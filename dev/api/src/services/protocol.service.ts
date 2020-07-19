@@ -25,7 +25,7 @@ export class ProtocolService {
             channel: 'dev',
             payload: data
         };
-        return this.redisService.send({type: 'hub'}, JSON.stringify(payload));
+        return this.redisService.send({message: 'hub'}, payload).toPromise();
     }
 
 }

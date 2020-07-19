@@ -1,15 +1,16 @@
 import {Controller} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
-import {Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {payloadInterface} from "../interfaces/payload.interface";
 
 @Controller()
 export class AppController {
 
     private config: ModuleInterface = {
         name: 'system',
-        version: 1.0,
-        description: 'system test',
+        version: 1.1,
+        description: 'System Module',
         started: new Date(),
         dependencies: [],
     };
@@ -18,18 +19,22 @@ export class AppController {
 
     }
 
-    @EventPattern({channel: 'system'})
-    public onMessage(@Payload() message: string, @Ctx() context: RedisContext) {
+    @MessagePattern({message: 'system'})
+    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext){
+        console.log('system message', data);
 
-        const data = JSON.parse(message);
+        const resp = this.perform(data);
+        console.log('system after perform', resp);
 
-        console.log(message);
+        return resp;
+    }
 
-        switch (data.api) {
-            default:
-                return null;
-                break;
-        }
+    @EventPattern({event: 'system'})
+    public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+
+        console.log('system event', data);
+
+        return this.perform(data);
     }
 
     async onApplicationBootstrap() {
@@ -43,7 +48,7 @@ export class AppController {
             console.log('will send register request');
 
             try {
-                const moduleResponse = await this.protocolService.registerModule(this.config).toPromise();
+                const moduleResponse = await this.protocolService.registerModule(this.config);
 
                 console.log(moduleResponse);
 
@@ -71,6 +76,17 @@ export class AppController {
 
 
         }, params.after * 1000);
+    }
+
+    private perform(data: payloadInterface){
+        try {
+            return this[data.api + 'Service'][data.act](data.payload, this.config);
+        } catch (ex) {//TODO return proper error to caller
+            console.log(ex);
+            return {
+                message:'Could not find ' + data.api + ':' + data.act
+            };
+        }
     }
 
 }

@@ -12,8 +12,6 @@ export class ProtocolService {
     ) {
     }
 
-
-
     public start() {
         return this.redisService.connect();
     }
@@ -25,7 +23,14 @@ export class ProtocolService {
             channel: 'system',
             payload: data
         };
-        return this.redisService.send({type: 'hub'}, JSON.stringify(payload));
+        return this.redisService.send({message: 'hub'}, payload).toPromise();
+    }
+
+    public ping(data: any, config: ModuleInterface){
+        return {
+            name: config.name,
+            version: config.version
+        };
     }
 
 }

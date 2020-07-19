@@ -23,6 +23,10 @@ export class ProtocolService {
     }
 
     public sendMessage(pattern, data: any){
+        return this.redisClient.send(pattern, data).toPromise();
+    }
+
+    public emitEvent(pattern, data: any){
         return this.redisClient.emit(pattern, data);
     }
 

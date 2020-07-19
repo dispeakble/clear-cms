@@ -7,44 +7,46 @@ services:
       - 6379:6379
     networks:
       - webnet
-#  crm-hub:
-#    container_name: crm-hub
-#    working_dir: /usr/src/app
-#    build:
-#      context: ./hub
-#      dockerfile: Dockerfile
-#    env_file:
-#      - ./hub/api/.dev-env
-#    networks:
-#      - webnet
-#    depends_on:
-#      - redis
-#  crm-dev:
-#    container_name: crm-dev
-#    working_dir: /usr/src/app
-#    build:
-#      context: ./dev
-#      dockerfile: Dockerfile
-#    env_file:
-#      - ./dev/api/.dev-env
-#    networks:
-#      - webnet
-#    depends_on:
-#      - redis
-#      - crm-hub
-#  crm-system:
-#    container_name: crm-system
-#    working_dir: /usr/src/app
-#    build:
-#      context: ./system
-#      dockerfile: Dockerfile
-#    env_file:
-#      - .env
-#    networks:
-#      - webnet
-#    ports:
-#      - 80:80
-#    depends_on:
-#      - redis
+  crm-hub:
+    container_name: crm-hub
+    working_dir: /usr/src/app
+    build:
+      context: ./hub
+      dockerfile: Dockerfile
+    env_file:
+      - ./hub/api/.env
+    networks:
+      - webnet
+    depends_on:
+      - redis
+  crm-dev:
+    container_name: crm-dev
+    working_dir: /usr/src/app
+    build:
+      context: ./dev
+      dockerfile: Dockerfile
+    env_file:
+      - ./dev/api/.env
+    networks:
+      - webnet
+    depends_on:
+      - redis
+      - crm-hub
+      - crm-system
+  crm-system:
+    container_name: crm-system
+    working_dir: /usr/src/app
+    build:
+      context: ./system
+      dockerfile: Dockerfile
+    env_file:
+      - ./system/api/.env
+    networks:
+      - webnet
+    ports:
+      - 80:80
+    depends_on:
+      - redis
+      - crm-hub
 networks:
   webnet:

@@ -11,16 +11,13 @@ export class ProtocolController {
                 private readonly moduleService: ModuleService)
     {}
 
-    @MessagePattern({type: 'hub'})//TODO should be an ENV or a config
-    public async onMessage(@Payload() message: string, @Ctx() context: RedisContext): Promise<payloadInterface> {
-
-        const data = JSON.parse(message);
+    @MessagePattern({message: 'hub'})//TODO should be an ENV or a config
+    public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext): Promise<payloadInterface> {
 
         console.log(data);
 
         switch (data.api) {
             case 'module':
-
                 const result = await this.moduleService.perform({
                     act: data.act,
                     payload: data.payload
@@ -36,8 +33,6 @@ export class ProtocolController {
                 };
 
                 return payload;
-
-                //this.protocolService.sendMessage({channel: data.channel}, payload);
                 break;
             default:
                 return null;

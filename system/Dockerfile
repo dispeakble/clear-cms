@@ -1,22 +1,13 @@
-FROM crm_crm-reactjs:latest as system_react
+FROM node:14.5.0-alpine As crm-nestjs
 
+RUN ["npm", "i", "-g", "@nestjs/cli"]
+
+RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY ./client .
-
-RUN npm install --only-production
-
-RUN npm run react:build
-
-FROM crm_crm-nestjs:latest
-
-WORKDIR /usr/src/app
-
-COPY ./api .
-
-RUN npm install --only=production
-
-COPY --from=system_react /usr/src/app/dist ./client
+COPY ./api/package*.json /usr/src/app/
+RUN npm install
+COPY ./api /usr/src/app
 
 RUN npm run build
 

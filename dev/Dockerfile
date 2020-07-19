@@ -1,4 +1,4 @@
-FROM node:12.13-alpine As crm-nestjs
+FROM node:14.5.0-alpine As crm-nestjs
 
 RUN ["npm", "i", "-g", "@nestjs/cli"]
 

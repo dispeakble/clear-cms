@@ -1,7 +1,8 @@
 import {Controller} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
-import {Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {payloadInterface} from "../interfaces/payload.interface";
 
 @Controller()
 export class AppController {
@@ -11,19 +12,30 @@ export class AppController {
         version: 1.0,
         description: 'dev test',
         started: new Date(),
-        dependencies: ['system'],
+        dependencies: [{
+            name: 'system',
+            version: 1.0
+        }],
     };
 
     constructor(private readonly protocolService: ProtocolService) {
 
     }
 
-    @EventPattern({channel: 'dev'})
-    public onMessage(@Payload() message: string, @Ctx() context: RedisContext) {
+    @MessagePattern({message: 'dev'})
+    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+        console.log(data);
 
-        const data = JSON.parse(message);
+        switch (data.api) {
+            default:
+                return null;
+                break;
+        }
+    }
 
-        console.log(message);
+    @EventPattern({event: 'dev'})
+    public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+        console.log(data);
 
         switch (data.api) {
             default:
@@ -43,7 +55,7 @@ export class AppController {
             console.log('will send register request');
 
             try {
-                const moduleResponse = await this.protocolService.registerModule(this.config).toPromise();
+                const moduleResponse = await this.protocolService.registerModule(this.config);
 
                 console.log(moduleResponse)
 
