@@ -1,32 +1,43 @@
 import {Controller, Inject} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
-import {Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
-import {AppService} from "../services/app.service";
+import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {ModuleService} from "../services/module.service";
+import {payloadInterface} from "../interfaces/payload.interface";
 
 @Controller()
 export class ProtocolController {
 
-    constructor(private readonly protocolService: ProtocolService, private readonly appService: AppService) {
+    constructor(private readonly protocolService: ProtocolService,
+                private readonly moduleService: ModuleService)
+    {}
 
-    }
-
-
-    @EventPattern({type: 'hub'})//TODO should be an ENV or a config
-    public onMessage(@Payload() message: string, @Ctx() context: RedisContext) {
-
-        console.log('Hub has a message', typeof message, message);
+    @MessagePattern({type: 'hub'})//TODO should be an ENV or a config
+    public async onMessage(@Payload() message: string, @Ctx() context: RedisContext): Promise<payloadInterface> {
 
         const data = JSON.parse(message);
 
-        switch (data.api) {
-            case 'hub':
+        console.log(data);
 
-                const result = this.appService.perform({
+        switch (data.api) {
+            case 'module':
+
+                const result = await this.moduleService.perform({
                     act: data.act,
                     payload: data.payload
                 });
 
-                this.protocolService.sendMessage({type: data.channel}, result);
+                result.name = data.payload.name;
+
+                let payload: payloadInterface = {
+                    api: 'module',
+                    act: 'confirm',
+                    channel: 'hub',
+                    payload: result,
+                };
+
+                return payload;
+
+                //this.protocolService.sendMessage({channel: data.channel}, payload);
                 break;
             default:
                 return null;

@@ -6,12 +6,6 @@ import {payloadInterface} from "../interfaces/payload.interface";
 @Injectable()
 export class ProtocolService {
 
-    private config = {
-        name: 'Development',
-        id: 'dev',
-        channel: 'dev'
-    };
-
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy
     ) {
@@ -23,14 +17,14 @@ export class ProtocolService {
         return this.redisService.connect();
     }
 
-    public sendHandshake(data) {
-        let payload = {
-            api: 'hub',
-            act: 'handShake',
+    public registerModule(data) {
+        let payload: payloadInterface = {
+            api: 'module',
+            act: 'register',
             channel: 'dev',
             payload: data
         };
-        return this.redisService.emit({type: 'hub'}, JSON.stringify(payload));
+        return this.redisService.send({type: 'hub'}, JSON.stringify(payload));
     }
 
 }

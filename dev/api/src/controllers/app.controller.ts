@@ -1,6 +1,7 @@
 import {Controller} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
+import {ModuleInterface} from "../interfaces/module.interface";
 
 @Controller()
 export class AppController {
@@ -16,17 +17,51 @@ export class AppController {
 
     }
 
-    @EventPattern({type: 'dev'})
-    public onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
-        console.log('dev has a message', typeof data, data);
+    @EventPattern({channel: 'dev'})
+    public onMessage(@Payload() message: string, @Ctx() context: RedisContext) {
+
+        const data = JSON.parse(message);
+
+        console.log(message);
+
+        switch (data.api) {
+            case 'confirm':
+                console.log('registration confirmed. can continue');
+                break;
+            case 'reject':
+                console.log('registration failed. will not continue');
+                break;
+            case 'retry':
+                console.log('registration failed. will retry in ', data.payload.retry);
+                break;
+            default:
+                return null;
+                break;
+        }
     }
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
         console.log('dev connected to redis');
-        setTimeout(() => {
+        setTimeout(async () => {
             console.log('will send handshake');
-            this.protocolService.sendHandshake(this.config);
+
+            const payload: ModuleInterface = {
+                name: 'dev',
+                version: 1.0,
+                description: 'dev test',
+                registered: new Date(),
+                dependencies: ['system'],
+            };
+
+            try {
+                const moduleResponse = await this.protocolService.registerModule(this.config).toPromise();
+                console.log(moduleResponse);
+            } catch (ex){
+
+            }
+
+
         }, 2000);
     }
 

@@ -6,6 +6,7 @@ import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
 import {ProtocolService} from "./services/protocol.service";
+import {ModuleService} from "./services/module.service";
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import {ProtocolService} from "./services/protocol.service";
     ])
   ],
   controllers: [AppController, ProtocolController],
-  providers: [AppService, ProtocolService]
+  providers: [AppService, ProtocolService, ModuleService]
 })
 
 export class AppModule {}

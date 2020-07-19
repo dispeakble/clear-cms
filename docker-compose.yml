@@ -14,7 +14,7 @@ services:
 #      context: ./hub
 #      dockerfile: Dockerfile
 #    env_file:
-#      - .dev-env
+#      - ./hub/api/.dev-env
 #    networks:
 #      - webnet
 #    depends_on:
@@ -26,7 +26,7 @@ services:
 #      context: ./dev
 #      dockerfile: Dockerfile
 #    env_file:
-#      - .dev-env
+#      - ./dev/api/.dev-env
 #    networks:
 #      - webnet
 #    depends_on:
