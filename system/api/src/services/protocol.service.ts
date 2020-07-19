@@ -22,7 +22,7 @@ export class ProtocolService {
         let payload: payloadInterface = {
             api: 'module',
             act: 'register',
-            channel: 'dev',
+            channel: 'system',
             payload: data
         };
         return this.redisService.send({type: 'hub'}, JSON.stringify(payload));

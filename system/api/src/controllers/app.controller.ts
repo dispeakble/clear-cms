@@ -7,18 +7,18 @@ import {ModuleInterface} from "../interfaces/module.interface";
 export class AppController {
 
     private config: ModuleInterface = {
-        name: 'dev',
+        name: 'system',
         version: 1.0,
-        description: 'dev test',
+        description: 'system test',
         started: new Date(),
-        dependencies: ['system'],
+        dependencies: [],
     };
 
     constructor(private readonly protocolService: ProtocolService) {
 
     }
 
-    @EventPattern({channel: 'dev'})
+    @EventPattern({channel: 'system'})
     public onMessage(@Payload() message: string, @Ctx() context: RedisContext) {
 
         const data = JSON.parse(message);
@@ -34,7 +34,7 @@ export class AppController {
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        console.log('dev connected to redis');
+        console.log('system connected to redis');
         this.registerModule({after: 2})
     }
 
@@ -45,7 +45,7 @@ export class AppController {
             try {
                 const moduleResponse = await this.protocolService.registerModule(this.config).toPromise();
 
-                console.log(moduleResponse)
+                console.log(moduleResponse);
 
                 switch(moduleResponse.payload.status){
                     case 'failed':
@@ -61,7 +61,7 @@ export class AppController {
                         }
                         break;
                     case 'registered':
-                        console.log('Dev registered');
+                        console.log('System registered');
                         break;
                 }
 

@@ -11,11 +11,11 @@ async function bootstrap() {
         const app = await NestFactory.createMicroservice(AppModule, {
             transport: Transport.REDIS,
             options: {
-                url: 'redis://redis',
+                url: 'redis://' + process.env.redis_server,
                 port: 6379
             },
         });
-        await app.listen(() => console.log('system is ready.'));
+        await app.listen(() => console.log('system is ready.', ...arguments));
     } catch(e){
         logger.log('Warning! Could not start event listener');
     }
