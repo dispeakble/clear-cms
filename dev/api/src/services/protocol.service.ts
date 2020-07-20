@@ -23,6 +23,10 @@ export class ProtocolService {
             api: 'module',
             act: 'register',
             channel: 'dev',
+            config: {
+                restart: true,
+                stop: false
+            },
             payload: data
         };
         return this.redisService.send({message: 'hub'}, payload).toPromise();

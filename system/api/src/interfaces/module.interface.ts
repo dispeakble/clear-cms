@@ -1,7 +1,13 @@
+export interface DependencyInterface{
+    name: string;
+    version: string;
+}
+
 export interface ModuleInterface {
     name: string;
-    version: number;
+    version: string;
     description: string;
     started: Date;
-    dependencies: string[];
+    config: any;
+    dependencies: DependencyInterface[];
 }

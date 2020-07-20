@@ -9,13 +9,22 @@ export class AppController {
 
     private config: ModuleInterface = {
         name: 'dev',
-        version: 1.0,
+        version: '20.07.19',
         description: 'dev test',
         started: new Date(),
-        dependencies: [{
-            name: 'system',
-            version: 1.0
-        }],
+        config: {
+            restart: true,
+            stop: false
+        },
+        dependencies: [
+            {
+                name: 'system',
+                version: 'latest'
+            }, {
+                name: 'hub',
+                version: 'latest'
+            }
+        ],
     };
 
     constructor(private readonly protocolService: ProtocolService) {
@@ -50,18 +59,16 @@ export class AppController {
         this.registerModule({after: 2})
     }
 
-    private registerModule(params){
+    private registerModule(params) {
         setTimeout(async () => {
-            console.log('will send register request');
-
             try {
                 const moduleResponse = await this.protocolService.registerModule(this.config);
 
                 console.log(moduleResponse)
 
-                switch(moduleResponse.payload.status){
+                switch (moduleResponse.payload.status) {
                     case 'failed':
-                        switch(moduleResponse.payload.resolution.action){
+                        switch (moduleResponse.payload.resolution.action) {
                             case 'retry':
                                 this.registerModule({
                                     after: moduleResponse.payload.resolution.after
@@ -77,7 +84,7 @@ export class AppController {
                         break;
                 }
 
-            } catch (ex){
+            } catch (ex) {
                 console.log(ex);
             }
 

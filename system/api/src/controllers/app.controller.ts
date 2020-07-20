@@ -9,9 +9,15 @@ export class AppController {
 
     private config: ModuleInterface = {
         name: 'system',
-        version: 1.1,
+        version: '20.07.19',
         description: 'System Module',
         started: new Date(),
+        config: {
+            permissions: {
+                stop: false,
+                restart: true
+            }
+        },
         dependencies: [],
     };
 
@@ -45,12 +51,9 @@ export class AppController {
 
     private registerModule(params){
         setTimeout(async () => {
-            console.log('will send register request');
 
             try {
                 const moduleResponse = await this.protocolService.registerModule(this.config);
-
-                console.log(moduleResponse);
 
                 switch(moduleResponse.payload.status){
                     case 'failed':

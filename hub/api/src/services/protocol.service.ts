@@ -7,12 +7,6 @@ import {payloadInterface} from "../interfaces/payload.interface";
 @Injectable()
 export class ProtocolService {
 
-    public config = {
-        name: 'Hub',
-        id: 'hub',
-        channel: 'hub'
-    };
-
     constructor(
         @Inject('REDIS_SERVICE') private redisClient: ClientProxy
     ) {
