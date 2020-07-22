@@ -32,62 +32,81 @@ export class AppController {
     }
 
     @MessagePattern({message: 'dev'})
-    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         console.log(data);
 
-        switch (data.api) {
-            default:
-                return null;
-                break;
-        }
+        const resp = await this.perform(data);
+        return resp;
     }
 
     @EventPattern({event: 'dev'})
-    public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         console.log(data);
 
-        switch (data.api) {
-            default:
-                return null;
-                break;
-        }
+        const resp = await this.perform(data);
+        return resp;
     }
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        console.log('dev connected to redis');
-        this.registerModule({after: 2})
+        await this.registerModule({after: 1});
+        try {
+            await this.protocolService.sendMessage({
+                channel: 'proxy',
+                payload: {api: 'protocol', act: 'mapRequest', payload: {channel: 'dev', type: 'get'}}
+            })
+        } catch (ex){
+            console.log(ex);
+        }
+
     }
 
     private registerModule(params) {
-        setTimeout(async () => {
-            try {
-                const moduleResponse = await this.protocolService.registerModule(this.config);
+        return new Promise((resolve_register) => {
+            setTimeout(async () => {
+                try {
+                    const moduleResponse = await this.protocolService.registerModule(this.config);
 
-                switch (moduleResponse.status) {
-                    case 'failed':
-                        switch (moduleResponse.resolution.action) {
-                            case 'retry':
-                                this.registerModule({
-                                    after: moduleResponse.resolution.after
-                                });
-                                break;
-                            default:
-                                console.log(moduleResponse);
-                                break;
-                        }
-                        break;
-                    case 'registered':
-                        console.log('Dev registered');
-                        break;
+                    switch (moduleResponse.status) {
+                        case 'failed':
+                            switch (moduleResponse.resolution.action) {
+                                case 'retry':
+                                    await this.registerModule({
+                                        after: moduleResponse.resolution.after
+                                    });
+                                    resolve_register(true);
+                                    break;
+                                default:
+                                    resolve_register(true);
+                                    console.log(moduleResponse);
+                                    break;
+                            }
+                            break;
+                        case 'registered':
+                            resolve_register(true);
+                            console.log('Dev module registered');
+                            break;
+                    }
+
+                } catch (ex) {
+                    resolve_register(true);
+                    console.log(ex);
                 }
 
-            } catch (ex) {
-                console.log(ex);
-            }
+            }, params.after * 1000);
+        });
 
+    }
 
-        }, params.after * 1000);
+    private perform(data: payloadInterface){
+        try {
+            return this[data.api + 'Service'].perform(data);
+        } catch (ex) {
+            console.log(ex);
+            return {
+                message:'Could not find ' + data.api + ':' + data.act
+            };
+        }
     }
 
 }

@@ -28,44 +28,16 @@ export class ProtocolController {
 
     @MessagePattern({message: 'hub'})//TODO should be an ENV or a config
     public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext): Promise<payloadInterface> {
-
-        const resp = this.perform(data);
-        return resp;
-
-        switch (data.api) {
-            case 'module':
-                const result = await this.moduleService.perform({
-                    act: data.act,
-                    payload: data.payload
-                });
-
-                result.name = data.payload.name;
-
-                let payload: payloadInterface = {
-                    api: 'module',
-                    act: 'confirm',
-                    channel: 'hub',
-                    payload: result,
-                };
-
-                return payload;
-                break;
-            default:
-                return null;
-                break;
-        }
-
-
+        return await this.perform(data);
     }
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        console.log('hub connected to redis');
     }
 
     private perform(data: payloadInterface){
         try {
-            return this[data.api + 'Service'][data.act](data.payload, this.config);
+            return this[data.api + 'Service'].perform(data, this.config);
         } catch (ex) {
             console.log(ex);
             return {

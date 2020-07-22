@@ -7,6 +7,8 @@ import {ModuleInterface} from "../interfaces/module.interface";
 @Injectable()
 export class ProtocolService {
 
+    private methods = [];
+
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy
     ) {
@@ -16,6 +18,14 @@ export class ProtocolService {
 
     public start() {
         return this.redisService.connect();
+    }
+
+    public sendMessage(data: any){
+        return this.redisService.send({message: data.channel}, data.payload).toPromise();
+    }
+
+    public emitEvent(data: any){
+        return this.redisService.emit(data.channel, data.payload);
     }
 
     public registerModule(data: ModuleInterface) {
@@ -30,6 +40,16 @@ export class ProtocolService {
             payload: data
         };
         return this.redisService.send({message: 'hub'}, payload).toPromise();
+    }
+
+    public perform(data: any) {
+        if (this.methods.includes(data.act)) {
+            //console.log('ProtocolService.' + data.act + '(' + JSON.stringify(data.payload) + ')');
+            return this[data.act](data.payload);
+        } else {
+            console.log("Dev.protocolService." + data.act + " not found");
+        }
+        return null;
     }
 
 }

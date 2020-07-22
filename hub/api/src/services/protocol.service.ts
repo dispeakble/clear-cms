@@ -8,6 +8,8 @@ import {ModuleInterface} from "../interfaces/module.interface";
 @Injectable()
 export class ProtocolService {
 
+    private methods = [];
+
     constructor(
         @Inject('REDIS_SERVICE') private redisClient: ClientProxy
     ) {
@@ -17,12 +19,12 @@ export class ProtocolService {
         return this.redisClient.connect();
     }
 
-    public sendMessage(pattern, data: any){
-        return this.redisClient.send(pattern, data).toPromise();
+    public sendMessage(data: any){
+        return this.redisClient.send(data.channel, data.payload).toPromise();
     }
 
-    public emitEvent(pattern, data: any){
-        return this.redisClient.emit(pattern, data);
+    public emitEvent(data: any){
+        return this.redisClient.emit(data.channel, data.payload);
     }
 
     public ping(data: any, config: ModuleInterface){
@@ -30,6 +32,16 @@ export class ProtocolService {
             name: config.name,
             version: config.version
         };
+    }
+
+    public perform(data: any) {
+        if (this.methods.includes(data.act)) {
+            //console.log('ProtocolService.' + data.act + '(' + JSON.stringify(data.payload) + ')');
+            return this[data.act](data.payload);
+        } else {
+            console.log("Hub.protocolService." + data.act + " not found");
+        }
+        return null;
     }
 
 }

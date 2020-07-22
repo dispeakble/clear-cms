@@ -36,7 +36,7 @@ async function bootstrap() {
             new FastifyAdapter({https: httpsOptions, logger: true})
         );
 
-        await netApp.listen(443, '0.0.0.0');
+        await netApp.listen(30443, '0.0.0.0');
 
         console.log('https server started');
 

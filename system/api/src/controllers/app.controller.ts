@@ -42,7 +42,7 @@ export class AppController {
     async onApplicationBootstrap() {
         await this.protocolService.start();
         console.log('system connected to redis');
-        this.registerModule({after: 2})
+        this.registerModule({after: 0})
     }
 
     private registerModule(params){

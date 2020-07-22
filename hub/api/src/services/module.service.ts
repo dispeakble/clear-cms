@@ -6,7 +6,7 @@ import {payloadInterface} from "../interfaces/payload.interface";
 @Injectable()
 export class ModuleService {
 
-    private actions = ["register"];
+    private methods = ["register"];
     private modules = {
         hub: {
             version: 'version',
@@ -20,12 +20,7 @@ export class ModuleService {
     constructor(private protocolService: ProtocolService) {
     }
 
-    public perform(params: any) {
-        if (this.actions.includes(params.act)) {
-            let _this = this;
-            return _this[params.act](Object.assign({}, params.payload))
-        }
-    }
+
 
     private async register(params: ModuleInterface) {
 
@@ -33,7 +28,7 @@ export class ModuleService {
 
         this.moduleStatus[params.name].tries++;
 
-        if(this.moduleStatus[params.name].tries >= 3){
+        if(this.moduleStatus[params.name].tries >= 10){
             const moduleRegistrationFailed = {
                 status: 'failed',
                 resolution: {
@@ -69,7 +64,10 @@ export class ModuleService {
                             resolve_ping(null);
                         }, 5000);
 
-                        const module_response = await this.protocolService.sendMessage({message: dep.name}, payload);
+                        const module_response = await this.protocolService.sendMessage({
+                            channel: dep.name,
+                            payload: payload
+                        });
                         resolve_ping(module_response);
                     } catch (ex){
                         resolve_ping(null);
@@ -120,7 +118,7 @@ export class ModuleService {
                 status: 'failed',
                 resolution: {
                     action: moduleAction,
-                    after: 10
+                    after: 1
                 },
                 reason: 'missing dependencies',
                 data: missingDeps
@@ -129,6 +127,16 @@ export class ModuleService {
         }
 
 
+    }
+
+    public perform(data: any) {
+        if (this.methods.includes(data.act)) {
+            //console.log('ProtocolService.' + data.act + '(' + JSON.stringify(data.payload) + ')');
+            return this[data.act](data.payload);
+        } else {
+            console.log("Hub.moduleService." + data.act + " not found");
+        }
+        return null;
     }
 
 }
