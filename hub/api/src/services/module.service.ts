@@ -50,6 +50,7 @@ export class ModuleService {
 
         await Promise.all(params.dependencies.map(async (dep) => {
             if (!this.modules.hasOwnProperty(dep.name)) {
+                moduleAction = 'retry';
                 console.log('could not find ' + dep.name + ' in this.modules.')
                 missingDeps.push(dep);
                 return dep;
@@ -78,13 +79,13 @@ export class ModuleService {
                 if(!pingResponse){
                     moduleAction = 'retry';
                 } else if(pingResponse.version === dep.version){
-                    console.log('found module: ' + pingResponse.name + '@' + pingResponse.version)
+                    //console.log('found module: ' + pingResponse.name + '@' + pingResponse.version)
                 } else if(dep.version === 'latest'){
-                    console.log('using ' + pingResponse.name + '@' + pingResponse.version + ' as latest ')
+                    //console.log('using ' + pingResponse.name + '@' + pingResponse.version + ' as latest ')
                     dep.version = pingResponse.version;
                 } else {
-                    console.log('could not find ' + dep.name + ':' + dep.version);
-                    console.log('got instead ' + pingResponse.name + '@' + pingResponse.version);
+                    //console.log('could not find ' + dep.name + ':' + dep.version);
+                    //console.log('got instead ' + pingResponse.name + '@' + pingResponse.version);
                     dep.version = pingResponse.version;
                     moduleAction = 'stop';
                     missingDeps.push({
@@ -93,7 +94,6 @@ export class ModuleService {
                         requestedVersion: dep.version
                     });
                 }
-                console.log('from ' + dep.name, pingResponse);
             } catch(ex){
                 console.log(ex);
             }
@@ -116,7 +116,6 @@ export class ModuleService {
             };
             return moduleRegistrationSucceeded;
         } else {
-            console.log(missingDeps);
             const moduleRegistrationFailed = {
                 status: 'failed',
                 resolution: {

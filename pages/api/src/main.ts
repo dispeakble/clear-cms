@@ -16,9 +16,9 @@ async function bootstrap() {
                 port: 6379
             },
         });
-        await app.listen(() => console.log('system is ready.', ...arguments));
+        await app.listen(() => console.log('pages module is ready.', ...arguments));
     } catch(e){
-        logger.log('Warning! Could not start event listener');
+        logger.log('Warning! Could not start the pages module');
     }
 
 

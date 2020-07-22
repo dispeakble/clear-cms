@@ -8,9 +8,9 @@ import {payloadInterface} from "../interfaces/payload.interface";
 export class AppController {
 
     private config: ModuleInterface = {
-        name: 'dev',
+        name: 'pages',
         version: '20.07.19',
-        description: 'dev test',
+        description: 'pages module',
         started: new Date(),
         config: {
             restart: true,
@@ -31,7 +31,7 @@ export class AppController {
 
     }
 
-    @MessagePattern({message: 'dev'})
+    @MessagePattern({message: 'pages'})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         console.log(data);
 
@@ -42,7 +42,7 @@ export class AppController {
         }
     }
 
-    @EventPattern({event: 'dev'})
+    @EventPattern({event: 'pages'})
     public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         console.log(data);
 
@@ -55,7 +55,7 @@ export class AppController {
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        console.log('dev connected to redis');
+        console.log('pages module connected to redis');
         this.registerModule({after: 2})
     }
 
@@ -78,7 +78,7 @@ export class AppController {
                         }
                         break;
                     case 'registered':
-                        console.log('Dev registered');
+                        console.log('Pages module registered');
                         break;
                 }
 

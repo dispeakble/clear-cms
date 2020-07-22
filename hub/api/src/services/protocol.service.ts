@@ -2,6 +2,7 @@ import {ClientProxy, Ctx, EventPattern, Payload, RedisContext} from "@nestjs/mic
 import {Inject, Injectable} from "@nestjs/common";
 import {AppService} from "./app.service";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {ModuleInterface} from "../interfaces/module.interface";
 
 
 @Injectable()
@@ -22,6 +23,13 @@ export class ProtocolService {
 
     public emitEvent(pattern, data: any){
         return this.redisClient.emit(pattern, data);
+    }
+
+    public ping(data: any, config: ModuleInterface){
+        return {
+            name: config.name,
+            version: config.version
+        };
     }
 
 }

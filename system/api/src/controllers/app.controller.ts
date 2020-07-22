@@ -27,11 +27,7 @@ export class AppController {
 
     @MessagePattern({message: 'system'})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext){
-        console.log('system message', data);
-
         const resp = this.perform(data);
-        console.log('system after perform', resp);
-
         return resp;
     }
 
@@ -55,12 +51,12 @@ export class AppController {
             try {
                 const moduleResponse = await this.protocolService.registerModule(this.config);
 
-                switch(moduleResponse.payload.status){
+                switch(moduleResponse.status){
                     case 'failed':
-                        switch(moduleResponse.payload.resolution.action){
+                        switch(moduleResponse.resolution.action){
                             case 'retry':
                                 this.registerModule({
-                                    after: moduleResponse.payload.resolution.after
+                                    after: moduleResponse.resolution.after
                                 });
                                 break;
                             default:
