@@ -7,7 +7,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 @Injectable()
 export class ProtocolService {
 
-    private methods = [];
+    private methods = ["get"];
 
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy
@@ -40,6 +40,14 @@ export class ProtocolService {
             payload: data
         };
         return this.redisService.send({message: 'hub'}, payload).toPromise();
+    }
+
+    private get(data: any){
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve('Hello World')
+            }, 1)
+        })
     }
 
     public perform(data: any) {

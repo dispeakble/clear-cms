@@ -1,13 +1,12 @@
-import {Controller, Get, Post, Res, Body, HttpStatus, Request} from '@nestjs/common';
+import {Controller, Get, Post, Res, Body, HttpStatus, Request, Inject} from '@nestjs/common';
 import {Response} from 'express';
-import {ProtocolService} from '../services/protocol.service';
+//import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import {AppService} from "../services/app.service";
 
 @Controller()
-export class ProxyController {
+export class ProtocolController {
 
     private config: ModuleInterface = {
         name: 'proxy',
@@ -30,7 +29,11 @@ export class ProxyController {
         ],
     };
 
-    constructor(private protocolService: ProtocolService, private readonly appService: AppService) {
+    constructor(
+        @Inject('ProtocolService') private protocolService) {
+        this.protocolService.start().then(() => {
+            this.registerModule({after: 1})
+        });
 
     }
 
@@ -68,11 +71,6 @@ export class ProxyController {
         console.log(data);
         const resp = await this.perform(data);
         return resp;
-    }
-
-    async onApplicationBootstrap() {
-        await this.protocolService.start();
-        await this.registerModule({after: 1})
     }
 
     private registerModule(params) {
