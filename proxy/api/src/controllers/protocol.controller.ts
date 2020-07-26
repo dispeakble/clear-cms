@@ -1,6 +1,5 @@
-import {Controller, Get, Post, Res, Body, HttpStatus, Request, Inject} from '@nestjs/common';
-import {Response} from 'express';
-//import {ProtocolService} from '../services/protocol.service';
+import {Controller, Get, Post, Res, Body, HttpStatus, Inject, Req} from '@nestjs/common';
+import {Response, Request} from 'express';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -32,28 +31,36 @@ export class ProtocolController {
     constructor(
         @Inject('ProtocolService') private protocolService) {
         this.protocolService.start().then(() => {
-            this.registerModule({after: 1})
+            this.registerModule({after: 0})
         });
 
     }
 
     //HTTPS protocol
-    @Post()
+    @Post('*')
     async onPost(@Res() res: Response, @Body() body: Body) {
 
         await this.protocolService.sendPost({res, body});//TODO try to use events and subscribers
         res.status(HttpStatus.CREATED).send();
     }
 
-    @Get()
-    async onGet(@Res() res: Response, @Request() req: Request) {
-        //TODO can be changed by any module live.
+    @Get('*')
+    async onGet(@Res() res: Response, @Req() req: Request) {
+
+
         //TODO should receive a subscriber
         //TODO map ports to different modules if needed
         //TODO map paths to different modules if needed
 
-        const headers = req.headers;
-        const app_data = await this.protocolService.sendGet(headers);//TODO try to use events and subscribers
+
+        const payload = {
+            ip: req.ip,
+            hostname: req.hostname,
+            query: req.query,
+            params: req.params,
+            headers: req.headers
+        };
+        const app_data = await this.protocolService.sendGet(payload);//TODO try to use events and subscribers
 
         res.status(HttpStatus.OK);
         res.send(app_data);

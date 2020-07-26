@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Config
+clusters:
+  - name: "crm-cluster"
+    cluster:
+      server: "https://crm-registry.me/k8s/clusters/c-9qn4w"
+      certificate-authority-data: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJpVENDQ\
+      VM2Z0F3SUJBZ0lCQURBS0JnZ3Foa2pPUFFRREFqQTdNUnd3R2dZRFZRUUtFeE5rZVc1aGJXbGoKY\
+      kdsemRHVnVaWEl0YjNKbk1Sc3dHUVlEVlFRREV4SmtlVzVoYldsamJHbHpkR1Z1WlhJdFkyRXdIa\
+      GNOTWpBdwpOekkxTWpFd05UVTJXaGNOTXpBd056SXpNakV3TlRVMldqQTdNUnd3R2dZRFZRUUtFe\
+      E5rZVc1aGJXbGpiR2x6CmRHVnVaWEl0YjNKbk1Sc3dHUVlEVlFRREV4SmtlVzVoYldsamJHbHpkR\
+      1Z1WlhJdFkyRXdXVEFUQmdjcWhrak8KUFFJQkJnZ3Foa2pPUFFNQkJ3TkNBQVI4RTdrVlp0VGhpR\
+      HozdE1QTlZXTWI2Ly8zM052LzlwNzRRSEwrQmpsVQp6RHJ3NDJRSXI4azB5OWJTMXlpNUV4WHczd\
+      CtMeER6dE9wcHBlZklCN1pQM295TXdJVEFPQmdOVkhROEJBZjhFCkJBTUNBcVF3RHdZRFZSMFRBU\
+      UgvQkFVd0F3RUIvekFLQmdncWhrak9QUVFEQWdOSkFEQkdBaUVBeUt3V0tMeFUKNVo2MjBLRWlre\
+      UJnelZXRDBzNmdyM3FNUWwvTXAwZ1pJVU1DSVFES25uY1BNNXduN3YrV0dKRERBWUorY2grMQpyd\
+      mkyMnVaMDhUYVRSeW1Pbmc9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0t"
+  - name: "crm-cluster-crm-pc"
+    cluster:
+      server: "https://192.168.1.119:6443"
+      certificate-authority-data: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN3akNDQ\
+      WFxZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFTTVJBd0RnWURWUVFERXdkcmRXSmwKT\
+      FdOaE1CNFhEVEl3TURjeU5qRXpNelF4TTFvWERUTXdNRGN5TkRFek16UXhNMW93RWpFUU1BNEdBM\
+      VVFQXhNSAphM1ZpWlMxallUQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ\
+      0VCQU8wT3R6OVMxY2Z1CjMvR3pZMnMzOUx2RStwdHM5MU1aVzdGVVlvS2F5RG5tTmtteWo0aW1PT\
+      TBEQWEwV2FRYkxvVUttR0NleGxOQW0Kd0lhK1BTN3I0cU5ucTJGaUpPOWNkVVNrRGFRLzZ6ZElKa\
+      EdEelRscWdzZldqaWxKQUlEVGFraDl3SnU1dnVJdQpINWwzbUhtMUhJOGVENkpHbUx1c3NFaWRWM\
+      0tDMFJCRHIveDBDdXcwb1FXVHNQbWFpTEpVb2hrRy9uSU9FV3pLClNpUVFUS3REVGpkdGRnalRET\
+      kdvakpvOHdXYlRnaVdxdXM0eHU5Qmx6b05yZHM5U2tTRklKaHJQbkdGQjZ4SHAKa3VldDY3NGhrU\
+      ktzM081OUFLM0RlOExvTGxOVVo4aVQ2VStDQ000WDl6d1Y2MGhOOFFwK2VzcU5HbVZNSDZ5Swpqa\
+      E52RTRjMUg0a0NBd0VBQWFNak1DRXdEZ1lEVlIwUEFRSC9CQVFEQWdLa01BOEdBMVVkRXdFQi93U\
+      UZNQU1CCkFmOHdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBREEwYVRLTTdJdW5FcGlyYjMyT0I2V\
+      XBXY240amFoRm1VRjMKbDdubU9GTHJPWVpqTE0rOE5RcEpjQlVocFVjZVg5T2RYNFMyTDYwazhhN\
+      zRYQW53UlBGTTVzbTB0QThDaTdjKwo1VkpIRlNzejhHdi9STW1uQ0VnN2xIdEdxZnF6TlRJd3M1d\
+      nZEc1JBZGdUQ0sxcEV5ZnIrYUl0cndvQS9VNTZMClNiSHBWcXhhTTVBSWM2RzlQRGhoYW5rTXp1V\
+      TBvWERDRHBnMTUvWjlCaGQzSEM1N1g3MTdZNVNTRGlGQWtZQmkKdVhvRmVJQWZJZHEwYWRGdmlHb\
+      k40Nno2TncxS2szT0d6VjZqRnR6cVd3Z0hvQTFzRGJCK01na3hqaWhnZm5jVAo4b3JLMTM5a3RwW\
+      jhQeFlubGZSNUZLaGM1VC9SZXRNUkRHaUJOV0VHU0dBZ01kWUVYRms9Ci0tLS0tRU5EIENFUlRJR\
+      klDQVRFLS0tLS0K"
+
+users:
+  - name: "crm-cluster"
+    user:
+      token: "kubeconfig-user-9krfs.c-9qn4w:sbw6lfgnfvfhnww5c9pk4h6clbsspzjdn828qwkzndwtd2blgv9vmb"
+
+contexts:
+  - name: "crm-cluster"
+    context:
+      user: "crm-cluster"
+      cluster: "crm-cluster"
+  - name: "crm-cluster-crm-pc"
+    context:
+      user: "crm-cluster"
+      cluster: "crm-cluster-crm-pc"
+
+current-context: "crm-cluster"

@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+  crm-hub:
+    container_name: crm-hub
+    working_dir: /usr/src/app
+    build:
+      context: ./hub
+      dockerfile: Dockerfile
+    env_file:
+      - ./hub/api/.env
+    command: "docker tag crm_crm-hub localhost:5000/crm-hub && docker push localhost:5000/crm-hub"
+  crm-dev:
+    container_name: crm-dev
+    working_dir: /usr/src/app
+    build:
+      context: ./dev
+      dockerfile: Dockerfile
+    env_file:
+      - ./dev/api/.env
+
+    command: "docker tag crm_crm-dev localhost:5000/crm-dev && docker push localhost:5000/crm-dev"
+  crm-pages:
+    container_name: crm-pages
+    working_dir: /usr/src/app
+    build:
+      context: ./pages
+      dockerfile: Dockerfile
+    env_file:
+      - ./pages/api/.env
+    command: "docker tag crm_crm-pages localhost:5000/crm-pages && docker push localhost:5000/crm-pages"
+  crm-system:
+    container_name: crm-system
+    working_dir: /usr/src/app
+    build:
+      context: ./system
+      dockerfile: Dockerfile
+    env_file:
+      - ./system/api/.env
+    command: "docker tag crm_crm-system localhost:5000/crm-system && docker push localhost:5000/crm-system"
+  crm-proxy:
+    container_name: crm-proxy
+    working_dir: /usr/src/app
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    env_file:
+      - ./proxy/api/.env
+    command: "docker tag crm_crm-proxy localhost:5000/crm-proxy && docker push localhost:5000/crm-proxy"

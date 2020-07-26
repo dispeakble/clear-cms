@@ -33,15 +33,13 @@ export class AppController {
 
     @MessagePattern({message: 'dev'})
     public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-        console.log(data);
-
         const resp = await this.perform(data);
         return resp;
     }
 
     @EventPattern({event: 'dev'})
     public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-        console.log(data);
+
 
         const resp = await this.perform(data);
         return resp;
@@ -49,9 +47,9 @@ export class AppController {
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        await this.registerModule({after: 1});
+        await this.registerModule({after: 0});
         try {
-            await this.protocolService.sendMessage({
+            await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
                 channel: 'proxy',
                 payload: {api: 'protocol', act: 'mapRequest', payload: {channel: 'dev', type: 'get'}}
             })

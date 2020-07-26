@@ -1,5 +1,13 @@
 version: '3.7'
 services:
+
+  redis:
+    container_name: redis
+    image: redis:5
+    ports:
+      - 6379:6379
+    networks:
+      - webnet
   traefik:
     image: "traefik:v2.0.0"
     command:
@@ -7,15 +15,10 @@ services:
       - --entrypoints.websecure.address=:443
       - --providers.docker
       - --api
-      - --certificatesresolvers.leresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.leresolver.acme.email=your@email.com
-      - --certificatesresolvers.leresolver.acme.storage=/acme.json
-      - --certificatesresolvers.leresolver.acme.tlschallenge=true
     ports:
       - "80:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./acme.json:/acme.json"
     labels:
       # global redirect to https
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
@@ -26,13 +29,6 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     depends_on:
       - redis
-  redis:
-    container_name: redis
-    image: redis:5
-    ports:
-      - 6379:6379
-    networks:
-      - webnet
   crm-hub:
     container_name: crm-hub
     working_dir: /usr/src/app
@@ -95,7 +91,7 @@ services:
     networks:
       - webnet
     ports:
-      - 443:30443
+      - 30443:30443
     depends_on:
       - crm-hub
       - crm-system

@@ -44,9 +44,7 @@ export class ProtocolService {
 
     private get(data: any){
         return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve('Hello World')
-            }, 1)
+            resolve('Hello World')
         })
     }
 

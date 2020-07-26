@@ -17,8 +17,6 @@ export class ProtocolService {
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
 
     public start() {
-        console.log('protocol start')
-        setInterval(() => console.log(this.channels), 1000)
         return this.redisService.connect();
     }
 

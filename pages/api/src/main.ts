@@ -13,7 +13,7 @@ async function bootstrap() {
             transport: Transport.REDIS,
             options: {
                 url: 'redis://' + process.env.redis_server,
-                port: 6379
+                port: +process.env.redis_port
             },
         });
         await app.listen(() => console.log('pages module is ready.', ...arguments));
