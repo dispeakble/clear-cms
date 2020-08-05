@@ -21,6 +21,9 @@ export default function Footer(props) {
     [classes.a]: true,
     [classes.footerWhiteFont]: whiteFont
   });
+  const date = new Date()
+  const dateTimeFormat = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
+  const [{ value: month },,{ value: day },,{ value: year }] = dateTimeFormat .formatToParts(date )
   return (
     <footer className={footerClasses}>
       <div className={classes.container}>
@@ -28,26 +31,17 @@ export default function Footer(props) {
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
               <a
-                href="//google.com"
+                href="//crm-awesome.io"
                 className={classes.block}
                 target="_blank"
               >
-                Licenses
+                Contact us
               </a>
             </ListItem>
           </List>
         </div>
         <div className={classes.right}>
-          &copy; {1900 + new Date().getYear()} , made with{"Nest/Reacj"}
-          <Favorite className={classes.icon} /> by{"Nest/Reacj"}
-          <a
-            href="//google.com"
-            className={aClasses}
-            target="_blank"
-          >
-            Contact us
-          </a>
-          for a better web.
+          {day}/{month}/{year}
         </div>
       </div>
     </footer>

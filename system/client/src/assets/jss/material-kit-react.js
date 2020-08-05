@@ -34,16 +34,16 @@ const containerFluid = {
 const container = {
   ...containerFluid,
   "@media (min-width: 576px)": {
-    maxWidth: "540px"
+    maxWidth: "576px"
   },
   "@media (min-width: 768px)": {
-    maxWidth: "720px"
+    maxWidth: "768px"
   },
   "@media (min-width: 992px)": {
-    maxWidth: "960px"
+    maxWidth: "992px"
   },
   "@media (min-width: 1200px)": {
-    maxWidth: "1140px"
+    maxWidth: "1200px"
   }
 };
 
@@ -69,7 +69,7 @@ const defaultFont = {
   lineHeight: "1.5em"
 };
 
-const primaryColor = "#9c27b0";
+const primaryColor = "#006C6C";
 const warningColor = "#ff9800";
 const dangerColor = "#f44336";
 const successColor = "#4caf50";
@@ -123,8 +123,8 @@ const infoCardHeader = {
   ...infoBoxShadow
 };
 const primaryCardHeader = {
-  color: "#fff",
-  background: "linear-gradient(60deg, #ab47bc, #8e24aa)",
+  color: "#FFF",
+  background: "linear-gradient(60deg, #013a50, #000F15)",
   ...primaryBoxShadow
 };
 const roseCardHeader = {
