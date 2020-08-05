@@ -15,7 +15,7 @@ const cardStyle = {
     minWidth: "0",
     wordWrap: "break-word",
     fontSize: ".875rem",
-    transition: "all 300ms linear"
+    transition: "all 300ms cubic-bezier(0.685, 0.0473, 0.346, 1)"
   },
   cardPlain: {
     background: "transparent",

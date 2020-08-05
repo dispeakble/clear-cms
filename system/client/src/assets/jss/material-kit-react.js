@@ -124,6 +124,7 @@ const infoCardHeader = {
 };
 const primaryCardHeader = {
   color: "#FFF",
+  transform: "perspective(70px) rotateX(-1deg)",
   background: "linear-gradient(60deg, #013a50, #000F15)",
   ...primaryBoxShadow
 };
