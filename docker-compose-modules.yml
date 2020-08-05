@@ -1,34 +1,34 @@
 version: '3.7'
 services:
 
-  redis:
-    container_name: redis
-    image: redis:5
-    ports:
-      - 6379:6379
-    networks:
-      - webnet
-  traefik:
-    image: "traefik:v2.0.0"
-    command:
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --providers.docker
-      - --api
-    ports:
-      - "80:80"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    labels:
-      # global redirect to https
-      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-      - "traefik.http.routers.http-catchall.entrypoints=web"
-      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-
-      # middleware redirect
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-    depends_on:
-      - redis
+#  redis:
+#    container_name: redis
+#    image: redis:5
+#    ports:
+#      - 6379:6379
+#    networks:
+#      - webnet
+#  traefik:
+#    image: "traefik:v2.0.0"
+#    command:
+#      - --entrypoints.web.address=:80
+#      - --entrypoints.websecure.address=:443
+#      - --providers.docker
+#      - --api
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#    labels:
+#      # global redirect to https
+#      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+#      - "traefik.http.routers.http-catchall.entrypoints=web"
+#      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+#
+#      # middleware redirect
+#      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+#    depends_on:
+#      - redis
   crm-hub:
     container_name: crm-hub
     working_dir: /usr/src/app
@@ -50,7 +50,6 @@ services:
     networks:
       - webnet
     depends_on:
-      - redis
       - crm-hub
       - crm-system
       - crm-proxy

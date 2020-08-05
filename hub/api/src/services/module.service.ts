@@ -34,9 +34,12 @@ export class ModuleService {
                 resolution: {
                     action: 'stop'
                 },
-                reason: 'retry count exceeded',
+                reason: 'retry count exceeded for ' + params.name,
                 data: null
             };
+
+            this.moduleStatus[params.name].tries = 0;
+
             return moduleRegistrationFailed;
         }
 
@@ -85,7 +88,7 @@ export class ModuleService {
                     //console.log('could not find ' + dep.name + ':' + dep.version);
                     //console.log('got instead ' + pingResponse.name + '@' + pingResponse.version);
                     dep.version = pingResponse.version;
-                    moduleAction = 'stop';
+                    moduleAction = 'restart';
                     missingDeps.push({
                         name: dep.name,
                         version: pingResponse.version,

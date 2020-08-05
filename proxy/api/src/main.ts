@@ -33,9 +33,11 @@ async function bootstrap() {
             },
         });
 
+        const default_http_port = +process.env.private_http_port || 30443;
+
         await netApp.startAllMicroservicesAsync();
 
-        await netApp.listen(30443, '0.0.0.0');
+        await netApp.listen(default_http_port, '0.0.0.0');
 
         console.log('https server started');
 

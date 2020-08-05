@@ -18,6 +18,9 @@ export class AppController {
         },
         dependencies: [
             {
+                name: 'storage',
+                version: 'latest'
+            }, {
                 name: 'system',
                 version: 'latest'
             }, {
@@ -49,10 +52,25 @@ export class AppController {
         await this.protocolService.start();
         await this.registerModule({after: 0});
         try {
-            await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
+            /*await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
                 channel: 'proxy',
                 payload: {api: 'protocol', act: 'mapRequest', payload: {channel: 'dev', type: 'get'}}
+            })*/
+
+            const t = await this.protocolService.sendMessage({
+                channel: 'storage',
+                payload: {
+                    api:'volume',
+                    act: 'writefile',
+                    payload:{
+                        name:'test.txt',
+                        content: 'lorem ipsum'
+                    }
+                }
             })
+
+            console.log(t);
+
         } catch (ex){
             console.log(ex);
         }
@@ -67,6 +85,7 @@ export class AppController {
 
                     switch (moduleResponse.status) {
                         case 'failed':
+                            console.log(moduleResponse);
                             switch (moduleResponse.resolution.action) {
                                 case 'retry':
                                     await this.registerModule({
@@ -74,9 +93,16 @@ export class AppController {
                                     });
                                     resolve_register(true);
                                     break;
+                                case 'restart':
+                                    console.log(JSON.stringify(moduleResponse));
+                                    console.log('DEV module cannot be registered');
+                                    process.exit;
+
+                                    break;
                                 default:
-                                    resolve_register(true);
-                                    console.log(moduleResponse);
+                                    console.log(JSON.stringify(moduleResponse));
+                                    throw new Error('DEV module cannot be registered');
+
                                     break;
                             }
                             break;

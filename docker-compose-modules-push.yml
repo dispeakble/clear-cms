@@ -7,8 +7,7 @@ services:
       context: ./hub
       dockerfile: Dockerfile
     env_file:
-      - ./hub/api/.env
-    command: "docker tag crm_crm-hub localhost:5000/crm-hub && docker push localhost:5000/crm-hub"
+      - .env
   crm-dev:
     container_name: crm-dev
     working_dir: /usr/src/app
@@ -16,9 +15,8 @@ services:
       context: ./dev
       dockerfile: Dockerfile
     env_file:
-      - ./dev/api/.env
+      - .env
 
-    command: "docker tag crm_crm-dev localhost:5000/crm-dev && docker push localhost:5000/crm-dev"
   crm-pages:
     container_name: crm-pages
     working_dir: /usr/src/app
@@ -26,8 +24,7 @@ services:
       context: ./pages
       dockerfile: Dockerfile
     env_file:
-      - ./pages/api/.env
-    command: "docker tag crm_crm-pages localhost:5000/crm-pages && docker push localhost:5000/crm-pages"
+      - .env
   crm-system:
     container_name: crm-system
     working_dir: /usr/src/app
@@ -35,8 +32,24 @@ services:
       context: ./system
       dockerfile: Dockerfile
     env_file:
-      - ./system/api/.env
-    command: "docker tag crm_crm-system localhost:5000/crm-system && docker push localhost:5000/crm-system"
+      - .env
+
+  crm-storage:
+    container_name: crm-storage
+    working_dir: /usr/src/app
+    build:
+      context: ./storage
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+  crm-db:
+    container_name: crm-db
+    working_dir: /usr/src/app
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    env_file:
+      - .env
   crm-proxy:
     container_name: crm-proxy
     working_dir: /usr/src/app
@@ -44,5 +57,4 @@ services:
       context: ./proxy
       dockerfile: Dockerfile
     env_file:
-      - ./proxy/api/.env
-    command: "docker tag crm_crm-proxy localhost:5000/crm-proxy && docker push localhost:5000/crm-proxy"
+      - .env

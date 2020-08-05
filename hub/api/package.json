@@ -8,6 +8,9 @@
   "scripts": {
     "prebuild": "npx rimraf dist",
     "build": "nest build",
+    "docker-build": "cd .. && docker build . -t crm-registry.me:5000/crm-hub",
+    "docker-push": "cd .. && docker push crm-registry.me:5000/crm-hub",
+    "docker-build-push": "npm run docker-build && npm run docker-push",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

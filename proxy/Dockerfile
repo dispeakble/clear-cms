@@ -11,4 +11,6 @@ COPY ./api /usr/src/app
 
 RUN npm run build
 
+CMD ["docker", "tag", "crm_crm-proxy", "localhost:5000/crm-proxy", "&&", "docker", "push", "localhost:5000/crm-proxy"]
+
 CMD ["npm", "run", "start:prod"]

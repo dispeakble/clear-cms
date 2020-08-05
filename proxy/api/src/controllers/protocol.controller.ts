@@ -96,8 +96,8 @@ export class ProtocolController {
                                     resolve_register(true);
                                     break;
                                 default:
-                                    resolve_register(true);
-                                    console.log(moduleResponse);
+                                    console.log(JSON.stringify(moduleResponse));
+                                    throw new Error('PROXY cannot be registered');
                                     break;
                             }
                             break;

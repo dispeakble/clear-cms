@@ -60,7 +60,8 @@ export class AppController {
                                 });
                                 break;
                             default:
-                                console.log(moduleResponse);
+                                console.log(JSON.stringify(moduleResponse));
+                                throw new Error('system module cannot be registered');
                                 break;
                         }
                         break;
