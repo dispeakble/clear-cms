@@ -17,10 +17,6 @@ import Header from "components/Header/Header.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
 import Button from "components/CustomButtons/Button.js";
-
-import image from "assets/img/bg.jpg";
-import profileImage from "assets/img/faces/avatar.jpg";
-
 import styles from "assets/jss/material-kit-react/views/componentsSections/navbarsStyle.js";
 
 const useStyles = makeStyles(styles);
@@ -135,7 +131,7 @@ export default function SectionNavbars() {
       <div id="navbar" className={classes.navbar}>
         <div
           className={classes.navigation}
-          style={{ backgroundImage: "url(" + image + ")" }}
+          /*style={{ backgroundImage: "url(" + image + ")" }}*/
         >
           <Header
             brand="Brand"
@@ -305,13 +301,7 @@ export default function SectionNavbars() {
                     caret={false}
                     hoverColor="black"
                     dropdownHeader="Dropdown Header"
-                    buttonText={
-                      <img
-                        src={profileImage}
-                        className={classes.img}
-                        alt="profile"
-                      />
-                    }
+                    buttonText="hehe"
                     buttonProps={{
                       className:
                         classes.navLink + " " + classes.imageDropdownButton,
