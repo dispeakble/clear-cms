@@ -44,6 +44,7 @@ export class ProtocolService {
 
     private get(data: any){
         return new Promise((resolve) => {
+            console.log(data);
             resolve('Hello World')
         })
     }

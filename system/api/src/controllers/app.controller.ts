@@ -18,7 +18,10 @@ export class AppController {
                 restart: true
             }
         },
-        dependencies: [],
+        dependencies: [{
+            name: 'hub',
+            version: 'latest'
+        }],
     };
 
     constructor(private readonly protocolService: ProtocolService) {

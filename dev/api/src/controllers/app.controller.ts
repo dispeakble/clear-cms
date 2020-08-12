@@ -1,4 +1,4 @@
-import {Controller} from '@nestjs/common';
+import {Controller, OnApplicationBootstrap} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
@@ -52,12 +52,12 @@ export class AppController {
         await this.protocolService.start();
         await this.registerModule({after: 0});
         try {
-            /*await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
+            await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
                 channel: 'proxy',
                 payload: {api: 'protocol', act: 'mapRequest', payload: {channel: 'dev', type: 'get'}}
-            })*/
+            })
 
-            const t = await this.protocolService.sendMessage({
+            /*const t = await this.protocolService.sendMessage({
                 channel: 'storage',
                 payload: {
                     api:'volume',
@@ -69,7 +69,7 @@ export class AppController {
                 }
             })
 
-            console.log(t);
+            console.log(t);*/
 
         } catch (ex){
             console.log(ex);
