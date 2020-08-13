@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 
-import "assets/scss/clear-crm.scss";
+import "../lib/assets/scss/clear-crm.scss";
 
 
 //import Components from "views/Components/Components.js";
-import ViewAuth from "views/ViewAuth/ViewAuth.js";
-import LandingPage from "views/LandingPage/LandingPage.js";
+import ViewAuth from "../lib/views/ViewAuth/ViewAuth.js";
+import LandingPage from "../lib/views/LandingPage/LandingPage.js";
 
 
 function start(){
