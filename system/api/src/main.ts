@@ -6,21 +6,20 @@ import { Transport } from '@nestjs/microservices';
 Logger.overrideLogger(['error']);
 // Create a logger instance
 const logger = new Logger('Main');
+const DEV = process.env.debug || false;
 
 async function bootstrap() {
     try {
-        const app = await NestFactory.createMicroservice(AppModule, {
-            transport: Transport.REDIS,
+        const tmpRedis = {transport: Transport.REDIS,
             options: {
-                url: 'redis://' + process.env.redis_server,
+            url: 'redis://' + process.env.redis_server,
                 port: +process.env.redis_port
-            },
-        });
-        await app.listen(() => console.log('system is ready.', ...arguments));
+        }};
+        const app = await NestFactory.createMicroservice(AppModule, tmpRedis);
+        await app.listen(() => logger.log('System:bootstrap complete'));
     } catch(e){
-        logger.log('Warning! Could not start event listener');
+        logger.log('System:bootstrap! Could not connect to redis');
     }
-
 
 }
 bootstrap();

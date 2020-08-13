@@ -3,7 +3,9 @@ import {AppService} from './services/app.service';
 import {AppController} from "./controllers/app.controller";
 import {ProtocolController} from "./controllers/protocol.controller";
 import {ProtocolService} from "./services/protocol.service";
+import {WebsocketGatewayService} from "./services/websocket.gateway.service";
 import {ClientsModule, Transport} from "@nestjs/microservices";
+
 
 @Module({
     imports: [
@@ -19,7 +21,7 @@ import {ClientsModule, Transport} from "@nestjs/microservices";
         ])
     ],
     controllers: [AppController, ProtocolController],
-    providers: [AppService, ProtocolService]
+    providers: [AppService, ProtocolService, WebsocketGatewayService]
 })
 
 export class AppModule {

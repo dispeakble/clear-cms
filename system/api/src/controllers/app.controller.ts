@@ -1,4 +1,4 @@
-import {Controller} from '@nestjs/common';
+import {Controller, Logger} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
@@ -24,6 +24,8 @@ export class AppController {
         }],
     };
 
+    public logger: Logger = new Logger('App.Controller');
+
     constructor(private readonly protocolService: ProtocolService) {
 
     }
@@ -37,14 +39,14 @@ export class AppController {
     @EventPattern({event: 'system'})
     public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
 
-        console.log('system event', data);
+        this.logger.log('system event', JSON.stringify(data));
 
         return this.perform(data);
     }
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        console.log('system connected to redis');
+        this.logger.log('system connected to redis');
         this.registerModule({after: 0})
     }
 
@@ -63,18 +65,18 @@ export class AppController {
                                 });
                                 break;
                             default:
-                                console.log(JSON.stringify(moduleResponse));
+                                this.logger.log(JSON.stringify(moduleResponse));
                                 throw new Error('system module cannot be registered');
                                 break;
                         }
                         break;
                     case 'registered':
-                        console.log('System registered');
+                        this.logger.log('System registered');
                         break;
                 }
 
             } catch (ex){
-                console.log(ex);
+                this.logger.log(ex);
             }
 
 
@@ -85,7 +87,7 @@ export class AppController {
         try {
             return this[data.api + 'Service'][data.act](data.payload, this.config);
         } catch (ex) {//TODO return proper error to caller
-            console.log(ex);
+            this.logger.log(ex);
             return {
                 message:'Could not find ' + data.api + ':' + data.act
             };
