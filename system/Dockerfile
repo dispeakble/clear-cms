@@ -11,6 +11,12 @@ COPY ./api /usr/src/app
 
 RUN npm run build
 
+COPY ./api/package*.json /usr/src/app/
+RUN npm install
+COPY ./api /usr/src/app
+
+RUN npm run build
+
 CMD ["docker", "tag", "crm_crm-system", "crm-dev.me:30500/clear_crm-system:dev", "&&", "docker", "push", "crm-dev.me:30500/clear_crm-system:dev"]
 
 CMD ["npm", "run", "start:prod"]
