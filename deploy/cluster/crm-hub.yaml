@@ -2,11 +2,10 @@
 kind: Deployment
 metadata:
   annotations:
-    deployment.kubernetes.io/revision: "30"
+    deployment.kubernetes.io/revision: "2"
     field.cattle.io/creatorId: user-zk4ns
-    field.cattle.io/publicEndpoints: '[{"nodeName":"c-rhp26:m-4dd1b826ed4f","addresses":["192.168.42.163"],"port":6379,"protocol":"TCP","podName":"default:crm-hub-5f9b44fffb-rzb7v","allNodes":false}]'
-  creationTimestamp: null
-  generation: 1
+  creationTimestamp: "2020-08-16T12:15:18Z"
+  generation: 4
   labels:
     cattle.io/creator: norman
     workload.user.cattle.io/workloadselector: deployment-default-crm-hub
@@ -18,7 +17,6 @@ metadata:
         f:annotations:
           .: {}
           f:field.cattle.io/creatorId: {}
-          f:field.cattle.io/publicEndpoints: {}
         f:labels:
           .: {}
           f:cattle.io/creator: {}
@@ -68,14 +66,12 @@ metadata:
                   k:{"containerPort":6379,"protocol":"TCP"}:
                     .: {}
                     f:containerPort: {}
-                    f:hostPort: {}
                     f:name: {}
                     f:protocol: {}
                 f:resources: {}
                 f:securityContext:
                   .: {}
                   f:allowPrivilegeEscalation: {}
-                  f:capabilities: {}
                   f:privileged: {}
                   f:readOnlyRootFilesystem: {}
                   f:runAsNonRoot: {}
@@ -84,18 +80,13 @@ metadata:
                 f:terminationMessagePolicy: {}
                 f:tty: {}
             f:dnsPolicy: {}
-            f:imagePullSecrets:
-              .: {}
-              k:{"name":"crm-dev"}:
-                .: {}
-                f:name: {}
             f:restartPolicy: {}
             f:schedulerName: {}
             f:securityContext: {}
             f:terminationGracePeriodSeconds: {}
     manager: Go-http-client
     operation: Update
-    time: "2020-08-12T09:03:01Z"
+    time: "2020-08-16T13:34:27Z"
   - apiVersion: apps/v1
     fieldsType: FieldsV1
     fieldsV1:
@@ -128,9 +119,12 @@ metadata:
         f:updatedReplicas: {}
     manager: kube-controller-manager
     operation: Update
-    time: "2020-08-12T09:03:01Z"
+    time: "2020-08-16T13:34:29Z"
   name: crm-hub
+  namespace: default
+  resourceVersion: "21031"
   selfLink: /apis/apps/v1/namespaces/default/deployments/crm-hub
+  uid: 91028418-3e64-4e15-91b5-365a4745ff24
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -146,8 +140,8 @@ spec:
   template:
     metadata:
       annotations:
-        cattle.io/timestamp: "2020-08-12T09:02:54Z"
-        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-hub","hostPort":6379,"kind":"ClusterIP","name":"6379tcp63792","protocol":"TCP","sourcePort":6379}]]'
+        cattle.io/timestamp: "2020-08-16T13:34:27Z"
+        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-hub","kind":"ClusterIP","name":"6379tcp2","protocol":"TCP"}]]'
       creationTimestamp: null
       labels:
         workload.user.cattle.io/workloadselector: deployment-default-crm-hub
@@ -158,18 +152,16 @@ spec:
           value: "6379"
         - name: redis_server
           value: redis-master
-        image: crm-dev.me:30500/clear_crm-hub:dev
+        image: localhost:5000/crm-hub:dev
         imagePullPolicy: Always
         name: crm-hub
         ports:
         - containerPort: 6379
-          hostPort: 6379
-          name: 6379tcp63792
+          name: 6379tcp2
           protocol: TCP
         resources: {}
         securityContext:
           allowPrivilegeEscalation: false
-          capabilities: {}
           privileged: false
           readOnlyRootFilesystem: false
           runAsNonRoot: false
@@ -178,10 +170,26 @@ spec:
         terminationMessagePolicy: File
         tty: true
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-      - name: crm-dev
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-08-16T12:15:18Z"
+    lastUpdateTime: "2020-08-16T12:15:18Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2020-08-16T12:15:18Z"
+    lastUpdateTime: "2020-08-16T13:34:29Z"
+    message: ReplicaSet "crm-hub-d774bdc8c" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

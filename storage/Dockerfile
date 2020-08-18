@@ -11,6 +11,4 @@ COPY ./api /usr/src/app
 
 RUN npm run build
 
-CMD ["docker", "tag", "crm_crm-storage", "localhost:5000/crm-storage", "&&", "docker", "push", "localhost:5000/crm-storage"]
-
-CMD ["npm", "run", "start:prod"]
+#CMD ["docker", "tag", "clearcrm_crm-storage", "localhost:5000/crm-storage", "&&", "docker", "push", "localhost:5000/crm-storage"]

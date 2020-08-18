@@ -11,5 +11,4 @@ COPY ./api /usr/src/app
 
 RUN npm run build
 
-CMD ["docker", "tag", "crm_crm-pages", "crm-dev.me:30500/clear_crm-pages:dev", "&&", "docker", "push", "crm-dev.me:30500/clear_crm-pages:dev"]
-CMD ["npm", "run", "start:prod"]
+#CMD ["docker", "tag", "clearcrm_crm-pages", "localhost:5000/crm-pages:latest", "&&", "docker", "push", "localhost:5000/crm-pages:latest"]

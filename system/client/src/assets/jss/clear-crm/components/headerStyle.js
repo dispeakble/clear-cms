@@ -16,8 +16,7 @@ const headerStyle = {
   appBar: {
     display: "flex",
     border: "0",
-    borderRadius: "3px",
-    padding: "0.625rem 0",
+    padding: "0",
     marginBottom: "20px",
     color: "#555",
     width: "100%",
@@ -30,6 +29,9 @@ const headerStyle = {
     justifyContent: "flex-start",
     position: "relative",
     zIndex: "unset"
+  },
+  rightDropdown:{
+    marginLeft:"auto"
   },
   absolute: {
     position: "absolute",
@@ -66,7 +68,8 @@ const headerStyle = {
     }
   },
   appResponsive: {
-    margin: "20px 10px"
+    margin: "10px 10px",
+    height:"100%"
   },
   primary: {
     backgroundColor: primaryColor,
@@ -107,8 +110,8 @@ const headerStyle = {
   transparent: {
     backgroundColor: "transparent !important",
     boxShadow: "none",
-    paddingTop: "25px",
-    color: "#FFFFFF"
+    paddingTop: "0",
+    color: "rgba(0,0,0,.87)"
   },
   dark: {
     color: "#FFFFFF",
@@ -118,7 +121,7 @@ const headerStyle = {
   },
   white: {
     border: "0",
-    padding: "0.625rem 0",
+    padding: "0",
     marginBottom: "20px",
     color: "#555",
     backgroundColor: "#fff !important",
@@ -137,8 +140,8 @@ const headerStyle = {
     display: "block",
     top: "0",
     height: "100vh",
-    right: "0",
-    left: "auto",
+    left: "0",
+    right: "auto",
     visibility: "visible",
     overflowY: "visible",
     borderTop: "none",

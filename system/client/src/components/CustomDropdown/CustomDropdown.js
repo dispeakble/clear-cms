@@ -148,10 +148,10 @@ export default function CustomDropdown(props) {
                     return (
                       <MenuItem
                         key={key}
-                        onClick={() => handleClose(prop)}
+                        onClick={() => handleClose(prop.href)}
                         className={dropdownItem}
                       >
-                        {prop}
+                        {prop.title}
                       </MenuItem>
                     );
                   })}

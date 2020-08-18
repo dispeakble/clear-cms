@@ -39,7 +39,7 @@ async function bootstrap() {
 
         await netApp.listen(default_http_port, '0.0.0.0');
 
-        console.log('https server started');
+        logger.log('https server started');
 
     } catch(e){
         logger.log('Warning! Could not start the proxy module');

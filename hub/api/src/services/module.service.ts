@@ -24,6 +24,8 @@ export class ModuleService {
 
     private async register(params: ModuleInterface) {
 
+        //
+
         this.moduleStatus[params.name] = this.moduleStatus[params.name] || {tries: 0};
 
         this.moduleStatus[params.name].tries++;
@@ -46,6 +48,19 @@ export class ModuleService {
         let missingDeps = [];
         let moduleAction = '';
 
+        if(!params.dependencies){
+            const moduleRegistrationFailed = {
+                status: 'succeeded',
+                resolution: {
+                    action: 'start',
+                    after: 1
+                },
+                reason: 'missing dependencies',
+                data: missingDeps
+            };
+            return moduleRegistrationFailed;
+        }
+
         await Promise.all(params.dependencies.map(async (dep) => {
             if (!this.modules.hasOwnProperty(dep.name)) {
                 moduleAction = 'retry';
@@ -53,7 +68,7 @@ export class ModuleService {
                 missingDeps.push(dep);
                 return dep;
             }
-            const payload: payloadInterface = {
+            const payload: payloadInterface = {//todo export this globally. lazy load
                 api: 'protocol',
                 act: 'ping',
                 channel: 'hub',
@@ -65,7 +80,7 @@ export class ModuleService {
                     try {
                         setTimeout(() => {
                             resolve_ping(null);
-                        }, 5000);
+                        }, 1000);
 
                         const module_response = await this.protocolService.sendMessage({
                             channel: dep.name,
@@ -103,6 +118,8 @@ export class ModuleService {
         }));
 
         if (missingDeps.length === 0) {
+
+            this.moduleStatus[params.name].tries = 0;
 
             this.modules[params.name] = {
                 version: params.version,

@@ -159,10 +159,10 @@ class CustomDropdown extends React.Component {
                       return (
                         <MenuItem
                           key={key}
-                          onClick={() => this.handleClose(prop)}
+                          onClick={() => this.handleClose(prop.href)}
                           className={dropdownItem}
                         >
-                          {prop}
+                          {prop.title}
                         </MenuItem>
                       );
                     })}

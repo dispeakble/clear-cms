@@ -13,8 +13,15 @@ const headerLinksStyle = theme => ({
     paddingBottom: "0",
     color: "inherit"
   },
+  linksContainer:{
+    position:"relative",
+    height:"100%"
+  },
+  listItemActive:{
+    color:"red",
+    background:"black"
+  },
   listItem: {
-    float: "left",
     color: "inherit",
     position: "relative",
     display: "block",
@@ -34,7 +41,16 @@ const headerLinksStyle = theme => ({
     }
   },
   listItemText: {
-    padding: "0 !important"
+    padding: "0 !important",
+    color: "rgba(0,0,0,.87)"
+  },
+  accordionLinks:{
+    width:"100%",
+    padding:"0"
+  },
+  accordion:{
+    padding:"0",
+    width:"100%"
   },
   navLink: {
     color: "inherit",
@@ -47,7 +63,8 @@ const headerLinksStyle = theme => ({
     lineHeight: "20px",
     textDecoration: "none",
     margin: "0px",
-    display: "inline-flex",
+    display: "block",
+    width: "100%",
     "&:hover,&:focus": {
       color: "inherit",
       background: "rgba(200, 200, 200, 0.2)"
@@ -62,6 +79,48 @@ const headerLinksStyle = theme => ({
         justifyContent: "flex-start"
       }
     }
+  },
+  logOut: {
+    color: "inherit",
+    background:"rgba(255,0,0,0.1)",
+    padding: "0.9375rem",
+    fontWeight: "400",
+    fontSize: "12px",
+    textTransform: "uppercase",
+    borderRadius: "3px",
+    lineHeight: "20px",
+    textDecoration: "none",
+    margin: "0px",
+    display: "block",
+    position:"absolute",
+    bottom: "20px",
+    width: "100%",
+    "&:hover,&:focus": {
+      color: "white",
+      background: "rgba(255, 0, 0, 1)"
+    },
+    [theme.breakpoints.down("sm")]: {
+      width: "calc(100% - 30px)",
+      marginLeft: "15px",
+      marginBottom: "8px",
+      marginTop: "8px",
+      textAlign: "left",
+      "& > span:first-child": {
+        justifyContent: "flex-start"
+      }
+    }
+  },
+  root: {
+    width: '100%',
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: '100%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
   },
   notificationNavLink: {
     color: "inherit",
@@ -101,11 +160,15 @@ const headerLinksStyle = theme => ({
     marginRight: "4px"
   },
   dropdownLink: {
-    "&,&:hover,&:focus": {
-      color: "inherit",
-      textDecoration: "none",
-      display: "block",
-      padding: "10px 20px"
+    color: "inherit",
+    borderBottom:"1px solid rgba(0,0,0,0.1)",
+    background: "inherit",
+    textDecoration: "none",
+    display: "block",
+    padding: "10px 20px",
+    width:"100%",
+    "&:hover,&:focus": {
+      background: "rgba(0,0,0,.1)"
     }
   },
   ...tooltip,

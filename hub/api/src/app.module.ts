@@ -16,7 +16,7 @@ import {ModuleService} from "./services/module.service";
         transport: Transport.REDIS,
         options: {
           url: 'redis://' + process.env.redis_server,
-          port: 31234
+          port: +process.env.redis_port
         }
       },
     ])
