@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-hub:${CRM_IMG_TAG}
+      dispeakble/crm-hub:${CRM_IMG_TAG}
   crm-dev:
     container_name: crm-dev
     working_dir: /usr/src/app
@@ -19,7 +19,7 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-dev:${CRM_IMG_TAG}
+      dispeakble/crm-dev:${CRM_IMG_TAG}
   crm-pages:
     container_name: crm-pages
     working_dir: /usr/src/app
@@ -29,7 +29,7 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-pages:${CRM_IMG_TAG}
+      dispeakble/crm-pages:${CRM_IMG_TAG}
   crm-system:
     container_name: crm-system
     working_dir: /usr/src/app
@@ -39,7 +39,7 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-system:${CRM_IMG_TAG}
+      dispeakble/crm-system:${CRM_IMG_TAG}
   crm-storage:
     container_name: crm-storage
     working_dir: /usr/src/app
@@ -49,7 +49,7 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-storage:${CRM_IMG_TAG}
+      dispeakble/crm-storage:${CRM_IMG_TAG}
   crm-db:
     container_name: crm-db
     working_dir: /usr/src/app
@@ -59,7 +59,7 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-db:${CRM_IMG_TAG}
+      dispeakble/crm-db:${CRM_IMG_TAG}
   crm-proxy:
     container_name: crm-proxy
     working_dir: /usr/src/app
@@ -69,4 +69,4 @@ services:
     env_file:
       - .env
     image:
-      localhost:5000/crm-proxy:${CRM_IMG_TAG}
+      dispeakble/crm-proxy:${CRM_IMG_TAG}

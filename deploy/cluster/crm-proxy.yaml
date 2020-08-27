@@ -92,6 +92,11 @@ metadata:
                 f:terminationMessagePolicy: {}
                 f:tty: {}
             f:dnsPolicy: {}
+            f:imagePullSecrets:
+              .: { }
+              k:{"name":"dockerhub"}:
+                .: { }
+                f:name: { }
             f:restartPolicy: {}
             f:schedulerName: {}
             f:securityContext: {}
