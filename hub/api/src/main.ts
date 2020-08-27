@@ -16,7 +16,7 @@ async function bootstrap() {
                 port: +process.env.redis_port
             },
         });
-        await app.listen(() => console.log('hub is ready.', ...arguments));
+        await app.listen(() => console.log('hub is ready.'));
     } catch(e){
         logger.log('Warning! Could not start event listener');
     }

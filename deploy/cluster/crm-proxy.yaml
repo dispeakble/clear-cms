@@ -2,9 +2,9 @@
 kind: Deployment
 metadata:
   annotations:
-    deployment.kubernetes.io/revision: "24"
+    deployment.kubernetes.io/revision: "3"
     field.cattle.io/creatorId: user-zk4ns
-    field.cattle.io/publicEndpoints: '[{"nodeName":"c-rhp26:m-4dd1b826ed4f","addresses":["192.168.42.163"],"port":31443,"protocol":"TCP","podName":"default:crm-proxy-7fbbd9496d-685q7","allNodes":false}]'
+    field.cattle.io/publicEndpoints: '[{"addresses":["192.168.42.163"],"port":443,"protocol":"HTTPS","serviceName":"default:crm-proxy-service","ingressName":"default:crm-proxy-lb","hostname":"crm-dev.me","path":"/","allNodes":true}]'
   creationTimestamp: null
   generation: 1
   labels:
@@ -69,13 +69,12 @@ metadata:
                 f:name: {}
                 f:ports:
                   .: {}
-                  k:{"containerPort":443,"protocol":"TCP"}:
+                  k:{"containerPort":6379,"protocol":"TCP"}:
                     .: {}
                     f:containerPort: {}
-                    f:hostPort: {}
                     f:name: {}
                     f:protocol: {}
-                  k:{"containerPort":6379,"protocol":"TCP"}:
+                  k:{"containerPort":9000,"protocol":"TCP"}:
                     .: {}
                     f:containerPort: {}
                     f:name: {}
@@ -93,18 +92,13 @@ metadata:
                 f:terminationMessagePolicy: {}
                 f:tty: {}
             f:dnsPolicy: {}
-            f:imagePullSecrets:
-              .: {}
-              k:{"name":"crm-dev"}:
-                .: {}
-                f:name: {}
             f:restartPolicy: {}
             f:schedulerName: {}
             f:securityContext: {}
             f:terminationGracePeriodSeconds: {}
     manager: Go-http-client
     operation: Update
-    time: "2020-08-12T16:51:57Z"
+    time: "2020-08-18T22:49:48Z"
   - apiVersion: apps/v1
     fieldsType: FieldsV1
     fieldsV1:
@@ -137,7 +131,7 @@ metadata:
         f:updatedReplicas: {}
     manager: kube-controller-manager
     operation: Update
-    time: "2020-08-12T16:51:57Z"
+    time: "2020-08-18T22:49:49Z"
   name: crm-proxy
   selfLink: /apis/apps/v1/namespaces/default/deployments/crm-proxy
 spec:
@@ -150,13 +144,13 @@ spec:
   strategy:
     rollingUpdate:
       maxSurge: 0
-      maxUnavailable: 1
+      maxUnavailable: 25%
     type: RollingUpdate
   template:
     metadata:
       annotations:
-        cattle.io/timestamp: "2020-08-12T16:51:55Z"
-        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-proxy","hostPort":0,"kind":"ClusterIP","name":"6379tcp2","protocol":"TCP"},{"containerPort":443,"dnsName":"crm-proxy-hostport","hostPort":31443,"kind":"HostPort","name":"443tcp314430","protocol":"TCP","sourcePort":31443}]]'
+        cattle.io/timestamp: "2020-08-18T22:47:19Z"
+        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-proxy","hostPort":0,"kind":"ClusterIP","name":"6379tcp2","protocol":"TCP"},{"containerPort":9000,"dnsName":"crm-proxy-nodeport","hostPort":0,"kind":"NodePort","name":"9000tcp300001","protocol":"TCP","sourcePort":30000}]]'
       creationTimestamp: null
       labels:
         workload.user.cattle.io/workloadselector: deployment-default-crm-proxy
@@ -164,21 +158,20 @@ spec:
       containers:
       - env:
         - name: private_http_port
-          value: "443"
+          value: "9000"
         - name: redis_port
           value: "6379"
         - name: redis_server
           value: redis-master
-        image: crm-dev.me:30500/clearcrm_crm-proxy:dev
+        image: localhost:5000/crm-proxy:1597788319
         imagePullPolicy: Always
         name: crm-proxy
         ports:
         - containerPort: 6379
           name: 6379tcp2
           protocol: TCP
-        - containerPort: 443
-          hostPort: 31443
-          name: 443tcp314430
+        - containerPort: 9000
+          name: 9000tcp300001
           protocol: TCP
         resources: {}
         securityContext:
@@ -192,8 +185,6 @@ spec:
         terminationMessagePolicy: File
         tty: true
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-      - name: crm-dev
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}

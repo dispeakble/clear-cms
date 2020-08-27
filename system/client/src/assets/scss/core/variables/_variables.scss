@@ -187,6 +187,7 @@ $paragraph-margin-bottom: 1rem !default;
 $grid-breakpoints: (
   xs: 0,
   sm: 100%,
+  smm: 100%,
   md: 100%,
   lg: 100%,
   xl: 100%
@@ -201,6 +202,7 @@ $grid-breakpoints: (
 
 $container-max-widths: (
   sm: 540px,
+  smm: 600px,
   md: 720px,
   lg: 960px,
   xl: 1140px

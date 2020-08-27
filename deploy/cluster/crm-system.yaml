@@ -2,7 +2,7 @@
 kind: Deployment
 metadata:
   annotations:
-    deployment.kubernetes.io/revision: "6"
+    deployment.kubernetes.io/revision: "7"
     field.cattle.io/creatorId: user-zk4ns
   creationTimestamp: null
   generation: 1
@@ -72,6 +72,7 @@ metadata:
                 f:securityContext:
                   .: {}
                   f:allowPrivilegeEscalation: {}
+                  f:capabilities: {}
                   f:privileged: {}
                   f:readOnlyRootFilesystem: {}
                   f:runAsNonRoot: {}
@@ -80,18 +81,13 @@ metadata:
                 f:terminationMessagePolicy: {}
                 f:tty: {}
             f:dnsPolicy: {}
-            f:imagePullSecrets:
-              .: {}
-              k:{"name":"crm-dev"}:
-                .: {}
-                f:name: {}
             f:restartPolicy: {}
             f:schedulerName: {}
             f:securityContext: {}
             f:terminationGracePeriodSeconds: {}
     manager: Go-http-client
     operation: Update
-    time: "2020-08-12T16:56:03Z"
+    time: "2020-08-18T22:12:25Z"
   - apiVersion: apps/v1
     fieldsType: FieldsV1
     fieldsV1:
@@ -124,7 +120,7 @@ metadata:
         f:updatedReplicas: {}
     manager: kube-controller-manager
     operation: Update
-    time: "2020-08-12T16:56:04Z"
+    time: "2020-08-18T22:12:26Z"
   name: crm-system
   selfLink: /apis/apps/v1/namespaces/default/deployments/crm-system
 spec:
@@ -136,14 +132,14 @@ spec:
       workload.user.cattle.io/workloadselector: deployment-default-crm-system
   strategy:
     rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
+      maxSurge: 1
+      maxUnavailable: 0
     type: RollingUpdate
   template:
     metadata:
       annotations:
-        cattle.io/timestamp: "2020-08-12T16:56:03Z"
-        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-system","kind":"ClusterIP","name":"6379tcp2","protocol":"TCP"}]]'
+        cattle.io/timestamp: "2020-08-18T22:12:25Z"
+        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-system","hostPort":0,"kind":"ClusterIP","name":"6379tcp02","protocol":"TCP","sourcePort":0}]]'
       creationTimestamp: null
       labels:
         workload.user.cattle.io/workloadselector: deployment-default-crm-system
@@ -154,16 +150,17 @@ spec:
           value: "6379"
         - name: redis_server
           value: redis-master
-        image: crm-dev.me:30500/crm-system
+        image: localhost:5000/crm-system:1597788319
         imagePullPolicy: Always
         name: crm-system
         ports:
         - containerPort: 6379
-          name: 6379tcp2
+          name: 6379tcp02
           protocol: TCP
         resources: {}
         securityContext:
           allowPrivilegeEscalation: false
+          capabilities: {}
           privileged: false
           readOnlyRootFilesystem: false
           runAsNonRoot: false
@@ -172,8 +169,6 @@ spec:
         terminationMessagePolicy: File
         tty: true
       dnsPolicy: ClusterFirst
-      imagePullSecrets:
-      - name: crm-dev
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
