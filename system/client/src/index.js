@@ -5,16 +5,14 @@ import { Router, Route, Switch } from "react-router-dom";
 
 import "assets/scss/clear-crm.scss";
 
-
 //import Components from "views/Components/Components.js";
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 //import LandingPage from "views/LandingPage/LandingPage.js";
+// salut, sunt ...
 
-
-function start(){
-
-    /*let connection = new WebSocket('ws://localhost:8282');
+function start() {
+  /*let connection = new WebSocket('ws://localhost:8282');
     // listen to onmessage event
     connection.onmessage = evt => {
         // add the new message to state
@@ -26,18 +24,18 @@ function start(){
         connection.send(Math.random())
     }, 2000)*/
 
-    var hist = createBrowserHistory();
+  var hist = createBrowserHistory();
 
-    ReactDOM.render(
-        <Router history={hist}>
-            <Switch>
-                <Route path="/view-auth" component={ViewAuth} />
-                <Route path="/" component={Dashboard} />//leave this always on the last place
-            </Switch>
-        </Router>,
-        document.getElementById("root")
-    );
+  ReactDOM.render(
+    <Router history={hist}>
+      <Switch>
+        <Route path="/view-auth" component={ViewAuth} />
+        <Route path="/" component={Dashboard} />
+        //leave this always on the last place
+      </Switch>
+    </Router>,
+    document.getElementById("root")
+  );
 }
 
 start();
-
