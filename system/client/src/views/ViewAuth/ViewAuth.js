@@ -22,6 +22,7 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import styles from "assets/jss/clear-crm/views/viewAuth.js";
 
 import image from "assets/img/view-auth-bg.png";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(styles);
 
@@ -32,6 +33,26 @@ export default function ViewAuth(props) {
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
+  const authCredentials = {
+      email:"abc@gmail.com",
+      password:"abc"
+  };
+
+  const url = props.location.pathname;
+
+  let showPassword = (url === '/view-auth');
+
+  const loginText = showPassword ? "Please type in your credentials" : "Enter your email address";
+
+  const onSubmit = (event) => {
+      event.preventDefault();
+      console.log(event);
+      //TODO check against authCredentials
+      //TODO check valid email format
+      //TODO add error messages
+      //TODO
+  }
+
   return (
     <div>
       {/*<Header
@@ -53,15 +74,15 @@ export default function ViewAuth(props) {
           <GridContainer justify="center">
             <GridItem xs={12} sm={12} md={4}>
               <Card className={classes[cardAnimaton]}>
-                <form className={classes.form}>
+                <form onSubmit={(event) => {onSubmit(event)}} className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
                     <h4>Crm System Authentication</h4>
                   </CardHeader>
-                  <p className={classes.divider}>Please type in your credentials</p>
+                  <p className={classes.divider}>{loginText}</p>
                   <CardBody>
                     <CustomInput
-                      labelText="Username"
-                      id="username"
+                      labelText="Email"
+                      id="email"
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -76,9 +97,9 @@ export default function ViewAuth(props) {
                         )
                       }}
                     />
-                    <CustomInput
+                      { showPassword ? <CustomInput
                       labelText="Password"
-                      id="pass"
+                      id="password"
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -93,10 +114,11 @@ export default function ViewAuth(props) {
                         ),
                         autoComplete: "off"
                       }}
-                    />
+                    /> : <React.Fragment></React.Fragment>}
+                      <Link className={classes.recoverPassword} target="/recover-password">Forgot password?</Link>
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button color="primary" size="lg">
+                    <Button type="submit" color="primary" size="lg">
                       Access account
                     </Button>
                   </CardFooter>

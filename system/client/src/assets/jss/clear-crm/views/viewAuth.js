@@ -85,6 +85,19 @@ const signupPageStyle = {
   },
   inputIconsColor: {
     color: "#495057"
+  },
+  recoverPassword:{
+    cursor:"pointer",
+    color: "darkcyan",
+    "&:hover":{
+      color: "darkcyan"
+    }
+  },
+  passwordField:{
+    display: "block"
+  },
+  hidden:{
+    display: "none"
   }
 };
 

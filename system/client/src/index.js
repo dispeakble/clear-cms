@@ -30,6 +30,7 @@ function start() {
     <Router history={hist}>
       <Switch>
         <Route path="/view-auth" component={ViewAuth} />
+        <Route path="/recover-password" component={ViewAuth} />
         <Route path="/" component={Dashboard} />
         //leave this always on the last place
       </Switch>
