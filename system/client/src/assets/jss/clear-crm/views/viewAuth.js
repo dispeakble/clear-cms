@@ -99,6 +99,17 @@ const signupPageStyle = {
   hidden: {
     display: "none",
   },
+  errorMessage: {
+    position: "fixed",
+    top: "0",
+    left: "33%",
+    width: "30%",
+    color: "white",
+    fontSize: "2rem",
+    border: "1px solid white",
+    padding: "30px",
+    background: "green",
+  },
 };
 
 export default signupPageStyle;

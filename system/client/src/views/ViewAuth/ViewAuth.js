@@ -26,9 +26,72 @@ import image from "assets/img/view-auth-bg.png";
 
 class ViewAuth extends Component {
   state = {
+    authButtonDisabled: { disabled: "disabled" },
     cardAnimaton: "cardHidden",
     buttonState: true,
+    areCredentialsNotOK: false,
+    email: "abc@gmail.com",
+    password: "abc",
+    emailValid: false,
+    passwordValid: false,
+    inputtedEmail: "",
+    inputtedPassword: "",
   };
+
+  handleInputChange = (event) => {
+    let newState = {};
+    switch (event.target.id) {
+      case "email":
+        //TODO validate email address here
+        let emailValid = event.target.value.match(
+          /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
+        );
+
+        if (emailValid) {
+          this.setState({ emailValid: true }, this.applyAuthButtonState);
+        } else {
+          this.setState({ emailValid: false }, this.applyAuthButtonState);
+        }
+
+        newState = { inputtedEmail: event.target.value };
+        break;
+      case "password":
+        if (event.target.value.length >= 5) {
+          this.setState({ passwordValid: true }, this.applyAuthButtonState);
+        } else {
+          this.setState({ passwordValid: false }, this.applyAuthButtonState);
+        }
+
+        newState = { inputtedPassword: event.target.value };
+        break;
+    }
+
+    this.setState(newState);
+    console.log(event);
+  };
+
+  applyAuthButtonState = () => {
+    this.setState({
+      authButtonDisabled:
+        this.state.emailValid && this.state.passwordValid
+          ? {}
+          : { disabled: "disabled" },
+    });
+  };
+
+  handleCredentials = () => {
+    console.log(this.state.inputtedEmail);
+    console.log(this.state.email);
+
+    if (
+      this.state.inputtedEmail !== this.state.email ||
+      this.state.inputtedPassword !== this.state.password
+    ) {
+      this.setState({ areCredentialsNotOK: true });
+      console.log(this.state.areCredentialsNotOK);
+    }
+  };
+
   render() {
     const url = this.props.location.pathname;
 
@@ -63,10 +126,19 @@ class ViewAuth extends Component {
     // }, 700);
     const classes = this.props.classes;
     console.log(classes);
-    const authCredentials = {
-      email: "abc@gmail.com",
-      password: "abc",
-    };
+
+    let areCredentialsNotOK = this.state.areCredentialsNotOK;
+
+    let credentialsErrorMessage;
+    console.log(this.state.areCredentialsNotOK);
+
+    if (areCredentialsNotOK) {
+      credentialsErrorMessage = (
+        <div className={classes.errorMessage}>Credentials are not OK</div>
+      );
+    } else {
+      credentialsErrorMessage = <div className={classes.hidden}></div>;
+    }
 
     return (
       <div>
@@ -85,6 +157,7 @@ class ViewAuth extends Component {
             backgroundPosition: "center center",
           }}
         >
+          {credentialsErrorMessage}
           <div className={classes.container}>
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={4}>
@@ -101,10 +174,12 @@ class ViewAuth extends Component {
                     <p className={classes.divider}>{loginText}</p>
                     <CardBody>
                       <CustomInput
+                        name="inputtedEmail"
                         labelText="Email"
                         id="email"
                         formControlProps={{
                           fullWidth: true,
+                          onChange: (event) => this.handleInputChange(event),
                         }}
                         inputProps={{
                           type: "username",
@@ -123,6 +198,7 @@ class ViewAuth extends Component {
                           id="password"
                           formControlProps={{
                             fullWidth: true,
+                            onChange: (event) => this.handleInputChange(event),
                           }}
                           inputProps={{
                             type: "password",
@@ -148,10 +224,11 @@ class ViewAuth extends Component {
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
                       <Button
-                        disabled={!this.state.buttonState}
+                        onClick={this.handleCredentials}
                         type="submit"
                         color="primary"
                         size="lg"
+                        {...this.state.authButtonDisabled}
                       >
                         {submitButtonText}
                       </Button>
