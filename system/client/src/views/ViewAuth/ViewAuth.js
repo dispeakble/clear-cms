@@ -3,17 +3,17 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
+import AddAlert from "@material-ui/icons/AddAlert";
+import DoneOutline from "@material-ui/icons/DoneOutline";
 // @material-ui/icons
 //import Email from "@material-ui/icons/Email";
 //import People from "@material-ui/icons/People";
 // core components
-import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
-import Footer from "components/Footer/Footer.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
+import Snackbar from "components/Snackbar/Snackbar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
@@ -29,13 +29,16 @@ class ViewAuth extends Component {
     authButtonDisabled: { disabled: "disabled" },
     cardAnimaton: "cardHidden",
     buttonState: true,
-    areCredentialsNotOK: false,
+    credentialsPassed: true,
     email: "abc@gmail.com",
-    password: "abc",
+    password: "abcde",
     emailValid: false,
     passwordValid: false,
     inputtedEmail: "",
     inputtedPassword: "",
+    redirectedFromRecoverPassword: false,
+    credentialsErrorMessage: "",
+    resetSuccessMessage: "",
   };
 
   handleInputChange = (event) => {
@@ -47,49 +50,66 @@ class ViewAuth extends Component {
           /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
         );
 
-        if (emailValid) {
-          this.setState({ emailValid: true }, this.applyAuthButtonState);
-        } else {
-          this.setState({ emailValid: false }, this.applyAuthButtonState);
-        }
+        this.setState({ emailValid: emailValid }, this.applyAuthButtonState);
 
-        newState = { inputtedEmail: event.target.value };
+        newState = {
+          inputtedEmail: event.target.value,
+        };
         break;
       case "password":
-        if (event.target.value.length >= 5) {
-          this.setState({ passwordValid: true }, this.applyAuthButtonState);
-        } else {
-          this.setState({ passwordValid: false }, this.applyAuthButtonState);
-        }
+        this.setState(
+          { passwordValid: event.target.value.length >= 5 },
+          this.applyAuthButtonState
+        );
 
-        newState = { inputtedPassword: event.target.value };
+        newState = {
+          inputtedPassword: event.target.value,
+        };
         break;
     }
 
     this.setState(newState);
-    console.log(event);
-  };
 
-  applyAuthButtonState = () => {
     this.setState({
-      authButtonDisabled:
-        this.state.emailValid && this.state.passwordValid
-          ? {}
-          : { disabled: "disabled" },
+      credentialsErrorMessage: "",
     });
   };
 
-  handleCredentials = () => {
-    console.log(this.state.inputtedEmail);
-    console.log(this.state.email);
-
-    if (
-      this.state.inputtedEmail !== this.state.email ||
-      this.state.inputtedPassword !== this.state.password
-    ) {
-      this.setState({ areCredentialsNotOK: true });
-      console.log(this.state.areCredentialsNotOK);
+  applyAuthButtonState = () => {
+    if (this.props.location.pathname === "/view-auth")
+      this.setState({
+        authButtonDisabled:
+          this.state.emailValid && this.state.passwordValid
+            ? {}
+            : { disabled: "disabled" },
+      });
+    else {
+      this.setState({
+        authButtonDisabled: this.state.emailValid
+          ? {}
+          : { disabled: "disabled" },
+      });
     }
+  };
+
+  handleCredentials = () => {
+    if (this.props.location.pathname === "/view-auth") {
+      if (
+        this.state.inputtedEmail !== this.state.email ||
+        this.state.inputtedPassword !== this.state.password
+      ) {
+        this.setState({ credentialsPassed: false });
+      }
+    }
+    if (this.props.location.pathname === "/recover-password") {
+      if (this.state.inputtedEmail !== this.state.email) {
+        this.setState({ credentialsPassed: false });
+      }
+    }
+  };
+
+  removeErrorMessage = () => {
+    this.setState({ credentialsPassed: true });
   };
 
   render() {
@@ -111,12 +131,64 @@ class ViewAuth extends Component {
 
     const onSubmit = (event) => {
       event.preventDefault();
-      console.log(event);
-      //TODO check against authCredentials
-      //TODO check valid email format
-      //TODO add error messages
-      //TODO
+
+      const { history } = this.props;
+
+      const loginState =
+        this.state.inputtedEmail === this.state.email &&
+        this.state.inputtedPassword === this.state.password;
+
+      const loginStateOnRecoverPassword =
+        this.state.inputtedEmail === this.state.email;
+
+      if (this.props.location.pathname === "/view-auth") {
+        if (loginState) {
+          history.push("/");
+        }
+      } else {
+        if (loginStateOnRecoverPassword) {
+          history.push("/view-auth/recovered");
+        }
+      }
+      let credentialsPassed = this.state.credentialsPassed;
+
+      const errorMessageContent =
+        this.props.location.pathname === "/view-auth"
+          ? "The entered credentials did not match any account."
+          : "We could not find the entered email address.";
+
+      if (!credentialsPassed) {
+        this.setState({
+          credentialsErrorMessage: (
+            <Snackbar
+              open
+              place="tc"
+              color="warning"
+              icon={AddAlert}
+              message={errorMessageContent}
+            />
+          ),
+        });
+      } else {
+        this.setState({
+          credentialsErrorMessage: "",
+        });
+      }
     };
+
+    let resetSuccessMessage;
+
+    if (this.props.location.pathname === "/view-auth/recovered") {
+      resetSuccessMessage = (
+        <Snackbar
+          open
+          place="tc"
+          color="success"
+          icon={DoneOutline}
+          message="Password successfully reset. Please check your e-mail."
+        />
+      );
+    }
 
     // const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
     // setTimeout(function () {
@@ -125,20 +197,6 @@ class ViewAuth extends Component {
     //   this.setState((state1: state2));
     // }, 700);
     const classes = this.props.classes;
-    console.log(classes);
-
-    let areCredentialsNotOK = this.state.areCredentialsNotOK;
-
-    let credentialsErrorMessage;
-    console.log(this.state.areCredentialsNotOK);
-
-    if (areCredentialsNotOK) {
-      credentialsErrorMessage = (
-        <div className={classes.errorMessage}>Credentials are not OK</div>
-      );
-    } else {
-      credentialsErrorMessage = <div className={classes.hidden}></div>;
-    }
 
     return (
       <div>
@@ -157,17 +215,13 @@ class ViewAuth extends Component {
             backgroundPosition: "center center",
           }}
         >
-          {credentialsErrorMessage}
+          {this.state.credentialsErrorMessage}
+          {resetSuccessMessage}
           <div className={classes.container}>
             <GridContainer justify="center">
               <GridItem xs={12} sm={12} md={4}>
                 <Card>
-                  <form
-                    onSubmit={(event) => {
-                      onSubmit(event);
-                    }}
-                    className={classes.form}
-                  >
+                  <form onSubmit={onSubmit} className={classes.form}>
                     <CardHeader color="primary" className={classes.cardHeader}>
                       <h4>Crm System Authentication</h4>
                     </CardHeader>
@@ -192,7 +246,9 @@ class ViewAuth extends Component {
                           ),
                         }}
                       />
-                      {loginOrRetrievePasswordURL ? (
+                      {loginOrRetrievePasswordURL ||
+                      this.props.location.pathname ===
+                        "/view-auth/recovered" ? (
                         <CustomInput
                           labelText="Password"
                           id="password"
@@ -219,7 +275,9 @@ class ViewAuth extends Component {
                         className={classes.recoverPassword}
                         to="/recover-password"
                       >
-                        {recoverPasswordText}
+                        <p onClick={this.removeErrorMessage}>
+                          {recoverPasswordText}
+                        </p>
                       </Link>
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
