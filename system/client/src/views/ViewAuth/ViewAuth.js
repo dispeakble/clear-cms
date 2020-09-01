@@ -38,7 +38,7 @@ class ViewAuth extends Component {
     inputtedPassword: "",
     redirectedFromRecoverPassword: false,
     credentialsErrorMessage: "",
-    resetSuccessMessage: "",
+    removeResetMessage: "",
   };
 
   handleInputChange = (event) => {
@@ -46,9 +46,9 @@ class ViewAuth extends Component {
     switch (event.target.id) {
       case "email":
         //TODO validate email address here
-        let emailValid = event.target.value.match(
-          /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-        );
+        let emailValid =
+          event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) &&
+          event.target.value.length <= 30;
 
         this.setState({ emailValid: emailValid }, this.applyAuthButtonState);
 
@@ -58,7 +58,10 @@ class ViewAuth extends Component {
         break;
       case "password":
         this.setState(
-          { passwordValid: event.target.value.length >= 5 },
+          {
+            passwordValid:
+              event.target.value.length >= 5 && event.target.value.length <= 30,
+          },
           this.applyAuthButtonState
         );
 
@@ -73,10 +76,15 @@ class ViewAuth extends Component {
     this.setState({
       credentialsErrorMessage: "",
     });
+
+    this.setState({ removeResetMessage: "none" });
   };
 
   applyAuthButtonState = () => {
-    if (this.props.location.pathname === "/view-auth")
+    if (
+      this.props.location.pathname === "/view-auth" ||
+      this.props.location.pathname === "/view-auth/recovered"
+    )
       this.setState({
         authButtonDisabled:
           this.state.emailValid && this.state.passwordValid
@@ -93,7 +101,10 @@ class ViewAuth extends Component {
   };
 
   handleCredentials = () => {
-    if (this.props.location.pathname === "/view-auth") {
+    if (
+      this.props.location.pathname === "/view-auth" ||
+      this.props.location.pathname === "/view-auth/recovered"
+    ) {
       if (
         this.state.inputtedEmail !== this.state.email ||
         this.state.inputtedPassword !== this.state.password
@@ -115,7 +126,9 @@ class ViewAuth extends Component {
   render() {
     const url = this.props.location.pathname;
 
-    let loginOrRetrievePasswordURL = url === "/view-auth";
+    const classes = this.props.classes;
+
+    let loginOrRetrievePasswordURL = url.startsWith("/view-auth");
 
     const loginText = loginOrRetrievePasswordURL
       ? "Please type in your credentials"
@@ -141,19 +154,24 @@ class ViewAuth extends Component {
       const loginStateOnRecoverPassword =
         this.state.inputtedEmail === this.state.email;
 
-      if (this.props.location.pathname === "/view-auth") {
+      if (
+        this.props.location.pathname === "/view-auth" ||
+        this.props.location.pathname === "/view-auth/recovered"
+      ) {
         if (loginState) {
           history.push("/");
         }
       } else {
         if (loginStateOnRecoverPassword) {
+          this.setState({ removeResetMessage: "" });
           history.push("/view-auth/recovered");
         }
       }
       let credentialsPassed = this.state.credentialsPassed;
 
       const errorMessageContent =
-        this.props.location.pathname === "/view-auth"
+        this.props.location.pathname === "/view-auth" ||
+        this.props.location.pathname === "/view-auth/recovered"
           ? "The entered credentials did not match any account."
           : "We could not find the entered email address.";
 
@@ -180,13 +198,15 @@ class ViewAuth extends Component {
 
     if (this.props.location.pathname === "/view-auth/recovered") {
       resetSuccessMessage = (
-        <Snackbar
-          open
-          place="tc"
-          color="success"
-          icon={DoneOutline}
-          message="Password successfully reset. Please check your e-mail."
-        />
+        <div style={{ display: this.state.removeResetMessage }}>
+          <Snackbar
+            open
+            place="tc"
+            color="success"
+            icon={DoneOutline}
+            message="Password successfully reset. Please check your e-mail."
+          />
+        </div>
       );
     }
 
@@ -196,7 +216,6 @@ class ViewAuth extends Component {
     //   let state2 = "";
     //   this.setState((state1: state2));
     // }, 700);
-    const classes = this.props.classes;
 
     return (
       <div>
