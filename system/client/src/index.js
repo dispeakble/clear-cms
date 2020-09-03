@@ -8,6 +8,7 @@ import "assets/scss/clear-crm.scss";
 //import Components from "views/Components/Components.js";
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
+import ProfilePage from "views/ProfilePage/ProfilePage.js";
 //import LandingPage from "views/LandingPage/LandingPage.js";
 // salut, sunt ...
 
@@ -29,6 +30,7 @@ function start() {
   ReactDOM.render(
     <Router history={hist}>
       <Switch>
+        <Route path="/settings/adminProfile" component={ProfilePage} />
         <Route path="/view-auth" component={ViewAuth} />
         <Route path="/recover-password" component={ViewAuth} />
         <Route path="/" component={Dashboard} />

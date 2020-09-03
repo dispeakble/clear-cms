@@ -210,13 +210,6 @@ class ViewAuth extends Component {
       );
     }
 
-    // const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
-    // setTimeout(function () {
-    //   let state1 = [...this.state.cardAnimaton];
-    //   let state2 = "";
-    //   this.setState((state1: state2));
-    // }, 700);
-
     return (
       <div>
         {/*<Header
