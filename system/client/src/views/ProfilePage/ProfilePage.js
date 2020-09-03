@@ -49,12 +49,58 @@ class ProfilePage extends Component {
     isButtonDisabled: true,
     removeErrorMessage: "none",
     removeSuccessMessage: "none",
+    currentPasswordStrength: "",
+    newPasswordStrength: "",
+    newPasswordAgainStrength: "",
+    currentEventId: "",
   };
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
 
-  handleInputChange = (event) => {
+  checkPasswordStrength = (passwordStrengthId, value) => {
+    console.log(passwordStrengthId);
+    console.log(value);
+
+    const hasNumber = (value) => {
+      return new RegExp(/[0-9]/).test(value);
+    };
+
+    const hasMixed = (value) => {
+      return new RegExp(/[a-z]/).test(value) && new RegExp(/[A-Z]/).test(value);
+    };
+    const hasSpecial = (value) => {
+      return new RegExp(/[!#@$%^&*)(+=._-]/).test(value);
+    };
+
+    if (
+      value.length >= 7 &&
+      hasNumber(value) &&
+      hasMixed(value) &&
+      hasSpecial(value)
+    ) {
+      this.setState({ [passwordStrengthId]: "veryStrong" });
+    } else if (
+      (value.length >= 6 && hasNumber(value) && hasMixed(value)) ||
+      (value.length >= 6 && hasNumber(value) && hasSpecial(value)) ||
+      (value.length >= 6 && hasMixed(value) && hasSpecial(value))
+    ) {
+      this.setState({ [passwordStrengthId]: "strong" });
+    } else if (
+      (value.length >= 5 && hasNumber(value)) ||
+      (value.length >= 5 && hasMixed(value)) ||
+      (value.length >= 5 && hasSpecial(value))
+    ) {
+      this.setState({ [passwordStrengthId]: "medium" });
+    } else if (value.length >= 5) {
+      this.setState({ [passwordStrengthId]: "weak" });
+    } else {
+      this.setState({ [passwordStrengthId]: "none" });
+    }
+  };
+
+  handleInputChange = async (event) => {
+    let currentValue = event.target.value;
     let newState = {};
     switch (event.target.id) {
       case "name":
@@ -84,7 +130,10 @@ class ProfilePage extends Component {
           event.target.value.length <= 30 &&
           event.target.value === this.state.password;
 
-        this.setState({ currentPasswordValid });
+        this.setState({
+          currentPasswordValid,
+          currentEventId: "currentPasswordStrength",
+        });
 
         newState = {
           currentPassword: event.target.value,
@@ -95,7 +144,10 @@ class ProfilePage extends Component {
         let newPasswordValid =
           event.target.value.length >= 5 && event.target.value.length <= 30;
 
-        this.setState({ newPasswordValid });
+        this.setState({
+          newPasswordValid,
+          currentEventId: "newPasswordStrength",
+        });
         newState = {
           newPassword: event.target.value,
           newPasswordNotEmpty: event.target.value.length > 0 ? true : "",
@@ -105,7 +157,10 @@ class ProfilePage extends Component {
         let newPasswordAgainValid =
           event.target.value.length >= 5 && event.target.value.length <= 30;
 
-        this.setState({ newPasswordAgainValid });
+        this.setState({
+          newPasswordAgainValid,
+          currentEventId: "newPasswordAgainStrength",
+        });
         newState = {
           newPasswordAgain: event.target.value,
           newPasswordAgainNotEmpty: event.target.value.length > 0 ? true : "",
@@ -113,7 +168,10 @@ class ProfilePage extends Component {
         break;
     }
 
-    this.setState(newState);
+    await this.setAsyncState(newState);
+    // used async await in order to get the updated state for the checkPasswordStrength() method
+
+    this.checkPasswordStrength(this.state.currentEventId, currentValue);
 
     this.setState({
       removeErrorMessage: "none",
@@ -122,15 +180,11 @@ class ProfilePage extends Component {
     });
   };
 
-  handleCredentials = async (event) => {
-    event.preventDefault();
-
+  handleCredentials = async () => {
     let newPasswordsCoincide =
       this.state.newPassword === this.state.newPasswordAgain;
 
     await this.setAsyncState({ newPasswordsCoincide });
-
-    console.log(newPasswordsCoincide);
 
     if (this.state.nameValid === true) {
       if (this.state.emailValid) {
@@ -211,6 +265,8 @@ class ProfilePage extends Component {
   render() {
     const classes = this.props.classes;
 
+    const { currentPassword, newPassword, newPasswordAgain } = this.state;
+
     let resetErrorMessage = (
       <div style={{ display: this.state.removeErrorMessage }}>
         <Snackbar
@@ -234,6 +290,63 @@ class ProfilePage extends Component {
         />
       </div>
     );
+
+    let mediumPasswordCurrentPass;
+    let strongPasswordCurrentPass;
+    let veryStrongPasswordCurrentPass;
+
+    let mediumPasswordNewPass;
+    let strongPasswordNewPass;
+    let veryStrongPasswordNewPass;
+
+    let mediumPasswordNewPassAgain;
+    let strongPasswordNewPassAgain;
+    let veryStrongPasswordNewPassAgain;
+
+    switch (this.state.currentPasswordStrength) {
+      case "medium":
+        mediumPasswordCurrentPass = classes.medium;
+        break;
+      case "strong":
+        mediumPasswordCurrentPass = classes.strong;
+        strongPasswordCurrentPass = classes.strong;
+        break;
+      case "veryStrong":
+        mediumPasswordCurrentPass = classes.veryStrong;
+        strongPasswordCurrentPass = classes.veryStrong;
+        veryStrongPasswordCurrentPass = classes.veryStrong;
+        break;
+    }
+
+    switch (this.state.newPasswordStrength) {
+      case "medium":
+        mediumPasswordNewPass = classes.medium;
+        break;
+      case "strong":
+        mediumPasswordNewPass = classes.strong;
+        strongPasswordNewPass = classes.strong;
+        break;
+      case "veryStrong":
+        mediumPasswordNewPass = classes.veryStrong;
+        strongPasswordNewPass = classes.veryStrong;
+        veryStrongPasswordNewPass = classes.veryStrong;
+        break;
+    }
+
+    switch (this.state.newPasswordAgainStrength) {
+      case "medium":
+        mediumPasswordNewPassAgain = classes.medium;
+        break;
+      case "strong":
+        mediumPasswordNewPassAgain = classes.strong;
+        strongPasswordNewPassAgain = classes.strong;
+        break;
+      case "veryStrong":
+        mediumPasswordNewPassAgain = classes.veryStrong;
+        strongPasswordNewPassAgain = classes.veryStrong;
+        veryStrongPasswordNewPassAgain = classes.veryStrong;
+        break;
+    }
 
     return (
       <div>
@@ -321,6 +434,42 @@ class ProfilePage extends Component {
                               autoComplete: "off",
                             }}
                           />
+                          <div>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                classes[this.state.currentPasswordStrength]
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                mediumPasswordCurrentPass
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                strongPasswordCurrentPass
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                veryStrongPasswordCurrentPass
+                              }
+                            ></p>
+                            <span className={classes.passwordText}>
+                              Password strength: &nbsp;
+                              <strong>
+                                {this.state.currentPasswordStrength}
+                              </strong>
+                            </span>
+                          </div>
                           <CustomInput
                             labelText="Enter New Password"
                             id="newPassword"
@@ -341,6 +490,40 @@ class ProfilePage extends Component {
                               autoComplete: "off",
                             }}
                           />
+                          <div>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                classes[this.state.newPasswordStrength]
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                mediumPasswordNewPass
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                strongPasswordNewPass
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                veryStrongPasswordNewPass
+                              }
+                            ></p>
+                            <span className={classes.passwordText}>
+                              Password strength: &nbsp;
+                              <strong>{this.state.newPasswordStrength}</strong>
+                            </span>
+                          </div>
                           <CustomInput
                             labelText="Re-Enter New Password"
                             id="newPasswordAgain"
@@ -361,12 +544,50 @@ class ProfilePage extends Component {
                               autoComplete: "off",
                             }}
                           />
+                          <div>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                classes[this.state.newPasswordAgainStrength]
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                mediumPasswordNewPassAgain
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                strongPasswordNewPassAgain
+                              }
+                            ></p>
+                            <p
+                              className={
+                                classes.passwordBar +
+                                " " +
+                                veryStrongPasswordNewPassAgain
+                              }
+                            ></p>
+                            <span className={classes.passwordText}>
+                              Password strength: &nbsp;
+                              <strong>
+                                {this.state.newPasswordAgainStrength}
+                              </strong>
+                            </span>
+                          </div>
+
                           <Button
                             disabled={this.state.isButtonDisabled}
                             onClick={this.handleCredentials}
                             type="submit"
                             color="primary"
                             size="lg"
+                            className={classes.button}
                           >
                             Save
                           </Button>

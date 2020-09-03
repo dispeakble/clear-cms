@@ -1,7 +1,6 @@
 import { container, title } from "assets/jss/clear-crm.js";
 
 import imagesStyle from "assets/jss/clear-crm/imagesStyles.js";
-import { Autorenew } from "@material-ui/icons";
 
 const profilePageStyle = {
   container,
@@ -80,6 +79,39 @@ const profilePageStyle = {
     "& div:nth-child(7):hover": {
       border: "2px solid #4267B2",
     },
+  },
+  passwordBar: {
+    display: "inline-block",
+    float: "left",
+    width: "23%",
+    height: "5px",
+    backgroundColor: "#B4B4B4",
+    border: "1px solid transparent",
+    borderRadius: "9px",
+    marginRight: "5px",
+  },
+  passwordText: {
+    display: "inline-block",
+    float: "left",
+    fontSize: "80%",
+  },
+  weak: {
+    backgroundColor: "red",
+  },
+  none: {
+    backgroundColor: "#B4B4B4",
+  },
+  medium: {
+    backgroundColor: "gold",
+  },
+  strong: {
+    backgroundColor: "#98FB98",
+  },
+  veryStrong: {
+    backgroundColor: "darkcyan",
+  },
+  button: {
+    marginTop: "10%",
   },
 };
 
