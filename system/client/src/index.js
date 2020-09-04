@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+import NotFound from "./components/NotFound/NotFound";
+import App from "./App";
 
 import "assets/scss/clear-crm.scss";
 
@@ -29,13 +31,7 @@ function start() {
 
   ReactDOM.render(
     <Router history={hist}>
-      <Switch>
-        <Route path="/settings/adminProfile" component={ProfilePage} />
-        <Route path="/view-auth" component={ViewAuth} />
-        <Route path="/recover-password" component={ViewAuth} />
-        <Route path="/" component={Dashboard} />
-        //leave this always on the last place
-      </Switch>
+      <App />
     </Router>,
     document.getElementById("root")
   );

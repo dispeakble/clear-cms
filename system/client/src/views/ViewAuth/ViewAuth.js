@@ -212,13 +212,6 @@ class ViewAuth extends Component {
 
     return (
       <div>
-        {/*<Header
-          absolute
-          color="transparent"
-          brand="Crm System Authentication"
-          rightLinks={<HeaderLinks />}
-          {...rest}
-        />*/}
         <div
           className={classes.pageHeader}
           style={{

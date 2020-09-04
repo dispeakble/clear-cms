@@ -82,7 +82,6 @@ const profilePageStyle = {
   },
   passwordBar: {
     display: "inline-block",
-    float: "left",
     width: "23%",
     height: "5px",
     backgroundColor: "#B4B4B4",
@@ -91,8 +90,6 @@ const profilePageStyle = {
     marginRight: "5px",
   },
   passwordText: {
-    display: "inline-block",
-    float: "left",
     fontSize: "80%",
   },
   weak: {
@@ -112,6 +109,18 @@ const profilePageStyle = {
   },
   button: {
     marginTop: "10%",
+    backgroundColor: "white",
+    color: "darkcyan",
+    border: "1px solid darkcyan",
+    fontWeight: "300",
+    transition: "all 0.5s",
+    cursor: "pointer",
+    "&:hover": { backgroundColor: "darkcyan", color: "white" },
+  },
+  syncAccountText: {
+    textAlign: "left",
+    display: "inline-block",
+    minWidth: "35%",
   },
 };
 

@@ -4,12 +4,9 @@ import classNames from "classnames";
 // @material-ui/core components
 import { withStyles } from "@material-ui/core/styles";
 // core components
-import Header from "components/Header/Header.js";
-import Footer from "components/Footer/Footer.js";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
 
 import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -54,9 +51,6 @@ class ProfilePage extends Component {
     new Promise((resolve) => this.setState(newState, resolve));
 
   checkPasswordStrength = (passwordStrengthId, value) => {
-    console.log(passwordStrengthId);
-    console.log(value);
-
     const hasNumber = (value) => {
       return new RegExp(/[0-9]/).test(value);
     };
@@ -258,6 +252,20 @@ class ProfilePage extends Component {
   };
 
   render() {
+    let generator = require("generate-password");
+
+    let password = generator.generate({
+      length: 15,
+      numbers: true,
+      lowercase: true,
+      uppercase: true,
+      excludeSimilarCharacters: false,
+      symbols: true,
+      strict: true,
+    });
+
+    console.log(password);
+
     const classes = this.props.classes;
 
     let resetErrorMessage = (
@@ -343,16 +351,6 @@ class ProfilePage extends Component {
 
     return (
       <div>
-        <Header
-          color="transparent"
-          brand="Clear CRM"
-          rightLinks={<HeaderLinks />}
-          fixed
-          changeColorOnScroll={{
-            height: 200,
-            color: "white",
-          }}
-        />
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div>
             {resetErrorMessage}
@@ -591,28 +589,36 @@ class ProfilePage extends Component {
                               <Button justIcon link className={classes.margin5}>
                                 <i className={"fab fa-google"} />
                               </Button>
-                              Sync with Google
+                              <span className={classes.syncAccountText}>
+                                Sync with Google
+                              </span>
                             </div>
                             <br />
                             <div className={classes.syncToAccount}>
                               <Button justIcon link className={classes.margin5}>
                                 <i className={"fab fa-twitter"} />
                               </Button>
-                              Sync with Twitter
+                              <span className={classes.syncAccountText}>
+                                Sync with Twitter
+                              </span>
                             </div>
                             <br />
                             <div className={classes.syncToAccount}>
                               <Button justIcon link className={classes.margin5}>
                                 <i className={"fab fa-instagram"} />
                               </Button>
-                              Sync with Instagram
+                              <span className={classes.syncAccountText}>
+                                Sync with Instagram
+                              </span>
                             </div>
                             <br />
                             <div className={classes.syncToAccount}>
                               <Button justIcon link className={classes.margin5}>
                                 <i className={"fab fa-facebook"} />
                               </Button>
-                              Sync with Facebook
+                              <span className={classes.syncAccountText}>
+                                Sync with Facebook
+                              </span>
                             </div>
                           </div>
                         </CardBody>
@@ -624,7 +630,6 @@ class ProfilePage extends Component {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }

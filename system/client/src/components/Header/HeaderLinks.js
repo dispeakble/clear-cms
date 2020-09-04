@@ -130,14 +130,18 @@ export default function HeaderLinks(props) {
         <Divider />
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
-            <ListItem button>
-              <ListItemText href="/general" primary="General" />
-            </ListItem>
-            <ListItem button>
-              <Link to="settings/adminProfile">
-                <ListItemText href="/general" primary="Admin Profile" />
-              </Link>
-            </ListItem>
+            <ListItemLink button href="/settings/general">
+              <ListItemIcon>
+                <Icon>settings</Icon>
+              </ListItemIcon>
+              <ListItemText primary="General Settings" />
+            </ListItemLink>
+            <ListItemLink button href="/settings/adminProfile">
+              <ListItemIcon>
+                <Icon>account_circle</Icon>
+              </ListItemIcon>
+              <ListItemText primary="Admin Profile" />
+            </ListItemLink>
           </List>
         </AccordionDetails>
       </Accordion>
