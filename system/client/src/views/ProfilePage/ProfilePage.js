@@ -18,6 +18,7 @@ import Icon from "@material-ui/core/Icon";
 import AddAlert from "@material-ui/icons/AddAlert";
 import DoneOutline from "@material-ui/icons/DoneOutline";
 import Snackbar from "components/Snackbar/Snackbar.js";
+import Clearfix from "components/Clearfix/Clearfix.js";
 
 import styles from "assets/jss/clear-crm/views/profilePage.js";
 
@@ -572,7 +573,7 @@ class ProfilePage extends Component {
                               </strong>
                             </span>
                                                     </div>
-
+                                                    <Clearfix />
                                                     <Button
                                                         disabled={this.state.isButtonDisabled}
                                                         onClick={this.handleCredentials}
