@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import NotFound from "./components/NotFound/NotFound";
 import App from "./App";
 
@@ -30,9 +30,9 @@ function start() {
   var hist = createBrowserHistory();
 
   ReactDOM.render(
-    <Router history={hist}>
+    <BrowserRouter history={hist}>
       <App />
-    </Router>,
+    </BrowserRouter>,
     document.getElementById("root")
   );
 }

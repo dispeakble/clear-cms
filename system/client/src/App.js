@@ -23,8 +23,8 @@ function App() {
         leftLinks={<HeaderLinks />}
         fixed
         changeColorOnScroll={{
-          height: 200,
-          color: "white",
+          height: 10,
+          color: "info",
         }}
       />
       <Switch>
