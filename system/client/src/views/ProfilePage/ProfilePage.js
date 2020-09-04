@@ -580,7 +580,7 @@ class ProfilePage extends Component {
                             size="lg"
                             className={classes.button}
                           >
-                            Save settings
+                            Save All Settings
                           </Button>
 
                           <h3>Link Accounts</h3>
