@@ -241,7 +241,7 @@ class ViewAuth extends Component {
                           onChange: (event) => this.handleInputChange(event),
                         }}
                         inputProps={{
-                          type: "username",
+                          type: "email",
                           endAdornment: (
                             <InputAdornment position="end">
                               <Icon className={classes.inputIconsColor}>

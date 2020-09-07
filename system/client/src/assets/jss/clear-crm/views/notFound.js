@@ -1,6 +1,8 @@
 const notFound = {
-  errorWrapper: {
-    color: "red",
+  notFoundWrapper: {
+    textAlign: "center",
+    marginTop: "30vh",
+    userSelect: "none",
   },
 };
 
