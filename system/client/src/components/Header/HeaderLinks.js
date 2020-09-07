@@ -86,6 +86,7 @@ export default function HeaderLinks(props) {
         onChange={handleChange("panel1")}
       >
         <AccordionSummary
+          className={classes.menuCategory}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"
           id="panel1bh-header"
@@ -99,16 +100,18 @@ export default function HeaderLinks(props) {
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
             {moduleList.map((module) => (
-              <ListItemLink
-                button
-                href={module.toLink}
-                activeClassName={module.active ? classes.listItemActive : {}}
-              >
-                <ListItemIcon>
-                  <Icon>{module.icon}</Icon>
-                </ListItemIcon>
-                <ListItemText primary={module.name} />
-              </ListItemLink>
+              <Link to={module.toLink} className={classes.links}>
+                <ListItemLink
+                  className={classes.accordionLinksItem}
+                  button
+                  activeClassName={module.active ? classes.listItemActive : {}}
+                >
+                  <ListItemIcon>
+                    <Icon>{module.icon}</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={module.name} />
+                </ListItemLink>
+              </Link>
             ))}
           </List>
         </AccordionDetails>
@@ -118,6 +121,7 @@ export default function HeaderLinks(props) {
         onChange={handleChange("panel2")}
       >
         <AccordionSummary
+          className={classes.menuCategory}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel2bh-content"
           id="panel2bh-header"
@@ -130,13 +134,21 @@ export default function HeaderLinks(props) {
         <Divider />
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
-            <ListItemLink button href="/settings/general">
+            <ListItemLink
+              className={classes.accordionLinksItem}
+              button
+              href="/settings/general"
+            >
               <ListItemIcon>
                 <Icon>settings</Icon>
               </ListItemIcon>
               <ListItemText primary="General Settings" />
             </ListItemLink>
-            <ListItemLink button href="/settings/adminProfile">
+            <ListItemLink
+              className={classes.accordionLinksItem}
+              button
+              href="/settings/adminProfile"
+            >
               <ListItemIcon>
                 <Icon>account_circle</Icon>
               </ListItemIcon>

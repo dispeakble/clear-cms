@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { BrowserRouter } from "react-router-dom";
-import NotFound from "./components/NotFound/NotFound";
 import App from "./App";
 
 import "assets/scss/clear-crm.scss";

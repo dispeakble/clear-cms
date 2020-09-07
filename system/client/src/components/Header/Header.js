@@ -1,16 +1,18 @@
-import React from "react";
+import React, { Component, useEffect, componentDidMount } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // nodejs library to set properties for components
 import PropTypes from "prop-types";
 // @material-ui/core components
-import {makeStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
+import Modal from "components/Modal/Modal";
+
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -18,134 +20,216 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 
-const useStyles = makeStyles(styles);
+class Header extends Component {
+  state = {
+    mobileOpen: false,
+    showAboutModal: false,
+    showLicenseModal: false,
+    licenseModal: {
+      name: "about",
+      title: "License Agreement",
+      content: "Hello World!",
+      closeButton: {
+        callback: () => {
+          this.setState({ showLicenseModal: false });
+        },
+        label: "Close",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.setState({ showLicenseModal: false });
+        },
+        label: "Confirm",
+      },
+    },
+    aboutModal: {
+      name: "about",
+      title: "About",
+      content: "Hello World!",
+      closeButton: {
+        callback: () => {
+          this.setState({ showAboutModal: false });
+        },
+        label: "Close",
+      },
+    },
+  };
 
-export default function Header(props) {
-    const classes = useStyles();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-    React.useEffect(() => {
-        if (props.changeColorOnScroll) {
-            window.addEventListener("scroll", headerColorChange);
-        }
-        return function cleanup() {
-            if (props.changeColorOnScroll) {
-                window.removeEventListener("scroll", headerColorChange);
-            }
-        };
-    });
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
-    const headerColorChange = () => {
-        const {color, changeColorOnScroll} = props;
-        const windowsScrollTop = window.pageYOffset;
-        if (windowsScrollTop > changeColorOnScroll.height) {
-            document.body
-                .getElementsByTagName("header")[0]
-                .classList.remove(classes[color]);
-            document.body
-                .getElementsByTagName("header")[0]
-                .classList.add(classes[changeColorOnScroll.color]);
-        } else {
-            document.body
-                .getElementsByTagName("header")[0]
-                .classList.add(classes[color]);
-            document.body
-                .getElementsByTagName("header")[0]
-                .classList.remove(classes[changeColorOnScroll.color]);
-        }
-    };
-    const {color, leftLinks, brand, fixed, absolute} = props;
-    const appBarClasses = classNames({
-        [classes.appBar]: true,
-        [classes[color]]: color,
-        [classes.absolute]: absolute,
-        [classes.fixed]: fixed
-    });
-
-    const dropDownList = [
-        {title:"License", href:"/license"},
-        {title:"About", href:"/about"},
-        {divider: true},
-        {title:"Logout", href:"/logout"}
-    ];
-
-    const handleRightMenuClick = (href) => {
-        console.log(href)
+  componentDidMount() {
+    const self = this;
+    function headerScroll() {
+      self.headerColorChange(self);
     }
-    return (
-        <AppBar className={appBarClasses}>
-            <Toolbar className={classes.container}>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerToggle}
-                >
-                    <Menu/>
-                </IconButton>
-                <div className={classes.flex}>
-                    <Button className={classes.title} href="/">{brand}</Button>
-                </div>
-                <div className={classes.rightDropdown}>
-                    <CustomDropdown
-                        buttonIcon={AccountCircle}
-                        buttonText="Logged in as Admin"
-                        dropdownHeader="Full Name"
-                        buttonProps={{
-                            className: classes.navLink,
-                            color: "transparent"
-                        }}
-                        onClick={handleRightMenuClick}
-                        dropdownList={dropDownList}
-                    />
-                </div>
-            </Toolbar>
-            <Drawer
-                variant="temporary"
-                anchor={"left"}
-                open={mobileOpen}
-                classes={{
-                    paper: classes.drawerPaper
-                }}
-                onClose={handleDrawerToggle}
-            >
-                <div className={classes.appResponsive}>
-                    {leftLinks}
+    if (this.props.changeColorOnScroll) {
+      window.removeEventListener("scroll", headerScroll);
+    }
+    if (this.props.changeColorOnScroll) {
+      window.addEventListener("scroll", headerScroll);
+    }
+  }
 
-                </div>
-            </Drawer>
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+
+  headerColorChange(self) {
+    const { color, changeColorOnScroll, classes } = self.props;
+    const windowsScrollTop = window.pageYOffset;
+    if (windowsScrollTop > changeColorOnScroll.height) {
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.remove(classes[color]);
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.add(classes[changeColorOnScroll.color]);
+    } else {
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.add(classes[color]);
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.remove(classes[changeColorOnScroll.color]);
+    }
+  }
+
+  dropDownList = [
+    {
+      title: "License",
+      id: "license",
+      modal: "License",
+    },
+    {
+      title: "About",
+      id: "about",
+      modal: "About",
+      callback: () => {},
+    },
+    { divider: true },
+    { title: "Logout", href: "/logout", id: "logout" },
+  ];
+
+  handleRightMenuClick = (event) => {
+    const modalValue = event.target.getAttribute("modal");
+    if (modalValue) {
+      setTimeout(() => {
+        //TODO populate the modal content here
+
+        switch (modalValue) {
+          case "License":
+            let licenseModal = this.state.licenseModal;
+            licenseModal.content = "License Agrrement Text";
+            this.setState({
+              licenseModal: licenseModal,
+            });
+            break;
+          case "About":
+            break;
+        }
+
+        let modalState = {};
+        modalState["show" + modalValue + "Modal"] = true;
+        this.setState(modalState);
+      }, 1000);
+    }
+  };
+  render() {
+    const classes = this.props.classes;
+
+    const { color, absolute, fixed } = this.props;
+
+    const appBarClasses = classNames({
+      [classes.appBar]: true,
+      [classes[color]]: this.props.color,
+      [classes.absolute]: this.props.absolute,
+      [classes.fixed]: this.props.fixed,
+    });
+
+    return (
+      <div>
+        <AppBar className={appBarClasses}>
+          <Toolbar className={classes.container}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={this.handleDrawerToggle}
+            >
+              <Menu />
+            </IconButton>
+            <div className={classes.flex}>
+              <Button className={classes.title} href="/">
+                {this.props.brand}
+              </Button>
+            </div>
+            <div className={classes.rightDropdown}>
+              <CustomDropdown
+                buttonIcon={AccountCircle}
+                buttonText="Logged in as Admin"
+                dropdownHeader="Full Name"
+                buttonProps={{
+                  className: classes.navLink,
+                  color: "transparent",
+                }}
+                onClick={this.handleRightMenuClick}
+                dropdownList={this.dropDownList}
+              />
+            </div>
+          </Toolbar>
+          <Drawer
+            variant="temporary"
+            anchor={"left"}
+            open={this.state.mobileOpen}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            onClose={this.handleDrawerToggle}
+          >
+            <div className={classes.appResponsive}>{this.props.leftLinks}</div>
+          </Drawer>
         </AppBar>
+        <Modal
+          showModal={this.state.showLicenseModal}
+          data={this.state.licenseModal}
+        />
+        <Modal
+          showModal={this.state.showAboutModal}
+          data={this.state.aboutModal}
+        />
+      </div>
     );
+  }
 }
 
+export default withStyles(styles)(Header);
+
 Header.defaultProp = {
-    color: "rgba(0,0,0,.87)"
+  color: "rgba(0,0,0,.87)",
 };
 
 Header.propTypes = {
-    color: "rgba(0,0,0,.87)",
-    leftLinks: PropTypes.node,
-    brand: PropTypes.string,
-    fixed: PropTypes.bool,
-    absolute: PropTypes.bool,
-    // this will cause the sidebar to change the color from
-    // props.color (see above) to changeColorOnScroll.color
-    // when the window.pageYOffset is heigher or equal to
-    // changeColorOnScroll.height and then when it is smaller than
-    // changeColorOnScroll.height change it back to
-    // props.color (see above)
-    changeColorOnScroll: PropTypes.shape({
-        height: PropTypes.number.isRequired,
-        color: PropTypes.oneOf([
-            "primary",
-            "info",
-            "success",
-            "warning",
-            "danger",
-            "transparent",
-            "white",
-            "rose",
-            "dark"
-        ]).isRequired
-    })
+  color: "rgba(0,0,0,.87)",
+  leftLinks: PropTypes.node,
+  brand: PropTypes.string,
+  fixed: PropTypes.bool,
+  absolute: PropTypes.bool,
+  // this will cause the sidebar to change the color from
+  // props.color (see above) to changeColorOnScroll.color
+  // when the window.pageYOffset is heigher or equal to
+  // changeColorOnScroll.height and then when it is smaller than
+  // changeColorOnScroll.height change it back to
+  // props.color (see above)
+  changeColorOnScroll: PropTypes.shape({
+    height: PropTypes.number.isRequired,
+    color: PropTypes.oneOf([
+      "primary",
+      "info",
+      "success",
+      "warning",
+      "danger",
+      "transparent",
+      "white",
+      "rose",
+      "dark",
+    ]).isRequired,
+  }),
 };
