@@ -26,9 +26,9 @@ class Header extends Component {
     showAboutModal: false,
     showLicenseModal: false,
     licenseModal: {
-      name: "licenseModal",
+      name: "about",
       title: "License Agreement",
-      content: "License",
+      content: "Hello World!",
       closeButton: {
         callback: () => {
           this.setState({ showLicenseModal: false });
@@ -46,7 +46,7 @@ class Header extends Component {
     aboutModal: {
       name: "about",
       title: "About",
-      content: "About",
+      content: "Hello World!",
       closeButton: {
         callback: () => {
           this.setState({ showAboutModal: false });
@@ -76,25 +76,20 @@ class Header extends Component {
   headerColorChange(self) {
     const { color, changeColorOnScroll, classes } = self.props;
     const windowsScrollTop = window.pageYOffset;
-    const header = document.body.getElementsByTagName("header")[0];
     if (windowsScrollTop > changeColorOnScroll.height) {
-      if (header) {
-        document.body
-          .getElementsByTagName("header")[0]
-          .classList.remove(classes[color]);
-        document.body
-          .getElementsByTagName("header")[0]
-          .classList.add(classes[changeColorOnScroll.color]);
-      }
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.remove(classes[color]);
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.add(classes[changeColorOnScroll.color]);
     } else {
-      if (header) {
-        document.body
-          .getElementsByTagName("header")[0]
-          .classList.add(classes[color]);
-        document.body
-          .getElementsByTagName("header")[0]
-          .classList.remove(classes[changeColorOnScroll.color]);
-      }
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.add(classes[color]);
+      document.body
+        .getElementsByTagName("header")[0]
+        .classList.remove(classes[changeColorOnScroll.color]);
     }
   }
 
@@ -119,6 +114,19 @@ class Header extends Component {
     if (modalValue) {
       setTimeout(() => {
         //TODO populate the modal content here
+
+        switch (modalValue) {
+          case "License":
+            let licenseModal = this.state.licenseModal;
+            licenseModal.content = "License Agrrement Text";
+            this.setState({
+              licenseModal: licenseModal,
+            });
+            break;
+          case "About":
+            break;
+        }
+
         let modalState = {};
         modalState["show" + modalValue + "Modal"] = true;
         this.setState(modalState);
@@ -137,12 +145,6 @@ class Header extends Component {
       [classes.fixed]: this.props.fixed,
     });
 
-    window.addEventListener("closeSideMenu", () => {
-      this.setState({
-        mobileOpen: false,
-      });
-    });
-
     return (
       <div>
         <AppBar className={appBarClasses}>
@@ -159,17 +161,10 @@ class Header extends Component {
                 {this.props.brand}
               </Button>
             </div>
-            <h3
-              className={
-                classes.title + " " + classes.flex + " " + classes.headerTitle
-              }
-            >
-              Admin Profile Settings
-            </h3>
             <div className={classes.rightDropdown}>
               <CustomDropdown
                 buttonIcon={AccountCircle}
-                buttonText=""
+                buttonText="Logged in as Admin"
                 dropdownHeader="Full Name"
                 buttonProps={{
                   className: classes.navLink,
@@ -180,7 +175,6 @@ class Header extends Component {
               />
             </div>
           </Toolbar>
-
           <Drawer
             variant="temporary"
             anchor={"left"}
@@ -193,13 +187,13 @@ class Header extends Component {
             <div className={classes.appResponsive}>{this.props.leftLinks}</div>
           </Drawer>
         </AppBar>
-        <Modal //TODO CONVERT TO COMPONENT
+        <Modal
           showModal={this.state.showLicenseModal}
-          {...this.state.licenseModal}
+          data={this.state.licenseModal}
         />
-        <Modal //TODO CONVERT TO COMPONENT
+        <Modal
           showModal={this.state.showAboutModal}
-          {...this.state.aboutModal}
+          data={this.state.aboutModal}
         />
       </div>
     );
