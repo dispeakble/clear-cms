@@ -14,9 +14,6 @@ import ProfilePage from "views/ProfilePage/ProfilePage.js";
 
 import "assets/scss/clear-crm.scss";
 
-const LazyComponent = React.lazy(() =>
-  import("views/LazyComponent/LazyComponent")
-);
 
 class App extends Component {
   state = {};
@@ -35,14 +32,7 @@ class App extends Component {
             color: "info",
           }}
         />
-        <Route
-          path="/pages"
-          render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <LazyComponent />
-            </Suspense>
-          )}
-        />
+
         <Switch>
           <Route path="/settings/adminProfile" component={ProfilePage} />
           <Route path="/view-auth" component={ViewAuth} />
@@ -51,7 +41,6 @@ class App extends Component {
           //leave this always on the last place
           <Route path="/logout" component={ViewAuth} />
           <Route path="/not-found" component={NotFound} />
-          {currentPath !== "/pages" ? <Redirect to="/not-found" /> : ""}
         </Switch>
         <Footer />
       </React.Fragment>
