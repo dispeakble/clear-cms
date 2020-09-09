@@ -360,7 +360,6 @@ class ProfilePage extends Component {
                 <GridItem xs={12} sm={12} md={6}>
                   <div className={classes.profile}>
                     <div className={classes.name}>
-                      <h3 className={classes.title}>Admin Profile Settings</h3>
                       <form>
                         <CardBody>
                           <CustomInput

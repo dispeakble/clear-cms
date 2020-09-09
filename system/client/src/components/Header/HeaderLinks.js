@@ -44,40 +44,11 @@ export default function HeaderLinks(props) {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const moduleList = [
-    {
-      //TODO get this from hub module list
-      toLink: "/pages",
-      name: "Pages",
-      icon: "web",
-      active: true,
-    },
-    {
-      toLink: "/blog",
-      icon: "book",
-      name: "Blog",
-    },
-    {
-      toLink: "/forum",
-      icon: "forum",
-      name: "Forum",
-    },
-    {
-      toLink: "/video-conference",
-      icon: "video_call",
-      name: "Video Conference",
-    },
-    {
-      toLink: "/file-transfer",
-      icon: "attachment",
-      name: "File Transfer",
-    },
-    {
-      toLink: "/photo-gallery",
-      icon: "photo_library",
-      name: "Photo Gallery",
-    },
-  ];
+  const moduleList = props.moduleList;
+
+  const handleLink = () => {
+    window.dispatchEvent(new Event("closeSideMenu"), true);
+  };
 
   return (
     <div className={classes.linksContainer}>
@@ -100,7 +71,11 @@ export default function HeaderLinks(props) {
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
             {moduleList.map((module) => (
-              <Link to={module.toLink} className={classes.links}>
+              <Link
+                to={module.toLink}
+                onClick={handleLink}
+                className={classes.links}
+              >
                 <ListItemLink
                   className={classes.accordionLinksItem}
                   button
@@ -134,26 +109,30 @@ export default function HeaderLinks(props) {
         <Divider />
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
-            <ListItemLink
-              className={classes.accordionLinksItem}
-              button
-              href="/settings/general"
+            <Link
+              to="/settings/general"
+              onClick={handleLink}
+              className={classes.links}
             >
-              <ListItemIcon>
-                <Icon>settings</Icon>
-              </ListItemIcon>
-              <ListItemText primary="General Settings" />
-            </ListItemLink>
-            <ListItemLink
-              className={classes.accordionLinksItem}
-              button
-              href="/settings/adminProfile"
+              <ListItemLink className={classes.accordionLinksItem} button>
+                <ListItemIcon>
+                  <Icon>settings</Icon>
+                </ListItemIcon>
+                <ListItemText primary="General Settings" />
+              </ListItemLink>
+            </Link>
+            <Link
+              to="/settings/adminProfile"
+              onClick={handleLink}
+              className={classes.links}
             >
-              <ListItemIcon>
-                <Icon>account_circle</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Admin Profile" />
-            </ListItemLink>
+              <ListItemLink className={classes.accordionLinksItem} button>
+                <ListItemIcon>
+                  <Icon>account_circle</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Admin Profile" />
+              </ListItemLink>
+            </Link>
           </List>
         </AccordionDetails>
       </Accordion>
