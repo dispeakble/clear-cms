@@ -19,9 +19,7 @@ const profilePageStyle = {
     color: "#999",
     textAlign: "center !important",
   },
-  name: {
-    marginTop: "-80px",
-  },
+  name: {},
   ...imagesStyle,
   main: {
     background: "#FFFFFF",

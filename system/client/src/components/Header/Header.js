@@ -145,6 +145,12 @@ class Header extends Component {
       [classes.fixed]: this.props.fixed,
     });
 
+    window.addEventListener("closeSideMenu", () => {
+      this.setState({
+        mobileOpen: false,
+      });
+    });
+
     return (
       <div>
         <AppBar className={appBarClasses}>
@@ -161,10 +167,17 @@ class Header extends Component {
                 {this.props.brand}
               </Button>
             </div>
+            <h3
+              className={
+                classes.title + " " + classes.flex + " " + classes.headerTitle
+              }
+            >
+              Admin Profile Settings
+            </h3>
             <div className={classes.rightDropdown}>
               <CustomDropdown
                 buttonIcon={AccountCircle}
-                buttonText="Logged in as Admin"
+                buttonText=""
                 dropdownHeader="Full Name"
                 buttonProps={{
                   className: classes.navLink,
@@ -175,6 +188,7 @@ class Header extends Component {
               />
             </div>
           </Toolbar>
+
           <Drawer
             variant="temporary"
             anchor={"left"}
