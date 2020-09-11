@@ -25,6 +25,11 @@ class App extends Component {
         active: true,
       },
       {
+        toLink: "/categories",
+        name: "Categories",
+        icon: "category",
+      },
+      {
         toLink: "/blog",
         icon: "book",
         name: "Blog",

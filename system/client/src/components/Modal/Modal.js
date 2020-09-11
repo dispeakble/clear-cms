@@ -15,14 +15,18 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Icon from "@material-ui/core/Icon";
+import { withRouter } from "react-router-dom";
 
 class Modal extends Component {
   callCloseCallback(data) {
-    this.props.data.closeButton.callback(data);
+    this.props.closeButton.callback(data);
   }
 
   callConfirmCallback(data) {
-    this.props.data.confirmButton.callback(data);
+    this.props.confirmButton.callback(data);
   }
 
   transition = React.forwardRef((props, ref) => {
@@ -59,16 +63,29 @@ class Modal extends Component {
           >
             <Close className={classes.modalClose} />
           </IconButton>
-          <h4 className={classes.modalTitle}>{this.props.data.title}</h4>
+          <h4 className={classes.modalTitle}>{this.props.title}</h4>
         </DialogTitle>
         <DialogContent
           id="classic-modal-slide-description"
           className={classes.modalBody}
         >
-          <p>{this.props.data.content}</p>
+          {this.props.modalContent}
+          {this.props.content}
         </DialogContent>
+        {/* {this.props.location.pathname === "/categories" ? (
+          <CustomInput
+            labelText="Title"
+            id="title"
+            required="required"
+            formControlProps={{
+              fullWidth: true,
+            }}
+          />
+        ) : (
+          ""
+        )} */}
         <DialogActions className={classes.modalFooter}>
-          {this.props.data.confirmButton && (
+          {this.props.confirmButton && (
             <Button
               color="transparent"
               simple
@@ -76,7 +93,7 @@ class Modal extends Component {
                 this.callConfirmCallback();
               }}
             >
-              {this.props.data.confirmButton.label}
+              {this.props.confirmButton.label}
             </Button>
           )}
           <Button
@@ -86,7 +103,7 @@ class Modal extends Component {
               this.callCloseCallback();
             }}
           >
-            {this.props.data.closeButton.label}
+            {this.props.closeButton.label}
           </Button>
         </DialogActions>
       </Dialog>
@@ -94,4 +111,4 @@ class Modal extends Component {
   }
 }
 
-export default withStyles(styles)(Modal);
+export default withRouter(withStyles(styles)(Modal));
