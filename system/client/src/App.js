@@ -1,48 +1,75 @@
 import React, { Component, Suspense } from "react";
 import ReactDOM from "react-dom";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { withRouter, Route, Switch } from "react-router-dom";
 import NotFound from "views/NotFound/NotFound";
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Footer from "components/Footer/Footer.js";
-import { withRouter } from "react-router-dom";
 
 //import Components from "views/Components/Components.js";
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
+import MainAppController from "views/MainAppController/MainAppController";
 
 import "assets/scss/clear-crm.scss";
 
-const LazyComponent = React.lazy(() =>
-  import("views/LazyComponent/LazyComponent")
-);
-
 class App extends Component {
-  state = {};
+  state = {
+    moduleList: [
+      {
+        //TODO get this from hub module list
+        toLink: "/pages",
+        name: "Pages",
+        icon: "web",
+        active: true,
+      },
+      {
+        toLink: "/categories",
+        name: "Categories",
+        icon: "category",
+      },
+      {
+        toLink: "/blog",
+        icon: "book",
+        name: "Blog",
+      },
+      {
+        toLink: "/forum",
+        icon: "forum",
+        name: "Forum",
+      },
+      {
+        toLink: "/video-conference",
+        icon: "video_call",
+        name: "Video Conference",
+      },
+      {
+        toLink: "/file-transfer",
+        icon: "attachment",
+        name: "File Transfer",
+      },
+      {
+        toLink: "/photo-gallery",
+        icon: "photo_library",
+        name: "Photo Gallery",
+      },
+    ],
+  };
   render() {
-    const currentPath = this.props.location.pathname;
-    console.log(currentPath);
     return (
       <React.Fragment>
         <Header
           color="transparent"
           brand="Clear CRM"
-          leftLinks={<HeaderLinks />}
+          leftLinks={<HeaderLinks moduleList={this.state.moduleList} />}
           fixed
           changeColorOnScroll={{
             height: 10,
             color: "info",
           }}
         />
-        <Route
-          path="/pages"
-          render={() => (
-            <Suspense fallback={<div>Loading...</div>}>
-              <LazyComponent />
-            </Suspense>
-          )}
-        />
+
         <Switch>
           <Route path="/settings/adminProfile" component={ProfilePage} />
           <Route path="/view-auth" component={ViewAuth} />
@@ -50,8 +77,14 @@ class App extends Component {
           <Route path="/" exact component={Dashboard} />
           //leave this always on the last place
           <Route path="/logout" component={ViewAuth} />
-          <Route path="/not-found" component={NotFound} />
-          {currentPath !== "/pages" ? <Redirect to="/not-found" /> : ""}
+          <Route
+            render={(props) => (
+              <MainAppController
+                {...props}
+                moduleList={this.state.moduleList}
+              />
+            )}
+          />
         </Switch>
         <Footer />
       </React.Fragment>

@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { withStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/categories.js";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
-import Checkbox from "@material-ui/core/Checkbox";
-
-// from material-table
-import MaterialTable from "material-table";
+import Modal from "components/Modal/Modal";
+import NewCategoryModal from "views/Categories/newCategoryModal";
+import EditCategoryModal from "views/Categories/editCategoryModal";
+import Button from "components/CustomButtons/Button.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
+import CardBody from "components/Card/CardBody.js";
 
 //todo import modal content to add category
 
@@ -16,225 +14,303 @@ const shortid = require("shortid");
 
 class Categories extends Component {
   state = {
-    showModal: false,
-    cat_list: [],
+    newCategoryInputtedName: "",
+    newCategoryInputtedDescription: "",
     categories: [
       {
         name: "Categ4",
         description: "Categ4 description",
         id: shortid.generate(),
-        primary: <Checkbox />,
       },
       {
         name: "Categ5",
         description: "Categ5 description",
         id: shortid.generate(),
-        primary: <Checkbox disabled />,
       },
       {
         name: "Categ3",
         description: "Categ3 description",
         id: shortid.generate(),
-        primary: <Checkbox />,
       },
       {
         name: "Categ1",
         description: "Categ1 description",
         id: shortid.generate(),
-        primary: <Checkbox />,
       },
       {
         name: "Categ2",
         description: "Categ2 description",
         id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ6",
-        description: "Categ6 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ7",
-        description: "Categ7 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ8",
-        description: "Categ8 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ9",
-        description: "Categ9 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ10",
-        description: "Categ10 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
       },
     ],
+    showNewCategoryModal: false,
+    newCategoryData: {
+      name: "addCategoryModal",
+      title: "Add new category",
+      content: (
+        <NewCategoryModal
+          onHandleInputChange={(event) => this.handleInputChange(event)}
+        />
+      ),
+      closeButton: {
+        callback: () => {
+          this.setState({ showNewCategoryModal: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.addNewCategory();
+          this.setState({ showNewCategoryModal: false });
+        },
+        label: "Add",
+      },
+    },
+    showEditCategoryModal: false,
+    editCategoryData: {
+      name: "editCategoryModal",
+      title: "Edit Category",
+      content: (
+        <EditCategoryModal
+          onHandleInputChange={(event) => this.handleInputChange(event)}
+        />
+      ),
+      closeButton: {
+        callback: () => {
+          this.setState({ showEditCategoryModal: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.doEditCategory();
+          this.setState({ showEditCategoryModal: false });
+        },
+        label: "Save",
+      },
+    },
+    categoryOnEditId: "",
+    sortDirection: "desc",
+    sortDirectionIcon: <span>&nbsp; &#x25B2; &#x25BC;</span>,
   };
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
 
-  tableOptions = {
-    getTheme: () => {
-      /*
-      error?: PaletteColorOptions;
-    warning?: PaletteColorOptions;
-    info?: PaletteColorOptions;
-    success?: PaletteColorOptions;
-      */
-      return createMuiTheme({
-        palette: {
-          text: {
-            //primary: "#F00",
-            //secondary: "#0F0",
-            disabled: "#00F",
-            hint: "#333",
-          },
-          error: {
-            main: "#FF0000",
-          },
-          warning: {
-            main: "#FF0000",
-          },
-          info: {
-            main: "#FF0000",
-          },
-          success: {
-            main: "#FF0000",
-          },
-          primary: {
-            main: "#008B8B",
-          },
-          secondary: {
-            main: "#008B8B",
-          },
-        },
-        overrides: {
-          MuiTypography: {
-            h6: {
-              textTransform: "capitalize",
-            },
-          },
-          MuiIconButton: {
-            root: {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-        },
-      });
-    },
-    actions: {
-      getData: () => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            let payload = {
-              totalCount: 100,
-              page: 1,
-              data: this.state.categories,
-            };
-            resolve(payload);
-          }, 300);
+  handleNewCategoryModal = () => {
+    setTimeout(() => {
+      this.setState({ showNewCategoryModal: true });
+    }, 1000);
+  };
+
+  handleDelete = (categoryId) => {
+    const categories = this.state.categories.filter(
+      (el) => el.id !== categoryId
+    );
+    this.setState({ categories });
+  };
+
+  handleEditCategoryModal = (categoryId) => {
+    setTimeout(() => {
+      this.setState({ showEditCategoryModal: true });
+      this.setState({ categoryOnEditId: categoryId });
+      console.log(this.state.categoryOnEditId);
+    }, 1000);
+  };
+
+  doEditCategory = () => {
+    const oldStateCategories = [...this.state.categories];
+    const categoriesIds = oldStateCategories.map((el) => {
+      return el.id;
+    });
+    const rightCategoryIndex = categoriesIds.indexOf(
+      this.state.categoryOnEditId
+    );
+    this.setState({
+      ...(this.state.categories[
+        rightCategoryIndex
+      ].name = this.state.newCategoryInputtedName),
+      ...(this.state.categories[
+        rightCategoryIndex
+      ].description = this.state.newCategoryInputtedDescription),
+    });
+  };
+
+  handleInputChange = async (event) => {
+    switch (event.target.id) {
+      case "name":
+        await this.setAsyncState({
+          newCategoryInputtedName: event.target.value,
         });
-      },
-      editable: {
-        onRowAdd: (newData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-            }, 1000);
-          }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = [...this.state.categories];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
-              this.setState({ categories: dataUpdate });
-              resolve();
-            }, 100);
-          }),
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...this.state.categories];
-              const index = oldData.tableData.id;
-              dataDelete.splice(index, 1);
-              this.setState({ categories: dataDelete });
-              resolve();
-            }, 100);
-          }),
-      },
-      customActions: [
+        break;
+      case "description":
+        await this.setAsyncState({
+          newCategoryInputtedDescription: event.target.value,
+        });
+
+        break;
+    }
+  };
+
+  addNewCategory() {
+    const oldState = [...this.state.categories];
+    const shortid = require("shortid");
+
+    if (
+      this.state.newCategoryInputtedName &&
+      this.state.newCategoryInputtedDescription
+    ) {
+      const newCategory = [
         {
-          tooltip: "Remove All Selected Users",
-          iconProps: { style: { color: "#DE4343" } },
-          icon: "delete",
-          onClick: (evt, data) =>
-            alert("You want to delete " + data.length + " rows"),
+          name: this.state.newCategoryInputtedName,
+          description: this.state.newCategoryInputtedDescription,
+          id: shortid.generate(),
         },
-      ],
-    },
-    props: {
-      icons: {
-        Add: () => <AddCircle className={this.props.classes.addIcon} />,
-        Edit: () => <Edit style={{ color: "darkcyan" }} />,
-        Delete: () => <Delete style={{ color: "#DE4343" }} />,
-      },
-      columns: [
-        { title: "Name", field: "name" },
-        {
-          title: "Description",
-          field: "description",
-        },
-        {
-          title: "Primary",
-          field: "primary",
-        },
-      ],
-      options: {
-        selection: true,
-        selectionStyle: styles.selection,
-        actionsColumnIndex: -1,
-        actionsCellStyle: styles.tableActions,
-        cellStyle: styles.tableCells,
-        headerStyle: styles.tableHeader,
-      },
-    },
+      ];
+      const newCategories = oldState.concat(newCategory);
+      this.setState({ categories: newCategories });
+    }
+  }
+
+  handleRemoveAllCategories() {
+    this.setState({ categories: "" });
+  }
+
+  handleSortByName = () => {
+    const categories = [...this.state.categories];
+    let newCategories;
+    if (this.state.sortDirection === "desc") {
+      newCategories = categories.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+      });
+      this.setState({
+        sortDirection: "asc",
+        sortDirectionIcon: <span>&nbsp; &#x25B2;</span>,
+      });
+    } else {
+      newCategories = categories.sort((a, b) => {
+        if (a.name < b.name) {
+          return 1;
+        }
+        if (a.name > b.name) {
+          return -1;
+        }
+      });
+      this.setState({
+        sortDirection: "desc",
+        sortDirectionIcon: <span>&nbsp; &#x25BC;</span>,
+      });
+    }
+
+    this.setState({ categories: newCategories });
+  };
+
+  handleSearch = (el) => {
+    let categories = [...this.state.categories];
+    let seekedCategory = categories.filter((categ) =>
+      categ.name.includes(el.target.value)
+    );
+    console.log(seekedCategory);
   };
 
   render() {
     const classes = this.props.classes;
     const shortid = require("shortid");
-
     return (
       <React.Fragment>
         <div className={classes.categoriesPanel}>
+          <h2>Categories</h2>
+          <br />
+
+          <CardBody>
+            <CustomInput
+              labelText="Search for a specific category..."
+              id="searchBox"
+              formControlProps={{
+                fullWidth: true,
+              }}
+              inputProps={{
+                type: "text",
+                onChange: (event) => this.handleSearch(event),
+              }}
+            />
+          </CardBody>
+
+          <Button
+            onClick={() => this.handleSortByName()}
+            type="submit"
+            color="success"
+            className={classes.button}
+          >
+            Sort by Name
+            {this.state.sortDirectionIcon}
+          </Button>
+
+          <Button
+            onClick={() => this.handleRemoveAllCategories()}
+            type="submit"
+            color="danger"
+            className={classes.button}
+          >
+            Remove All
+          </Button>
+          <br />
           <div className={classes.categoriesWrapper}>
-            <MuiThemeProvider theme={this.tableOptions.getTheme()}>
-              <MaterialTable
-                columns={this.tableOptions.props.columns}
-                data={this.tableOptions.actions.getData}
-                icons={this.tableOptions.props.icons}
-                options={this.tableOptions.props.options}
-                editable={this.tableOptions.actions.editable}
-                actions={this.tableOptions.actions.customActions}
-              />
-            </MuiThemeProvider>
+            {this.state.categories
+              ? this.state.categories.map((el) => (
+                  <div
+                    key={shortid.generate()}
+                    className={classes.categoryWrapper}
+                  >
+                    <p>{el.name}</p>
+                    <hr />
+                    <p>{el.description}</p>
+                    <Button
+                      onClick={() => this.handleEditCategoryModal(el.id)}
+                      type="submit"
+                      color="primary"
+                      size="sm"
+                      className={classes.button}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => this.handleDelete(el.id)}
+                      type="submit"
+                      color="danger"
+                      size="sm"
+                      className={classes.button}
+                    >
+                      X
+                    </Button>
+                  </div>
+                ))
+              : ""}
           </div>
         </div>
+        <button
+          className={classes.newCategory}
+          onClick={this.handleNewCategoryModal}
+        >
+          +
+        </button>
+        <Modal
+          showModal={this.state.showNewCategoryModal}
+          {...this.state.newCategoryData}
+          {...this.state}
+        />
+        <Modal
+          showModal={this.state.showEditCategoryModal}
+          {...this.state.editCategoryData}
+          {...this.state}
+        />
       </React.Fragment>
     );
   }

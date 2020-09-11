@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-
 import styles from "../../assets/jss/clear-crm/views/notFound.js";
 
 class NotFound extends Component {
