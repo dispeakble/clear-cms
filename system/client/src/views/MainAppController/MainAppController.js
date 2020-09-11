@@ -5,17 +5,17 @@ import NotFound from "views/NotFound/NotFound";
 class MainAppController extends Component {
   state = {};
 
-  hasModule(url, moduleList) {
-    const urlObj = url.split("/");
-    let response = false;
+  hasModule(currentPath, moduleList) {
+    const pathObject = currentPath.split("/");
+    let componentExists = false;
 
     moduleList.map((el) => {
-      if (el.toLink.replace("/", "") === urlObj[0]) {
-        response = true;
+      if (el.toLink.replace("/", "") === pathObject[1]) {
+        componentExists = true;
       }
     });
 
-    return response;
+    return componentExists;
   }
 
   render() {
@@ -25,7 +25,9 @@ class MainAppController extends Component {
     const pathnames = this.props.moduleList;
     let LazyComponent;
     if (this.hasModule(currentPath, pathnames)) {
-      LazyComponent = React.lazy(() => import(`.${currentPath}`));
+      LazyComponent = React.lazy(() =>
+        import(`./ExtraComponents${currentPath}`)
+      );
     } else {
       LazyComponent = NotFound;
     }

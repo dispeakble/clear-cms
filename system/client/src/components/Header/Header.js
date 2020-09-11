@@ -26,9 +26,9 @@ class Header extends Component {
     showAboutModal: false,
     showLicenseModal: false,
     licenseModal: {
-      name: "about",
+      name: "licenseModal",
       title: "License Agreement",
-      content: "Hello World!",
+      content: "License",
       closeButton: {
         callback: () => {
           this.setState({ showLicenseModal: false });
@@ -46,7 +46,7 @@ class Header extends Component {
     aboutModal: {
       name: "about",
       title: "About",
-      content: "Hello World!",
+      content: "About",
       closeButton: {
         callback: () => {
           this.setState({ showAboutModal: false });
@@ -114,19 +114,6 @@ class Header extends Component {
     if (modalValue) {
       setTimeout(() => {
         //TODO populate the modal content here
-
-        switch (modalValue) {
-          case "License":
-            let licenseModal = this.state.licenseModal;
-            licenseModal.content = "License Agrrement Text";
-            this.setState({
-              licenseModal: licenseModal,
-            });
-            break;
-          case "About":
-            break;
-        }
-
         let modalState = {};
         modalState["show" + modalValue + "Modal"] = true;
         this.setState(modalState);
@@ -201,13 +188,13 @@ class Header extends Component {
             <div className={classes.appResponsive}>{this.props.leftLinks}</div>
           </Drawer>
         </AppBar>
-        <Modal
+        <Modal //TODO CONVERT TO COMPONENT
           showModal={this.state.showLicenseModal}
-          data={this.state.licenseModal}
+          {...this.state.licenseModal}
         />
-        <Modal
+        <Modal //TODO CONVERT TO COMPONENT
           showModal={this.state.showAboutModal}
-          data={this.state.aboutModal}
+          {...this.state.aboutModal}
         />
       </div>
     );
