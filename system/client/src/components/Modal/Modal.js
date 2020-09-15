@@ -21,6 +21,9 @@ import Icon from "@material-ui/core/Icon";
 import { withRouter } from "react-router-dom";
 
 class Modal extends Component {
+  state = {
+    nameToEdit: this.props.nameToEdit,
+  };
   callCloseCallback(data) {
     this.props.closeButton.callback(data);
   }
@@ -35,7 +38,6 @@ class Modal extends Component {
 
   render() {
     const classes = this.props.classes;
-
     return (
       <Dialog
         classes={{
@@ -69,7 +71,6 @@ class Modal extends Component {
           id="classic-modal-slide-description"
           className={classes.modalBody}
         >
-          {this.props.modalContent}
           {this.props.content}
         </DialogContent>
         {/* {this.props.location.pathname === "/categories" ? (
@@ -84,9 +85,11 @@ class Modal extends Component {
         ) : (
           ""
         )} */}
+
         <DialogActions className={classes.modalFooter}>
           {this.props.confirmButton && (
             <Button
+              disabled={this.props.isBtnDisabled}
               color="transparent"
               simple
               onClick={() => {
