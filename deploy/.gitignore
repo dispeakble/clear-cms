@@ -1,0 +1,11 @@
+.vscode/
+.idea/
+kube-config.yaml
+last-deploy.log
+*.log
+shield-prepare-servers
+vultr_key.pem
+.DS_Store
+scripts/.upload_accepted
+*.pub
+*.pem
