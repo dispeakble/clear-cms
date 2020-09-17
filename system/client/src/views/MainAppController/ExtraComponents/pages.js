@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import styles from "assets/jss/clear-crm/views/categories.js";
+import styles from "assets/jss/clear-crm/views/pages.js";
 import AddCircle from "@material-ui/icons/AddCircle";
 import Edit from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
 import Checkbox from "@material-ui/core/Checkbox";
+import { Link } from "react-router-dom";
 
 // from material-table
 import MaterialTable from "material-table";
@@ -14,68 +15,68 @@ import MaterialTable from "material-table";
 
 const shortid = require("shortid");
 
-class Categories extends Component {
+class Pages extends Component {
   state = {
     showModal: false,
     cat_list: [],
     categories: [
       {
-        name: "Categ4",
-        description: "Categ4 description",
+        title: "Title1",
+        category: "Categ4",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ5",
-        description: "Categ5 description",
+        title: "Title2",
+        category: "Categ5",
         id: shortid.generate(),
         primary: <Checkbox disabled />,
       },
       {
-        name: "Categ3",
-        description: "Categ3 description",
+        title: "Title3",
+        category: "Categ3",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ1",
-        description: "Categ1 description",
+        title: "Title4",
+        category: "Categ1",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ2",
-        description: "Categ2 description",
+        title: "Title5",
+        category: "Categ2",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ6",
-        description: "Categ6 description",
+        title: "Title6",
+        category: "Categ6",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ7",
-        description: "Categ7 description",
+        title: "Title7",
+        category: "Categ7",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ8",
-        description: "Categ8 description",
+        title: "Title8",
+        category: "Categ8",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ9",
-        description: "Categ9 description",
+        title: "Title9",
+        category: "Categ9",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
       {
-        name: "Categ10",
-        description: "Categ10 description",
+        title: "Title10",
+        category: "Categ10",
         id: shortid.generate(),
         primary: <Checkbox />,
       },
@@ -150,12 +151,6 @@ class Categories extends Component {
         });
       },
       editable: {
-        onRowAdd: (newData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              resolve();
-            }, 1000);
-          }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -189,15 +184,14 @@ class Categories extends Component {
     },
     props: {
       icons: {
-        Add: () => <AddCircle className={this.props.classes.addIcon} />,
         Edit: () => <Edit style={{ color: "darkcyan" }} />,
         Delete: () => <Delete style={{ color: "#DE4343" }} />,
       },
       columns: [
-        { title: "Name", field: "name" },
+        { title: "Title", field: "title" },
         {
-          title: "Description",
-          field: "description",
+          title: "Category",
+          field: "category",
         },
         {
           title: "Primary",
@@ -235,9 +229,12 @@ class Categories extends Component {
             </MuiThemeProvider>
           </div>
         </div>
+        <Link to="/pagesAdd">
+          <AddCircle className={classes.addIcon} />
+        </Link>
       </React.Fragment>
     );
   }
 }
 
-export default withStyles(styles)(Categories);
+export default withStyles(styles)(Pages);

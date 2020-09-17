@@ -108,8 +108,12 @@ const javascriptStyles = {
     color: "#FF6461",
   },
   addIcon: {
+    cursor: "pointer",
     color: "darkcyan",
-    fontSize: "130%",
+    fontSize: "400%",
+    position: "fixed",
+    bottom: "1rem",
+    right: "1rem",
     "&:hover": {
       color: "#007272",
     },
