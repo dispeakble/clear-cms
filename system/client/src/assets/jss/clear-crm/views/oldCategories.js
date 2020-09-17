@@ -3,7 +3,6 @@ import { container, title } from "assets/jss/clear-crm.js";
 import modalStyle from "assets/jss/clear-crm/modalStyle.js";
 import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
 import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
-import { GpsFixed } from "@material-ui/icons";
 
 const javascriptStyles = {
   section: {
@@ -37,7 +36,7 @@ const javascriptStyles = {
   ...popoverStyles,
   categoriesPanel: {
     textAlign: "center",
-    marginTop: "60px",
+    marginTop: "30vh",
   },
   categoriesWrapper: {
     margin: "0 auto",
@@ -66,15 +65,6 @@ const javascriptStyles = {
     width: "3rem",
     height: "3rem",
   },
-  addButton: {
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    cursor: "pointer",
-    width: "3rem",
-    height: "3rem",
-    color: "darkcyan",
-  },
   removeButton: {
     backgroundColor: "red",
     color: "white",
@@ -82,37 +72,6 @@ const javascriptStyles = {
     border: "1px solid transparent",
     borderRadius: "9px",
     cursor: "pointer",
-  },
-  tableActions: {},
-  editAction: {
-    color: "darkcyan",
-  },
-  deleteAction: {
-    color: "#FF6461",
-  },
-  tableCells: {
-    fontSize: "90%",
-  },
-  tableHeader: {
-    backgroundColor: "#B2ACAB",
-    color: "white",
-    fontSize: "100%",
-  },
-  removeSelectedIcon: {
-    color: "#FF6461",
-    position: "fixed",
-    right: "0",
-    bottom: "0",
-  },
-  deleteSweepIcon: {
-    color: "#FF6461",
-  },
-  addIcon: {
-    color: "darkcyan",
-    fontSize: "130%",
-    "&:hover": {
-      color: "#007272",
-    },
   },
 };
 
