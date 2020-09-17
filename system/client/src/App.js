@@ -11,6 +11,9 @@ import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
+import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
 
 import "assets/scss/clear-crm.scss";
 
@@ -77,6 +80,7 @@ class App extends Component {
           <Route path="/" exact component={Dashboard} />
           //leave this always on the last place
           <Route path="/logout" component={ViewAuth} />
+          <Route path="/pagesAdd" component={PagesAdd} />
           <Route
             render={(props) => (
               <MainAppController
