@@ -39,10 +39,6 @@ const javascriptStyles = {
     textAlign: "center",
     marginTop: "60px",
   },
-  previewBodyWrapper: {
-    minHeight: "100%",
-    height: "100%",
-  },
   categoriesWrapper: {
     margin: "0 auto",
     width: "80%",
@@ -87,6 +83,7 @@ const javascriptStyles = {
     borderRadius: "9px",
     cursor: "pointer",
   },
+  tableActions: {},
   editAction: {
     color: "darkcyan",
   },
@@ -129,15 +126,20 @@ const javascriptStyles = {
     bottom: "0",
   },
   gridHolder: {
-    position: "absolute",
+    position: "fixed",
     top: 0,
     left: 0,
     background: "#E5E5E5",
     zIndex: "99999",
     width: "100%",
     height: "100%",
+    margin: 0,
+    padding: 0,
+    boxSizing: "border-box",
   },
   gridLayout: {
+    width: "100%",
+    height: "100%",
     position: "relative",
     top: 0,
     left: 0,
@@ -239,20 +241,6 @@ const javascriptStyles = {
       margin: "10px 0",
       padding: "10px",
     },
-  },
-  pageTitle: {
-    left: 0,
-    top: 0,
-    textAlign: "center",
-    userSelect: "none",
-  },
-  noItemsMessageWrapper: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
   },
 };
 
