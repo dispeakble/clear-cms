@@ -125,9 +125,24 @@ const javascriptStyles = {
     right: "0",
     bottom: "0",
   },
+  gridHolder: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    background: "#E5E5E5",
+    zIndex: "99999",
+    width: "100%",
+    height: "100%",
+    margin: 0,
+    padding: 0,
+    boxSizing: "border-box",
+  },
   gridLayout: {
+    width: "100%",
+    height: "100%",
     position: "relative",
-    margin: "60px 30px 0",
+    top: 0,
+    left: 0,
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
     },
@@ -226,67 +241,6 @@ const javascriptStyles = {
       margin: "10px 0",
       padding: "10px",
     },
-  },
-  addButton: {
-    color: "white",
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    padding: 0,
-    width: "3rem",
-    height: "3rem",
-    "&:hover": {
-      backgroundColor: "darkcyan",
-    },
-  },
-  actionsButtons: {
-    marginTop: "5vh",
-    textAlign: "center",
-  },
-  deleteIcon: {
-    borderRadius: "50px",
-
-    color: "#FF6461",
-    "&:hover": {
-      color: "white",
-    },
-  },
-  pageTitle: {
-    padding: "0 10px",
-    background: "#FFF",
-  },
-
-  // for Hamburger menu
-  root: {
-    transform: "translateZ(0px)",
-    flexGrow: 1,
-  },
-  speedDial: {
-    position: "fixed",
-    right: "1rem",
-    bottom: "1rem",
-  },
-  speedDialAction: {
-    color: "darkcyan",
-  },
-  links: {
-    margin: "0",
-    padding: "0",
-    boxSizing: "border-box",
-    color: "darkcyan",
-    "&:hover": {
-      color: "darkcyan",
-    },
-  },
-  previewIcon: {
-    margin: "0",
-    padding: "0",
-    boxSizing: "border-box",
-  },
-  removeItemIcon: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
   },
 };
 
