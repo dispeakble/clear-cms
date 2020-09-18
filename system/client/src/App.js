@@ -12,6 +12,8 @@ import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
+import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
+
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
@@ -81,6 +83,7 @@ class App extends Component {
           //leave this always on the last place
           <Route path="/logout" component={ViewAuth} />
           <Route path="/pagesAdd" component={PagesAdd} />
+          <Route path="/pagePreview" component={PagePreview} />
           <Route
             render={(props) => (
               <MainAppController
