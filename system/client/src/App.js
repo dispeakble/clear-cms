@@ -93,7 +93,6 @@ class App extends Component {
             )}
           />
         </Switch>
-        <Footer />
       </React.Fragment>
     );
   }

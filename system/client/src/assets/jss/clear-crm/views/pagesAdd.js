@@ -4,6 +4,7 @@ import modalStyle from "assets/jss/clear-crm/modalStyle.js";
 import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
 import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
 import { GpsFixed } from "@material-ui/icons";
+import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
 
 const javascriptStyles = {
   section: {
@@ -83,7 +84,6 @@ const javascriptStyles = {
     borderRadius: "9px",
     cursor: "pointer",
   },
-  tableActions: {},
   editAction: {
     color: "darkcyan",
   },
@@ -127,7 +127,7 @@ const javascriptStyles = {
   },
   gridLayout: {
     position: "relative",
-    margin: "60px 30px 0",
+    margin: "0 30px 0",
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
     },
@@ -151,14 +151,14 @@ const javascriptStyles = {
       boxSizing: "border-box",
     },
     "& .react-grid-item:not(.react-grid-placeholder)": {
-      background: "#00acc1",
-      border: "1px solid #00649B",
+      background: "#FFFFFF",
+      border: "1px solid #CCC",
     },
     "& .react-grid-item.resizing": {
       opacity: "0.9",
     },
     "& .react-grid-item.static": {
-      background: "#cce",
+      background: "#FFF",
     },
     "& .react-grid-item .text": {
       fontSize: "24px",
@@ -252,7 +252,8 @@ const javascriptStyles = {
     },
   },
   pageTitle: {
-    padding: "0 10px",
+    marginTop: "5px",
+    padding: "0",
     background: "#FFF",
   },
 
@@ -287,6 +288,54 @@ const javascriptStyles = {
     position: "absolute",
     bottom: 0,
     right: 0,
+  },
+  editItemIcon: {
+    position: "absolute",
+    bottom: 0,
+    right: 30,
+  },
+  option: {
+    width: "100%",
+    fontSize: 15,
+    "& > span": {
+      marginRight: 10,
+      fontSize: 18,
+    },
+  },
+  drawerPaper: {
+    border: "none",
+    bottom: "0",
+    transitionProperty: "top, bottom, width",
+    transitionDuration: ".2s, .2s, .35s",
+    transitionTimingFunction: "linear, linear, ease",
+    width: drawerWidth,
+    ...boxShadow,
+    position: "fixed",
+    display: "block",
+    top: "0",
+    height: "100vh",
+    left: "0",
+    right: "auto",
+    visibility: "visible",
+    overflowY: "visible",
+    borderTop: "none",
+    textAlign: "left",
+    paddingRight: "0px",
+    paddingLeft: "0",
+    ...transition,
+  },
+  bodyWrapper: {
+    background: "white",
+  },
+  textfield: {
+    fontSize: "10rem",
+    color: "gold",
+  },
+  column: {
+    flexBasis: "32.66%",
+  },
+  accordion: {
+    overflow: "visible",
   },
 };
 
