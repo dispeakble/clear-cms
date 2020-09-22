@@ -14,6 +14,8 @@
     "history": "4.10.1",
     "lodash": "^4.17.20",
     "material-table": "^1.69.0",
+    "material-ui-color-picker": "^3.5.1",
+    "material-ui-dropzone": "^3.5.0",
     "moment": "2.26.0",
     "node-sass": "4.14.1",
     "nouislider": "14.5.0",
