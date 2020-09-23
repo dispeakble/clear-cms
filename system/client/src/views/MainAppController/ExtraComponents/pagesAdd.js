@@ -70,16 +70,16 @@ class PagesAdd extends React.PureComponent {
   };
 
   state = {
-    title: "",
+    pageTitle: "",
     showModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
     items: [
       {
-        backgroundColor: "white",
-        borderColor: "black",
-        borderWidth: "1px",
-        borderRadius: "5px",
+        backgroundColor: "#C8C8C8",
+        borderColor: "#000000",
+        borderWidth: "1",
+        borderRadius: "5",
         backgroundImage: "",
         title: "Header",
         module: "Header Module",
@@ -91,10 +91,10 @@ class PagesAdd extends React.PureComponent {
         add: false,
       },
       {
-        backgroundColor: "grey",
-        borderColor: "grey",
-        borderWidth: "0",
-        borderRadius: "0",
+        backgroundColor: "#FFFFFF",
+        borderColor: "#787878",
+        borderWidth: "1",
+        borderRadius: "5",
         backgroundImage: "",
         title: "Menu",
         module: "Menu Module",
@@ -106,10 +106,10 @@ class PagesAdd extends React.PureComponent {
         add: false,
       },
       {
-        backgroundColor: "white",
-        borderColor: "grey",
-        borderWidth: "0",
-        borderRadius: "0",
+        backgroundColor: "#F9F9F9",
+        borderColor: "#000000",
+        borderWidth: "1",
+        borderRadius: "5",
         backgroundImage: "",
         title: "Home Page",
         module: "Text Module",
@@ -123,14 +123,13 @@ class PagesAdd extends React.PureComponent {
     ],
     newCounter: 0,
     actions: [
-      { icon: <Save onClick={() => this.handleSave()} />, name: "Save block" },
-      {
-        icon: <Delete onClick={() => this.handleDelete()} />,
-        name: "Remove block",
-      },
       {
         icon: <AddCircle onClick={() => this.onAddItem()} />,
         name: "Add block",
+      },
+      {
+        icon: <Delete onClick={() => this.handleDelete()} />,
+        name: "Remove block",
       },
       {
         icon: <Code />,
@@ -147,12 +146,10 @@ class PagesAdd extends React.PureComponent {
     ],
     open: false,
     hidden: false,
-    itemsDetails: [
-      [{ label: "Header1" }, { label: "Menu1" }, { label: "Text1" }],
-      [{ label: "Header2" }, { label: "Menu2" }, { label: "Text2" }],
-      [{ label: "Header3" }, { label: "Menu3" }, { label: "Text3" }],
-      [{ label: "Header4" }, { label: "Menu4" }, { label: "Text4" }],
-      [{ label: "Header5" }, { label: "Menu5" }, { label: "Text5" }],
+    modulesList: [
+      { label: "Header Module" },
+      { label: "Menu Module" },
+      { label: "Text Module" },
     ],
     config: {
       layoutBoxSpacing: [10, 10],
@@ -210,36 +207,24 @@ class PagesAdd extends React.PureComponent {
           backgroundImage: el.backgroundImage,
         }}
       >
-        <p>{title}</p>
-        <p>{module}</p>
-        {/* <CustomInput
-          labelText="Title"
-          id="fieldTitle"
-          required="required"
-          formControlProps={{
-            fullWidth: true,
-            onChange: (event) => this.handleInputChange(event),
+        <p
+          style={{
+            fontSize: `${this.state.fontSize}rem`,
+            fontFamily: this.state.fontFamily,
+            color: this.state.textColor,
           }}
-          inputProps={{
-            value: this.state.name,
-            type: "text",
+        >
+          {el.title}
+        </p>
+        <p
+          style={{
+            fontSize: `${this.state.fontSize}rem`,
+            fontFamily: this.state.fontFamily,
+            color: this.state.textColor,
           }}
-        />
-        <Autocomplete
-          id="country-select-demo"
-          className={this.props.classes.option}
-          options={this.state.itemsDetails[i]}
-          autoHighlight
-          getOptionLabel={(option) => option.label}
-          renderInput={(params) => (
-            <TextField
-              className={this.props.classes.textfield}
-              {...params}
-              label="Choose a module"
-              variant="outlined"
-            />
-          )}
-        /> */}
+        >
+          {el.module}
+        </p>
         <span
           className={this.props.classes.removeItemIcon}
           onClick={this.onRemoveItem.bind(this, i)}
@@ -249,11 +234,11 @@ class PagesAdd extends React.PureComponent {
           </IconButton>
         </span>
         <span
-          className={this.props.classes.editItemIcon}
+          className={this.props.classes.editItemIconWrapper}
           onClick={() => this.handleEdit(i)}
         >
           <IconButton color="secondary" iconStyle={{ width: 30, height: 30 }}>
-            <Edit style={{ color: "darkcyan" }} />
+            <Edit className={this.props.classes.editItemIcon} />
           </IconButton>
         </span>
       </div>
@@ -270,10 +255,10 @@ class PagesAdd extends React.PureComponent {
 
     let items = this.state.items;
     items.push({
-      backgroundColor: "white",
-      borderColor: "black",
-      borderWidth: "1px",
-      borderRadius: "5px",
+      backgroundColor: "#FFFFFF",
+      borderColor: "#000000",
+      borderWidth: "1",
+      borderRadius: "5",
       backgroundImage: "",
       title: "New Box",
       module: "Select Module",
@@ -308,10 +293,20 @@ class PagesAdd extends React.PureComponent {
   }
 
   handleInputChange = (event) => {
-    if (event.target.value.length >= 5) {
-      this.setState({ isAddBtnDisabled: false, title: event.target.value });
-    } else {
-      this.setState({ isAddBtnDisabled: true });
+    switch (event.target.id) {
+      case "pageTitle":
+        let pageTitle = [...this.state.pageTitle];
+        pageTitle = event.target.value;
+        this.setState({ pageTitle });
+        break;
+      case "itemTitle":
+        let items = [...this.state.items];
+        let item = {
+          ...items[this.state.itemOnEditIndex],
+          title: event.target.value,
+        };
+        items[this.state.itemOnEditIndex] = item;
+        this.setState({ items });
     }
   };
 
@@ -319,9 +314,12 @@ class PagesAdd extends React.PureComponent {
     this.setState({ showModal: false });
   }
 
-  handleEdit = (index) => {
-    this.setState({
+  handleEdit = async (index) => {
+    await this.setAsyncState({
       itemOnEditIndex: index,
+    });
+    console.log(this.state.itemOnEditIndex);
+    await this.setAsyncState({
       showEditMenu: !this.state.showEditMenu,
     });
   };
@@ -335,11 +333,11 @@ class PagesAdd extends React.PureComponent {
     this.setState({ showModal: true });
   };
 
-  callConfirmCallback = () => {
-    this.closeModal();
-    const { history } = this.props;
-    history.push("/pages");
-  };
+  // callConfirmCallback = () => {
+  //   this.closeModal();
+  //   const { history } = this.props;
+  //   history.push("/pages");
+  // };
 
   // for Hamburger menu
 
@@ -363,8 +361,8 @@ class PagesAdd extends React.PureComponent {
     }
   };
 
-  handleBorderWidth = (event, newValue) => {
-    this.setState({ itemBorderWidth: newValue });
+  handleBorderWidth = async (event, newValue) => {
+    await this.setState({ itemBorderWidth: newValue });
   };
 
   handleBorderRadius = (event, newValue) => {
@@ -372,8 +370,9 @@ class PagesAdd extends React.PureComponent {
   };
 
   handleItemBgImage = (event) => {
-    let imgSrc = event.target.value.split("\\")[2];
-    this.setState({ imgSrc: `assets/img/${imgSrc}` });
+    // let imgSrc = event.target.value.split("\\")[2];
+    // this.setState({ imgSrc: `assets/img/${imgSrc}` });
+    console.log("Background Image Updated");
   };
 
   closeEditSideMenu = () => {
@@ -500,7 +499,18 @@ class PagesAdd extends React.PureComponent {
     this.setState({ fontFamily: newValue.label });
   };
 
+  handleItemModule = (event, newValue) => {
+    let items = [...this.state.items];
+    let item = {
+      ...items[this.state.itemOnEditIndex],
+      module: newValue.label,
+    };
+    items[this.state.itemOnEditIndex] = item;
+    this.setState({ items });
+  };
+
   render() {
+    const { history } = this.props;
     const classes = this.props.classes;
     const { color, absolute, fixed } = this.props;
 
@@ -508,36 +518,61 @@ class PagesAdd extends React.PureComponent {
       <React.Fragment>
         <div
           style={{
-            backgroundColor: this.state.bgColor,
-            fontSize: `${this.state.fontSize}rem`,
-            fontFamily: this.state.fontFamily,
-            color: this.state.textColor,
+            marginTop: "60px",
+            paddingBottom: "60px",
           }}
           className={classes.bodyWrapper}
         >
-          <div style={{ marginTop: "60px" }} className={classes.root}></div>
           <MuiThemeProvider theme={this.getTheme()}>
             <Drawer
               variant="temporary"
               anchor={"left"}
               open={this.state.showEditMenu}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
               onClose={this.handleEditMenu}
+              className={classes.sideMenu}
             >
-              <h3 style={{ textAlign: "center", marginBottom: "50px" }}>
-                Edit Box Properties
-              </h3>
-
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontWeight: "400", marginBottom: "5px" }}>
-                  Background Color
-                </div>
+              <h3>Edit Box Properties</h3>
+              <div>
+                <CustomInput
+                  labelText="Title"
+                  id="itemTitle"
+                  required="required"
+                  formControlProps={{
+                    fullWidth: true,
+                    onChange: (event) => this.handleInputChange(event),
+                  }}
+                  inputProps={{
+                    value: this.state.items[Number(this.state.itemOnEditIndex)]
+                      .title,
+                    type: "text",
+                  }}
+                />
+                <Autocomplete
+                  id="moduleDropdown"
+                  onChange={this.handleItemModule}
+                  className={this.props.classes.option}
+                  autoHighlight
+                  getOptionLabel={(option) => option.label}
+                  options={this.state.modulesList}
+                  renderInput={(params) => (
+                    <TextField
+                      className={this.props.classes.textfield}
+                      {...params}
+                      label="Choose a module"
+                      variant="outlined"
+                    />
+                  )}
+                />
+              </div>
+              <hr />
+              <div>
+                <div>Background Color</div>
                 <ColorPicker
                   name="color"
-                  defaultValue="#000"
-                  // value={this.state.color} - for controlled component
+                  defaultValue={
+                    this.state.items[Number(this.state.itemOnEditIndex)]
+                      .backgroundColor
+                  }
                   onChange={(color) => {
                     if (color) {
                       this.setState({ itemBgColor: color });
@@ -546,13 +581,14 @@ class PagesAdd extends React.PureComponent {
                 />
               </div>
               <hr />
-              <div style={{ textAlign: "center" }}>
-                <div style={{ fontWeight: "400", marginBottom: "5px" }}>
-                  Border Color
-                </div>
+              <div>
+                <div>Border Color</div>
                 <ColorPicker
                   name="color"
-                  defaultValue="#000"
+                  defaultValue={
+                    this.state.items[Number(this.state.itemOnEditIndex)]
+                      .borderColor
+                  }
                   onChange={(color) => {
                     if (color) {
                       this.setState({ itemBorderColor: color });
@@ -561,13 +597,17 @@ class PagesAdd extends React.PureComponent {
                 />
               </div>
               <hr />
-              <div style={{ textAlign: "center" }}>
+              <div>
                 <Typography id="discrete-slider" gutterBottom>
                   Border Width
                 </Typography>
                 <Slider
-                  style={{ width: "80%" }}
-                  onChange={this.handleBorderWidth}
+                  defaultValue={
+                    this.state.items[Number(this.state.itemOnEditIndex)]
+                      .borderWidth
+                  }
+                  className={classes.sideMenuSlider}
+                  onChangeCommitted={this.handleBorderWidth}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   min={0}
@@ -575,13 +615,17 @@ class PagesAdd extends React.PureComponent {
                 />
               </div>
               <hr />
-              <div style={{ textAlign: "center" }}>
+              <div>
                 <Typography id="discrete-slider" gutterBottom>
                   Border Radius
                 </Typography>
                 <Slider
-                  style={{ width: "80%" }}
-                  onChange={this.handleBorderRadius}
+                  defaultValue={
+                    this.state.items[Number(this.state.itemOnEditIndex)]
+                      .borderRadius
+                  }
+                  className={classes.sideMenuSlider}
+                  onChangeCommitted={this.handleBorderRadius}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   min={0}
@@ -589,36 +633,27 @@ class PagesAdd extends React.PureComponent {
                 />
               </div>
               <hr />
-              <div
-                style={{ textAlign: "center", margin: "0 auto", width: "80%" }}
-              >
-                <div style={{ fontWeight: "400", marginBottom: "5px" }}>
-                  Background Image
+              <div>
+                <div>Background Image</div>
+                <div className={classes.dropzoneAreaWrapper}>
+                  <DropzoneArea onChange={this.handleItemBgImage.bind(this)} />
                 </div>
-                <CustomInput
-                  id="bgImage"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) => this.handleItemBgImage(event),
-                  }}
-                  inputProps={{
-                    type: "file",
-                    autoComplete: "off",
-                  }}
-                />
               </div>
               <hr />
 
-              <DialogActions className={classes.modalFooter}>
+              <DialogActions className={classes.dialogActions}>
                 <Button
-                  disabled={this.state.isBtnDisabled}
-                  color="success"
-                  simple
+                  className={classes.saveButton}
+                  color="primary"
                   onClick={this.saveChangedStyle}
                 >
-                  <div>Save</div>
+                  Save
                 </Button>
-                <Button color="danger" simple onClick={this.closeEditSideMenu}>
+                <Button
+                  className={classes.cancelButton}
+                  color="danger"
+                  onClick={this.closeEditSideMenu}
+                >
                   Cancel
                 </Button>
               </DialogActions>
@@ -688,27 +723,19 @@ class PagesAdd extends React.PureComponent {
                   id="panel1c-header"
                 >
                   <div className={classes.column}>
-                    <Typography
-                      style={{ fontSize: "120%" }}
-                      className={classes.secondaryHeading}
-                    >
+                    <Typography className={classes.typography}>
                       Page Options
                     </Typography>
                   </div>
                 </AccordionSummary>
                 <Divider />
 
-                <AccordionDetails className={classes.details}>
+                <AccordionDetails className={classes.accordionDetails}>
                   <div
-                    style={{ borderRight: "1px solid darkcyan" }}
-                    className={classes.column}
+                    className={classes.column + " " + classes.columnSeparator}
                   >
-                    <h4 style={{ textAlign: "center", fontWeight: "400" }}>
-                      Background
-                    </h4>
-                    <h5 style={{ fontSize: "100%", fontWeight: "400" }}>
-                      Background Color
-                    </h5>
+                    <h4>Background</h4>
+                    <h5>Background Color</h5>
                     <ColorPicker
                       name="color"
                       defaultValue="#000"
@@ -719,42 +746,32 @@ class PagesAdd extends React.PureComponent {
                         }
                       }}
                     />
-                    <h5 style={{ fontSize: "100%", fontWeight: "400" }}>
-                      Background Image
-                    </h5>
-                    <div style={{ width: "90%" }}>
+                    <h5>Background Image</h5>
+                    <div className={classes.dropzoneAreaWrapper}>
                       <DropzoneArea onChange={this.handleBgImage.bind(this)} />
                     </div>
                   </div>
-                  <p style={{ width: "1%" }} />
+                  <p />
                   <div
-                    style={{
-                      borderRight: "1px solid darkcyan",
-                      paddingRight: "1%",
-                    }}
-                    className={classes.column}
+                    className={classes.column + " " + classes.columnSeparator}
                   >
-                    <h4 style={{ textAlign: "center", fontWeight: "400" }}>
-                      Font{" "}
-                    </h4>
+                    <h4>Font </h4>
                     <div>
                       <Typography id="discrete-slider" gutterBottom>
                         Font Size
                       </Typography>
                       <Slider
-                        style={{ width: "80%", marginLeft: "10%" }}
-                        onChange={this.handleFontSize}
+                        className={classes.pageOptionsSlider}
+                        onChangeCommitted={this.handleFontSize}
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
                         min={0}
                         max={5}
                       />
                     </div>
-                    <h5 style={{ fontSize: "100%", fontWeight: "400" }}>
-                      Font Family
-                    </h5>
+                    <h5>Font Family</h5>
                     <Autocomplete
-                      id="country-select-demo"
+                      id="fontFamilyDropdown"
                       onChange={this.handleFontFamily}
                       className={this.props.classes.option}
                       options={this.state.fontFamilies}
@@ -769,9 +786,7 @@ class PagesAdd extends React.PureComponent {
                         />
                       )}
                     />
-                    <h5 style={{ fontSize: "100%", fontWeight: "400" }}>
-                      Text Color
-                    </h5>
+                    <h5>Text Color</h5>
                     <ColorPicker
                       name="color"
                       defaultValue="#000"
@@ -783,17 +798,15 @@ class PagesAdd extends React.PureComponent {
                       }}
                     />
                   </div>
-                  <p style={{ width: "1%" }} />
+                  <p />
                   <div className={clsx(classes.column, classes.helper)}>
-                    <h4 style={{ textAlign: "center", fontWeight: "400" }}>
-                      Miscellaneous
-                    </h4>
+                    <h4>Miscellaneous</h4>
                     <div>
                       <Typography id="discrete-slider" gutterBottom>
                         Box Spacing
                       </Typography>
                       <Slider
-                        style={{ width: "80%", marginLeft: "10%" }}
+                        className={classes.pageOptionsSlider}
                         onChangeCommitted={this.handleBoxSpacing}
                         defaultValue={this.state.config.layoutBoxSpacing[0]}
                         getAriaValueText={() =>
@@ -807,19 +820,11 @@ class PagesAdd extends React.PureComponent {
                     </div>
                   </div>
                 </AccordionDetails>
-
-                <Divider />
-                <AccordionActions>
-                  <Button size="small">Cancel</Button>
-                  <Button size="small" color="primary">
-                    Save
-                  </Button>
-                </AccordionActions>
               </Accordion>
-              <div className={classes.pageTitle}>
+              <div className={classes.pageTitleInputWrapper}>
                 <CustomInput
                   labelText="Page Title"
-                  id="title"
+                  id="pageTitle"
                   required="required"
                   formControlProps={{
                     fullWidth: true,
@@ -832,7 +837,10 @@ class PagesAdd extends React.PureComponent {
                 />
               </div>
 
+              <h1 className={classes.pageTitle}>{this.state.pageTitle} </h1>
+
               <ResponsiveReactGridLayout
+                style={{ backgroundColor: this.state.bgColor }}
                 // margin={this.state.boxSpacing} primeste un array cu 2 valori
                 isBounded="true"
                 margin={this.state.config.layoutBoxSpacing}
@@ -843,9 +851,54 @@ class PagesAdd extends React.PureComponent {
                 {_.map(this.state.items, (el) => this.createElement(el))}
               </ResponsiveReactGridLayout>
             </div>
+
+            <Button
+              onClick={() => {
+                localStorage.setItem(
+                  "bgColor",
+                  JSON.stringify(this.state.bgColor)
+                );
+                localStorage.setItem(
+                  "fontSize",
+                  JSON.stringify(this.state.fontSize)
+                );
+                localStorage.setItem(
+                  "fontFamily",
+                  JSON.stringify(this.state.fontFamily)
+                );
+                localStorage.setItem(
+                  "textColor",
+                  JSON.stringify(this.state.textColor)
+                );
+                localStorage.setItem(
+                  "layoutBoxSpacing",
+                  JSON.stringify(this.state.config.layoutBoxSpacing)
+                );
+                localStorage.setItem(
+                  "pageTitle",
+                  JSON.stringify(this.state.pageTitle)
+                );
+                localStorage.setItem("items", JSON.stringify(this.state.items));
+              }}
+              className={classes.savePageButton}
+              color="primary"
+            >
+              <div>Save</div>
+            </Button>
+            <Button
+              onClick={() => {
+                history.push("/pages");
+                localStorage.clear();
+              }}
+              className={classes.cancelPageButton}
+              color="danger"
+            >
+              Discard
+            </Button>
+
             <SpeedDial
-              ariaLabel="SpeedDial example"
               className={classes.speedDial}
+              ariaLabel="SpeedDial example"
               hidden={this.state.hidden}
               icon={<SpeedDialIcon />}
               onClose={this.handleClose}
