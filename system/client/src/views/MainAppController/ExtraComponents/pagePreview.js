@@ -29,19 +29,9 @@ class PagePreview extends React.PureComponent {
     showModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
-    items: [0, 1, 2, 3, 4].map(function (i, key, list) {
-      return {
-        i: i.toString(),
-        x: i * 2,
-        y: 0,
-        w: 2,
-        h: 2,
-        add: i === list.length - 1,
-      };
-    }),
-    newCounter: 0,
-    open: false,
-    hidden: false,
+    items: JSON.parse(localStorage.getItem("items"))
+      ? JSON.parse(localStorage.getItem("items"))
+      : "",
   };
 
   createElement(el) {
@@ -52,34 +42,53 @@ class PagePreview extends React.PureComponent {
       cursor: "pointer",
     };
     const i = el.i;
+    el.static = true;
     return (
-      <div key={i} data-grid={el}>
-        <span className="text">{i}</span>
-        <span
-          className="remove"
-          style={removeStyle}
-          onClick={this.onRemoveItem.bind(this, i)}
-        ></span>
+      <div
+        key={i}
+        data-grid={el}
+        style={{
+          padding: "5px",
+          backgroundColor: el.backgroundColor,
+          borderColor: el.borderColor,
+          borderWidth: el.borderWidth,
+          borderRadius: el.borderRadius,
+          backgroundImage: el.backgroundImage,
+        }}
+      >
+        <p
+          style={{
+            fontSize: JSON.parse(localStorage.getItem("fontSize"))
+              ? `${JSON.parse(localStorage.getItem("fontSize"))}rem`
+              : "",
+            fontFamily: JSON.parse(localStorage.getItem("fontFamily"))
+              ? JSON.parse(localStorage.getItem("fontFamily"))
+              : "",
+            color: JSON.parse(localStorage.getItem("textColor"))
+              ? JSON.parse(localStorage.getItem("textColor"))
+              : "",
+          }}
+        >
+          {el.title}
+        </p>
+        <p
+          style={{
+            fontSize: JSON.parse(localStorage.getItem("fontSize"))
+              ? `${JSON.parse(localStorage.getItem("fontSize"))}rem`
+              : "",
+            fontFamily: JSON.parse(localStorage.getItem("fontFamily"))
+              ? JSON.parse(localStorage.getItem("fontFamily"))
+              : "",
+            color: JSON.parse(localStorage.getItem("textColor"))
+              ? JSON.parse(localStorage.getItem("textColor"))
+              : "",
+          }}
+        >
+          {el.module}
+        </p>
       </div>
     );
   }
-
-  onAddItem = () => {
-    /*eslint no-console: 0*/
-    console.log("adding", "n" + this.state.newCounter);
-    this.setState({
-      // Add a new item. It must have a unique key!
-      items: this.state.items.concat({
-        i: Math.random().toFixed(2),
-        x: (this.state.items.length * 2) % (this.state.cols || 12),
-        y: Infinity, // puts it at the bottom
-        w: 2,
-        h: 2,
-      }),
-      // Increment the counter to ensure key is always unique.
-      newCounter: this.state.newCounter + 1,
-    });
-  };
 
   // We're using the cols coming back from this to calculate where to add new items.
   onBreakpointChange = (breakpoint, cols) => {
@@ -172,20 +181,39 @@ class PagePreview extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <MuiThemeProvider theme={this.getTheme()}>
-          <div className={classes.gridHolder}>
-            <div className={classes.gridLayout}>
-              <ResponsiveReactGridLayout
-                isBounded="true"
-                onLayoutChange={() => this.onLayoutChange}
-                onBreakpointChange={() => this.onBreakpointChange}
-                {...this.props}
-              >
-                {_.map(this.state.items, (el) => this.createElement(el))}
-              </ResponsiveReactGridLayout>
+        <div className={classes.bodyWrapper}>
+          <MuiThemeProvider theme={this.getTheme()}>
+            <div className={classes.gridHolder}>
+              <div className={classes.gridLayout}>
+                <h1 className={classes.pageTitle}>
+                  {JSON.parse(localStorage.getItem("pageTitle"))
+                    ? JSON.parse(localStorage.getItem("pageTitle"))
+                    : ""}
+                </h1>
+                <ResponsiveReactGridLayout
+                  style={{
+                    backgroundColor: JSON.parse(localStorage.getItem("bgColor"))
+                      ? JSON.parse(localStorage.getItem("bgColor"))
+                      : "",
+                  }}
+                  margin={
+                    JSON.parse(localStorage.getItem("layoutBoxSpacing"))
+                      ? JSON.parse(localStorage.getItem("layoutBoxSpacing"))
+                      : 0
+                  }
+                  isBounded="true"
+                  onLayoutChange={() => this.onLayoutChange}
+                  onBreakpointChange={() => this.onBreakpointChange}
+                  {...this.props}
+                >
+                  {this.state.items
+                    ? _.map(this.state.items, (el) => this.createElement(el))
+                    : ""}
+                </ResponsiveReactGridLayout>
+              </div>
             </div>
-          </div>
-        </MuiThemeProvider>
+          </MuiThemeProvider>
+        </div>
       </React.Fragment>
     );
   }

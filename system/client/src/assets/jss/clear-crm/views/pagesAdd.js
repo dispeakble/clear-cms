@@ -251,10 +251,14 @@ const javascriptStyles = {
       color: "white",
     },
   },
-  pageTitle: {
+  pageTitleInputWrapper: {
     marginTop: "5px",
     padding: "0",
     background: "#FFF",
+  },
+  pageTitle: {
+    textAlign: "center",
+    userSelect: "none",
   },
 
   // for Hamburger menu
@@ -266,6 +270,7 @@ const javascriptStyles = {
     position: "fixed",
     right: "1rem",
     bottom: "1rem",
+    width: "5%",
   },
   speedDialAction: {
     color: "darkcyan",
@@ -289,10 +294,13 @@ const javascriptStyles = {
     bottom: 0,
     right: 0,
   },
-  editItemIcon: {
+  editItemIconWrapper: {
     position: "absolute",
     bottom: 0,
     right: 30,
+  },
+  editItemIcon: {
+    color: "darkcyan",
   },
   option: {
     width: "100%",
@@ -303,6 +311,7 @@ const javascriptStyles = {
     },
   },
   drawerPaper: {
+    overflow: "auto",
     border: "none",
     bottom: "0",
     transitionProperty: "top, bottom, width",
@@ -324,6 +333,31 @@ const javascriptStyles = {
     paddingLeft: "0",
     ...transition,
   },
+  dialogActions: {
+    position: "relative",
+    bottom: "0",
+    width: "86%",
+    margin: "0 auto",
+    marginTop: "20px",
+  },
+  saveButton: {
+    position: "absolute",
+    left: 0,
+  },
+  cancelButton: {
+    position: "absolute",
+    right: 0,
+  },
+  savePageButton: {
+    position: "fixed",
+    right: "13rem",
+    bottom: "1rem",
+  },
+  cancelPageButton: {
+    position: "fixed",
+    right: "6rem",
+    bottom: "1rem",
+  },
   bodyWrapper: {
     background: "white",
   },
@@ -334,8 +368,55 @@ const javascriptStyles = {
   column: {
     flexBasis: "32.66%",
   },
+  columnSeparator: {
+    borderRight: "1px solid darkcyan",
+    paddingRight: "1%",
+  },
   accordion: {
     overflow: "visible",
+  },
+  accordionDetails: {
+    "& div h4": {
+      textAlign: "center",
+      fontWeight: "400",
+    },
+    "& div h5": {
+      fontSize: "100%",
+      fontWeight: "400",
+    },
+    "& > p": {
+      width: "1%",
+    },
+  },
+  dropzoneAreaWrapper: {
+    width: "90%",
+    margin: "0 auto",
+  },
+  pageOptionsSlider: {
+    width: "80%",
+    marginLeft: "10%",
+  },
+
+  sideMenu: {
+    "& h3": {
+      textAlign: "center",
+      marginBottom: "50px",
+    },
+    "& > div": {
+      textAlign: "center",
+    },
+    "& > div div": {
+      margin: "0 auto",
+      fontWeight: "400",
+      marginBottom: "5px",
+      width: "90%",
+    },
+  },
+  sideMenuSlider: {
+    width: "80%",
+  },
+  typography: {
+    fontSize: "120%",
   },
 };
 
