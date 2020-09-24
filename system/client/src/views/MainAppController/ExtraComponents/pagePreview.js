@@ -29,10 +29,29 @@ class PagePreview extends React.PureComponent {
     showModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
-    items: JSON.parse(localStorage.getItem("items"))
-      ? JSON.parse(localStorage.getItem("items"))
-      : "",
+    items: [],
+    config: {
+      backgroundColor: "",
+      fontSize: "",
+      fontFamily: "",
+      textColor: "",
+      layoutBoxSpacing: "",
+      pageTitle: "",
+    },
   };
+
+  componentDidMount() {
+    const items = JSON.parse(localStorage.getItem("items"));
+    this.setState({
+      items: items,
+    });
+
+    const config = JSON.parse(localStorage.getItem("pageConfig"));
+
+    this.setState({
+      config: config,
+    });
+  }
 
   createElement(el) {
     const removeStyle = {
@@ -58,30 +77,9 @@ class PagePreview extends React.PureComponent {
       >
         <p
           style={{
-            fontSize: JSON.parse(localStorage.getItem("fontSize"))
-              ? `${JSON.parse(localStorage.getItem("fontSize"))}rem`
-              : "",
-            fontFamily: JSON.parse(localStorage.getItem("fontFamily"))
-              ? JSON.parse(localStorage.getItem("fontFamily"))
-              : "",
-            color: JSON.parse(localStorage.getItem("textColor"))
-              ? JSON.parse(localStorage.getItem("textColor"))
-              : "",
-          }}
-        >
-          {el.title}
-        </p>
-        <p
-          style={{
-            fontSize: JSON.parse(localStorage.getItem("fontSize"))
-              ? `${JSON.parse(localStorage.getItem("fontSize"))}rem`
-              : "",
-            fontFamily: JSON.parse(localStorage.getItem("fontFamily"))
-              ? JSON.parse(localStorage.getItem("fontFamily"))
-              : "",
-            color: JSON.parse(localStorage.getItem("textColor"))
-              ? JSON.parse(localStorage.getItem("textColor"))
-              : "",
+            fontSize: this.state.config.fontSize,
+            fontFamily: this.state.config.fontFamily,
+            color: this.state.config.fontColor,
           }}
         >
           {el.module}
@@ -89,70 +87,6 @@ class PagePreview extends React.PureComponent {
       </div>
     );
   }
-
-  // We're using the cols coming back from this to calculate where to add new items.
-  onBreakpointChange = (breakpoint, cols) => {
-    this.setState({
-      breakpoint: breakpoint,
-      cols: cols,
-    });
-  };
-
-  onLayoutChange(layout) {
-    this.setState({ layout: layout });
-  }
-
-  onRemoveItem(i) {
-    this.setState({
-      items: _.reject(this.state.items, { i: i }),
-    });
-  }
-
-  handleInputChange = (event) => {
-    if (event.target.value.length >= 5) {
-      this.setState({ isAddBtnDisabled: false, title: event.target.value });
-    } else {
-      this.setState({ isAddBtnDisabled: true });
-    }
-  };
-
-  closeModal() {
-    this.setState({ showModal: false });
-  }
-
-  handleEdit = () => {
-    console.log("editted");
-  };
-
-  handleSave = () => {
-    const { history } = this.props;
-    history.push("/pages");
-  };
-
-  handleDelete = () => {
-    this.setState({ showModal: true });
-  };
-
-  callConfirmCallback = () => {
-    this.closeModal();
-    const { history } = this.props;
-    history.push("/pages");
-  };
-
-  // for Hamburger menu
-
-  handleHiddenChange = (event) => {
-    this.setState({ hidden: event.target.checked });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
   // for MuiThemeProvider
 
   getTheme = () => {
@@ -166,9 +100,9 @@ class PagePreview extends React.PureComponent {
       overrides: {
         MuiSpeedDial: {
           fab: {
-            backgroundColor: "darkcyan",
+            backgroundColor: this.state.config.backgroundColor,
             "&:hover": {
-              backgroundColor: "#006F6F",
+              backgroundColor: this.state.config.backgroundColor,
             },
           },
         },
@@ -180,41 +114,31 @@ class PagePreview extends React.PureComponent {
     const classes = this.props.classes;
 
     return (
-      <React.Fragment>
-        <div className={classes.bodyWrapper}>
-          <MuiThemeProvider theme={this.getTheme()}>
-            <div className={classes.gridHolder}>
-              <div className={classes.gridLayout}>
-                <h1 className={classes.pageTitle}>
-                  {JSON.parse(localStorage.getItem("pageTitle"))
-                    ? JSON.parse(localStorage.getItem("pageTitle"))
-                    : ""}
-                </h1>
-                <ResponsiveReactGridLayout
-                  style={{
-                    backgroundColor: JSON.parse(localStorage.getItem("bgColor"))
-                      ? JSON.parse(localStorage.getItem("bgColor"))
-                      : "",
-                  }}
-                  margin={
-                    JSON.parse(localStorage.getItem("layoutBoxSpacing"))
-                      ? JSON.parse(localStorage.getItem("layoutBoxSpacing"))
-                      : 0
-                  }
-                  isBounded="true"
-                  onLayoutChange={() => this.onLayoutChange}
-                  onBreakpointChange={() => this.onBreakpointChange}
-                  {...this.props}
-                >
-                  {this.state.items
-                    ? _.map(this.state.items, (el) => this.createElement(el))
-                    : ""}
-                </ResponsiveReactGridLayout>
-              </div>
+      <div
+        className={classes.previewBodyWrapper}
+        style={{ backgroundColor: this.state.config.backgroundColor }}
+      >
+        <MuiThemeProvider theme={this.getTheme()}>
+          <div className={classes.gridHolder}>
+            <div className={classes.gridLayout}>
+              <h1 className={classes.pageTitle}>
+                {this.state.config.pageTitle}
+              </h1>
+              <ResponsiveReactGridLayout
+                margin={this.state.config.layoutBoxSpacing}
+                isBounded="true"
+                onLayoutChange={() => this.onLayoutChange}
+                onBreakpointChange={() => this.onBreakpointChange}
+                {...this.props}
+              >
+                {this.state.items
+                  ? _.map(this.state.items, (el) => this.createElement(el))
+                  : ""}
+              </ResponsiveReactGridLayout>
             </div>
-          </MuiThemeProvider>
-        </div>
-      </React.Fragment>
+          </div>
+        </MuiThemeProvider>
+      </div>
     );
   }
 }

@@ -334,20 +334,26 @@ const javascriptStyles = {
     ...transition,
   },
   dialogActions: {
-    position: "relative",
+    position: "fixed",
+    left: 0,
     bottom: "0",
     width: "86%",
     margin: "0 auto",
     marginTop: "20px",
   },
-  saveButton: {
+  sideMenuActionHolder: {
     position: "absolute",
-    left: 0,
+    bottom: "0",
+    left: "0",
+    right: "0",
+    background: "white",
+    display: "flex",
+    justifyContent: "space-between",
+    width: "80%",
+    margin: "0 auto",
   },
-  cancelButton: {
-    position: "absolute",
-    right: 0,
-  },
+  sideMenuSaveBtn: {},
+  sideMenuCancelBtn: {},
   savePageButton: {
     position: "fixed",
     right: "13rem",
@@ -396,27 +402,31 @@ const javascriptStyles = {
     width: "80%",
     marginLeft: "10%",
   },
+  textColorWrapper: {},
 
   sideMenu: {
     "& h3": {
       textAlign: "center",
       marginBottom: "50px",
     },
-    "& > div": {
-      textAlign: "center",
-    },
-    "& > div div": {
-      margin: "0 auto",
-      fontWeight: "400",
-      marginBottom: "5px",
-      width: "90%",
-    },
   },
   sideMenuSlider: {
+    width: "100%",
+  },
+  sideMenuEditorForm: {
     width: "80%",
+    margin: "0 auto",
+  },
+  sideMenuEditor: {
+    width: "300px",
+    height: "calc(100% - 60px)",
+    overflowY: "auto",
   },
   typography: {
     fontSize: "120%",
+  },
+  colorPicker: {
+    width: "100%",
   },
 };
 

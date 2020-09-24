@@ -39,6 +39,10 @@ const javascriptStyles = {
     textAlign: "center",
     marginTop: "60px",
   },
+  previewBodyWrapper: {
+    minHeight: "100%",
+    height: "100%",
+  },
   categoriesWrapper: {
     margin: "0 auto",
     width: "80%",
