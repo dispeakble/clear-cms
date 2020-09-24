@@ -75,51 +75,60 @@ class PagesAdd extends React.PureComponent {
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
     items: [
-      {
-        backgroundColor: "#C8C8C8",
-        borderColor: "#000000",
-        borderWidth: "1",
-        borderRadius: "5",
-        backgroundImage: "",
-        title: "Header",
-        module: "Header Module",
-        i: 0,
-        x: 0,
-        y: 0,
-        w: 12,
-        h: 2,
-        add: false,
-      },
-      {
-        backgroundColor: "#FFFFFF",
-        borderColor: "#787878",
-        borderWidth: "1",
-        borderRadius: "5",
-        backgroundImage: "",
-        title: "Menu",
-        module: "Menu Module",
-        i: "1",
-        x: 0,
-        y: 2,
-        w: 2,
-        h: 12,
-        add: false,
-      },
-      {
-        backgroundColor: "#F9F9F9",
-        borderColor: "#000000",
-        borderWidth: "1",
-        borderRadius: "5",
-        backgroundImage: "",
-        title: "Home Page",
-        module: "Text Module",
-        i: "2",
-        x: 3,
-        y: 2,
-        w: 10,
-        h: 12,
-        add: false,
-      },
+      // {
+      //   backgroundColor: "#C8C8C8",
+      //   borderColor: "#FF0000",
+      //   borderWidth: "1",
+      //   borderRadius: "10px",
+      //   backgroundImage: "",
+      //   fontSize: "1",
+      //   fontFamily: "Calibri",
+      //   textColor: "#008B8B",
+      //   title: "Header",
+      //   module: "Header Module",
+      //   i: "0",
+      //   x: 0,
+      //   y: 0,
+      //   w: 12,
+      //   h: 2,
+      //   add: false,
+      // },
+      // {
+      //   backgroundColor: "#FFFFFF",
+      //   borderColor: "#787878",
+      //   borderWidth: "1",
+      //   borderRadius: "0",
+      //   backgroundImage: "#",
+      //   fontSize: "1",
+      //   fontFamily: "Calibri",
+      //   textColor: "#008B8B",
+      //   title: "Menu",
+      //   module: "Menu Module",
+      //   i: "1",
+      //   x: 0,
+      //   y: 2,
+      //   w: 2,
+      //   h: 12,
+      //   add: false,
+      // },
+      // {
+      //   backgroundColor: "#F9F9F9",
+      //   borderColor: "#000000",
+      //   borderWidth: "1",
+      //   borderRadius: "0",
+      //   backgroundImage: "",
+      //   fontSize: "1",
+      //   fontFamily: "Calibri",
+      //   textColor: "#008B8B",
+      //   title: "Home Page",
+      //   module: "Text Module",
+      //   i: "2",
+      //   x: 3,
+      //   y: 2,
+      //   w: 10,
+      //   h: 12,
+      //   add: false,
+      // },
     ],
     newCounter: 0,
     actions: [
@@ -128,18 +137,14 @@ class PagesAdd extends React.PureComponent {
         name: "Add block",
       },
       {
-        icon: <Delete onClick={() => this.handleDelete()} />,
-        name: "Remove block",
-      },
-      {
-        icon: <Code />,
-        name: "Split View",
-      },
-      {
         icon: (
-          <Link className={this.props.classes.links} to="/pagePreview">
+          <a
+            className={this.props.classes.links}
+            href="/pagePreview"
+            target="_blank"
+          >
             <Visibility className={this.props.classes.previewIcon} />
-          </Link>
+          </a>
         ),
         name: "Preview",
       },
@@ -154,16 +159,22 @@ class PagesAdd extends React.PureComponent {
     config: {
       layoutBoxSpacing: [10, 10],
     },
+    editValues: {
+      itemTitle: "",
+    },
+    editItemTitle: "",
+    editItemBgColor: "",
+    editItemBorderRadius: "",
+    editItemBorderWidth: "",
+    editItemBorderColor: "",
+    editItemBackgroundColor: "",
+    editItemFontSize: "",
+    editItemFontFamily: "",
+    editItemTextColor: "",
     showEditMenu: false,
-    itemOnEditIndex: "",
-    itemBgColor: "",
-    changedBgColor: "",
+    itemEditId: "",
     itemBorderColor: "",
-    changedBgColor: "",
     itemBorderWidth: "",
-    changedBorderWidth: "",
-    itemBorderRadius: "",
-    changedBorderRadius: "",
     itemImgSrc: "",
     changedImgSrc: "",
     bgColor: "",
@@ -177,6 +188,9 @@ class PagesAdd extends React.PureComponent {
     ],
     fontFamily: "",
     textColor: "",
+    itemFontSize: "",
+    itemFontFamily: "",
+    itemTextColor: "",
   };
 
   setAsyncState = (newState) =>
@@ -209,18 +223,18 @@ class PagesAdd extends React.PureComponent {
       >
         <p
           style={{
-            fontSize: `${this.state.fontSize}rem`,
-            fontFamily: this.state.fontFamily,
-            color: this.state.textColor,
+            fontSize: `${el.fontSize}rem`,
+            fontFamily: el.fontFamily,
+            color: el.textColor,
           }}
         >
           {el.title}
         </p>
         <p
           style={{
-            fontSize: `${this.state.fontSize}rem`,
-            fontFamily: this.state.fontFamily,
-            color: this.state.textColor,
+            fontSize: `${el.fontSize}rem`,
+            fontFamily: el.fontFamily,
+            color: el.textColor,
           }}
         >
           {el.module}
@@ -235,7 +249,7 @@ class PagesAdd extends React.PureComponent {
         </span>
         <span
           className={this.props.classes.editItemIconWrapper}
-          onClick={() => this.handleEdit(i)}
+          onClick={() => this.handleEdit(el.i)}
         >
           <IconButton color="secondary" iconStyle={{ width: 30, height: 30 }}>
             <Edit className={this.props.classes.editItemIcon} />
@@ -246,7 +260,7 @@ class PagesAdd extends React.PureComponent {
   }
 
   onAddItem = () => {
-    let newId = "";
+    let newId = "0";
     try {
       newId = parseInt(this.state.items[this.state.items.length - 1]["i"]) + 1;
     } catch (err) {
@@ -260,6 +274,9 @@ class PagesAdd extends React.PureComponent {
       borderWidth: "1",
       borderRadius: "5",
       backgroundImage: "",
+      fontSize: "",
+      fontFamily: "",
+      textColor: "",
       title: "New Box",
       module: "Select Module",
       i: newId + "",
@@ -282,9 +299,28 @@ class PagesAdd extends React.PureComponent {
     });
   };
 
-  onLayoutChange(layout) {
-    this.setState({ layout: layout });
+  getItemById(id) {
+    return this.state.items.find((item) => item.i === id);
   }
+
+  onLayoutChange = (layout) => {
+    try {
+      let newItems = layout.map((item) => {
+        let oldItem = this.getItemById(item.i);
+        oldItem["x"] = item["x"];
+        oldItem.y = item.y;
+        oldItem.w = item.w;
+        oldItem.h = item.h;
+        return oldItem;
+      });
+
+      console.log(layout);
+      //let renderedItems = [...this.state.items];
+      this.setState({ items: newItems });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   onRemoveItem(i) {
     this.setState({
@@ -292,7 +328,7 @@ class PagesAdd extends React.PureComponent {
     });
   }
 
-  handleInputChange = (event) => {
+  handleInputChange = async (event) => {
     switch (event.target.id) {
       case "pageTitle":
         let pageTitle = [...this.state.pageTitle];
@@ -300,13 +336,17 @@ class PagesAdd extends React.PureComponent {
         this.setState({ pageTitle });
         break;
       case "itemTitle":
-        let items = [...this.state.items];
-        let item = {
-          ...items[this.state.itemOnEditIndex],
-          title: event.target.value,
-        };
-        items[this.state.itemOnEditIndex] = item;
-        this.setState({ items });
+        // let items = [...this.state.items];
+
+        // let item = this.getItemById(this.state.itemEditId);
+        // item.title = event.target.value;
+
+        // let itemIndex = items.findIndex(
+        //   (item) => item.i === this.state.itemEditId
+        // );
+
+        // items[itemIndex] = item;
+        await this.setAsyncState({ editItemTitle: event.target.value + "" });
     }
   };
 
@@ -314,11 +354,27 @@ class PagesAdd extends React.PureComponent {
     this.setState({ showModal: false });
   }
 
-  handleEdit = async (index) => {
+  handleEdit = async (id) => {
     await this.setAsyncState({
-      itemOnEditIndex: index,
+      itemEditId: id,
     });
-    console.log(this.state.itemOnEditIndex);
+    console.log(this.state.itemEditId);
+    const item = this.getItemById(id);
+
+    await this.setAsyncState({
+      editItemTitle: item.title,
+      editItemBorderRadius: item.borderRadius,
+      editItemBorderWidth: item.borderWidth,
+      editItemBorderColor: item.borderColor,
+      editItemBackgroundColor: item.backgroundColor,
+      editItemFontSize: item.fontSize,
+      editItemFontFamily: item.fontFamily,
+      editItemTextColor: item.textColor,
+      // editItemBorderRadius: item.borderRadius,
+      // editItemBorderRadius: item.borderRadius,
+      // editItemBorderRadius: item.borderRadius,
+      // editItemBorderRadius: item.borderRadius,
+    });
     await this.setAsyncState({
       showEditMenu: !this.state.showEditMenu,
     });
@@ -366,7 +422,19 @@ class PagesAdd extends React.PureComponent {
   };
 
   handleBorderRadius = (event, newValue) => {
-    this.setState({ itemBorderRadius: newValue });
+    this.setState({ editItemBorderRadius: newValue });
+  };
+
+  handleItemFontSize = (event, newValue) => {
+    this.setState({ itemFontSize: newValue });
+  };
+
+  handleItemFontFamily = (event, newValue) => {
+    this.setState({ itemFontFamily: newValue.label });
+  };
+
+  handleItemTextColor = (event, newValue) => {
+    this.setState({ itemTextColor: newValue });
   };
 
   handleItemBgImage = (event) => {
@@ -392,19 +460,27 @@ class PagesAdd extends React.PureComponent {
   }
 
   saveChangedStyle = () => {
-    let foundItem = this.getBoxById(this.state.itemOnEditIndex);
+    let foundItem = this.getItemById(this.state.itemEditId);
 
-    foundItem.item.backgroundColor = this.state.itemBgColor;
-    foundItem.item.borderColor = this.state.itemBorderColor;
-    foundItem.item.borderWidth = this.state.itemBorderWidth;
-    foundItem.item.borderRadius = this.state.itemBorderRadius;
-    foundItem.item.backgroundImage = this.state.itemImgSrc;
+    foundItem.title = this.state.editItemTitle;
+    foundItem.backgroundColor = this.state.editItemBackgroundColor;
+    foundItem.borderColor = this.state.editItemBorderColor;
+    foundItem.borderWidth = this.state.editItemBorderWidth;
+    foundItem.borderRadius = this.state.editItemBorderRadius;
+    foundItem.fontSize = this.state.editItemFontSize;
+    foundItem.fontFamily = this.state.editItemFontFamily;
+    foundItem.textColor = this.state.itemTextColor;
+    foundItem.backgroundImage = this.state.editItemBackgroundImage;
 
     let items = this.state.items;
-    items[foundItem.index] = foundItem.item;
+    let foundItemIndex = items.findIndex(
+      (item) => item.i === this.state.itemEditId
+    );
+
+    items[foundItemIndex] = foundItem;
 
     this.setAsyncState({
-      items: items,
+      items,
     });
 
     this.closeEditSideMenu();
@@ -501,11 +577,17 @@ class PagesAdd extends React.PureComponent {
 
   handleItemModule = (event, newValue) => {
     let items = [...this.state.items];
-    let item = {
-      ...items[this.state.itemOnEditIndex],
-      module: newValue.label,
-    };
-    items[this.state.itemOnEditIndex] = item;
+
+    let item = this.getItemById(this.state.itemEditId);
+    item.module = newValue.label;
+
+    items = items.map((box) => {
+      if (box.i === item.i) {
+        box = item;
+      }
+      return box;
+    });
+
     this.setState({ items });
   };
 
@@ -531,132 +613,197 @@ class PagesAdd extends React.PureComponent {
               onClose={this.handleEditMenu}
               className={classes.sideMenu}
             >
-              <h3>Edit Box Properties</h3>
-              <div>
-                <CustomInput
-                  labelText="Title"
-                  id="itemTitle"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) => this.handleInputChange(event),
-                  }}
-                  inputProps={{
-                    value: this.state.items[Number(this.state.itemOnEditIndex)]
-                      .title,
-                    type: "text",
-                  }}
-                />
-                <Autocomplete
-                  id="moduleDropdown"
-                  onChange={this.handleItemModule}
-                  className={this.props.classes.option}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  options={this.state.modulesList}
-                  renderInput={(params) => (
-                    <TextField
-                      className={this.props.classes.textfield}
-                      {...params}
-                      label="Choose a module"
-                      variant="outlined"
+              <div className={classes.sideMenuEditor}>
+                <div className={classes.sideMenuEditorForm}>
+                  <h3>Edit Box Properties</h3>
+                  <div>
+                    <CustomInput
+                      labelText="Title"
+                      id="itemTitle"
+                      required="required"
+                      formControlProps={{
+                        fullWidth: true,
+                        onChange: (event) => this.handleInputChange(event),
+                      }}
+                      inputProps={{
+                        value: this.state.editItemTitle,
+                        type: "text",
+                      }}
                     />
-                  )}
-                />
-              </div>
-              <hr />
-              <div>
-                <div>Background Color</div>
-                <ColorPicker
-                  name="color"
-                  defaultValue={
-                    this.state.items[Number(this.state.itemOnEditIndex)]
-                      .backgroundColor
-                  }
-                  onChange={(color) => {
-                    if (color) {
-                      this.setState({ itemBgColor: color });
-                    }
-                  }}
-                />
-              </div>
-              <hr />
-              <div>
-                <div>Border Color</div>
-                <ColorPicker
-                  name="color"
-                  defaultValue={
-                    this.state.items[Number(this.state.itemOnEditIndex)]
-                      .borderColor
-                  }
-                  onChange={(color) => {
-                    if (color) {
-                      this.setState({ itemBorderColor: color });
-                    }
-                  }}
-                />
-              </div>
-              <hr />
-              <div>
-                <Typography id="discrete-slider" gutterBottom>
-                  Border Width
-                </Typography>
-                <Slider
-                  defaultValue={
-                    this.state.items[Number(this.state.itemOnEditIndex)]
-                      .borderWidth
-                  }
-                  className={classes.sideMenuSlider}
-                  onChangeCommitted={this.handleBorderWidth}
-                  aria-labelledby="discrete-slider"
-                  valueLabelDisplay="auto"
-                  min={0}
-                  max={20}
-                />
-              </div>
-              <hr />
-              <div>
-                <Typography id="discrete-slider" gutterBottom>
-                  Border Radius
-                </Typography>
-                <Slider
-                  defaultValue={
-                    this.state.items[Number(this.state.itemOnEditIndex)]
-                      .borderRadius
-                  }
-                  className={classes.sideMenuSlider}
-                  onChangeCommitted={this.handleBorderRadius}
-                  aria-labelledby="discrete-slider"
-                  valueLabelDisplay="auto"
-                  min={0}
-                  max={30}
-                />
-              </div>
-              <hr />
-              <div>
-                <div>Background Image</div>
-                <div className={classes.dropzoneAreaWrapper}>
-                  <DropzoneArea onChange={this.handleItemBgImage.bind(this)} />
+                  </div>
+                  <div>
+                    <Autocomplete
+                      id="moduleDropdown"
+                      onChange={this.handleItemModule}
+                      className={this.props.classes.option}
+                      autoHighlight
+                      getOptionLabel={(option) => option.label}
+                      options={this.state.modulesList}
+                      renderInput={(params) => (
+                        <TextField
+                          className={this.props.classes.textfield}
+                          {...params}
+                          label="Choose a module"
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                  </div>
+                  <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      Font Size
+                    </Typography>
+                    <Slider
+                      defaultValue={
+                        this.state.itemEditId
+                          ? this.getItemById(this.state.itemEditId).fontSize
+                          : ""
+                      }
+                      onChangeCommitted={this.handleItemFontSize}
+                      aria-labelledby="discrete-slider"
+                      valueLabelDisplay="auto"
+                      min={0}
+                      max={5}
+                    />
+                  </div>
+
+                  <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      Font Family
+                    </Typography>
+                    <Autocomplete
+                      id="fontFamilyDropdown"
+                      onChange={this.handleItemFontFamily}
+                      className={this.props.classes.option}
+                      options={this.state.fontFamilies}
+                      autoHighlight
+                      getOptionLabel={(option) => option.label}
+                      renderInput={(params) => (
+                        <TextField
+                          className={this.props.classes.textfield}
+                          {...params}
+                          label="Choose a Font Family"
+                          variant="outlined"
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <div className={classes.textColorWrapper}>
+                    <Typography gutterBottom>Text Color</Typography>
+                    <ColorPicker
+                      className={classes.colorPicker}
+                      name="color"
+                      defaultValue={
+                        this.state.itemEditId
+                          ? this.getItemById(this.state.itemEditId).textColor
+                          : ""
+                      }
+                      // value={this.state.color} - for controlled component
+                      onChange={(color) => {
+                        if (color) {
+                          this.setState({ itemTextColor: color });
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Typography gutterBottom>Background Color</Typography>
+                    <ColorPicker
+                      labelText="Background Color"
+                      name="color"
+                      className={classes.colorPicker}
+                      defaultValue={
+                        this.state.itemEditId
+                          ? this.getItemById(this.state.itemEditId)
+                              .backgroundColor
+                          : ""
+                      }
+                      onChange={async (color) => {
+                        if (color) {
+                          await this.setAsyncState({
+                            editItemBackgroundColor: color,
+                          });
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Typography gutterBottom>Border Color</Typography>
+                    <ColorPicker
+                      name="color"
+                      className={classes.colorPicker}
+                      defaultValue={
+                        this.state.itemEditId
+                          ? this.getItemById(this.state.itemEditId).borderColor
+                          : ""
+                      }
+                      onChange={(color) => {
+                        if (color) {
+                          this.setState({ itemBorderColor: color });
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Typography gutterBottom>Border Width</Typography>
+                    <Slider
+                      defaultValue={
+                        this.state.itemEditId
+                          ? this.getItemById(this.state.itemEditId).borderWidth
+                          : ""
+                      }
+                      className={classes.sideMenuSlider}
+                      onChangeCommitted={this.handleBorderWidth}
+                      aria-labelledby="discrete-slider"
+                      valueLabelDisplay="auto"
+                      min={0}
+                      max={20}
+                    />
+                  </div>
+                  <div>
+                    <Typography gutterBottom>Border Radius</Typography>
+                    <Slider
+                      defaultValue={
+                        this.state.itemEditId
+                          ? this.getItemById(this.state.itemEditId).borderRadius
+                          : ""
+                      }
+                      className={classes.sideMenuSlider}
+                      onChangeCommitted={this.handleBorderRadius}
+                      aria-labelledby="discrete-slider"
+                      valueLabelDisplay="auto"
+                      min={0}
+                      max={30}
+                    />
+                  </div>
+
+                  <div>
+                    <Typography gutterBottom>Background Image</Typography>
+                    <div className={classes.dropzoneAreaWrapper}>
+                      <DropzoneArea
+                        onChange={this.handleItemBgImage.bind(this)}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <hr />
-
-              <DialogActions className={classes.dialogActions}>
+              <div className={classes.sideMenuActionHolder}>
                 <Button
-                  className={classes.saveButton}
+                  className={classes.sideMenuSaveBtn}
                   color="primary"
                   onClick={this.saveChangedStyle}
                 >
                   Save
                 </Button>
                 <Button
-                  className={classes.cancelButton}
+                  className={classes.sideMenuCancelBtn}
                   color="danger"
                   onClick={this.closeEditSideMenu}
                 >
                   Cancel
                 </Button>
-              </DialogActions>
+              </div>
             </Drawer>
             <Dialog
               classes={{
@@ -840,11 +987,18 @@ class PagesAdd extends React.PureComponent {
               <h1 className={classes.pageTitle}>{this.state.pageTitle} </h1>
 
               <ResponsiveReactGridLayout
-                style={{ backgroundColor: this.state.bgColor }}
+                style={{
+                  backgroundColor: this.state.bgColor,
+                  fontSize: `${this.state.fontSize}rem`,
+                  fontFamily: this.state.fontFamily,
+                  color: this.state.textColor,
+                }}
                 // margin={this.state.boxSpacing} primeste un array cu 2 valori
                 isBounded="true"
                 margin={this.state.config.layoutBoxSpacing}
-                onLayoutChange={() => this.onLayoutChange}
+                onLayoutChange={(layout) => {
+                  return this.onLayoutChange(layout);
+                }}
                 onBreakpointChange={() => this.onBreakpointChange}
                 {...this.props}
               >
@@ -854,30 +1008,15 @@ class PagesAdd extends React.PureComponent {
 
             <Button
               onClick={() => {
-                localStorage.setItem(
-                  "bgColor",
-                  JSON.stringify(this.state.bgColor)
-                );
-                localStorage.setItem(
-                  "fontSize",
-                  JSON.stringify(this.state.fontSize)
-                );
-                localStorage.setItem(
-                  "fontFamily",
-                  JSON.stringify(this.state.fontFamily)
-                );
-                localStorage.setItem(
-                  "textColor",
-                  JSON.stringify(this.state.textColor)
-                );
-                localStorage.setItem(
-                  "layoutBoxSpacing",
-                  JSON.stringify(this.state.config.layoutBoxSpacing)
-                );
-                localStorage.setItem(
-                  "pageTitle",
-                  JSON.stringify(this.state.pageTitle)
-                );
+                const pageConfig = {
+                  backgroundColor: this.state.bgColor,
+                  fontSize: this.state.bgCfontSizeolor,
+                  fontFamily: this.state.fontFamily,
+                  textColor: this.state.textColor,
+                  layoutBoxSpacing: this.state.layoutBoxSpacing,
+                  pageTitle: this.state.pageTitle,
+                };
+                localStorage.setItem("pageConfig", JSON.stringify(pageConfig));
                 localStorage.setItem("items", JSON.stringify(this.state.items));
               }}
               className={classes.savePageButton}

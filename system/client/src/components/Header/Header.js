@@ -76,20 +76,25 @@ class Header extends Component {
   headerColorChange(self) {
     const { color, changeColorOnScroll, classes } = self.props;
     const windowsScrollTop = window.pageYOffset;
+    const header = document.body.getElementsByTagName("header")[0];
     if (windowsScrollTop > changeColorOnScroll.height) {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(classes[color]);
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(classes[changeColorOnScroll.color]);
+      if (header) {
+        document.body
+          .getElementsByTagName("header")[0]
+          .classList.remove(classes[color]);
+        document.body
+          .getElementsByTagName("header")[0]
+          .classList.add(classes[changeColorOnScroll.color]);
+      }
     } else {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(classes[color]);
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(classes[changeColorOnScroll.color]);
+      if (header) {
+        document.body
+          .getElementsByTagName("header")[0]
+          .classList.add(classes[color]);
+        document.body
+          .getElementsByTagName("header")[0]
+          .classList.remove(classes[changeColorOnScroll.color]);
+      }
     }
   }
 
