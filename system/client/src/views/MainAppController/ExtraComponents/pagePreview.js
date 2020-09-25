@@ -30,13 +30,15 @@ class PagePreview extends React.PureComponent {
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
     items: [],
-    config: {
+    pageConfig: {
       backgroundColor: "",
       fontSize: "",
       fontFamily: "",
       textColor: "",
       layoutBoxSpacing: "",
       pageTitle: "",
+      pageTitleFontSize: "",
+      pageTitleTextColor: "",
     },
   };
 
@@ -46,10 +48,10 @@ class PagePreview extends React.PureComponent {
       items: items,
     });
 
-    const config = JSON.parse(localStorage.getItem("pageConfig"));
+    const pageConfig = JSON.parse(localStorage.getItem("pageConfig"));
 
     this.setState({
-      config: config,
+      pageConfig,
     });
   }
 
@@ -77,9 +79,9 @@ class PagePreview extends React.PureComponent {
       >
         <p
           style={{
-            fontSize: this.state.config.fontSize,
-            fontFamily: this.state.config.fontFamily,
-            color: this.state.config.fontColor,
+            fontSize: `${el.fontSize}rem`,
+            fontFamily: el.fontFamily,
+            color: el.textColor,
           }}
         >
           {el.module}
@@ -100,9 +102,9 @@ class PagePreview extends React.PureComponent {
       overrides: {
         MuiSpeedDial: {
           fab: {
-            backgroundColor: this.state.config.backgroundColor,
+            backgroundColor: "",
             "&:hover": {
-              backgroundColor: this.state.config.backgroundColor,
+              backgroundColor: "",
             },
           },
         },
@@ -112,33 +114,61 @@ class PagePreview extends React.PureComponent {
 
   render() {
     const classes = this.props.classes;
+    console.log(this.state.items === undefined);
 
     return (
-      <div
-        className={classes.previewBodyWrapper}
-        style={{ backgroundColor: this.state.config.backgroundColor }}
-      >
-        <MuiThemeProvider theme={this.getTheme()}>
-          <div className={classes.gridHolder}>
-            <div className={classes.gridLayout}>
-              <h1 className={classes.pageTitle}>
-                {this.state.config.pageTitle}
-              </h1>
-              <ResponsiveReactGridLayout
-                margin={this.state.config.layoutBoxSpacing}
-                isBounded="true"
-                onLayoutChange={() => this.onLayoutChange}
-                onBreakpointChange={() => this.onBreakpointChange}
-                {...this.props}
-              >
-                {this.state.items
-                  ? _.map(this.state.items, (el) => this.createElement(el))
-                  : ""}
-              </ResponsiveReactGridLayout>
-            </div>
+      <React.Fragment>
+        {this.state.items !== null && this.state.items.length > 0 ? (
+          <div className={classes.previewBodyWrapper}>
+            <MuiThemeProvider theme={this.getTheme()}>
+              <div className={classes.gridHolder}>
+                <div
+                  className={classes.gridLayout}
+                  style={{
+                    backgroundColor: this.state.pageConfig.backgroundColor,
+                    fontSize: `${this.state.fontSize}rem`,
+                    fontFamily: this.state.fontFamily,
+                    color: this.state.textColor,
+                  }}
+                >
+                  <h5
+                    style={{
+                      fontSize: `${this.state.pageConfig.pageTitleFontSize}rem`,
+                      color: this.state.pageConfig.pageTitleTextColor,
+                    }}
+                    className={classes.pageTitle}
+                  >
+                    {this.state.pageConfig.pageTitle}
+                  </h5>
+                  <ResponsiveReactGridLayout
+                    style={{
+                      backgroundColor: this.state.pageConfig.backgroundColor,
+                      fontSize: `${this.state.fontSize}rem`,
+                      fontFamily: this.state.fontFamily,
+                      color: this.state.textColor,
+                    }}
+                    margin={this.state.pageConfig.layoutBoxSpacing}
+                    isBounded="true"
+                    onLayoutChange={() => this.onLayoutChange}
+                    onBreakpointChange={() => this.onBreakpointChange}
+                    {...this.props}
+                  >
+                    {this.state.items
+                      ? _.map(this.state.items, (el) => this.createElement(el))
+                      : ""}
+                  </ResponsiveReactGridLayout>
+                </div>
+              </div>
+            </MuiThemeProvider>
           </div>
-        </MuiThemeProvider>
-      </div>
+        ) : (
+          <div className={classes.noItemsMessageWrapper}>
+            <h1 className={classes.noItemsMessage}>
+              There are no added items.
+            </h1>
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 }
