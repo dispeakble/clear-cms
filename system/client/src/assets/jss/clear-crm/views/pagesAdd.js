@@ -394,6 +394,9 @@ const javascriptStyles = {
       width: "1%",
     },
   },
+  titleVsPageDivider: {
+    margin: "20px 0",
+  },
   dropzoneAreaWrapper: {
     width: "90%",
     margin: "0 auto",
@@ -402,7 +405,6 @@ const javascriptStyles = {
     width: "80%",
     marginLeft: "10%",
   },
-  textColorWrapper: {},
 
   sideMenu: {
     "& h3": {

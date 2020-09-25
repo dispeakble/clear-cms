@@ -246,6 +246,14 @@ const javascriptStyles = {
     textAlign: "center",
     userSelect: "none",
   },
+  noItemsMessageWrapper: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 };
 
 export default javascriptStyles;

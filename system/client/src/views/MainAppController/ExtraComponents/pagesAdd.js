@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { indexOf } from "lodash";
 import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
@@ -70,66 +70,10 @@ class PagesAdd extends React.PureComponent {
   };
 
   state = {
-    pageTitle: "",
     showModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
-    items: [
-      // {
-      //   backgroundColor: "#C8C8C8",
-      //   borderColor: "#FF0000",
-      //   borderWidth: "1",
-      //   borderRadius: "10px",
-      //   backgroundImage: "",
-      //   fontSize: "1",
-      //   fontFamily: "Calibri",
-      //   textColor: "#008B8B",
-      //   title: "Header",
-      //   module: "Header Module",
-      //   i: "0",
-      //   x: 0,
-      //   y: 0,
-      //   w: 12,
-      //   h: 2,
-      //   add: false,
-      // },
-      // {
-      //   backgroundColor: "#FFFFFF",
-      //   borderColor: "#787878",
-      //   borderWidth: "1",
-      //   borderRadius: "0",
-      //   backgroundImage: "#",
-      //   fontSize: "1",
-      //   fontFamily: "Calibri",
-      //   textColor: "#008B8B",
-      //   title: "Menu",
-      //   module: "Menu Module",
-      //   i: "1",
-      //   x: 0,
-      //   y: 2,
-      //   w: 2,
-      //   h: 12,
-      //   add: false,
-      // },
-      // {
-      //   backgroundColor: "#F9F9F9",
-      //   borderColor: "#000000",
-      //   borderWidth: "1",
-      //   borderRadius: "0",
-      //   backgroundImage: "",
-      //   fontSize: "1",
-      //   fontFamily: "Calibri",
-      //   textColor: "#008B8B",
-      //   title: "Home Page",
-      //   module: "Text Module",
-      //   i: "2",
-      //   x: 3,
-      //   y: 2,
-      //   w: 10,
-      //   h: 12,
-      //   add: false,
-      // },
-    ],
+    items: [],
     newCounter: 0,
     actions: [
       {
@@ -159,10 +103,8 @@ class PagesAdd extends React.PureComponent {
     config: {
       layoutBoxSpacing: [10, 10],
     },
-    editValues: {
-      itemTitle: "",
-    },
     editItemTitle: "",
+    editItemModule: "",
     editItemBgColor: "",
     editItemBorderRadius: "",
     editItemBorderWidth: "",
@@ -171,14 +113,10 @@ class PagesAdd extends React.PureComponent {
     editItemFontSize: "",
     editItemFontFamily: "",
     editItemTextColor: "",
+    editItemFontSize: "",
+    editItemTextColor: "",
     showEditMenu: false,
     itemEditId: "",
-    itemBorderColor: "",
-    itemBorderWidth: "",
-    itemImgSrc: "",
-    changedImgSrc: "",
-    bgColor: "",
-    bgImage: "",
     fontFamilies: [
       { label: "Arial" },
       { label: "Calibri" },
@@ -186,12 +124,43 @@ class PagesAdd extends React.PureComponent {
       { label: "Times New Roman" },
       { label: "Verdana" },
     ],
-    fontFamily: "",
+    bgColor: "",
+    bgImage: "",
+    titleFontSize: "",
+    titleTextColor: "",
+    fontSize: "",
     textColor: "",
-    itemFontSize: "",
-    itemFontFamily: "",
-    itemTextColor: "",
+    fontFamily: "Arial",
+    pageTitle: "",
   };
+
+  componentDidMount() {
+    const items = JSON.parse(localStorage.getItem("items"));
+
+    if (items !== null) {
+      this.setState({
+        items: items,
+      });
+    }
+
+    const pageConfig = JSON.parse(localStorage.getItem("pageConfig"));
+
+    if (pageConfig !== null) {
+      let savedLayoutBoxSpacing = {
+        layoutBoxSpacing: pageConfig.layoutBoxSpacing,
+      };
+      this.setState({
+        bgColor: pageConfig.backgroundColor,
+        titleFontSize: pageConfig.pageTitleFontSize,
+        titleTextColor: pageConfig.pageTitleTextColor,
+        fontSize: pageConfig.fontSize,
+        textColor: pageConfig.textColor,
+        fontFamily: pageConfig.fontFamily,
+        pageTitle: pageConfig.pageTitle,
+        config: savedLayoutBoxSpacing,
+      });
+    }
+  }
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
@@ -259,6 +228,22 @@ class PagesAdd extends React.PureComponent {
     );
   }
 
+  // handleItemModule = async (event, newValue) => {
+  //   let items = [...this.state.items];
+
+  //   let item = this.getItemById(this.state.itemEditId);
+  //   item.module = newValue.label;
+
+  //   items = items.map((box) => {
+  //     if (box.i === item.i) {
+  //       box = item;
+  //     }
+  //     return box;
+  //   });
+
+  //   await this.setAsyncState({ items });
+  // };
+
   onAddItem = () => {
     let newId = "0";
     try {
@@ -269,6 +254,8 @@ class PagesAdd extends React.PureComponent {
 
     let items = this.state.items;
     items.push({
+      title: "New Box",
+      module: "",
       backgroundColor: "#FFFFFF",
       borderColor: "#000000",
       borderWidth: "1",
@@ -277,8 +264,6 @@ class PagesAdd extends React.PureComponent {
       fontSize: "",
       fontFamily: "",
       textColor: "",
-      title: "New Box",
-      module: "Select Module",
       i: newId + "",
       x: 0,
       y: Infinity, // puts it at the bottom
@@ -354,6 +339,26 @@ class PagesAdd extends React.PureComponent {
     this.setState({ showModal: false });
   }
 
+  getFontFamilyIndex(name) {
+    return this.state.fontFamilies.findIndex((font) => {
+      return font.label === name;
+    });
+  }
+
+  getModuleIndex(name) {
+    return this.state.modulesList.findIndex((mod) => {
+      return mod.label === name;
+    });
+  }
+
+  getFontFamilyItem(name) {
+    return this.state.fontFamilies[
+      this.state.fontFamilies.findIndex((font) => {
+        return font.label === name;
+      })
+    ];
+  }
+
   handleEdit = async (id) => {
     await this.setAsyncState({
       itemEditId: id,
@@ -363,12 +368,13 @@ class PagesAdd extends React.PureComponent {
 
     await this.setAsyncState({
       editItemTitle: item.title,
+      editItemModule: this.getModuleIndex(item.module),
       editItemBorderRadius: item.borderRadius,
       editItemBorderWidth: item.borderWidth,
       editItemBorderColor: item.borderColor,
       editItemBackgroundColor: item.backgroundColor,
       editItemFontSize: item.fontSize,
-      editItemFontFamily: item.fontFamily,
+      editItemFontFamily: this.getFontFamilyIndex(item.fontFamily),
       editItemTextColor: item.textColor,
       // editItemBorderRadius: item.borderRadius,
       // editItemBorderRadius: item.borderRadius,
@@ -418,28 +424,30 @@ class PagesAdd extends React.PureComponent {
   };
 
   handleBorderWidth = async (event, newValue) => {
-    await this.setState({ itemBorderWidth: newValue });
+    await this.setAsyncState({ editItemBorderWidth: newValue });
   };
 
-  handleBorderRadius = (event, newValue) => {
-    this.setState({ editItemBorderRadius: newValue });
+  handleBorderRadius = async (event, newValue) => {
+    await this.setAsyncState({ editItemBorderRadius: newValue });
   };
 
-  handleItemFontSize = (event, newValue) => {
-    this.setState({ itemFontSize: newValue });
+  handleItemFontSize = async (event, newValue) => {
+    await this.setAsyncState({ editItemFontSize: newValue });
   };
 
-  handleItemFontFamily = (event, newValue) => {
-    this.setState({ itemFontFamily: newValue.label });
+  handleItemFontFamily = async (event, newValue) => {
+    await this.setAsyncState({
+      editItemFontFamily: this.getFontFamilyIndex(newValue.label),
+    });
   };
 
-  handleItemTextColor = (event, newValue) => {
-    this.setState({ itemTextColor: newValue });
+  handleItemModule = async (event, newValue) => {
+    await this.setAsyncState({
+      editItemModule: this.getModuleIndex(newValue.label),
+    });
   };
 
-  handleItemBgImage = (event) => {
-    // let imgSrc = event.target.value.split("\\")[2];
-    // this.setState({ imgSrc: `assets/img/${imgSrc}` });
+  handleItemBgImage = async (event) => {
     console.log("Background Image Updated");
   };
 
@@ -463,13 +471,20 @@ class PagesAdd extends React.PureComponent {
     let foundItem = this.getItemById(this.state.itemEditId);
 
     foundItem.title = this.state.editItemTitle;
+    foundItem.module = this.state.modulesList[this.state.editItemModule];
+    foundItem.module = foundItem.module ? foundItem.module.label : "";
     foundItem.backgroundColor = this.state.editItemBackgroundColor;
     foundItem.borderColor = this.state.editItemBorderColor;
     foundItem.borderWidth = this.state.editItemBorderWidth;
     foundItem.borderRadius = this.state.editItemBorderRadius;
     foundItem.fontSize = this.state.editItemFontSize;
-    foundItem.fontFamily = this.state.editItemFontFamily;
-    foundItem.textColor = this.state.itemTextColor;
+    foundItem.fontFamily = this.state.fontFamilies[
+      this.state.editItemFontFamily
+    ];
+    foundItem.fontFamily = foundItem.fontFamily
+      ? foundItem.fontFamily.label
+      : "";
+    foundItem.textColor = this.state.editItemTextColor;
     foundItem.backgroundImage = this.state.editItemBackgroundImage;
 
     let items = this.state.items;
@@ -571,24 +586,14 @@ class PagesAdd extends React.PureComponent {
     }
   };
 
-  handleFontFamily = (event, newValue) => {
-    this.setState({ fontFamily: newValue.label });
+  handleTitleFontSize = async (event, newValue) => {
+    if (this.state.fontSize !== newValue) {
+      await this.setAsyncState({ titleFontSize: newValue });
+    }
   };
 
-  handleItemModule = (event, newValue) => {
-    let items = [...this.state.items];
-
-    let item = this.getItemById(this.state.itemEditId);
-    item.module = newValue.label;
-
-    items = items.map((box) => {
-      if (box.i === item.i) {
-        box = item;
-      }
-      return box;
-    });
-
-    this.setState({ items });
+  handleFontFamily = async (event, newValue) => {
+    await this.setAsyncState({ fontFamily: newValue.label });
   };
 
   render() {
@@ -638,6 +643,9 @@ class PagesAdd extends React.PureComponent {
                       className={this.props.classes.option}
                       autoHighlight
                       getOptionLabel={(option) => option.label}
+                      defaultValue={
+                        this.state.modulesList[this.state.editItemModule]
+                      }
                       options={this.state.modulesList}
                       renderInput={(params) => (
                         <TextField
@@ -675,6 +683,9 @@ class PagesAdd extends React.PureComponent {
                       id="fontFamilyDropdown"
                       onChange={this.handleItemFontFamily}
                       className={this.props.classes.option}
+                      defaultValue={
+                        this.state.fontFamilies[this.state.editItemFontFamily]
+                      }
                       options={this.state.fontFamilies}
                       autoHighlight
                       getOptionLabel={(option) => option.label}
@@ -689,20 +700,18 @@ class PagesAdd extends React.PureComponent {
                     />
                   </div>
 
-                  <div className={classes.textColorWrapper}>
+                  <div>
                     <Typography gutterBottom>Text Color</Typography>
                     <ColorPicker
                       className={classes.colorPicker}
                       name="color"
-                      defaultValue={
-                        this.state.itemEditId
-                          ? this.getItemById(this.state.itemEditId).textColor
-                          : ""
-                      }
-                      // value={this.state.color} - for controlled component
-                      onChange={(color) => {
+                      TextFieldProps={{ value: this.state.editItemTextColor }}
+                      defaultValue={this.state.editItemTextColor}
+                      onChange={async (color) => {
                         if (color) {
-                          this.setState({ itemTextColor: color });
+                          await this.setAsyncState({
+                            editItemTextColor: color,
+                          });
                         }
                       }}
                     />
@@ -713,6 +722,9 @@ class PagesAdd extends React.PureComponent {
                       labelText="Background Color"
                       name="color"
                       className={classes.colorPicker}
+                      TextFieldProps={{
+                        value: this.state.editItemBackgroundColor,
+                      }}
                       defaultValue={
                         this.state.itemEditId
                           ? this.getItemById(this.state.itemEditId)
@@ -733,14 +745,19 @@ class PagesAdd extends React.PureComponent {
                     <ColorPicker
                       name="color"
                       className={classes.colorPicker}
+                      TextFieldProps={{
+                        value: this.state.editItemBorderColor,
+                      }}
                       defaultValue={
                         this.state.itemEditId
                           ? this.getItemById(this.state.itemEditId).borderColor
                           : ""
                       }
-                      onChange={(color) => {
+                      onChange={async (color) => {
                         if (color) {
-                          this.setState({ itemBorderColor: color });
+                          await this.setAsyncState({
+                            editItemBorderColor: color,
+                          });
                         }
                       }}
                     />
@@ -884,12 +901,12 @@ class PagesAdd extends React.PureComponent {
                     <h4>Background</h4>
                     <h5>Background Color</h5>
                     <ColorPicker
+                      TextFieldProps={{ value: this.state.bgColor }}
                       name="color"
-                      defaultValue="#000"
-                      // value={this.state.color} - for controlled component
-                      onChange={(color) => {
+                      defaultValue={this.state.bgColor}
+                      onChange={async (color) => {
                         if (color) {
-                          this.setState({ bgColor: color });
+                          await this.setAsyncState({ bgColor: color });
                         }
                       }}
                     />
@@ -905,18 +922,60 @@ class PagesAdd extends React.PureComponent {
                     <h4>Font </h4>
                     <div>
                       <Typography id="discrete-slider" gutterBottom>
-                        Font Size
+                        Title Font Size
                       </Typography>
                       <Slider
                         className={classes.pageOptionsSlider}
-                        onChangeCommitted={this.handleFontSize}
+                        value={
+                          this.state.titleFontSize
+                            ? Number(this.state.titleFontSize)
+                            : ""
+                        }
+                        onChangeCommitted={this.handleTitleFontSize}
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
                         min={0}
                         max={5}
                       />
                     </div>
-                    <h5>Font Family</h5>
+                    <h5>Title Text Color</h5>
+                    <ColorPicker
+                      name="color"
+                      TextFieldProps={{ value: this.state.titleTextColor }}
+                      defaultValue={this.state.titleTextColor}
+                      onChange={async (color) => {
+                        if (color) {
+                          await this.setAsyncState({ titleTextColor: color });
+                        }
+                      }}
+                    />
+                    <Divider className={classes.titleVsPageDivider} />
+                    <div>
+                      <Typography id="discrete-slider" gutterBottom>
+                        Page Font Size
+                      </Typography>
+                      <Slider
+                        className={classes.pageOptionsSlider}
+                        onChangeCommitted={this.handleFontSize}
+                        value={this.state.fontSize}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        min={0}
+                        max={5}
+                      />
+                    </div>
+                    <h5>Page Text Color</h5>
+                    <ColorPicker
+                      name="color"
+                      TextFieldProps={{ value: this.state.textColor }}
+                      defaultValue={this.state.textColor}
+                      onChange={async (color) => {
+                        if (color) {
+                          await this.setAsyncState({ textColor: color });
+                        }
+                      }}
+                    />
+                    <h5>Page Font Family</h5>
                     <Autocomplete
                       id="fontFamilyDropdown"
                       onChange={this.handleFontFamily}
@@ -924,6 +983,7 @@ class PagesAdd extends React.PureComponent {
                       options={this.state.fontFamilies}
                       autoHighlight
                       getOptionLabel={(option) => option.label}
+                      value={this.getFontFamilyItem(this.state.fontFamily)}
                       renderInput={(params) => (
                         <TextField
                           className={this.props.classes.textfield}
@@ -932,17 +992,6 @@ class PagesAdd extends React.PureComponent {
                           variant="outlined"
                         />
                       )}
-                    />
-                    <h5>Text Color</h5>
-                    <ColorPicker
-                      name="color"
-                      defaultValue="#000"
-                      // value={this.state.color} - for controlled component
-                      onChange={(color) => {
-                        if (color) {
-                          this.setState({ textColor: color });
-                        }
-                      }}
                     />
                   </div>
                   <p />
@@ -984,36 +1033,55 @@ class PagesAdd extends React.PureComponent {
                 />
               </div>
 
-              <h1 className={classes.pageTitle}>{this.state.pageTitle} </h1>
-
-              <ResponsiveReactGridLayout
+              <div
                 style={{
                   backgroundColor: this.state.bgColor,
                   fontSize: `${this.state.fontSize}rem`,
                   fontFamily: this.state.fontFamily,
                   color: this.state.textColor,
                 }}
-                // margin={this.state.boxSpacing} primeste un array cu 2 valori
-                isBounded="true"
-                margin={this.state.config.layoutBoxSpacing}
-                onLayoutChange={(layout) => {
-                  return this.onLayoutChange(layout);
-                }}
-                onBreakpointChange={() => this.onBreakpointChange}
-                {...this.props}
               >
-                {_.map(this.state.items, (el) => this.createElement(el))}
-              </ResponsiveReactGridLayout>
+                <h5
+                  style={{
+                    fontSize: `${this.state.titleFontSize}rem`,
+                    color: this.state.titleTextColor,
+                  }}
+                  className={classes.pageTitle}
+                >
+                  {this.state.pageTitle}{" "}
+                </h5>
+
+                <ResponsiveReactGridLayout
+                  style={{
+                    backgroundColor: this.state.bgColor,
+                    fontSize: `${this.state.fontSize}rem`,
+                    fontFamily: this.state.fontFamily,
+                    color: this.state.textColor,
+                  }}
+                  // margin={this.state.boxSpacing} primeste un array cu 2 valori
+                  isBounded="true"
+                  margin={this.state.config.layoutBoxSpacing}
+                  onLayoutChange={(layout) => {
+                    return this.onLayoutChange(layout);
+                  }}
+                  onBreakpointChange={() => this.onBreakpointChange}
+                  {...this.props}
+                >
+                  {_.map(this.state.items, (el) => this.createElement(el))}
+                </ResponsiveReactGridLayout>
+              </div>
             </div>
 
             <Button
               onClick={() => {
                 const pageConfig = {
                   backgroundColor: this.state.bgColor,
-                  fontSize: this.state.bgCfontSizeolor,
-                  fontFamily: this.state.fontFamily,
+                  pageTitleFontSize: this.state.titleFontSize,
+                  pageTitleTextColor: this.state.titleTextColor,
+                  fontSize: this.state.fontSize,
                   textColor: this.state.textColor,
-                  layoutBoxSpacing: this.state.layoutBoxSpacing,
+                  fontFamily: this.state.fontFamily,
+                  layoutBoxSpacing: this.state.config.layoutBoxSpacing,
                   pageTitle: this.state.pageTitle,
                 };
                 localStorage.setItem("pageConfig", JSON.stringify(pageConfig));
