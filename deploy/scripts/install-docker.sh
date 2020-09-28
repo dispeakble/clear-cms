@@ -25,8 +25,8 @@ done
 
 if [ ! -x "$APP_BIN" ] || [ "$($APP_BIN version | grep -c $APP_VERSION)" -le 0 ] || [ "$FORCE_INSTALL" = true ]; then
     echo "Installing $APP ..."
-    DOCKER_SCRIPT_URL="https://releases.rancher.com/install-docker/$APP_VERSION.sh"
-    curl -LJ --progress-bar $DOCKER_SCRIPT_URL | sh
+    DOCKER_SCRIPT_URL="https://releases.rancher.com/install-docker/19.03.8.sh"
+    curl -LJ --progress-bar https://releases.rancher.com/install-docker/19.03.8.sh | sh
     sudo systemctl enable docker
     sudo systemctl start docker
     sudo usermod -aG docker "$USER" 

@@ -13,5 +13,3 @@ RUN npm run build
 
 CMD ["rm", "-fr", "src"]
 CMD ["npm","run","start:prod"]
-
-#CMD ["docker", "tag", "clearcrm_crm-hub", "localhost:5000/crm-hub:latest", "&&", "docker", "push", "localhost:5000/crm-hub:latest"]
