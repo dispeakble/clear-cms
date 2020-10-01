@@ -1,19 +1,9 @@
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { Suspense } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
-import {
-  Save,
-  Delete,
-  AddCircle,
-  Code,
-  Visibility,
-  HighlightOff,
-} from "@material-ui/icons";
-import Button from "components/CustomButtons/Button.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
-import CustomInput from "components/CustomInput/CustomInput.js";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -21,7 +11,7 @@ class PagePreview extends React.PureComponent {
   static defaultProps = {
     className: "layout",
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    rowHeight: 100,
+    rowHeight: 1,
   };
 
   state = {
@@ -40,6 +30,8 @@ class PagePreview extends React.PureComponent {
       pageTitleFontSize: "",
       pageTitleTextColor: "",
     },
+    pageModule: [],
+    fontUnit: "px",
   };
 
   componentDidMount() {
@@ -56,36 +48,74 @@ class PagePreview extends React.PureComponent {
   }
 
   createElement(el) {
-    const removeStyle = {
-      position: "absolute",
-      right: "2px",
-      top: 0,
-      cursor: "pointer",
-    };
     const i = el.i;
     el.static = true;
+
+    let style = {};
+
+    if (el.backgroundColor) {
+      style.backgroundColor = el.backgroundColor;
+    }
+
+    if (el.borderColor) {
+      style.borderColor = el.borderColor;
+    }
+
+    if (el.borderWidth) {
+      style.borderStyle = "solid";
+      style.borderWidth = el.borderWidth + "px";
+    }
+
+    if (el.borderRadius) {
+      style.borderRadius = el.borderRadius;
+    }
+
+    if (el.backgroundImage) {
+      style.backgroundImage = el.backgroundImage;
+    }
+
+    if (el.fontSize) {
+      style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+      style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+    }
+
+    if (el.fontFamily) {
+      style.fontFamily = el.fontFamily;
+    }
+
+    if (el.textColor) {
+      style.color = el.textColor;
+    }
+
+    const loadingFallback = (() => {
+      return <span>Loading...</span>;
+    })();
+
+    let LazyComponent;
+
+    switch (el.module) {
+      case "Text Module":
+        LazyComponent = React.lazy(() => import(`./TextModule`));
+        break;
+      case "Header Module":
+        LazyComponent = React.lazy(() => import(`./HeaderModule`));
+        break;
+      case "Menu Module":
+        LazyComponent = React.lazy(() => import(`./MenuModule`));
+        break;
+      default:
+        LazyComponent = "";
+    }
+
     return (
-      <div
-        key={i}
-        data-grid={el}
-        style={{
-          padding: "5px",
-          backgroundColor: el.backgroundColor,
-          borderColor: el.borderColor,
-          borderWidth: el.borderWidth,
-          borderRadius: el.borderRadius,
-          backgroundImage: el.backgroundImage,
-        }}
-      >
-        <p
-          style={{
-            fontSize: `${el.fontSize}rem`,
-            fontFamily: el.fontFamily,
-            color: el.textColor,
-          }}
-        >
-          {el.module}
-        </p>
+      <div key={i} data-grid={el} style={style}>
+        {el.module ? (
+          <Suspense fallback={loadingFallback}>
+            <LazyComponent />
+          </Suspense>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
@@ -126,24 +156,15 @@ class PagePreview extends React.PureComponent {
                   className={classes.gridLayout}
                   style={{
                     backgroundColor: this.state.pageConfig.backgroundColor,
-                    fontSize: `${this.state.fontSize}rem`,
+                    fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
                   }}
                 >
-                  <h5
-                    style={{
-                      fontSize: `${this.state.pageConfig.pageTitleFontSize}rem`,
-                      color: this.state.pageConfig.pageTitleTextColor,
-                    }}
-                    className={classes.pageTitle}
-                  >
-                    {this.state.pageConfig.pageTitle}
-                  </h5>
                   <ResponsiveReactGridLayout
                     style={{
                       backgroundColor: this.state.pageConfig.backgroundColor,
-                      fontSize: `${this.state.fontSize}rem`,
+                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                       fontFamily: this.state.fontFamily,
                       color: this.state.textColor,
                     }}
@@ -162,11 +183,7 @@ class PagePreview extends React.PureComponent {
             </MuiThemeProvider>
           </div>
         ) : (
-          <div className={classes.noItemsMessageWrapper}>
-            <h1 className={classes.noItemsMessage}>
-              There are no added items.
-            </h1>
-          </div>
+          ""
         )}
       </React.Fragment>
     );

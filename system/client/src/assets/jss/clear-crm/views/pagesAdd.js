@@ -1,141 +1,14 @@
-import { container, title } from "assets/jss/clear-crm.js";
-
-import modalStyle from "assets/jss/clear-crm/modalStyle.js";
-import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
-import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
-import { GpsFixed } from "@material-ui/icons";
 import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
 
 const javascriptStyles = {
-  section: {
-    padding: "70px 0 0",
-  },
-  container,
-  title: {
-    ...title,
-    marginTop: "30px",
-    minHeight: "32px",
-    textDecoration: "none",
-  },
-  icon: {
-    width: "17px",
-    height: "17px",
-    marginRight: "4px",
-  },
-  ...modalStyle,
-  label: {
-    color: "rgba(0, 0, 0, 0.26)",
-    cursor: "pointer",
-    display: "inline-flex",
-    fontSize: "14px",
-    transition: "0.3s ease all",
-    lineHeight: "1.428571429",
-    fontWeight: "400",
-    paddingLeft: "0",
-    letterSpacing: "normal",
-  },
-  ...tooltipsStyle,
-  ...popoverStyles,
-  categoriesPanel: {
-    textAlign: "center",
-    marginTop: "60px",
-  },
-  categoriesWrapper: {
-    margin: "0 auto",
-    width: "80%",
-    height: "auto",
-    minWidth: "10rem",
-  },
-  categoryWrapper: {
-    display: "inlineBlock",
-    float: "left",
-    width: "20%",
-    backgroundColor: "white",
-    padding: "10px",
-    border: "1px solid transparent",
-    borderRadius: "20px",
-    margin: "10px",
-  },
-  newCategory: {
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    cursor: "pointer",
-    position: "fixed",
-    right: "1rem",
-    bottom: "1rem",
-    width: "3rem",
-    height: "3rem",
-  },
-  addButton: {
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    cursor: "pointer",
-    width: "3rem",
-    height: "3rem",
-    color: "darkcyan",
-  },
-  removeButton: {
-    backgroundColor: "red",
-    color: "white",
-    padding: "10px",
-    border: "1px solid transparent",
-    borderRadius: "9px",
-    cursor: "pointer",
-  },
-  editAction: {
-    color: "darkcyan",
-  },
-  deleteAction: {
-    color: "#FF6461",
-  },
-  tableCells: {
-    fontSize: "90%",
-  },
-  tableHeader: {
-    backgroundColor: "#B2ACAB",
-    color: "white",
-    fontSize: "100%",
-  },
-  removeSelectedIcon: {
-    color: "#FF6461",
-    position: "fixed",
-    right: "0",
-    bottom: "0",
-  },
-  deleteSweepIcon: {
-    color: "#FF6461",
-  },
-  addIcon: {
-    cursor: "pointer",
-    color: "darkcyan",
-    fontSize: "400%",
-    position: "fixed",
-    bottom: "1rem",
-    right: "1rem",
-    "&:hover": {
-      color: "#007272",
-    },
-  },
-  previewLayout: {
-    position: "fixed",
-    left: "0",
-    top: "0",
-    right: "0",
-    bottom: "0",
-  },
   gridLayout: {
     position: "relative",
     margin: "0 30px 0",
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
     },
-    "& .react-grid-placeholder": {
-      background: "rgba(0,0,0,0.14)",
-    },
+    "& .react-grid-placeholder": {},
     "& .react-grid-layout ": {
-      background: "#FFF",
       marginTop: "10px",
     },
     "& .layoutJSON": {
@@ -157,9 +30,7 @@ const javascriptStyles = {
     "& .react-grid-item.resizing": {
       opacity: "0.9",
     },
-    "& .react-grid-item.static": {
-      background: "#FFF",
-    },
+    "& .react-grid-item.static": {},
     "& .react-grid-item .text": {
       fontSize: "24px",
       textAlign: "center",
@@ -227,38 +98,10 @@ const javascriptStyles = {
       padding: "10px",
     },
   },
-  addButton: {
-    color: "white",
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    padding: 0,
-    width: "3rem",
-    height: "3rem",
-    "&:hover": {
-      backgroundColor: "darkcyan",
-    },
-  },
-  actionsButtons: {
-    marginTop: "5vh",
-    textAlign: "center",
-  },
-  deleteIcon: {
-    borderRadius: "50px",
-
-    color: "#FF6461",
-    "&:hover": {
-      color: "white",
-    },
-  },
   pageTitleInputWrapper: {
     marginTop: "5px",
     padding: "0",
     background: "#FFF",
-  },
-  pageTitle: {
-    textAlign: "center",
-    userSelect: "none",
   },
 
   // for Hamburger menu
@@ -310,37 +153,6 @@ const javascriptStyles = {
       fontSize: 18,
     },
   },
-  drawerPaper: {
-    overflow: "auto",
-    border: "none",
-    bottom: "0",
-    transitionProperty: "top, bottom, width",
-    transitionDuration: ".2s, .2s, .35s",
-    transitionTimingFunction: "linear, linear, ease",
-    width: drawerWidth,
-    ...boxShadow,
-    position: "fixed",
-    display: "block",
-    top: "0",
-    height: "100vh",
-    left: "0",
-    right: "auto",
-    visibility: "visible",
-    overflowY: "visible",
-    borderTop: "none",
-    textAlign: "left",
-    paddingRight: "0px",
-    paddingLeft: "0",
-    ...transition,
-  },
-  dialogActions: {
-    position: "fixed",
-    left: 0,
-    bottom: "0",
-    width: "86%",
-    margin: "0 auto",
-    marginTop: "20px",
-  },
   sideMenuActionHolder: {
     position: "absolute",
     bottom: "0",
@@ -352,8 +164,6 @@ const javascriptStyles = {
     width: "80%",
     margin: "0 auto",
   },
-  sideMenuSaveBtn: {},
-  sideMenuCancelBtn: {},
   savePageButton: {
     position: "fixed",
     right: "13rem",
@@ -394,9 +204,6 @@ const javascriptStyles = {
       width: "1%",
     },
   },
-  titleVsPageDivider: {
-    margin: "20px 0",
-  },
   dropzoneAreaWrapper: {
     width: "90%",
     margin: "0 auto",
@@ -426,9 +233,6 @@ const javascriptStyles = {
   },
   typography: {
     fontSize: "120%",
-  },
-  colorPicker: {
-    width: "100%",
   },
 };
 

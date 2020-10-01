@@ -1,18 +1,9 @@
-import _, { indexOf } from "lodash";
-import React, { Component } from "react";
+import React from "react";
+import _ from "lodash";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-import { Link } from "react-router-dom";
-import {
-  Save,
-  Delete,
-  DeleteForever,
-  AddCircle,
-  Code,
-  Visibility,
-  Edit,
-} from "@material-ui/icons";
+import { DeleteForever, AddCircle, Visibility, Edit } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -25,13 +16,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 import Close from "@material-ui/icons/Close";
 
-// for Hamburger Menu
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormLabel from "@material-ui/core/FormLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
+// for speed dial
 import Switch from "@material-ui/core/Switch";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
@@ -42,22 +30,20 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for the styling side-menu
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import CustomDropdown from "components/CustomDropdown/CustomDropdown";
 import Drawer from "@material-ui/core/Drawer";
-import ColorPicker from "material-ui-color-picker";
 
 // for accordeon
 import clsx from "clsx";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionActions from "@material-ui/core/AccordionActions";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Chip from "@material-ui/core/Chip";
 import Divider from "@material-ui/core/Divider";
 import { DropzoneArea } from "material-ui-dropzone";
+
+// for the new color picker
+import { SketchPicker } from "react-color";
+import reactCSS from "reactcss";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -66,7 +52,7 @@ class PagesAdd extends React.PureComponent {
     className: "layout",
     //colsClient: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },//PUT THIS ON PRODUCTION AND PREVIEW
     cols: { lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 },
-    rowHeight: 100,
+    rowHeight: 1,
   };
 
   state = {
@@ -93,8 +79,7 @@ class PagesAdd extends React.PureComponent {
         name: "Preview",
       },
     ],
-    open: false,
-    hidden: false,
+    speedDialState: false,
     modulesList: [
       { label: "Header Module" },
       { label: "Menu Module" },
@@ -103,6 +88,10 @@ class PagesAdd extends React.PureComponent {
     config: {
       layoutBoxSpacing: [10, 10],
     },
+    editItemFontSizeShow: false,
+    editItemFontFamilyShow: false,
+    editItemTextColorShow: false,
+    editItemBackgroundColorShow: false,
     editItemTitle: "",
     editItemModule: "",
     editItemBgColor: "",
@@ -112,8 +101,6 @@ class PagesAdd extends React.PureComponent {
     editItemBackgroundColor: "",
     editItemFontSize: "",
     editItemFontFamily: "",
-    editItemTextColor: "",
-    editItemFontSize: "",
     editItemTextColor: "",
     showEditMenu: false,
     itemEditId: "",
@@ -126,12 +113,20 @@ class PagesAdd extends React.PureComponent {
     ],
     bgColor: "",
     bgImage: "",
-    titleFontSize: "",
-    titleTextColor: "",
     fontSize: "",
-    textColor: "",
+    textColor: "#000000",
     fontFamily: "Arial",
     pageTitle: "",
+    pageOrItemFontSize: "",
+    pageOrItemFontFamily: "",
+    pageOrItemTextColor: "",
+    displayBgColorPicker: false,
+    displayTextColorPicker: false,
+    displayItemTextColorPicker: false,
+    displayItemBgColorPicker: false,
+    displayItemBorderColorPicker: false,
+    fontUnit: "px",
+    shouldPublish: false,
   };
 
   componentDidMount() {
@@ -151,8 +146,6 @@ class PagesAdd extends React.PureComponent {
       };
       this.setState({
         bgColor: pageConfig.backgroundColor,
-        titleFontSize: pageConfig.pageTitleFontSize,
-        titleTextColor: pageConfig.pageTitleTextColor,
         fontSize: pageConfig.fontSize,
         textColor: pageConfig.textColor,
         fontFamily: pageConfig.fontFamily,
@@ -175,55 +168,87 @@ class PagesAdd extends React.PureComponent {
     const i = el.i,
       title = el.title,
       module = el.module;
-    //el.static = true;
+
+    let itemStyle = {};
+
+    if (el.fontSize) {
+      itemStyle.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+      itemStyle.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+    } else {
+      itemStyle.fontSize = `${this.state.fontSize}${this.state.fontUnit}`;
+    }
+
+    if (el.fontFamily) {
+      itemStyle.fontFamily = el.fontFamily;
+    } else {
+      itemStyle.fontFamily = this.state.fontFamily;
+    }
+
+    if (el.textColor) {
+      itemStyle.color = el.textColor;
+    } else {
+      itemStyle.color = this.state.textColor;
+    }
+
+    if (el.backgroundColor) {
+      itemStyle.backgroundColor = el.backgroundColor;
+    } else {
+      itemStyle.backgroundColor = this.state.bgColor;
+    }
+
+    if (el.borderColor) {
+      itemStyle.borderColor = el.borderColor;
+    }
+
+    if (el.borderWidth) {
+      itemStyle.borderWidth = el.borderWidth;
+    }
+
+    if (el.borderRadius) {
+      itemStyle.borderRadius = el.borderRadius;
+    }
+
+    if (el.backgroundImage) {
+      itemStyle.backgroundImage = el.backgroundImage;
+    }
+
+    //adding default box styles
+    itemStyle.padding = "5px";
 
     return (
-      <div
-        key={i}
-        data-grid={el}
-        style={{
-          padding: "5px",
-          backgroundColor: el.backgroundColor,
-          borderColor: el.borderColor,
-          borderWidth: el.borderWidth,
-          borderRadius: el.borderRadius,
-          backgroundImage: el.backgroundImage,
-        }}
-      >
-        <p
+      <div key={i} data-grid={el} style={itemStyle}>
+        <p style={{ fontSize: "inherit", color: "inherit" }}>{el.title}</p>
+        <p style={{ fontSize: "inherit", color: "inherit" }}>{el.module}</p>
+        <div
           style={{
-            fontSize: `${el.fontSize}rem`,
-            fontFamily: el.fontFamily,
-            color: el.textColor,
+            position: "absolute",
+            right: "0",
+            bottom: "0",
+            left: "0",
+            background: "white",
           }}
         >
-          {el.title}
-        </p>
-        <p
-          style={{
-            fontSize: `${el.fontSize}rem`,
-            fontFamily: el.fontFamily,
-            color: el.textColor,
-          }}
-        >
-          {el.module}
-        </p>
-        <span
-          className={this.props.classes.removeItemIcon}
-          onClick={this.onRemoveItem.bind(this, i)}
-        >
-          <IconButton color="secondary" iconStyle={{ width: 30, height: 30 }}>
-            <DeleteForever />
-          </IconButton>
-        </span>
-        <span
-          className={this.props.classes.editItemIconWrapper}
-          onClick={() => this.handleEdit(el.i)}
-        >
-          <IconButton color="secondary" iconStyle={{ width: 30, height: 30 }}>
-            <Edit className={this.props.classes.editItemIcon} />
-          </IconButton>
-        </span>
+          <span
+            className={this.props.classes.removeItemIcon}
+            onClick={this.onRemoveItem.bind(this, i)}
+          >
+            <Tooltip title="Delete">
+              <IconButton color="secondary" size="medium">
+                <DeleteForever />
+              </IconButton>
+            </Tooltip>
+          </span>
+          <span
+            className={this.props.classes.editItemIconWrapper}
+            onClick={() => this.handleEdit(el.i)}
+          >
+            <Tooltip title="Edit">
+              <IconButton color="secondary" size="medium">
+                <Edit className={this.props.classes.editItemIcon} />
+              </IconButton>
+            </Tooltip>
+          </span>
+        </div>
       </div>
     );
   }
@@ -245,9 +270,13 @@ class PagesAdd extends React.PureComponent {
   // };
 
   onAddItem = () => {
-    let newId = "0";
+    let newId = "1";
     try {
-      newId = parseInt(this.state.items[this.state.items.length - 1]["i"]) + 1;
+      this.state.items.map((item) => {
+        newId = Number(item.i) > Number(newId) ? item.i : newId;
+      });
+      newId++;
+      newId += "";
     } catch (err) {
       console.log(err);
     }
@@ -256,19 +285,16 @@ class PagesAdd extends React.PureComponent {
     items.push({
       title: "New Box",
       module: "",
-      backgroundColor: "#FFFFFF",
       borderColor: "#000000",
-      borderWidth: "1",
-      borderRadius: "5",
+      borderStyle: "solid",
+      borderWidth: "0",
+      borderRadius: "0",
       backgroundImage: "",
-      fontSize: "",
-      fontFamily: "",
-      textColor: "",
       i: newId + "",
       x: 0,
       y: Infinity, // puts it at the bottom
       w: 2,
-      h: 2,
+      h: 20,
     });
     this.setState({
       // Add a new item. It must have a unique key!
@@ -308,6 +334,9 @@ class PagesAdd extends React.PureComponent {
   };
 
   onRemoveItem(i) {
+    this.setState({
+      itemEditId: "",
+    });
     this.setState({
       items: _.reject(this.state.items, { i: i }),
     });
@@ -372,15 +401,20 @@ class PagesAdd extends React.PureComponent {
       editItemBorderRadius: item.borderRadius,
       editItemBorderWidth: item.borderWidth,
       editItemBorderColor: item.borderColor,
-      editItemBackgroundColor: item.backgroundColor,
-      editItemFontSize: item.fontSize,
-      editItemFontFamily: this.getFontFamilyIndex(item.fontFamily),
-      editItemTextColor: item.textColor,
+      editItemBackgroundColor: item.backgroundColor || "",
+      editItemFontSize: item.fontSize || "",
+      editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || "",
+      editItemTextColor: item.textColor || "",
+      editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
+      editItemFontSizeShow: item.hasOwnProperty("fontSize"),
+      editItemFontFamilyShow: item.hasOwnProperty("fontFamily"),
+      editItemTextColorShow: item.hasOwnProperty("textColor"),
       // editItemBorderRadius: item.borderRadius,
       // editItemBorderRadius: item.borderRadius,
       // editItemBorderRadius: item.borderRadius,
       // editItemBorderRadius: item.borderRadius,
     });
+    console.log(this.state.editItemFontSize);
     await this.setAsyncState({
       showEditMenu: !this.state.showEditMenu,
     });
@@ -401,18 +435,14 @@ class PagesAdd extends React.PureComponent {
   //   history.push("/pages");
   // };
 
-  // for Hamburger menu
+  // for speed dial
 
-  handleHiddenChange = (event) => {
-    this.setState({ hidden: event.target.checked });
+  handleSpeedDialClose = () => {
+    this.setState({ speedDialState: false });
   };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleOpen = () => {
-    this.setState({ open: true });
+  handleSpeedDialOpen = () => {
+    this.setState({ speedDialState: true });
   };
 
   handleBoxSpacing = async (event, newValue) => {
@@ -432,16 +462,25 @@ class PagesAdd extends React.PureComponent {
   };
 
   handleItemFontSize = async (event, newValue) => {
-    await this.setAsyncState({ editItemFontSize: newValue });
+    await this.setAsyncState({
+      editItemFontSize: newValue,
+      pageOrItemFontSize: "item",
+    });
   };
 
   handleItemFontFamily = async (event, newValue) => {
+    const fontFamily = newValue ? this.getFontFamilyIndex(newValue.label) : "";
+
     await this.setAsyncState({
-      editItemFontFamily: this.getFontFamilyIndex(newValue.label),
+      editItemFontFamily: fontFamily,
+      pageOrItemFontFamily: "item",
     });
   };
 
   handleItemModule = async (event, newValue) => {
+    if (!newValue || !newValue.label) {
+      return;
+    }
     await this.setAsyncState({
       editItemModule: this.getModuleIndex(newValue.label),
     });
@@ -473,18 +512,53 @@ class PagesAdd extends React.PureComponent {
     foundItem.title = this.state.editItemTitle;
     foundItem.module = this.state.modulesList[this.state.editItemModule];
     foundItem.module = foundItem.module ? foundItem.module.label : "";
-    foundItem.backgroundColor = this.state.editItemBackgroundColor;
-    foundItem.borderColor = this.state.editItemBorderColor;
-    foundItem.borderWidth = this.state.editItemBorderWidth;
-    foundItem.borderRadius = this.state.editItemBorderRadius;
-    foundItem.fontSize = this.state.editItemFontSize;
-    foundItem.fontFamily = this.state.fontFamilies[
-      this.state.editItemFontFamily
-    ];
-    foundItem.fontFamily = foundItem.fontFamily
-      ? foundItem.fontFamily.label
-      : "";
-    foundItem.textColor = this.state.editItemTextColor;
+
+    if (this.state.editItemBackgroundColorShow) {
+      foundItem.backgroundColor = this.state.editItemBackgroundColor;
+    } else {
+      delete foundItem.backgroundColor;
+    }
+
+    if (this.state.editItemFontSizeShow) {
+      foundItem.fontSize = this.state.editItemFontSize;
+    } else {
+      delete foundItem.fontSize;
+    }
+
+    if (this.state.editItemFontFamilyShow) {
+      foundItem.fontFamily = this.state.fontFamilies[
+        this.state.editItemFontFamily
+      ];
+
+      foundItem.fontFamily = foundItem.fontFamily
+        ? foundItem.fontFamily.label
+        : "";
+
+      if (!foundItem.fontFamily) {
+        delete foundItem.fontFamily;
+      }
+    } else {
+      delete foundItem.fontFamily;
+    }
+
+    if (this.state.editItemTextColorShow) {
+      foundItem.textColor = this.state.editItemTextColor;
+    } else {
+      delete foundItem.textColor;
+    }
+
+    if (Number(foundItem.borderWidth)) {
+      foundItem.borderColor = this.state.editItemBorderColor;
+      foundItem.borderWidth = this.state.editItemBorderWidth;
+      foundItem.borderRadius = this.state.editItemBorderRadius;
+      foundItem.borderStyle = "solid";
+    } else {
+      delete foundItem.borderColor;
+      delete foundItem.borderWidth;
+      delete foundItem.borderRadius;
+      delete foundItem.borderStyle;
+    }
+
     foundItem.backgroundImage = this.state.editItemBackgroundImage;
 
     let items = this.state.items;
@@ -573,8 +647,14 @@ class PagesAdd extends React.PureComponent {
             height: "50px",
           },
         },
-        MuiPaper: {
-          root: {},
+        MuiDropzoneArea: {
+          root: {
+            height: "145px",
+            minHeight: "145px",
+          },
+          text: {
+            fontSize: "1rem",
+          },
         },
       },
     });
@@ -582,24 +662,103 @@ class PagesAdd extends React.PureComponent {
 
   handleFontSize = async (event, newValue) => {
     if (this.state.fontSize !== newValue) {
-      await this.setAsyncState({ fontSize: newValue });
-    }
-  };
-
-  handleTitleFontSize = async (event, newValue) => {
-    if (this.state.fontSize !== newValue) {
-      await this.setAsyncState({ titleFontSize: newValue });
+      await this.setAsyncState({
+        fontSize: newValue,
+        pageOrItemFontSize: "page",
+      });
     }
   };
 
   handleFontFamily = async (event, newValue) => {
-    await this.setAsyncState({ fontFamily: newValue.label });
+    await this.setAsyncState({
+      fontFamily: newValue.label,
+      pageOrItemFontFamily: "page",
+    });
+  };
+
+  sendStyles = (targetedColor) => {
+    return reactCSS({
+      default: {
+        color: {
+          width: "36px",
+          height: "14px",
+          borderRadius: "2px",
+          background: targetedColor,
+        },
+        swatch: {
+          padding: "5px",
+          background: "#fff",
+          borderRadius: "1px",
+          border: "1px solid rgba(0, 0, 0, 0.23)",
+          display: "inline-block",
+          cursor: "pointer",
+        },
+        popover: {
+          position: "absolute",
+          zIndex: "2",
+        },
+        cover: {
+          position: "fixed",
+          top: "0px",
+          right: "0px",
+          bottom: "0px",
+          left: "0px",
+        },
+      },
+    });
+  };
+
+  // for color pickers
+
+  handleClick = (displayColorPicker) => {
+    this.setState({ [displayColorPicker]: !this.state.displayColorPicker });
+  };
+
+  handleColorPickerClose = (displayColorPicker) => {
+    this.setState({ [displayColorPicker]: false });
+  };
+
+  createColorPicker = (styles, displayColorPicker, targetedColor) => {
+    return (
+      <div>
+        <div
+          style={styles.swatch}
+          onClick={() => this.handleClick(displayColorPicker)}
+        >
+          <div style={styles.color} />
+        </div>
+        {this.state[displayColorPicker] ? (
+          <div style={styles.popover}>
+            <div
+              style={styles.cover}
+              onClick={() => this.handleColorPickerClose(displayColorPicker)}
+            />
+            <SketchPicker
+              color={this.state[targetedColor]}
+              onChangeComplete={async (color) => {
+                await this.setAsyncState({ [targetedColor]: color.hex });
+              }}
+            />
+          </div>
+        ) : null}
+      </div>
+    );
   };
 
   render() {
     const { history } = this.props;
     const classes = this.props.classes;
     const { color, absolute, fixed } = this.props;
+
+    const bgColorStyles = this.sendStyles(this.state.bgColor);
+    const textColorStyles = this.sendStyles(this.state.textColor);
+    const itemTextColorStyles = this.sendStyles(this.state.editItemTextColor);
+    const itemBgColorStyles = this.sendStyles(
+      this.state.editItemBackgroundColor
+    );
+    const itemBorderColorStyles = this.sendStyles(
+      this.state.editItemBorderColor
+    );
 
     return (
       <React.Fragment>
@@ -659,115 +818,169 @@ class PagesAdd extends React.PureComponent {
                   </div>
                   <div>
                     <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Enable Custom Font Size">
+                        <Switch
+                          checked={this.state.editItemFontSizeShow}
+                          onChange={() => {
+                            this.setState({
+                              editItemFontSizeShow: !this.state
+                                .editItemFontSizeShow,
+                            });
+                          }}
+                          value={Number(this.state.editItemFontSizeShow)}
+                        />
+                      </Tooltip>
                       Font Size
                     </Typography>
-                    <Slider
-                      defaultValue={
-                        this.state.itemEditId
-                          ? this.getItemById(this.state.itemEditId).fontSize
-                          : ""
+                    <div
+                      style={
+                        this.state.editItemFontSizeShow
+                          ? {}
+                          : { display: "none" }
                       }
-                      onChangeCommitted={this.handleItemFontSize}
-                      aria-labelledby="discrete-slider"
-                      valueLabelDisplay="auto"
-                      min={0}
-                      max={5}
-                    />
+                    >
+                      <Slider
+                        defaultValue={
+                          this.state.itemEditId
+                            ? Number(
+                                this.getItemById(this.state.itemEditId).fontSize
+                              )
+                            : ""
+                        }
+                        onChangeCommitted={this.handleItemFontSize}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        min={5}
+                        max={50}
+                      />
+                    </div>
                   </div>
 
                   <div>
                     <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Enable Custom Font Family">
+                        <Switch
+                          checked={this.state.editItemFontFamilyShow}
+                          onChange={() => {
+                            this.setState({
+                              editItemFontFamily: "",
+                              editItemFontFamilyShow: !this.state
+                                .editItemFontFamilyShow,
+                            });
+                          }}
+                          value={this.state.editItemFontFamilyShow}
+                        />
+                      </Tooltip>
                       Font Family
                     </Typography>
-                    <Autocomplete
-                      id="fontFamilyDropdown"
-                      onChange={this.handleItemFontFamily}
-                      className={this.props.classes.option}
-                      defaultValue={
-                        this.state.fontFamilies[this.state.editItemFontFamily]
+                    <div
+                      style={
+                        this.state.editItemFontFamilyShow
+                          ? {}
+                          : { display: "none" }
                       }
-                      options={this.state.fontFamilies}
-                      autoHighlight
-                      getOptionLabel={(option) => option.label}
-                      renderInput={(params) => (
-                        <TextField
-                          className={this.props.classes.textfield}
-                          {...params}
-                          label="Choose a Font Family"
-                          variant="outlined"
-                        />
-                      )}
-                    />
+                    >
+                      <Autocomplete
+                        onChange={this.handleItemFontFamily}
+                        className={this.props.classes.option}
+                        value={this.getFontFamilyItem(
+                          this.state.editItemFontFamily
+                        )}
+                        defaultValue={
+                          this.state.fontFamilies[this.state.editItemFontFamily]
+                        }
+                        options={this.state.fontFamilies}
+                        autoHighlight
+                        getOptionLabel={(option) => option.label}
+                        renderInput={(params) => (
+                          <TextField
+                            className={this.props.classes.textfield}
+                            {...params}
+                            label="Choose a Font Family"
+                            variant="outlined"
+                          />
+                        )}
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <Typography gutterBottom>Text Color</Typography>
-                    <ColorPicker
-                      className={classes.colorPicker}
-                      name="color"
-                      TextFieldProps={{ value: this.state.editItemTextColor }}
-                      defaultValue={this.state.editItemTextColor}
-                      onChange={async (color) => {
-                        if (color) {
-                          await this.setAsyncState({
-                            editItemTextColor: color,
-                          });
-                        }
-                      }}
-                    />
+                    <Typography gutterBottom>
+                      <Tooltip title="Enable Custom Text Color">
+                        <Switch
+                          checked={this.state.editItemTextColorShow}
+                          onChange={() => {
+                            this.setState({
+                              editItemTextColor: "#000000",
+                              editItemTextColorShow: !this.state
+                                .editItemTextColorShow,
+                            });
+                          }}
+                          value={this.state.editItemTextColorShow}
+                        />
+                      </Tooltip>
+                      Text Color
+                    </Typography>
+                    <div
+                      style={
+                        this.state.editItemTextColorShow
+                          ? {}
+                          : { display: "none" }
+                      }
+                    >
+                      {this.createColorPicker(
+                        itemTextColorStyles,
+                        "displayItemTextColorPicker",
+                        "editItemTextColor"
+                      )}
+                    </div>
                   </div>
                   <div>
-                    <Typography gutterBottom>Background Color</Typography>
-                    <ColorPicker
-                      labelText="Background Color"
-                      name="color"
-                      className={classes.colorPicker}
-                      TextFieldProps={{
-                        value: this.state.editItemBackgroundColor,
-                      }}
-                      defaultValue={
-                        this.state.itemEditId
-                          ? this.getItemById(this.state.itemEditId)
-                              .backgroundColor
-                          : ""
+                    <Typography gutterBottom>
+                      <Tooltip title="Enable Custom Text Color">
+                        <Switch
+                          onChange={() => {
+                            this.setState({
+                              editItemBackgroundColorShow: !this.state
+                                .editItemBackgroundColorShow,
+                            });
+                          }}
+                          checked={this.state.editItemBackgroundColorShow}
+                        />
+                      </Tooltip>
+                      Background Color
+                    </Typography>
+                    <div
+                      style={
+                        this.state.editItemBackgroundColorShow
+                          ? {}
+                          : { display: "none" }
                       }
-                      onChange={async (color) => {
-                        if (color) {
-                          await this.setAsyncState({
-                            editItemBackgroundColor: color,
-                          });
-                        }
-                      }}
-                    />
+                    >
+                      {this.createColorPicker(
+                        itemBgColorStyles,
+                        "displayItemBgColorPicker",
+                        "editItemBackgroundColor"
+                      )}
+                    </div>
                   </div>
                   <div>
                     <Typography gutterBottom>Border Color</Typography>
-                    <ColorPicker
-                      name="color"
-                      className={classes.colorPicker}
-                      TextFieldProps={{
-                        value: this.state.editItemBorderColor,
-                      }}
-                      defaultValue={
-                        this.state.itemEditId
-                          ? this.getItemById(this.state.itemEditId).borderColor
-                          : ""
-                      }
-                      onChange={async (color) => {
-                        if (color) {
-                          await this.setAsyncState({
-                            editItemBorderColor: color,
-                          });
-                        }
-                      }}
-                    />
+                    {this.createColorPicker(
+                      itemBorderColorStyles,
+                      "displayItemBorderColorPicker",
+                      "editItemBorderColor"
+                    )}
                   </div>
                   <div>
                     <Typography gutterBottom>Border Width</Typography>
                     <Slider
                       defaultValue={
                         this.state.itemEditId
-                          ? this.getItemById(this.state.itemEditId).borderWidth
+                          ? Number(
+                              this.getItemById(this.state.itemEditId)
+                                .borderWidth
+                            )
                           : ""
                       }
                       className={classes.sideMenuSlider}
@@ -775,7 +988,7 @@ class PagesAdd extends React.PureComponent {
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
                       min={0}
-                      max={20}
+                      max={10}
                     />
                   </div>
                   <div>
@@ -783,7 +996,10 @@ class PagesAdd extends React.PureComponent {
                     <Slider
                       defaultValue={
                         this.state.itemEditId
-                          ? this.getItemById(this.state.itemEditId).borderRadius
+                          ? Number(
+                              this.getItemById(this.state.itemEditId)
+                                .borderRadius
+                            )
                           : ""
                       }
                       className={classes.sideMenuSlider}
@@ -900,16 +1116,13 @@ class PagesAdd extends React.PureComponent {
                   >
                     <h4>Background</h4>
                     <h5>Background Color</h5>
-                    <ColorPicker
-                      TextFieldProps={{ value: this.state.bgColor }}
-                      name="color"
-                      defaultValue={this.state.bgColor}
-                      onChange={async (color) => {
-                        if (color) {
-                          await this.setAsyncState({ bgColor: color });
-                        }
-                      }}
-                    />
+
+                    {this.createColorPicker(
+                      bgColorStyles,
+                      "displayBgColorPicker",
+                      "bgColor"
+                    )}
+
                     <h5>Background Image</h5>
                     <div className={classes.dropzoneAreaWrapper}>
                       <DropzoneArea onChange={this.handleBgImage.bind(this)} />
@@ -922,60 +1135,26 @@ class PagesAdd extends React.PureComponent {
                     <h4>Font </h4>
                     <div>
                       <Typography id="discrete-slider" gutterBottom>
-                        Title Font Size
-                      </Typography>
-                      <Slider
-                        className={classes.pageOptionsSlider}
-                        value={
-                          this.state.titleFontSize
-                            ? Number(this.state.titleFontSize)
-                            : ""
-                        }
-                        onChangeCommitted={this.handleTitleFontSize}
-                        aria-labelledby="discrete-slider"
-                        valueLabelDisplay="auto"
-                        min={0}
-                        max={5}
-                      />
-                    </div>
-                    <h5>Title Text Color</h5>
-                    <ColorPicker
-                      name="color"
-                      TextFieldProps={{ value: this.state.titleTextColor }}
-                      defaultValue={this.state.titleTextColor}
-                      onChange={async (color) => {
-                        if (color) {
-                          await this.setAsyncState({ titleTextColor: color });
-                        }
-                      }}
-                    />
-                    <Divider className={classes.titleVsPageDivider} />
-                    <div>
-                      <Typography id="discrete-slider" gutterBottom>
-                        Page Font Size
+                        Font Size
                       </Typography>
                       <Slider
                         className={classes.pageOptionsSlider}
                         onChangeCommitted={this.handleFontSize}
-                        value={this.state.fontSize}
+                        defaultValue={Number(this.state.fontSize)}
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
-                        min={0}
-                        max={5}
+                        min={5}
+                        max={50}
                       />
                     </div>
-                    <h5>Page Text Color</h5>
-                    <ColorPicker
-                      name="color"
-                      TextFieldProps={{ value: this.state.textColor }}
-                      defaultValue={this.state.textColor}
-                      onChange={async (color) => {
-                        if (color) {
-                          await this.setAsyncState({ textColor: color });
-                        }
-                      }}
-                    />
-                    <h5>Page Font Family</h5>
+                    <h5>Text Color</h5>
+                    {this.createColorPicker(
+                      textColorStyles,
+                      "displayTextColorPicker",
+                      "textColor"
+                    )}
+
+                    <h5>Font Family</h5>
                     <Autocomplete
                       id="fontFamilyDropdown"
                       onChange={this.handleFontFamily}
@@ -1004,15 +1183,33 @@ class PagesAdd extends React.PureComponent {
                       <Slider
                         className={classes.pageOptionsSlider}
                         onChangeCommitted={this.handleBoxSpacing}
-                        defaultValue={this.state.config.layoutBoxSpacing[0]}
+                        defaultValue={Number(
+                          this.state.config.layoutBoxSpacing[0]
+                        )}
                         getAriaValueText={() =>
                           this.state.config.layoutBoxSpacing[0] + " pixels"
                         }
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
                         min={0}
-                        max={30}
+                        max={150}
                       />
+                    </div>
+                    <div>
+                      <Typography id="discrete-slider" gutterBottom>
+                        Publish
+                        <Tooltip title="Enable Publishing">
+                          <Switch
+                            checked={this.state.shouldPublish}
+                            onChange={() => {
+                              this.setState({
+                                shouldPublish: !this.state.shouldPublish,
+                              });
+                            }}
+                            value={this.state.shouldPublish}
+                          />
+                        </Tooltip>
+                      </Typography>
                     </div>
                   </div>
                 </AccordionDetails>
@@ -1027,39 +1224,35 @@ class PagesAdd extends React.PureComponent {
                     onChange: (event) => this.handleInputChange(event),
                   }}
                   inputProps={{
-                    value: this.state.name,
+                    inputProps: {
+                      minLength: "3",
+                      maxLength: "50",
+                    },
+
+                    value: this.state.pageTitle,
                     type: "text",
                   }}
                 />
               </div>
 
+              {/* titleAndContentWrapper */}
               <div
                 style={{
                   backgroundColor: this.state.bgColor,
-                  fontSize: `${this.state.fontSize}rem`,
+                  fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,
                   color: this.state.textColor,
                 }}
               >
-                <h5
-                  style={{
-                    fontSize: `${this.state.titleFontSize}rem`,
-                    color: this.state.titleTextColor,
-                  }}
-                  className={classes.pageTitle}
-                >
-                  {this.state.pageTitle}{" "}
-                </h5>
-
                 <ResponsiveReactGridLayout
                   style={{
                     backgroundColor: this.state.bgColor,
-                    fontSize: `${this.state.fontSize}rem`,
+                    fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
                   }}
                   // margin={this.state.boxSpacing} primeste un array cu 2 valori
-                  isBounded="true"
+                  isBounded={true}
                   margin={this.state.config.layoutBoxSpacing}
                   onLayoutChange={(layout) => {
                     return this.onLayoutChange(layout);
@@ -1073,19 +1266,39 @@ class PagesAdd extends React.PureComponent {
             </div>
 
             <Button
+              disabled={this.state.pageTitle.length === 0}
               onClick={() => {
-                const pageConfig = {
+                let pageConfig = {
                   backgroundColor: this.state.bgColor,
-                  pageTitleFontSize: this.state.titleFontSize,
-                  pageTitleTextColor: this.state.titleTextColor,
                   fontSize: this.state.fontSize,
                   textColor: this.state.textColor,
                   fontFamily: this.state.fontFamily,
                   layoutBoxSpacing: this.state.config.layoutBoxSpacing,
                   pageTitle: this.state.pageTitle,
                 };
-                localStorage.setItem("pageConfig", JSON.stringify(pageConfig));
-                localStorage.setItem("items", JSON.stringify(this.state.items));
+                let pagesLength;
+                if (JSON.parse(localStorage.getItem("pages")) !== null) {
+                  pagesLength = JSON.parse(localStorage.getItem("pages"))
+                    .length;
+                } else {
+                  pagesLength = 0;
+                }
+                let pages = [];
+
+                let newPage = {
+                  id: pagesLength + 1,
+                  pageConfig: pageConfig,
+                  items: this.state.items,
+                };
+
+                if (JSON.parse(localStorage.getItem("pages")) !== null) {
+                  pages = JSON.parse(localStorage.getItem("pages"));
+                  pages.push(newPage);
+                } else {
+                  pages.push(newPage);
+                }
+
+                localStorage.setItem("pages", JSON.stringify(pages));
               }}
               className={classes.savePageButton}
               color="primary"
@@ -1102,15 +1315,13 @@ class PagesAdd extends React.PureComponent {
             >
               Discard
             </Button>
-
             <SpeedDial
               className={classes.speedDial}
               ariaLabel="SpeedDial example"
-              hidden={this.state.hidden}
               icon={<SpeedDialIcon />}
-              onClose={this.handleClose}
-              onOpen={this.handleOpen}
-              open={this.state.open}
+              onClose={this.handleSpeedDialClose}
+              onOpen={this.handleSpeedDialOpen}
+              open={this.state.speedDialState}
             >
               {this.state.actions.map((action) => (
                 <SpeedDialAction
@@ -1118,7 +1329,7 @@ class PagesAdd extends React.PureComponent {
                   key={action.name}
                   icon={action.icon}
                   tooltipTitle={action.name}
-                  onClick={this.handleClose}
+                  onClick={this.handleSpeedDialClose}
                 />
               ))}
             </SpeedDial>

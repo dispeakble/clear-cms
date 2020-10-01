@@ -6,134 +6,11 @@ import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
 import { GpsFixed } from "@material-ui/icons";
 
 const javascriptStyles = {
-  section: {
-    padding: "70px 0 0",
-  },
-  container,
-  title: {
-    ...title,
-    marginTop: "30px",
-    minHeight: "32px",
-    textDecoration: "none",
-  },
-  icon: {
-    width: "17px",
-    height: "17px",
-    marginRight: "4px",
-  },
-  ...modalStyle,
-  label: {
-    color: "rgba(0, 0, 0, 0.26)",
-    cursor: "pointer",
-    display: "inline-flex",
-    fontSize: "14px",
-    transition: "0.3s ease all",
-    lineHeight: "1.428571429",
-    fontWeight: "400",
-    paddingLeft: "0",
-    letterSpacing: "normal",
-  },
-  ...tooltipsStyle,
-  ...popoverStyles,
-  categoriesPanel: {
-    textAlign: "center",
-    marginTop: "60px",
-  },
   previewBodyWrapper: {
     minHeight: "100%",
     height: "100%",
   },
-  categoriesWrapper: {
-    margin: "0 auto",
-    width: "80%",
-    height: "auto",
-    minWidth: "10rem",
-  },
-  categoryWrapper: {
-    display: "inlineBlock",
-    float: "left",
-    width: "20%",
-    backgroundColor: "white",
-    padding: "10px",
-    border: "1px solid transparent",
-    borderRadius: "20px",
-    margin: "10px",
-  },
-  newCategory: {
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    cursor: "pointer",
-    position: "fixed",
-    right: "1rem",
-    bottom: "1rem",
-    width: "3rem",
-    height: "3rem",
-  },
-  addButton: {
-    fontSize: "2rem",
-    border: "1px solid transparent",
-    borderRadius: "50px",
-    cursor: "pointer",
-    width: "3rem",
-    height: "3rem",
-    color: "darkcyan",
-  },
-  removeButton: {
-    backgroundColor: "red",
-    color: "white",
-    padding: "10px",
-    border: "1px solid transparent",
-    borderRadius: "9px",
-    cursor: "pointer",
-  },
-  editAction: {
-    color: "darkcyan",
-  },
-  deleteAction: {
-    color: "#FF6461",
-  },
-  tableCells: {
-    fontSize: "90%",
-  },
-  tableHeader: {
-    backgroundColor: "#B2ACAB",
-    color: "white",
-    fontSize: "100%",
-  },
-  removeSelectedIcon: {
-    color: "#FF6461",
-    position: "fixed",
-    right: "0",
-    bottom: "0",
-  },
-  deleteSweepIcon: {
-    color: "#FF6461",
-  },
-  addIcon: {
-    cursor: "pointer",
-    color: "darkcyan",
-    fontSize: "400%",
-    position: "fixed",
-    bottom: "1rem",
-    right: "1rem",
-    "&:hover": {
-      color: "#007272",
-    },
-  },
-  previewLayout: {
-    position: "fixed",
-    left: "0",
-    top: "0",
-    right: "0",
-    bottom: "0",
-  },
   gridHolder: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    background: "#E5E5E5",
-    zIndex: "99999",
     width: "100%",
     height: "100%",
   },
@@ -144,35 +21,18 @@ const javascriptStyles = {
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
     },
-    "& .react-grid-placeholder": {
-      background: "rgba(0,0,0,0.14)",
-    },
-    "& .react-grid-layout ": {
-      background: "#FFF",
-      marginTop: "10px",
-    },
-    "& .layoutJSON": {
-      background: "#ddd",
-      border: "1px solid black",
-      marginTop: "10px",
-      padding: "10px",
-    },
-    "& .columns": {
-      columns: "120px",
-    },
+    "& .react-grid-placeholder": {},
+    "& .react-grid-layout ": {},
+    "& .layoutJSON": {},
+    "& .columns": {},
     "& .react-grid-item": {
       boxSizing: "border-box",
     },
-    "& .react-grid-item:not(.react-grid-placeholder)": {
-      background: "#00acc1",
-      border: "1px solid #00649B",
-    },
+    "& .react-grid-item:not(.react-grid-placeholder)": {},
     "& .react-grid-item.resizing": {
       opacity: "0.9",
     },
-    "& .react-grid-item.static": {
-      background: "#cce",
-    },
+    "& .react-grid-item.static": {},
     "& .react-grid-item .text": {
       fontSize: "24px",
       textAlign: "center",
@@ -239,20 +99,6 @@ const javascriptStyles = {
       margin: "10px 0",
       padding: "10px",
     },
-  },
-  pageTitle: {
-    left: 0,
-    top: 0,
-    textAlign: "center",
-    userSelect: "none",
-  },
-  noItemsMessageWrapper: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
   },
 };
 
