@@ -62,18 +62,24 @@ class App extends Component {
     ],
   };
   render() {
+    const { pathname } = this.props.location;
+    console.log(pathname);
     return (
       <React.Fragment>
-        <Header
-          color="transparent"
-          brand="Clear CRM"
-          leftLinks={<HeaderLinks moduleList={this.state.moduleList} />}
-          fixed
-          changeColorOnScroll={{
-            height: 10,
-            color: "info",
-          }}
-        />
+        {pathname !== "/pagePreview" ? (
+          <Header
+            color="transparent"
+            brand="Clear CRM"
+            leftLinks={<HeaderLinks moduleList={this.state.moduleList} />}
+            fixed
+            changeColorOnScroll={{
+              height: 10,
+              color: "info",
+            }}
+          />
+        ) : (
+          ""
+        )}
 
         <Switch>
           <Route path="/settings/adminProfile" component={ProfilePage} />

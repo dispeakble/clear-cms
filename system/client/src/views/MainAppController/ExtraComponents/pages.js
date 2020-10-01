@@ -2,16 +2,16 @@ import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pages.js";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
+import { Edit, DeleteForever, Visibility } from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import { forwardRef } from "react";
 
 // from material-table
 import MaterialTable from "material-table";
-
-//todo import modal content to add category
 
 const shortid = require("shortid");
 
@@ -19,66 +19,66 @@ class Pages extends Component {
   state = {
     showModal: false,
     cat_list: [],
-    categories: [
+    pages: [
       {
         title: "Title1",
         category: "Categ4",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title2",
         category: "Categ5",
         id: shortid.generate(),
-        primary: <Checkbox disabled />,
+        default: <Checkbox disabled />,
       },
       {
         title: "Title3",
         category: "Categ3",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title4",
         category: "Categ1",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title5",
         category: "Categ2",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title6",
         category: "Categ6",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title7",
         category: "Categ7",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title8",
         category: "Categ8",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title9",
         category: "Categ9",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
       {
         title: "Title10",
         category: "Categ10",
         id: shortid.generate(),
-        primary: <Checkbox />,
+        default: <Checkbox />,
       },
     ],
   };
@@ -117,9 +117,6 @@ class Pages extends Component {
           primary: {
             main: "#008B8B",
           },
-          secondary: {
-            main: "#008B8B",
-          },
         },
         overrides: {
           MuiTypography: {
@@ -144,7 +141,7 @@ class Pages extends Component {
             let payload = {
               totalCount: 100,
               page: 1,
-              data: this.state.categories,
+              data: this.state.pages,
             };
             resolve(payload);
           }, 300);
@@ -154,20 +151,20 @@ class Pages extends Component {
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              const dataUpdate = [...this.state.categories];
+              const dataUpdate = [...this.state.pages];
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;
-              this.setState({ categories: dataUpdate });
+              this.setState({ pages: dataUpdate });
               resolve();
             }, 100);
           }),
         onRowDelete: (oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              const dataDelete = [...this.state.categories];
+              const dataDelete = [...this.state.pages];
               const index = oldData.tableData.id;
               dataDelete.splice(index, 1);
-              this.setState({ categories: dataDelete });
+              this.setState({ pages: dataDelete });
               resolve();
             }, 100);
           }),
@@ -180,12 +177,29 @@ class Pages extends Component {
           onClick: (evt, data) =>
             alert("You want to delete " + data.length + " rows"),
         },
+        {
+          iconProps: { style: { color: "#008B8B" } },
+          position: "row",
+          icon: "visibility",
+          tooltip: "Page Preview",
+          onClick: (event, rowData) => {
+            // go to page preview
+          },
+        },
       ],
     },
     props: {
       icons: {
-        Edit: () => <Edit style={{ color: "darkcyan" }} />,
-        Delete: () => <Delete style={{ color: "#DE4343" }} />,
+        Edit: () => (
+          <IconButton color="primary" size="medium">
+            <Edit className={this.props.classes.editItemIcon} />
+          </IconButton>
+        ),
+        Delete: () => (
+          <IconButton color="secondary" size="medium">
+            <DeleteForever />
+          </IconButton>
+        ),
       },
       columns: [
         { title: "Title", field: "title" },
@@ -194,8 +208,8 @@ class Pages extends Component {
           field: "category",
         },
         {
-          title: "Primary",
-          field: "primary",
+          title: "Default",
+          field: "default",
         },
       ],
       options: {
@@ -211,12 +225,11 @@ class Pages extends Component {
 
   render() {
     const classes = this.props.classes;
-    const shortid = require("shortid");
 
     return (
       <React.Fragment>
-        <div className={classes.categoriesPanel}>
-          <div className={classes.categoriesWrapper}>
+        <div className={classes.pagesPanel}>
+          <div className={classes.pagesWrapper}>
             <MuiThemeProvider theme={this.tableOptions.getTheme()}>
               <MaterialTable
                 columns={this.tableOptions.props.columns}
@@ -230,7 +243,7 @@ class Pages extends Component {
           </div>
         </div>
         <Link to="/pagesAdd">
-          <AddCircle className={classes.addIcon} />
+          <SpeedDialIcon className={classes.speedDialIcon} />
         </Link>
       </React.Fragment>
     );
