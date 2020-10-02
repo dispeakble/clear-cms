@@ -63,7 +63,6 @@ class App extends Component {
   };
   render() {
     const { pathname } = this.props.location;
-    console.log(pathname);
     return (
       <React.Fragment>
         {pathname !== "/pagePreview" ? (
@@ -90,6 +89,7 @@ class App extends Component {
           <Route path="/logout" component={ViewAuth} />
           <Route path="/pagesAdd" component={PagesAdd} />
           <Route path="/pagePreview" component={PagePreview} />
+          <Route path="/pageEdit/:id" component={PagesAdd} />
           <Route
             render={(props) => (
               <MainAppController

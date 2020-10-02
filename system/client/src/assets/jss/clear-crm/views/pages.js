@@ -19,6 +19,9 @@ const javascriptStyles = {
   tableCells: {
     fontSize: "90%",
   },
+  tableActions: {
+    width: 40,
+  },
   tableHeader: {
     backgroundColor: "#B2ACAB",
     color: "white",

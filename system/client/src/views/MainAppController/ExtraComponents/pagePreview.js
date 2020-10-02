@@ -95,13 +95,13 @@ class PagePreview extends React.PureComponent {
 
     switch (el.module) {
       case "Text Module":
-        LazyComponent = React.lazy(() => import(`./TextModule`));
+        LazyComponent = React.lazy(() => import(`./modules/TextModule`));
         break;
       case "Header Module":
-        LazyComponent = React.lazy(() => import(`./HeaderModule`));
+        LazyComponent = React.lazy(() => import(`./modules/HeaderModule`));
         break;
       case "Menu Module":
-        LazyComponent = React.lazy(() => import(`./MenuModule`));
+        LazyComponent = React.lazy(() => import(`./modules/MenuModule`));
         break;
       default:
         LazyComponent = "";

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import _ from "lodash";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import { WidthProvider, Responsive } from "react-grid-layout";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
+import { withRouter } from "react-router-dom";
 
 // for the modal
 import Dialog from "@material-ui/core/Dialog";
@@ -45,6 +46,12 @@ import { DropzoneArea } from "material-ui-dropzone";
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
+//import purchased modules. TODO add them dynamically
+
+import HeaderModule from "views/MainAppController/ExtraComponents/modules/HeaderModule";
+import MenuModule from "views/MainAppController/ExtraComponents/modules/MenuModule";
+import TextModule from "views/MainAppController/ExtraComponents/modules/TextModule";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class PagesAdd extends React.PureComponent {
@@ -56,7 +63,7 @@ class PagesAdd extends React.PureComponent {
   };
 
   state = {
-    showModal: false,
+    showDiscardModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
     items: [],
@@ -94,6 +101,7 @@ class PagesAdd extends React.PureComponent {
     editItemBackgroundColorShow: false,
     editItemTitle: "",
     editItemModule: "",
+    editItemModuleOptions: {},
     editItemBgColor: "",
     editItemBorderRadius: "",
     editItemBorderWidth: "",
@@ -126,32 +134,70 @@ class PagesAdd extends React.PureComponent {
     displayItemBgColorPicker: false,
     displayItemBorderColorPicker: false,
     fontUnit: "px",
-    shouldPublish: false,
+    publish: false,
+    defaultPage: false,
+    categories: [],
+    category: "",
+    isEdit: false, // we will reuse this component to edit and add pages
+    showModuleOptionsModal: false,
   };
 
   componentDidMount() {
-    const items = JSON.parse(localStorage.getItem("items"));
+    let isEdit = this.props.location.pathname.indexOf("pageEdit") > -1;
+    let pageId = Number(this.props.match.params.id);
 
-    if (items !== null) {
-      this.setState({
-        items: items,
+    if (isEdit) {
+      let pages = JSON.parse(localStorage.getItem("pages"));
+
+      let currentPage = pages.find((page) => {
+        return Number(page.id) === pageId;
       });
+      const pageConfig = currentPage.pageConfig;
+      const items = JSON.parse(localStorage.getItem("items"));
+
+      if (items !== null) {
+        this.setState({
+          items,
+        });
+      }
+
+      if (pageConfig !== null) {
+        let savedLayoutBoxSpacing = {
+          layoutBoxSpacing: pageConfig.layoutBoxSpacing,
+        };
+        this.setState({
+          bgColor: pageConfig.backgroundColor,
+          fontSize: pageConfig.fontSize,
+          textColor: pageConfig.textColor,
+          fontFamily: pageConfig.fontFamily,
+          pageTitle: pageConfig.pageTitle,
+          config: savedLayoutBoxSpacing,
+        });
+      }
+      this.setAsyncState({
+        items: currentPage.items,
+        pageConfig: currentPage.pageConfig,
+      });
+    } else {
+      this.setState({ actions: [this.state.actions[0]] });
     }
 
-    const pageConfig = JSON.parse(localStorage.getItem("pageConfig"));
+    this.setAsyncState({
+      isEdit: isEdit,
+      pageId: pageId,
+    });
 
-    if (pageConfig !== null) {
-      let savedLayoutBoxSpacing = {
-        layoutBoxSpacing: pageConfig.layoutBoxSpacing,
-      };
-      this.setState({
-        bgColor: pageConfig.backgroundColor,
-        fontSize: pageConfig.fontSize,
-        textColor: pageConfig.textColor,
-        fontFamily: pageConfig.fontFamily,
-        pageTitle: pageConfig.pageTitle,
-        config: savedLayoutBoxSpacing,
+    let categories = [];
+    let categoriesFromStorage = JSON.parse(localStorage.getItem("categories"));
+
+    if (categoriesFromStorage) {
+      categoriesFromStorage.map((category) => {
+        categories.push({
+          label: category.name,
+          id: category.id,
+        });
       });
+      this.setState({ categories });
     }
   }
 
@@ -165,9 +211,7 @@ class PagesAdd extends React.PureComponent {
       top: 0,
       cursor: "pointer",
     };
-    const i = el.i,
-      title = el.title,
-      module = el.module;
+    const i = el.i;
 
     let itemStyle = {};
 
@@ -200,8 +244,16 @@ class PagesAdd extends React.PureComponent {
       itemStyle.borderColor = el.borderColor;
     }
 
+    if (el.borderStyle) {
+      itemStyle.borderStyle = el.borderStyle;
+    }
+
     if (el.borderWidth) {
       itemStyle.borderWidth = el.borderWidth;
+    } else {
+      itemStyle.borderWidth = 1;
+      itemStyle.borderStyle = "dashed";
+      itemStyle.borderColor = "#CCC";
     }
 
     if (el.borderRadius) {
@@ -215,10 +267,37 @@ class PagesAdd extends React.PureComponent {
     //adding default box styles
     itemStyle.padding = "5px";
 
+    let LazyModule;
+    const loadingFallback = (() => {
+      return <span>Loading...</span>;
+    })();
+    switch (el.module) {
+      default:
+        LazyModule = "";
+        break;
+      case "Header Module": //TODO MAKE THIS DYNAMIC
+        LazyModule = React.lazy(() => import(`./modules/HeaderModule`));
+        break;
+      case "Menu Module":
+        LazyModule = React.lazy(() => import(`./modules/MenuModule`));
+        break;
+      case "Text Module":
+        LazyModule = React.lazy(() => import(`./modules/TextModule`));
+        break;
+    }
+
     return (
       <div key={i} data-grid={el} style={itemStyle}>
         <p style={{ fontSize: "inherit", color: "inherit" }}>{el.title}</p>
-        <p style={{ fontSize: "inherit", color: "inherit" }}>{el.module}</p>
+        <div>
+          {el.module ? (
+            <Suspense fallback={loadingFallback}>
+              <LazyModule showModule={() => this.showModuleOptionsModal} />
+            </Suspense>
+          ) : (
+            ""
+          )}
+        </div>
         <div
           style={{
             position: "absolute",
@@ -273,9 +352,8 @@ class PagesAdd extends React.PureComponent {
     let newId = "1";
     try {
       this.state.items.map((item) => {
-        newId = Number(item.i) > Number(newId) ? item.i : newId;
+        newId = Number(item.i) > Number(newId) ? item.i + 1 : newId;
       });
-      newId++;
       newId += "";
     } catch (err) {
       console.log(err);
@@ -285,7 +363,8 @@ class PagesAdd extends React.PureComponent {
     items.push({
       title: "New Box",
       module: "",
-      borderColor: "#000000",
+      moduleOptions: {},
+      borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
       borderStyle: "solid",
       borderWidth: "0",
       borderRadius: "0",
@@ -325,7 +404,6 @@ class PagesAdd extends React.PureComponent {
         return oldItem;
       });
 
-      console.log(layout);
       //let renderedItems = [...this.state.items];
       this.setState({ items: newItems });
     } catch (err) {
@@ -364,8 +442,12 @@ class PagesAdd extends React.PureComponent {
     }
   };
 
-  closeModal() {
-    this.setState({ showModal: false });
+  closeDiscardModal() {
+    this.setState({ showDiscardModal: false });
+  }
+
+  closeModuleOptionsModal() {
+    this.setState({ showModuleOptionsModal: false });
   }
 
   getFontFamilyIndex(name) {
@@ -388,6 +470,14 @@ class PagesAdd extends React.PureComponent {
     ];
   }
 
+  getCategoryItem(name) {
+    return this.state.categories[
+      this.state.categories.findIndex((category) => {
+        return category.label === name;
+      })
+    ];
+  }
+
   handleEdit = async (id) => {
     await this.setAsyncState({
       itemEditId: id,
@@ -398,9 +488,11 @@ class PagesAdd extends React.PureComponent {
     await this.setAsyncState({
       editItemTitle: item.title,
       editItemModule: this.getModuleIndex(item.module),
+      editItemModuleOptions: item.moduleOptions,
       editItemBorderRadius: item.borderRadius,
       editItemBorderWidth: item.borderWidth,
       editItemBorderColor: item.borderColor,
+      editItemBorderStyle: item.borderStyle,
       editItemBackgroundColor: item.backgroundColor || "",
       editItemFontSize: item.fontSize || "",
       editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || "",
@@ -425,8 +517,12 @@ class PagesAdd extends React.PureComponent {
     history.push("/pages");
   };
 
-  handleDelete = () => {
-    this.setState({ showModal: true });
+  handleDiscard = () => {
+    this.setState({ showDiscardModal: true });
+  };
+
+  handleModuleOptions = () => {
+    this.setState({ showModuleOptionsModal: true });
   };
 
   // callConfirmCallback = () => {
@@ -512,6 +608,7 @@ class PagesAdd extends React.PureComponent {
     foundItem.title = this.state.editItemTitle;
     foundItem.module = this.state.modulesList[this.state.editItemModule];
     foundItem.module = foundItem.module ? foundItem.module.label : "";
+    foundItem.moduleOptions = this.state.moduleOptions;
 
     if (this.state.editItemBackgroundColorShow) {
       foundItem.backgroundColor = this.state.editItemBackgroundColor;
@@ -547,7 +644,7 @@ class PagesAdd extends React.PureComponent {
       delete foundItem.textColor;
     }
 
-    if (Number(foundItem.borderWidth)) {
+    if (Number(this.state.editItemBorderWidth)) {
       foundItem.borderColor = this.state.editItemBorderColor;
       foundItem.borderWidth = this.state.editItemBorderWidth;
       foundItem.borderRadius = this.state.editItemBorderRadius;
@@ -676,6 +773,12 @@ class PagesAdd extends React.PureComponent {
     });
   };
 
+  handleCategory = async (event, newValue) => {
+    await this.setAsyncState({
+      category: newValue.id,
+    });
+  };
+
   sendStyles = (targetedColor) => {
     return reactCSS({
       default: {
@@ -736,13 +839,69 @@ class PagesAdd extends React.PureComponent {
             <SketchPicker
               color={this.state[targetedColor]}
               onChangeComplete={async (color) => {
-                await this.setAsyncState({ [targetedColor]: color.hex });
+                await this.setAsyncState({
+                  [targetedColor]: color.hex,
+                });
               }}
             />
           </div>
         ) : null}
       </div>
     );
+  };
+
+  savePage = () => {
+    let pageConfig = {
+      backgroundColor: this.state.bgColor,
+      fontSize: this.state.fontSize,
+      textColor: this.state.textColor,
+      fontFamily: this.state.fontFamily,
+      layoutBoxSpacing: this.state.config.layoutBoxSpacing,
+      pageTitle: this.state.pageTitle,
+      publish: this.state.publish,
+      defaultPage: this.state.defaultPage,
+      category: this.state.category,
+    };
+
+    let pages = JSON.parse(localStorage.getItem("pages")) || [];
+
+    if (this.state.defaultPage) {
+      pages.map((page) => (page.pageConfig.defaultPage = false));
+    }
+
+    if (this.state.isEdit) {
+      if (pages.length) {
+        pages.map((page) => {
+          if (page.id === this.state.pageId) {
+            return {
+              id: page.id,
+              pageConfig: pageConfig,
+              items: this.state.items,
+            };
+          } else {
+            return page;
+          }
+        });
+      }
+    } else {
+      let newPageId = 1;
+
+      if (pages.length) {
+        pages.map((page) => {
+          newPageId = page.id > newPageId ? page.id + 1 : newPageId;
+          return page;
+        });
+      }
+
+      let newPage = {
+        id: newPageId,
+        pageConfig: pageConfig,
+        items: this.state.items,
+      };
+      pages.push(newPage);
+    }
+
+    localStorage.setItem("pages", JSON.stringify(pages));
   };
 
   render() {
@@ -1043,10 +1202,10 @@ class PagesAdd extends React.PureComponent {
                 root: classes.center,
                 paper: classes.modal,
               }}
-              open={this.state.showModal}
+              open={this.state.showDiscardModal}
               TransitionComponent={this.transition}
               keepMounted
-              onClose={() => this.closeModal()}
+              onClose={() => this.closeDiscardModal()}
               aria-labelledby="classic-modal-slide-title"
               aria-describedby="classic-modal-slide-description"
             >
@@ -1055,15 +1214,6 @@ class PagesAdd extends React.PureComponent {
                 disableTypography
                 className={classes.modalHeader}
               >
-                <IconButton
-                  className={classes.modalCloseButton}
-                  key="close"
-                  aria-label="Close"
-                  color="inherit"
-                  onClick={() => this.closeModal()}
-                >
-                  <Close className={classes.modalClose} />
-                </IconButton>
                 <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
               </DialogTitle>
               <DialogContent
@@ -1078,9 +1228,7 @@ class PagesAdd extends React.PureComponent {
                   disabled={this.state.isBtnDisabled}
                   color="transparent"
                   simple
-                  onClick={() => {
-                    this.callConfirmCallback();
-                  }}
+                  onClick={() => history.push("/pages")}
                 >
                   <div>Proceed</div>
                 </Button>
@@ -1088,13 +1236,60 @@ class PagesAdd extends React.PureComponent {
                   color="danger"
                   simple
                   onClick={() => {
-                    this.closeModal();
+                    this.closeDiscardModal();
                   }}
                 >
                   Cancel
                 </Button>
               </DialogActions>
             </Dialog>
+
+            <Dialog
+              classes={{
+                root: classes.center,
+                paper: classes.modal,
+              }}
+              open={this.state.showModuleOptionsModal}
+              TransitionComponent={this.transition}
+              keepMounted
+              onClose={() => this.closeModuleOptionsModal()}
+              aria-labelledby="classic-modal-slide-title"
+              aria-describedby="classic-modal-slide-description"
+            >
+              <DialogTitle
+                id="classic-modal-slide-title"
+                disableTypography
+                className={classes.modalHeader}
+              >
+                <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
+              </DialogTitle>
+              <DialogContent
+                id="classic-modal-slide-description"
+                className={classes.modalBody}
+              >
+                <div>Module Options</div>
+              </DialogContent>
+
+              <DialogActions className={classes.modalFooter}>
+                <Button
+                  disabled={this.state.isBtnDisabled}
+                  color="transparent"
+                  simple
+                >
+                  <div>Save</div>
+                </Button>
+                <Button
+                  color="danger"
+                  simple
+                  onClick={() => {
+                    this.closeModuleOptionsModal();
+                  }}
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
+            </Dialog>
+
             <div className={classes.gridLayout}>
               <Accordion className={classes.accordion}>
                 <AccordionSummary
@@ -1197,19 +1392,54 @@ class PagesAdd extends React.PureComponent {
                     </div>
                     <div>
                       <Typography id="discrete-slider" gutterBottom>
-                        Publish
                         <Tooltip title="Enable Publishing">
                           <Switch
-                            checked={this.state.shouldPublish}
+                            checked={this.state.publish}
                             onChange={() => {
                               this.setState({
-                                shouldPublish: !this.state.shouldPublish,
+                                publish: !this.state.publish,
                               });
                             }}
-                            value={this.state.shouldPublish}
+                            value={this.state.publish}
                           />
                         </Tooltip>
+                        Publish
                       </Typography>
+                    </div>
+                    <div>
+                      <Typography id="discrete-slider" gutterBottom>
+                        <Tooltip title="Enable Publishing">
+                          <Switch
+                            checked={this.state.defaultPage}
+                            onChange={() => {
+                              this.setState({
+                                defaultPage: !this.state.defaultPage,
+                              });
+                            }}
+                            value={this.state.defaultPage}
+                          />
+                        </Tooltip>
+                        Default Page
+                      </Typography>
+                    </div>
+                    <div>
+                      <Autocomplete
+                        id="categoryDropdown"
+                        onChange={this.handleCategory}
+                        className={this.props.classes.option}
+                        options={this.state.categories}
+                        autoHighlight
+                        getOptionLabel={(option) => option.label}
+                        value={this.getCategoryItem(this.state.category)}
+                        renderInput={(params) => (
+                          <TextField
+                            className={this.props.classes.textfield}
+                            {...params}
+                            label="Choose a category"
+                            variant="outlined"
+                          />
+                        )}
+                      />
                     </div>
                   </div>
                 </AccordionDetails>
@@ -1267,49 +1497,14 @@ class PagesAdd extends React.PureComponent {
 
             <Button
               disabled={this.state.pageTitle.length === 0}
-              onClick={() => {
-                let pageConfig = {
-                  backgroundColor: this.state.bgColor,
-                  fontSize: this.state.fontSize,
-                  textColor: this.state.textColor,
-                  fontFamily: this.state.fontFamily,
-                  layoutBoxSpacing: this.state.config.layoutBoxSpacing,
-                  pageTitle: this.state.pageTitle,
-                };
-                let pagesLength;
-                if (JSON.parse(localStorage.getItem("pages")) !== null) {
-                  pagesLength = JSON.parse(localStorage.getItem("pages"))
-                    .length;
-                } else {
-                  pagesLength = 0;
-                }
-                let pages = [];
-
-                let newPage = {
-                  id: pagesLength + 1,
-                  pageConfig: pageConfig,
-                  items: this.state.items,
-                };
-
-                if (JSON.parse(localStorage.getItem("pages")) !== null) {
-                  pages = JSON.parse(localStorage.getItem("pages"));
-                  pages.push(newPage);
-                } else {
-                  pages.push(newPage);
-                }
-
-                localStorage.setItem("pages", JSON.stringify(pages));
-              }}
+              onClick={() => this.savePage()}
               className={classes.savePageButton}
               color="primary"
             >
               <div>Save</div>
             </Button>
             <Button
-              onClick={() => {
-                history.push("/pages");
-                localStorage.clear();
-              }}
+              onClick={() => this.handleDiscard()}
               className={classes.cancelPageButton}
               color="danger"
             >
@@ -1340,4 +1535,4 @@ class PagesAdd extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(PagesAdd);
+export default withRouter(withStyles(styles)(PagesAdd));
