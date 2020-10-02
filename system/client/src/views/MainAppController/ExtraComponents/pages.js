@@ -2,10 +2,17 @@ import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pages.js";
-import { Edit, DeleteForever, Visibility } from "@material-ui/icons";
+
+import {
+  Edit,
+  DeleteForever,
+  Visibility,
+  Add as AddIcon,
+  CheckBox,
+} from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { forwardRef } from "react";
@@ -19,69 +26,30 @@ class Pages extends Component {
   state = {
     showModal: false,
     cat_list: [],
-    pages: [
-      {
-        title: "Title1",
-        category: "Categ4",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title2",
-        category: "Categ5",
-        id: shortid.generate(),
-        default: <Checkbox disabled />,
-      },
-      {
-        title: "Title3",
-        category: "Categ3",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title4",
-        category: "Categ1",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title5",
-        category: "Categ2",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title6",
-        category: "Categ6",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title7",
-        category: "Categ7",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title8",
-        category: "Categ8",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title9",
-        category: "Categ9",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-      {
-        title: "Title10",
-        category: "Categ10",
-        id: shortid.generate(),
-        default: <Checkbox />,
-      },
-    ],
+    pages: [],
+    currentPage: 1,
+    currentEditId: "",
   };
+
+  componentDidMount() {
+    let pages = [];
+    let pagesFromStorage = JSON.parse(localStorage.getItem("pages"));
+    if (pagesFromStorage) {
+      pagesFromStorage.map((page) => {
+        pages.push({
+          id: page.id,
+          title: page.pageConfig.pageTitle,
+          publish: <Checkbox disabled checked={page.pageConfig.publish} />,
+          defaultPage: (
+            <Checkbox disabled checked={page.pageConfig.defaultPage} />
+          ),
+
+          category: page.pageConfig.category,
+        });
+      });
+      this.setState({ pages });
+    }
+  }
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
@@ -114,11 +82,22 @@ class Pages extends Component {
           success: {
             main: "#FF0000",
           },
+          secondary: {
+            main: "#008B8B",
+          },
           primary: {
             main: "#008B8B",
           },
         },
         overrides: {
+          MuiTableCell: {
+            head: {
+              "&:last-child": {
+                width: "1px !important",
+                whiteSpace: "nowrap",
+              },
+            },
+          },
           MuiTypography: {
             h6: {
               textTransform: "capitalize",
@@ -126,6 +105,7 @@ class Pages extends Component {
           },
           MuiIconButton: {
             root: {
+              padding: "3px",
               "&:hover": {
                 backgroundColor: "transparent",
               },
@@ -135,52 +115,70 @@ class Pages extends Component {
       });
     },
     actions: {
-      getData: () => {
+      getData: (query) => {
         return new Promise((resolve) => {
-          setTimeout(() => {
+          setTimeout(async () => {
+            await this.setAsyncState({
+              currentPage: query.page + 1,
+            });
+
+            //TODO SORT SERVER SIDE!!!!!!!!!!
+            let truncatedData = this.state.pages.slice(
+              query.page,
+              query.pageSize
+            );
             let payload = {
-              totalCount: 100,
-              page: 1,
-              data: this.state.pages,
+              totalCount: this.state.pages.length,
+              page: query.page,
+              data: truncatedData,
             };
             resolve(payload);
           }, 300);
         });
       },
-      editable: {
-        onRowUpdate: (newData, oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataUpdate = [...this.state.pages];
-              const index = oldData.tableData.id;
-              dataUpdate[index] = newData;
-              this.setState({ pages: dataUpdate });
-              resolve();
-            }, 100);
-          }),
-        onRowDelete: (oldData) =>
-          new Promise((resolve, reject) => {
-            setTimeout(() => {
-              const dataDelete = [...this.state.pages];
-              const index = oldData.tableData.id;
-              dataDelete.splice(index, 1);
-              this.setState({ pages: dataDelete });
-              resolve();
-            }, 100);
-          }),
-      },
       customActions: [
         {
           tooltip: "Remove All Selected Users",
-          iconProps: { style: { color: "#DE4343" } },
-          icon: "delete",
+
+          icon: () => (
+            <IconButton>
+              <DeleteForever color="error" />
+            </IconButton>
+          ),
           onClick: (evt, data) =>
             alert("You want to delete " + data.length + " rows"),
         },
         {
-          iconProps: { style: { color: "#008B8B" } },
           position: "row",
-          icon: "visibility",
+          icon: () => (
+            <IconButton color="primary">
+              <Visibility />
+            </IconButton>
+          ),
+          tooltip: "Page Preview",
+          onClick: (event, rowData) => {
+            // go to page preview
+          },
+        },
+        {
+          onClick: (event, rowData) => {
+            window.open(`/pageEdit/${rowData.id}`);
+          },
+          position: "row",
+          tooltip: "Page Preview",
+          icon: () => (
+            <IconButton color="primary" size="medium">
+              <Edit className={this.props.classes.editItemIcon} />
+            </IconButton>
+          ),
+        },
+        {
+          position: "row",
+          icon: () => (
+            <IconButton color="primary" size="medium">
+              <DeleteForever color="error" />
+            </IconButton>
+          ),
           tooltip: "Page Preview",
           onClick: (event, rowData) => {
             // go to page preview
@@ -189,18 +187,6 @@ class Pages extends Component {
       ],
     },
     props: {
-      icons: {
-        Edit: () => (
-          <IconButton color="primary" size="medium">
-            <Edit className={this.props.classes.editItemIcon} />
-          </IconButton>
-        ),
-        Delete: () => (
-          <IconButton color="secondary" size="medium">
-            <DeleteForever />
-          </IconButton>
-        ),
-      },
       columns: [
         { title: "Title", field: "title" },
         {
@@ -208,15 +194,28 @@ class Pages extends Component {
           field: "category",
         },
         {
-          title: "Default",
-          field: "default",
+          title: "Publish",
+          headerStyle: {
+            width: "300px",
+          },
+          field: "publish",
         },
+        {
+          title: "Default Page",
+          headerStyle: {
+            width: "300px",
+          },
+          field: "defaultPage",
+        },
+        { title: "Id", field: "id", hidden: true },
       ],
       options: {
         selection: true,
         selectionStyle: styles.selection,
         actionsColumnIndex: -1,
-        actionsCellStyle: styles.tableActions,
+        actionsCellStyle: {
+          width: "auto",
+        },
         cellStyle: styles.tableCells,
         headerStyle: styles.tableHeader,
       },
@@ -225,26 +224,39 @@ class Pages extends Component {
 
   render() {
     const classes = this.props.classes;
-
+    console.log(this.state.pages);
     return (
       <React.Fragment>
         <div className={classes.pagesPanel}>
           <div className={classes.pagesWrapper}>
             <MuiThemeProvider theme={this.tableOptions.getTheme()}>
               <MaterialTable
+                classes={{
+                  actions: {
+                    width: "auto",
+                  },
+                }}
+                title="Pages List"
                 columns={this.tableOptions.props.columns}
                 data={this.tableOptions.actions.getData}
-                icons={this.tableOptions.props.icons}
                 options={this.tableOptions.props.options}
-                editable={this.tableOptions.actions.editable}
                 actions={this.tableOptions.actions.customActions}
               />
+              <Link
+                to="/pagesAdd"
+                style={{
+                  position: "fixed",
+                  right: this.tableOptions.getTheme().spacing(2),
+                  bottom: this.tableOptions.getTheme().spacing(2),
+                }}
+              >
+                <Fab color="primary" aria-label="add">
+                  <AddIcon />
+                </Fab>
+              </Link>
             </MuiThemeProvider>
           </div>
         </div>
-        <Link to="/pagesAdd">
-          <SpeedDialIcon className={classes.speedDialIcon} />
-        </Link>
       </React.Fragment>
     );
   }

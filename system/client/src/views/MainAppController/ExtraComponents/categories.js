@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/categories.js";
-import AddCircle from "@material-ui/icons/AddCircle";
-import Edit from "@material-ui/icons/Edit";
-import Delete from "@material-ui/icons/Delete";
+
+import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
 
 // from material-table
 import MaterialTable from "material-table";
@@ -18,69 +18,18 @@ class Categories extends Component {
   state = {
     showModal: false,
     cat_list: [],
-    categories: [
-      {
-        name: "Categ4",
-        description: "Categ4 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ5",
-        description: "Categ5 description",
-        id: shortid.generate(),
-        primary: <Checkbox disabled />,
-      },
-      {
-        name: "Categ3",
-        description: "Categ3 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ1",
-        description: "Categ1 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ2",
-        description: "Categ2 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ6",
-        description: "Categ6 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ7",
-        description: "Categ7 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ8",
-        description: "Categ8 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ9",
-        description: "Categ9 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-      {
-        name: "Categ10",
-        description: "Categ10 description",
-        id: shortid.generate(),
-        primary: <Checkbox />,
-      },
-    ],
+    categories: [],
   };
+
+  componentDidMount() {
+    const categories = JSON.parse(localStorage.getItem("categories"));
+
+    if (categories !== null) {
+      this.setState({
+        categories: categories,
+      });
+    }
+  }
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
@@ -121,6 +70,14 @@ class Categories extends Component {
           },
         },
         overrides: {
+          MuiTableCell: {
+            head: {
+              "&:last-child": {
+                width: "1px !important",
+                whiteSpace: "nowrap",
+              },
+            },
+          },
           MuiTypography: {
             h6: {
               textTransform: "capitalize",
@@ -128,6 +85,14 @@ class Categories extends Component {
           },
           MuiIconButton: {
             root: {
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            },
+          },
+          MuiIconButton: {
+            root: {
+              padding: "3px",
               "&:hover": {
                 backgroundColor: "transparent",
               },
@@ -152,7 +117,15 @@ class Categories extends Component {
       editable: {
         onRowAdd: (newData) =>
           new Promise((resolve, reject) => {
-            setTimeout(() => {
+            setTimeout(async () => {
+              let categories = [...this.state.categories];
+              newData.id = this.state.categories.length + 1;
+              let newCategories = categories.concat(newData);
+              await this.setState({ categories: newCategories });
+              await localStorage.setItem(
+                "categories",
+                JSON.stringify(newCategories)
+              );
               resolve();
             }, 1000);
           }),
@@ -180,8 +153,11 @@ class Categories extends Component {
       customActions: [
         {
           tooltip: "Remove All Selected Users",
-          iconProps: { style: { color: "#DE4343" } },
-          icon: "delete",
+          icon: () => (
+            <IconButton color="primary">
+              <DeleteForever color="error" />{" "}
+            </IconButton>
+          ),
           onClick: (evt, data) =>
             alert("You want to delete " + data.length + " rows"),
         },
@@ -190,18 +166,22 @@ class Categories extends Component {
     props: {
       icons: {
         Add: () => <AddCircle className={this.props.classes.addIcon} />,
-        Edit: () => <Edit style={{ color: "darkcyan" }} />,
-        Delete: () => <Delete style={{ color: "#DE4343" }} />,
+        Edit: () => (
+          <IconButton color="primary">
+            <Edit color="primary" />{" "}
+          </IconButton>
+        ),
+        Delete: () => (
+          <IconButton color="primary">
+            <DeleteForever color="error" />{" "}
+          </IconButton>
+        ),
       },
       columns: [
-        { title: "Name", field: "name" },
+        { title: "Title", field: "name" },
         {
           title: "Description",
           field: "description",
-        },
-        {
-          title: "Primary",
-          field: "primary",
         },
       ],
       options: {
@@ -225,6 +205,7 @@ class Categories extends Component {
           <div className={classes.categoriesWrapper}>
             <MuiThemeProvider theme={this.tableOptions.getTheme()}>
               <MaterialTable
+                title="Categories"
                 columns={this.tableOptions.props.columns}
                 data={this.tableOptions.actions.getData}
                 icons={this.tableOptions.props.icons}

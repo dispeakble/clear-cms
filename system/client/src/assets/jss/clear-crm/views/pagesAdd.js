@@ -25,7 +25,6 @@ const javascriptStyles = {
     },
     "& .react-grid-item:not(.react-grid-placeholder)": {
       background: "#FFFFFF",
-      border: "1px solid #CCC",
     },
     "& .react-grid-item.resizing": {
       opacity: "0.9",
