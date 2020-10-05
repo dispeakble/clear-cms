@@ -20,11 +20,11 @@ export class ProtocolService {
     }
 
     public sendMessage(data: any){
-        return this.redisClient.send(data.channel, data.payload).toPromise();
+        return this.redisClient.send({ message: data.channel }, data.payload).toPromise();
     }
 
     public emitEvent(data: any){
-        return this.redisClient.emit(data.channel, data.payload);
+        return this.redisClient.emit({ event: data.channel }, data.payload);
     }
 
     public ping(data: any, config: ModuleInterface){

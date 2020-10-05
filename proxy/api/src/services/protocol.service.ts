@@ -73,6 +73,7 @@ export class ProtocolService {
         const payload = {
             api: 'protocol',
             act: 'get',
+            channel:'proxy',
             payload: data
         };
         return this.redisService.send({message: this.channels.get}, payload).toPromise();
@@ -83,6 +84,13 @@ export class ProtocolService {
         return new Promise((resolve_map_request) => {
             setTimeout(resolve_map_request, 0);
         });
+    }
+
+    public ping(data: any, config: ModuleInterface){
+        return {
+            name: config.name,
+            version: config.version
+        };
     }
 
     public perform(data: any) {

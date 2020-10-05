@@ -19,10 +19,6 @@ export class ProtocolController {
         },
         dependencies: [
             {
-                name: 'system',
-                version: 'latest'
-            },
-            {
                 name: 'hub',
                 version: 'latest'
             }
@@ -36,7 +32,7 @@ export class ProtocolController {
         ) {
         this.protocolService.start().then(() => {
             this.registerModule({after: 0})
-            this.createWebSocket();
+            //this.createWebSocket();
         });
     }
 
@@ -44,6 +40,7 @@ export class ProtocolController {
     @Post('*')
     async onPost(@Res() res: Response, @Body() body: Body) {
 
+        //TODO only send to registered pods
         await this.protocolService.sendPost({res, body});//TODO try to use events and subscribers
         res.status(HttpStatus.CREATED).send();
     }
@@ -62,21 +59,30 @@ export class ProtocolController {
             params: req.params,
             headers: req.headers
         };
-        const app_data = await this.protocolService.sendGet(payload);//TODO try to use events and subscribers
+        const app_data = await this.protocolService.sendGet(payload);
 
-        res.status(HttpStatus.OK);
-        res.send(app_data);
+        console.log(app_data)
+
+        switch(app_data.type){
+            case 'Buffer':
+                res.status(HttpStatus.OK);
+                res.end(Buffer.from(app_data.data));
+                break;
+        }
+
+
     }
 
     //Microservice protocol
     @MessagePattern({message: 'proxy'})
-    public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    public async onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
+        console.log(data);
         const resp = await this.perform(data);
         return resp;
     }
 
     @EventPattern({event: 'proxy'})
-    public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    public async onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         console.log(data);
         const resp = await this.perform(data);
         return resp;
@@ -98,6 +104,7 @@ export class ProtocolController {
 
                     switch (moduleResponse.status) {
                         case 'failed':
+                            console.log(moduleResponse);
                             switch (moduleResponse.resolution.action) {
                                 case 'retry':
                                     await this.registerModule({
@@ -105,9 +112,16 @@ export class ProtocolController {
                                     });
                                     resolve_register(true);
                                     break;
+                                case 'restart':
+                                    console.log(JSON.stringify(moduleResponse));
+                                    console.log('Proxy module cannot be registered');
+                                    process.exit;
+
+                                    break;
                                 default:
                                     console.log(JSON.stringify(moduleResponse));
-                                    throw new Error('PROXY cannot be registered');
+                                    throw new Error('Proxy module cannot be registered');
+
                                     break;
                             }
                             break;

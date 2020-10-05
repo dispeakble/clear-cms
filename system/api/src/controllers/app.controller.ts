@@ -15,11 +15,15 @@ export class AppController {
         config: {
             permissions: {
                 stop: false,
-                restart: true
+                restart: true,
+                ports: [80]
             }
         },
         dependencies: [{
             name: 'hub',
+            version: 'latest'
+        }, {
+            name: 'proxy',
             version: 'latest'
         }],
     };
@@ -32,8 +36,7 @@ export class AppController {
 
     @MessagePattern({message: 'system'})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext){
-        const resp = this.perform(data);
-        return resp;
+        return this.perform(data);
     }
 
     @EventPattern({event: 'system'})
@@ -47,7 +50,18 @@ export class AppController {
     async onApplicationBootstrap() {
         await this.protocolService.start();
         this.logger.log('system connected to redis');
-        this.registerModule({after: 0})
+        this.registerModule({after: 0});
+        await this.protocolService.emitEvent({//TODO ask HUB for this. Hub must check mappings.
+            channel: 'proxy',
+            payload: {
+                api: 'protocol',
+                act: 'mapRequest',
+                channel: 'system',
+                payload: {
+                    channel: 'system',
+                    type: 'get'
+                }}
+        })
     }
 
     private registerModule(params){

@@ -28,7 +28,8 @@ export class ProtocolController {
 
     @MessagePattern({message: 'hub'})//TODO should be an ENV or a config
     public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext): Promise<payloadInterface> {
-        return await this.perform(data);
+        const response = await this.perform(data);
+        return response;
     }
 
     async onApplicationBootstrap() {
