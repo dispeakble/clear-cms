@@ -19,6 +19,8 @@ import { forwardRef } from "react";
 
 import MaterialTable from "material-table";
 
+// comment for testing
+
 const shortid = require("shortid");
 
 class Pages extends Component {
