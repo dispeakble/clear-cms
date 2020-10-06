@@ -17,7 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { forwardRef } from "react";
 
-// from material-table
 import MaterialTable from "material-table";
 
 const shortid = require("shortid");
