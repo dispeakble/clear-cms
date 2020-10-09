@@ -69,10 +69,6 @@ class Header extends Component {
     }
   }
 
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
-
   headerColorChange(self) {
     const { color, changeColorOnScroll, classes } = self.props;
     const windowsScrollTop = window.pageYOffset;
@@ -139,7 +135,7 @@ class Header extends Component {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={this.handleDrawerToggle}
+              onClick={this.props.handleDrawerToggle}
             >
               <Menu />
             </IconButton>
@@ -165,11 +161,11 @@ class Header extends Component {
           <Drawer
             variant="temporary"
             anchor={"left"}
-            open={this.state.mobileOpen}
+            open={this.props.mobileOpen}
             classes={{
               paper: classes.drawerPaper,
             }}
-            onClose={this.handleDrawerToggle}
+            onClose={this.props.handleDrawerToggle}
           >
             <div className={classes.appResponsive}>{this.props.leftLinks}</div>
           </Drawer>

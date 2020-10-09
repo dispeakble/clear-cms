@@ -2,7 +2,6 @@ import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
 
 const javascriptStyles = {
   gridLayout: {
-    position: "relative",
     margin: "0 30px 0",
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
@@ -108,7 +107,7 @@ const javascriptStyles = {
     transform: "translateZ(0px)",
     flexGrow: 1,
   },
-  speedDial: {
+  pageSpeedDial: {
     position: "fixed",
     right: "1rem",
     bottom: "1rem",
@@ -131,15 +130,21 @@ const javascriptStyles = {
     padding: "0",
     boxSizing: "border-box",
   },
-  removeItemIcon: {
+  itemSpeedDialWrapper: {
     position: "absolute",
-    bottom: 0,
+    bottom: 5,
     right: 0,
   },
+  removeItemIcon: {
+    color: "#F44336",
+  },
   editItemIconWrapper: {
+    color: "#008B8B",
+  },
+  editModuleIconWrapper: {
     position: "absolute",
-    bottom: 0,
-    right: 30,
+    top: 0,
+    right: 0,
   },
   editItemIcon: {
     color: "darkcyan",
@@ -232,6 +237,31 @@ const javascriptStyles = {
   },
   typography: {
     fontSize: "120%",
+  },
+  MenuModule: {
+    margin: "0",
+    listStyle: "none",
+    "& a": {
+      display: "block",
+      padding: "0 5px",
+      lineHeight: "15px",
+    },
+    "& li": {
+      padding: "0",
+      marginLeft: "5px",
+    },
+    "& li:hover": {
+      background: "rgba(255,255,255,0.15)",
+    },
+  },
+  MenuModuleHorizontal: {
+    "& li": {
+      display: "inline-block",
+      marginLeft: "0",
+    },
+  },
+  addIcon: {
+    color: "#008b8b",
   },
 };
 

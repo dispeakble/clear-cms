@@ -4,6 +4,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 // react components for routing our app without refresh
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -37,6 +38,7 @@ function ListItemLink(props) {
 }
 
 export default function HeaderLinks(props) {
+  let history = useHistory();
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -52,6 +54,7 @@ export default function HeaderLinks(props) {
       icon: "web",
       active: true,
     },
+    { toLink: "/categories", icon: "category", name: "Categories" },
     {
       toLink: "/blog",
       icon: "book",
@@ -79,6 +82,10 @@ export default function HeaderLinks(props) {
     },
   ];
 
+  const handlePathChange = (path) => {
+    history.push(`${path}`);
+  };
+
   return (
     <div className={classes.linksContainer}>
       <Accordion
@@ -101,7 +108,8 @@ export default function HeaderLinks(props) {
           <List className={classes.accordionLinks}>
             {moduleList.map((module) => (
               <Link to={module.toLink} className={classes.links}>
-                <ListItemLink
+                <ListItem
+                  onClick={() => props.closeDrawer()}
                   className={classes.accordionLinksItem}
                   button
                   activeClassName={module.active ? classes.listItemActive : {}}
@@ -110,7 +118,7 @@ export default function HeaderLinks(props) {
                     <Icon>{module.icon}</Icon>
                   </ListItemIcon>
                   <ListItemText primary={module.name} />
-                </ListItemLink>
+                </ListItem>
               </Link>
             ))}
           </List>
@@ -134,26 +142,33 @@ export default function HeaderLinks(props) {
         <Divider />
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
-            <ListItemLink
+            <ListItem
+              onClick={() => {
+                props.closeDrawer();
+                handlePathChange("/settings/general");
+              }}
               className={classes.accordionLinksItem}
               button
-              href="/settings/general"
             >
               <ListItemIcon>
                 <Icon>settings</Icon>
               </ListItemIcon>
               <ListItemText primary="General Settings" />
-            </ListItemLink>
-            <ListItemLink
+            </ListItem>
+
+            <ListItem
+              onClick={() => {
+                props.closeDrawer();
+                handlePathChange("/settings/adminProfile");
+              }}
               className={classes.accordionLinksItem}
               button
-              href="/settings/adminProfile"
             >
               <ListItemIcon>
                 <Icon>account_circle</Icon>
               </ListItemIcon>
               <ListItemText primary="Admin Profile" />
-            </ListItemLink>
+            </ListItem>
           </List>
         </AccordionDetails>
       </Accordion>

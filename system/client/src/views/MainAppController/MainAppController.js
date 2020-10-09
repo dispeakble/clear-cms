@@ -1,6 +1,7 @@
 import React, { Component, Suspense } from "react";
 import { Route } from "react-router-dom";
 import NotFound from "views/NotFound/NotFound";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class MainAppController extends Component {
   state = {};
@@ -23,10 +24,11 @@ class MainAppController extends Component {
 
     const currentPath = location.pathname;
     const pathnames = this.props.moduleList;
+    const pathObject = currentPath.split("/");
     let LazyComponent;
-    if (this.hasModule(currentPath, pathnames)) {
+    if (this.hasModule(currentPath, pathnames) && !pathObject[2]) {
       LazyComponent = React.lazy(() =>
-        import(`./ExtraComponents${currentPath}`)
+        import(`./ExtraComponents/${pathObject[1]}`)
       );
     } else {
       LazyComponent = NotFound;
@@ -34,7 +36,25 @@ class MainAppController extends Component {
     return (
       <Route
         render={() => (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <div
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  background: "none",
+                }}
+              >
+                <ClipLoader
+                  size={50}
+                  color={"#123abc"}
+                  loading={true}
+                  style={{ background: "none" }}
+                />
+              </div>
+            }
+          >
             <LazyComponent />
           </Suspense>
         )}

@@ -10,15 +10,26 @@ import IconButton from "@material-ui/core/IconButton";
 // from material-table
 import MaterialTable from "material-table";
 
+// for the modal
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Tooltip from "@material-ui/core/Tooltip";
+import Close from "@material-ui/icons/Close";
+import Button from "components/CustomButtons/Button.js";
+
 //todo import modal content to add category
 
 const shortid = require("shortid");
 
 class Categories extends Component {
   state = {
+    tableRef: React.createRef(),
     showModal: false,
     cat_list: [],
     categories: [],
+    showMultipleDeleteModal: false,
   };
 
   componentDidMount() {
@@ -98,6 +109,25 @@ class Categories extends Component {
               },
             },
           },
+          MuiIconButton: {
+            // for changing the color of the success and X icons on edit
+            colorInherit: {
+              "&:first-child": {
+                color: "#008b8b",
+                padding: "5px",
+              },
+              "&:last-child": {
+                color: "#FF0000",
+                padding: "5px",
+              },
+            },
+          },
+          MuiSvgIcon: {
+            // for changing the color of the hamburger icon
+            root: {
+              color: "#000000",
+            },
+          },
         },
       });
     },
@@ -121,13 +151,10 @@ class Categories extends Component {
               let categories = [...this.state.categories];
               newData.id = this.state.categories.length + 1;
               let newCategories = categories.concat(newData);
-              await this.setState({ categories: newCategories });
-              await localStorage.setItem(
-                "categories",
-                JSON.stringify(newCategories)
-              );
+              this.setState({ categories: newCategories });
+              localStorage.setItem("categories", JSON.stringify(newCategories));
               resolve();
-            }, 1000);
+            }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
@@ -146,20 +173,20 @@ class Categories extends Component {
               const index = oldData.tableData.id;
               dataDelete.splice(index, 1);
               this.setState({ categories: dataDelete });
+              localStorage.setItem("categories", JSON.stringify(dataDelete));
               resolve();
             }, 100);
           }),
       },
       customActions: [
         {
-          tooltip: "Remove All Selected Users",
+          tooltip: "Remove All Selected Categories",
           icon: () => (
             <IconButton color="primary">
               <DeleteForever color="error" />{" "}
             </IconButton>
           ),
-          onClick: (evt, data) =>
-            alert("You want to delete " + data.length + " rows"),
+          onClick: async (evt, data) => this.showMultipleDeleteModal(evt, data),
         },
       ],
     },
@@ -195,6 +222,29 @@ class Categories extends Component {
     },
   };
 
+  showMultipleDeleteModal = (evt, data) => {
+    this.setState({ multipleDeleteData: data, showMultipleDeleteModal: true });
+  };
+
+  closeMultipleDeleteModal = () => {
+    this.setState({ showMultipleDeleteModal: false });
+  };
+
+  multipleDeleteCallback = async () => {
+    let categories = [...this.state.categories];
+    let categIds = [];
+    let multipleDeleteData = this.state.multipleDeleteData;
+    multipleDeleteData.map((categ) => categIds.push(categ.id));
+    categories = categories.filter((categ) => {
+      return !categIds.includes(categ.id);
+    });
+    console.log(categories);
+    await this.setAsyncState({ categories });
+    localStorage.setItem("categories", JSON.stringify(categories));
+    this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
+    this.closeMultipleDeleteModal();
+  };
+
   render() {
     const classes = this.props.classes;
     const shortid = require("shortid");
@@ -206,8 +256,9 @@ class Categories extends Component {
             <MuiThemeProvider theme={this.tableOptions.getTheme()}>
               <MaterialTable
                 title="Categories"
+                tableRef={this.state.tableRef}
                 columns={this.tableOptions.props.columns}
-                data={this.tableOptions.actions.getData}
+                data={() => this.tableOptions.actions.getData()}
                 icons={this.tableOptions.props.icons}
                 options={this.tableOptions.props.options}
                 editable={this.tableOptions.actions.editable}
@@ -216,6 +267,53 @@ class Categories extends Component {
             </MuiThemeProvider>
           </div>
         </div>
+
+        <Dialog
+          classes={{
+            root: classes.center,
+            paper: classes.modal,
+          }}
+          open={this.state.showMultipleDeleteModal}
+          TransitionComponent={this.transition}
+          keepMounted
+          onClose={() => this.closeMultipleDeleteModal()}
+          aria-labelledby="classic-modal-slide-title"
+          aria-describedby="classic-modal-slide-description"
+        >
+          <DialogTitle
+            id="classic-modal-slide-title"
+            disableTypography
+            className={classes.modalHeader}
+          >
+            <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
+          </DialogTitle>
+          <DialogContent
+            id="classic-modal-slide-description"
+            className={classes.modalBody}
+          >
+            <div>Are you sure you want to proceed ?</div>
+          </DialogContent>
+
+          <DialogActions className={classes.modalFooter}>
+            <Button
+              disabled={this.state.isBtnDisabled}
+              color="transparent"
+              simple
+              onClick={() => this.multipleDeleteCallback()}
+            >
+              <div>Proceed</div>
+            </Button>
+            <Button
+              color="danger"
+              simple
+              onClick={() => {
+                this.closeMultipleDeleteModal();
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </React.Fragment>
     );
   }

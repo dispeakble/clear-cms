@@ -60,16 +60,27 @@ class App extends Component {
         name: "Photo Gallery",
       },
     ],
+    mobileOpen: false,
+  };
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
   };
   render() {
     const { pathname } = this.props.location;
     return (
       <React.Fragment>
-        {pathname !== "/pagePreview" ? (
+        {!pathname.includes("/pagePreview") ? (
           <Header
+            mobileOpen={this.state.mobileOpen}
             color="transparent"
             brand="Clear CRM"
-            leftLinks={<HeaderLinks moduleList={this.state.moduleList} />}
+            handleDrawerToggle={() => this.handleDrawerToggle()}
+            leftLinks={
+              <HeaderLinks
+                closeDrawer={() => this.handleDrawerToggle()}
+                moduleList={this.state.moduleList}
+              />
+            }
             fixed
             changeColorOnScroll={{
               height: 10,
@@ -85,10 +96,9 @@ class App extends Component {
           <Route path="/view-auth" component={ViewAuth} />
           <Route path="/recover-password" component={ViewAuth} />
           <Route path="/" exact component={Dashboard} />
-          //leave this always on the last place
           <Route path="/logout" component={ViewAuth} />
           <Route path="/pagesAdd" component={PagesAdd} />
-          <Route path="/pagePreview" component={PagePreview} />
+          <Route path="/pagePreview/:id" component={PagePreview} />
           <Route path="/pageEdit/:id" component={PagesAdd} />
           <Route
             render={(props) => (
@@ -99,7 +109,7 @@ class App extends Component {
             )}
           />
         </Switch>
-        <Footer />
+        {pathname.includes("/page") !== true ? <Footer /> : ""}
       </React.Fragment>
     );
   }
