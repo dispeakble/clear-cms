@@ -3,6 +3,14 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pages.js";
 
+// for the modal
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Close from "@material-ui/icons/Close";
+import Button from "components/CustomButtons/Button.js";
+
 import {
   Edit,
   DeleteForever,
@@ -15,7 +23,6 @@ import { Link } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import { forwardRef } from "react";
 
 import MaterialTable from "material-table";
 
@@ -30,6 +37,7 @@ class Pages extends Component {
     pages: [],
     currentPage: 1,
     currentEditId: "",
+    showMultipleDeleteModal: "",
   };
 
   componentDidMount() {
@@ -139,15 +147,14 @@ class Pages extends Component {
       },
       customActions: [
         {
-          tooltip: "Remove All Selected Users",
+          tooltip: "Remove All Selected Pages",
 
           icon: () => (
             <IconButton>
               <DeleteForever color="error" />
             </IconButton>
           ),
-          onClick: (evt, data) =>
-            alert("You want to delete " + data.length + " rows"),
+          onClick: async (evt, data) => this.showMultipleDeleteModal(evt, data),
         },
         {
           position: "row",
@@ -158,20 +165,21 @@ class Pages extends Component {
           ),
           tooltip: "Page Preview",
           onClick: (event, rowData) => {
-            // go to page preview
+            window.open(`/pagePreview/${Number(rowData.tableData.id) + 1}`);
+            console.log(rowData);
           },
         },
         {
-          onClick: (event, rowData) => {
-            window.open(`/pageEdit/${rowData.id}`);
-          },
           position: "row",
-          tooltip: "Page Preview",
+          tooltip: "Edit",
           icon: () => (
             <IconButton color="primary" size="medium">
               <Edit className={this.props.classes.editItemIcon} />
             </IconButton>
           ),
+          onClick: (event, rowData) => {
+            window.open(`/pageEdit/${Number(rowData.tableData.id) + 1}`);
+          },
         },
         {
           position: "row",
@@ -180,9 +188,22 @@ class Pages extends Component {
               <DeleteForever color="error" />
             </IconButton>
           ),
-          tooltip: "Page Preview",
-          onClick: (event, rowData) => {
-            // go to page preview
+          tooltip: "Delete",
+          onClick: async (event, rowData) => {
+            const pages = [...this.state.pages];
+            const index = rowData.tableData.id;
+            pages.splice(index, 1);
+
+            let pagesInStorage = JSON.parse(localStorage.getItem("pages"));
+            let newPagesInStorage = [...pagesInStorage];
+            newPagesInStorage.splice(index, 1);
+
+            await localStorage.setItem(
+              "pages",
+              JSON.stringify(newPagesInStorage)
+            );
+
+            await this.setAsyncState({ pages });
           },
         },
       ],
@@ -223,6 +244,43 @@ class Pages extends Component {
     },
   };
 
+  showMultipleDeleteModal = (evt, data) => {
+    this.setState({ multipleDeleteData: data, showMultipleDeleteModal: true });
+  };
+
+  closeMultipleDeleteModal = () => {
+    this.setState({ showMultipleDeleteModal: false });
+  };
+
+  multipleDeleteCallback = async () => {
+    let pages = [...JSON.parse(localStorage.getItem("pages"))];
+    let pagesIds = [];
+    let multipleDeleteData = this.state.multipleDeleteData;
+    multipleDeleteData.map((page) => pagesIds.push(page.id));
+    pages = pages.filter((page) => {
+      return !pagesIds.includes(page.id);
+    });
+    console.log(pages);
+
+    let pagesToSet = [];
+
+    pages.map((page) => {
+      pagesToSet.push({
+        id: page.id,
+        title: page.pageConfig.pageTitle,
+        publish: <Checkbox disabled checked={page.pageConfig.publish} />,
+        defaultPage: (
+          <Checkbox disabled checked={page.pageConfig.defaultPage} />
+        ),
+        category: page.pageConfig.category,
+      });
+    });
+
+    await this.setAsyncState({ pages: pagesToSet });
+    localStorage.setItem("pages", JSON.stringify(pages));
+    this.closeMultipleDeleteModal();
+  };
+
   render() {
     const classes = this.props.classes;
     console.log(this.state.pages);
@@ -239,7 +297,7 @@ class Pages extends Component {
                 }}
                 title="Pages List"
                 columns={this.tableOptions.props.columns}
-                data={this.tableOptions.actions.getData}
+                data={this.state.pages} // if u use getData() it won't work
                 options={this.tableOptions.props.options}
                 actions={this.tableOptions.actions.customActions}
               />
@@ -258,6 +316,52 @@ class Pages extends Component {
             </MuiThemeProvider>
           </div>
         </div>
+        <Dialog
+          classes={{
+            root: classes.center,
+            paper: classes.modal,
+          }}
+          open={this.state.showMultipleDeleteModal}
+          TransitionComponent={this.transition}
+          keepMounted
+          onClose={() => this.closeMultipleDeleteModal()}
+          aria-labelledby="classic-modal-slide-title"
+          aria-describedby="classic-modal-slide-description"
+        >
+          <DialogTitle
+            id="classic-modal-slide-title"
+            disableTypography
+            className={classes.modalHeader}
+          >
+            <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
+          </DialogTitle>
+          <DialogContent
+            id="classic-modal-slide-description"
+            className={classes.modalBody}
+          >
+            <div>Are you sure you want to proceed ?</div>
+          </DialogContent>
+
+          <DialogActions className={classes.modalFooter}>
+            <Button
+              disabled={this.state.isBtnDisabled}
+              color="transparent"
+              simple
+              onClick={() => this.multipleDeleteCallback()}
+            >
+              <div>Proceed</div>
+            </Button>
+            <Button
+              color="danger"
+              simple
+              onClick={() => {
+                this.closeMultipleDeleteModal();
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       </React.Fragment>
     );
   }

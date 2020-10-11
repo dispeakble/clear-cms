@@ -4,6 +4,8 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
+import parse from "html-react-parser";
+import { LinkSharp } from "@material-ui/icons";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -35,19 +37,19 @@ class PagePreview extends React.PureComponent {
   };
 
   componentDidMount() {
-    const items = JSON.parse(localStorage.getItem("items"));
+    const allPages = JSON.parse(localStorage.getItem("pages"));
+    const currentPage = allPages[Number(this.props.match.params.id) - 1];
+    const items = currentPage.items;
+    const pageConfig = currentPage.pageConfig;
+    console.log(items);
+
     this.setState({
       items: items,
-    });
-
-    const pageConfig = JSON.parse(localStorage.getItem("pageConfig"));
-
-    this.setState({
       pageConfig,
     });
   }
 
-  createElement(el) {
+  createElement(el, classes) {
     const i = el.i;
     el.static = true;
 
@@ -74,7 +76,7 @@ class PagePreview extends React.PureComponent {
       style.backgroundImage = el.backgroundImage;
     }
 
-    if (el.fontSize) {
+    if (Number(el.fontSize)) {
       style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
       style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
     }
@@ -107,20 +109,59 @@ class PagePreview extends React.PureComponent {
         LazyComponent = "";
     }
 
-    return (
-      <div key={i} data-grid={el} style={style}>
-        {el.module ? (
-          <Suspense fallback={loadingFallback}>
-            <LazyComponent />
-          </Suspense>
-        ) : (
-          ""
-        )}
-      </div>
-    );
+    switch (el.module) {
+      case "Text Module":
+        return (
+          <div key={i} data-grid={el} style={style}>
+            {el.moduleOptions ? parse(el.moduleOptions.data) : ""}
+          </div>
+        );
+      case "Menu Module":
+        let link_style = {
+          display: "block",
+          padding: "0 15px",
+        };
+        if (el.textColor) {
+          link_style.color = el.textColor;
+        }
+        // if (el.fontSize) {
+        //   link_style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+        //   link_style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+        // }
+        return (
+          <div key={i} data-grid={el} style={style}>
+            <ul
+              style={{
+                margin: "0",
+                padding: "0",
+                listStyle: "none",
+              }}
+            >
+              {el.moduleOptions.data.map((elm, i) => {
+                return (
+                  <li
+                    style={{
+                      display: "inline-block",
+                    }}
+                  >
+                    <a
+                      style={el.moduleOptions.isVertical ? link_style : {}}
+                      title={elm.title}
+                      href={elm.link}
+                      target={elm.targetLink}
+                    >
+                      {elm.text} ADD HOVER EFFECT :D
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        );
+    }
   }
-  // for MuiThemeProvider
 
+  // for MuiThemeProvider
   getTheme = () => {
     /*
     error?: PaletteColorOptions;
@@ -175,7 +216,9 @@ class PagePreview extends React.PureComponent {
                     {...this.props}
                   >
                     {this.state.items
-                      ? _.map(this.state.items, (el) => this.createElement(el))
+                      ? _.map(this.state.items, (el) =>
+                          this.createElement(el, classes)
+                        )
                       : ""}
                   </ResponsiveReactGridLayout>
                 </div>
