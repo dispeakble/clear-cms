@@ -100,6 +100,12 @@ class PagePreview extends React.PureComponent {
         LazyComponent = React.lazy(() => import(`./modules/TextModule`));
         break;
       case "Header Module":
+        style.backgroundImage = `url(${el.moduleOptions.data.bg})`;
+        style.backgroundRepeat = `no-repeat`;
+        style.backgroundSize = 'cover';
+        style.backgroundPosition = 'center center';
+        style.position = el.moduleOptions.data.isModuleSticky ? 'sticky !important' : ''
+        style.top = el.moduleOptions.data.isModuleSticky ? '0 !important' : ''
         LazyComponent = React.lazy(() => import(`./modules/HeaderModule`));
         break;
       case "Menu Module":
@@ -110,6 +116,13 @@ class PagePreview extends React.PureComponent {
     }
 
     switch (el.module) {
+      case "Header Module":
+        return (
+          <div  key={i} data-grid={el} style={style}>
+            <a href={el.moduleOptions.data.logoLink} target='_blank'><img className={classes.logoImage} src={el.moduleOptions.data.logoImage} alt={el.moduleOptions.data.logoTitle}/></a>
+          </div>
+        );
+        break;
       case "Text Module":
         return (
           <div key={i} data-grid={el} style={style}>
