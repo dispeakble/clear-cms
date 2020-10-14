@@ -122,7 +122,7 @@ class PagesAdd extends React.PureComponent {
     editItemBorderColor: "",
     editItemBackgroundColor: "",
     editItemFontSize: "",
-    editItemFontFamily: "",
+    editItemFontFamily: -1,
     editItemTextColor: "",
     showEditMenu: false,
     itemEditId: "",
@@ -281,7 +281,6 @@ class PagesAdd extends React.PureComponent {
   };
 
   createElement(el) {
-    console.log("will render item box");
     const removeStyle = {
       position: "absolute",
       right: "2px",
@@ -387,32 +386,46 @@ class PagesAdd extends React.PureComponent {
       },
     ];
 
-    let moduleAction = {
-      icon: el.module ? (
-        <Suspense fallback={loadingFallback}>
-          <LazyModule
-            boxId={el.i}
-            moduleOptions={el.moduleOptions}
-            handleSave={(id, data, isVertical) => {
-              this.setTemporaryModuleOptions(id, data, isVertical);
-              this.saveModuleOptions(id, data, isVertical);
-            }}
-          />
-        </Suspense>
-      ) : (
-        ""
-      ),
-      name: "Edit Module",
-    };
+    // let moduleAction = {
+    //   icon: el.module ? (
+    //     <Suspense fallback={loadingFallback}>
+    //       <LazyModule
+    //         boxId={el.i}
+    //         moduleOptions={el.moduleOptions}
+    //         handleSave={(id, data, isVertical) => {
+    //           this.setTemporaryModuleOptions(id, data, isVertical);
+    //           this.saveModuleOptions(id, data, isVertical);
+    //         }}
+    //       />
+    //     </Suspense>
+    //   ) : (
+    //     ""
+    //   ),
+    //   name: "Edit Module",
+    // };
 
-    if (el.module.length > 0) {
-      itemActions.push(moduleAction);
-    }
+    // if (el.module.length > 0) {
+    //   itemActions.push(moduleAction);
+    // }
 
     return (
       <div key={i} data-grid={el} style={itemStyle}>
-        <p style={{ fontSize: "inherit", color: "inherit" }}>{el.title}</p>
-        <span className={this.props.classes.editModuleIconWrapper}></span>
+        <p style={{ fontSize: "12px", color: "black" }}>{el.title}</p>
+        <span className={this.props.classes.editModuleIconWrapper}>
+          {el.module ? (
+            <Suspense fallback={loadingFallback}>
+              <LazyModule
+                boxId={el.i}
+                moduleOptions={el.moduleOptions}
+                handleSave={(id, data) => {
+                  this.saveModuleOptions(id, data);
+                }}
+              />
+            </Suspense>
+          ) : (
+            ""
+          )}
+        </span>
         <span className={this.props.classes.itemSpeedDialWrapper}>
           <SpeedDial
             FabProps={{ size: "small" }}
@@ -579,9 +592,11 @@ class PagesAdd extends React.PureComponent {
   }
 
   getModuleIndex(name) {
-    return this.state.modulesList.findIndex((mod) => {
-      return mod.label === name;
-    });
+    return Number(
+      this.state.modulesList.findIndex((mod) => {
+        return mod.label === name;
+      })
+    );
   }
 
   getFontFamilyItem(name) {
@@ -616,7 +631,7 @@ class PagesAdd extends React.PureComponent {
       editItemBorderStyle: item.borderStyle,
       editItemBackgroundColor: item.backgroundColor || "",
       editItemFontSize: item.fontSize || "",
-      editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || "",
+      editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
       editItemTextColor: item.textColor || "",
       editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
       editItemFontSizeShow: item.hasOwnProperty("fontSize"),
@@ -716,7 +731,7 @@ class PagesAdd extends React.PureComponent {
     const fontFamily = newValue ? this.getFontFamilyIndex(newValue.label) : "";
 
     await this.setAsyncState({
-      editItemFontFamily: fontFamily,
+      editItemFontFamily: +fontFamily,
       pageOrItemFontFamily: "item",
     });
   };
@@ -854,6 +869,10 @@ class PagesAdd extends React.PureComponent {
     return createMuiTheme({
       overrides: {
         MuiSpeedDial: {
+          actionsClosed: {
+            height: "0",
+            oveflow: "hidden",
+          },
           fab: {
             backgroundColor: "darkcyan",
             "&:hover": {
@@ -1111,6 +1130,22 @@ class PagesAdd extends React.PureComponent {
                 <div className={classes.sideMenuEditorForm}>
                   <h3>Edit Box Properties</h3>
                   <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Show scrollbars if the content exceeds the box">
+                        <Switch
+                          checked={this.state.showScrollbars}
+                          onChange={() => {
+                            this.setState({
+                              showScrollbars: !this.state.showScrollbars,
+                            });
+                          }}
+                          value={Number(this.state.showScrollbars)}
+                        />
+                      </Tooltip>
+                      Scrollbars
+                    </Typography>
+                  </div>
+                  <div>
                     <CustomInput
                       labelText="Title"
                       id="itemTitle"
@@ -1193,7 +1228,7 @@ class PagesAdd extends React.PureComponent {
                           checked={this.state.editItemFontFamilyShow}
                           onChange={() => {
                             this.setState({
-                              editItemFontFamily: "",
+                              editItemFontFamily: -1,
                               editItemFontFamilyShow: !this.state
                                 .editItemFontFamilyShow,
                             });
@@ -1213,10 +1248,7 @@ class PagesAdd extends React.PureComponent {
                       <Autocomplete
                         onChange={this.handleItemFontFamily}
                         className={this.props.classes.option}
-                        value={this.getFontFamilyItem(
-                          this.state.editItemFontFamily
-                        )}
-                        defaultValue={
+                        value={
                           this.state.fontFamilies[this.state.editItemFontFamily]
                         }
                         options={this.state.fontFamilies}
@@ -1625,6 +1657,7 @@ class PagesAdd extends React.PureComponent {
                   }}
                   // margin={this.state.boxSpacing} primeste un array cu 2 valori
                   isBounded={true}
+                  isDraggable={false}
                   margin={this.state.config.layoutBoxSpacing}
                   containerPadding={this.state.config.layoutBoxPadding}
                   onLayoutChange={(layout) => {

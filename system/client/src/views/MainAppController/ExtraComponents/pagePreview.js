@@ -102,24 +102,41 @@ class PagePreview extends React.PureComponent {
       case "Header Module":
         style.backgroundImage = `url(${el.moduleOptions.data.bg})`;
         style.backgroundRepeat = `no-repeat`;
-        style.backgroundSize = 'cover';
-        style.backgroundPosition = 'center center';
-        style.position = el.moduleOptions.data.isModuleSticky ? 'sticky !important' : ''
-        style.top = el.moduleOptions.data.isModuleSticky ? '0 !important' : ''
+        style.backgroundSize = "cover";
+        style.backgroundPosition = "center center";
+        style.position = "fixed !important";
+        style.top = "0";
         LazyComponent = React.lazy(() => import(`./modules/HeaderModule`));
         break;
       case "Menu Module":
         LazyComponent = React.lazy(() => import(`./modules/MenuModule`));
         break;
       default:
-        LazyComponent = "";
+        LazyComponent = null;
     }
 
     switch (el.module) {
       case "Header Module":
         return (
-          <div  key={i} data-grid={el} style={style}>
-            <a href={el.moduleOptions.data.logoLink} target='_blank'><img className={classes.logoImage} src={el.moduleOptions.data.logoImage} alt={el.moduleOptions.data.logoTitle}/></a>
+          <div
+            key={i}
+            data-grid={el}
+            style={style}
+            className={
+              el.moduleOptions.data.isModuleSticky ? classes.itemWrapper : ""
+            }
+          >
+            <a
+              title={el.moduleOptions.data.logoTitle}
+              href={el.moduleOptions.data.logoLink}
+              target="_blank"
+            >
+              <img
+                className={classes.logoImage}
+                src={el.moduleOptions.data.logoImage}
+                alt={el.moduleOptions.data.logoTitle}
+              />
+            </a>
           </div>
         );
         break;
@@ -129,6 +146,7 @@ class PagePreview extends React.PureComponent {
             {el.moduleOptions ? parse(el.moduleOptions.data) : ""}
           </div>
         );
+        break;
       case "Menu Module":
         let link_style = {
           display: "block",
@@ -150,7 +168,7 @@ class PagePreview extends React.PureComponent {
                 listStyle: "none",
               }}
             >
-              {el.moduleOptions.data.map((elm, i) => {
+              {el.moduleOptions.data.links.map((elm, i) => {
                 return (
                   <li
                     style={{
@@ -171,6 +189,9 @@ class PagePreview extends React.PureComponent {
             </ul>
           </div>
         );
+        break;
+      default:
+        return <React.Fragment></React.Fragment>;
     }
   }
 

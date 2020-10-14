@@ -263,6 +263,12 @@ const javascriptStyles = {
   addIcon: {
     color: "#008b8b",
   },
+  dropzoneColumn: {
+    width: "50%",
+    display: "inline-block",
+    padding: "1rem",
+    verticalAlign: "text-top",
+  },
 };
 
 export default javascriptStyles;

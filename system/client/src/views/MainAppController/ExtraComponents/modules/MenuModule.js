@@ -297,15 +297,18 @@ class MenuModule extends Component {
           textAlign: "center",
         }}
       >
-        <IconButton
-          onClick={() => this.handleEdit(this.props.boxId)}
-          color="primary"
-          size="medium"
-        >
-          <ArtTrack />
-        </IconButton>
+        <Tooltip title="Edit Menu Module">
+          <IconButton
+            onClick={() => this.handleEdit(this.props.boxId)}
+            color="primary"
+            size="medium"
+          >
+            <ArtTrack />
+          </IconButton>
+        </Tooltip>
 
         <Dialog
+          onBackdropClick="false"
           classes={{
             root: classes.center,
             paper: classes.modal,
@@ -359,11 +362,10 @@ class MenuModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.handleSave(
-                  this.state.itemModuleEditId,
-                  this.state.menuOptions,
-                  this.state.isMenuVertical
-                );
+                this.props.handleSave(this.state.itemModuleEditId, {
+                  links: this.state.menuOptions,
+                  isVertical: this.state.isMenuVertical,
+                });
                 this.closeModuleOptionsModal();
               }}
             >

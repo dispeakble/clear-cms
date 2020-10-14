@@ -100,6 +100,16 @@ const javascriptStyles = {
       padding: "10px",
     },
   },
+  previewItemWrapper: {
+    opacity: "0.5",
+  },
+  logoImage: {
+    width: "10%",
+  },
+  itemWrapper: {
+    position: "sticky !important",
+    top: 0,
+  },
 };
 
 export default javascriptStyles;
