@@ -191,7 +191,7 @@ class PagePreview extends React.PureComponent {
         );
         break;
       default:
-        return <React.Fragment></React.Fragment>;
+        return <div key={i} data-grid={el} style={style}></div>;
     }
   }
 
