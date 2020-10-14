@@ -74,6 +74,7 @@ class HeaderModule extends Component {
   }
 
   handleEdit = async (id) => {
+    this.props.onStartEditingModule();
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
@@ -256,6 +257,7 @@ class HeaderModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
+                this.props.onEndEditingModule();
                 this.props.handleSave(this.state.itemModuleEditId, {
                   bg: this.state.backgroundImage,
                   logoImage: this.state.logoImage,

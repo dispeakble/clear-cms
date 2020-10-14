@@ -282,6 +282,7 @@ class MenuModule extends Component {
   }
 
   handleEdit = async (id) => {
+    this.props.onStartEditingModule();
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
@@ -362,6 +363,7 @@ class MenuModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
+                this.props.onEndEditingModule();
                 this.props.handleSave(this.state.itemModuleEditId, {
                   links: this.state.menuOptions,
                   isVertical: this.state.isMenuVertical,

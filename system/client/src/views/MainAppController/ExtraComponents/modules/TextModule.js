@@ -64,6 +64,7 @@ class TextModule extends Component {
   }
 
   handleEdit = async (id) => {
+    this.props.onStartEditingModule();
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
@@ -182,6 +183,7 @@ class TextModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
+                this.props.onEndEditingModule();
                 this.props.handleSave(
                   this.state.itemModuleEditId,
                   this.state.textContent
