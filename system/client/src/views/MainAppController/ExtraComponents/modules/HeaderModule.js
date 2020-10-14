@@ -20,17 +20,16 @@ import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import Divider from "@material-ui/core/Divider";
 import CustomInput from "components/CustomInput/CustomInput.js";
-
-
+import { BluetoothAudioSharp } from "@material-ui/icons";
 
 class HeaderModule extends Component {
   state = {
     itemModuleEditId: "",
     showModuleOptionsModal: false,
-    modalTitle: "Modal Background",
+    modalTitle: "Header Module Options",
     isModuleSticky: false,
-    logoTitle: '',
-    logoLink: '',
+    logoTitle: "",
+    logoLink: "",
   };
   getTheme = () => {
     /*
@@ -56,6 +55,20 @@ class HeaderModule extends Component {
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
 
+  componentDidMount() {
+    if (this.props.moduleOptions.data) {
+      let moduleOptions = this.props.moduleOptions.data;
+      console.log(moduleOptions.logoTitle);
+      this.setState({
+        isModuleSticky: moduleOptions.isModuleSticky,
+        logoTitle: moduleOptions.logoTitle,
+        logoLink: moduleOptions.logoLink,
+        backgroundImage: moduleOptions.bg,
+        logoImage: moduleOptions.logoImage,
+      });
+    }
+  }
+
   closeModuleOptionsModal() {
     this.setState({ showModuleOptionsModal: false });
   }
@@ -67,45 +80,32 @@ class HeaderModule extends Component {
     });
   };
 
-  handleInputChange(event) {
-    this.setState({
-      textContent: event.target.value,
-    });
-  }
-
-  handleRichInputChange(event) {
-    this.setState({
-      textContent: event,
-    });
-  }
-
   toBase64(file) {
     return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
     });
   }
 
   handleItemBgImage = async (event) => {
-    if(event.length){
-      let strings = await Promise.all(event.map(file => this.toBase64(file)));
+    if (event.length) {
+      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
       this.setAsyncState({
-        backgroundImage:strings[0]
+        backgroundImage: strings[0],
       });
     }
   };
 
   handleItemLogo = async (event) => {
-    if(event.length){
-      let strings = await Promise.all(event.map(file => this.toBase64(file)));
+    if (event.length) {
+      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
       this.setAsyncState({
-        logoImage: strings[0]
+        logoImage: strings[0],
       });
     }
-    
-  }
+  };
 
   handleInputChange = async (event) => {
     switch (event.target.id) {
@@ -162,69 +162,92 @@ class HeaderModule extends Component {
             id="classic-modal-slide-description"
             className={classes.modalBody}
           >
-            {" "}
-            <Typography id="discrete-slider" gutterBottom>
-           <Tooltip title="Make the header permanently visible">
-                        <Switch
-                          checked={this.state.isModuleSticky}
-                          onChange={() => {
-                            this.setState({
-                              isModuleSticky: !this.state.isModuleSticky,
-                            });
-                          }}
-                          value={this.state.isModuleSticky}
-                        />
-                      </Tooltip>
-        Sticky Module                   
-      </Typography>
-      <Divider/>
-
-        <div className={classes.column}>
-      <Typography  id="discrete-slider" gutterBottom>
-        Upload Background Image
-            <DropzoneArea
-              filesLimit={1}
-              className={classes.dropzone}
-              onChange={this.handleItemBgImage.bind(this)}
-            />
-      </Typography>
-      </div>
-      
-      <div className={classes.column}>
-      <Typography id="discrete-slider" gutterBottom>
-        Upload Logo Image
-
-            <DropzoneArea
-              filesLimit={1}
-              className={classes.dropzone}
-              onChange={this.handleItemLogo.bind(this)}
-            />
-      </Typography>
-      <CustomInput
-                      labelText="Title"
-                      id="logoTitle"
-                      required="required"
-                      formControlProps={{
-                        fullWidth: true,
-                        onChange: (event) => this.handleInputChange(event),
-                      }}
-                      inputProps={{
-                        value: this.state.editItemTitle,
-                        type: "text",
-                      }} />
-                      <CustomInput
-                      labelText="Link"
-                      id="logoLink"
-                      required="required"
-                      formControlProps={{
-                        fullWidth: true,
-                        onChange: (event) => this.handleInputChange(event),
-                      }}
-                      inputProps={{
-                        value: this.state.editItemTitle,
-                        type: "text",
-                      }} />
-      </div>
+            <Typography
+              style={{
+                flex: '0 1 ~ "calc(33% - 15px)"',
+              }}
+              id="discrete-slider"
+              gutterBottom
+            >
+              <Tooltip title="Make the header permanently visible">
+                <Switch
+                  checked={this.state.isModuleSticky}
+                  onChange={() => {
+                    this.setState({
+                      isModuleSticky: !this.state.isModuleSticky,
+                    });
+                  }}
+                  value={this.state.isModuleSticky}
+                />
+              </Tooltip>
+              Sticky Header
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <div
+                style={{
+                  margin: "0 20px",
+                  width: "calc(50% - 10px)",
+                }}
+              >
+                <CustomInput
+                  labelText="Logo Title"
+                  id="logoTitle"
+                  required="required"
+                  formControlProps={{
+                    fullWidth: true,
+                    onChange: (event) => this.handleInputChange(event),
+                  }}
+                  inputProps={{
+                    value: this.state.logoTitle,
+                    type: "text",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  margin: "0 20px",
+                  width: "calc(50% - 10px)",
+                }}
+              >
+                <CustomInput
+                  labelText="Logo Link"
+                  id="logoLink"
+                  required="required"
+                  formControlProps={{
+                    fullWidth: true,
+                    onChange: (event) => this.handleInputChange(event),
+                  }}
+                  inputProps={{
+                    value: this.state.logoLink,
+                    type: "text",
+                  }}
+                />
+              </div>
+            </div>
+            <div className={classes.dropzoneColumn}>
+              <Typography id="discrete-slider" gutterBottom>
+                Upload Background Image
+                <DropzoneArea
+                  filesLimit={1}
+                  className={classes.dropzone}
+                  onChange={this.handleItemBgImage.bind(this)}
+                />
+              </Typography>
+            </div>
+            <div className={classes.dropzoneColumn}>
+              <Typography id="discrete-slider" gutterBottom>
+                Upload Logo Image
+                <DropzoneArea
+                  filesLimit={1}
+                  className={classes.dropzone}
+                  onChange={this.handleItemLogo.bind(this)}
+                />
+              </Typography>
+            </div>
           </DialogContent>
 
           <DialogActions className={classes.modalFooter}>
@@ -232,16 +255,13 @@ class HeaderModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.handleSave(
-                  this.state.itemModuleEditId,
-                  {
-                    bg:this.state.backgroundImage,
-                    logoImage: this.state.logoImage,
-                    logoTitle: this.state.logoTitle,
-                    logoLink: this.state.logoLink,
-                    isModuleSticky: this.state.isModuleSticky
-                  }
-                );
+                this.props.handleSave(this.state.itemModuleEditId, {
+                  bg: this.state.backgroundImage,
+                  logoImage: this.state.logoImage,
+                  logoTitle: this.state.logoTitle,
+                  logoLink: this.state.logoLink,
+                  isModuleSticky: this.state.isModuleSticky,
+                });
                 this.closeModuleOptionsModal();
               }}
             >
@@ -250,6 +270,10 @@ class HeaderModule extends Component {
             <Button
               color="danger"
               onClick={() => {
+                this.setState({
+                  logoTitle: this.props.moduleOptions.data.logoTitle,
+                  logoLink: this.props.moduleOptions.data.logoLink,
+                });
                 this.closeModuleOptionsModal();
               }}
             >

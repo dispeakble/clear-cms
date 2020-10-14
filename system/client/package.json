@@ -32,6 +32,8 @@
     "react-scripts": "3.4.1",
     "react-slick": "0.26.1",
     "react-spinners": "^0.9.0",
+    "react-sticky": "^6.0.3",
+    "react-stickynode": "^3.0.4",
     "react-swipeable-views": "0.13.9",
     "reactcss": "^1.2.3",
     "shortid": "^2.2.15"
