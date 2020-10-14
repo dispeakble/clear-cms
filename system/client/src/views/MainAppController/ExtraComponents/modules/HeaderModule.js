@@ -16,11 +16,21 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import Close from "@material-ui/icons/Close";
 
+import Typography from "@material-ui/core/Typography";
+import Switch from "@material-ui/core/Switch";
+import Divider from "@material-ui/core/Divider";
+import CustomInput from "components/CustomInput/CustomInput.js";
+
+
+
 class HeaderModule extends Component {
   state = {
     itemModuleEditId: "",
     showModuleOptionsModal: false,
-    modalTitle: "Modal Background Image",
+    modalTitle: "Modal Background",
+    isModuleSticky: false,
+    logoTitle: '',
+    logoLink: '',
   };
   getTheme = () => {
     /*
@@ -69,8 +79,47 @@ class HeaderModule extends Component {
     });
   }
 
+  toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+  }
+
   handleItemBgImage = async (event) => {
-    console.log("Background Image Updated");
+    if(event.length){
+      let strings = await Promise.all(event.map(file => this.toBase64(file)));
+      this.setAsyncState({
+        backgroundImage:strings[0]
+      });
+    }
+  };
+
+  handleItemLogo = async (event) => {
+    if(event.length){
+      let strings = await Promise.all(event.map(file => this.toBase64(file)));
+      this.setAsyncState({
+        logoImage: strings[0]
+      });
+    }
+    
+  }
+
+  handleInputChange = async (event) => {
+    switch (event.target.id) {
+      case "logoTitle":
+        let logoTitle = [...this.state.logoTitle];
+        logoTitle = event.target.value;
+        this.setState({ logoTitle });
+        break;
+      case "logoLink":
+        let logoLink = [...this.state.logoLink];
+        logoLink = event.target.value;
+        this.setState({ logoLink });
+        break;
+    }
   };
 
   render() {
@@ -114,11 +163,68 @@ class HeaderModule extends Component {
             className={classes.modalBody}
           >
             {" "}
+            <Typography id="discrete-slider" gutterBottom>
+           <Tooltip title="Make the header permanently visible">
+                        <Switch
+                          checked={this.state.isModuleSticky}
+                          onChange={() => {
+                            this.setState({
+                              isModuleSticky: !this.state.isModuleSticky,
+                            });
+                          }}
+                          value={this.state.isModuleSticky}
+                        />
+                      </Tooltip>
+        Sticky Module                   
+      </Typography>
+      <Divider/>
+
+        <div className={classes.column}>
+      <Typography  id="discrete-slider" gutterBottom>
+        Upload Background Image
             <DropzoneArea
-              onChange={(data) => console.log(data)}
+              filesLimit={1}
               className={classes.dropzone}
               onChange={this.handleItemBgImage.bind(this)}
             />
+      </Typography>
+      </div>
+      
+      <div className={classes.column}>
+      <Typography id="discrete-slider" gutterBottom>
+        Upload Logo Image
+
+            <DropzoneArea
+              filesLimit={1}
+              className={classes.dropzone}
+              onChange={this.handleItemLogo.bind(this)}
+            />
+      </Typography>
+      <CustomInput
+                      labelText="Title"
+                      id="logoTitle"
+                      required="required"
+                      formControlProps={{
+                        fullWidth: true,
+                        onChange: (event) => this.handleInputChange(event),
+                      }}
+                      inputProps={{
+                        value: this.state.editItemTitle,
+                        type: "text",
+                      }} />
+                      <CustomInput
+                      labelText="Link"
+                      id="logoLink"
+                      required="required"
+                      formControlProps={{
+                        fullWidth: true,
+                        onChange: (event) => this.handleInputChange(event),
+                      }}
+                      inputProps={{
+                        value: this.state.editItemTitle,
+                        type: "text",
+                      }} />
+      </div>
           </DialogContent>
 
           <DialogActions className={classes.modalFooter}>
@@ -128,7 +234,13 @@ class HeaderModule extends Component {
               onClick={() => {
                 this.props.handleSave(
                   this.state.itemModuleEditId,
-                  this.state.textContent
+                  {
+                    bg:this.state.backgroundImage,
+                    logoImage: this.state.logoImage,
+                    logoTitle: this.state.logoTitle,
+                    logoLink: this.state.logoLink,
+                    isModuleSticky: this.state.isModuleSticky
+                  }
                 );
                 this.closeModuleOptionsModal();
               }}
