@@ -41,6 +41,14 @@ class ViewAuth extends Component {
     removeResetMessage: "",
   };
 
+  componentDidMount() {
+    if (this.props.location.pathname === "/logout") {
+      setTimeout(() => {
+        this.props.history.push("/view-auth");
+      }, 1000);
+    }
+  }
+
   handleInputChange = (event) => {
     let newState = {};
     switch (event.target.id) {
