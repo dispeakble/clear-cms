@@ -69,6 +69,7 @@ class PagesAdd extends React.PureComponent {
   };
 
   state = {
+    isDraggable: true,
     temporaryModuleOptions: {},
     showDiscardModal: false,
     itemOnDeleteIndex: "",
@@ -160,6 +161,18 @@ class PagesAdd extends React.PureComponent {
 
     pageTransitionPadding: "",
   };
+
+  onStartEditingModule() {
+    this.setAsyncState({
+      isDraggable: false,
+    });
+  }
+
+  onEndEditingModule() {
+    this.setAsyncState({
+      isDraggable: true,
+    });
+  }
 
   async componentDidMount() {
     //     const { pathname } = this.props.location;
@@ -415,6 +428,8 @@ class PagesAdd extends React.PureComponent {
           {el.module ? (
             <Suspense fallback={loadingFallback}>
               <LazyModule
+                onStartEditingModule={() => this.onStartEditingModule()}
+                onEndEditingModule={() => this.onEndEditingModule()}
                 boxId={el.i}
                 moduleOptions={el.moduleOptions}
                 handleSave={(id, data) => {
@@ -1657,7 +1672,7 @@ class PagesAdd extends React.PureComponent {
                   }}
                   // margin={this.state.boxSpacing} primeste un array cu 2 valori
                   isBounded={true}
-                  isDraggable={false}
+                  isDraggable={this.state.isDraggable}
                   margin={this.state.config.layoutBoxSpacing}
                   containerPadding={this.state.config.layoutBoxPadding}
                   onLayoutChange={(layout) => {
