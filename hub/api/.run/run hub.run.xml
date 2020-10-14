@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="run hub" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/hub/api/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start:dev" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="redis_server" value="dosidoweb.com" />
+      <env name="redis_port" value="6379" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
