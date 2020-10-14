@@ -303,12 +303,12 @@ class MenuModule extends Component {
             color="primary"
             size="medium"
           >
-          <ArtTrack />
-        </IconButton>
+            <ArtTrack />
+          </IconButton>
         </Tooltip>
-        
 
         <Dialog
+          onBackdropClick="false"
           classes={{
             root: classes.center,
             paper: classes.modal,
@@ -362,13 +362,10 @@ class MenuModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.handleSave(
-                  this.state.itemModuleEditId,
-                  {
-                    links:this.state.menuOptions,
-                    isVertical: this.state.isMenuVertical
-                  }
-                );
+                this.props.handleSave(this.state.itemModuleEditId, {
+                  links: this.state.menuOptions,
+                  isVertical: this.state.isMenuVertical,
+                });
                 this.closeModuleOptionsModal();
               }}
             >

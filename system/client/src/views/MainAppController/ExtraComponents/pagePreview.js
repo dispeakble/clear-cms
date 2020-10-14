@@ -112,7 +112,7 @@ class PagePreview extends React.PureComponent {
         LazyComponent = React.lazy(() => import(`./modules/MenuModule`));
         break;
       default:
-        LazyComponent = "";
+        LazyComponent = null;
     }
 
     switch (el.module) {
@@ -146,6 +146,7 @@ class PagePreview extends React.PureComponent {
             {el.moduleOptions ? parse(el.moduleOptions.data) : ""}
           </div>
         );
+        break;
       case "Menu Module":
         let link_style = {
           display: "block",
@@ -188,6 +189,9 @@ class PagePreview extends React.PureComponent {
             </ul>
           </div>
         );
+        break;
+      default:
+        return <React.Fragment></React.Fragment>;
     }
   }
 

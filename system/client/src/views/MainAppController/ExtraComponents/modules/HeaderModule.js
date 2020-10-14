@@ -140,6 +140,7 @@ class HeaderModule extends Component {
         </IconButton>
 
         <Dialog
+          onBackdropClick="false"
           classes={{
             root: classes.center,
             paper: classes.modal,

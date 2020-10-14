@@ -1657,6 +1657,7 @@ class PagesAdd extends React.PureComponent {
                   }}
                   // margin={this.state.boxSpacing} primeste un array cu 2 valori
                   isBounded={true}
+                  isDraggable={false}
                   margin={this.state.config.layoutBoxSpacing}
                   containerPadding={this.state.config.layoutBoxPadding}
                   onLayoutChange={(layout) => {
