@@ -24,16 +24,13 @@ class TextModule extends Component {
   state = {
     textContent: "",
     itemModuleEditId: "",
+    richTextContent: "",
     showModuleOptionsModal: false,
     modalTitle: "Text content",
     richFormattedText: false,
   };
 
-  componentDidMount() {
-    if (this.props.moduleOptions.data) {
-      this.setState({ textContent: this.props.moduleOptions.data });
-    }
-  }
+  componentDidMount() {}
 
   getTheme = () => {
     /*
@@ -65,6 +62,22 @@ class TextModule extends Component {
 
   handleEdit = async (id) => {
     this.props.onStartEditingModule();
+    if (this.props.moduleOptions.data) {
+      await this.setAsyncState({
+        richFormattedText: this.props.moduleOptions.data.isRichFormattedText,
+      });
+      if (this.props.moduleOptions.data.isRichFormattedText) {
+        await this.setAsyncState({
+          textContent: "",
+          richTextContent: this.props.moduleOptions.data.textData,
+        });
+      } else {
+        await this.setAsyncState({
+          richTextContent: "",
+          textContent: this.props.moduleOptions.data.textData,
+        });
+      }
+    }
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
@@ -72,15 +85,15 @@ class TextModule extends Component {
   };
 
   handleInputChange(event) {
-    this.setState({
-      textContent: event.target.value,
-    });
-  }
-
-  handleRichInputChange(event) {
-    this.setState({
-      textContent: event,
-    });
+    if (event.target) {
+      this.setState({
+        textContent: event.target.value,
+      });
+    } else {
+      this.setState({
+        richTextContent: event,
+      });
+    }
   }
 
   render() {
@@ -127,7 +140,7 @@ class TextModule extends Component {
             {this.state.richFormattedText === true ? (
               <Editor
                 id="editor"
-                initialValue={this.state.textContent}
+                value={this.state.textContent}
                 init={{
                   height: 500,
                   menubar: false,
@@ -141,7 +154,7 @@ class TextModule extends Component {
              alignleft aligncenter alignright alignjustify | \
              bullist numlist outdent indent | removeformat | help",
                 }}
-                onEditorChange={(event) => this.handleRichInputChange(event)}
+                onEditorChange={(event) => this.handleInputChange(event)}
               />
             ) : (
               <CustomInput
@@ -184,18 +197,21 @@ class TextModule extends Component {
               color="primary"
               onClick={() => {
                 this.props.onEndEditingModule();
-                this.props.handleSave(
-                  this.state.itemModuleEditId,
-                  this.state.textContent
-                );
+                this.props.handleSave(this.state.itemModuleEditId, {
+                  textData: this.state.richFormattedText
+                    ? this.state.richTextContent
+                    : this.state.textContent,
+                  isRichFormattedText: this.state.richFormattedText,
+                });
                 this.closeModuleOptionsModal();
+                console.log(this.state.textContent);
               }}
             >
               <div>Save</div>
             </Button>
             <Button
               color="danger"
-              onClick={() => {
+              onClick={async () => {
                 this.closeModuleOptionsModal();
               }}
             >
