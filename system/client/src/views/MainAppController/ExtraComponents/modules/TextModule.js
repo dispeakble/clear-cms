@@ -166,10 +166,6 @@ class TextModule extends Component {
                   onChange: (event) => this.handleInputChange(event),
                 }}
                 inputProps={{
-                  inputProps: {
-                    minLength: "3",
-                    maxLength: "50",
-                  },
                   value: this.state.textContent,
                   type: "text",
                 }}
