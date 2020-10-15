@@ -141,11 +141,19 @@ class PagePreview extends React.PureComponent {
         );
         break;
       case "Text Module":
-        return (
-          <div key={i} data-grid={el} style={style}>
-            {el.moduleOptions ? parse(el.moduleOptions.data) : ""}
-          </div>
-        );
+        if (el.moduleOptions.data.isRichFormattedText) {
+          return (
+            <div key={i} data-grid={el} style={style}>
+              {el.moduleOptions ? parse(el.moduleOptions.textData) : ""}
+            </div>
+          );
+        } else {
+          return (
+            <div key={i} data-grid={el} style={style}>
+              {el.moduleOptions ? el.moduleOptions.textData : ""}
+            </div>
+          );
+        }
         break;
       case "Menu Module":
         let link_style = {
