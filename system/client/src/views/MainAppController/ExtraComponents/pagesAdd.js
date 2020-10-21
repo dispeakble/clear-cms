@@ -100,6 +100,7 @@ class PagesAdd extends React.PureComponent {
       { label: "Header Module" },
       { label: "Menu Module" },
       { label: "Text Module" },
+      { label: "Theme Module" },
     ],
     config: {
       layoutBoxSpacing: [10, 10],
@@ -155,11 +156,10 @@ class PagesAdd extends React.PureComponent {
     categories: [],
     category: 0,
     isEdit: false, // we will reuse this component to edit and add pages
-
     editItemModuleOptions: {},
     editModuleOptions: "",
-
     pageTransitionPadding: "",
+    editItemScrollbars: false,
   };
 
   onStartEditingModule() {
@@ -304,6 +304,10 @@ class PagesAdd extends React.PureComponent {
 
     let itemStyle = {};
 
+    if (el.showScrollbars) {
+      itemStyle.showScrollbars = el.showScrollbars;
+    }
+
     if (el.fontSize) {
       itemStyle.fontSize = `${el.fontSize}${this.state.fontUnit}`;
       itemStyle.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
@@ -373,6 +377,9 @@ class PagesAdd extends React.PureComponent {
       case "Text Module":
         LazyModule = React.lazy(() => import(`./modules/TextModule`));
         break;
+      case "Theme Module":
+        LazyModule = React.lazy(() => import(`./modules/ThemeModule`));
+        break;
     }
 
     let itemActions = [
@@ -424,43 +431,53 @@ class PagesAdd extends React.PureComponent {
     return (
       <div key={i} data-grid={el} style={itemStyle}>
         <p style={{ fontSize: "12px", color: "black" }}>{el.title}</p>
-        <span className={this.props.classes.editModuleIconWrapper}>
-          {el.module ? (
-            <Suspense fallback={loadingFallback}>
-              <LazyModule
-                onStartEditingModule={() => this.onStartEditingModule()}
-                onEndEditingModule={() => this.onEndEditingModule()}
-                boxId={el.i}
-                moduleOptions={el.moduleOptions}
-                handleSave={(id, data) => {
-                  this.saveModuleOptions(id, data);
-                }}
-              />
-            </Suspense>
-          ) : (
-            ""
-          )}
-        </span>
-        <span className={this.props.classes.itemSpeedDialWrapper}>
-          <SpeedDial
-            FabProps={{ size: "small" }}
-            ariaLabel="Module Speed Dial"
-            icon={<MoreVert />}
-            onClose={() => this.toggleItemSD(Number(el.i), false)}
-            onOpen={() => this.toggleItemSD(Number(el.i), true)}
-            open={this.state.itemSdId === Number(el.i)}
-          >
-            {itemActions.map((action) => (
-              <SpeedDialAction
-                className={this.props.classes.itemSpeedDial}
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={this.handleSpeedDialClose}
-              />
-            ))}
-          </SpeedDial>
-        </span>
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            height: "48px",
+            right: 0,
+            left: 0,
+          }}
+        >
+          <span className={this.props.classes.editModuleIconWrapper}>
+            {el.module ? (
+              <Suspense fallback={loadingFallback}>
+                <LazyModule
+                  onStartEditingModule={() => this.onStartEditingModule()}
+                  onEndEditingModule={() => this.onEndEditingModule()}
+                  boxId={el.i}
+                  moduleOptions={el.moduleOptions}
+                  handleSave={(id, data) => {
+                    this.saveModuleOptions(id, data);
+                  }}
+                />
+              </Suspense>
+            ) : (
+              ""
+            )}
+          </span>
+          <span className={this.props.classes.itemSpeedDialWrapper}>
+            <SpeedDial
+              FabProps={{ size: "small" }}
+              ariaLabel="Module Speed Dial"
+              icon={<MoreVert />}
+              onClose={() => this.toggleItemSD(Number(el.i), false)}
+              onOpen={() => this.toggleItemSD(Number(el.i), true)}
+              open={this.state.itemSdId === Number(el.i)}
+            >
+              {itemActions.map((action) => (
+                <SpeedDialAction
+                  className={this.props.classes.itemSpeedDial}
+                  key={action.name}
+                  icon={action.icon}
+                  tooltipTitle={action.name}
+                  onClick={this.handleSpeedDialClose}
+                />
+              ))}
+            </SpeedDial>
+          </span>
+        </div>
       </div>
     );
   }
@@ -506,6 +523,7 @@ class PagesAdd extends React.PureComponent {
     let items = this.state.items;
     items.push({
       title: "New Box",
+      showScrollbars: "",
       module: "",
       moduleOptions: { data: "" },
       borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
@@ -637,6 +655,7 @@ class PagesAdd extends React.PureComponent {
     const item = this.getItemById(id);
 
     await this.setAsyncState({
+      editItemScrollbars: item.showScrollbars,
       editItemTitle: item.title,
       editItemModule: this.getModuleIndex(item.module),
       editItemModuleOptions: item.moduleOptions,
@@ -822,6 +841,12 @@ class PagesAdd extends React.PureComponent {
       delete foundItem.textColor;
     }
 
+    if (this.state.editItemScrollbars) {
+      foundItem.showScrollbars = this.state.editItemScrollbars;
+    } else {
+      delete foundItem.showScrollbars;
+    }
+
     if (Number(this.state.editItemBorderWidth)) {
       foundItem.borderColor = this.state.editItemBorderColor;
       foundItem.borderWidth = this.state.editItemBorderWidth;
@@ -908,7 +933,7 @@ class PagesAdd extends React.PureComponent {
         },
         MuiInputLabel: {
           formControl: {
-            width: "90%",
+            // width: "90%",
             marginLeft: "1%",
           },
         },
@@ -946,7 +971,10 @@ class PagesAdd extends React.PureComponent {
         },
         MuiDialog: {
           paper: {
-            width: "80%",
+            width: "100%",
+          },
+          paperWidthSm: {
+            maxWidth: "1000px",
           },
         },
       },
@@ -1148,13 +1176,14 @@ class PagesAdd extends React.PureComponent {
                     <Typography id="discrete-slider" gutterBottom>
                       <Tooltip title="Show scrollbars if the content exceeds the box">
                         <Switch
-                          checked={this.state.showScrollbars}
+                          checked={this.state.editItemScrollbars}
                           onChange={() => {
                             this.setState({
-                              showScrollbars: !this.state.showScrollbars,
+                              editItemScrollbars: !this.state
+                                .editItemScrollbars,
                             });
                           }}
-                          value={Number(this.state.showScrollbars)}
+                          value={this.state.editItemScrollbars}
                         />
                       </Tooltip>
                       Scrollbars
@@ -1301,7 +1330,7 @@ class PagesAdd extends React.PureComponent {
                     <div
                       style={
                         this.state.editItemTextColorShow
-                          ? {}
+                          ? { position: "relative" }
                           : { display: "none" }
                       }
                     >
@@ -1330,7 +1359,7 @@ class PagesAdd extends React.PureComponent {
                     <div
                       style={
                         this.state.editItemBackgroundColorShow
-                          ? {}
+                          ? { position: "relative" }
                           : { display: "none" }
                       }
                     >
@@ -1341,7 +1370,7 @@ class PagesAdd extends React.PureComponent {
                       )}
                     </div>
                   </div>
-                  <div>
+                  <div style={{ position: "relative" }}>
                     <Typography gutterBottom>Border Color</Typography>
                     {this.createColorPicker(
                       itemBorderColorStyles,

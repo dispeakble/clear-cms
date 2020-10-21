@@ -5,7 +5,10 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import parse from "html-react-parser";
-import { LinkSharp } from "@material-ui/icons";
+
+// for accordion menu
+import List from "@material-ui/core/List";
+import AppMenu from "components/AppMenuItem/AppMenu";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -34,6 +37,7 @@ class PagePreview extends React.PureComponent {
     },
     pageModule: [],
     fontUnit: "px",
+    openedAccordionLink: {},
   };
 
   componentDidMount() {
@@ -41,13 +45,62 @@ class PagePreview extends React.PureComponent {
     const currentPage = allPages[Number(this.props.match.params.id) - 1];
     const items = currentPage.items;
     const pageConfig = currentPage.pageConfig;
-    console.log(items);
 
     this.setState({
       items: items,
       pageConfig,
     });
   }
+
+  createMenu(params, showAsAccordion, stretchToFit, backgroundColor, style) {
+    const createLink = (elm) => {
+      return (
+        <li>
+          <a href={elm.link} title={elm.title} target={elm.target}>
+            {elm.text}
+          </a>
+          {elm.children && elm.children.length
+            ? this.createMenu(elm.children)
+            : ""}
+        </li>
+      );
+    };
+
+    console.log(backgroundColor);
+
+    if (!showAsAccordion) {
+      return (
+        <ul
+          style={{ display: stretchToFit ? "flex" : "" }}
+          className={this.props.classes.linksMenuUl}
+        >
+          {params.map((elm) => createLink(elm))}
+        </ul>
+      );
+    } else {
+      return (
+        <List component="nav" disablePadding>
+          <AppMenu
+            menuLinksData={params}
+            bgColor={backgroundColor}
+            style={{
+              color: "inherit",
+              fontSize: "inherit",
+              fontFamily: "inherit",
+              border: "1px solid rgba(0,0,0,0.3)",
+            }}
+          />
+        </List>
+      );
+    }
+  }
+
+  handleClick = (id) => {
+    let openedAccordionLinks = this.state.openedAccordionLink;
+    openedAccordionLinks[id] = !openedAccordionLinks[id];
+
+    this.setState({ openedAccordionLinks });
+  };
 
   createElement(el, classes) {
     const i = el.i;
@@ -87,6 +140,10 @@ class PagePreview extends React.PureComponent {
 
     if (el.textColor) {
       style.color = el.textColor;
+    }
+
+    if (el.showScrollbars) {
+      style.overflow = "auto";
     }
 
     const loadingFallback = (() => {
@@ -144,13 +201,13 @@ class PagePreview extends React.PureComponent {
         if (el.moduleOptions.data.isRichFormattedText) {
           return (
             <div key={i} data-grid={el} style={style}>
-              {el.moduleOptions ? parse(el.moduleOptions.textData) : ""}
+              {el.moduleOptions ? parse(el.moduleOptions.data.textData) : ""}
             </div>
           );
         } else {
           return (
             <div key={i} data-grid={el} style={style}>
-              {el.moduleOptions ? el.moduleOptions.textData : ""}
+              {el.moduleOptions ? el.moduleOptions.data.textData : ""}
             </div>
           );
         }
@@ -167,34 +224,72 @@ class PagePreview extends React.PureComponent {
         //   link_style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
         //   link_style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
         // }
+
+        // let x = (
+        //   <div>
+        //     <p>ppppp</p>
+        //   </div>
+        // );
+        // let y = <p>nnnnn</p>;
+        // let w = String(x).replace("<div>", "");
+        // console.log(w);
+        // let z = w.replace("</div>", "");
+        // console.log(z);
+        // x = `<div>${z}</div>`;
+        // console.log(x);
+
+        let linksList = el.moduleOptions.data.links.filter(
+          (link) => !link.parentId
+        );
+        let isVertical = el.moduleOptions.data.isVertical;
+        let showAsAccordion = el.moduleOptions.data.showAsAccordion;
+        let stretchToFit = el.moduleOptions.data.stretchToFit;
+        let backgroundColor = el.moduleOptions.data.backgroundColor;
+
+        function populateChildrenLinks(childRows) {
+          let childrenRows = childRows
+            ? childRows.map((childLink) => ({
+                id: childLink.id,
+                title: childLink.title,
+                text: childLink.text,
+                href: childLink.link,
+                target: childLink.targetLink,
+                children: populateChildrenLinks(childLink.tableData.childRows),
+              }))
+            : "";
+
+          return childrenRows;
+        }
+
+        let menuData = linksList.map((link) => ({
+          id: link.id,
+          title: link.title,
+          text: link.text,
+          href: link.link,
+          target: link.targetLink,
+          children: populateChildrenLinks(link.tableData.childRows),
+        }));
+
         return (
-          <div key={i} data-grid={el} style={style}>
-            <ul
-              style={{
-                margin: "0",
-                padding: "0",
-                listStyle: "none",
-              }}
-            >
-              {el.moduleOptions.data.links.map((elm, i) => {
-                return (
-                  <li
-                    style={{
-                      display: "inline-block",
-                    }}
-                  >
-                    <a
-                      style={el.moduleOptions.isVertical ? link_style : {}}
-                      title={elm.title}
-                      href={elm.link}
-                      target={elm.targetLink}
-                    >
-                      {elm.text} ADD HOVER EFFECT :D
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+          <div
+            className={
+              isVertical
+                ? classes.verticalLinksMenu
+                : classes.horizontalLinksMenu
+            }
+            key={i}
+            data-grid={el}
+            style={{ display: "inline-block" }}
+          >
+            {(() => {
+              return this.createMenu(
+                menuData,
+                showAsAccordion,
+                stretchToFit,
+                backgroundColor,
+                style
+              );
+            })()}
           </div>
         );
         break;
@@ -227,7 +322,6 @@ class PagePreview extends React.PureComponent {
 
   render() {
     const classes = this.props.classes;
-    console.log(this.state.items === undefined);
 
     return (
       <React.Fragment>

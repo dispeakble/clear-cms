@@ -57,10 +57,13 @@ class Header extends Component {
   };
 
   componentDidMount() {
-    const self = this;
-    function headerScroll() {
-      self.headerColorChange(self);
-    }
+    let headerScroll = () => {
+      try {
+        this.headerColorChange(this);
+      } catch (er) {
+        console.log(er);
+      }
+    };
     if (this.props.changeColorOnScroll) {
       window.removeEventListener("scroll", headerScroll);
     }

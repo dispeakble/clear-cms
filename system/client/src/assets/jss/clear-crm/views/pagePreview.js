@@ -1,10 +1,3 @@
-import { container, title } from "assets/jss/clear-crm.js";
-
-import modalStyle from "assets/jss/clear-crm/modalStyle.js";
-import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
-import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
-import { GpsFixed } from "@material-ui/icons";
-
 const javascriptStyles = {
   previewBodyWrapper: {
     minHeight: "100%",
@@ -109,6 +102,137 @@ const javascriptStyles = {
   itemWrapper: {
     position: "sticky !important",
     top: 0,
+  },
+  // for dropdown menu
+  verticalLinksMenu: {
+    "& > ul": {
+      display: "inline-block",
+      padding: 0,
+      margin: 0,
+      "& > li": {
+        margin: 0,
+        display: "block",
+        position: "relative",
+        left: 0,
+        background: "#525789",
+        fontFamily: "cambria",
+        transform: "translate(0%)",
+      },
+    },
+    "& > ul ul": {
+      width: "100%",
+    },
+    "& ul": {
+      display: "inline-block",
+      margin: 0,
+      listStyle: "none",
+      "& li": {
+        margin: 0,
+
+        display: "block",
+        position: "relative",
+        right: 0,
+        transform: "translate(100%, -50px)",
+        background: "#525789",
+        fontFamily: "cambria",
+        "& ul": { display: "none", margin: 0 },
+        "& a": {
+          margin: 0,
+          display: "block",
+          padding: "1em",
+          textDecoration: "none",
+          whiteSpace: "normal",
+          color: "#fff",
+          transition: "0.3s",
+          "&:hover": {
+            background: "#8497AF",
+          },
+        },
+        "&:hover": {
+          cursor: "pointer",
+          "& > ul": {
+            display: "block",
+            position: "absolute",
+            opacity: 0.9,
+            right: 0,
+          },
+          "& li": {
+            float: "none",
+          },
+          "& a": {
+            background: "#41424c",
+          },
+        },
+      },
+      "&:before": {
+        content: " ",
+        display: "table",
+      },
+
+      "&:after": {
+        content: " ",
+        display: "table",
+        clear: "both",
+      },
+    },
+  },
+  horizontalLinksMenu: {
+    "& ul": {
+      margin: 0,
+      padding: 0,
+      listStyle: "none",
+      "& li": {
+        flex: 1,
+        display: "inline-block",
+        position: "relative",
+        background: "#525789",
+        fontFamily: "cambria",
+        "& ul": { display: "none", width: "100%" },
+        "& a": {
+          display: "block",
+          padding: "0.4em 1em",
+          textDecoration: "none",
+          whiteSpace: "normal",
+          width: "100%",
+          color: "#fff",
+          transition: "0.3s",
+          "&:hover": {
+            background: "#8497AF",
+          },
+        },
+        "&:hover": {
+          cursor: "pointer",
+          "& > ul": {
+            flex: 1,
+            display: "block",
+            position: "absolute",
+            opacity: 0.9,
+          },
+          "& li": {
+            display: "block",
+          },
+          "& a": {
+            background: "#41424c",
+          },
+        },
+      },
+      "&:before": {
+        content: " ",
+        display: "table",
+      },
+
+      "&:after": {
+        content: " ",
+        display: "table",
+        clear: "both",
+      },
+      "& ul": {
+        "& ul": {
+          left: "100%",
+          top: "0",
+        },
+      },
+    },
   },
 };
 

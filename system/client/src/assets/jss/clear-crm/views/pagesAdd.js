@@ -141,10 +141,17 @@ const javascriptStyles = {
   editItemIconWrapper: {
     color: "#008B8B",
   },
+  editModuleActionsWrapper: {
+    position: "absolute",
+    bottom: 0,
+    height: "48px",
+    right: 0,
+    left: 0,
+  },
   editModuleIconWrapper: {
     position: "absolute",
-    top: 0,
-    right: 0,
+    bottom: 0,
+    left: 0,
   },
   editItemIcon: {
     color: "darkcyan",

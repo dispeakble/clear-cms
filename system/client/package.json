@@ -14,6 +14,7 @@
     "generate-password": "^1.5.1",
     "history": "4.10.1",
     "html-react-parser": "^0.14.0",
+    "jsx-to-string": "^1.4.0",
     "lodash": "^4.17.20",
     "material-table": "^1.69.0",
     "material-ui-dropzone": "^3.5.0",

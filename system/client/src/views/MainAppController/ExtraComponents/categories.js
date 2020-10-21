@@ -210,7 +210,9 @@ class Categories extends Component {
           title: "Description",
           field: "description",
         },
+        { title: "Parent Id", field: "parentId", type: "numeric" },
       ],
+      parentChildData: (row, rows) => rows.find((a) => a.id === row.parentId),
       options: {
         selection: true,
         selectionStyle: styles.selection,
@@ -258,6 +260,7 @@ class Categories extends Component {
                 title="Categories"
                 tableRef={this.state.tableRef}
                 columns={this.tableOptions.props.columns}
+                parentChildData={this.tableOptions.props.parentChildData}
                 data={() => this.tableOptions.actions.getData()}
                 icons={this.tableOptions.props.icons}
                 options={this.tableOptions.props.options}

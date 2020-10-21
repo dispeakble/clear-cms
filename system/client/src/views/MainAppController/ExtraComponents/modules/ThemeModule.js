@@ -28,13 +28,8 @@ import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
 // for the dropdown
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Menu, MenuItem } from "@material-ui/core";
 
-// for the new color picker
-import { SketchPicker } from "react-color";
-import reactCSS from "reactcss";
-
-class MenuModule extends Component {
+class ThemeModule extends Component {
   state = {
     menuOptions: [],
     itemModuleEditId: "",
@@ -45,28 +40,18 @@ class MenuModule extends Component {
     showMultipleDeleteModal: false,
     tableRef: React.createRef(),
     isMenuVertical: false,
-    showAsAccordion: false,
-    flatLinks: [],
-    stretchToFit: false,
-    displayBgColorPicker: false,
-    bgColor: "",
-    icons: [],
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.moduleOptions.data) {
-      await this.setAsyncState({
-        menuOptions: this.props.moduleOptions.data.links,
-        isMenuVertical: this.props.moduleOptions.data.isVertical,
-        stretchToFit: this.props.moduleOptions.data.stretchToFit,
-      });
-      if (this.props.moduleOptions.data.showAsAccordion) {
-        await this.setAsyncState({
-          showAsAccordion: this.props.moduleOptions.data.showAsAccordion,
-        });
-      }
-      this.getAllLinks();
+      this.setState({ menuOptions: this.props.moduleOptions.data.links });
     }
+    if (this.props.moduleOptions.isVertical) {
+      this.setState({
+        isMenuVertical: this.props.moduleOptions.data.isVertical,
+      });
+    }
+    console.log(this.props.moduleOptions);
   }
 
   getTheme = () => {
@@ -105,39 +90,6 @@ class MenuModule extends Component {
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
 
-  sendStyles = (targetedColor) => {
-    return reactCSS({
-      default: {
-        color: {
-          width: "36px",
-          height: "14px",
-          borderRadius: "2px",
-          background: targetedColor,
-        },
-        swatch: {
-          padding: "5px",
-          background: "#fff",
-          borderRadius: "1px",
-          border: "1px solid rgba(0, 0, 0, 0.23)",
-          display: "inline-block",
-          cursor: "pointer",
-        },
-        popover: {
-          position: "absolute",
-          zIndex: "2",
-          zIndex: 99999,
-        },
-        cover: {
-          position: "fixed",
-          top: "0px",
-          right: "0px",
-          bottom: "0px",
-          left: "0px",
-        },
-      },
-    });
-  };
-
   showMultipleDeleteModal = (evt, data) => {
     this.setState({ multipleDeleteData: data, showMultipleDeleteModal: true });
   };
@@ -159,45 +111,6 @@ class MenuModule extends Component {
 
     this.closeMultipleDeleteModal();
   };
-
-  getAllLinks = async (data, parentName) => {
-    let result = this.state.flatLinks;
-    if (this.state.menuOptions.length) {
-      let links = data || this.state.menuOptions;
-      links.map((el) => {
-        el.concatText = el.text;
-        if (parentName) {
-          el.concatText = parentName + "/" + el.concatText;
-        }
-        result.push({
-          id: el.id,
-          label: el.concatText,
-        });
-        if (
-          el.tableData &&
-          el.tableData.childRows &&
-          el.tableData.childRows.length
-        ) {
-          this.getAllLinks(el.tableData.childRows, el.text);
-        }
-      });
-
-      await this.setAsyncState({
-        flatLinks: result,
-      });
-    }
-  };
-
-  getLinkById(id) {
-    let result = {};
-    let links = this.state.flatLinks;
-    links.map((link) => {
-      if (link.id == id) {
-        result = link;
-      }
-    });
-    return result;
-  }
 
   tableOptions = {
     getTheme: () => {
@@ -288,7 +201,9 @@ class MenuModule extends Component {
               let newMenuOptions = menuOptions.concat(newData);
 
               this.setState({ menuOptions: newMenuOptions });
+
               resolve();
+              console.log(newMenuOptions);
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
@@ -339,86 +254,12 @@ class MenuModule extends Component {
         ),
       },
       columns: [
-        { title: "Text", field: "text" },
         {
           title: "Title",
           field: "title",
         },
-        {
-          title: "Link",
-          field: "link",
-        },
-        {
-          title: "Target",
-          field: "targetLink",
-          lookup: { _self: "In Page", _blank: "New Tab" },
-        },
-        {
-          title: "Icon",
-          field: "icon",
-          editComponent: (columnData) => {
-            debugger;
-            return (
-              <Autocomplete
-                options={this.state.icons}
-                autoHighlight
-                className={this.props.classes.option}
-                value={this.state.flatLinks.find(
-                  (link) => link.id === columnData.rowData.parentId
-                )}
-                onChange={(ev, value) => {
-                  columnData.onRowDataChange({
-                    ...columnData.rowData,
-                    parentId: value.id,
-                  });
-                }}
-                getOptionLabel={(option) => option.label}
-                renderInput={(params) => (
-                  <TextField
-                    className={this.props.classes.textfield}
-                    {...params}
-                    label="Parent link"
-                    variant="outlined"
-                  />
-                )}
-              />
-            );
-          },
-        },
-        {
-          title: "Parent Id",
-          field: "parentId",
-          type: "numeric",
-          editComponent: (columnData) => {
-            debugger;
-            return (
-              <Autocomplete
-                options={this.state.flatLinks}
-                autoHighlight
-                className={this.props.classes.option}
-                value={this.state.flatLinks.find(
-                  (link) => link.id === columnData.rowData.parentId
-                )}
-                onChange={(ev, value) => {
-                  columnData.onRowDataChange({
-                    ...columnData.rowData,
-                    parentId: value.id,
-                  });
-                }}
-                getOptionLabel={(option) => option.label}
-                renderInput={(params) => (
-                  <TextField
-                    className={this.props.classes.textfield}
-                    {...params}
-                    label="Parent link"
-                    variant="outlined"
-                  />
-                )}
-              />
-            );
-          },
-        },
-        // { title: "Parent Id", field: "parentId", type: "numeric" },
+        { title: "Text", field: "text" },
+        { title: "Parent Id", field: "parentId", type: "numeric" },
       ],
       parentChildData: (row, rows) => rows.find((a) => a.id === row.parentId),
       options: {
@@ -430,14 +271,6 @@ class MenuModule extends Component {
         headerStyle: styles.tableHeader,
       },
     },
-  };
-
-  handleClick = () => {
-    this.setState({ displayBgColorPicker: !this.state.displayBgColorPicker });
-  };
-
-  handleColorPickerClose = () => {
-    this.setState({ displayBgColorPicker: false });
   };
 
   closeModuleOptionsModal() {
@@ -455,7 +288,6 @@ class MenuModule extends Component {
 
   render() {
     const classes = this.props.classes;
-    const bgColorStyles = this.sendStyles(this.state.bgColor);
 
     return (
       <div
@@ -463,7 +295,7 @@ class MenuModule extends Component {
           textAlign: "center",
         }}
       >
-        <Tooltip title="Edit Menu Module">
+        <Tooltip title="Edit Theme Module">
           <IconButton
             onClick={() => this.handleEdit(this.props.boxId)}
             color="primary"
@@ -497,50 +329,6 @@ class MenuModule extends Component {
             id="classic-modal-slide-description"
             className={classes.modalBody}
           >
-            <Typography gutterBottom>
-              <div>
-                <div
-                  style={bgColorStyles.swatch}
-                  onClick={() => this.handleClick("displayBgColorPicker")}
-                >
-                  <div style={bgColorStyles.color} />
-                </div>
-                {this.state.displayBgColorPicker ? (
-                  <div style={bgColorStyles.popover}>
-                    <div
-                      style={bgColorStyles.cover}
-                      onClick={() =>
-                        this.handleColorPickerClose("displayBgColorPicker")
-                      }
-                    />
-                    <SketchPicker
-                      color={this.state.bgColor}
-                      onChangeComplete={async (color) => {
-                        await this.setAsyncState({
-                          bgColor: color.hex,
-                        });
-                      }}
-                    />
-                  </div>
-                ) : null}
-              </div>
-              <span style={{ display: "inline" }}>Background Color</span>
-            </Typography>
-
-            <Typography id="discrete-slider" gutterBottom>
-              <Tooltip title="Show the menu links in vertical order">
-                <Switch
-                  checked={this.state.showAsAccordion}
-                  onChange={() => {
-                    this.setState({
-                      showAsAccordion: !this.state.showAsAccordion,
-                    });
-                  }}
-                  value={this.state.showAsAccordion}
-                />
-              </Tooltip>
-              Show as Accordion{" "}
-            </Typography>
             <Typography id="discrete-slider" gutterBottom>
               <Tooltip title="Show the menu links in vertical order">
                 <Switch
@@ -550,27 +338,13 @@ class MenuModule extends Component {
                       isMenuVertical: !this.state.isMenuVertical,
                     });
                   }}
-                  value={this.state.isMenuVertical}
+                  value={Number(this.state.isMenuVertical)}
                 />
               </Tooltip>
               Vertical Menu
             </Typography>
-            <Typography id="discrete-slider" gutterBottom>
-              <Tooltip title="Stretch the menu links so as to cover all the width of the box">
-                <Switch
-                  checked={this.state.stretchToFit}
-                  onChange={() => {
-                    this.setState({
-                      stretchToFit: !this.state.stretchToFit,
-                    });
-                  }}
-                  value={this.state.stretchToFit}
-                />
-              </Tooltip>
-              Stretch to Fit
-            </Typography>
             <MaterialTable
-              title="Menu Links"
+              title="Themes"
               tableRef={this.state.tableRef}
               columns={this.tableOptions.props.columns}
               parentChildData={this.tableOptions.props.parentChildData}
@@ -591,8 +365,6 @@ class MenuModule extends Component {
                 this.props.handleSave(this.state.itemModuleEditId, {
                   links: this.state.menuOptions,
                   isVertical: this.state.isMenuVertical,
-                  showAsAccordion: this.state.showAsAccordion,
-                  backgroundColor: this.state.bgColor,
                 });
                 this.closeModuleOptionsModal();
               }}
@@ -660,4 +432,4 @@ class MenuModule extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(MenuModule));
+export default withRouter(withStyles(styles)(ThemeModule));
