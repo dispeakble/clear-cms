@@ -120,10 +120,10 @@ class PagesAdd extends React.PureComponent {
     editItemModule: "",
     editItemBgColor: "",
     editItemBorderRadius: "",
-    editItemBorderWidth: "",
+    editItemBorderWidth: 0,
     editItemBorderColor: "",
     editItemBackgroundColor: "",
-    editItemFontSize: "",
+    editItemFontSize: 5,
     editItemFontFamily: -1,
     editItemTextColor: "",
     showEditMenu: false,
@@ -659,12 +659,12 @@ class PagesAdd extends React.PureComponent {
       editItemTitle: item.title,
       editItemModule: this.getModuleIndex(item.module),
       editItemModuleOptions: item.moduleOptions,
-      editItemBorderRadius: item.borderRadius,
-      editItemBorderWidth: item.borderWidth,
+      editItemBorderRadius: item.borderRadius || 0,
+      editItemBorderWidth: item.borderWidth || 0,
       editItemBorderColor: item.borderColor,
       editItemBorderStyle: item.borderStyle,
       editItemBackgroundColor: item.backgroundColor || "",
-      editItemFontSize: item.fontSize || "",
+      editItemFontSize: item.fontSize || 5,
       editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
       editItemTextColor: item.textColor || "",
       editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
@@ -974,7 +974,7 @@ class PagesAdd extends React.PureComponent {
             width: "100%",
           },
           paperWidthSm: {
-            maxWidth: "1000px",
+            maxWidth: "100vw",
           },
         },
       },
@@ -1249,13 +1249,7 @@ class PagesAdd extends React.PureComponent {
                       }
                     >
                       <Slider
-                        defaultValue={
-                          this.state.itemEditId
-                            ? Number(
-                                this.getItemById(this.state.itemEditId).fontSize
-                              )
-                            : ""
-                        }
+                        defaultValue={Number(this.state.editItemFontSize)}
                         onChangeCommitted={this.handleItemFontSize}
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
@@ -1381,14 +1375,7 @@ class PagesAdd extends React.PureComponent {
                   <div>
                     <Typography gutterBottom>Border Width</Typography>
                     <Slider
-                      defaultValue={
-                        this.state.itemEditId
-                          ? Number(
-                              this.getItemById(this.state.itemEditId)
-                                .borderWidth
-                            )
-                          : ""
-                      }
+                      defaultValue={Number(this.state.editItemBorderWidth)}
                       className={classes.sideMenuSlider}
                       onChangeCommitted={this.handleBorderWidth}
                       aria-labelledby="discrete-slider"
@@ -1400,14 +1387,7 @@ class PagesAdd extends React.PureComponent {
                   <div>
                     <Typography gutterBottom>Border Radius</Typography>
                     <Slider
-                      defaultValue={
-                        this.state.itemEditId
-                          ? Number(
-                              this.getItemById(this.state.itemEditId)
-                                .borderRadius
-                            )
-                          : ""
-                      }
+                      defaultValue={Number(this.state.editItemBorderRadius)}
                       className={classes.sideMenuSlider}
                       onChangeCommitted={this.handleBorderRadius}
                       aria-labelledby="discrete-slider"

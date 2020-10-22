@@ -8,7 +8,9 @@ import parse from "html-react-parser";
 
 // for accordion menu
 import List from "@material-ui/core/List";
-import AppMenu from "components/AppMenuItem/AppMenu";
+import LinksMenu from "components/LinksMenu/LinksMenu";
+
+import Icon from "@material-ui/core/Icon";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -52,26 +54,63 @@ class PagePreview extends React.PureComponent {
     });
   }
 
-  createMenu(params, showAsAccordion, stretchToFit, backgroundColor, style) {
+  createMenu(params, options) {
+    console.log(params);
     const createLink = (elm) => {
       return (
-        <li>
-          <a href={elm.link} title={elm.title} target={elm.target}>
+        <li
+          style={{
+            backgroundColor: options.backgroundColor,
+            color: "inherit",
+            fontSize: "inherit",
+            fontFamily: "inherit",
+            display: "inline-block",
+          }}
+        >
+          <a
+            style={{
+              display: "block",
+              verticalAlign: "text-top",
+              whiteSpace: "nowrap",
+              color: "inherit",
+              fontSize: "inherit",
+              fontFamily: "inherit",
+              // overflow: "hidden",
+              // textOverflow: "ellipsis",
+            }}
+            href={elm.link}
+            title={elm.title}
+            target={elm.target}
+          >
+            <Icon
+              style={{
+                color: "inherit",
+                fontSize: "inherit",
+                verticalAlign: "middle",
+              }}
+            >
+              {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
+            </Icon>
             {elm.text}
           </a>
           {elm.children && elm.children.length
-            ? this.createMenu(elm.children)
+            ? this.createMenu(elm.children, { ...options, isTopLevel: false })
             : ""}
         </li>
       );
     };
 
-    console.log(backgroundColor);
-
-    if (!showAsAccordion) {
+    if (!options.showAsAccordion) {
       return (
         <ul
-          style={{ display: stretchToFit ? "flex" : "" }}
+          style={{
+            display: options.stretchToFit && options.isTopLevel ? "flex" : "",
+            backgroundColor: "",
+            color: "inherit",
+            fontSize: "inherit",
+            fontFamily: "inherit",
+            border: "1px solid rgba(0,0,0,0.3)",
+          }}
           className={this.props.classes.linksMenuUl}
         >
           {params.map((elm) => createLink(elm))}
@@ -80,9 +119,9 @@ class PagePreview extends React.PureComponent {
     } else {
       return (
         <List component="nav" disablePadding>
-          <AppMenu
+          <LinksMenu
             menuLinksData={params}
-            bgColor={backgroundColor}
+            bgColor={options.backgroundColor}
             style={{
               color: "inherit",
               fontSize: "inherit",
@@ -241,10 +280,12 @@ class PagePreview extends React.PureComponent {
         let linksList = el.moduleOptions.data.links.filter(
           (link) => !link.parentId
         );
+        console.log(linksList);
         let isVertical = el.moduleOptions.data.isVertical;
         let showAsAccordion = el.moduleOptions.data.showAsAccordion;
         let stretchToFit = el.moduleOptions.data.stretchToFit;
         let backgroundColor = el.moduleOptions.data.backgroundColor;
+        console.log(el);
 
         function populateChildrenLinks(childRows) {
           let childrenRows = childRows
@@ -254,6 +295,7 @@ class PagePreview extends React.PureComponent {
                 text: childLink.text,
                 href: childLink.link,
                 target: childLink.targetLink,
+                icon: childLink.icon,
                 children: populateChildrenLinks(childLink.tableData.childRows),
               }))
             : "";
@@ -267,8 +309,11 @@ class PagePreview extends React.PureComponent {
           text: link.text,
           href: link.link,
           target: link.targetLink,
+          icon: link.icon,
           children: populateChildrenLinks(link.tableData.childRows),
         }));
+
+        console.log(menuData);
 
         return (
           <div
@@ -279,16 +324,21 @@ class PagePreview extends React.PureComponent {
             }
             key={i}
             data-grid={el}
-            style={{ display: "inline-block" }}
+            style={{
+              display: "inline-block",
+              width: isVertical ? "100%" : "",
+              color: el.textColor,
+              fontSize: el.fontSize,
+              fontFamily: el.fontFamily,
+            }}
           >
             {(() => {
-              return this.createMenu(
-                menuData,
+              return this.createMenu(menuData, {
                 showAsAccordion,
                 stretchToFit,
                 backgroundColor,
-                style
-              );
+                isTopLevel: true,
+              });
             })()}
           </div>
         );

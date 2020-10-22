@@ -9,9 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import Close from "@material-ui/icons/Close";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import { ArtTrack } from "@material-ui/icons";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -23,7 +21,14 @@ import { Editor } from "@tinymce/tinymce-react";
 
 // for the material-table within the edit modal options modal
 import MaterialTable from "material-table";
-import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
+import {
+  DeleteForever,
+  AddCircle,
+  Edit,
+  ArtTrack,
+  Close,
+} from "@material-ui/icons";
+import * as Icons from "@material-ui/icons";
 
 // for the dropdown
 import TextField from "@material-ui/core/TextField";
@@ -33,6 +38,10 @@ import { Menu, MenuItem } from "@material-ui/core";
 // for the new color picker
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
+
+// for Font Awesome
+import Icon from "@material-ui/core/Icon";
+import parse from "html-react-parser";
 
 class MenuModule extends Component {
   state = {
@@ -51,6 +60,7 @@ class MenuModule extends Component {
     displayBgColorPicker: false,
     bgColor: "",
     icons: [],
+    icon: "",
   };
 
   async componentDidMount() {
@@ -59,6 +69,7 @@ class MenuModule extends Component {
         menuOptions: this.props.moduleOptions.data.links,
         isMenuVertical: this.props.moduleOptions.data.isVertical,
         stretchToFit: this.props.moduleOptions.data.stretchToFit,
+        bgColor: this.props.moduleOptions.data.backgroundColor,
       });
       if (this.props.moduleOptions.data.showAsAccordion) {
         await this.setAsyncState({
@@ -66,7 +77,34 @@ class MenuModule extends Component {
         });
       }
       this.getAllLinks();
+      console.log(this.props.moduleOptions.data);
     }
+
+    let icons = Object.keys(Icons).filter((key) => {
+      let show = true;
+      if (key.includes("Outlined")) {
+        show = false;
+      } else if (key.includes("Rounded")) {
+        show = false;
+      } else if (key.includes("Sharp")) {
+        show = false;
+      } else if (key.includes("New")) {
+        show = false;
+      } else if (key.includes("TwoTone")) {
+        show = false;
+      }
+
+      return show;
+    });
+
+    icons = icons.map((key) => {
+      return {
+        text: key.replace(/([a-z0-9])([A-Z])/g, "$1 $2"),
+        label: key.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase(),
+      };
+    });
+
+    this.setState({ icons });
   }
 
   getTheme = () => {
@@ -88,7 +126,7 @@ class MenuModule extends Component {
         },
         MuiDialog: {
           paperWidthSm: {
-            maxWidth: "1000px",
+            maxWidth: "100%",
             backgroundColor: "#FFDF00",
           },
         },
@@ -351,33 +389,42 @@ class MenuModule extends Component {
         {
           title: "Target",
           field: "targetLink",
+          width: "100px",
           lookup: { _self: "In Page", _blank: "New Tab" },
         },
         {
           title: "Icon",
           field: "icon",
           editComponent: (columnData) => {
-            debugger;
             return (
               <Autocomplete
+                className={this.props.classes.option}
                 options={this.state.icons}
                 autoHighlight
-                className={this.props.classes.option}
-                value={this.state.flatLinks.find(
-                  (link) => link.id === columnData.rowData.parentId
+                getOptionLabel={(option) => option.text}
+                value={this.state.icons.find(
+                  (icon) => icon.text === columnData.rowData.icon
                 )}
                 onChange={(ev, value) => {
-                  columnData.onRowDataChange({
-                    ...columnData.rowData,
-                    parentId: value.id,
-                  });
+                  if (value && value.text) {
+                    columnData.onRowDataChange({
+                      ...columnData.rowData,
+                      icon: value.text,
+                    });
+                  }
                 }}
-                getOptionLabel={(option) => option.label}
+                renderOption={(option) => {
+                  return (
+                    <React.Fragment>
+                      <Icon>{option.label}</Icon> {option.text}
+                    </React.Fragment>
+                  );
+                }}
                 renderInput={(params) => (
                   <TextField
                     className={this.props.classes.textfield}
                     {...params}
-                    label="Parent link"
+                    label="Icon"
                     variant="outlined"
                   />
                 )}
@@ -390,7 +437,6 @@ class MenuModule extends Component {
           field: "parentId",
           type: "numeric",
           editComponent: (columnData) => {
-            debugger;
             return (
               <Autocomplete
                 options={this.state.flatLinks}
@@ -592,6 +638,7 @@ class MenuModule extends Component {
                   links: this.state.menuOptions,
                   isVertical: this.state.isMenuVertical,
                   showAsAccordion: this.state.showAsAccordion,
+                  stretchToFit: this.state.stretchToFit,
                   backgroundColor: this.state.bgColor,
                 });
                 this.closeModuleOptionsModal();

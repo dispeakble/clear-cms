@@ -9,14 +9,15 @@ import IconPeople from "@material-ui/icons/People";
 import IconBarChart from "@material-ui/icons/BarChart";
 import IconLibraryBooks from "@material-ui/icons/LibraryBooks";
 
-import AppMenuItem from "./AppMenuItem";
+import LinksMenuItem from "./LinksMenuItem";
 
-class AppMenu extends Component {
+class LinksMenu extends Component {
   render() {
     return (
       <List component="nav" disablePadding>
         {this.props.menuLinksData.map((item, index) => (
-          <AppMenuItem
+          <LinksMenuItem
+            menuLinksData={this.props.menuLinksData}
             bgColor={this.props.bgColor}
             style={{
               color: "inherit",
@@ -33,4 +34,4 @@ class AppMenu extends Component {
   }
 }
 
-export default AppMenu;
+export default LinksMenu;

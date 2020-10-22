@@ -184,17 +184,14 @@ const javascriptStyles = {
       "& li": {
         flex: 1,
         display: "inline-block",
-        position: "relative",
-        background: "#525789",
         fontFamily: "cambria",
-        "& ul": { display: "none", width: "100%" },
+        "& ul": { display: "none" },
         "& a": {
           display: "block",
           padding: "0.4em 1em",
           textDecoration: "none",
           whiteSpace: "normal",
           width: "100%",
-          color: "#fff",
           transition: "0.3s",
           "&:hover": {
             background: "#8497AF",
@@ -204,7 +201,7 @@ const javascriptStyles = {
           cursor: "pointer",
           "& > ul": {
             flex: 1,
-            display: "block",
+            display: "inline-block",
             position: "absolute",
             opacity: 0.9,
           },
@@ -212,7 +209,7 @@ const javascriptStyles = {
             display: "block",
           },
           "& a": {
-            background: "#41424c",
+            display: "block",
           },
         },
       },

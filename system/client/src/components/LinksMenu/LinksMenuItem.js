@@ -12,9 +12,9 @@ import Collapse from "@material-ui/core/Collapse";
 import IconExpandLess from "@material-ui/icons/ExpandLess";
 import IconExpandMore from "@material-ui/icons/ExpandMore";
 
-import AppMenuItemComponent from "./AppMenuItemComponent";
+import LinksMenuItemComponent from "./LinksMenuItemComponent";
 
-const AppMenuItem = (props) => {
+const LinksMenuItem = (props) => {
   const { text, href, Icon, children = [] } = props;
   const classes = useStyles();
   const isExpandable = children && children.length > 0;
@@ -25,7 +25,8 @@ const AppMenuItem = (props) => {
   }
 
   const MenuItemRoot = (
-    <AppMenuItemComponent
+    <LinksMenuItemComponent
+      menuLinksData={this.props.menuLinksData}
       className={classes.menuItem}
       bgColor={props.bgColor}
       style={{
@@ -40,14 +41,15 @@ const AppMenuItem = (props) => {
       <ListItemText primary={text} />
       {isExpandable && !open && <IconExpandMore />}
       {isExpandable && open && <IconExpandLess />}
-    </AppMenuItemComponent>
+    </LinksMenuItemComponent>
   );
 
   const MenuItemChildren = isExpandable ? (
     <Collapse in={open} timeout="auto" unmountOnExit>
       <List component="div" disablePadding>
         {children.map((item, index) => (
-          <AppMenuItem
+          <LinksMenuItem
+            menuLinksData={props.menuLinksData}
             bgColor={props.bgColor}
             style={{
               color: "inherit",
@@ -92,4 +94,4 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default AppMenuItem;
+export default LinksMenuItem;
