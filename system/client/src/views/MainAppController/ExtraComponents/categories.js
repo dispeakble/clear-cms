@@ -19,6 +19,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 
+// for the dropdown
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Menu, MenuItem } from "@material-ui/core";
+
 //todo import modal content to add category
 
 const shortid = require("shortid");
@@ -30,20 +35,55 @@ class Categories extends Component {
     cat_list: [],
     categories: [],
     showMultipleDeleteModal: false,
+    flatCategories: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const categories = JSON.parse(localStorage.getItem("categories"));
 
     if (categories !== null) {
-      this.setState({
+      await this.setAsyncState({
         categories: categories,
       });
     }
+
+    this.getAllCategories();
   }
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
+
+  getCategoriesNested(id) {
+    let result = "";
+    let cat = this.state.categories.find((el) => el.id === id);
+    result = cat.name;
+    if (cat && cat.parentId) {
+      result = this.getCategoriesNested(cat.parentId) + "/" + result;
+    }
+    return result;
+  }
+
+  getAllCategories = async () => {
+    let result = [];
+
+    if (this.state.categories.length) {
+      let links = this.state.categories;
+      links.map((el) => {
+        let catName = el.name;
+        if (el.parentId) {
+          catName = this.getCategoriesNested(el.parentId) + "/" + el.name;
+        }
+        result.push({
+          id: el.id,
+          label: catName,
+        });
+      });
+
+      await this.setAsyncState({
+        flatCategories: result,
+      });
+    }
+  };
 
   tableOptions = {
     getTheme: () => {
@@ -148,21 +188,25 @@ class Categories extends Component {
         onRowAdd: (newData) =>
           new Promise((resolve, reject) => {
             setTimeout(async () => {
+              delete newData.tableData;
               let categories = [...this.state.categories];
               newData.id = this.state.categories.length + 1;
               let newCategories = categories.concat(newData);
-              this.setState({ categories: newCategories });
+              await this.setAsyncState({ categories: newCategories });
+              this.getAllCategories();
               localStorage.setItem("categories", JSON.stringify(newCategories));
               resolve();
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            setTimeout(() => {
+            setTimeout(async () => {
+              delete newData.tableData;
               const dataUpdate = [...this.state.categories];
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;
-              this.setState({ categories: dataUpdate });
+              await this.setAsyncState({ categories: dataUpdate });
+              this.getAllCategories();
               resolve();
             }, 100);
           }),
@@ -210,7 +254,46 @@ class Categories extends Component {
           title: "Description",
           field: "description",
         },
-        { title: "Parent Id", field: "parentId", type: "numeric" },
+        {
+          title: "Parent Id",
+          field: "parentId",
+          type: "numeric",
+          editComponent: (columnData) => {
+            let filteredCats = this.state.flatCategories.filter(
+              (cat) => cat.id !== columnData.rowData.id
+            );
+            return (
+              <Autocomplete
+                options={filteredCats}
+                autoHighlight
+                className={this.props.classes.option}
+                defaultValue={() => {
+                  let foundLink = this.state.flatCategories.find(
+                    (link) => link.id === columnData.rowData.parentId
+                  );
+                  return foundLink;
+                }}
+                onChange={(ev, value) => {
+                  if (value && value.label) {
+                    columnData.onRowDataChange({
+                      ...columnData.rowData,
+                      parentId: value.id,
+                    });
+                  }
+                }}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                  <TextField
+                    className={this.props.classes.textfield}
+                    {...params}
+                    label="Parent category"
+                    variant="outlined"
+                  />
+                )}
+              />
+            );
+          },
+        },
       ],
       parentChildData: (row, rows) => rows.find((a) => a.id === row.parentId),
       options: {

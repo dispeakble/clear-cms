@@ -26,7 +26,7 @@ const LinksMenuItem = (props) => {
 
   const MenuItemRoot = (
     <LinksMenuItemComponent
-      menuLinksData={this.props.menuLinksData}
+      menuLinksData={props.menuLinksData}
       className={classes.menuItem}
       bgColor={props.bgColor}
       style={{

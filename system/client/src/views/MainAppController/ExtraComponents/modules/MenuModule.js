@@ -198,26 +198,58 @@ class MenuModule extends Component {
     this.closeMultipleDeleteModal();
   };
 
-  getAllLinks = async (data, parentName) => {
-    let result = this.state.flatLinks;
+  // getAllLinks = async (data, parentName) => {
+  //   let result = this.state.flatLinks;
+  //   if (this.state.menuOptions.length) {
+  //     let links = data || this.state.menuOptions;
+  //     links.map((el) => {
+  //       el.concatText = el.text;
+  //       if (parentName) {
+  //         el.concatText = parentName + "/" + el.concatText;
+  //       }
+  //       result.push({
+  //         id: el.id,
+  //         label: el.concatText,
+  //       });
+  //       if (
+  //         el.tableData &&
+  //         el.tableData.childRows &&
+  //         el.tableData.childRows.length
+  //       ) {
+  //         this.getAllLinks(el.tableData.childRows, el.text);
+  //       }
+  //     });
+
+  //     await this.setAsyncState({
+  //       flatLinks: result,
+  //     });
+  //   }
+  // };
+
+  getLinksNested(id) {
+    let result = "";
+    let link = this.state.menuOptions.find((el) => el.id === id);
+    result = link.text;
+    if (link && link.parentId) {
+      result = this.getLinksNested(link.parentId) + "/" + result;
+    }
+    return result;
+  }
+
+  getAllLinks = async () => {
+    let result = [];
+
     if (this.state.menuOptions.length) {
-      let links = data || this.state.menuOptions;
+      let links = this.state.menuOptions;
       links.map((el) => {
-        el.concatText = el.text;
-        if (parentName) {
-          el.concatText = parentName + "/" + el.concatText;
+        let linkName = el.text;
+        if (el.parentId) {
+          linkName = this.getLinksNested(el.parentId) + "/" + el.text;
         }
         result.push({
           id: el.id,
-          label: el.concatText,
+          label: linkName,
         });
-        if (
-          el.tableData &&
-          el.tableData.childRows &&
-          el.tableData.childRows.length
-        ) {
-          this.getAllLinks(el.tableData.childRows, el.text);
-        }
       });
 
       await this.setAsyncState({
@@ -225,17 +257,6 @@ class MenuModule extends Component {
       });
     }
   };
-
-  getLinkById(id) {
-    let result = {};
-    let links = this.state.flatLinks;
-    links.map((link) => {
-      if (link.id == id) {
-        result = link;
-      }
-    });
-    return result;
-  }
 
   tableOptions = {
     getTheme: () => {
@@ -321,21 +342,25 @@ class MenuModule extends Component {
         onRowAdd: (newData) =>
           new Promise((resolve, reject) => {
             setTimeout(async () => {
+              delete newData.tableData;
               let menuOptions = [...this.state.menuOptions];
               newData.id = this.state.menuOptions.length + 1;
               let newMenuOptions = menuOptions.concat(newData);
 
-              this.setState({ menuOptions: newMenuOptions });
+              await this.setAsyncState({ menuOptions: newMenuOptions });
+              this.getAllLinks();
               resolve();
             }, 100);
           }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
-            setTimeout(() => {
+            setTimeout(async () => {
+              delete newData.tableData;
               const dataUpdate = [...this.state.menuOptions];
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;
-              this.setState({ menuOptions: dataUpdate });
+              await this.setAsyncState({ menuOptions: dataUpdate });
+              this.getAllLinks();
               resolve();
             }, 100);
           }),
@@ -437,9 +462,12 @@ class MenuModule extends Component {
           field: "parentId",
           type: "numeric",
           editComponent: (columnData) => {
+            let filteredLinks = this.state.flatLinks.filter(
+              (link) => link.id !== columnData.rowData.id
+            );
             return (
               <Autocomplete
-                options={this.state.flatLinks}
+                options={filteredLinks}
                 autoHighlight
                 className={this.props.classes.option}
                 value={this.state.flatLinks.find(
