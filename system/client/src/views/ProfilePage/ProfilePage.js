@@ -252,19 +252,17 @@ class ProfilePage extends Component {
   };
 
   render() {
-    let generator = require("generate-password");
+    // let generator = require("generate-password");
 
-    let password = generator.generate({
-      length: 15,
-      numbers: true,
-      lowercase: true,
-      uppercase: true,
-      excludeSimilarCharacters: false,
-      symbols: true,
-      strict: true,
-    });
-
-    console.log(password);
+    // let password = generator.generate({
+    //   length: 15,
+    //   numbers: true,
+    //   lowercase: true,
+    //   uppercase: true,
+    //   excludeSimilarCharacters: false,
+    //   symbols: true,
+    //   strict: true,
+    // });
 
     const classes = this.props.classes;
 

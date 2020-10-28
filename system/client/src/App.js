@@ -4,7 +4,6 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import NotFound from "views/NotFound/NotFound";
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
-import Footer from "components/Footer/Footer.js";
 
 //import Components from "views/Components/Components.js";
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
@@ -109,7 +108,6 @@ class App extends Component {
             )}
           />
         </Switch>
-        {pathname.includes("/page") !== true ? <Footer /> : ""}
       </React.Fragment>
     );
   }
