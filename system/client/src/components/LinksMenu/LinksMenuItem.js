@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 
+import Icon from "@material-ui/core/Icon";
+
 import List from "@material-ui/core/List";
 
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -15,7 +17,7 @@ import IconExpandMore from "@material-ui/icons/ExpandMore";
 import LinksMenuItemComponent from "./LinksMenuItemComponent";
 
 const LinksMenuItem = (props) => {
-  const { text, href, Icon, children = [] } = props;
+  const { text, href, icon, children = [] } = props;
   const classes = useStyles();
   const isExpandable = children && children.length > 0;
   const [open, setOpen] = React.useState(false);
@@ -38,6 +40,9 @@ const LinksMenuItem = (props) => {
       link={!children ? href : ""}
       onClick={handleClick}
     >
+      <Icon style={{ color: "inherit" }}>
+        {icon ? icon.replace(" ", "_").toLowerCase() : ""}
+      </Icon>
       <ListItemText primary={text} />
       {isExpandable && !open && <IconExpandMore />}
       {isExpandable && open && <IconExpandLess />}

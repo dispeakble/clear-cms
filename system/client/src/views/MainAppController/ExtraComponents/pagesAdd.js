@@ -142,6 +142,7 @@ class PagesAdd extends React.PureComponent {
     textColor: "#000000",
     fontFamily: "Arial",
     pageTitle: "",
+    pageLink: "",
     pageOrItemFontSize: "",
     pageOrItemFontFamily: "",
     pageOrItemTextColor: "",
@@ -246,6 +247,7 @@ class PagesAdd extends React.PureComponent {
           textColor: pageConfig.textColor,
           fontFamily: pageConfig.fontFamily,
           pageTitle: pageConfig.pageTitle,
+          pageLink: pageConfig.pageLink,
           config: savedLayoutBoxSpacing,
           category: pageConfig.category,
           defaultPage: pageConfig.defaultPage,
@@ -586,9 +588,14 @@ class PagesAdd extends React.PureComponent {
   handleInputChange = async (event) => {
     switch (event.target.id) {
       case "pageTitle":
-        let pageTitle = [...this.state.pageTitle];
+        let pageTitle = [this.state.pageTitle];
         pageTitle = event.target.value;
         this.setState({ pageTitle });
+        break;
+      case "pageLink":
+        let pageLink = [this.state.pageLink];
+        pageLink = event.target.value;
+        this.setState({ pageLink });
         break;
       case "moduleOptions":
         let editModuleOptions = [...this.state.editModuleOptions];
@@ -1083,6 +1090,7 @@ class PagesAdd extends React.PureComponent {
       fontFamily: this.state.fontFamily,
       layoutBoxSpacing: this.state.config.layoutBoxSpacing,
       pageTitle: this.state.pageTitle,
+      pageLink: this.state.pageLink,
       publish: this.state.publish,
       defaultPage: this.state.defaultPage,
       category: this.state.category,
@@ -1639,6 +1647,25 @@ class PagesAdd extends React.PureComponent {
                         <></>
                       )}
                     </div>
+                    <div>
+                      <CustomInput
+                        labelText="Page Link"
+                        id="pageLink"
+                        required="required"
+                        formControlProps={{
+                          fullWidth: true,
+                          onChange: (event) => this.handleInputChange(event),
+                        }}
+                        inputProps={{
+                          inputProps: {
+                            minLength: "3",
+                            maxLength: "50",
+                          },
+                          value: this.state.pageLink,
+                          type: "text",
+                        }}
+                      />
+                    </div>
                   </div>
                 </AccordionDetails>
               </Accordion>
@@ -1656,7 +1683,6 @@ class PagesAdd extends React.PureComponent {
                       minLength: "3",
                       maxLength: "50",
                     },
-
                     value: this.state.pageTitle,
                     type: "text",
                   }}

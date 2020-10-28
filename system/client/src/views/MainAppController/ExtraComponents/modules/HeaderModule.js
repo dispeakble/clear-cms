@@ -111,12 +111,12 @@ class HeaderModule extends Component {
   handleInputChange = async (event) => {
     switch (event.target.id) {
       case "logoTitle":
-        let logoTitle = [...this.state.logoTitle];
+        let logoTitle = [this.state.logoTitle];
         logoTitle = event.target.value;
         this.setState({ logoTitle });
         break;
       case "logoLink":
-        let logoLink = [...this.state.logoLink];
+        let logoLink = [this.state.logoLink];
         logoLink = event.target.value;
         this.setState({ logoLink });
         break;
