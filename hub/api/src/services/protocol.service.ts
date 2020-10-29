@@ -8,7 +8,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 @Injectable()
 export class ProtocolService {
 
-    private methods = [];
+    private methods = ["ping"];
 
     constructor(
         @Inject('REDIS_SERVICE') private redisClient: ClientProxy
@@ -34,10 +34,10 @@ export class ProtocolService {
         };
     }
 
-    public perform(data: any) {
+    public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
             //console.log('ProtocolService.' + data.act + '(' + JSON.stringify(data.payload) + ')');
-            return this[data.act](data.payload);
+            return this[data.act](data.payload, config);
         } else {
             console.log("Hub.protocolService." + data.act + " not found");
         }

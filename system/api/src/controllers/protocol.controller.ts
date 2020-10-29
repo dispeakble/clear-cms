@@ -1,12 +1,13 @@
-import {Controller, Logger} from '@nestjs/common';
+import {Controller, Inject, Logger} from '@nestjs/common';
 import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 
 @Controller()
-export class AppController {
+export class ProtocolController {
 
+    public logger: Logger = new Logger('App.Controller');
     private config: ModuleInterface = {
         name: 'system',
         version: '20.07.19',
@@ -22,28 +23,23 @@ export class AppController {
         dependencies: [{
             name: 'hub',
             version: 'latest'
-        }, {
+        }/*, {
             name: 'proxy',
             version: 'latest'
-        }],
+        }*/],
     };
 
-    public logger: Logger = new Logger('App.Controller');
-
-    constructor(private readonly protocolService: ProtocolService) {
+    constructor(@Inject('ProtocolService') private protocolService,@Inject('HttpService') private httpService,) {
 
     }
 
     @MessagePattern({message: 'system'})
-    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext){
+    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
     @EventPattern({event: 'system'})
     public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-
-        this.logger.log('system event', JSON.stringify(data));
-
         return this.perform(data);
     }
 
@@ -51,28 +47,27 @@ export class AppController {
         await this.protocolService.start();
         this.logger.log('system connected to redis');
         this.registerModule({after: 0});
-        await this.protocolService.emitEvent({//TODO ask HUB for this. Hub must check mappings.
-            channel: 'proxy',
+        await this.protocolService.emitEvent({
+            channel: 'hub',
             payload: {
-                api: 'protocol',
-                act: 'mapRequest',
-                channel: 'system',
+                api: 'module',
+                act: 'mapPort',
                 payload: {
                     channel: 'system',
-                    type: 'get'
-                }}
+                    port: process.env.public_port
+                }
+            }
         })
     }
 
-    private registerModule(params){
+    private registerModule(params) {
         setTimeout(async () => {
-
             try {
                 const moduleResponse = await this.protocolService.registerModule(this.config);
 
-                switch(moduleResponse.status){
+                switch (moduleResponse.status) {
                     case 'failed':
-                        switch(moduleResponse.resolution.action){
+                        switch (moduleResponse.resolution.action) {
                             case 'retry':
                                 this.registerModule({
                                     after: moduleResponse.resolution.after
@@ -89,7 +84,7 @@ export class AppController {
                         break;
                 }
 
-            } catch (ex){
+            } catch (ex) {
                 this.logger.log(ex);
             }
 
@@ -99,9 +94,8 @@ export class AppController {
 
     private perform(data: payloadInterface){
         try {
-            return this[data.api + 'Service'][data.act](data.payload, this.config);
-        } catch (ex) {//TODO return proper error to caller
-            this.logger.log(ex);
+            return this[data.api + 'Service'].perform(data, this.config);
+        } catch (ex) {
             return {
                 message:'Could not find ' + data.api + ':' + data.act
             };

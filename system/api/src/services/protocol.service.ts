@@ -8,6 +8,8 @@ import * as fs from "fs";
 @Injectable()
 export class ProtocolService {
 
+    private methods = ["start", "sendMessage", "emitEvent", "registerModule", "ping"];
+
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy
     ) {
@@ -35,35 +37,20 @@ export class ProtocolService {
         return this.redisService.send({message: 'hub'}, payload).toPromise();
     }
 
-    public get(data: any){
-        return new Promise((resolve_get) => {
-            const query = data.query;
-            const params = data.params;
-            let file_name = 'index.html';
-
-            if(data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1){
-                file_name = params[0];
-            }
-
-            try {
-                const file = fs.readFileSync(__dirname + '/../../public/' + file_name);
-                resolve_get(file);
-            } catch (err) {
-                const file = fs.readFileSync(__dirname + '/../../public/index.html');
-                resolve_get(file);
-            }
-
-
-
-        });
-
-    }
-
     public ping(data: any, config: ModuleInterface){
         return {
             name: config.name,
             version: config.version
         };
+    }
+
+    public perform(data: any, config?: ModuleInterface) {
+        if (this.methods.includes(data.act)) {
+            return this[data.act](data.payload, config);
+        } else {
+            console.log("System.httpService." + data.act + " not found");
+        }
+        return null;
     }
 
 }

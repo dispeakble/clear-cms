@@ -13,7 +13,8 @@ async function bootstrap() {
             transport: Transport.REDIS,
             options: {
                 url: 'redis://' + process.env.redis_server,
-                port: +process.env.redis_port
+                port: +process.env.redis_port,
+                password: process.env.redis_password
             },
         });
         await app.listen(() => console.log('hub is ready.'));
