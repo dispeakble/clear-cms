@@ -2,11 +2,12 @@ import {Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {ProtocolService} from "./protocol.service";
 import {payloadInterface} from "../interfaces/payload.interface";
+import { RedisCacheService } from '../cache/redisCache.service';
 
 @Injectable()
 export class ModuleService {
 
-    private methods = ["register"];
+    private methods = ["register", "mapPort", "getPort", "getChannel"];
     private modules = {
         hub: {
             version: 'version',
@@ -17,10 +18,10 @@ export class ModuleService {
     };
     private moduleStatus = {};
 
-    constructor(private protocolService: ProtocolService) {
+    constructor(
+        private protocolService: ProtocolService,
+        private cacheService: RedisCacheService) {
     }
-
-
 
     private async register(params: ModuleInterface) {
 
@@ -146,7 +147,44 @@ export class ModuleService {
             return moduleRegistrationFailed;
         }
 
+    }
 
+    async mapPort(data: any){
+        let p_string = await this.cacheService.get('ports');
+        let ports = JSON.parse(p_string);
+        ports = ports || {};
+        ports[data.port] = data.channel;
+        await this.cacheService.set('ports', JSON.stringify(ports));
+        this.protocolService.emitEvent({
+            channel: 'proxy',
+            payload: {
+                api: 'app',
+                act: 'updatePortMapping',
+                payload: ports
+            }
+        })
+    }
+
+    async getPortByChannel(data: any){
+        let p_string = await this.cacheService.get('ports');
+        let ports = JSON.parse(p_string);
+        if(ports){
+            for(let port in ports){
+                if(ports[port] === data.channel){
+                    return +port;
+                }
+            }
+        }
+        return null;
+    }
+
+    async getPortByPort(data: any){
+        let p_string = await this.cacheService.get('ports');
+        let ports = JSON.parse(p_string);
+        if(ports){
+            return ports[data.port];
+        }
+        return null;
     }
 
     public perform(data: any) {

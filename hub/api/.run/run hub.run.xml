@@ -7,8 +7,9 @@
     </scripts>
     <node-interpreter value="project" />
     <envs>
-      <env name="redis_server" value="dosidoweb.com" />
+      <env name="redis_server" value="127.0.0.1" />
       <env name="redis_port" value="6379" />
+      <env name="redis_password" value="1qaz" />
     </envs>
     <method v="2" />
   </configuration>

@@ -32,6 +32,12 @@ export class ProtocolController {
         return response;
     }
 
+    @EventPattern({event: 'hub'})
+    public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+        const response = await this.perform(data);
+        return response;
+    }
+
     async onApplicationBootstrap() {
         await this.protocolService.start();
     }
@@ -40,7 +46,6 @@ export class ProtocolController {
         try {
             return this[data.api + 'Service'].perform(data, this.config);
         } catch (ex) {
-            console.log(ex);
             return {
                 message:'Could not find ' + data.api + ':' + data.act
             };
