@@ -9,6 +9,7 @@ import {
   AddCircle,
   Visibility,
   Edit,
+  OpenWith,
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
@@ -52,11 +53,7 @@ import { DropzoneArea } from "material-ui-dropzone";
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
-//import purchased modules. TODO add them dynamically
-
-import HeaderModule from "views/MainAppController/ExtraComponents/modules/HeaderModule";
-import MenuModule from "views/MainAppController/ExtraComponents/modules/MenuModule";
-import TextModule from "views/MainAppController/ExtraComponents/modules/TextModule";
+import Icon from "@material-ui/core/Icon";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -432,7 +429,19 @@ class PagesAdd extends React.PureComponent {
 
     return (
       <div key={i} data-grid={el} style={itemStyle}>
-        <p style={{ fontSize: "12px", color: "black" }}>{el.title}</p>
+        <p style={{ fontSize: "12px", color: "black" }}>
+          <Tooltip title="Drag Box">
+            <Icon
+              style={{ cursor: "grab" }}
+              class="MyDragHandleClassName"
+              color="primary"
+              size="medium"
+            >
+              <OpenWith />
+            </Icon>
+          </Tooltip>
+          &nbsp; {el.title}
+        </p>
         <div
           style={{
             position: "absolute",
@@ -1710,6 +1719,7 @@ class PagesAdd extends React.PureComponent {
                   isDraggable={this.state.isDraggable}
                   margin={this.state.config.layoutBoxSpacing}
                   containerPadding={this.state.config.layoutBoxPadding}
+                  draggableHandle=".MyDragHandleClassName"
                   onLayoutChange={(layout) => {
                     return this.onLayoutChange(layout);
                   }}

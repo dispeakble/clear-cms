@@ -208,6 +208,7 @@ class TextModule extends Component {
             <Button
               color="danger"
               onClick={async () => {
+                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >

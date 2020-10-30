@@ -677,6 +677,7 @@ class MenuModule extends Component {
             <Button
               color="danger"
               onClick={() => {
+                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >
