@@ -14,6 +14,7 @@ import {
 import Button from "components/CustomButtons/Button.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import MoreMenu from "components/MoreMenu/MoreMenu.js";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { withRouter } from "react-router-dom";
@@ -66,7 +67,7 @@ class PagesAdd extends React.PureComponent {
   };
 
   state = {
-    isDraggable: true,
+    //isDraggable: true,
     temporaryModuleOptions: {},
     showDiscardModal: false,
     itemOnDeleteIndex: "",
@@ -161,15 +162,15 @@ class PagesAdd extends React.PureComponent {
   };
 
   onStartEditingModule() {
-    this.setAsyncState({
-      isDraggable: false,
-    });
+    // this.setAsyncState({
+    //   isDraggable: false,
+    // });
   }
 
   onEndEditingModule() {
-    this.setAsyncState({
-      isDraggable: true,
-    });
+    // this.setAsyncState({
+    //   isDraggable: true,
+    // });
   }
 
   async componentDidMount() {
@@ -276,11 +277,11 @@ class PagesAdd extends React.PureComponent {
     this.setState({ pageTransitionPadding: "" });
   };
 
-  toggleItemSD(id, state) {
+  async toggleItemSD(id, state) {
     if (!state) {
       id = 0;
     }
-    this.setAsyncState({
+    await this.setAsyncState({
       itemSdId: id,
     });
   }
@@ -365,7 +366,7 @@ class PagesAdd extends React.PureComponent {
     })();
     switch (el.module) {
       default:
-        LazyModule = "";
+        LazyModule = false;
         break;
       case "Header Module": //TODO MAKE THIS DYNAMIC
         LazyModule = React.lazy(() => import(`./modules/HeaderModule`));
@@ -383,24 +384,18 @@ class PagesAdd extends React.PureComponent {
 
     let itemActions = [
       {
-        icon: (
-          <DeleteForever
-            onClick={this.onRemoveItem.bind(this, i)}
-            className={this.props.classes.removeItemIcon}
-          />
-        ),
+        callback: () => {
+          this.onRemoveItem(el.i);
+        },
+        icon: <DeleteForever className={this.props.classes.removeItemIcon} />,
         name: "Delete Item",
       },
       {
-        icon: (
-          <Edit
-            onClick={() => {
-              this.addPagePadding();
-              this.handleEdit(el.i);
-            }}
-            className={this.props.classes.editItemIcon}
-          />
-        ),
+        callback: () => {
+          this.addPagePadding();
+          this.handleEdit(el.i);
+        },
+        icon: <Edit className={this.props.classes.editItemIcon} />,
         name: "Edit Item",
       },
     ];
@@ -429,7 +424,9 @@ class PagesAdd extends React.PureComponent {
 
     return (
       <div key={i} data-grid={el} style={itemStyle}>
-        <p style={{ fontSize: "12px", color: "black" }}>
+        <div
+          style={{ fontSize: "12px", color: "black", verticalAlign: "middle" }}
+        >
           <Tooltip title="Drag Box">
             <Icon
               style={{ cursor: "grab" }}
@@ -441,7 +438,7 @@ class PagesAdd extends React.PureComponent {
             </Icon>
           </Tooltip>
           &nbsp; {el.title}
-        </p>
+        </div>
         <div
           style={{
             position: "absolute",
@@ -452,7 +449,7 @@ class PagesAdd extends React.PureComponent {
           }}
         >
           <span className={this.props.classes.editModuleIconWrapper}>
-            {el.module ? (
+            {el.module && LazyModule ? (
               <Suspense fallback={loadingFallback}>
                 <LazyModule
                   onStartEditingModule={() => this.onStartEditingModule()}
@@ -469,24 +466,7 @@ class PagesAdd extends React.PureComponent {
             )}
           </span>
           <span className={this.props.classes.itemSpeedDialWrapper}>
-            <SpeedDial
-              FabProps={{ size: "small" }}
-              ariaLabel="Module Speed Dial"
-              icon={<MoreVert />}
-              onClose={() => this.toggleItemSD(Number(el.i), false)}
-              onOpen={() => this.toggleItemSD(Number(el.i), true)}
-              open={this.state.itemSdId === Number(el.i)}
-            >
-              {itemActions.map((action) => (
-                <SpeedDialAction
-                  className={this.props.classes.itemSpeedDial}
-                  key={action.name}
-                  icon={action.icon}
-                  tooltipTitle={action.name}
-                  onClick={this.handleSpeedDialClose}
-                />
-              ))}
-            </SpeedDial>
+            <MoreMenu itemActions={itemActions} />
           </span>
         </div>
       </div>
@@ -1716,7 +1696,6 @@ class PagesAdd extends React.PureComponent {
                   }}
                   // margin={this.state.boxSpacing} primeste un array cu 2 valori
                   isBounded={true}
-                  isDraggable={this.state.isDraggable}
                   margin={this.state.config.layoutBoxSpacing}
                   containerPadding={this.state.config.layoutBoxPadding}
                   draggableHandle=".MyDragHandleClassName"
