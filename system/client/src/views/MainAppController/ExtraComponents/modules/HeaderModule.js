@@ -277,6 +277,7 @@ class HeaderModule extends Component {
                   logoTitle: this.props.moduleOptions.data.logoTitle,
                   logoLink: this.props.moduleOptions.data.logoLink,
                 });
+                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >
