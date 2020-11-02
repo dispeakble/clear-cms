@@ -64,6 +64,9 @@ class MenuModule extends Component {
   };
 
   async componentDidMount() {
+    let menuOptions = this.props.moduleOptions.data.links;
+    console.log(menuOptions);
+
     if (this.props.moduleOptions.data) {
       await this.setAsyncState({
         menuOptions: this.props.moduleOptions.data.links,
@@ -412,10 +415,11 @@ class MenuModule extends Component {
           field: "link",
         },
         {
-          title: "Target",
-          field: "targetLink",
+          title: "Location",
+          field: "location",
           width: "100px",
           lookup: { _self: "In Page", _blank: "New Tab" },
+          initialEditValue: "_self",
         },
         {
           title: "Icon",
