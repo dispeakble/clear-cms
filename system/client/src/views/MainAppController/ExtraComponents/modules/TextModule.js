@@ -140,7 +140,7 @@ class TextModule extends Component {
             {this.state.richFormattedText === true ? (
               <Editor
                 id="editor"
-                value={this.state.textContent}
+                value={this.state.richTextContent}
                 init={{
                   height: 500,
                   menubar: false,
