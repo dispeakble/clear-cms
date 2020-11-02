@@ -3,6 +3,8 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pages.js";
 
+import IconButton from "@material-ui/core/IconButton";
+
 import { withRouter } from "react-router-dom";
 
 // for the modal
@@ -23,7 +25,6 @@ import {
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import MaterialTable from "material-table";
