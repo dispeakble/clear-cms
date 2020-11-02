@@ -3,6 +3,8 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pages.js";
 
+import { withRouter } from "react-router-dom";
+
 // for the modal
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -178,7 +180,9 @@ class Pages extends Component {
             </IconButton>
           ),
           onClick: (event, rowData) => {
-            window.open(`/pageEdit/${Number(rowData.tableData.id) + 1}`);
+            this.props.history.push(
+              `/pageEdit/${Number(rowData.tableData.id) + 1}`
+            );
           },
         },
         {
@@ -367,4 +371,4 @@ class Pages extends Component {
   }
 }
 
-export default withStyles(styles)(Pages);
+export default withRouter(withStyles(styles)(Pages));
