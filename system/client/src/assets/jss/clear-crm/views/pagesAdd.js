@@ -2,7 +2,7 @@ import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
 
 const javascriptStyles = {
   gridLayout: {
-    margin: "0 30px 0",
+    margin: "0 15px 0",
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
     },
@@ -100,6 +100,17 @@ const javascriptStyles = {
     marginTop: "5px",
     padding: "0",
     background: "#FFF",
+  },
+
+  // for the 2 icons on the right side of the page
+
+  iconsWrapper: {
+    flex: "0 0 112px",
+    width: "112px",
+    whiteSpace: "nowrap",
+  },
+  rightSideIcon: {
+    fontSize: "2rem",
   },
 
   // for Hamburger menu

@@ -75,23 +75,6 @@ class PagesAdd extends React.PureComponent {
     items: [],
     itemSdId: 0,
     newCounter: 0,
-    pageActions: [
-      {
-        icon: <AddCircle onClick={() => this.onAddItem()} />,
-        name: "Add block",
-      },
-      {
-        icon: (
-          <Visibility
-            onClick={() => {
-              window.open(`/pagePreview/${this.props.match.params.id}`);
-            }}
-            className={this.props.classes.previewIcon}
-          />
-        ),
-        name: "Preview",
-      },
-    ],
 
     speedDialState: false,
     modulesList: [
@@ -159,6 +142,7 @@ class PagesAdd extends React.PureComponent {
     editModuleOptions: "",
     pageTransitionPadding: "",
     editItemScrollbars: false,
+    addAnItem: false,
   };
 
   onStartEditingModule() {
@@ -256,8 +240,6 @@ class PagesAdd extends React.PureComponent {
         items: currentPage.items,
         pageConfig: currentPage.pageConfig,
       });
-    } else {
-      await this.setAsyncState({ pageActions: [this.state.pageActions[0]] });
     }
 
     await this.setAsyncState({
@@ -489,8 +471,12 @@ class PagesAdd extends React.PureComponent {
   //   await this.setAsyncState({ items });
   // };
 
-  onAddItem = () => {
+  onAddItem() {
     let newId = 0;
+    this.setState({
+      // Add a new item. It must have a unique key!
+      onAddItem: !this.state.onAddItem,
+    });
     try {
       this.state.items.map((item) => {
         newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
@@ -499,41 +485,33 @@ class PagesAdd extends React.PureComponent {
 
       newId++;
 
-      // let items = this.state.items;
-      // let newId = "1";
+      let items = this.state.items;
+      items.push({
+        title: "New Box",
+        showScrollbars: "",
+        module: "",
+        moduleOptions: { data: "" },
+        borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
+        borderStyle: "solid",
+        borderWidth: "0",
+        borderRadius: "0",
+        fontSize: "0", // to avoid getting NAN in the slider
+        backgroundImage: "",
+        i: newId + "",
+        x: 0,
+        y: Infinity, // puts it at the bottom
+        w: 2,
+        h: 20,
+      });
 
-      // items.map((item) => {
-      //   itemsIds.push(Number(item.i));
-      // });
-      // console.log(itemsIds);
-      // newId = Math.max(itemsIds) + 1;
+      this.setState({
+        // Add a new item. It must have a unique key!
+        items: items,
+      });
     } catch (err) {
       console.log(err);
     }
-
-    let items = this.state.items;
-    items.push({
-      title: "New Box",
-      showScrollbars: "",
-      module: "",
-      moduleOptions: { data: "" },
-      borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
-      borderStyle: "solid",
-      borderWidth: "0",
-      borderRadius: "0",
-      fontSize: "0", // to avoid getting NAN in the slider
-      backgroundImage: "",
-      i: newId + "",
-      x: 0,
-      y: Infinity, // puts it at the bottom
-      w: 2,
-      h: 20,
-    });
-    this.setState({
-      // Add a new item. It must have a unique key!
-      items: items,
-    });
-  };
+  }
 
   // We're using the cols coming back from this to calculate where to add new items.
   onBreakpointChange = (breakpoint, cols) => {
@@ -903,6 +881,14 @@ class PagesAdd extends React.PureComponent {
   success?: PaletteColorOptions;
     */
     return createMuiTheme({
+      palette: {
+        primary: {
+          main: "#008B8B",
+        },
+        secondary: {
+          main: "#F44336",
+        },
+      },
       overrides: {
         MuiSpeedDial: {
           actionsClosed: {
@@ -1477,187 +1463,225 @@ class PagesAdd extends React.PureComponent {
             </Dialog>
 
             <div className={classes.gridLayout}>
-              <Accordion className={classes.accordion}>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1c-content"
-                  id="panel1c-header"
-                >
-                  <div className={classes.column}>
-                    <Typography className={classes.typography}>
-                      Page Options
-                    </Typography>
-                  </div>
-                </AccordionSummary>
-                <Divider />
+              <div style={{ display: "flex" }}>
+                <div style={{ flex: 1 }}>
+                  <Accordion className={classes.accordion}>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1c-content"
+                      id="panel1c-header"
+                    >
+                      <div className={classes.column}>
+                        <Typography className={classes.typography}>
+                          Page Options
+                        </Typography>
+                      </div>
+                    </AccordionSummary>
+                    <Divider />
 
-                <AccordionDetails className={classes.accordionDetails}>
-                  <div
-                    className={classes.column + " " + classes.columnSeparator}
-                  >
-                    <h4>Background</h4>
-                    <h5>Background Color</h5>
-
-                    {this.createColorPicker(
-                      bgColorStyles,
-                      "displayBgColorPicker",
-                      "bgColor"
-                    )}
-
-                    <h5>Background Image</h5>
-                    <div className={classes.dropzoneAreaWrapper}>
-                      <DropzoneArea
-                        onChange={this.handleBgImage.bind(this)}
-                        onDrop={(acceptedFiles) => console.log(acceptedFiles)}
-                      />
-                    </div>
-                  </div>
-                  <p />
-                  <div
-                    className={classes.column + " " + classes.columnSeparator}
-                  >
-                    <h4>Font </h4>
-                    <div>
-                      <Typography id="discrete-slider" gutterBottom>
-                        Font Size
-                      </Typography>
-                      <Slider
-                        className={classes.pageOptionsSlider}
-                        onChangeCommitted={this.handleFontSize}
-                        defaultValue={Number(this.state.fontSize)}
-                        aria-labelledby="discrete-slider"
-                        valueLabelDisplay="auto"
-                        min={5}
-                        max={50}
-                      />
-                    </div>
-                    <h5>Text Color</h5>
-                    {this.createColorPicker(
-                      textColorStyles,
-                      "displayTextColorPicker",
-                      "textColor"
-                    )}
-
-                    <h5>Font Family</h5>
-                    <Autocomplete
-                      id="fontFamilyDropdown"
-                      onChange={this.handleFontFamily}
-                      className={this.props.classes.option}
-                      options={this.state.fontFamilies}
-                      autoHighlight
-                      getOptionLabel={(option) => option.label}
-                      value={this.getFontFamilyItem(this.state.fontFamily)}
-                      renderInput={(params) => (
-                        <TextField
-                          className={this.props.classes.textfield}
-                          {...params}
-                          label="Choose a Font Family"
-                          variant="outlined"
-                        />
-                      )}
-                    />
-                  </div>
-                  <p />
-                  <div className={clsx(classes.column, classes.helper)}>
-                    <h4>Miscellaneous</h4>
-                    <div>
-                      <Typography id="discrete-slider" gutterBottom>
-                        Box Spacing
-                      </Typography>
-                      <Slider
-                        className={classes.pageOptionsSlider}
-                        onChangeCommitted={this.handleBoxSpacing}
-                        defaultValue={Number(
-                          this.state.config.layoutBoxSpacing[0]
-                        )}
-                        getAriaValueText={() =>
-                          this.state.config.layoutBoxSpacing[0] + " pixels"
+                    <AccordionDetails className={classes.accordionDetails}>
+                      <div
+                        className={
+                          classes.column + " " + classes.columnSeparator
                         }
-                        aria-labelledby="discrete-slider"
-                        valueLabelDisplay="auto"
-                        min={0}
-                        max={150}
-                      />
-                    </div>
-                    <div>
-                      <Typography id="discrete-slider" gutterBottom>
-                        <Tooltip title="Enable Publishing">
-                          <Switch
-                            checked={this.state.publish}
-                            onChange={() => {
-                              this.setState({
-                                publish: !this.state.publish,
-                              });
-                            }}
-                            value={this.state.publish}
+                      >
+                        <h4>Background</h4>
+                        <h5>Background Color</h5>
+
+                        {this.createColorPicker(
+                          bgColorStyles,
+                          "displayBgColorPicker",
+                          "bgColor"
+                        )}
+
+                        <h5>Background Image</h5>
+                        <div className={classes.dropzoneAreaWrapper}>
+                          <DropzoneArea
+                            onChange={this.handleBgImage.bind(this)}
+                            onDrop={(acceptedFiles) =>
+                              console.log(acceptedFiles)
+                            }
                           />
-                        </Tooltip>
-                        Publish
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography id="discrete-slider" gutterBottom>
-                        <Tooltip title="Set as default page">
-                          <Switch
-                            checked={this.state.defaultPage}
-                            onChange={() => {
-                              this.setState({
-                                defaultPage: !this.state.defaultPage,
-                              });
-                            }}
-                            value={true}
+                        </div>
+                      </div>
+                      <p />
+                      <div
+                        className={
+                          classes.column + " " + classes.columnSeparator
+                        }
+                      >
+                        <h4>Font </h4>
+                        <div>
+                          <Typography id="discrete-slider" gutterBottom>
+                            Font Size
+                          </Typography>
+                          <Slider
+                            className={classes.pageOptionsSlider}
+                            onChangeCommitted={this.handleFontSize}
+                            defaultValue={Number(this.state.fontSize)}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="auto"
+                            min={5}
+                            max={50}
                           />
-                        </Tooltip>
-                        Default Page
-                      </Typography>
-                    </div>
-                    <div>
-                      {this.state.categories.length ? (
+                        </div>
+                        <h5>Text Color</h5>
+                        {this.createColorPicker(
+                          textColorStyles,
+                          "displayTextColorPicker",
+                          "textColor"
+                        )}
+
+                        <h5>Font Family</h5>
                         <Autocomplete
-                          id="categoryDropdown"
-                          onChange={this.handleCategory}
+                          id="fontFamilyDropdown"
+                          onChange={this.handleFontFamily}
                           className={this.props.classes.option}
-                          options={this.state.categories}
+                          options={this.state.fontFamilies}
                           autoHighlight
                           getOptionLabel={(option) => option.label}
-                          defaultValue={this.getCategoryItem(
-                            this.state.category
-                          )}
+                          value={this.getFontFamilyItem(this.state.fontFamily)}
                           renderInput={(params) => (
                             <TextField
                               className={this.props.classes.textfield}
                               {...params}
-                              label="Choose a category"
+                              label="Choose a Font Family"
                               variant="outlined"
                             />
                           )}
                         />
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <div>
-                      <CustomInput
-                        labelText="Page Link"
-                        id="pageLink"
-                        required="required"
-                        formControlProps={{
-                          fullWidth: true,
-                          onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                          inputProps: {
-                            minLength: "3",
-                            maxLength: "50",
-                          },
-                          value: this.state.pageLink,
-                          type: "text",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </AccordionDetails>
-              </Accordion>
+                      </div>
+                      <p />
+                      <div className={clsx(classes.column, classes.helper)}>
+                        <h4>Miscellaneous</h4>
+                        <div>
+                          <Typography id="discrete-slider" gutterBottom>
+                            Box Spacing
+                          </Typography>
+                          <Slider
+                            className={classes.pageOptionsSlider}
+                            onChangeCommitted={this.handleBoxSpacing}
+                            defaultValue={Number(
+                              this.state.config.layoutBoxSpacing[0]
+                            )}
+                            getAriaValueText={() =>
+                              this.state.config.layoutBoxSpacing[0] + " pixels"
+                            }
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="auto"
+                            min={0}
+                            max={150}
+                          />
+                        </div>
+                        <div>
+                          <Typography id="discrete-slider" gutterBottom>
+                            <Tooltip title="Enable Publishing">
+                              <Switch
+                                checked={this.state.publish}
+                                onChange={() => {
+                                  this.setState({
+                                    publish: !this.state.publish,
+                                  });
+                                }}
+                                value={this.state.publish}
+                              />
+                            </Tooltip>
+                            Publish
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography id="discrete-slider" gutterBottom>
+                            <Tooltip title="Set as default page">
+                              <Switch
+                                checked={this.state.defaultPage}
+                                onChange={() => {
+                                  this.setState({
+                                    defaultPage: !this.state.defaultPage,
+                                  });
+                                }}
+                                value={true}
+                              />
+                            </Tooltip>
+                            Default Page
+                          </Typography>
+                        </div>
+                        <div>
+                          {this.state.categories.length ? (
+                            <Autocomplete
+                              id="categoryDropdown"
+                              onChange={this.handleCategory}
+                              className={this.props.classes.option}
+                              options={this.state.categories}
+                              autoHighlight
+                              getOptionLabel={(option) => option.label}
+                              defaultValue={this.getCategoryItem(
+                                this.state.category
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  className={this.props.classes.textfield}
+                                  {...params}
+                                  label="Choose a category"
+                                  variant="outlined"
+                                />
+                              )}
+                            />
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                        <div>
+                          <CustomInput
+                            labelText="Page Link"
+                            id="pageLink"
+                            required="required"
+                            formControlProps={{
+                              fullWidth: true,
+                              onChange: (event) =>
+                                this.handleInputChange(event),
+                            }}
+                            inputProps={{
+                              inputProps: {
+                                minLength: "3",
+                                maxLength: "50",
+                              },
+                              value: this.state.pageLink,
+                              type: "text",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+                <div className={classes.iconsWrapper}>
+                  <IconButton color="primary" onClick={() => this.onAddItem()}>
+                    <AddCircle
+                      className={classes.rightSideIcon}
+                      color="primary"
+                    />{" "}
+                  </IconButton>
+
+                  {this.props.history.location.pathname.includes("pageEdit") ? (
+                    <IconButton
+                      color="primary"
+                      onClick={() => {
+                        window.open(
+                          `/pagePreview/${this.props.match.params.id}`
+                        );
+                      }}
+                    >
+                      <Visibility
+                        className={classes.rightSideIcon}
+                        color="primary"
+                      />{" "}
+                    </IconButton>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+
               <div className={classes.pageTitleInputWrapper}>
                 <CustomInput
                   labelText="Page Title"
@@ -1725,24 +1749,6 @@ class PagesAdd extends React.PureComponent {
             >
               Discard
             </Button>
-            <SpeedDial
-              className={classes.pageSpeedDial}
-              ariaLabel="Page Speed Dial"
-              icon={<SpeedDialIcon />}
-              onClose={this.handleSpeedDialClose}
-              onOpen={this.handleSpeedDialOpen}
-              open={this.state.speedDialState}
-            >
-              {this.state.pageActions.map((action) => (
-                <SpeedDialAction
-                  className={classes.speedDialAction}
-                  key={action.name}
-                  icon={action.icon}
-                  tooltipTitle={action.name}
-                  onClick={this.handleSpeedDialClose}
-                />
-              ))}
-            </SpeedDial>
           </MuiThemeProvider>
         </div>
       </React.Fragment>
