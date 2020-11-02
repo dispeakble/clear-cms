@@ -39,7 +39,9 @@ class Pages extends Component {
     pages: [],
     currentPage: 1,
     currentEditId: "",
-    showMultipleDeleteModal: "",
+    showDeleteModal: "",
+    pageToDeleteId: "",
+    deleteQty: "",
   };
 
   componentDidMount() {
@@ -156,7 +158,7 @@ class Pages extends Component {
               <DeleteForever color="error" />
             </IconButton>
           ),
-          onClick: async (evt, data) => this.showMultipleDeleteModal(evt, data),
+          onClick: async (evt, data) => this.showDeleteModal(evt, data),
         },
         {
           position: "row",
@@ -193,22 +195,7 @@ class Pages extends Component {
             </IconButton>
           ),
           tooltip: "Delete",
-          onClick: async (event, rowData) => {
-            const pages = [...this.state.pages];
-            const index = rowData.tableData.id;
-            pages.splice(index, 1);
-
-            let pagesInStorage = JSON.parse(localStorage.getItem("pages"));
-            let newPagesInStorage = [...pagesInStorage];
-            newPagesInStorage.splice(index, 1);
-
-            await localStorage.setItem(
-              "pages",
-              JSON.stringify(newPagesInStorage)
-            );
-
-            await this.setAsyncState({ pages });
-          },
+          onClick: async (evt, data) => this.showDeleteModal(evt, data, 1),
         },
       ],
     },
@@ -248,41 +235,61 @@ class Pages extends Component {
     },
   };
 
-  showMultipleDeleteModal = (evt, data) => {
-    this.setState({ multipleDeleteData: data, showMultipleDeleteModal: true });
-  };
-
-  closeMultipleDeleteModal = () => {
-    this.setState({ showMultipleDeleteModal: false });
-  };
-
-  multipleDeleteCallback = async () => {
-    let pages = [...JSON.parse(localStorage.getItem("pages"))];
-    let pagesIds = [];
-    let multipleDeleteData = this.state.multipleDeleteData;
-    multipleDeleteData.map((page) => pagesIds.push(page.id));
-    pages = pages.filter((page) => {
-      return !pagesIds.includes(page.id);
+  showDeleteModal = (evt, data, deleteQty) => {
+    this.setState({
+      deleteData: data,
+      showDeleteModal: true,
+      pageToDeleteId: data.tableData.id,
+      deleteQty: deleteQty,
     });
-    console.log(pages);
+  };
 
-    let pagesToSet = [];
+  closeDeleteModal = () => {
+    this.setState({ showDeleteModal: false, deleteQty: "" });
+  };
 
-    pages.map((page) => {
-      pagesToSet.push({
-        id: page.id,
-        title: page.pageConfig.pageTitle,
-        publish: <Checkbox disabled checked={page.pageConfig.publish} />,
-        defaultPage: (
-          <Checkbox disabled checked={page.pageConfig.defaultPage} />
-        ),
-        category: page.pageConfig.category,
+  deleteCallback = async () => {
+    if (this.state.deleteQty === 1) {
+      const pages = [...this.state.pages];
+      const index = this.state.pageToDeleteId;
+      pages.splice(index, 1);
+
+      let pagesInStorage = JSON.parse(localStorage.getItem("pages"));
+      let newPagesInStorage = [...pagesInStorage];
+      newPagesInStorage.splice(index, 1);
+
+      await localStorage.setItem("pages", JSON.stringify(newPagesInStorage));
+
+      await this.setAsyncState({ pages, deleteQty: "" });
+      this.closeDeleteModal();
+    } else {
+      let pages = [...JSON.parse(localStorage.getItem("pages"))];
+      let pagesIds = [];
+      let deleteData = this.state.deleteData;
+      deleteData.map((page) => pagesIds.push(page.id));
+      pages = pages.filter((page) => {
+        return !pagesIds.includes(page.id);
       });
-    });
+      console.log(pages);
 
-    await this.setAsyncState({ pages: pagesToSet });
-    localStorage.setItem("pages", JSON.stringify(pages));
-    this.closeMultipleDeleteModal();
+      let pagesToSet = [];
+
+      pages.map((page) => {
+        pagesToSet.push({
+          id: page.id,
+          title: page.pageConfig.pageTitle,
+          publish: <Checkbox disabled checked={page.pageConfig.publish} />,
+          defaultPage: (
+            <Checkbox disabled checked={page.pageConfig.defaultPage} />
+          ),
+          category: page.pageConfig.category,
+        });
+      });
+
+      await this.setAsyncState({ pages: pagesToSet });
+      localStorage.setItem("pages", JSON.stringify(pages));
+      this.closeDeleteModal();
+    }
   };
 
   render() {
@@ -325,10 +332,10 @@ class Pages extends Component {
             root: classes.center,
             paper: classes.modal,
           }}
-          open={this.state.showMultipleDeleteModal}
+          open={this.state.showDeleteModal}
           TransitionComponent={this.transition}
           keepMounted
-          onClose={() => this.closeMultipleDeleteModal()}
+          onClose={() => this.closeDeleteModal()}
           aria-labelledby="classic-modal-slide-title"
           aria-describedby="classic-modal-slide-description"
         >
@@ -351,7 +358,7 @@ class Pages extends Component {
               disabled={this.state.isBtnDisabled}
               color="transparent"
               simple
-              onClick={() => this.multipleDeleteCallback()}
+              onClick={() => this.deleteCallback()}
             >
               <div>Proceed</div>
             </Button>
@@ -359,7 +366,7 @@ class Pages extends Component {
               color="danger"
               simple
               onClick={() => {
-                this.closeMultipleDeleteModal();
+                this.closeDeleteModal();
               }}
             >
               Cancel
