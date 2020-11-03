@@ -75,14 +75,21 @@ class PagePreview extends React.PureComponent {
     if (Number(el.fontSize)) {
       style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
       style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+    } else if (this.state.pageConfig.fontSize) {
+      style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      style.fontSlineHeightize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {
       style.fontFamily = el.fontFamily;
+    } else if (this.state.pageConfig.fontFamily) {
+      style.fontFamily = this.state.pageConfig.fontFamily;
     }
 
     if (el.textColor) {
       style.color = el.textColor;
+    } else if (this.state.pageConfig.textColor) {
+      style.textColor = this.state.pageConfig.textColor;
     }
 
     if (el.showScrollbars) {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import LinksMenu from "components/LinksMenu/LinksMenu";
-import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+import styles from "assets/jss/clear-crm/views/menuModule.js";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 
@@ -12,56 +12,25 @@ class MenuModule extends Component {
   createMenu(params, options) {
     const createLink = (elm) => {
       return (
-        <li
-          style={{
-            backgroundColor: options.backgroundColor,
-            color: "inherit",
-            fontSize: "inherit",
-            fontFamily: "inherit",
-            display: "inline-block",
-          }}
-        >
-          {elm.target === "_blank" ? (
-            <a
+        <li style={options.style}>
+          <a
+            onClick={() => this.props.updateCurrentPath()}
+            style={options.style}
+            href={elm.href}
+            title={elm.title}
+            target={elm.target}
+          >
+            <Icon
               style={{
-                display: "block",
-                verticalAlign: "text-top",
-                whiteSpace: "nowrap",
-                color: "inherit",
-                fontSize: "inherit",
-                fontFamily: "inherit",
-                // overflow: "hidden",
-                // textOverflow: "ellipsis",
+                color: options.style.color,
+                fontSize: options.style.fontSize,
+                verticalAlign: "middle",
               }}
-              href={elm.link}
-              title={elm.title}
-              target="_blank"
             >
-              <Icon
-                style={{
-                  color: "inherit",
-                  fontSize: "inherit",
-                  verticalAlign: "middle",
-                }}
-              >
-                {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
-              </Icon>
-              {elm.text}
-            </a>
-          ) : (
-            <Link to={elm.link}>
-              <Icon
-                style={{
-                  color: "inherit",
-                  fontSize: "inherit",
-                  verticalAlign: "middle",
-                }}
-              >
-                {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
-              </Icon>
-              {elm.text}
-            </Link>
-          )}
+              {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
+            </Icon>
+            {elm.text}
+          </a>
 
           {elm.children && elm.children.length
             ? this.createMenu(elm.children, { ...options, isTopLevel: false })
@@ -70,37 +39,44 @@ class MenuModule extends Component {
       );
     };
 
+    let style = {
+      display:
+        options.stretchToFit && options.isTopLevel && !options.isVertical
+          ? "flex"
+          : "",
+      backgroundColor: "",
+      color: options.style.color,
+      fontSize: options.style.fontSize,
+      fontFamily: options.style.fontFamily,
+      boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.3)",
+    };
+
+    let accordionStyle = {
+      backgroundColor: "",
+      color: options.style.color,
+      fontSize: options.style.fontSize,
+      fontFamily: options.style.fontFamily,
+      border: "1px solid rgba(0,0,0,0.3)",
+    };
+
     if (options.showAsAccordion) {
+      if (options.stretchToFit && options.isTopLevel) {
+        accordionStyle.width = "100%";
+      }
       return (
         <List component="nav" disablePadding>
           <LinksMenu
+            style={accordionStyle}
+            accordionStyle={accordionStyle}
             menuLinksData={params}
-            bgColor={options.backgroundColor}
-            style={{
-              color: "inherit",
-              fontSize: "inherit",
-              fontFamily: "inherit",
-              border: "1px solid rgba(0,0,0,0.3)",
-            }}
           />
         </List>
       );
     } else {
-      return (
-        <ul
-          style={{
-            display: options.stretchToFit && options.isTopLevel ? "flex" : "",
-            backgroundColor: "",
-            color: "inherit",
-            fontSize: "inherit",
-            fontFamily: "inherit",
-            border: "1px solid rgba(0,0,0,0.3)",
-          }}
-          className={this.props.classes.linksMenuUl}
-        >
-          {params.map((elm) => createLink(elm))}
-        </ul>
-      );
+      if (options.isVertical && options.stretchToFit && options.isTopLevel) {
+        style.width = "100%";
+      }
+      return <ul style={style}>{params.map((elm) => createLink(elm))}</ul>;
     }
   }
 
@@ -122,13 +98,12 @@ class MenuModule extends Component {
 
   render() {
     const classes = this.props.classes;
-    let link_style = {
-      display: "block",
-      padding: "0 15px",
+    const style = {
+      color: this.props.style.color || "inherit",
+      backgroundColor: this.props.style.backgroundColor || "inherit",
+      fontSize: this.props.style.fontSize + "px" || "inherit",
+      fontFamily: this.props.style.fontFamily || "inherit",
     };
-    if (this.props.element.textColor) {
-      link_style.color = this.props.element.textColor;
-    }
 
     let linksList = this.props.element.moduleOptions.data.links.filter(
       (link) => !link.parentId
@@ -156,19 +131,16 @@ class MenuModule extends Component {
         key={this.props.i}
         data-grid={this.props.element}
         style={{
-          display: "inline-block",
-          width: isVertical ? "100%" : "",
-          color: this.props.element.textColor,
-          fontSize: this.props.element.fontSize,
-          fontFamily: this.props.element.fontFamily,
+          width: isVertical || stretchToFit ? "100%" : "",
         }}
       >
         {(() => {
           return this.createMenu(menuData, {
             showAsAccordion,
             stretchToFit,
-            backgroundColor,
+            style,
             isTopLevel: true,
+            isVertical,
           });
         })()}
       </div>

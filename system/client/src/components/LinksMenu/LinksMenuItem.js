@@ -28,21 +28,22 @@ const LinksMenuItem = (props) => {
 
   const MenuItemRoot = (
     <LinksMenuItemComponent
+      accordionStyle={props.accordionStyle}
       menuLinksData={props.menuLinksData}
       className={classes.menuItem}
-      bgColor={props.bgColor}
       style={{
-        color: "inherit",
-        fontSize: "inherit",
-        fontFamily: "inherit",
+        color: props.accordionStyle.color,
+        fontSize: props.accordionStyle.fontSize,
+        fontFamily: props.accordionStyle.fontFamily,
         border: "1px solid rgba(0,0,0,0.3)",
       }}
       link={!children ? href : ""}
       onClick={handleClick}
     >
-      <Icon style={{ color: "inherit" }}>
+      <Icon style={{ color: props.accordionStyle.color }}>
         {icon ? icon.replace(" ", "_").toLowerCase() : ""}
       </Icon>
+
       <ListItemText primary={text} />
       {isExpandable && !open && <IconExpandMore />}
       {isExpandable && open && <IconExpandLess />}
@@ -54,12 +55,12 @@ const LinksMenuItem = (props) => {
       <List component="div" disablePadding>
         {children.map((item, index) => (
           <LinksMenuItem
+            accordionStyle={props.accordionStyle}
             menuLinksData={props.menuLinksData}
-            bgColor={props.bgColor}
             style={{
-              color: "inherit",
-              fontSize: "inherit",
-              fontFamily: "inherit",
+              color: props.accordionStyle.color,
+              fontSize: props.accordionStyle.fontSize,
+              fontFamily: props.accordionStyle.fontFamily,
               border: "1px solid rgba(0,0,0,0.3)",
             }}
             {...item}
