@@ -6,30 +6,21 @@ import Icon from "@material-ui/core/Icon";
 const LinksMenuItemComponent = (props) => {
   const { className, onClick, link, children } = props;
 
-  let icon = props.menuLinksData[0].icon
-    ? props.menuLinksData[0].icon.replace(" ", "_").toLowerCase()
-    : "";
-
   // If link is not set return the orinary ListItem
   if (!link || typeof link !== "string") {
     return (
-      <React.Fragment>
-        <Icon style={{ color: "inherit" }}>{icon}</Icon>
-
-        <ListItem
-          style={{
-            backgroundColor: props.bgColor,
-            color: "inherit",
-            fontSize: "inherit",
-            fontFamily: "inherit",
-            border: "1px solid rgba(0,0,0,0.3)",
-          }}
-          button
-          className={className}
-          children={children}
-          onClick={onClick}
-        />
-      </React.Fragment>
+      <ListItem
+        style={{
+          backgroundColor: props.accordionStyle.backgroundColor,
+          color: props.accordionStyle.color,
+          fontSize: props.accordionStyle.fontSize,
+          fontFamily: props.accordionStyle.fontFamily,
+        }}
+        button
+        className={className}
+        children={children}
+        onClick={onClick}
+      />
     );
   }
 
@@ -42,7 +33,6 @@ const LinksMenuItemComponent = (props) => {
         color: "inherit",
         fontSize: "inherit",
         fontFamily: "inherit",
-        border: "1px solid rgba(0,0,0,0.3)",
       }}
       className={className}
       children={children}

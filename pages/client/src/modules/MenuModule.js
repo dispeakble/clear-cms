@@ -109,6 +109,7 @@ class MenuModule extends Component {
     let isVertical = this.props.element.moduleOptions.data.isVertical;
     let showAsAccordion = this.props.element.moduleOptions.data.showAsAccordion;
     let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
+    let backgroundColor = this.props.element.moduleOptions.data.backgroundColor;
 
     let menuData = linksList.map((link) => ({
       id: link.id,

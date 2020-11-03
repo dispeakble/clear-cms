@@ -18,11 +18,11 @@ class LinksMenu extends Component {
         {this.props.menuLinksData.map((item, index) => (
           <LinksMenuItem
             menuLinksData={this.props.menuLinksData}
-            bgColor={this.props.bgColor}
+            accordionStyle={this.props.accordionStyle}
             style={{
-              color: "inherit",
-              fontSize: "inherit",
-              fontFamily: "inherit",
+              color: this.props.accordionStyle.color,
+              fontSize: this.props.accordionStyle.fontSize,
+              fontFamily: this.props.accordionStyle.fontFamily,
               border: "1px solid rgba(0,0,0,0.3)",
             }}
             {...item}
