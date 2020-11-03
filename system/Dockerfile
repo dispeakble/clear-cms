@@ -2,19 +2,26 @@ FROM node:14.5.0-alpine As crm-nestjs
 
 RUN ["npm", "i", "-g", "@nestjs/cli"]
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /usr/src/api
+RUN mkdir -p /usr/src/api/public
+RUN mkdir -p /usr/src/client/
+WORKDIR /usr/src/client
 
 
-#COPY ./api/package*.json /usr/src/app/ //TODO copy from ./client, build, copy dist to /api/public, build app
-#RUN npm install
-#COPY ./api /usr/src/app
-#
-#RUN npm run build
-
-COPY ./api/package*.json /usr/src/app/
+COPY ./client/package*.json /usr/src/client/
 RUN npm install
-COPY ./api /usr/src/app
+COPY ./client /usr/src/client
+
+RUN npm run build
+
+CMD ["rm", "-fr", "src"]
+CMD ["rm", "-fr", "node_modules"]
+
+WORKDIR /usr/src/api
+
+COPY ./api/package*.json /usr/src/api/
+RUN npm install
+COPY ./api /usr/src/api
 
 RUN npm run build
 
