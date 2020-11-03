@@ -8,6 +8,8 @@ import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
+import { Helmet } from "react-helmet";
+
 import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -349,6 +351,9 @@ class ProfilePage extends Component {
 
     return (
       <div>
+        <Helmet>
+          <title>Profile Page</title>
+        </Helmet>
         <div className={classNames(classes.main, classes.mainRaised)}>
           <div>
             {resetErrorMessage}

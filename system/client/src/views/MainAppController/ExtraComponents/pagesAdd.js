@@ -19,6 +19,8 @@ import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { withRouter } from "react-router-dom";
 
+import { Helmet } from "react-helmet";
+
 // for the modal
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -1135,6 +1137,9 @@ class PagesAdd extends React.PureComponent {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>{this.state.isEdit ? "Edit Page" : "Add Page"}</title>
+        </Helmet>
         <div
           style={{
             marginTop: "60px",

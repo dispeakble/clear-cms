@@ -3,6 +3,8 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/categories.js";
 
+import { Helmet } from "react-helmet";
+
 import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
@@ -336,6 +338,9 @@ class Categories extends Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>Categories</title>
+        </Helmet>
         <div className={classes.categoriesPanel}>
           <div className={classes.categoriesWrapper}>
             <MuiThemeProvider theme={this.tableOptions.getTheme()}>

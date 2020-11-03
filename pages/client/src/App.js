@@ -6,6 +6,8 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import styles from "./assets/jss/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 
+import { Helmet } from "react-helmet";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class App extends React.PureComponent {
@@ -213,6 +215,9 @@ class App extends React.PureComponent {
 
     return (
       <div className={classes.previewBodyWrapper}>
+        <Helmet>
+          <title>{this.state.pageConfig.pageTitle}</title>
+        </Helmet>
         <MuiThemeProvider theme={this.getTheme()}>
           <div className={classes.gridHolder}>
             <div
