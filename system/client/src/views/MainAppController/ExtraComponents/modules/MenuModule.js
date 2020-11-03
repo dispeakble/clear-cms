@@ -467,6 +467,7 @@ class MenuModule extends Component {
             let filteredLinks = this.state.flatLinks.filter(
               (link) => link.id !== columnData.rowData.id
             );
+            console.log(filteredLinks);
             return (
               <Autocomplete
                 options={filteredLinks}

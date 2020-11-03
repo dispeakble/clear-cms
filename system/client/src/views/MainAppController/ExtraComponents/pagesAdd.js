@@ -77,6 +77,7 @@ class PagesAdd extends React.PureComponent {
     items: [],
     itemSdId: 0,
     newCounter: 0,
+    flatLinks: [],
 
     speedDialState: false,
     modulesList: [
@@ -172,9 +173,12 @@ class PagesAdd extends React.PureComponent {
         categories.push({
           label: category.name,
           id: category.id,
+          parentId: category.parentId,
         });
       });
       await this.setAsyncState({ categories });
+
+      this.getAllLinks();
     }
 
     if (isEdit) {
@@ -996,6 +1000,41 @@ class PagesAdd extends React.PureComponent {
     });
   };
 
+  getLinksNested(id) {
+    let result = "";
+    let link = this.state.categories.find((el) => el.id === id);
+    result = link.label;
+    if (link && link.parentId) {
+      result = this.getLinksNested(link.parentId) + "/" + result;
+    }
+    return result;
+  }
+
+  getAllLinks = async () => {
+    let result = [];
+
+    if (this.state.categories.length) {
+      let links = this.state.categories;
+      links.map((el) => {
+        let linkName = el.label;
+        console.log(el);
+        if (el.parentId) {
+          linkName = this.getLinksNested(el.parentId) + "/" + el.label;
+        }
+        result.push({
+          id: el.id,
+          label: linkName,
+        });
+      });
+
+      console.log(result);
+
+      await this.setAsyncState({
+        flatLinks: result,
+      });
+    }
+  };
+
   sendStyles = (targetedColor) => {
     return reactCSS({
       default: {
@@ -1141,6 +1180,8 @@ class PagesAdd extends React.PureComponent {
     const itemBorderColorStyles = this.sendStyles(
       this.state.editItemBorderColor
     );
+
+    console.log(this.state.flatLinks);
 
     return (
       <React.Fragment>
@@ -1617,29 +1658,29 @@ class PagesAdd extends React.PureComponent {
                           </Typography>
                         </div>
                         <div>
-                          {this.state.categories.length ? (
-                            <Autocomplete
-                              id="categoryDropdown"
-                              onChange={this.handleCategory}
-                              className={this.props.classes.option}
-                              options={this.state.categories}
-                              autoHighlight
-                              getOptionLabel={(option) => option.label}
-                              defaultValue={this.getCategoryItem(
-                                this.state.category
-                              )}
-                              renderInput={(params) => (
-                                <TextField
-                                  className={this.props.classes.textfield}
-                                  {...params}
-                                  label="Choose a category"
-                                  variant="outlined"
-                                />
-                              )}
-                            />
-                          ) : (
-                            <></>
-                          )}
+                          <Autocomplete
+                            id="categoryDropdown"
+                            onChange={this.handleCategory}
+                            className={this.props.classes.option}
+                            options={this.state.flatLinks}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            // value={this.getCategoryItem(this.state.category)}
+                            // onChange={(ev, value) => {
+                            //   columnData.onRowDataChange({
+                            //     ...columnData.rowData,
+                            //     parentId: value.id,
+                            //   });
+                            // }}
+                            renderInput={(params) => (
+                              <TextField
+                                className={this.props.classes.textfield}
+                                {...params}
+                                label="Choose a category"
+                                variant="outlined"
+                              />
+                            )}
+                          />
                         </div>
                         <div>
                           <CustomInput
