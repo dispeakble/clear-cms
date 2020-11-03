@@ -77,7 +77,7 @@ class PagesAdd extends React.PureComponent {
     items: [],
     itemSdId: 0,
     newCounter: 0,
-    flatLinks: [],
+    flatCategories: [],
 
     speedDialState: false,
     modulesList: [
@@ -178,7 +178,7 @@ class PagesAdd extends React.PureComponent {
       });
       await this.setAsyncState({ categories });
 
-      this.getAllLinks();
+      this.getAllCategories();
     }
 
     if (isEdit) {
@@ -609,9 +609,6 @@ class PagesAdd extends React.PureComponent {
   }
 
   handleEdit = async (id) => {
-    console.log(this.state.items);
-    console.log(id);
-
     await this.setAsyncState({
       itemEditId: id,
     });
@@ -859,8 +856,6 @@ class PagesAdd extends React.PureComponent {
       items,
     });
 
-    console.log(this.state.items);
-
     this.closeEditSideMenu();
   };
 
@@ -1000,26 +995,25 @@ class PagesAdd extends React.PureComponent {
     });
   };
 
-  getLinksNested(id) {
+  getCategoriesNested(id) {
     let result = "";
     let link = this.state.categories.find((el) => el.id === id);
     result = link.label;
     if (link && link.parentId) {
-      result = this.getLinksNested(link.parentId) + "/" + result;
+      result = this.getCategoriesNested(link.parentId) + "/" + result;
     }
     return result;
   }
 
-  getAllLinks = async () => {
+  getAllCategories = async () => {
     let result = [];
 
     if (this.state.categories.length) {
       let links = this.state.categories;
       links.map((el) => {
         let linkName = el.label;
-        console.log(el);
         if (el.parentId) {
-          linkName = this.getLinksNested(el.parentId) + "/" + el.label;
+          linkName = this.getCategoriesNested(el.parentId) + "/" + el.label;
         }
         result.push({
           id: el.id,
@@ -1027,10 +1021,8 @@ class PagesAdd extends React.PureComponent {
         });
       });
 
-      console.log(result);
-
       await this.setAsyncState({
-        flatLinks: result,
+        flatCategories: result,
       });
     }
   };
@@ -1180,8 +1172,6 @@ class PagesAdd extends React.PureComponent {
     const itemBorderColorStyles = this.sendStyles(
       this.state.editItemBorderColor
     );
-
-    console.log(this.state.flatLinks);
 
     return (
       <React.Fragment>
@@ -1662,7 +1652,7 @@ class PagesAdd extends React.PureComponent {
                             id="categoryDropdown"
                             onChange={this.handleCategory}
                             className={this.props.classes.option}
-                            options={this.state.flatLinks}
+                            options={this.state.flatCategories}
                             autoHighlight
                             getOptionLabel={(option) => option.label}
                             // value={this.getCategoryItem(this.state.category)}
