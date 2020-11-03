@@ -145,6 +145,7 @@ class PagesAdd extends React.PureComponent {
     pageTransitionPadding: "",
     editItemScrollbars: false,
     addAnItem: false,
+    showLinklessPageModal: false,
   };
 
   onStartEditingModule() {
@@ -1127,6 +1128,54 @@ class PagesAdd extends React.PureComponent {
     this.props.history.push("/pages");
   };
 
+  confirmAddLinkless = () => {
+    return (
+      <Dialog
+        style={{ margin: "0 auto", width: "50%", textAlign: "center" }}
+        classes={{
+          root: this.props.classes.center,
+          paper: this.props.classes.modal,
+        }}
+        open={this.state.showLinklessPageModal}
+        TransitionComponent={this.transition}
+        keepMounted
+        aria-labelledby="classic-modal-slide-title"
+        aria-describedby="classic-modal-slide-description"
+      >
+        <DialogContent
+          id="classic-modal-slide-description"
+          className={this.props.classes.modalBody}
+        >
+          <div>
+            This page has no link assigned. Are you sure you want to proceed ?
+          </div>
+        </DialogContent>
+
+        <DialogActions className={this.props.classes.modalFooter}>
+          <Button
+            color="transparent"
+            simple
+            onClick={() => {
+              this.savePage();
+              this.setState({ showLinklessPageModal: false });
+            }}
+          >
+            <div>Proceed</div>
+          </Button>
+          <Button
+            color="danger"
+            simple
+            onClick={() => {
+              this.setState({ showLinklessPageModal: false });
+            }}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   render() {
     const { history } = this.props;
     const classes = this.props.classes;
@@ -1746,9 +1795,17 @@ class PagesAdd extends React.PureComponent {
               </div>
             </div>
 
+            {this.confirmAddLinkless()}
+
             <Button
               disabled={this.state.pageTitle.length === 0}
-              onClick={() => this.savePage()}
+              onClick={() => {
+                if (this.state.pageLink) {
+                  this.savePage();
+                } else {
+                  this.setState({ showLinklessPageModal: true });
+                }
+              }}
               className={classes.savePageButton}
               color="primary"
             >
