@@ -77,6 +77,7 @@ class PagesAdd extends React.PureComponent {
     items: [],
     itemSdId: 0,
     newCounter: 0,
+    flatCategories: [],
 
     speedDialState: false,
     modulesList: [
@@ -172,9 +173,12 @@ class PagesAdd extends React.PureComponent {
         categories.push({
           label: category.name,
           id: category.id,
+          parentId: category.parentId,
         });
       });
       await this.setAsyncState({ categories });
+
+      this.getAllCategories();
     }
 
     if (isEdit) {
@@ -605,9 +609,6 @@ class PagesAdd extends React.PureComponent {
   }
 
   handleEdit = async (id) => {
-    console.log(this.state.items);
-    console.log(id);
-
     await this.setAsyncState({
       itemEditId: id,
     });
@@ -855,8 +856,6 @@ class PagesAdd extends React.PureComponent {
       items,
     });
 
-    console.log(this.state.items);
-
     this.closeEditSideMenu();
   };
 
@@ -994,6 +993,38 @@ class PagesAdd extends React.PureComponent {
     await this.setAsyncState({
       category: newCatId,
     });
+  };
+
+  getCategoriesNested(id) {
+    let result = "";
+    let link = this.state.categories.find((el) => el.id === id);
+    result = link.label;
+    if (link && link.parentId) {
+      result = this.getCategoriesNested(link.parentId) + "/" + result;
+    }
+    return result;
+  }
+
+  getAllCategories = async () => {
+    let result = [];
+
+    if (this.state.categories.length) {
+      let links = this.state.categories;
+      links.map((el) => {
+        let linkName = el.label;
+        if (el.parentId) {
+          linkName = this.getCategoriesNested(el.parentId) + "/" + el.label;
+        }
+        result.push({
+          id: el.id,
+          label: linkName,
+        });
+      });
+
+      await this.setAsyncState({
+        flatCategories: result,
+      });
+    }
   };
 
   sendStyles = (targetedColor) => {
@@ -1617,29 +1648,29 @@ class PagesAdd extends React.PureComponent {
                           </Typography>
                         </div>
                         <div>
-                          {this.state.categories.length ? (
-                            <Autocomplete
-                              id="categoryDropdown"
-                              onChange={this.handleCategory}
-                              className={this.props.classes.option}
-                              options={this.state.categories}
-                              autoHighlight
-                              getOptionLabel={(option) => option.label}
-                              defaultValue={this.getCategoryItem(
-                                this.state.category
-                              )}
-                              renderInput={(params) => (
-                                <TextField
-                                  className={this.props.classes.textfield}
-                                  {...params}
-                                  label="Choose a category"
-                                  variant="outlined"
-                                />
-                              )}
-                            />
-                          ) : (
-                            <></>
-                          )}
+                          <Autocomplete
+                            id="categoryDropdown"
+                            onChange={this.handleCategory}
+                            className={this.props.classes.option}
+                            options={this.state.flatCategories}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            // value={this.getCategoryItem(this.state.category)}
+                            // onChange={(ev, value) => {
+                            //   columnData.onRowDataChange({
+                            //     ...columnData.rowData,
+                            //     parentId: value.id,
+                            //   });
+                            // }}
+                            renderInput={(params) => (
+                              <TextField
+                                className={this.props.classes.textfield}
+                                {...params}
+                                label="Choose a category"
+                                variant="outlined"
+                              />
+                            )}
+                          />
                         </div>
                         <div>
                           <CustomInput
