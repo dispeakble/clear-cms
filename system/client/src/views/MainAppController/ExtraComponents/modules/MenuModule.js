@@ -61,6 +61,7 @@ class MenuModule extends Component {
     bgColor: "",
     icons: [],
     icon: "",
+    linklessPageLinks: false,
   };
 
   async componentDidMount() {
@@ -530,6 +531,62 @@ class MenuModule extends Component {
     });
   };
 
+  confirmAddLinkless = () => {
+    return (
+      <Dialog
+        style={{ margin: "0 auto", width: "50%", textAlign: "center" }}
+        classes={{
+          root: this.props.classes.center,
+          paper: this.props.classes.modal,
+        }}
+        open={this.state.linklessPageLinks}
+        TransitionComponent={this.transition}
+        keepMounted
+        aria-labelledby="classic-modal-slide-title"
+        aria-describedby="classic-modal-slide-description"
+      >
+        <DialogContent
+          id="classic-modal-slide-description"
+          className={this.props.classes.modalBody}
+        >
+          <div>
+            The menu contains items with no links assigned. Are you sure you
+            want to proceed ?
+          </div>
+        </DialogContent>
+
+        <DialogActions className={this.props.classes.modalFooter}>
+          <Button
+            color="transparent"
+            simple
+            onClick={() => {
+              this.props.onEndEditingModule();
+              this.props.handleSave(this.state.itemModuleEditId, {
+                links: this.state.menuOptions,
+                isVertical: this.state.isMenuVertical,
+                showAsAccordion: this.state.showAsAccordion,
+                stretchToFit: this.state.stretchToFit,
+                backgroundColor: this.state.bgColor,
+              });
+              this.closeModuleOptionsModal();
+            }}
+          >
+            <div>Proceed</div>
+          </Button>
+          <Button
+            color="danger"
+            simple
+            onClick={() => {
+              this.setState({ linklessPageLinks: false });
+            }}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   render() {
     const classes = this.props.classes;
     const bgColorStyles = this.sendStyles(this.state.bgColor);
@@ -657,6 +714,7 @@ class MenuModule extends Component {
               editable={this.tableOptions.actions.editable}
               actions={this.tableOptions.actions.customActions}
             />
+            {this.confirmAddLinkless()}
           </DialogContent>
 
           <DialogActions className={classes.modalFooter}>
@@ -665,14 +723,26 @@ class MenuModule extends Component {
               color="primary"
               onClick={() => {
                 this.props.onEndEditingModule();
-                this.props.handleSave(this.state.itemModuleEditId, {
-                  links: this.state.menuOptions,
-                  isVertical: this.state.isMenuVertical,
-                  showAsAccordion: this.state.showAsAccordion,
-                  stretchToFit: this.state.stretchToFit,
-                  backgroundColor: this.state.bgColor,
+                let menuOptions = this.state.menuOptions;
+                let linklessPageLinks = false;
+                menuOptions.forEach((link) => {
+                  if (!link.link) {
+                    linklessPageLinks = true;
+                  }
                 });
-                this.closeModuleOptionsModal();
+                if (linklessPageLinks) {
+                  this.setState({ linklessPageLinks: true });
+                } else {
+                  this.props.onEndEditingModule();
+                  this.props.handleSave(this.state.itemModuleEditId, {
+                    links: this.state.menuOptions,
+                    isVertical: this.state.isMenuVertical,
+                    showAsAccordion: this.state.showAsAccordion,
+                    stretchToFit: this.state.stretchToFit,
+                    backgroundColor: this.state.bgColor,
+                  });
+                  this.closeModuleOptionsModal();
+                }
               }}
             >
               <div>Save</div>
