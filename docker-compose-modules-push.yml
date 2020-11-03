@@ -1,35 +1,35 @@
 version: '3.3'
 services:
-  crm-hub:
-    container_name: crm-hub
-    working_dir: /usr/src/app
-    build:
-      context: ./hub
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-hub:${CRM_IMG_TAG}
-  crm-dev:
-    container_name: crm-dev
-    working_dir: /usr/src/app
-    build:
-      context: ./dev
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-dev:${CRM_IMG_TAG}
-  crm-pages:
-    container_name: crm-pages
-    working_dir: /usr/src/app
-    build:
-      context: ./pages
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-pages:${CRM_IMG_TAG}
+#  crm-hub:
+#    container_name: crm-hub
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./hub
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-hub:${CRM_IMG_TAG}
+#  crm-dev:
+#    container_name: crm-dev
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./dev
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-dev:${CRM_IMG_TAG}
+#  crm-pages:
+#    container_name: crm-pages
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./pages
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-pages:${CRM_IMG_TAG}
   crm-system:
     container_name: crm-system
     working_dir: /usr/src/app
@@ -40,29 +40,29 @@ services:
       - .env
     image:
       dispeakble/crm-system:${CRM_IMG_TAG}
-  crm-storage:
-    container_name: crm-storage
-    working_dir: /usr/src/app
-    build:
-      context: ./storage
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-storage:${CRM_IMG_TAG}
-  crm-db:
-    container_name: crm-db
-    working_dir: /usr/src/app
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-db:${CRM_IMG_TAG}
+#  crm-storage:
+#    container_name: crm-storage
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./storage
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-storage:${CRM_IMG_TAG}
+#  crm-db:
+#    container_name: crm-db
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./db
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-db:${CRM_IMG_TAG}
   crm-proxy:
     container_name: crm-proxy
-    working_dir: /usr/src/app
+    working_dir: /usr/src/api
     build:
       context: ./proxy
       dockerfile: Dockerfile

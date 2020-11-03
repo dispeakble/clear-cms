@@ -1,6 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
+import * as mime from "mime";
 
 @Injectable()
 export class HttpService {
@@ -23,10 +24,11 @@ export class HttpService {
 
             try {
                 const file = fs.readFileSync(__dirname + '/../../public/' + file_name);
-                resolve_get(file);
+                const mime_type = mime.getType(file_name);
+                resolve_get({file:file, mime:mime_type});
             } catch (err) {
                 const file = fs.readFileSync(__dirname + '/../../public/index.html');
-                resolve_get(file);
+                resolve_get({file:file, mime:'text/html'});
             }
 
         });

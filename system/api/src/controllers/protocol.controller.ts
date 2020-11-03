@@ -54,7 +54,7 @@ export class ProtocolController {
                 act: 'mapPort',
                 payload: {
                     channel: 'system',
-                    port: process.env.public_port
+                    port: process.env.backend_port
                 }
             }
         })
