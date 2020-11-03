@@ -65,7 +65,6 @@ class MenuModule extends Component {
 
   async componentDidMount() {
     let menuOptions = this.props.moduleOptions.data.links;
-    console.log(menuOptions);
 
     if (this.props.moduleOptions.data) {
       await this.setAsyncState({
@@ -80,7 +79,6 @@ class MenuModule extends Component {
         });
       }
       this.getAllLinks();
-      console.log(this.props.moduleOptions.data);
     }
 
     let icons = Object.keys(Icons).filter((key) => {
