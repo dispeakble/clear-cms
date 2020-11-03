@@ -7,6 +7,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/Icon";
 import { DeleteForever, Edit, Add as AddIcon } from "@material-ui/icons";
+
+import { Helmet } from "react-helmet";
+
 // for the modal
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -199,6 +202,9 @@ class Themes extends Component {
     return (
       <MuiThemeProvider theme={this.getTheme()}>
         <React.Fragment>
+          <Helmet>
+            <title>Themes</title>
+          </Helmet>
           <div className={classes.buttonsWrapper}>
             <Button
               onClick={() => this.showAdminThumbnailsPage()}

@@ -20,6 +20,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import { Link } from "react-router-dom";
 
+import { Helmet } from "react-helmet";
+
 import styles from "assets/jss/clear-crm/views/viewAuth.js";
 
 import image from "assets/img/view-auth-bg.png";
@@ -220,6 +222,9 @@ class ViewAuth extends Component {
 
     return (
       <div>
+        <Helmet>
+          <title>Authentication</title>
+        </Helmet>
         <div
           className={classes.pageHeader}
           style={{

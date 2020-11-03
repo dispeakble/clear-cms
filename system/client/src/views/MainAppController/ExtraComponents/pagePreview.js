@@ -5,6 +5,8 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 
+import { Helmet } from "react-helmet";
+
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class PagePreview extends React.PureComponent {
@@ -157,6 +159,9 @@ class PagePreview extends React.PureComponent {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>Preview Page</title>
+        </Helmet>
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>

@@ -5,6 +5,8 @@ import NotFound from "views/NotFound/NotFound";
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
+import { Helmet } from "react-helmet";
+
 //import Components from "views/Components/Components.js";
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
@@ -68,6 +70,9 @@ class App extends Component {
     const { pathname } = this.props.location;
     return (
       <React.Fragment>
+        <Helmet>
+          <title>App</title>
+        </Helmet>
         {!pathname.includes("/pagePreview") ? (
           <Header
             mobileOpen={this.state.mobileOpen}

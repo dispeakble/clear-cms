@@ -3,6 +3,8 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pages.js";
 
+import { Helmet } from "react-helmet";
+
 import IconButton from "@material-ui/core/IconButton";
 
 import { withRouter } from "react-router-dom";
@@ -298,6 +300,9 @@ class Pages extends Component {
     console.log(this.state.pages);
     return (
       <React.Fragment>
+        <Helmet>
+          <title>Pages</title>
+        </Helmet>
         <div className={classes.pagesPanel}>
           <div className={classes.pagesWrapper}>
             <MuiThemeProvider theme={this.tableOptions.getTheme()}>
