@@ -576,6 +576,7 @@ class MenuModule extends Component {
             className={classes.modalBody}
           >
             <Typography gutterBottom>
+              <span style={{ display: "inline" }}>Background Color</span>
               <div>
                 <div
                   style={bgColorStyles.swatch}
@@ -602,7 +603,6 @@ class MenuModule extends Component {
                   </div>
                 ) : null}
               </div>
-              <span style={{ display: "inline" }}>Background Color</span>
             </Typography>
 
             <Typography id="discrete-slider" gutterBottom>
