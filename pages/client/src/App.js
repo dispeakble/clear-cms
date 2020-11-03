@@ -99,6 +99,10 @@ class App extends React.PureComponent {
 
     let style = {};
 
+    if (el.backgroundImage) {
+      style.backgroundImage = `url(${el.backgroundImage})`;
+    }
+
     if (el.backgroundColor) {
       style.backgroundColor = el.backgroundColor;
     }
@@ -231,6 +235,7 @@ class App extends React.PureComponent {
             >
               <ResponsiveReactGridLayout
                 style={{
+                  backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
                   backgroundColor: this.state.pageConfig.backgroundColor,
                   fontSize: `${this.state.pageConfig.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.pageConfig.fontFamily,

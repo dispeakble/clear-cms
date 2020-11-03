@@ -101,7 +101,7 @@ class PagesAdd extends React.PureComponent {
     editItemBackgroundColorShow: false,
     editItemTitle: "",
     editItemModule: "",
-    editItemBgColor: "",
+    editItemBgImage: "",
     editItemBorderRadius: "",
     editItemBorderWidth: 0,
     editItemBorderColor: "",
@@ -120,7 +120,7 @@ class PagesAdd extends React.PureComponent {
       { label: "Verdana" },
     ],
     bgColor: "",
-    bgImage: "",
+    backgroundImage: "",
     fontSize: "",
     textColor: "#000000",
     fontFamily: "Arial",
@@ -160,28 +160,6 @@ class PagesAdd extends React.PureComponent {
   }
 
   async componentDidMount() {
-    //     const { pathname } = this.props.location;
-    //     const currentPageId = pathname.split("/")[2];
-
-    //     const allPages = JSON.parse(localStorage.getItem("pages"));
-    //     const currentPage = allPages.find(
-    //       (page) => Number(page.id) === Number(currentPageId)
-    //     );
-    //     const allItems = currentPage.items;
-
-    // allItems.map(this)
-
-    //     const currentItem = allItems.find((item) => item.i === this.props.boxId);
-    //     const moduleOptions = currentItem.moduleOptions.data;
-    //     const isMenuVertical = currentItem.moduleOptions.isVertical;
-
-    //     if (moduleOptions) {
-    //       this.setState({ menuOptions: moduleOptions });
-    //     }
-    //     if (isMenuVertical) {
-    //       this.setState({ isMenuVertical });
-    //     }
-
     let isEdit = this.props.location.pathname.indexOf("pageEdit") > -1;
     let pageId = Number(this.props.match.params.id);
 
@@ -227,6 +205,7 @@ class PagesAdd extends React.PureComponent {
         };
         await this.setAsyncState({
           bgColor: pageConfig.backgroundColor,
+          backgroundImage: pageConfig.backgroundImage,
           fontSize: pageConfig.fontSize,
           textColor: pageConfig.textColor,
           fontFamily: pageConfig.fontFamily,
@@ -274,7 +253,6 @@ class PagesAdd extends React.PureComponent {
     let allTempModuleOptions = this.state.temporaryModuleOptions;
     allTempModuleOptions[Number(id)] = { data: data, isVertical: isVertical };
     this.setState({ temporaryModuleOptions: allTempModuleOptions });
-    console.log(this.state.temporaryModuleOptions);
   };
 
   createElement(el) {
@@ -311,6 +289,12 @@ class PagesAdd extends React.PureComponent {
       itemStyle.color = this.state.textColor;
     }
 
+    if (el.backgroundImage) {
+      itemStyle.backgroundImage = `url(${el.backgroundImage})`;
+    } else {
+      itemStyle.backgroundImage = `url(${this.state.backgroundImage})`;
+    }
+
     if (el.backgroundColor) {
       itemStyle.backgroundColor = el.backgroundColor;
     } else {
@@ -335,10 +319,6 @@ class PagesAdd extends React.PureComponent {
 
     if (el.borderRadius) {
       itemStyle.borderRadius = el.borderRadius;
-    }
-
-    if (el.backgroundImage) {
-      itemStyle.backgroundImage = el.backgroundImage;
     }
 
     //adding default box styles
@@ -625,6 +605,9 @@ class PagesAdd extends React.PureComponent {
   }
 
   handleEdit = async (id) => {
+    console.log(this.state.items);
+    console.log(id);
+
     await this.setAsyncState({
       itemEditId: id,
     });
@@ -640,7 +623,7 @@ class PagesAdd extends React.PureComponent {
       editItemBorderColor: item.borderColor,
       editItemBorderStyle: item.borderStyle,
       editItemBackgroundColor: item.backgroundColor || "",
-      editItemFontSize: item.fontSize || 5,
+      editItemBgImage: item.backgroundImage,
       editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
       editItemTextColor: item.textColor || "",
       editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
@@ -755,8 +738,33 @@ class PagesAdd extends React.PureComponent {
     });
   };
 
+  toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
   handleItemBgImage = async (event) => {
-    console.log("Background Image Updated");
+    if (event.length) {
+      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+
+      this.setAsyncState({
+        editItemBgImage: strings[0],
+      });
+    }
+  };
+
+  handleBgImage = async (event) => {
+    if (event.length) {
+      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+
+      this.setAsyncState({
+        backgroundImage: strings[0],
+      });
+    }
   };
 
   closeEditSideMenu = () => {
@@ -781,6 +789,7 @@ class PagesAdd extends React.PureComponent {
     foundItem.title = this.state.editItemTitle;
     foundItem.module = this.state.modulesList[this.state.editItemModule];
     foundItem.module = foundItem.module ? foundItem.module.label : "";
+    foundItem.backgroundImage = this.state.editItemBgImage;
     //foundItem.moduleOptions = this.state.moduleOptions;
 
     if (this.state.editItemBackgroundColorShow) {
@@ -835,8 +844,6 @@ class PagesAdd extends React.PureComponent {
       delete foundItem.borderStyle;
     }
 
-    foundItem.backgroundImage = this.state.editItemBackgroundImage;
-
     let items = this.state.items;
     let foundItemIndex = items.findIndex(
       (item) => item.i === this.state.itemEditId
@@ -847,6 +854,8 @@ class PagesAdd extends React.PureComponent {
     this.setAsyncState({
       items,
     });
+
+    console.log(this.state.items);
 
     this.closeEditSideMenu();
   };
@@ -867,7 +876,6 @@ class PagesAdd extends React.PureComponent {
       reader.onload = () => {
         // Do whatever you want with the file contents
         const binaryStr = reader.result;
-        console.log(binaryStr.toString("base64"));
       };
       reader.readAsArrayBuffer(file);
     });
@@ -1062,6 +1070,7 @@ class PagesAdd extends React.PureComponent {
   savePage = () => {
     let pageConfig = {
       backgroundColor: this.state.bgColor,
+      backgroundImage: this.state.backgroundImage,
       fontSize: this.state.fontSize,
       textColor: this.state.textColor,
       fontFamily: this.state.fontFamily,
@@ -1072,8 +1081,6 @@ class PagesAdd extends React.PureComponent {
       defaultPage: this.state.defaultPage,
       category: this.state.category,
     };
-
-    console.log(this.state.items);
 
     let pages = JSON.parse(localStorage.getItem("pages")) || [];
 
@@ -1389,7 +1396,7 @@ class PagesAdd extends React.PureComponent {
                     <Typography gutterBottom>Background Image</Typography>
                     <div className={classes.dropzoneAreaWrapper}>
                       <DropzoneArea
-                        onChange={(data) => console.log(data)}
+                        filesLimit={1}
                         className={classes.dropzone}
                         onChange={this.handleItemBgImage.bind(this)}
                       />
@@ -1502,10 +1509,9 @@ class PagesAdd extends React.PureComponent {
                         <h5>Background Image</h5>
                         <div className={classes.dropzoneAreaWrapper}>
                           <DropzoneArea
+                            filesLimit={1}
+                            className={classes.dropzone}
                             onChange={this.handleBgImage.bind(this)}
-                            onDrop={(acceptedFiles) =>
-                              console.log(acceptedFiles)
-                            }
                           />
                         </div>
                       </div>
@@ -1710,6 +1716,7 @@ class PagesAdd extends React.PureComponent {
               {/* titleAndContentWrapper */}
               <div
                 style={{
+                  backgroundImage: `url(${this.state.backgroundImage})`,
                   backgroundColor: this.state.bgColor,
                   fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,

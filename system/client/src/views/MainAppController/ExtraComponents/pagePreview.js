@@ -51,6 +51,10 @@ class PagePreview extends React.PureComponent {
 
     let style = {};
 
+    if (el.backgroundImage) {
+      style.backgroundImage = `url(${el.backgroundImage})`;
+    }
+
     if (el.backgroundColor) {
       style.backgroundColor = el.backgroundColor;
     }
@@ -66,10 +70,6 @@ class PagePreview extends React.PureComponent {
 
     if (el.borderRadius) {
       style.borderRadius = el.borderRadius;
-    }
-
-    if (el.backgroundImage) {
-      style.backgroundImage = el.backgroundImage;
     }
 
     if (Number(el.fontSize)) {
@@ -176,6 +176,7 @@ class PagePreview extends React.PureComponent {
               >
                 <ResponsiveReactGridLayout
                   style={{
+                    backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
                     backgroundColor: this.state.pageConfig.backgroundColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
