@@ -121,7 +121,7 @@ class Header extends Component {
     const modalValue = event.target.getAttribute("modal");
     if (modalValue) {
       if (modalValue === "adminProfile") {
-        this.props.history.push("/adminProfile");
+        this.props.history.push("/profile-page");
       } else {
         setTimeout(() => {
           //TODO populate the modal content here
