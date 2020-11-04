@@ -408,6 +408,9 @@ class PagesAdd extends React.PureComponent {
           </Tooltip>
           &nbsp; {el.title}
         </div>
+        <span className={this.props.classes.itemSpeedDialWrapper}>
+          <MoreMenu itemActions={itemActions} />
+        </span>
         <div
           style={{
             position: "absolute",
@@ -433,9 +436,6 @@ class PagesAdd extends React.PureComponent {
             ) : (
               ""
             )}
-          </span>
-          <span className={this.props.classes.itemSpeedDialWrapper}>
-            <MoreMenu itemActions={itemActions} />
           </span>
         </div>
       </div>
@@ -906,9 +906,10 @@ class PagesAdd extends React.PureComponent {
             oveflow: "hidden",
           },
           fab: {
-            backgroundColor: "darkcyan",
+            backgroundColor: "white",
+            color: "black",
             "&:hover": {
-              backgroundColor: "#006F6F",
+              backgroundColor: "white",
             },
           },
         },

@@ -143,7 +143,7 @@ const javascriptStyles = {
   },
   itemSpeedDialWrapper: {
     position: "absolute",
-    bottom: 5,
+    top: "0.5rem",
     right: 0,
   },
   removeItemIcon: {
