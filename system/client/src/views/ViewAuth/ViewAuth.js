@@ -223,7 +223,11 @@ class ViewAuth extends Component {
     return (
       <div>
         <Helmet>
-          <title>Authentication</title>
+          <title>
+            {this.props.location.pathname === "/recover-password"
+              ? "Recover Password"
+              : "Authentication"}
+          </title>
         </Helmet>
         <div
           className={classes.pageHeader}
