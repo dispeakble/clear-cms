@@ -4,6 +4,7 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
+import { withRouter } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
 
@@ -157,6 +158,12 @@ class PagePreview extends React.PureComponent {
     });
   };
 
+  getCurrentPageName = () => {
+    let pathArr = this.props.history.location.pathname.split("/");
+    let currentPage = pathArr[pathArr.length - 1];
+    return currentPage;
+  };
+
   render() {
     const classes = this.props.classes;
 
@@ -167,7 +174,7 @@ class PagePreview extends React.PureComponent {
     return (
       <React.Fragment>
         <Helmet>
-          <title>Preview Page</title>
+          <title>Preview {this.getCurrentPageName()} </title>
         </Helmet>
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
@@ -206,4 +213,4 @@ class PagePreview extends React.PureComponent {
   }
 }
 
-export default withStyles(styles)(PagePreview);
+export default withRouter(withStyles(styles)(PagePreview));
