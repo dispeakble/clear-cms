@@ -164,13 +164,6 @@ class App extends React.PureComponent {
       let LazyComponent = null;
       let LazyComponentName = el.module.replace(" ", "");
       if (el.module === "Header Module") {
-        if (el.moduleOptions.data.bg) {
-          style.backgroundImage = `url(${el.moduleOptions.data.bg})`;
-          style.backgroundRepeat = `no-repeat`;
-          style.backgroundSize = "cover";
-          style.backgroundPosition = "center center";
-        }
-
         style.position = el.moduleOptions.data.isModuleSticky
           ? "fixed !important"
           : "";
@@ -235,6 +228,13 @@ class App extends React.PureComponent {
             <div
               className={classes.gridLayout}
               style={{
+                backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
+                backgroundRepeat: this.state.pageConfig.pageBackgroundRepeat
+                  ? "repeat"
+                  : "no-repeat",
+                backgroundSize: this.state.pageConfig.pageBackgroundStretch
+                  ? "cover"
+                  : "auto",
                 backgroundColor: this.state.pageConfig.backgroundColor,
                 fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                 fontFamily: this.state.fontFamily,
@@ -244,6 +244,12 @@ class App extends React.PureComponent {
               <ResponsiveReactGridLayout
                 style={{
                   backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
+                  backgroundRepeat: this.state.pageConfig.pageBackgroundRepeat
+                    ? "repeat"
+                    : "no-repeat",
+                  backgroundSize: this.state.pageConfig.pageBackgroundStretch
+                    ? "cover"
+                    : "auto",
                   backgroundColor: this.state.pageConfig.backgroundColor,
                   fontSize: `${this.state.pageConfig.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.pageConfig.fontFamily,

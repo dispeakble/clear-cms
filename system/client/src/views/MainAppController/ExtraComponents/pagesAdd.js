@@ -137,6 +137,8 @@ class PagesAdd extends React.PureComponent {
     displayItemBorderColorPicker: false,
     fontUnit: "px",
     publish: false,
+    pageBackgroundRepeat: false,
+    pageBackgroundStretch: false,
     defaultPage: false,
     categories: [],
     category: 0,
@@ -224,6 +226,8 @@ class PagesAdd extends React.PureComponent {
           category: pageConfig.category,
           defaultPage: pageConfig.defaultPage,
           publish: pageConfig.publish,
+          backgroundRepeat: pageConfig.backgroundRepeat,
+          backgroundStretch: pageConfig.backgroundRepeat,
         });
       }
       await this.setAsyncState({
@@ -1138,6 +1142,8 @@ class PagesAdd extends React.PureComponent {
       pageTitle: this.state.pageTitle,
       pageLink: this.state.pageLink,
       publish: this.state.publish,
+      backgroundRepeat: this.state.pageBackgroundRepeat,
+      backgroundStretch: this.state.pageBackgroundStretch,
       defaultPage: this.state.defaultPage,
       category: this.state.category,
     };
@@ -1656,6 +1662,42 @@ class PagesAdd extends React.PureComponent {
                             onChange={this.handleBgImage.bind(this)}
                           />
                         </div>
+
+                        <div>
+                          <Typography id="discrete-slider" gutterBottom>
+                            <Tooltip title="Background Repeat">
+                              <Switch
+                                checked={this.state.pageBackgroundRepeat}
+                                onChange={() => {
+                                  this.setState({
+                                    pageBackgroundRepeat: !this.state
+                                      .pageBackgroundRepeat,
+                                  });
+                                }}
+                                value={this.state.pageBackgroundRepeat}
+                              />
+                            </Tooltip>
+                            Background Repeat
+                          </Typography>
+                        </div>
+
+                        <div>
+                          <Typography id="discrete-slider" gutterBottom>
+                            <Tooltip title="Background Stretch">
+                              <Switch
+                                checked={this.state.pageBackgroundStretch}
+                                onChange={() => {
+                                  this.setState({
+                                    pageBackgroundStretch: !this.state
+                                      .pageBackgroundStretch,
+                                  });
+                                }}
+                                value={this.state.pageBackgroundStretch}
+                              />
+                            </Tooltip>
+                            Background Stretch
+                          </Typography>
+                        </div>
                       </div>
                       <p />
                       <div
@@ -1866,6 +1908,12 @@ class PagesAdd extends React.PureComponent {
               <div
                 style={{
                   backgroundImage: `url(${this.state.backgroundImage})`,
+                  backgroundRepeat: this.state.pageBackgroundRepeat
+                    ? "repeat"
+                    : "no-repeat",
+                  backgroundSize: this.state.pageBackgroundStretch
+                    ? "cover"
+                    : "auto",
                   backgroundColor: this.state.bgColor,
                   fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,
@@ -1874,6 +1922,13 @@ class PagesAdd extends React.PureComponent {
               >
                 <ResponsiveReactGridLayout
                   style={{
+                    backgroundImage: `url(${this.state.backgroundImage})`,
+                    backgroundRepeat: this.state.pageBackgroundRepeat
+                      ? "repeat"
+                      : "no-repeat",
+                    backgroundSize: this.state.pageBackgroundStretch
+                      ? "cover"
+                      : "auto",
                     backgroundColor: this.state.bgColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
