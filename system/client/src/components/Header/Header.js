@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Modal from "components/Modal/Modal";
+import { withRouter } from "react-router-dom";
 
 // @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
@@ -94,6 +95,14 @@ class Header extends Component {
 
   dropDownList = [
     {
+      title: "Admin Profile",
+      id: "adminProfile",
+      modal: "adminProfile",
+      callback: () => {
+        console.log(1);
+      },
+    },
+    {
       title: "License",
       id: "license",
       modal: "License",
@@ -111,12 +120,16 @@ class Header extends Component {
   handleRightMenuClick = (event) => {
     const modalValue = event.target.getAttribute("modal");
     if (modalValue) {
-      setTimeout(() => {
-        //TODO populate the modal content here
-        let modalState = {};
-        modalState["show" + modalValue + "Modal"] = true;
-        this.setState(modalState);
-      }, 1000);
+      if (modalValue === "adminProfile") {
+        this.props.history.push("/adminProfile");
+      } else {
+        setTimeout(() => {
+          //TODO populate the modal content here
+          let modalState = {};
+          modalState["show" + modalValue + "Modal"] = true;
+          this.setState(modalState);
+        }, 1000);
+      }
     }
   };
   render() {
@@ -151,7 +164,6 @@ class Header extends Component {
               <CustomDropdown
                 buttonIcon={AccountCircle}
                 buttonText="Logged in as Admin"
-                dropdownHeader="Full Name"
                 buttonProps={{
                   className: classes.navLink,
                   color: "transparent",
@@ -186,7 +198,7 @@ class Header extends Component {
   }
 }
 
-export default withStyles(styles)(Header);
+export default withRouter(withStyles(styles)(Header));
 
 Header.defaultProp = {
   color: "rgba(0,0,0,.87)",

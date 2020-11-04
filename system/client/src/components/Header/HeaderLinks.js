@@ -155,20 +155,6 @@ export default function HeaderLinks(props) {
               </ListItemIcon>
               <ListItemText primary="General Settings" />
             </ListItem>
-
-            <ListItem
-              onClick={() => {
-                props.closeDrawer();
-                handlePathChange("/settings/adminProfile");
-              }}
-              className={classes.accordionLinksItem}
-              button
-            >
-              <ListItemIcon>
-                <Icon>account_circle</Icon>
-              </ListItemIcon>
-              <ListItemText primary="Admin Profile" />
-            </ListItem>
           </List>
         </AccordionDetails>
       </Accordion>
