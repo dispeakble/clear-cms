@@ -103,6 +103,14 @@ class App extends React.PureComponent {
       style.backgroundImage = `url(${el.backgroundImage})`;
     }
 
+    if (el.backgroundRepeat) {
+      style.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
+    }
+
+    if (el.backgroundStretch) {
+      style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
+    }
+
     if (el.backgroundColor) {
       style.backgroundColor = el.backgroundColor;
     }

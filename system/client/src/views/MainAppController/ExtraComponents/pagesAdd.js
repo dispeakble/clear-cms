@@ -147,6 +147,10 @@ class PagesAdd extends React.PureComponent {
     editItemScrollbars: false,
     addAnItem: false,
     showLinklessPageModal: false,
+    backgroundRepeat: false,
+    backgroundStretch: false,
+    editItemBgRepeat: false,
+    editItemBgStretch: false,
   };
 
   onStartEditingModule() {
@@ -273,6 +277,14 @@ class PagesAdd extends React.PureComponent {
 
     if (el.showScrollbars) {
       itemStyle.showScrollbars = el.showScrollbars;
+    }
+
+    if (el.backgroundRepeat) {
+      itemStyle.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
+    }
+
+    if (el.backgroundStretch) {
+      itemStyle.backgroundSize = el.backgroundStretch ? "cover" : "auto";
     }
 
     if (el.fontSize) {
@@ -476,6 +488,8 @@ class PagesAdd extends React.PureComponent {
       items.push({
         title: "New Box",
         showScrollbars: "",
+        backgroundRepeat: "",
+        backgroundStretch: "",
         module: "",
         moduleOptions: { data: "" },
         borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
@@ -617,6 +631,8 @@ class PagesAdd extends React.PureComponent {
 
     await this.setAsyncState({
       editItemScrollbars: item.showScrollbars,
+      editItemBgRepeat: item.backgroundRepeat,
+      editItemBgStretch: item.backgroundStretch,
       editItemTitle: item.title,
       editItemModule: this.getModuleIndex(item.module),
       editItemModuleOptions: item.moduleOptions,
@@ -832,6 +848,18 @@ class PagesAdd extends React.PureComponent {
       foundItem.showScrollbars = this.state.editItemScrollbars;
     } else {
       delete foundItem.showScrollbars;
+    }
+
+    if (this.state.editItemBgRepeat) {
+      foundItem.backgroundRepeat = this.state.editItemBgRepeat;
+    } else {
+      delete foundItem.backgroundRepeat;
+    }
+
+    if (this.state.editItemBgStretch) {
+      foundItem.backgroundStretch = this.state.editItemBgStretch;
+    } else {
+      delete foundItem.backgroundStretch;
     }
 
     if (Number(this.state.editItemBorderWidth)) {
@@ -1482,6 +1510,40 @@ class PagesAdd extends React.PureComponent {
                       />
                     </div>
                   </div>
+
+                  <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Background Repeat">
+                        <Switch
+                          checked={this.state.backgroundRepeat}
+                          onChange={() => {
+                            this.setState({
+                              backgroundRepeat: !this.state.backgroundRepeat,
+                            });
+                          }}
+                          value={this.state.backgroundRepeat}
+                        />
+                      </Tooltip>
+                      Background Repeat
+                    </Typography>
+                  </div>
+
+                  <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Background Stretch">
+                        <Switch
+                          checked={this.state.backgroundStretch}
+                          onChange={() => {
+                            this.setState({
+                              backgroundStretch: !this.state.backgroundStretch,
+                            });
+                          }}
+                          value={this.state.backgroundStretch}
+                        />
+                      </Tooltip>
+                      Background Stretch
+                    </Typography>
+                  </div>
                 </div>
               </div>
               <div className={classes.sideMenuActionHolder}>
@@ -1746,27 +1808,34 @@ class PagesAdd extends React.PureComponent {
                   </Accordion>
                 </div>
                 <div className={classes.iconsWrapper}>
-                  <IconButton color="primary" onClick={() => this.onAddItem()}>
-                    <AddCircle
-                      className={classes.rightSideIcon}
-                      color="primary"
-                    />{" "}
-                  </IconButton>
-
-                  {this.props.history.location.pathname.includes("pageEdit") ? (
+                  <Tooltip title="Add a new box">
                     <IconButton
                       color="primary"
-                      onClick={() => {
-                        window.open(
-                          `/pagePreview/${this.props.match.params.id}`
-                        );
-                      }}
+                      onClick={() => this.onAddItem()}
                     >
-                      <Visibility
+                      <AddCircle
                         className={classes.rightSideIcon}
                         color="primary"
                       />{" "}
                     </IconButton>
+                  </Tooltip>
+
+                  {this.props.history.location.pathname.includes("pageEdit") ? (
+                    <Tooltip title="Go to preview page">
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          window.open(
+                            `/pagePreview/${this.props.match.params.id}`
+                          );
+                        }}
+                      >
+                        <Visibility
+                          className={classes.rightSideIcon}
+                          color="primary"
+                        />{" "}
+                      </IconButton>
+                    </Tooltip>
                   ) : (
                     ""
                   )}
