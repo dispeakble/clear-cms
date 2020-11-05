@@ -7,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { Helmet } from "react-helmet";
 
@@ -365,48 +366,59 @@ class ProfilePage extends Component {
                     <div className={classes.name}>
                       <form>
                         <CardBody>
-                          <CustomInput
-                            labelText="Name"
-                            id="name"
-                            required="required"
-                            formControlProps={{
-                              fullWidth: true,
-                              onChange: (event) =>
-                                this.handleInputChange(event),
+                          <div
+                            style={{
+                              display: "flex",
                             }}
-                            inputProps={{
-                              value: this.state.name,
-                              type: "text",
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <Icon className={classes.inputIconsColor}>
-                                    account_circle
-                                  </Icon>
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
-                          <CustomInput
-                            labelText="Please enter new email address"
-                            id="email"
-                            required="required"
-                            formControlProps={{
-                              fullWidth: true,
-                              onChange: (event) =>
-                                this.handleInputChange(event),
-                            }}
-                            inputProps={{
-                              value: this.state.email,
-                              type: "email",
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <Icon className={classes.inputIconsColor}>
-                                    account_circle
-                                  </Icon>
-                                </InputAdornment>
-                              ),
-                            }}
-                          />
+                          >
+                            <CustomInput
+                              className={classes.column}
+                              labelText="Name"
+                              id="name"
+                              required="required"
+                              formControlProps={{
+                                fullWidth: true,
+                                onChange: (event) =>
+                                  this.handleInputChange(event),
+                              }}
+                              inputProps={{
+                                value: this.state.name,
+                                type: "text",
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <Icon className={classes.inputIconsColor}>
+                                      account_circle
+                                    </Icon>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+
+                            <p style={{ width: "15px" }}></p>
+
+                            <CustomInput
+                              className={classes.column}
+                              labelText="Please enter new email address"
+                              id="email"
+                              required="required"
+                              formControlProps={{
+                                fullWidth: true,
+                                onChange: (event) =>
+                                  this.handleInputChange(event),
+                              }}
+                              inputProps={{
+                                value: this.state.email,
+                                type: "email",
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <Icon className={classes.inputIconsColor}>
+                                      account_circle
+                                    </Icon>
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          </div>
                           <CustomInput
                             labelText="Enter Current Password"
                             id="currentPassword"
@@ -584,50 +596,31 @@ class ProfilePage extends Component {
                           >
                             Save All Settings
                           </Button>
-
-                          <h3>Link Accounts</h3>
-                          <div className={classes.syncToAccountWrapper}>
-                            <div className={classes.syncToAccount}>
-                              <Button justIcon link className={classes.margin5}>
-                                <i className={"fab fa-google"} />
-                              </Button>
-                              <span className={classes.syncAccountText}>
-                                Sync with Google
-                              </span>
-                            </div>
-                            <br />
-                            <div className={classes.syncToAccount}>
-                              <Button justIcon link className={classes.margin5}>
-                                <i className={"fab fa-twitter"} />
-                              </Button>
-                              <span className={classes.syncAccountText}>
-                                Sync with Twitter
-                              </span>
-                            </div>
-                            <br />
-                            <div className={classes.syncToAccount}>
-                              <Button justIcon link className={classes.margin5}>
-                                <i className={"fab fa-instagram"} />
-                              </Button>
-                              <span className={classes.syncAccountText}>
-                                Sync with Instagram
-                              </span>
-                            </div>
-                            <br />
-                            <div className={classes.syncToAccount}>
-                              <Button justIcon link className={classes.margin5}>
-                                <i className={"fab fa-facebook"} />
-                              </Button>
-                              <span className={classes.syncAccountText}>
-                                Sync with Facebook
-                              </span>
-                            </div>
-                          </div>
                         </CardBody>
                       </form>
                     </div>
                   </div>
                 </GridItem>
+                <div className={classes.syncToAccountWrapper}>
+                  <Tooltip title={"Follow us on Twitter"}>
+                    <Button link>
+                      <i className={"fab fa-twitter"} />
+                      <p className={classes.syncAccountText}>Twitter</p>
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title={"Like us on Facebook"}>
+                    <Button link>
+                      <i className={"fab fa-facebook"} />
+                      <p className={classes.syncAccountText}>Facebook</p>
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title={"Sync to Google Account"}>
+                    <Button link>
+                      <i className={"fab fa-google"} />
+                      <p className={classes.syncAccountText}>Google</p>
+                    </Button>
+                  </Tooltip>
+                </div>
               </GridContainer>
             </div>
           </div>

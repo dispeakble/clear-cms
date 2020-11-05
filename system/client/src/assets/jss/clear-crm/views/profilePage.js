@@ -65,18 +65,22 @@ const profilePageStyle = {
     },
   },
   syncToAccountWrapper: {
-    "& div:nth-child(1):hover": {
-      border: "2px solid #EA4335",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: "60%",
+    "& button:nth-child(1):hover": {
+      color: "#1DA1F3",
     },
-    "& div:nth-child(3):hover": {
-      border: "2px solid #1DA1F3",
+    "& button:nth-child(2):hover": {
+      color: "#4267B2",
     },
-    "& div:nth-child(5):hover": {
-      border: "2px solid #9231BF",
+    "& button:nth-child(3):hover": {
+      color: "#EA4335",
     },
-    "& div:nth-child(7):hover": {
-      border: "2px solid #4267B2",
-    },
+  },
+  column: {
+    width: "50%",
   },
   passwordBar: {
     display: "inline-block",
