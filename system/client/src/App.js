@@ -96,7 +96,7 @@ class App extends Component {
         )}
 
         <Switch>
-          <Route path="/adminProfile" component={ProfilePage} />
+          <Route path="/profile-page" component={ProfilePage} />
           <Route path="/view-auth" component={ViewAuth} />
           <Route path="/recover-password" component={ViewAuth} />
           <Route path="/" exact component={Dashboard} />
