@@ -14,7 +14,6 @@ class MoreMenu extends Component {
     new Promise((resolve) => this.setState(newState, resolve));
 
   toggleState(status) {
-    console.log("will set state to " + status);
     this.setState({
       opened: status,
     });
@@ -24,12 +23,12 @@ class MoreMenu extends Component {
     return (
       <SpeedDial
         FabProps={{ size: "small" }}
+        direction="down"
         ariaLabel="Module Speed Dial"
         icon={<MoreVert />}
-        onClose={() => this.toggleState(false)}
-        onOpen={() => {
+        onClick={() => {
           if (!this.state.force) {
-            this.toggleState(true);
+            this.toggleState(!this.state.opened);
           }
           this.setState({
             force: false,
