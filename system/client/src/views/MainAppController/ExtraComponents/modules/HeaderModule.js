@@ -30,6 +30,8 @@ class HeaderModule extends Component {
     isModuleSticky: false,
     logoTitle: "",
     logoLink: "",
+    backgroundRepeat: false,
+    backgroundStretch: false,
   };
   getTheme = () => {
     /*
@@ -61,6 +63,8 @@ class HeaderModule extends Component {
       console.log(moduleOptions.logoTitle);
       this.setState({
         isModuleSticky: moduleOptions.isModuleSticky,
+        backgroundRepeat: moduleOptions.backgroundRepeat,
+        backgroundStretch: moduleOptions.backgroundStretch,
         logoTitle: moduleOptions.logoTitle,
         logoLink: moduleOptions.logoLink,
         backgroundImage: moduleOptions.bg,
@@ -184,6 +188,37 @@ class HeaderModule extends Component {
               </Tooltip>
               Sticky Header
             </Typography>
+
+            <Typography id="discrete-slider" gutterBottom>
+              <Tooltip title="Background Repeat">
+                <Switch
+                  checked={this.state.backgroundRepeat}
+                  onChange={() => {
+                    this.setState({
+                      backgroundRepeat: !this.state.backgroundRepeat,
+                    });
+                  }}
+                  value={this.state.backgroundRepeat}
+                />
+              </Tooltip>
+              Background Repeat
+            </Typography>
+
+            <Typography id="discrete-slider" gutterBottom>
+              <Tooltip title="Background Stretch">
+                <Switch
+                  checked={this.state.backgroundStretch}
+                  onChange={() => {
+                    this.setState({
+                      backgroundStretch: !this.state.backgroundStretch,
+                    });
+                  }}
+                  value={this.state.backgroundStretch}
+                />
+              </Tooltip>
+              Background Stretch
+            </Typography>
+
             <div
               style={{
                 display: "flex",
@@ -264,6 +299,8 @@ class HeaderModule extends Component {
                   logoTitle: this.state.logoTitle,
                   logoLink: this.state.logoLink,
                   isModuleSticky: this.state.isModuleSticky,
+                  backgroundRepeat: this.state.backgroundRepeat,
+                  backgroundStretch: this.state.backgroundStretch,
                 });
                 this.closeModuleOptionsModal();
               }}
