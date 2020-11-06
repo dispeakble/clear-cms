@@ -109,7 +109,6 @@ const javascriptStyles = {
   },
   addIcon: {
     color: "darkcyan",
-    fontSize: "130%",
     "&:hover": {
       color: "#007272",
     },
