@@ -178,10 +178,10 @@ class PagePreview extends React.PureComponent {
                 className={classes.gridLayout}
                 style={{
                   backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
-                  backgroundRepeat: this.state.pageConfig.pageBackgroundRepeat
+                  backgroundRepeat: this.state.pageConfig.backgroundRepeat
                     ? "repeat"
                     : "no-repeat",
-                  backgroundSize: this.state.pageConfig.pageBackgroundStretch
+                  backgroundSize: this.state.pageConfig.backgroundStretch
                     ? "cover"
                     : "auto",
                   backgroundColor: this.state.pageConfig.backgroundColor,
@@ -193,10 +193,10 @@ class PagePreview extends React.PureComponent {
                 <ResponsiveReactGridLayout
                   style={{
                     backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
-                    backgroundRepeat: this.state.pageConfig.pageBackgroundRepeat
+                    backgroundRepeat: this.state.pageConfig.backgroundRepeat
                       ? "repeat"
                       : "no-repeat",
-                    backgroundSize: this.state.pageConfig.pageBackgroundStretch
+                    backgroundSize: this.state.pageConfig.backgroundStretch
                       ? "cover"
                       : "auto",
                     backgroundColor: this.state.pageConfig.backgroundColor,

@@ -226,8 +226,8 @@ class PagesAdd extends React.PureComponent {
           category: pageConfig.category,
           defaultPage: pageConfig.defaultPage,
           publish: pageConfig.publish,
-          backgroundRepeat: pageConfig.backgroundRepeat,
-          backgroundStretch: pageConfig.backgroundRepeat,
+          pageBackgroundRepeat: pageConfig.backgroundRepeat,
+          pageBackgroundStretch: pageConfig.backgroundStretch,
         });
       }
       await this.setAsyncState({
@@ -269,6 +269,7 @@ class PagesAdd extends React.PureComponent {
   };
 
   createElement(el) {
+    console.log(this.state.backgroundRepeat);
     const removeStyle = {
       position: "absolute",
       right: "2px",
@@ -281,14 +282,6 @@ class PagesAdd extends React.PureComponent {
 
     if (el.showScrollbars) {
       itemStyle.showScrollbars = el.showScrollbars;
-    }
-
-    if (el.backgroundRepeat) {
-      itemStyle.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
-    }
-
-    if (el.backgroundStretch) {
-      itemStyle.backgroundSize = el.backgroundStretch ? "cover" : "auto";
     }
 
     if (el.fontSize) {
@@ -312,8 +305,18 @@ class PagesAdd extends React.PureComponent {
 
     if (el.backgroundImage) {
       itemStyle.backgroundImage = `url(${el.backgroundImage})`;
+    }
+
+    if (el.backgroundRepeat) {
+      itemStyle.backgroundRepeat = "repeat";
     } else {
-      itemStyle.backgroundImage = `url(${this.state.backgroundImage})`;
+      itemStyle.backgroundRepeat = "no-repeat";
+    }
+
+    if (el.backgroundStretch) {
+      itemStyle.backgroundSize = "cover";
+    } else {
+      itemStyle.backgroundSize = "auto";
     }
 
     if (el.backgroundColor) {
@@ -492,8 +495,6 @@ class PagesAdd extends React.PureComponent {
       items.push({
         title: "New Box",
         showScrollbars: "",
-        backgroundRepeat: "",
-        backgroundStretch: "",
         module: "",
         moduleOptions: { data: "" },
         borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
@@ -502,6 +503,8 @@ class PagesAdd extends React.PureComponent {
         borderRadius: "0",
         fontSize: "0", // to avoid getting NAN in the slider
         backgroundImage: "",
+        backgroundRepeat: "",
+        backgroundStretch: "",
         i: newId + "",
         x: 0,
         y: Infinity, // puts it at the bottom
@@ -632,11 +635,10 @@ class PagesAdd extends React.PureComponent {
       itemEditId: id,
     });
     const item = this.getItemById(id);
+    console.log(item);
 
     await this.setAsyncState({
       editItemScrollbars: item.showScrollbars,
-      editItemBgRepeat: item.backgroundRepeat,
-      editItemBgStretch: item.backgroundStretch,
       editItemTitle: item.title,
       editItemModule: this.getModuleIndex(item.module),
       editItemModuleOptions: item.moduleOptions,
@@ -646,6 +648,8 @@ class PagesAdd extends React.PureComponent {
       editItemBorderStyle: item.borderStyle,
       editItemBackgroundColor: item.backgroundColor || "",
       editItemBgImage: item.backgroundImage,
+      editItemBgRepeat: item.backgroundRepeat,
+      editItemBgStretch: item.backgroundStretch,
       editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
       editItemTextColor: item.textColor || "",
       editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
@@ -663,8 +667,7 @@ class PagesAdd extends React.PureComponent {
   };
 
   handlePageSave = () => {
-    const { history } = this.props;
-    history.push("/pages");
+    console.log(this.state.items);
   };
 
   handleDiscard = () => {
@@ -779,6 +782,18 @@ class PagesAdd extends React.PureComponent {
     }
   };
 
+  handleItemBgRepeat = async (event) => {
+    this.setState({
+      editItemBgRepeat: !this.state.editItemBgRepeat,
+    });
+  };
+
+  handleItemBgStretch = async (event) => {
+    this.setState({
+      editItemBgStretch: !this.state.editItemBgStretch,
+    });
+  };
+
   handleBgImage = async (event) => {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
@@ -812,6 +827,9 @@ class PagesAdd extends React.PureComponent {
     foundItem.module = this.state.modulesList[this.state.editItemModule];
     foundItem.module = foundItem.module ? foundItem.module.label : "";
     foundItem.backgroundImage = this.state.editItemBgImage;
+    foundItem.backgroundRepeat = this.state.editItemBgRepeat;
+    foundItem.backgroundStretch = this.state.editItemBgStretch;
+
     //foundItem.moduleOptions = this.state.moduleOptions;
 
     if (this.state.editItemBackgroundColorShow) {
@@ -852,18 +870,6 @@ class PagesAdd extends React.PureComponent {
       foundItem.showScrollbars = this.state.editItemScrollbars;
     } else {
       delete foundItem.showScrollbars;
-    }
-
-    if (this.state.editItemBgRepeat) {
-      foundItem.backgroundRepeat = this.state.editItemBgRepeat;
-    } else {
-      delete foundItem.backgroundRepeat;
-    }
-
-    if (this.state.editItemBgStretch) {
-      foundItem.backgroundStretch = this.state.editItemBgStretch;
-    } else {
-      delete foundItem.backgroundStretch;
     }
 
     if (Number(this.state.editItemBorderWidth)) {
@@ -1522,13 +1528,9 @@ class PagesAdd extends React.PureComponent {
                     <Typography id="discrete-slider" gutterBottom>
                       <Tooltip title="Background Repeat">
                         <Switch
-                          checked={this.state.backgroundRepeat}
-                          onChange={() => {
-                            this.setState({
-                              backgroundRepeat: !this.state.backgroundRepeat,
-                            });
-                          }}
-                          value={this.state.backgroundRepeat}
+                          checked={this.state.editItemBgRepeat}
+                          onChange={this.handleItemBgRepeat.bind(this)}
+                          value={this.state.editItemBgRepeat}
                         />
                       </Tooltip>
                       Background Repeat
@@ -1539,13 +1541,9 @@ class PagesAdd extends React.PureComponent {
                     <Typography id="discrete-slider" gutterBottom>
                       <Tooltip title="Background Stretch">
                         <Switch
-                          checked={this.state.backgroundStretch}
-                          onChange={() => {
-                            this.setState({
-                              backgroundStretch: !this.state.backgroundStretch,
-                            });
-                          }}
-                          value={this.state.backgroundStretch}
+                          checked={this.state.editItemBgStretch}
+                          onChange={this.handleItemBgStretch.bind(this)}
+                          value={this.state.editItemBgStretch}
                         />
                       </Tooltip>
                       Background Stretch
