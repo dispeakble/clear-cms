@@ -215,7 +215,6 @@ class PagePreview extends React.PureComponent {
             </div>
           </MuiThemeProvider>
         </div>
-        )
       </React.Fragment>
     );
   }
