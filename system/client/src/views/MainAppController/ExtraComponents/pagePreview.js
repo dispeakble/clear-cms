@@ -151,12 +151,6 @@ class PagePreview extends React.PureComponent {
     });
   };
 
-  getCurrentPageName = () => {
-    let pathArr = this.props.history.location.pathname.split("/");
-    let currentPage = pathArr[pathArr.length - 1];
-    return currentPage;
-  };
-
   render() {
     const classes = this.props.classes;
 
@@ -167,7 +161,7 @@ class PagePreview extends React.PureComponent {
     return (
       <React.Fragment>
         <Helmet>
-          <title>Preview {this.getCurrentPageName()} </title>
+          <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
