@@ -5,6 +5,7 @@ const javascriptStyles = {
     margin: "0 15px 0",
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
+      boxSizing: "border-box",
     },
     "& .react-grid-placeholder": {},
     "& .react-grid-layout ": {
@@ -18,9 +19,6 @@ const javascriptStyles = {
     },
     "& .columns": {
       columns: "120px",
-    },
-    "& .react-grid-item": {
-      boxSizing: "border-box",
     },
     "& .react-grid-item:not(.react-grid-placeholder)": {
       background: "#FFFFFF",
@@ -47,10 +45,7 @@ const javascriptStyles = {
       cursor: "pointer",
     },
     "& .react-grid-dragHandleExample": {
-      cursor: "move",
-      cursor: "grab",
-      cursor: "-moz-grab",
-      cursor: "-webkit-grab",
+      cursor: "move"
     },
 
     "& .toolbox": {
@@ -279,7 +274,11 @@ const javascriptStyles = {
     },
   },
   addIcon: {
-    color: "#008b8b",
+    color: "darkcyan",
+    fontSize: "130%",
+    "&:hover": {
+      color: "#007272",
+    },
   },
   dropzoneColumn: {
     width: "50%",

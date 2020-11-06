@@ -6,7 +6,6 @@ import styles from "assets/jss/clear-crm/views/categories.js";
 import { Helmet } from "react-helmet";
 
 import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
-import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 
 // from material-table
@@ -17,14 +16,11 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import Tooltip from "@material-ui/core/Tooltip";
-import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 
 // for the dropdown
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Menu, MenuItem } from "@material-ui/core";
 
 //todo import modal content to add category
 
@@ -138,20 +134,12 @@ class Categories extends Component {
           },
           MuiIconButton: {
             root: {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            },
-          },
-          MuiIconButton: {
-            root: {
+              fontSize:"18px",
               padding: "3px",
               "&:hover": {
                 backgroundColor: "transparent",
               },
             },
-          },
-          MuiIconButton: {
             // for changing the color of the success and X icons on edit
             colorInherit: {
               "&:first-child": {

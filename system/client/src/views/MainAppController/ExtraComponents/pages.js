@@ -14,20 +14,17 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
-import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 
 import {
   Edit,
   DeleteForever,
   Visibility,
-  Add as AddIcon,
-  CheckBox,
+  Add as AddIcon
 } from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 import Fab from "@material-ui/core/Fab";
-import Tooltip from "@material-ui/core/Tooltip";
 
 import MaterialTable from "material-table";
 
@@ -153,6 +150,16 @@ class Pages extends Component {
         });
       },
       customActions: [
+        {
+          icon: 'add_circle',
+          tooltip: 'Add Page',
+          isFreeAction: true,
+          onClick: (event) => {
+            this.props.history.push(
+                `/pagesAdd`
+            );
+          }
+        },
         {
           tooltip: "Remove All Selected Pages",
 
@@ -318,18 +325,6 @@ class Pages extends Component {
                 options={this.tableOptions.props.options}
                 actions={this.tableOptions.actions.customActions}
               />
-              <Link
-                to="/pagesAdd"
-                style={{
-                  position: "fixed",
-                  right: this.tableOptions.getTheme().spacing(2),
-                  bottom: this.tableOptions.getTheme().spacing(2),
-                }}
-              >
-                <Fab color="primary" aria-label="add">
-                  <AddIcon />
-                </Fab>
-              </Link>
             </MuiThemeProvider>
           </div>
         </div>
