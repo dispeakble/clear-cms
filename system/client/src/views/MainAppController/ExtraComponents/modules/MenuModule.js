@@ -57,7 +57,7 @@ class MenuModule extends Component {
     bgColor: "",
     icons: [],
     icon: "",
-    linklessPageLinks: false,
+    noLinksFound: false,
   };
 
   async componentDidMount() {
@@ -507,15 +507,20 @@ class MenuModule extends Component {
     });
   };
 
-  confirmAddLinkless = () => {
+  confirmNoLinksFound = () => {
     return (
       <Dialog
-        style={{ margin: "0 auto", width: "50%", textAlign: "center" }}
+        style={{
+          margin: "0 auto",
+          minWidth: "30%",
+          maxWidth: "60%",
+          textAlign: "center",
+        }}
         classes={{
           root: this.props.classes.center,
           paper: this.props.classes.modal,
         }}
-        open={this.state.linklessPageLinks}
+        open={this.state.noLinksFound}
         TransitionComponent={this.transition}
         keepMounted
         aria-labelledby="classic-modal-slide-title"
@@ -526,8 +531,8 @@ class MenuModule extends Component {
           className={this.props.classes.modalBody}
         >
           <div>
-            The menu contains items with no links assigned. Are you sure you
-            want to proceed ?
+            You are about to save a menu module without any links. Would you
+            like to proceed?
           </div>
         </DialogContent>
 
@@ -553,7 +558,7 @@ class MenuModule extends Component {
             color="danger"
             simple
             onClick={() => {
-              this.setState({ linklessPageLinks: false });
+              this.setState({ noLinksFound: false });
             }}
           >
             Cancel
@@ -690,7 +695,7 @@ class MenuModule extends Component {
               editable={this.tableOptions.actions.editable}
               actions={this.tableOptions.actions.customActions}
             />
-            {this.confirmAddLinkless()}
+            {this.confirmNoLinksFound()}
           </DialogContent>
 
           <DialogActions className={classes.modalFooter}>
@@ -700,14 +705,14 @@ class MenuModule extends Component {
               onClick={() => {
                 this.props.onEndEditingModule();
                 let menuOptions = this.state.menuOptions;
-                let linklessPageLinks = false;
-                menuOptions.forEach((link) => {
-                  if (!link.link) {
-                    linklessPageLinks = true;
+                let foundLinks = false;
+                menuOptions.forEach((item) => {
+                  if (!item.link) {
+                    foundLinks = true;
                   }
                 });
-                if (linklessPageLinks) {
-                  this.setState({ linklessPageLinks: true });
+                if (!foundLinks) {
+                  this.setState({ noLinksFound: true });
                 } else {
                   this.props.onEndEditingModule();
                   this.props.handleSave(this.state.itemModuleEditId, {
