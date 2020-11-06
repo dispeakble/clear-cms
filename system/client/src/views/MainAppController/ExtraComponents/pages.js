@@ -16,21 +16,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "components/CustomButtons/Button.js";
 
-import {
-  Edit,
-  DeleteForever,
-  Visibility,
-  Add as AddIcon
-} from "@material-ui/icons";
+import { Edit, DeleteForever, Visibility } from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
-import Fab from "@material-ui/core/Fab";
 
 import MaterialTable from "material-table";
-
-// comment for testing
-
-const shortid = require("shortid");
 
 class Pages extends Component {
   state = {
@@ -151,14 +140,15 @@ class Pages extends Component {
       },
       customActions: [
         {
-          icon: 'add_circle',
-          tooltip: 'Add Page',
+          icon: "add_circle",
+          tooltip: "Add Page",
           isFreeAction: true,
+          iconProps: {
+            style: { color: "darkcyan" },
+          },
           onClick: (event) => {
-            this.props.history.push(
-                `/pagesAdd`
-            );
-          }
+            this.props.history.push(`/pagesAdd`);
+          },
         },
         {
           tooltip: "Remove All Selected Pages",

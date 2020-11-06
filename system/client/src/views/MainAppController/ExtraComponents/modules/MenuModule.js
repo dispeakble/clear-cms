@@ -9,15 +9,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import CustomInput from "components/CustomInput/CustomInput.js";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
-import { Editor } from "@tinymce/tinymce-react";
 
 // for the material-table within the edit modal options modal
 import MaterialTable from "material-table";
@@ -26,14 +23,14 @@ import {
   AddCircle,
   Edit,
   ArtTrack,
-  Close,
+  Check,
+  Clear,
 } from "@material-ui/icons";
 import * as Icons from "@material-ui/icons";
 
 // for the dropdown
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { Menu, MenuItem } from "@material-ui/core";
 
 // for the new color picker
 import { SketchPicker } from "react-color";
@@ -41,7 +38,6 @@ import reactCSS from "reactcss";
 
 // for Font Awesome
 import Icon from "@material-ui/core/Icon";
-import parse from "html-react-parser";
 
 class MenuModule extends Component {
   state = {
@@ -65,8 +61,6 @@ class MenuModule extends Component {
   };
 
   async componentDidMount() {
-    let menuOptions = this.props.moduleOptions.data.links;
-
     if (this.props.moduleOptions.data) {
       await this.setAsyncState({
         menuOptions: this.props.moduleOptions.data.links,
@@ -199,34 +193,6 @@ class MenuModule extends Component {
 
     this.closeMultipleDeleteModal();
   };
-
-  // getAllLinks = async (data, parentName) => {
-  //   let result = this.state.flatLinks;
-  //   if (this.state.menuOptions.length) {
-  //     let links = data || this.state.menuOptions;
-  //     links.map((el) => {
-  //       el.concatText = el.text;
-  //       if (parentName) {
-  //         el.concatText = parentName + "/" + el.concatText;
-  //       }
-  //       result.push({
-  //         id: el.id,
-  //         label: el.concatText,
-  //       });
-  //       if (
-  //         el.tableData &&
-  //         el.tableData.childRows &&
-  //         el.tableData.childRows.length
-  //       ) {
-  //         this.getAllLinks(el.tableData.childRows, el.text);
-  //       }
-  //     });
-
-  //     await this.setAsyncState({
-  //       flatLinks: result,
-  //     });
-  //   }
-  // };
 
   getLinksNested(id) {
     let result = "";
@@ -392,6 +358,16 @@ class MenuModule extends Component {
     props: {
       icons: {
         Add: () => <AddCircle className={this.props.classes.addIcon} />,
+        Check: () => (
+          <IconButton color="primary">
+            <Check color="primary" />{" "}
+          </IconButton>
+        ),
+        Clear: () => (
+          <IconButton color="error">
+            <Clear color="error" />{" "}
+          </IconButton>
+        ),
         Edit: () => (
           <IconButton color="primary">
             <Edit color="primary" />{" "}

@@ -5,7 +5,13 @@ import styles from "assets/jss/clear-crm/views/categories.js";
 
 import { Helmet } from "react-helmet";
 
-import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
+import {
+  DeleteForever,
+  AddCircle,
+  Edit,
+  Check,
+  Clear,
+} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 
 // from material-table
@@ -23,8 +29,6 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 //todo import modal content to add category
-
-const shortid = require("shortid");
 
 class Categories extends Component {
   state = {
@@ -134,21 +138,9 @@ class Categories extends Component {
           },
           MuiIconButton: {
             root: {
-              fontSize:"18px",
               padding: "3px",
               "&:hover": {
                 backgroundColor: "transparent",
-              },
-            },
-            // for changing the color of the success and X icons on edit
-            colorInherit: {
-              "&:first-child": {
-                color: "#008b8b",
-                padding: "5px",
-              },
-              "&:last-child": {
-                color: "#FF0000",
-                padding: "5px",
               },
             },
           },
@@ -227,6 +219,16 @@ class Categories extends Component {
     props: {
       icons: {
         Add: () => <AddCircle className={this.props.classes.addIcon} />,
+        Check: () => (
+          <IconButton color="primary">
+            <Check color="primary" />{" "}
+          </IconButton>
+        ),
+        Clear: () => (
+          <IconButton color="error">
+            <Clear color="error" />{" "}
+          </IconButton>
+        ),
         Edit: () => (
           <IconButton color="primary">
             <Edit color="primary" />{" "}
@@ -322,7 +324,6 @@ class Categories extends Component {
 
   render() {
     const classes = this.props.classes;
-    const shortid = require("shortid");
 
     return (
       <React.Fragment>
