@@ -1,8 +1,6 @@
 import {Body, Controller, Get, HttpStatus, Inject, Post, Req, Res} from "@nestjs/common";
 import {Request, Response} from "express";
-import {WebsocketGatewayService} from "../services/websocket.gateway.service";
 import {ModuleInterface} from "../interfaces/module.interface";
-import * as mime from "mime";
 
 @Controller()
 export class AppController {
@@ -13,7 +11,7 @@ export class AppController {
         @Inject('ProtocolService') private protocolService,
         @Inject('SystemService') private systemService,
         @Inject('AppService') private appService,
-        private wsService: WebsocketGatewayService
+        @Inject('WsGateway') private wsGateway
     ) {
         this.protocolService.start().then(async () => {
             let payload: ModuleInterface = {
@@ -63,12 +61,12 @@ export class AppController {
             }
 
         };
-        console.log(payload)
+        //console.log(payload)
         const app_data = await this.protocolService.sendGet(payload);
 
         res.setHeader("Content-Type", app_data['mime']);
 
-        console.log(app_data)
+        //console.log(app_data)
 
         switch (app_data.file.type) {
             case 'Buffer':
@@ -76,7 +74,6 @@ export class AppController {
                 res.end(Buffer.from(app_data.file.data));
                 break;
         }
-
 
     }
 
@@ -90,12 +87,6 @@ export class AppController {
                 }
             }
         });
-    }
-
-    private createWebSocket() {
-        this.wsService.subscribeToWs('session').subscribe((params) => {
-            params.client.emit('ok');
-        })
     }
 
 }

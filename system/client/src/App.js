@@ -1,13 +1,11 @@
-import React, { Component, Suspense } from "react";
-import ReactDOM from "react-dom";
-import { withRouter, Route, Switch } from "react-router-dom";
-import NotFound from "views/NotFound/NotFound";
+import React, {Component} from "react";
+import {withRouter, Route, Switch} from "react-router-dom";
+
+//Wrappers
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
-import { Helmet } from "react-helmet";
-
-//import Components from "views/Components/Components.js";
+//views //TODO MOVE TO CONTROLLERS
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
@@ -15,107 +13,129 @@ import MainAppController from "views/MainAppController/MainAppController";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 
+//styles
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-
 import "assets/scss/clear-crm.scss";
 
-class App extends Component {
-  state = {
-    moduleList: [
-      {
-        //TODO get this from hub module list
-        toLink: "/pages",
-        name: "Pages",
-        icon: "web",
-        active: true,
-      },
-      {
-        toLink: "/categories",
-        name: "Categories",
-        icon: "category",
-      },
-      {
-        toLink: "/blog",
-        icon: "book",
-        name: "Blog",
-      },
-      {
-        toLink: "/forum",
-        icon: "forum",
-        name: "Forum",
-      },
-      {
-        toLink: "/video-conference",
-        icon: "video_call",
-        name: "Video Conference",
-      },
-      {
-        toLink: "/file-transfer",
-        icon: "attachment",
-        name: "File Transfer",
-      },
-      {
-        toLink: "/photo-gallery",
-        icon: "photo_library",
-        name: "Photo Gallery",
-      },
-    ],
-    mobileOpen: false,
-  };
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
-  render() {
-    const { pathname } = this.props.location;
-    return (
-      <React.Fragment>
-        <Helmet>
-          <title>App</title>
-        </Helmet>
-        {!pathname.includes("/pagePreview") ? (
-          <Header
-            mobileOpen={this.state.mobileOpen}
-            color="transparent"
-            brand="Clear CRM"
-            handleDrawerToggle={() => this.handleDrawerToggle()}
-            leftLinks={
-              <HeaderLinks
-                closeDrawer={() => this.handleDrawerToggle()}
-                moduleList={this.state.moduleList}
-              />
-            }
-            fixed
-            changeColorOnScroll={{
-              height: 10,
-              color: "info",
-            }}
-          />
-        ) : (
-          ""
-        )}
+//Controllers
+import AuthController from "controllers/auth.controller";
 
-        <Switch>
-          <Route path="/profile-page" component={ProfilePage} />
-          <Route path="/view-auth" component={ViewAuth} />
-          <Route path="/recover-password" component={ViewAuth} />
-          <Route path="/" exact component={Dashboard} />
-          <Route path="/logout" component={ViewAuth} />
-          <Route path="/pagesAdd" component={PagesAdd} />
-          <Route path="/pagePreview/:id" component={PagePreview} />
-          <Route path="/pageEdit/:id" component={PagesAdd} />
-          <Route
-            render={(props) => (
-              <MainAppController
-                {...props}
-                moduleList={this.state.moduleList}
-              />
-            )}
-          />
-        </Switch>
-      </React.Fragment>
-    );
-  }
+//Services
+import WsService from 'services/ws.service';
+import { Helmet } from "react-helmet";
+
+class App extends Component {
+    state = {
+        services:{},
+        moduleList: [
+            {
+                //TODO get this from hub module list
+                toLink: "/pages",
+                name: "Pages",
+                icon: "web",
+                active: true,
+            },
+            {
+                toLink: "/categories",
+                name: "Categories",
+                icon: "category",
+            },
+            {
+                toLink: "/blog",
+                icon: "book",
+                name: "Blog",
+            },
+            {
+                toLink: "/forum",
+                icon: "forum",
+                name: "Forum",
+            },
+            {
+                toLink: "/video-conference",
+                icon: "video_call",
+                name: "Video Conference",
+            },
+            {
+                toLink: "/file-transfer",
+                icon: "attachment",
+                name: "File Transfer",
+            },
+            {
+                toLink: "/photo-gallery",
+                icon: "photo_library",
+                name: "Photo Gallery",
+            },
+        ],
+        socket:{},
+        mobileOpen: false,
+    };
+
+    async componentWillMount() {
+        this.state.services.ws = new WsService();
+
+        this.state.services.ws.start();
+        //const m = await this.ws.send('ping');
+        //console.log(m);
+    }
+
+    handleDrawerToggle = () => {
+        this.setState({mobileOpen: !this.state.mobileOpen});
+    };
+
+    render() {
+        const {pathname} = this.props.location;
+        return (
+            <React.Fragment>
+                <Helmet>
+                    <title>App</title>
+                </Helmet>
+                {!pathname.includes("/pagePreview") ? (
+                    <Header
+                        mobileOpen={this.state.mobileOpen}
+                        color="transparent"
+                        brand="Clear CRM"
+                        handleDrawerToggle={() => this.handleDrawerToggle()}
+                        leftLinks={
+                            <HeaderLinks
+                                closeDrawer={() => this.handleDrawerToggle()}
+                                moduleList={this.state.moduleList}
+                            />
+                        }
+                        fixed
+                        changeColorOnScroll={{
+                            height: 10,
+                            color: "info",
+                        }}
+                    />
+                ) : (
+                    ""
+                )}
+
+                <Switch>
+                    <Route path="/profile-page" component={ProfilePage}/>
+                    <Route path="/view-auth" render={(props) => {
+                        return (<AuthController {...props} services={this.state.services} />)
+                    }} />
+                    <Route path="/recover-password" component={ViewAuth}/>
+                    <Route path="/" exact component={Dashboard}/>
+                    <Route path="/logout" component={ViewAuth}/>
+                    <Route path="/pagesAdd" component={PagesAdd}/>
+                    <Route path="/pagePreview/:id" component={PagePreview}/>
+                    <Route path="/pageEdit/:id" component={PagesAdd}/>
+                    <Route
+                        render={(props) => (
+                            <MainAppController
+                                {...props}
+                                moduleList={this.state.moduleList}
+                            />
+                        )}
+                    />
+                </Switch>
+
+            </React.Fragment>
+        );
+    }
 }
 
 export default withRouter(App);

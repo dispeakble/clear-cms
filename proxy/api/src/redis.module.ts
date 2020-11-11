@@ -1,16 +1,11 @@
 import {Module, Scope} from '@nestjs/common';
-import {AppController} from "./controllers/app.controller";
 import {ProtocolController} from "./controllers/protocol.controller";
-import {AppService} from './services/app.service';
 import {ProtocolService} from "./services/protocol.service";
-import { WsGateway } from './gateways/ws.gateway';
-import {SystemService} from "./services/system.service";
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import { ConfigModule } from './modules/config.module';
 
 @Module({
     imports: [
-        ConfigModule.register({ folder: 'config' }),
         ClientsModule.register([
             {
                 name: 'REDIS_SERVICE',
@@ -23,10 +18,10 @@ import { ConfigModule } from './modules/config.module';
             },
         ])
     ],
-    controllers: [AppController, ProtocolController],
-    providers: [AppService, ProtocolService, WsGateway, SystemService]
+    controllers: [ProtocolController],
+    providers: [ProtocolService]
 })
 
-export class AppModule {
+export class RedisModule {
     constructor() { }
 }
