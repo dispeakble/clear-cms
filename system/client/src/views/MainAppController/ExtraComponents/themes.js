@@ -75,14 +75,6 @@ class Themes extends Component {
       isdefault: false,
       html2canvasImage: "",
     },
-    adminData: {
-      title: "",
-      bgcolor: "",
-      textColor: "",
-      fontFamily: "",
-      isdefault: false,
-      html2canvasImage: "",
-    },
     onPublic: false,
     onAdmin: false,
     editMode: false,
@@ -101,6 +93,7 @@ class Themes extends Component {
 
     fontFamilyIndex: "",
     showEditorMenu: true,
+    fullEditorData: "",
   };
 
   setAsyncState = (newState) =>
@@ -173,17 +166,31 @@ class Themes extends Component {
   };
 
   onRemoveItem = async () => {
-    let thumbnails = [...this.state.thumbnails];
+    if (this.state.side) {
+      let adminThumbnails = [...this.state.adminThumbnails];
 
-    let newThumbnails = thumbnails.filter(
-      (tbn) => tbn.id !== this.state.itemToRemoveId
-    );
+      let newThumbnails = adminThumbnails.filter(
+        (tbn) => tbn.id !== this.state.itemToRemoveId
+      );
 
-    await this.setAsyncState({
-      thumbnails: newThumbnails,
-    });
+      await this.setAsyncState({
+        adminThumbnails: newThumbnails,
+      });
 
-    localStorage.setItem("publicThemes", JSON.stringify(newThumbnails));
+      localStorage.setItem("adminThemes", JSON.stringify(newThumbnails));
+    } else {
+      let thumbnails = [...this.state.thumbnails];
+
+      let newThumbnails = thumbnails.filter(
+        (tbn) => tbn.id !== this.state.itemToRemoveId
+      );
+
+      await this.setAsyncState({
+        thumbnails: newThumbnails,
+      });
+
+      localStorage.setItem("publicThemes", JSON.stringify(newThumbnails));
+    }
   };
 
   getTbnById = (passedId) => {
@@ -197,20 +204,36 @@ class Themes extends Component {
 
     let data = {};
 
-    data.id = tbn.id;
-    data.title = tbn.title;
-    data.bgcolor = tbn.bgcolor;
-    data.bgimage = tbn.bgimage;
-    data.fontsize = tbn.fontsize;
-    data.textcolor = tbn.textcolor;
-    data.fontfamily = tbn.fontfamily;
-    data.bordercolor = tbn.bordercolor;
-    data.isdefault = tbn.isdefault;
+    let fullEditorData = JSON.parse(localStorage.getItem("fullEditorData"));
+
+    if (this.state.side) {
+      data = tbn;
+
+      if (fullEditorData) {
+        fullEditorData.palette = data;
+      }
+    } else {
+      data.id = tbn.id;
+      data.title = tbn.title;
+      data.bgcolor = tbn.bgcolor;
+      data.bgimage = tbn.bgimage;
+      data.fontsize = tbn.fontsize;
+      data.textcolor = tbn.textcolor;
+      data.fontfamily = tbn.fontfamily;
+      data.bordercolor = tbn.bordercolor;
+      data.isdefault = tbn.isdefault;
+    }
 
     this.setState({
       data,
       editMode: true,
     });
+
+    if (fullEditorData) {
+      this.setState({
+        fullEditorData,
+      });
+    }
 
     let fontFamilyIndex = this.getFontFamilyIndex(tbn.fontfamily);
 
@@ -245,7 +268,7 @@ class Themes extends Component {
         <React.Fragment>
           <Card
             className={this.props.classes.root}
-            style={{ margin: "20px", width: "25%" }}
+            style={{ margin: "20px", width: "20%" }}
           >
             <CardActionArea>
               <CardMedia
@@ -253,13 +276,15 @@ class Themes extends Component {
                 className={this.props.classes.media}
                 image={tbn.html2canvasImage}
               />
-              <CardContent>{tbn.title}</CardContent>
+              <CardContent style={{ textAlign: "center" }}>
+                {tbn.title}
+              </CardContent>
             </CardActionArea>
-            <CardActions>
+            <CardActions style={{ justifyContent: "flex-end" }}>
               <Tooltip title="Edit Thumbnail">
                 <IconButton
                   onClick={() => this.enableEditMode(tbn.id)}
-                  style={{ cursor: "pointer", marginLeft: "70%" }}
+                  style={{ cursor: "pointer" }}
                   color="primary"
                   size="medium"
                 >
@@ -463,6 +488,8 @@ class Themes extends Component {
         base64image = canvas.toDataURL("image/png");
       }
 
+      let fullEditorData = this.themeEditor.state.theme;
+
       thumbnail = this.themeEditor.state.theme.palette;
 
       thumbnail.title = this.state.data.title;
@@ -491,11 +518,14 @@ class Themes extends Component {
         );
 
         adminThumbnails[foundTbnIndex] = thumbnail;
+        fullEditorData.palette = thumbnail;
       }
 
       await this.setAsyncState({
         adminThumbnails,
       });
+
+      localStorage.setItem("fullEditorData", JSON.stringify(fullEditorData));
     } else {
       let canvas;
       let base64image;
@@ -640,15 +670,6 @@ class Themes extends Component {
                   }}
                 />
               </div>
-              <Editor
-                visibleMenu={this.state.showEditorMenu}
-                id="themeEditor"
-                currentTheme={this.state.adminData}
-                style={{ height: "100%", display: "block" }}
-                ref={(editor) => {
-                  this.themeEditor = editor;
-                }}
-              />
               <Typography gutterBottom>
                 <Tooltip title="Set as theme for all pages">
                   <Switch
@@ -658,6 +679,17 @@ class Themes extends Component {
                 </Tooltip>
                 Default Theme
               </Typography>
+              <Editor
+                visibleMenu={this.state.showEditorMenu}
+                id="themeEditor"
+                currentTheme={
+                  this.state.editMode ? this.state.fullEditorData : ""
+                }
+                style={{ height: "100%", display: "block" }}
+                ref={(editor) => {
+                  this.themeEditor = editor;
+                }}
+              />
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -800,6 +832,7 @@ class Themes extends Component {
 
                   <div
                     style={{
+                      height: "calc(100% - 27px)",
                       backgroundColor: "inherit",
                       color: "inherit",
                       fontSize: "inherit",
@@ -941,7 +974,7 @@ class Themes extends Component {
           <Helmet>
             <title>Themes</title>
           </Helmet>
-          <AppBar position="static">
+          <AppBar position="static" style={{ marginTop: "52px" }}>
             <Tabs
               value={this.state.side}
               onChange={this.changeTab}
@@ -951,7 +984,9 @@ class Themes extends Component {
               <Tab label="Admin" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
-          <div>{this.createAdminThumbnailsPage(this.state.side)}</div>
+          <div style={{ display: "flex" }}>
+            {this.createAdminThumbnailsPage(this.state.side)}
+          </div>
           <div
             style={{
               position: "fixed",

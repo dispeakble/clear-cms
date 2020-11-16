@@ -46,46 +46,46 @@ export default function HeaderLinks(props) {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const moduleList = [
-    {
-      //TODO get this from hub module list
-      toLink: "/pages",
-      name: "Pages",
-      icon: "web",
-      active: true,
-    },
-    {
-      toLink: "/themes",
-      icon: "brush",
-      name: "Themes",
-    },
-    { toLink: "/categories", icon: "category", name: "Categories" },
-    {
-      toLink: "/blog",
-      icon: "book",
-      name: "Blog",
-    },
-    {
-      toLink: "/forum",
-      icon: "forum",
-      name: "Forum",
-    },
-    {
-      toLink: "/video-conference",
-      icon: "video_call",
-      name: "Video Conference",
-    },
-    {
-      toLink: "/file-transfer",
-      icon: "attachment",
-      name: "File Transfer",
-    },
-    {
-      toLink: "/photo-gallery",
-      icon: "photo_library",
-      name: "Photo Gallery",
-    },
-  ];
+  // const moduleList = [
+  //   {
+  //     //TODO get this from hub module list
+  //     toLink: "/pages",
+  //     name: "Pages",
+  //     icon: "web",
+  //     active: true,
+  //   },
+  //   {
+  //     toLink: "/themes",
+  //     icon: "brush",
+  //     name: "Themes",
+  //   },
+  //   { toLink: "/categories", icon: "category", name: "Categories" },
+  //   {
+  //     toLink: "/blog",
+  //     icon: "book",
+  //     name: "Blog",
+  //   },
+  //   {
+  //     toLink: "/forum",
+  //     icon: "forum",
+  //     name: "Forum",
+  //   },
+  //   {
+  //     toLink: "/video-conference",
+  //     icon: "video_call",
+  //     name: "Video Conference",
+  //   },
+  //   {
+  //     toLink: "/file-transfer",
+  //     icon: "attachment",
+  //     name: "File Transfer",
+  //   },
+  //   {
+  //     toLink: "/photo-gallery",
+  //     icon: "photo_library",
+  //     name: "Photo Gallery",
+  //   },
+  // ];
 
   const handlePathChange = (path) => {
     history.push(`${path}`);
@@ -111,7 +111,7 @@ export default function HeaderLinks(props) {
         <Divider />
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
-            {moduleList.map((module) => (
+            {props.moduleList.map((module) => (
               <Link to={module.toLink} className={classes.links}>
                 <ListItem
                   onClick={() => props.closeDrawer()}

@@ -1,29 +1,17 @@
 const javascriptStyles = {
   buttonsWrapper: {
-    overflow: "hidden",
-    position: "absolute",
     width: "100%",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 99999,
   },
   outerWrapper: {
-    overflow: "hidden",
-    position: "absolute",
     width: "100%",
     height: "100%",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   },
   thumbnailsWrapper: {
-    width: "50%",
-    border: "11px solid pink",
-    width: "50vw",
     display: "flex",
     flexWrap: "wrap",
-    textAlign: "center",
+    width: "100%",
   },
   column: {
     flexBasis: "49%",
@@ -65,6 +53,9 @@ const javascriptStyles = {
   },
 
   previewWrapper: {
+    width: "700px",
+    height: "700px",
+    margin: "0 auto",
     padding: "10px",
   },
 
@@ -73,7 +64,8 @@ const javascriptStyles = {
   previewText: { width: "75%", paddingTop: "15px" },
 
   root: {
-    maxWidth: 345,
+    maxWidth: "345px",
+    padding: "5px",
   },
   media: {
     height: 140,

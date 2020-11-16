@@ -36,6 +36,11 @@ class App extends Component {
         icon: "category",
       },
       {
+        toLink: "/themes",
+        name: "Themes",
+        icon: "brush",
+      },
+      {
         toLink: "/blog",
         icon: "book",
         name: "Blog",
