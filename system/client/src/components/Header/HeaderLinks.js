@@ -54,6 +54,11 @@ export default function HeaderLinks(props) {
       icon: "web",
       active: true,
     },
+    {
+      toLink: "/themes",
+      icon: "brush",
+      name: "Themes",
+    },
     { toLink: "/categories", icon: "category", name: "Categories" },
     {
       toLink: "/blog",
