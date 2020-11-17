@@ -6,6 +6,9 @@ import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
 import { GpsFixed } from "@material-ui/icons";
 
 const javascriptStyles = {
+  body: {
+    backgroundColor: "pink",
+  },
   section: {
     padding: "70px 0 0",
   },
@@ -112,6 +115,9 @@ const javascriptStyles = {
     "&:hover": {
       color: "#007272",
     },
+  },
+  testclass: {
+    color: "primary",
   },
 };
 

@@ -71,16 +71,17 @@ class Themes extends Component {
       fontsize: "",
       textcolor: "",
       fontfamily: "",
-      bordercolor: "",
       isdefault: false,
       html2canvasImage: "",
+      boxSpacingConfig: "",
+      bgrepeat: "",
+      bgstretch: "",
     },
     onPublic: false,
     onAdmin: false,
     editMode: false,
     displayBgColorPicker: false,
     displayTextColorPicker: false,
-    displayBorderColorPicker: false,
     fontFamilies: [
       { label: "Arial" },
       { label: "Calibri" },
@@ -114,18 +115,11 @@ class Themes extends Component {
   }
 
   getTheme = () => {
-    /*
-        error?: PaletteColorOptions;
-      warning?: PaletteColorOptions;
-      info?: PaletteColorOptions;
-      success?: PaletteColorOptions;
-        */
+    const themes = JSON.parse(localStorage.getItem("adminThemes"));
+
+    const defaultTheme = themes.find((theme) => theme.isdefault === true);
     return createMuiTheme({
-      palette: {
-        primary: { main: "#008B8B" },
-        secondary: { main: "#FFFFFF" },
-        error: { main: "#F44336" },
-      },
+      palette: defaultTheme,
       overrides: {
         MuiFab: {
           root: {
@@ -220,8 +214,10 @@ class Themes extends Component {
       data.fontsize = tbn.fontsize;
       data.textcolor = tbn.textcolor;
       data.fontfamily = tbn.fontfamily;
-      data.bordercolor = tbn.bordercolor;
       data.isdefault = tbn.isdefault;
+      data.boxSpacingConfig = tbn.boxSpacingConfig;
+      data.bgrepeat = tbn.bgrepeat;
+      data.bgstretch = tbn.bgstretch;
     }
 
     this.setState({
@@ -410,6 +406,19 @@ class Themes extends Component {
     this.setState({ data });
   };
 
+  handleItemBgRepeat = async (event) => {
+    let data = { ...this.state.data };
+    data.bgrepeat = !this.state.data.bgrepeat;
+
+    this.setState({ data });
+  };
+
+  handleItemBgStretch = async (event) => {
+    let data = { ...this.state.data };
+    data.bgstretch = !this.state.data.bgstretch;
+    this.setState({ data });
+  };
+
   handleFontSize = (event, newValue) => {
     let data = this.state.data;
 
@@ -434,6 +443,28 @@ class Themes extends Component {
 
     return foundFontFamily;
   }
+
+  handleBoxSpacing = async (event, newValue) => {
+    if (this.state.data.boxSpacingConfig.layoutBoxSpacing[0] !== newValue) {
+      let boxSpacingConfig = this.state.data.boxSpacingConfig;
+      boxSpacingConfig = {
+        layoutBoxSpacing: [newValue, newValue],
+        layoutBoxPadding: {
+          lg: [1, 1],
+          md: [1, 1],
+          sm: [1, 1],
+          xs: [1, 1],
+          xxs: [1, 1],
+        },
+      };
+
+      let data = { ...this.state.data };
+
+      data.boxSpacingConfig = boxSpacingConfig;
+
+      this.setState({ data });
+    }
+  };
 
   toBase64(file) {
     return new Promise((resolve, reject) => {
@@ -547,9 +578,11 @@ class Themes extends Component {
         fontsize: this.state.data.fontsize,
         textcolor: this.state.data.textcolor,
         fontfamily: this.state.data.fontfamily,
-        bordercolor: this.state.data.bordercolor,
         isdefault: this.state.data.isdefault,
         html2canvasImage: base64image,
+        boxSpacingConfig: this.state.data.boxSpacingConfig,
+        bgrepeat: this.state.data.bgrepeat,
+        bgstretch: this.state.data.bgstretch,
       };
 
       let thumbnails = this.state.thumbnails;
@@ -605,7 +638,6 @@ class Themes extends Component {
   createNewThumbnail() {
     const bgColorStyles = this.sendStyles(this.state.data.bgcolor);
     const textColorStyles = this.sendStyles(this.state.data.textcolor);
-    const borderColorStyles = this.sendStyles(this.state.data.bordercolor);
 
     let tbnOnEdit = this.getTbnOnEdit(this.state.tbnOnEditId);
 
@@ -738,6 +770,31 @@ class Themes extends Component {
                       onDrop={(acceptedFiles) => console.log(acceptedFiles)}
                     />
                   </div>
+                  <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Background Repeat">
+                        <Switch
+                          checked={this.state.data.bgrepeat}
+                          onChange={this.handleItemBgRepeat}
+                          value={this.state.data.bgrepeat}
+                        />
+                      </Tooltip>
+                      Background Repeat
+                    </Typography>
+                  </div>
+
+                  <div>
+                    <Typography id="discrete-slider" gutterBottom>
+                      <Tooltip title="Background Stretch">
+                        <Switch
+                          checked={this.state.data.bgstretch}
+                          onChange={this.handleItemBgStretch}
+                          value={this.state.data.bgstretch}
+                        />
+                      </Tooltip>
+                      Background Stretch
+                    </Typography>
+                  </div>
                 </div>
                 <p />
                 <div className={this.props.classes.column}>
@@ -782,15 +839,24 @@ class Themes extends Component {
                       />
                     )}
                   />
-
-                  <h5>Border Color</h5>
-                  <div style={{ position: "relative" }}>
-                    {this.createColorPicker(
-                      borderColorStyles,
-                      "displayBorderColorPicker",
-                      "bordercolor"
+                  <Typography id="discrete-slider" gutterBottom>
+                    Box Spacing
+                  </Typography>
+                  <Slider
+                    className={this.props.classes.pageOptionsSlider}
+                    onChangeCommitted={this.handleBoxSpacing}
+                    defaultValue={Number(
+                      this.state.data.boxSpacingConfig.layoutBoxSpacing[0]
                     )}
-                  </div>
+                    getAriaValueText={() =>
+                      this.state.data.boxSpacingConfig.layoutBoxSpacing[0] +
+                      " pixels"
+                    }
+                    aria-labelledby="discrete-slider"
+                    valueLabelDisplay="auto"
+                    min={0}
+                    max={150}
+                  />
                 </div>
               </div>
               <Typography gutterBottom>
@@ -814,6 +880,12 @@ class Themes extends Component {
                     color: this.state.data.textcolor,
                     fontSize: this.state.data.fontsize,
                     fontFamily: this.state.data.fontfamily,
+                    backgroundRepeat: this.state.data.bgrepeat
+                      ? "repeat"
+                      : "no-repeat",
+                    backgroundSize: this.state.data.bgstretch
+                      ? "cover"
+                      : "auto",
                   }}
                 >
                   <AppBar
@@ -843,7 +915,6 @@ class Themes extends Component {
                     <List
                       style={{
                         margin: "10px 15px 5px 5px",
-                        border: `1px solid ${this.state.data.bordercolor}`,
                       }}
                       className={this.props.classes.previewList}
                       component="nav"
@@ -968,6 +1039,17 @@ class Themes extends Component {
       };
     };
 
+    let initialBoxSpacingConfig = {
+      layoutBoxSpacing: [10, 10],
+      layoutBoxPadding: {
+        lg: [1, 1],
+        md: [1, 1],
+        sm: [1, 1],
+        xs: [1, 1],
+        xxs: [1, 1],
+      },
+    };
+
     return (
       <MuiThemeProvider theme={this.getTheme()}>
         <React.Fragment>
@@ -995,7 +1077,12 @@ class Themes extends Component {
             }}
           >
             <Fab
-              onClick={() => this.setState({ data: {}, createModal: true })}
+              onClick={() =>
+                this.setState({
+                  data: { boxSpacingConfig: initialBoxSpacingConfig },
+                  createModal: true,
+                })
+              }
               color="primary"
               aria-label="add"
             >
