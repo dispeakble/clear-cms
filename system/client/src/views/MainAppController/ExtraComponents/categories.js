@@ -38,6 +38,7 @@ class Categories extends Component {
     categories: [],
     showMultipleDeleteModal: false,
     flatCategories: [],
+    defaultTheme: "",
   };
 
   async componentDidMount() {
@@ -95,33 +96,13 @@ class Categories extends Component {
     info?: PaletteColorOptions;
     success?: PaletteColorOptions;
       */
+
+      const themes = JSON.parse(localStorage.getItem("adminThemes"));
+
+      const defaultTheme = themes.find((theme) => theme.isdefault === true);
+
       return createMuiTheme({
-        palette: {
-          text: {
-            //primary: "#F00",
-            //secondary: "#0F0",
-            disabled: "#00F",
-            hint: "#333",
-          },
-          error: {
-            main: "#FF0000",
-          },
-          warning: {
-            main: "#FF0000",
-          },
-          info: {
-            main: "#FF0000",
-          },
-          success: {
-            main: "#FF0000",
-          },
-          primary: {
-            main: "#008B8B",
-          },
-          secondary: {
-            main: "#008B8B",
-          },
-        },
+        palette: defaultTheme,
         overrides: {
           MuiTableCell: {
             head: {
@@ -142,12 +123,6 @@ class Categories extends Component {
               "&:hover": {
                 backgroundColor: "transparent",
               },
-            },
-          },
-          MuiSvgIcon: {
-            // for changing the color of the hamburger icon
-            root: {
-              color: "#000000",
             },
           },
         },
@@ -208,8 +183,8 @@ class Categories extends Component {
         {
           tooltip: "Remove All Selected Categories",
           icon: () => (
-            <IconButton color="primary">
-              <DeleteForever color="error" />{" "}
+            <IconButton color="error">
+              <DeleteForever />{" "}
             </IconButton>
           ),
           onClick: async (evt, data) => this.showMultipleDeleteModal(evt, data),

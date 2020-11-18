@@ -5,7 +5,16 @@ import {withRouter, Route, Switch} from "react-router-dom";
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
+import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import styles from "assets/jss/clear-crm/views/categories.js";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+import { Helmet } from "react-helmet";
+
 //views //TODO MOVE TO CONTROLLERS
+//import Components from "views/Components/Components.js";
+import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
@@ -25,119 +34,162 @@ import WsService from 'services/ws.service';
 import { Helmet } from "react-helmet";
 
 class App extends Component {
-    state = {
-        services:{},
-        moduleList: [
-            {
-                //TODO get this from hub module list
-                toLink: "/pages",
-                name: "Pages",
-                icon: "web",
-                active: true,
-            },
-            {
-                toLink: "/categories",
-                name: "Categories",
-                icon: "category",
-            },
-            {
-                toLink: "/blog",
-                icon: "book",
-                name: "Blog",
-            },
-            {
-                toLink: "/forum",
-                icon: "forum",
-                name: "Forum",
-            },
-            {
-                toLink: "/video-conference",
-                icon: "video_call",
-                name: "Video Conference",
-            },
-            {
-                toLink: "/file-transfer",
-                icon: "attachment",
-                name: "File Transfer",
-            },
-            {
-                toLink: "/photo-gallery",
-                icon: "photo_library",
-                name: "Photo Gallery",
-            },
-        ],
-        socket:{},
-        mobileOpen: false,
-    };
+  state = {
+    services:{},
+    moduleList: [
+      {
+        //TODO get this from hub module list
+        toLink: "/pages",
+        name: "Pages",
+        icon: "web",
+        active: true,
+      },
+      {
+        toLink: "/categories",
+        name: "Categories",
+        icon: "category",
+      },
+      {
+        toLink: "/themes",
+        name: "Themes",
+        icon: "brush",
+      },
+      {
+        toLink: "/blog",
+        icon: "book",
+        name: "Blog",
+      },
+      {
+        toLink: "/forum",
+        icon: "forum",
+        name: "Forum",
+      },
+      {
+        toLink: "/video-conference",
+        icon: "video_call",
+        name: "Video Conference",
+      },
+      {
+        toLink: "/file-transfer",
+        icon: "attachment",
+        name: "File Transfer",
+      },
+      {
+        toLink: "/photo-gallery",
+        icon: "photo_library",
+        name: "Photo Gallery",
+      },
+    ],
+    socket:{},
+    mobileOpen: false,
+  };
 
-    constructor() {
-        super();
-        this.state.services.ws = new WsService();
-        this.state.services.ws.start();
-    }
+  constructor() {
+    super();
+    this.state.services.ws = new WsService();
+    this.state.services.ws.start();
+  }
 
-    handleDrawerToggle = () => {
-        this.setState({mobileOpen: !this.state.mobileOpen});
-    };
+  getTheme = () => {
+    const themes = JSON.parse(localStorage.getItem("adminThemes"));
 
-    render() {
-        const {pathname} = this.props.location;
-        const excludeHeader=['pagePreview', 'view-auth', 'recover-password'];
-        return (
-            <React.Fragment>
-                <Helmet>
-                    <title>App</title>
-                </Helmet>
-                {excludeHeader.indexOf(pathname.replaceAll('/', '')) === -1 ? (
-                    <Header
-                        mobileOpen={this.state.mobileOpen}
-                        color="transparent"
-                        brand="Clear CRM"
-                        handleDrawerToggle={() => this.handleDrawerToggle()}
-                        leftLinks={
-                            <HeaderLinks
-                                closeDrawer={() => this.handleDrawerToggle()}
-                                moduleList={this.state.moduleList}
-                            />
-                        }
-                        fixed
-                        changeColorOnScroll={{
-                            height: 10,
-                            color: "info",
-                        }}
-                    />
-                ) : (
-                    ""
-                )}
+    const defaultTheme = themes.find((theme) => theme.isdefault === true);
 
-                <Switch>
-                    <Route path="/view-auth" render={(props) => {
-                        return (<AuthController {...props} services={this.state.services} />)
-                    }} />
-                    <Route path="/logout" render={(props) => {
-                        return (<AuthController {...props} services={this.state.services} />)
-                    }} />
-                    <Route path="/recover-password" render={(props) => {
-                        return (<AuthController {...props} services={this.state.services} />)
-                    }} />
-                    <Route path="/profile-page" component={ProfilePage}/>
-                    <Route path="/" exact component={Dashboard}/>
-                    <Route path="/pagesAdd" component={PagesAdd}/>
-                    <Route path="/pagePreview/:id" component={PagePreview}/>
-                    <Route path="/pageEdit/:id" component={PagesAdd}/>
-                    <Route
-                        render={(props) => (
-                            <MainAppController
-                                {...props}
-                                moduleList={this.state.moduleList}
-                            />
-                        )}
-                    />
-                </Switch>
+    return createMuiTheme({
+      palette: defaultTheme,
+      // {
+      //   text: {
+      //     //primary: "#F00",
+      //     //secondary: "#0F0",
+      //     disabled: "#00F",
+      //     hint: "#333",
+      //   },
+      //   error: {
+      //     main: "#FF0000",
+      //   },
+      //   warning: {
+      //     main: "#FF0000",
+      //   },
+      //   info: {
+      //     main: "#FF0000",
+      //   },
+      //   success: {
+      //     main: "#FF0000",
+      //   },
+      //   primary: {
+      //     main: "#008B8B",
+      //   },
+      //   secondary: {
+      //     main: "#008B8B",
+      //   },
+      // },
+      overrides: {},
+    });
+  };
 
-            </React.Fragment>
-        );
-    }
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+  render() {
+    const { pathname } = this.props.location;
+    return (
+      <React.Fragment>
+        <Helmet>
+          <title>App</title>
+        </Helmet>
+
+        <MuiThemeProvider theme={this.getTheme()}>
+          <CssBaseline />
+          {excludeHeader.indexOf(pathname.replaceAll('/', '')) === -1 ? (
+            <Header
+              mobileOpen={this.state.mobileOpen}
+              color="transparent"
+              brand="Clear CRM"
+              handleDrawerToggle={() => this.handleDrawerToggle()}
+              leftLinks={
+                <HeaderLinks
+                  closeDrawer={() => this.handleDrawerToggle()}
+                  moduleList={this.state.moduleList}
+                />
+              }
+              fixed
+              changeColorOnScroll={{
+                height: 10,
+                color: "info",
+              }}
+            />
+          ) : (
+            ""
+          )}
+
+          <Switch>
+            <Route path="/view-auth" render={(props) => {
+              return (<AuthController {...props} services={this.state.services} />)
+            }} />
+            <Route path="/logout" render={(props) => {
+              return (<AuthController {...props} services={this.state.services} />)
+            }} />
+            <Route path="/recover-password" render={(props) => {
+              return (<AuthController {...props} services={this.state.services} />)
+            }} />
+            <Route path="/profile-page" component={ProfilePage} />
+            <Route path="/" exact component={Dashboard} />
+            <Route path="/pagesAdd" component={PagesAdd} />
+            <Route path="/pagePreview/:id" component={PagePreview} />
+            <Route path="/pageEdit/:id" component={PagesAdd} />
+            <Route
+              render={(props) => (
+                <MainAppController
+                  {...props}
+                  moduleList={this.state.moduleList}
+                />
+              )}
+            />
+          </Switch>
+        </MuiThemeProvider>
+      </React.Fragment>
+    );
+  }
 }
 
-export default withRouter(App);
+export default withRouter(withStyles(styles)(App));

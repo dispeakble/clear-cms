@@ -12,14 +12,14 @@ class HeaderModule extends Component {
 
     if (this.props.element.moduleOptions.data.bg) {
       style.backgroundImage = `url(${this.props.element.moduleOptions.data.bg})`;
-      (style.backgroundRepeat = this.props.element.moduleOptions.data
+      style.backgroundRepeat = this.props.element.moduleOptions.data
         .backgroundRepeat
         ? "repeat"
-        : "no-repeat"),
-        (style.backgroundSize = this.props.element.moduleOptions.data
-          .backgroundStretch
-          ? "cover"
-          : "auto");
+        : "no-repeat";
+      style.backgroundSize = this.props.element.moduleOptions.data
+        .backgroundStretch
+        ? "cover"
+        : "auto";
       style.backgroundPosition = "center center";
     }
 
@@ -49,8 +49,6 @@ class HeaderModule extends Component {
     );
   };
   render() {
-    const classes = this.props.classes;
-
     return this.sendModule();
   }
 }

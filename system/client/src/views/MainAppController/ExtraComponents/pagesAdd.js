@@ -127,7 +127,6 @@ class PagesAdd extends React.PureComponent {
     fontFamily: "Arial",
     pageTitle: "",
     pageLink: "",
-    pageOrItemFontSize: "",
     pageOrItemFontFamily: "",
     pageOrItemTextColor: "",
     displayBgColorPicker: false,
@@ -153,7 +152,15 @@ class PagesAdd extends React.PureComponent {
     backgroundStretch: false,
     editItemBgRepeat: false,
     editItemBgStretch: false,
+    bgColorStyles: {},
+    textColorStyles: {},
+    itemTextColorStyles: {},
+    itemBgColorStyles: {},
+    itemBorderColorStyles: {},
   };
+
+  defaultTheme = {};
+  muiTheme = {};
 
   onStartEditingModule() {
     // this.setAsyncState({
@@ -214,6 +221,7 @@ class PagesAdd extends React.PureComponent {
             xxs: [1, 1],
           },
         };
+
         await this.setAsyncState({
           bgColor: pageConfig.backgroundColor,
           backgroundImage: pageConfig.backgroundImage,
@@ -222,6 +230,7 @@ class PagesAdd extends React.PureComponent {
           fontFamily: pageConfig.fontFamily,
           pageTitle: pageConfig.pageTitle,
           pageLink: pageConfig.pageLink,
+          defaultConfig: savedLayoutBoxSpacing,
           config: savedLayoutBoxSpacing,
           category: pageConfig.category,
           defaultPage: pageConfig.defaultPage,
@@ -234,7 +243,51 @@ class PagesAdd extends React.PureComponent {
         items: currentPage.items,
         pageConfig: currentPage.pageConfig,
       });
+    } else {
+      const themes = JSON.parse(localStorage.getItem("publicThemes"));
+
+      const defaultTheme = themes.find((theme) => theme.isdefault === true);
+
+      this.defaultTheme = defaultTheme;
+
+      this.muiTheme = this.createDefaultTheme();
+
+      let newPageOptions = {};
+
+      if (defaultTheme.bgcolor) {
+        newPageOptions.bgColor = defaultTheme.bgcolor;
+      }
+      if (defaultTheme.bgimage) {
+        newPageOptions.backgroundImage = defaultTheme.bgimage;
+      }
+      if (defaultTheme.bgrepeat) {
+        newPageOptions.pageBackgroundRepeat = defaultTheme.bgrepeat;
+      }
+      if (defaultTheme.bgstretch) {
+        newPageOptions.pageBackgroundStretch = defaultTheme.bgstretch;
+      }
+      if (defaultTheme.fontsize) {
+        newPageOptions.fontSize = defaultTheme.fontsize;
+      }
+      if (defaultTheme.textcolor) {
+        newPageOptions.textColor = defaultTheme.textcolor;
+      }
+      if (defaultTheme.fontfamily) {
+        newPageOptions.fontFamily = defaultTheme.fontfamily;
+      }
+      if (defaultTheme.boxSpacingConfig) {
+        newPageOptions.config = defaultTheme.boxSpacingConfig;
+      }
+      await this.setAsyncState(newPageOptions);
     }
+
+    await this.setAsyncState({
+      bgColorStyles: this.sendStyles(this.state.bgColor),
+      textColorStyles: this.sendStyles(this.state.textColor),
+      itemTextColorStyles: this.sendStyles(this.state.editItemTextColor),
+      itemBgColorStyles: this.sendStyles(this.state.editItemBackgroundColor),
+      itemBorderColorStyles: this.sendStyles(this.state.editItemBorderColor),
+    });
 
     await this.setAsyncState({
       isEdit: isEdit,
@@ -269,7 +322,6 @@ class PagesAdd extends React.PureComponent {
   };
 
   createElement(el) {
-    console.log(this.state.backgroundRepeat);
     const removeStyle = {
       position: "absolute",
       right: "2px",
@@ -741,7 +793,6 @@ class PagesAdd extends React.PureComponent {
   handleItemFontSize = async (event, newValue) => {
     await this.setAsyncState({
       editItemFontSize: newValue,
-      pageOrItemFontSize: "item",
     });
   };
 
@@ -921,22 +972,9 @@ class PagesAdd extends React.PureComponent {
 
   // for MuiThemeProvider
 
-  getTheme = () => {
-    /*
-    error?: PaletteColorOptions;
-  warning?: PaletteColorOptions;
-  info?: PaletteColorOptions;
-  success?: PaletteColorOptions;
-    */
+  createDefaultTheme = () => {
     return createMuiTheme({
-      palette: {
-        primary: {
-          main: "#008B8B",
-        },
-        secondary: {
-          main: "#F44336",
-        },
-      },
+      palette: this.defaultTheme,
       overrides: {
         MuiSpeedDial: {
           actionsClosed: {
@@ -1012,13 +1050,10 @@ class PagesAdd extends React.PureComponent {
     });
   };
 
-  handleFontSize = async (event, newValue) => {
-    if (this.state.fontSize !== newValue) {
-      await this.setAsyncState({
-        fontSize: newValue,
-        pageOrItemFontSize: "page",
-      });
-    }
+  handleFontSize = (event, newValue) => {
+    this.setState({
+      fontSize: newValue,
+    });
   };
 
   handleFontFamily = async (event, newValue) => {
@@ -1110,6 +1145,9 @@ class PagesAdd extends React.PureComponent {
   };
 
   createColorPicker = (styles, displayColorPicker, targetedColor) => {
+    if (!styles) {
+      return;
+    }
     return (
       <div>
         <div
@@ -1201,20 +1239,6 @@ class PagesAdd extends React.PureComponent {
   };
 
   render() {
-    const { history } = this.props;
-    const classes = this.props.classes;
-    const { color, absolute, fixed } = this.props;
-
-    const bgColorStyles = this.sendStyles(this.state.bgColor);
-    const textColorStyles = this.sendStyles(this.state.textColor);
-    const itemTextColorStyles = this.sendStyles(this.state.editItemTextColor);
-    const itemBgColorStyles = this.sendStyles(
-      this.state.editItemBackgroundColor
-    );
-    const itemBorderColorStyles = this.sendStyles(
-      this.state.editItemBorderColor
-    );
-
     return (
       <React.Fragment>
         <Helmet>
@@ -1226,19 +1250,19 @@ class PagesAdd extends React.PureComponent {
             paddingBottom: "60px",
             paddingLeft: this.state.pageTransitionPadding,
           }}
-          className={classes.bodyWrapper}
+          className={this.props.classes.bodyWrapper}
         >
-          <MuiThemeProvider theme={this.getTheme()}>
+          <MuiThemeProvider theme={this.muiTheme}>
             <Drawer
               BackdropProps={{ invisible: true }}
               variant="temporary"
               anchor={"left"}
               open={this.state.showEditMenu}
               onClose={this.handleEditMenu}
-              className={classes.sideMenu}
+              className={this.props.classes.sideMenu}
             >
-              <div className={classes.sideMenuEditor}>
-                <div className={classes.sideMenuEditorForm}>
+              <div className={this.props.classes.sideMenuEditor}>
+                <div className={this.props.classes.sideMenuEditorForm}>
                   <h3>Edit Box Properties</h3>
                   <div>
                     <Typography id="discrete-slider" gutterBottom>
@@ -1397,7 +1421,7 @@ class PagesAdd extends React.PureComponent {
                       }
                     >
                       {this.createColorPicker(
-                        itemTextColorStyles,
+                        this.state.itemTextColorStyles,
                         "displayItemTextColorPicker",
                         "editItemTextColor"
                       )}
@@ -1426,7 +1450,7 @@ class PagesAdd extends React.PureComponent {
                       }
                     >
                       {this.createColorPicker(
-                        itemBgColorStyles,
+                        this.state.itemBgColorStyles,
                         "displayItemBgColorPicker",
                         "editItemBackgroundColor"
                       )}
@@ -1435,7 +1459,7 @@ class PagesAdd extends React.PureComponent {
                   <div style={{ position: "relative" }}>
                     <Typography gutterBottom>Border Color</Typography>
                     {this.createColorPicker(
-                      itemBorderColorStyles,
+                      this.state.itemBorderColorStyles,
                       "displayItemBorderColorPicker",
                       "editItemBorderColor"
                     )}
@@ -1444,7 +1468,7 @@ class PagesAdd extends React.PureComponent {
                     <Typography gutterBottom>Border Width</Typography>
                     <Slider
                       defaultValue={Number(this.state.editItemBorderWidth)}
-                      className={classes.sideMenuSlider}
+                      className={this.props.classes.sideMenuSlider}
                       onChangeCommitted={this.handleBorderWidth}
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
@@ -1456,7 +1480,7 @@ class PagesAdd extends React.PureComponent {
                     <Typography gutterBottom>Border Radius</Typography>
                     <Slider
                       defaultValue={Number(this.state.editItemBorderRadius)}
-                      className={classes.sideMenuSlider}
+                      className={this.props.classes.sideMenuSlider}
                       onChangeCommitted={this.handleBorderRadius}
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
@@ -1467,10 +1491,10 @@ class PagesAdd extends React.PureComponent {
 
                   <div>
                     <Typography gutterBottom>Background Image</Typography>
-                    <div className={classes.dropzoneAreaWrapper}>
+                    <div className={this.props.classes.dropzoneAreaWrapper}>
                       <DropzoneArea
                         filesLimit={1}
-                        className={classes.dropzone}
+                        className={this.props.classes.dropzone}
                         onChange={this.handleItemBgImage.bind(this)}
                       />
                     </div>
@@ -1503,9 +1527,9 @@ class PagesAdd extends React.PureComponent {
                   </div>
                 </div>
               </div>
-              <div className={classes.sideMenuActionHolder}>
+              <div className={this.props.classes.sideMenuActionHolder}>
                 <Button
-                  className={classes.sideMenuSaveBtn}
+                  className={this.props.classes.sideMenuSaveBtn}
                   color="primary"
                   onClick={() => {
                     this.removePagePadding();
@@ -1515,7 +1539,7 @@ class PagesAdd extends React.PureComponent {
                   Save
                 </Button>
                 <Button
-                  className={classes.sideMenuCancelBtn}
+                  className={this.props.classes.sideMenuCancelBtn}
                   color="danger"
                   onClick={() => {
                     this.removePagePadding();
@@ -1528,8 +1552,8 @@ class PagesAdd extends React.PureComponent {
             </Drawer>
             <Dialog
               classes={{
-                root: classes.center,
-                paper: classes.modal,
+                root: this.props.classes.center,
+                paper: this.props.classes.modal,
               }}
               open={this.state.showDiscardModal}
               TransitionComponent={this.transition}
@@ -1541,23 +1565,25 @@ class PagesAdd extends React.PureComponent {
               <DialogTitle
                 id="classic-modal-slide-title"
                 disableTypography
-                className={classes.modalHeader}
+                className={this.props.classes.modalHeader}
               >
-                <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
+                <h4 className={this.props.classes.modalTitle}>
+                  {this.state.modalTitle}
+                </h4>
               </DialogTitle>
               <DialogContent
                 id="classic-modal-slide-description"
-                className={classes.modalBody}
+                className={this.props.classes.modalBody}
               >
                 <div>Are you sure you want to proceed ?</div>
               </DialogContent>
 
-              <DialogActions className={classes.modalFooter}>
+              <DialogActions className={this.props.classes.modalFooter}>
                 <Button
                   disabled={this.state.isBtnDisabled}
                   color="transparent"
                   simple
-                  onClick={() => history.push("/pages")}
+                  onClick={() => this.props.history.push("/pages")}
                 >
                   <div>Proceed</div>
                 </Button>
@@ -1573,43 +1599,47 @@ class PagesAdd extends React.PureComponent {
               </DialogActions>
             </Dialog>
 
-            <div className={classes.gridLayout}>
+            <div className={this.props.classes.gridLayout}>
               <div style={{ display: "flex" }}>
                 <div style={{ flex: 1 }}>
-                  <Accordion className={classes.accordion}>
+                  <Accordion className={this.props.classes.accordion}>
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
                       aria-controls="panel1c-content"
                       id="panel1c-header"
                     >
-                      <div className={classes.column}>
-                        <Typography className={classes.typography}>
+                      <div className={this.props.classes.column}>
+                        <Typography className={this.props.classes.typography}>
                           Page Options
                         </Typography>
                       </div>
                     </AccordionSummary>
                     <Divider />
 
-                    <AccordionDetails className={classes.accordionDetails}>
+                    <AccordionDetails
+                      className={this.props.classes.accordionDetails}
+                    >
                       <div
                         className={
-                          classes.column + " " + classes.columnSeparator
+                          this.props.classes.column +
+                          " " +
+                          this.props.classes.columnSeparator
                         }
                       >
                         <h4>Background</h4>
                         <h5>Background Color</h5>
 
                         {this.createColorPicker(
-                          bgColorStyles,
+                          this.state.bgColorStyles,
                           "displayBgColorPicker",
                           "bgColor"
                         )}
 
                         <h5>Background Image</h5>
-                        <div className={classes.dropzoneAreaWrapper}>
+                        <div className={this.props.classes.dropzoneAreaWrapper}>
                           <DropzoneArea
                             filesLimit={1}
-                            className={classes.dropzone}
+                            className={this.props.classes.dropzone}
                             onChange={this.handleBgImage.bind(this)}
                           />
                         </div>
@@ -1653,7 +1683,9 @@ class PagesAdd extends React.PureComponent {
                       <p />
                       <div
                         className={
-                          classes.column + " " + classes.columnSeparator
+                          this.props.classes.column +
+                          " " +
+                          this.props.classes.columnSeparator
                         }
                       >
                         <h4>Font </h4>
@@ -1662,9 +1694,11 @@ class PagesAdd extends React.PureComponent {
                             Font Size
                           </Typography>
                           <Slider
-                            className={classes.pageOptionsSlider}
-                            onChangeCommitted={this.handleFontSize}
-                            defaultValue={Number(this.state.fontSize)}
+                            className={this.props.classes.pageOptionsSlider}
+                            onChange={(event, newValue) => {
+                              this.handleFontSize(event, newValue);
+                            }}
+                            value={this.state.fontSize}
                             aria-labelledby="discrete-slider"
                             valueLabelDisplay="auto"
                             min={5}
@@ -1673,7 +1707,7 @@ class PagesAdd extends React.PureComponent {
                         </div>
                         <h5>Text Color</h5>
                         {this.createColorPicker(
-                          textColorStyles,
+                          this.state.textColorStyles,
                           "displayTextColorPicker",
                           "textColor"
                         )}
@@ -1698,18 +1732,21 @@ class PagesAdd extends React.PureComponent {
                         />
                       </div>
                       <p />
-                      <div className={clsx(classes.column, classes.helper)}>
+                      <div
+                        className={clsx(
+                          this.props.classes.column,
+                          this.props.classes.helper
+                        )}
+                      >
                         <h4>Miscellaneous</h4>
                         <div>
                           <Typography id="discrete-slider" gutterBottom>
                             Box Spacing
                           </Typography>
                           <Slider
-                            className={classes.pageOptionsSlider}
-                            onChangeCommitted={this.handleBoxSpacing}
-                            defaultValue={Number(
-                              this.state.config.layoutBoxSpacing[0]
-                            )}
+                            className={this.props.classes.pageOptionsSlider}
+                            onChange={this.handleBoxSpacing}
+                            value={this.state.config.layoutBoxSpacing[0]}
                             getAriaValueText={() =>
                               this.state.config.layoutBoxSpacing[0] + " pixels"
                             }
@@ -1800,14 +1837,14 @@ class PagesAdd extends React.PureComponent {
                     </AccordionDetails>
                   </Accordion>
                 </div>
-                <div className={classes.iconsWrapper}>
+                <div className={this.props.classes.iconsWrapper}>
                   <Tooltip title="Add a new box">
                     <IconButton
                       color="primary"
                       onClick={() => this.onAddItem()}
                     >
                       <AddCircle
-                        className={classes.rightSideIcon}
+                        className={this.props.classes.rightSideIcon}
                         color="primary"
                       />{" "}
                     </IconButton>
@@ -1824,7 +1861,7 @@ class PagesAdd extends React.PureComponent {
                         }}
                       >
                         <Visibility
-                          className={classes.rightSideIcon}
+                          className={this.props.classes.rightSideIcon}
                           color="primary"
                         />{" "}
                       </IconButton>
@@ -1835,7 +1872,7 @@ class PagesAdd extends React.PureComponent {
                 </div>
               </div>
 
-              <div className={classes.pageTitleInputWrapper}>
+              <div className={this.props.classes.pageTitleInputWrapper}>
                 <CustomInput
                   labelText="Page Title"
                   id="pageTitle"
@@ -1906,14 +1943,14 @@ class PagesAdd extends React.PureComponent {
               onClick={() => {
                 this.savePage();
               }}
-              className={classes.savePageButton}
+              className={this.props.classes.savePageButton}
               color="primary"
             >
               <div>Save</div>
             </Button>
             <Button
               onClick={() => this.handleDiscard()}
-              className={classes.cancelPageButton}
+              className={this.props.classes.cancelPageButton}
               color="danger"
             >
               Discard
