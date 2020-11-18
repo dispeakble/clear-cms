@@ -1,16 +1,16 @@
-import {Controller} from '@nestjs/common';
-import {ProtocolService} from '../services/protocol.service';
-import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Body, Controller, Get, HttpStatus, Inject, Post, Req, Res} from "@nestjs/common";
+import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 
 @Controller()
 export class AppController {
 
     private config: ModuleInterface = {
         name: 'db',
-        version: '20.07.19',
-        description: 'db test',
+        version: '20.11.17',
+        description: 'db module',
         started: new Date(),
         config: {
             restart: true,
@@ -18,95 +18,49 @@ export class AppController {
         },
         dependencies: [
             {
-                name: 'system',
-                version: 'latest'
-            }, {
                 name: 'hub',
                 version: 'latest'
             }
         ],
     };
 
-    constructor(private readonly protocolService: ProtocolService) {
-
+    constructor(
+      @Inject('ProtocolService') private protocolService,
+      @Inject('SystemService') private systemService,
+      @Inject('DbService') private dbService
+    ) {
+        this.protocolService.start().then(async () => {
+            let response = await this.systemService.registerModule(this.config);
+            console.log(response);
+        })
     }
 
-    @MessagePattern({message: this.config.name})
-    public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    //Microservice protocol
+    @MessagePattern({message: 'db'})
+    public async onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
+        console.log(data);
         const resp = await this.perform(data);
         return resp;
     }
 
-    @EventPattern({event: this.config.name})
-    public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-
-
+    @EventPattern({event: 'db'})
+    public async onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
+        console.log(data);
         const resp = await this.perform(data);
         return resp;
     }
 
-    async onApplicationBootstrap() {
-        await this.protocolService.start();
-        await this.registerModule({after: 0});
+    private perform(data: payloadInterface) {
         try {
-            await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
-                channel: 'proxy',
-                payload: {api: 'protocol', act: 'mapRequest', payload: {channel: 'db', type: 'get'}}
-            })
-        } catch (ex){
-            console.log(ex);
-        }
-
-    }
-
-    private registerModule(params) {
-        return new Promise((resolve_register) => {
-            setTimeout(async () => {
-                try {
-                    const moduleResponse = await this.protocolService.registerModule(this.config);
-
-                    switch (moduleResponse.status) {
-                        case 'failed':
-                            switch (moduleResponse.resolution.action) {
-                                case 'retry':
-                                    await this.registerModule({
-                                        after: moduleResponse.resolution.after
-                                    });
-                                    resolve_register(true);
-                                    break;
-                                default:
-                                    console.log(JSON.stringify(moduleResponse));
-                                    throw new Error('DB module cannot be registered');
-                                    break;
-                            }
-                            break;
-                        default:
-                            console.log(JSON.stringify(moduleResponse));
-                            throw new Error('DB module cannot be registered');
-                            break;
-                        case 'registered':
-                            resolve_register(true);
-                            console.log('Dev module registered');
-                            break;
-                    }
-
-                } catch (ex) {
-                    resolve_register(true);
-                    console.log(ex);
-                }
-
-            }, params.after * 1000);
-        });
-
-    }
-
-    private perform(data: payloadInterface){
-        try {
-            return this[data.api + 'Service'].perform(data);
+            console.log('calling ' + data.api + 'Service.perform(' + JSON.stringify({
+                act: data.act,
+                payload: data.payload
+            }) + ')');
+            return this[data.api + 'Service'].perform({act: data.act, payload: data.payload}, this.config);
         } catch (ex) {
             console.log(ex);
             return {
-                message:'Could not find ' + data.api + ':' + data.act
+                message: 'Db could not find ' + data.api + ':' + data.act
             };
         }
     }

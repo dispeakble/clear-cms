@@ -10,8 +10,6 @@ export class ProtocolService {
     //exposed methods
     private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "ping", "setValue", "getValue"];
 
-    private channel = 'hub';
-
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
 
     public start() {
@@ -21,9 +19,9 @@ export class ProtocolService {
     public sendMessage(data: payloadInterface) {
 
         let payload: payloadInterface = {
+            channel: data.channel,
             api: data.api,
             act: data.act,
-            channel: data.channel,
             payload: data.payload || ""
         };
 
@@ -70,7 +68,8 @@ export class ProtocolService {
     }
 
     public setValue(key: string, value: any){
-
+        console.log(key);
+        console.log(value);
     }
 
     public perform(data: any, config?: ModuleInterface) {

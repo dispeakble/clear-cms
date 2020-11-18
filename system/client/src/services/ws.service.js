@@ -28,7 +28,7 @@ class WsService {
 
     onmessage(params) {
         try {
-            if(params && params.channel){
+            if(params && params.channel && this.callbacks.message.hasOwnProperty(params.channel)){
                 this.callbacks.message[params.channel](params.data);//tricky...
             }
         } catch (err) {
@@ -50,6 +50,7 @@ class WsService {
 
     subscribe(params){
         this.callbacks.message[params.channel] = params.callbacks.message;
+        this.client.off(params.channel);
         this.client.on(params.channel, (e) =>
         {
             return this.onmessage({channel:params.channel, data: e})

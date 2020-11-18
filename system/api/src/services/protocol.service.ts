@@ -8,7 +8,7 @@ import * as fs from "fs";
 @Injectable()
 export class ProtocolService {
 
-    private methods = ["start", "sendMessage", "emitEvent", "registerModule", "ping"];
+    private methods = ["start", "sendMessage", "emitMessage", "registerModule", "ping"];
 
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy
@@ -19,12 +19,30 @@ export class ProtocolService {
         return this.redisService.connect();
     }
 
-    public sendMessage(data: any){
-        return this.redisService.send({message: data.channel}, data.payload).toPromise();
+    public sendMessage(data: payloadInterface) {
+
+        let payload: payloadInterface = {
+            channel: data.channel,
+            api: data.api,
+            act: data.act,
+            payload: data.payload || ""
+        };
+
+        return this.redisService.send({message: data.channel}, payload).toPromise();
+
     }
 
-    public emitEvent(data: any){
-        return this.redisService.emit({event: data.channel}, data.payload);
+    public emitMessage(data: any) {
+
+        let payload: payloadInterface = {
+            api: data.module,
+            act: data.act,
+            channel: data.channel,
+            payload: data.payload || ""
+        };
+
+        return this.redisService.emit({message: data.channel}, payload).toPromise();
+
     }
 
     public registerModule(data: ModuleInterface) {

@@ -5,7 +5,7 @@ import {
     WsResponse,
     WebSocketServer,
     OnGatewayConnection,
-    OnGatewayDisconnect, MessageBody
+    OnGatewayDisconnect
 } from '@nestjs/websockets';
 import {Logger} from '@nestjs/common';
 import {Socket, Server} from 'socket.io';
@@ -23,31 +23,21 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
 
     @WebSocketServer() wss: Server;
     private logger: Logger = new Logger('AppGateway');
+    private callbacks = {};
 
     afterInit(server: Server) {
         this.logger.log('Initialized...');
         this.wss.on('connect', function (socket) {
-            //console.log(server);
             socket.on('message', (data) => {
-                socket.send('hehe')
+                console.log(data);
+                socket.send('handshake...')
             })
             return {sid: socket.id}
-        })
-        this.wss.on('error', function (data) {
-            console.log(data);
-        })
-
-        console.log(this.wss.eventNames())
-
-        this.wss.on('message', (data) => {
-            console.log(data);
         })
     }
 
     handleConnection(client: Socket, ...args: any[]) {
         this.logger.log(`Client connected: ${client.id}`);
-
-        return {event: 'C', data: {sid: client.id}}
     }
 
     handleDisconnect(client: Socket) {
@@ -55,11 +45,25 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     }
 
     @SubscribeMessage('S')
-    handleMessage(client: Socket, payload: any): WsResponse<string> {
+    onMessage(client: Socket, payload: any): Promise<WsResponse> {
         this.logger.log(`Message received for ${client.id}`);
         this.logger.log(payload);
-        //this.wss.emit('msgToClient', payload); // send data to every client
-        //client.emit('messageToClient', payload); // send data to client socket only
-        return {event: payload.channel, data: "pong"}; // send data to client socket only
+        try {
+            return new Promise<WsResponse>(async (resolve) => {
+                const data = {event: payload.channel, data: await this.callbacks['onMessage'](payload)}
+                resolve(data)
+            })
+
+        } catch(err){
+            console.log('cannot call onMessage on parent', JSON.stringify(err));
+        }
+    }
+
+    //app functionality
+    registerCallbacks(params){
+        let cbNames = Object.keys(params.callbacks);
+        cbNames.map((cb) => {
+            this.callbacks[cb] = params.callbacks[cb];
+        })
     }
 }

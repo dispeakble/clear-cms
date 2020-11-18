@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-// @material-ui/core components
 import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 import AddAlert from "@material-ui/icons/AddAlert";
 import DoneOutline from "@material-ui/icons/DoneOutline";
-// @material-ui/icons
-//import Email from "@material-ui/icons/Email";
-//import People from "@material-ui/icons/People";
 // core components
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -29,79 +25,63 @@ import image from "assets/img/view-auth-bg.png";
 class ViewAuth extends Component {
   state = {
     authButtonDisabled: { disabled: "disabled" },
-    cardAnimaton: "cardHidden",
-    buttonState: true,
-    credentialsPassed: true,
-    email: "abc@gmail.com",
-    password: "abcde",
+    buttonState: false,
+    credentialsPassed: false,
     emailValid: false,
     passwordValid: false,
-    inputtedEmail: "",
-    inputtedPassword: "",
-    redirectedFromRecoverPassword: false,
+    email: "",
+    password: "",
     credentialsErrorMessage: "",
     removeResetMessage: "",
   };
 
   componentDidMount() {
     if (this.props.location.pathname === "/logout") {
+      //TODO send logout message
       setTimeout(() => {
         this.props.history.push("/view-auth");
-      }, 1000);
+      }, 0);
     }
   }
 
   handleInputChange = (event) => {
-    let newState = {};
     switch (event.target.id) {
       case "email":
-        //TODO validate email address here
         let emailValid =
           event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) &&
           event.target.value.length <= 30;
 
-        this.setState({ emailValid: emailValid }, this.applyAuthButtonState);
+        this.setState({emailValid: emailValid, email: event.target.value,}, this.applyAuthButtonState);
 
-        newState = {
-          inputtedEmail: event.target.value,
-        };
         break;
       case "password":
         this.setState(
           {
             passwordValid:
-              event.target.value.length >= 5 && event.target.value.length <= 30,
+              event.target.value.length >= 3 && event.target.value.length <= 30,
+            password: event.target.value,
           },
           this.applyAuthButtonState
         );
 
-        newState = {
-          inputtedPassword: event.target.value,
-        };
         break;
     }
 
-    this.setState(newState);
-
-    this.setState({
-      credentialsErrorMessage: "",
-    });
-
-    this.setState({ removeResetMessage: "none" });
+    this.setState({removeResetMessage: "none", credentialsErrorMessage: "",});
   };
 
   applyAuthButtonState = () => {
     if (
       this.props.location.pathname === "/view-auth" ||
       this.props.location.pathname === "/view-auth/recovered"
-    )
+    ){
       this.setState({
         authButtonDisabled:
           this.state.emailValid && this.state.passwordValid
             ? {}
             : { disabled: "disabled" },
       });
-    else {
+    } else {
       this.setState({
         authButtonDisabled: this.state.emailValid
           ? {}
@@ -110,27 +90,57 @@ class ViewAuth extends Component {
     }
   };
 
-  handleCredentials = () => {
+  removeErrorMessage = () => {
+    this.setState({ credentialsPassed: true });
+  };
+
+  onSubmit = (event) => {
+    event.preventDefault();
+
+    const { history } = this.props;
+
     if (
       this.props.location.pathname === "/view-auth" ||
       this.props.location.pathname === "/view-auth/recovered"
     ) {
-      if (
-        this.state.inputtedEmail !== this.state.email ||
-        this.state.inputtedPassword !== this.state.password
-      ) {
-        this.setState({ credentialsPassed: false });
-      }
-    }
-    if (this.props.location.pathname === "/recover-password") {
-      if (this.state.inputtedEmail !== this.state.email) {
-        this.setState({ credentialsPassed: false });
-      }
-    }
-  };
 
-  removeErrorMessage = () => {
-    this.setState({ credentialsPassed: true });
+      this.props.control.login({
+        email:this.state.email,
+        password:this.state.password
+      });
+
+      //history.push("/");
+
+    } else {
+      //this.setState({ removeResetMessage: "" });
+      //history.push("/view-auth/recovered");
+
+    }
+    let credentialsPassed = this.state.credentialsPassed;
+
+    const errorMessageContent =
+      this.props.location.pathname === "/view-auth" ||
+      this.props.location.pathname === "/view-auth/recovered"
+        ? "The entered credentials did not match any account."
+        : "We could not find the entered email address.";
+
+    if (!credentialsPassed) {
+      this.setState({
+        credentialsErrorMessage: (
+          <Snackbar
+            open
+            place="tc"
+            color="warning"
+            icon={AddAlert}
+            message={errorMessageContent}
+          />
+        ),
+      });
+    } else {
+      this.setState({
+        credentialsErrorMessage: "",
+      });
+    }
   };
 
   render() {
@@ -148,62 +158,6 @@ class ViewAuth extends Component {
       ? "Access account"
       : "Recover Password";
 
-    const recoverPasswordText = loginOrRetrievePasswordURL
-      ? "Forgot Password ?"
-      : "";
-
-    const onSubmit = (event) => {
-      event.preventDefault();
-
-      const { history } = this.props;
-
-      const loginState =
-        this.state.inputtedEmail === this.state.email &&
-        this.state.inputtedPassword === this.state.password;
-
-      const loginStateOnRecoverPassword =
-        this.state.inputtedEmail === this.state.email;
-
-      if (
-        this.props.location.pathname === "/view-auth" ||
-        this.props.location.pathname === "/view-auth/recovered"
-      ) {
-        if (loginState) {
-          history.push("/");
-        }
-      } else {
-        if (loginStateOnRecoverPassword) {
-          this.setState({ removeResetMessage: "" });
-          history.push("/view-auth/recovered");
-        }
-      }
-      let credentialsPassed = this.state.credentialsPassed;
-
-      const errorMessageContent =
-        this.props.location.pathname === "/view-auth" ||
-        this.props.location.pathname === "/view-auth/recovered"
-          ? "The entered credentials did not match any account."
-          : "We could not find the entered email address.";
-
-      if (!credentialsPassed) {
-        this.setState({
-          credentialsErrorMessage: (
-            <Snackbar
-              open
-              place="tc"
-              color="warning"
-              icon={AddAlert}
-              message={errorMessageContent}
-            />
-          ),
-        });
-      } else {
-        this.setState({
-          credentialsErrorMessage: "",
-        });
-      }
-    };
-
     let resetSuccessMessage;
 
     if (this.props.location.pathname === "/view-auth/recovered") {
@@ -218,6 +172,17 @@ class ViewAuth extends Component {
           />
         </div>
       );
+    }
+
+    let headerText = "";
+
+    switch(this.props.location.pathname){
+      default:
+        headerText = "Admin login";
+        break;
+      case "/recover-password":
+        headerText = "Recover password";
+        break;
     }
 
     return (
@@ -241,16 +206,16 @@ class ViewAuth extends Component {
           {resetSuccessMessage}
           <div className={classes.container}>
             <GridContainer justify="center">
-              <GridItem xs={12} sm={12} md={4}>
+              <GridItem lg={3} md={4} sm={6} xs={10} xxs={12}>
                 <Card>
-                  <form onSubmit={onSubmit} className={classes.form}>
+                  <form onSubmit={this.onSubmit} className={classes.form}>
                     <CardHeader color="primary" className={classes.cardHeader}>
-                      <h4>Crm System Authentication</h4>
+                      <h4>{headerText}</h4>
                     </CardHeader>
                     <p className={classes.divider}>{loginText}</p>
                     <CardBody>
                       <CustomInput
-                        name="inputtedEmail"
+                        name="email"
                         labelText="Email"
                         id="email"
                         formControlProps={{
@@ -270,41 +235,46 @@ class ViewAuth extends Component {
                       />
                       {loginOrRetrievePasswordURL ||
                       this.props.location.pathname ===
-                        "/view-auth/recovered" ? (
-                        <CustomInput
-                          labelText="Password"
-                          id="password"
-                          formControlProps={{
-                            fullWidth: true,
-                            onChange: (event) => this.handleInputChange(event),
-                          }}
-                          inputProps={{
-                            type: "password",
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <Icon className={classes.inputIconsColor}>
-                                  lock_outline
-                                </Icon>
-                              </InputAdornment>
-                            ),
-                            autoComplete: "off",
-                          }}
-                        />
+                      "/view-auth/recovered" ? (
+                          <React.Fragment>
+                            <CustomInput
+                              labelText="Password"
+                              id="password"
+                              formControlProps={{
+                                fullWidth: true,
+                                onChange: (event) => this.handleInputChange(event),
+                              }}
+                              inputProps={{
+                                type: "password",
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <Icon className={classes.inputIconsColor}>
+                                      lock_outline
+                                    </Icon>
+                                  </InputAdornment>
+                                ),
+                                autoComplete: "off",
+                              }}
+                            />
+                            <Link className={classes.recoverPassword} to="/recover-password">
+                              <p onClick={this.removeErrorMessage}>
+                                I forgot my password
+                              </p>
+                            </Link>
+                          </React.Fragment>
+
                       ) : (
-                        <React.Fragment></React.Fragment>
+                        <Link className={classes.recoverPassword} to="/view-auth">
+                          <p onClick={this.removeErrorMessage}>
+                            Back to login
+                          </p>
+                        </Link>
                       )}
-                      <Link
-                        className={classes.recoverPassword}
-                        to="/recover-password"
-                      >
-                        <p onClick={this.removeErrorMessage}>
-                          {recoverPasswordText}
-                        </p>
-                      </Link>
+
                     </CardBody>
                     <CardFooter className={classes.cardFooter}>
                       <Button
-                        onClick={this.handleCredentials}
+                        onClick={this.onSubmit}
                         type="submit"
                         color="primary"
                         size="lg"
@@ -318,7 +288,6 @@ class ViewAuth extends Component {
               </GridItem>
             </GridContainer>
           </div>
-          {/*<Footer whiteFont />*/}
         </div>
       </div>
     );

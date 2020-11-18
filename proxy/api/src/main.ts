@@ -7,7 +7,6 @@ import {Transport} from "@nestjs/microservices";
 import * as http from "http";
 import * as https from "https";
 import {ExpressAdapter} from "@nestjs/platform-express";
-import {doc} from "prettier";
 import {join} from "path";
 
 Logger.overrideLogger(['error']);

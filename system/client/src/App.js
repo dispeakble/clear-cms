@@ -6,7 +6,6 @@ import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
 //views //TODO MOVE TO CONTROLLERS
-import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
@@ -71,12 +70,10 @@ class App extends Component {
         mobileOpen: false,
     };
 
-    async componentWillMount() {
+    constructor() {
+        super();
         this.state.services.ws = new WsService();
-
         this.state.services.ws.start();
-        //const m = await this.ws.send('ping');
-        //console.log(m);
     }
 
     handleDrawerToggle = () => {
@@ -85,12 +82,13 @@ class App extends Component {
 
     render() {
         const {pathname} = this.props.location;
+        const excludeHeader=['pagePreview', 'view-auth', 'recover-password'];
         return (
             <React.Fragment>
                 <Helmet>
                     <title>App</title>
                 </Helmet>
-                {!pathname.includes("/pagePreview") ? (
+                {excludeHeader.indexOf(pathname.replaceAll('/', '')) === -1 ? (
                     <Header
                         mobileOpen={this.state.mobileOpen}
                         color="transparent"
@@ -113,13 +111,17 @@ class App extends Component {
                 )}
 
                 <Switch>
-                    <Route path="/profile-page" component={ProfilePage}/>
                     <Route path="/view-auth" render={(props) => {
                         return (<AuthController {...props} services={this.state.services} />)
                     }} />
-                    <Route path="/recover-password" component={ViewAuth}/>
+                    <Route path="/logout" render={(props) => {
+                        return (<AuthController {...props} services={this.state.services} />)
+                    }} />
+                    <Route path="/recover-password" render={(props) => {
+                        return (<AuthController {...props} services={this.state.services} />)
+                    }} />
+                    <Route path="/profile-page" component={ProfilePage}/>
                     <Route path="/" exact component={Dashboard}/>
-                    <Route path="/logout" component={ViewAuth}/>
                     <Route path="/pagesAdd" component={PagesAdd}/>
                     <Route path="/pagePreview/:id" component={PagePreview}/>
                     <Route path="/pageEdit/:id" component={PagesAdd}/>

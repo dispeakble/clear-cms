@@ -1,6 +1,7 @@
 import {Body, Controller, Get, HttpStatus, Inject, Post, Req, Res} from "@nestjs/common";
 import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {payloadInterface} from "../interfaces/payload.interface";
 
 @Controller()
 export class AppController {
@@ -29,8 +30,39 @@ export class AppController {
                 }],
             };
             let response = await this.systemService.registerModule(payload);
-
             console.log(response);
+
+            this.wsGateway.registerCallbacks({
+                callbacks: {
+                    "onMessage": async (params) => {
+                        const response = await this.onMessage(params);
+                        return response
+                    }
+                }
+            });
+        })
+    }
+
+    private onMessage(params){
+        return new Promise((resolve) => {
+            console.log('got message from gateway', JSON.stringify(params))
+
+            const payload: payloadInterface = {
+                channel: params.module,
+                api: params.api,
+                act: params.act,
+                payload: params.payload
+            };
+
+            this.protocolService.sendMessage(payload).then((moduleResponse) => {
+                let response = {
+                    id: params.id,
+                    data: moduleResponse
+                }
+
+                resolve(response);
+            });
+
         })
     }
 
