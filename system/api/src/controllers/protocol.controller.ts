@@ -29,7 +29,11 @@ export class ProtocolController {
         }*/],
     };
 
-    constructor(@Inject('ProtocolService') private protocolService,@Inject('HttpService') private httpService,) {
+    constructor(
+      @Inject('ProtocolService') private protocolService,
+      @Inject('HttpService') private httpService,
+      @Inject('AuthService') private authService,
+      ) {
 
     }
 
@@ -47,7 +51,7 @@ export class ProtocolController {
         await this.protocolService.start();
         this.logger.log('system connected to redis');
         this.registerModule({after: 0});
-        await this.protocolService.emitEvent({
+        await this.protocolService.emitMessage({
             channel: 'hub',
             payload: {
                 api: 'module',
@@ -97,7 +101,7 @@ export class ProtocolController {
             return this[data.api + 'Service'].perform(data, this.config);
         } catch (ex) {
             return {
-                message:'Could not find ' + data.api + ':' + data.act
+                error:'Could not find ' + data.api + ':' + data.act
             };
         }
     }

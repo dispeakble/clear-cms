@@ -7,6 +7,7 @@ import {Transport} from "@nestjs/microservices";
 import * as http from "http";
 import * as https from "https";
 import {ExpressAdapter} from "@nestjs/platform-express";
+import {join} from "path";
 
 Logger.overrideLogger(['error']);
 
@@ -15,7 +16,7 @@ const logger = new Logger('Main');
 let server;
 let app;
 
-const init = async () => {
+const init = async (options) => {
     server = express();
 
     app = await NestFactory.create(
@@ -23,7 +24,16 @@ const init = async () => {
         new ExpressAdapter(server),
     );
 
-    await app.init();
+    await app.connectMicroservice({
+        transport: Transport.REDIS,
+        options: {
+            url:  'redis://' + process.env.redis_server,
+            port: +process.env.redis_port,
+            password: process.env.redis_password
+        }
+    });
+
+
     return true;
 }
 
@@ -34,8 +44,8 @@ const createServer = async (data) => {
             break;
         case 'https':
             const httpsOptions = {//TODO insert these from a volume or something
-                key: fs.readFileSync('./nest_certs/private-key.pem'),
-                cert: fs.readFileSync('./nest_certs/public-certificate.pem'),
+                key: fs.readFileSync(join(__dirname, '..', 'certs/private-key.pem')),
+                cert: fs.readFileSync(join(__dirname, '..', 'certs/public-certificate.pem')),
             };
             https.createServer(httpsOptions, server).listen(data.port);
             break;
@@ -59,25 +69,13 @@ const createServer = async (data) => {
 
 async function bootstrap() {
     try {
-        await init();
-        console.log('init done');
-
-        createServer({
-            name: process.env.redis_server,
-            port: process.env.redis_port,
-            password: process.env.redis_password,
-            protocol: 'redis'
+        await init({
+            port: process.env.backend_port
         });
 
-        createServer({port: process.env.public_port, protocol: 'http'});
-        console.log('public server listening');
-
-        createServer({port: process.env.backend_port, protocol: 'http'});
-        console.log('backend server listening');
-
-        console.log('redis connected');
-
         await app.startAllMicroservicesAsync();
+
+        await app.listen(process.env.backend_port, '0.0.0.0');
 
     } catch (e) {
         logger.log('Warning! Could not start the proxy module');

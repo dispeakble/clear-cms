@@ -1,7 +1,7 @@
-import React, { Component, Suspense } from "react";
-import ReactDOM from "react-dom";
-import { withRouter, Route, Switch } from "react-router-dom";
-import NotFound from "views/NotFound/NotFound";
+import React, {Component} from "react";
+import {withRouter, Route, Switch} from "react-router-dom";
+
+//Wrappers
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
@@ -12,6 +12,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { Helmet } from "react-helmet";
 
+//views //TODO MOVE TO CONTROLLERS
 //import Components from "views/Components/Components.js";
 import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
@@ -20,13 +21,21 @@ import MainAppController from "views/MainAppController/MainAppController";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 
+//styles
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
-
 import "assets/scss/clear-crm.scss";
+
+//Controllers
+import AuthController from "controllers/auth.controller";
+
+//Services
+import WsService from 'services/ws.service';
+import { Helmet } from "react-helmet";
 
 class App extends Component {
   state = {
+    services:{},
     moduleList: [
       {
         //TODO get this from hub module list
@@ -71,8 +80,15 @@ class App extends Component {
         name: "Photo Gallery",
       },
     ],
+    socket:{},
     mobileOpen: false,
   };
+
+  constructor() {
+    super();
+    this.state.services.ws = new WsService();
+    this.state.services.ws.start();
+  }
 
   getTheme = () => {
     const themes = JSON.parse(localStorage.getItem("adminThemes"));
@@ -124,7 +140,7 @@ class App extends Component {
 
         <MuiThemeProvider theme={this.getTheme()}>
           <CssBaseline />
-          {!pathname.includes("/pagePreview") ? (
+          {excludeHeader.indexOf(pathname.replaceAll('/', '')) === -1 ? (
             <Header
               mobileOpen={this.state.mobileOpen}
               color="transparent"
@@ -147,11 +163,17 @@ class App extends Component {
           )}
 
           <Switch>
+            <Route path="/view-auth" render={(props) => {
+              return (<AuthController {...props} services={this.state.services} />)
+            }} />
+            <Route path="/logout" render={(props) => {
+              return (<AuthController {...props} services={this.state.services} />)
+            }} />
+            <Route path="/recover-password" render={(props) => {
+              return (<AuthController {...props} services={this.state.services} />)
+            }} />
             <Route path="/profile-page" component={ProfilePage} />
-            <Route path="/view-auth" component={ViewAuth} />
-            <Route path="/recover-password" component={ViewAuth} />
             <Route path="/" exact component={Dashboard} />
-            <Route path="/logout" component={ViewAuth} />
             <Route path="/pagesAdd" component={PagesAdd} />
             <Route path="/pagePreview/:id" component={PagePreview} />
             <Route path="/pageEdit/:id" component={PagesAdd} />

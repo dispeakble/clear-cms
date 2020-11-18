@@ -1,8 +1,7 @@
 import {Body, Controller, Get, HttpStatus, Inject, Post, Req, Res} from "@nestjs/common";
 import {Request, Response} from "express";
-import {WebsocketGatewayService} from "../services/websocket.gateway.service";
 import {ModuleInterface} from "../interfaces/module.interface";
-import * as mime from "mime";
+import {payloadInterface} from "../interfaces/payload.interface";
 
 @Controller()
 export class AppController {
@@ -13,7 +12,7 @@ export class AppController {
         @Inject('ProtocolService') private protocolService,
         @Inject('SystemService') private systemService,
         @Inject('AppService') private appService,
-        private wsService: WebsocketGatewayService
+        @Inject('WsGateway') private wsGateway
     ) {
         this.protocolService.start().then(async () => {
             let payload: ModuleInterface = {
@@ -31,8 +30,39 @@ export class AppController {
                 }],
             };
             let response = await this.systemService.registerModule(payload);
-
             console.log(response);
+
+            this.wsGateway.registerCallbacks({
+                callbacks: {
+                    "onMessage": async (params) => {
+                        const response = await this.onMessage(params);
+                        return response
+                    }
+                }
+            });
+        })
+    }
+
+    private onMessage(params){
+        return new Promise((resolve) => {
+            console.log('got message from gateway', JSON.stringify(params))
+
+            const payload: payloadInterface = {
+                channel: params.module,
+                api: params.api,
+                act: params.act,
+                payload: params.payload
+            };
+
+            this.protocolService.sendMessage(payload).then((moduleResponse) => {
+                let response = {
+                    id: params.id,
+                    data: moduleResponse
+                }
+
+                resolve(response);
+            });
+
         })
     }
 
@@ -63,12 +93,12 @@ export class AppController {
             }
 
         };
-        console.log(payload)
+        //console.log(payload)
         const app_data = await this.protocolService.sendGet(payload);
 
         res.setHeader("Content-Type", app_data['mime']);
 
-        console.log(app_data)
+        //console.log(app_data)
 
         switch (app_data.file.type) {
             case 'Buffer':
@@ -76,7 +106,6 @@ export class AppController {
                 res.end(Buffer.from(app_data.file.data));
                 break;
         }
-
 
     }
 
@@ -90,12 +119,6 @@ export class AppController {
                 }
             }
         });
-    }
-
-    private createWebSocket() {
-        this.wsService.subscribeToWs('session').subscribe((params) => {
-            params.client.emit('ok');
-        })
     }
 
 }
