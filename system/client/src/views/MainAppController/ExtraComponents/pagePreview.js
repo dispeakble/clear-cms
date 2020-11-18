@@ -32,18 +32,49 @@ class PagePreview extends React.PureComponent {
     },
     fontUnit: "px",
     openedAccordionLink: {},
+    pathname: "",
   };
 
-  componentDidMount() {
+  navigateToUrl() {
+    const { pathname } = this.props.location;
+    let pathnameId = Number(pathname.split("/")[2]);
+    console.log(pathnameId);
+
+    if (pathname === this.state.pathname) {
+      return true;
+    }
+
     const allPages = JSON.parse(localStorage.getItem("pages"));
-    const currentPage = allPages[Number(this.props.match.params.id) - 1];
-    const items = currentPage.items;
-    const pageConfig = currentPage.pageConfig;
+    let currentPage;
+    currentPage = allPages.find((el) => el.id === pathnameId);
+
+    const items = currentPage ? currentPage.items : "";
+    const pageConfig = currentPage ? currentPage.pageConfig : "";
 
     this.setState({
       items: items,
       pageConfig,
+      pathname,
     });
+  }
+
+  shouldComponentUpdate() {
+    this.navigateToUrl();
+    return true;
+  }
+
+  componentDidMount() {
+    // const allPages = JSON.parse(localStorage.getItem("pages"));
+    // const currentPage = allPages[Number(this.props.match.params.id) - 1];
+    // const items = currentPage.items;
+    // const pageConfig = currentPage.pageConfig;
+
+    // this.setState({
+    //   items: items,
+    //   pageConfig,
+    // });
+
+    this.navigateToUrl();
   }
 
   createElement(el) {

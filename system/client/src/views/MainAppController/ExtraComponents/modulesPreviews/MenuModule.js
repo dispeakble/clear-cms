@@ -16,7 +16,7 @@ class MenuModule extends Component {
           <a
             onClick={() => this.props.updateCurrentPath()}
             style={options.style}
-            href={elm.href}
+            href={`/pagePreview/${elm.id}`}
             title={elm.title}
             target={elm.target}
           >
