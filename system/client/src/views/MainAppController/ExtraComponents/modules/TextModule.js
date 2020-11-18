@@ -33,16 +33,11 @@ class TextModule extends Component {
   componentDidMount() {}
 
   getTheme = () => {
-    /*
-    error?: PaletteColorOptions;
-  warning?: PaletteColorOptions;
-  info?: PaletteColorOptions;
-  success?: PaletteColorOptions;
-    */
+    const themes = JSON.parse(localStorage.getItem("adminThemes"));
+
+    const defaultTheme = themes.find((theme) => theme.isdefault === true);
     return createMuiTheme({
-      palette: {
-        primary: "008b8b",
-      },
+      palette: defaultTheme,
       overrides: {
         MuiDialogTitle: {
           root: {

@@ -5,6 +5,11 @@ import NotFound from "views/NotFound/NotFound";
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
+import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import styles from "assets/jss/clear-crm/views/categories.js";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 import { Helmet } from "react-helmet";
 
 //import Components from "views/Components/Components.js";
@@ -36,6 +41,11 @@ class App extends Component {
         icon: "category",
       },
       {
+        toLink: "/themes",
+        name: "Themes",
+        icon: "brush",
+      },
+      {
         toLink: "/blog",
         icon: "book",
         name: "Blog",
@@ -63,6 +73,44 @@ class App extends Component {
     ],
     mobileOpen: false,
   };
+
+  getTheme = () => {
+    const themes = JSON.parse(localStorage.getItem("adminThemes"));
+
+    const defaultTheme = themes.find((theme) => theme.isdefault === true);
+
+    return createMuiTheme({
+      palette: defaultTheme,
+      // {
+      //   text: {
+      //     //primary: "#F00",
+      //     //secondary: "#0F0",
+      //     disabled: "#00F",
+      //     hint: "#333",
+      //   },
+      //   error: {
+      //     main: "#FF0000",
+      //   },
+      //   warning: {
+      //     main: "#FF0000",
+      //   },
+      //   info: {
+      //     main: "#FF0000",
+      //   },
+      //   success: {
+      //     main: "#FF0000",
+      //   },
+      //   primary: {
+      //     main: "#008B8B",
+      //   },
+      //   secondary: {
+      //     main: "#008B8B",
+      //   },
+      // },
+      overrides: {},
+    });
+  };
+
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
@@ -73,49 +121,53 @@ class App extends Component {
         <Helmet>
           <title>App</title>
         </Helmet>
-        {!pathname.includes("/pagePreview") ? (
-          <Header
-            mobileOpen={this.state.mobileOpen}
-            color="transparent"
-            brand="Clear CRM"
-            handleDrawerToggle={() => this.handleDrawerToggle()}
-            leftLinks={
-              <HeaderLinks
-                closeDrawer={() => this.handleDrawerToggle()}
-                moduleList={this.state.moduleList}
-              />
-            }
-            fixed
-            changeColorOnScroll={{
-              height: 10,
-              color: "info",
-            }}
-          />
-        ) : (
-          ""
-        )}
 
-        <Switch>
-          <Route path="/profile-page" component={ProfilePage} />
-          <Route path="/view-auth" component={ViewAuth} />
-          <Route path="/recover-password" component={ViewAuth} />
-          <Route path="/" exact component={Dashboard} />
-          <Route path="/logout" component={ViewAuth} />
-          <Route path="/pagesAdd" component={PagesAdd} />
-          <Route path="/pagePreview/:id" component={PagePreview} />
-          <Route path="/pageEdit/:id" component={PagesAdd} />
-          <Route
-            render={(props) => (
-              <MainAppController
-                {...props}
-                moduleList={this.state.moduleList}
-              />
-            )}
-          />
-        </Switch>
+        <MuiThemeProvider theme={this.getTheme()}>
+          <CssBaseline />
+          {!pathname.includes("/pagePreview") ? (
+            <Header
+              mobileOpen={this.state.mobileOpen}
+              color="transparent"
+              brand="Clear CRM"
+              handleDrawerToggle={() => this.handleDrawerToggle()}
+              leftLinks={
+                <HeaderLinks
+                  closeDrawer={() => this.handleDrawerToggle()}
+                  moduleList={this.state.moduleList}
+                />
+              }
+              fixed
+              changeColorOnScroll={{
+                height: 10,
+                color: "info",
+              }}
+            />
+          ) : (
+            ""
+          )}
+
+          <Switch>
+            <Route path="/profile-page" component={ProfilePage} />
+            <Route path="/view-auth" component={ViewAuth} />
+            <Route path="/recover-password" component={ViewAuth} />
+            <Route path="/" exact component={Dashboard} />
+            <Route path="/logout" component={ViewAuth} />
+            <Route path="/pagesAdd" component={PagesAdd} />
+            <Route path="/pagePreview/:id" component={PagePreview} />
+            <Route path="/pageEdit/:id" component={PagesAdd} />
+            <Route
+              render={(props) => (
+                <MainAppController
+                  {...props}
+                  moduleList={this.state.moduleList}
+                />
+              )}
+            />
+          </Switch>
+        </MuiThemeProvider>
       </React.Fragment>
     );
   }
 }
 
-export default withRouter(App);
+export default withRouter(withStyles(styles)(App));

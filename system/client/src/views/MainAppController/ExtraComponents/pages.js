@@ -58,39 +58,11 @@ class Pages extends Component {
 
   tableOptions = {
     getTheme: () => {
-      /*
-      error?: PaletteColorOptions;
-    warning?: PaletteColorOptions;
-    info?: PaletteColorOptions;
-    success?: PaletteColorOptions;
-      */
+      const themes = JSON.parse(localStorage.getItem("adminThemes"));
+
+      const defaultTheme = themes.find((theme) => theme.isdefault === true);
       return createMuiTheme({
-        palette: {
-          text: {
-            //primary: "#F00",
-            //secondary: "#0F0",
-            disabled: "#00F",
-            hint: "#333",
-          },
-          error: {
-            main: "#FF0000",
-          },
-          warning: {
-            main: "#FF0000",
-          },
-          info: {
-            main: "#FF0000",
-          },
-          success: {
-            main: "#FF0000",
-          },
-          secondary: {
-            main: "#008B8B",
-          },
-          primary: {
-            main: "#008B8B",
-          },
-        },
+        palette: defaultTheme,
         overrides: {
           MuiTableCell: {
             head: {
