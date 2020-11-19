@@ -107,7 +107,7 @@ class PagesAdd extends React.PureComponent {
     editItemBorderWidth: 0,
     editItemBorderColor: "",
     editItemBackgroundColor: "",
-    editItemFontSize: 5,
+    editItemFontSize: 0,
     editItemFontFamily: -1,
     editItemTextColor: "",
     showEditMenu: false,
@@ -561,7 +561,6 @@ class PagesAdd extends React.PureComponent {
         borderStyle: "solid",
         borderWidth: "0",
         borderRadius: "0",
-        fontSize: "0", // to avoid getting NAN in the slider
         backgroundImage: "",
         backgroundRepeat: "",
         backgroundStretch: "",
@@ -706,6 +705,7 @@ class PagesAdd extends React.PureComponent {
       editItemBorderWidth: item.borderWidth || 0,
       editItemBorderColor: item.borderColor,
       editItemBorderStyle: item.borderStyle,
+      editItemFontSize: item.fontSize || 5,
       editItemBackgroundColor: item.backgroundColor || "",
       editItemBgImage: item.backgroundImage,
       editItemBgRepeat: item.backgroundRepeat,
@@ -1337,7 +1337,7 @@ class PagesAdd extends React.PureComponent {
                                 .editItemFontSizeShow,
                             });
                           }}
-                          value={Number(this.state.editItemFontSizeShow)}
+                          value={this.state.editItemFontSizeShow}
                         />
                       </Tooltip>
                       Font Size
