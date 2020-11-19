@@ -148,6 +148,12 @@ class TextModule extends Component {
                     "undo redo | formatselect | bold italic forecolor backcolor | \
              alignleft aligncenter alignright alignjustify | \
              bullist numlist outdent indent | removeformat",
+                  init_instance_callback: function (editor) {
+                    var annoyingMessage = document.querySelector(
+                      ".tox-notifications-container"
+                    );
+                    annoyingMessage.style.display = "none";
+                  },
                 }}
                 onEditorChange={(event) => this.handleInputChange(event)}
               />

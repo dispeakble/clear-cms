@@ -45,7 +45,7 @@ const javascriptStyles = {
       cursor: "pointer",
     },
     "& .react-grid-dragHandleExample": {
-      cursor: "move"
+      cursor: "move",
     },
 
     "& .toolbox": {
