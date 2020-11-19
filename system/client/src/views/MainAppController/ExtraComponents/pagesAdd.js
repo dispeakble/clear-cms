@@ -244,41 +244,48 @@ class PagesAdd extends React.PureComponent {
         pageConfig: currentPage.pageConfig,
       });
     } else {
-      const themes = JSON.parse(localStorage.getItem("publicThemes"));
+      const publicThemes = JSON.parse(localStorage.getItem("publicThemes"));
 
-      const defaultTheme = themes.find((theme) => theme.isdefault === true);
+      let defaultPublicTheme;
 
-      this.defaultTheme = defaultTheme;
+      if (publicThemes) {
+        defaultPublicTheme = publicThemes.find(
+          (theme) => theme.isdefault === true
+        );
+      }
+
+      this.defaultTheme = this.props.defaultTheme;
 
       this.muiTheme = this.createDefaultTheme();
 
-      let newPageOptions = {};
-
-      if (defaultTheme.bgcolor) {
-        newPageOptions.bgColor = defaultTheme.bgcolor;
+      if (defaultPublicTheme) {
+        if (defaultPublicTheme.bgcolor) {
+          this.setState({ bgColor: defaultPublicTheme.bgcolor });
+        }
+        if (defaultPublicTheme.bgimage) {
+          this.setState({ backgroundImage: defaultPublicTheme.bgimage });
+        }
+        if (defaultPublicTheme.bgrepeat) {
+          this.setState({ pageBackgroundRepeat: defaultPublicTheme.bgrepeat });
+        }
+        if (defaultPublicTheme.bgstretch) {
+          this.setState({
+            pageBackgroundStretch: defaultPublicTheme.bgstretch,
+          });
+        }
+        if (defaultPublicTheme.fontsize) {
+          this.setState({ fontSize: defaultPublicTheme.fontsize });
+        }
+        if (defaultPublicTheme.textcolor) {
+          this.setState({ textColor: defaultPublicTheme.textcolor });
+        }
+        if (defaultPublicTheme.fontfamily) {
+          this.setState({ fontFamily: defaultPublicTheme.fontfamily });
+        }
+        if (defaultPublicTheme.boxSpacingConfig) {
+          this.setState({ config: defaultPublicTheme.boxSpacingConfig });
+        }
       }
-      if (defaultTheme.bgimage) {
-        newPageOptions.backgroundImage = defaultTheme.bgimage;
-      }
-      if (defaultTheme.bgrepeat) {
-        newPageOptions.pageBackgroundRepeat = defaultTheme.bgrepeat;
-      }
-      if (defaultTheme.bgstretch) {
-        newPageOptions.pageBackgroundStretch = defaultTheme.bgstretch;
-      }
-      if (defaultTheme.fontsize) {
-        newPageOptions.fontSize = defaultTheme.fontsize;
-      }
-      if (defaultTheme.textcolor) {
-        newPageOptions.textColor = defaultTheme.textcolor;
-      }
-      if (defaultTheme.fontfamily) {
-        newPageOptions.fontFamily = defaultTheme.fontfamily;
-      }
-      if (defaultTheme.boxSpacingConfig) {
-        newPageOptions.config = defaultTheme.boxSpacingConfig;
-      }
-      await this.setAsyncState(newPageOptions);
     }
 
     await this.setAsyncState({
@@ -495,6 +502,7 @@ class PagesAdd extends React.PureComponent {
             {el.module && LazyModule ? (
               <Suspense fallback={loadingFallback}>
                 <LazyModule
+                  defaultTheme={this.props.defaultTheme}
                   onStartEditingModule={() => this.onStartEditingModule()}
                   onEndEditingModule={() => this.onEndEditingModule()}
                   boxId={el.i}
@@ -974,7 +982,8 @@ class PagesAdd extends React.PureComponent {
 
   createDefaultTheme = () => {
     return createMuiTheme({
-      palette: this.defaultTheme,
+      palette: this.props.defaultTheme,
+
       overrides: {
         MuiSpeedDial: {
           actionsClosed: {

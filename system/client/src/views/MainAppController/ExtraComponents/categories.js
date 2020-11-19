@@ -97,12 +97,8 @@ class Categories extends Component {
     success?: PaletteColorOptions;
       */
 
-      const themes = JSON.parse(localStorage.getItem("adminThemes"));
-
-      const defaultTheme = themes.find((theme) => theme.isdefault === true);
-
       return createMuiTheme({
-        palette: defaultTheme,
+        palette: this.props.defaultTheme,
         overrides: {
           MuiTableCell: {
             head: {

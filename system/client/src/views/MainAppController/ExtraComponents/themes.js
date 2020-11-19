@@ -115,11 +115,9 @@ class Themes extends Component {
   }
 
   getTheme = () => {
-    const themes = JSON.parse(localStorage.getItem("adminThemes"));
-
-    const defaultTheme = themes.find((theme) => theme.isdefault === true);
+    console.log(this.props.defaultTheme);
     return createMuiTheme({
-      palette: defaultTheme,
+      palette: this.props.defaultTheme,
       overrides: {
         MuiFab: {
           root: {
@@ -185,6 +183,8 @@ class Themes extends Component {
 
       localStorage.setItem("publicThemes", JSON.stringify(newThumbnails));
     }
+
+    this.props.tweakTheState();
   };
 
   getTbnById = (passedId) => {
@@ -561,8 +561,6 @@ class Themes extends Component {
       let canvas;
       let base64image;
 
-      console.log(previewElement);
-
       this.hideMenu();
 
       if (previewElement) {
@@ -619,6 +617,8 @@ class Themes extends Component {
     this.closeNewThumbnailModal();
 
     this.setState({ createModal: false });
+
+    this.props.tweakTheState();
   };
 
   getTbnOnEdit = (id) => {
@@ -644,7 +644,6 @@ class Themes extends Component {
     let previewElement = document.querySelector("#previewElement");
 
     let adminPreviewElement = document.querySelector("#adminPreviewElement");
-    console.log(previewElement);
 
     return (
       <Dialog
@@ -1060,7 +1059,7 @@ class Themes extends Component {
             <Tabs
               value={this.state.side}
               onChange={this.changeTab}
-              indicatorColor="secondary"
+              indicatorColor="primary"
             >
               <Tab label="Public" {...a11yProps(0)} />
               <Tab label="Admin" {...a11yProps(1)} />
