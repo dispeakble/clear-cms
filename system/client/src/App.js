@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {withRouter, Route, Switch} from "react-router-dom";
+import React, { Component } from "react";
+import { withRouter, Route, Switch } from "react-router-dom";
 
 //Wrappers
 import Header from "components/Header/Header.js";
@@ -30,12 +30,11 @@ import "assets/scss/clear-crm.scss";
 import AuthController from "controllers/auth.controller";
 
 //Services
-import WsService from 'services/ws.service';
-import { Helmet } from "react-helmet";
+import WsService from "services/ws.service";
 
 class App extends Component {
   state = {
-    services:{},
+    services: {},
     moduleList: [
       {
         //TODO get this from hub module list
@@ -80,8 +79,10 @@ class App extends Component {
         name: "Photo Gallery",
       },
     ],
-    socket:{},
+    excludeHeader: ["pagePreview", "view-auth", "recover-password"],
+    socket: {},
     mobileOpen: false,
+    someTweakedState: false,
   };
 
   constructor() {
@@ -90,41 +91,62 @@ class App extends Component {
     this.state.services.ws.start();
   }
 
+  defaultThemeToDispatch;
+
   getTheme = () => {
     const themes = JSON.parse(localStorage.getItem("adminThemes"));
 
-    const defaultTheme = themes.find((theme) => theme.isdefault === true);
+    const hardcodedStyles = {
+      text: {
+        //primary: "#F00",
+        //secondary: "#0F0",
+        disabled: "#00F",
+        hint: "#333",
+      },
+      error: {
+        main: "#FF0000",
+      },
+      warning: {
+        main: "#FF0000",
+      },
+      info: {
+        main: "#FF0000",
+      },
+      success: {
+        main: "#FF0000",
+      },
+      primary: {
+        main: "#008B8B",
+      },
+      secondary: {
+        main: "#008B8B",
+      },
+    };
+
+    let defaultTheme;
+
+    console.log(themes);
+
+    if (themes) {
+      defaultTheme = themes.find((theme) => theme.isdefault === true);
+      if (!defaultTheme) {
+        defaultTheme = hardcodedStyles;
+      }
+    } else {
+      defaultTheme = hardcodedStyles;
+    }
+
+    this.defaultThemeToDispatch = defaultTheme;
+    console.log(this.defaultThemeToDispatch);
 
     return createMuiTheme({
       palette: defaultTheme,
-      // {
-      //   text: {
-      //     //primary: "#F00",
-      //     //secondary: "#0F0",
-      //     disabled: "#00F",
-      //     hint: "#333",
-      //   },
-      //   error: {
-      //     main: "#FF0000",
-      //   },
-      //   warning: {
-      //     main: "#FF0000",
-      //   },
-      //   info: {
-      //     main: "#FF0000",
-      //   },
-      //   success: {
-      //     main: "#FF0000",
-      //   },
-      //   primary: {
-      //     main: "#008B8B",
-      //   },
-      //   secondary: {
-      //     main: "#008B8B",
-      //   },
-      // },
       overrides: {},
     });
+  };
+
+  tweakTheState = () => {
+    this.setState({ someTweakedState: !this.state.someTweakedState });
   };
 
   handleDrawerToggle = () => {
@@ -140,7 +162,8 @@ class App extends Component {
 
         <MuiThemeProvider theme={this.getTheme()}>
           <CssBaseline />
-          {excludeHeader.indexOf(pathname.replaceAll('/', '')) === -1 ? (
+          {this.state.excludeHeader.indexOf(pathname.replaceAll("/", "")) ===
+          -1 ? (
             <Header
               mobileOpen={this.state.mobileOpen}
               color="transparent"
@@ -161,17 +184,31 @@ class App extends Component {
           ) : (
             ""
           )}
-
           <Switch>
-            <Route path="/view-auth" render={(props) => {
-              return (<AuthController {...props} services={this.state.services} />)
-            }} />
-            <Route path="/logout" render={(props) => {
-              return (<AuthController {...props} services={this.state.services} />)
-            }} />
-            <Route path="/recover-password" render={(props) => {
-              return (<AuthController {...props} services={this.state.services} />)
-            }} />
+            <Route
+              path="/view-auth"
+              render={(props) => {
+                return (
+                  <AuthController {...props} services={this.state.services} />
+                );
+              }}
+            />
+            <Route
+              path="/logout"
+              render={(props) => {
+                return (
+                  <AuthController {...props} services={this.state.services} />
+                );
+              }}
+            />
+            <Route
+              path="/recover-password"
+              render={(props) => {
+                return (
+                  <AuthController {...props} services={this.state.services} />
+                );
+              }}
+            />
             <Route path="/profile-page" component={ProfilePage} />
             <Route path="/" exact component={Dashboard} />
             <Route path="/pagesAdd" component={PagesAdd} />
@@ -180,6 +217,8 @@ class App extends Component {
             <Route
               render={(props) => (
                 <MainAppController
+                  tweakTheState={this.tweakTheState}
+                  defaultTheme={this.defaultThemeToDispatch}
                   {...props}
                   moduleList={this.state.moduleList}
                 />

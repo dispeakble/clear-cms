@@ -20,6 +20,8 @@ class MainAppController extends Component {
   }
 
   render() {
+    console.log(this.props.defaultTheme);
+
     const { location } = this.props;
 
     const currentPath = location.pathname;
@@ -55,7 +57,10 @@ class MainAppController extends Component {
               </div>
             }
           >
-            <LazyComponent />
+            <LazyComponent
+              tweakTheState={this.props.tweakTheState}
+              defaultTheme={this.props.defaultTheme}
+            />
           </Suspense>
         )}
       />
