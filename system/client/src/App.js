@@ -6,7 +6,7 @@ import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/categories.js";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -47,36 +47,43 @@ class App extends Component {
         toLink: "/categories",
         name: "Categories",
         icon: "category",
+        active: false,
       },
       {
         toLink: "/themes",
         name: "Themes",
         icon: "brush",
+        active: false,
       },
       {
         toLink: "/blog",
         icon: "book",
         name: "Blog",
+        active: false,
       },
       {
         toLink: "/forum",
         icon: "forum",
         name: "Forum",
+        active: false,
       },
       {
         toLink: "/video-conference",
         icon: "video_call",
         name: "Video Conference",
+        active: false,
       },
       {
         toLink: "/file-transfer",
         icon: "attachment",
         name: "File Transfer",
+        active: false,
       },
       {
         toLink: "/photo-gallery",
         icon: "photo_library",
         name: "Photo Gallery",
+        active: false,
       },
     ],
     excludeHeader: ["pagePreview", "view-auth", "recover-password"],

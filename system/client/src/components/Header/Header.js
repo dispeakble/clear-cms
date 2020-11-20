@@ -205,7 +205,6 @@ Header.defaultProp = {
 };
 
 Header.propTypes = {
-  color: "rgba(0,0,0,.87)",
   leftLinks: PropTypes.node,
   brand: PropTypes.string,
   fixed: PropTypes.bool,
