@@ -116,6 +116,10 @@ class MenuModule extends Component {
             maxWidth: "100%",
             backgroundColor: "#FFDF00",
           },
+          paper: {
+            width: "100%",
+            backgroundColor: "#FFDF00",
+          },
         },
       },
     });
