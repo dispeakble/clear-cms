@@ -46,7 +46,6 @@ class MenuModule extends Component {
     showModuleOptionsModal: false,
     modalTitle: "Menu Items",
     richFormattedText: false,
-    itemModuleEditId: "",
     showMultipleDeleteModal: false,
     tableRef: React.createRef(),
     isMenuVertical: false,
@@ -148,7 +147,6 @@ class MenuModule extends Component {
         },
         popover: {
           position: "absolute",
-          zIndex: "2",
           zIndex: 99999,
         },
         cover: {
@@ -263,13 +261,6 @@ class MenuModule extends Component {
           MuiTypography: {
             h6: {
               textTransform: "capitalize",
-            },
-          },
-          MuiIconButton: {
-            root: {
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
             },
           },
           MuiIconButton: {
@@ -585,7 +576,6 @@ class MenuModule extends Component {
             paper: classes.modal,
           }}
           open={this.state.showModuleOptionsModal}
-          onBackdropClick="false"
           TransitionComponent={this.transition}
           keepMounted
           aria-labelledby="classic-modal-slide-title"
