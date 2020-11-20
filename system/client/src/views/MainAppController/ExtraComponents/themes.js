@@ -69,8 +69,8 @@ class Themes extends Component {
       bgcolor: "",
       bgimage: "",
       fontsize: "",
-      textcolor: "",
-      fontfamily: "",
+      textcolor: "#000000",
+      fontfamily: "Arial",
       isdefault: false,
       html2canvasImage: "",
       boxSpacingConfig: "",
@@ -95,6 +95,7 @@ class Themes extends Component {
     fontFamilyIndex: "",
     showEditorMenu: true,
     fullEditorData: "",
+    defaultFontFamily: "Arial",
   };
 
   setAsyncState = (newState) =>
@@ -428,12 +429,16 @@ class Themes extends Component {
   };
 
   handleFontFamily = (event, newValue) => {
-    let data = this.state.data;
-    data.fontfamily = newValue.label;
+    if (this.state.editMode) {
+      let data = this.state.data;
+      data.fontfamily = newValue.label;
 
-    let fontFamilyIndex = this.getFontFamilyIndex(newValue.label);
+      let fontFamilyIndex = this.getFontFamilyIndex(newValue.label);
 
-    this.setState({ data, fontFamilyIndex });
+      this.setState({ data, fontFamilyIndex });
+    } else {
+      this.setState({ defaultFontFamily: newValue.label });
+    }
   };
 
   getFontFamilyIndex(name) {
@@ -635,6 +640,14 @@ class Themes extends Component {
     this.setState({ showEditorMenu: false });
   }
 
+  getFontFamilyItem(name) {
+    return this.state.fontFamilies[
+      this.state.fontFamilies.findIndex((font) => {
+        return font.label === name;
+      })
+    ];
+  }
+
   createNewThumbnail() {
     const bgColorStyles = this.sendStyles(this.state.data.bgcolor);
     const textColorStyles = this.sendStyles(this.state.data.textcolor);
@@ -804,7 +817,7 @@ class Themes extends Component {
                     </Typography>
                     <Slider
                       className={this.props.classes.pageOptionsSlider}
-                      onChangeCommitted={this.handleFontSize}
+                      onChange={this.handleFontSize}
                       value={this.state.data.fontsize}
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
@@ -828,7 +841,11 @@ class Themes extends Component {
                     options={this.state.fontFamilies}
                     autoHighlight
                     getOptionLabel={(option) => option.label}
-                    value={this.state.fontFamilies[this.state.fontFamilyIndex]}
+                    value={
+                      this.state.editMode
+                        ? this.state.fontFamilies[this.state.fontFamilyIndex]
+                        : this.getFontFamilyItem(this.state.defaultFontFamily)
+                    }
                     renderInput={(params) => (
                       <TextField
                         className={this.props.classes.textfield}
@@ -1076,12 +1093,11 @@ class Themes extends Component {
             }}
           >
             <Fab
-              onClick={() =>
-                this.setState({
-                  data: { boxSpacingConfig: initialBoxSpacingConfig },
-                  createModal: true,
-                })
-              }
+              onClick={() => {
+                let data = this.state.data;
+                data.boxSpacingConfig = initialBoxSpacingConfig;
+                this.setState({ data, createModal: true });
+              }}
               color="primary"
               aria-label="add"
             >
