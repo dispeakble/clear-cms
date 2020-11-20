@@ -117,8 +117,6 @@ class MenuModule extends Component {
             maxWidth: "100%",
             backgroundColor: "#FFDF00",
           },
-        },
-        MuiDialog: {
           paper: {
             width: "100%",
             backgroundColor: "#FFDF00",
@@ -699,8 +697,10 @@ class MenuModule extends Component {
                 let menuOptions = this.state.menuOptions;
                 let foundLinks = false;
                 menuOptions.forEach((item) => {
-                  if (!item.link) {
+                  if (item.link) {
                     foundLinks = true;
+                  } else {
+                    foundLinks = false;
                   }
                 });
                 if (!foundLinks) {
