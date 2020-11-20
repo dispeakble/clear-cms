@@ -1154,27 +1154,32 @@ class PagesAdd extends React.PureComponent {
   };
 
   createColorPicker = (styles, displayColorPicker, targetedColor) => {
-    if (!styles) {
+    if (!this.state[styles]) {
       return;
     }
+
+    let pickerColor = Object.assign({}, this.state[styles].color);
+
+    pickerColor.background = this.state[targetedColor];
+
     return (
       <div>
         <div
-          style={styles.swatch}
+          style={this.state[styles].swatch}
           onClick={() => this.handleClick(displayColorPicker)}
         >
-          <div style={styles.color} />
+          <div style={pickerColor} />
         </div>
         {this.state[displayColorPicker] ? (
-          <div style={styles.popover}>
+          <div style={this.state[styles].popover}>
             <div
-              style={styles.cover}
+              style={this.state[styles].cover}
               onClick={() => this.handleColorPickerClose(displayColorPicker)}
             />
             <SketchPicker
               color={this.state[targetedColor]}
-              onChangeComplete={async (color) => {
-                await this.setAsyncState({
+              onChangeComplete={(color) => {
+                this.setState({
                   [targetedColor]: color.hex,
                 });
               }}
@@ -1430,7 +1435,7 @@ class PagesAdd extends React.PureComponent {
                       }
                     >
                       {this.createColorPicker(
-                        this.state.itemTextColorStyles,
+                        "itemTextColorStyles",
                         "displayItemTextColorPicker",
                         "editItemTextColor"
                       )}
@@ -1459,7 +1464,7 @@ class PagesAdd extends React.PureComponent {
                       }
                     >
                       {this.createColorPicker(
-                        this.state.itemBgColorStyles,
+                        "itemBgColorStyles",
                         "displayItemBgColorPicker",
                         "editItemBackgroundColor"
                       )}
@@ -1468,7 +1473,7 @@ class PagesAdd extends React.PureComponent {
                   <div style={{ position: "relative" }}>
                     <Typography gutterBottom>Border Color</Typography>
                     {this.createColorPicker(
-                      this.state.itemBorderColorStyles,
+                      "itemBorderColorStyles",
                       "displayItemBorderColorPicker",
                       "editItemBorderColor"
                     )}
@@ -1639,7 +1644,7 @@ class PagesAdd extends React.PureComponent {
                         <h5>Background Color</h5>
 
                         {this.createColorPicker(
-                          this.state.bgColorStyles,
+                          "bgColorStyles",
                           "displayBgColorPicker",
                           "bgColor"
                         )}
@@ -1716,7 +1721,7 @@ class PagesAdd extends React.PureComponent {
                         </div>
                         <h5>Text Color</h5>
                         {this.createColorPicker(
-                          this.state.textColorStyles,
+                          "textColorStyles",
                           "displayTextColorPicker",
                           "textColor"
                         )}
