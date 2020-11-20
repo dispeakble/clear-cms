@@ -350,16 +350,8 @@ class MenuModule extends Component {
     props: {
       icons: {
         Add: () => <AddCircle className={this.props.classes.addIcon} />,
-        Check: () => (
-          <IconButton color="primary">
-            <Check color="primary" />{" "}
-          </IconButton>
-        ),
-        Clear: () => (
-          <IconButton color="error">
-            <Clear color="error" />{" "}
-          </IconButton>
-        ),
+        Check: () => <Check color="primary" />,
+        Clear: () => <Clear color="error" />,
         Edit: () => (
           <IconButton color="primary">
             <Edit color="primary" />{" "}
