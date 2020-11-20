@@ -685,15 +685,8 @@ class MenuModule extends Component {
               onClick={() => {
                 this.props.onEndEditingModule();
                 let menuOptions = this.state.menuOptions;
-                let foundLinks = false;
-                menuOptions.forEach((item) => {
-                  if (item.link) {
-                    foundLinks = true;
-                  } else {
-                    foundLinks = false;
-                  }
-                });
-                if (!foundLinks) {
+
+                if (!menuOptions.length) {
                   this.setState({ noLinksFound: true });
                 } else {
                   this.props.onEndEditingModule();
