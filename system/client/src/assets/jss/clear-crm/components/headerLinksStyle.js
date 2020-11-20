@@ -17,10 +17,6 @@ const headerLinksStyle = (theme) => ({
     position: "relative",
     height: "100%",
   },
-  listItemActive: {
-    color: "red",
-    background: "black",
-  },
   listItem: {
     color: "inherit",
     position: "relative",

@@ -3,7 +3,7 @@ import React from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 // react components for routing our app without refresh
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router";
 
 // @material-ui/core components
@@ -112,19 +112,28 @@ export default function HeaderLinks(props) {
         <AccordionDetails className={classes.accordion}>
           <List className={classes.accordionLinks}>
             {props.moduleList.map((module) => (
-              <Link to={module.toLink} className={classes.links}>
+              <NavLink
+                key={module.name}
+                to={module.toLink}
+                className={classes.links}
+                activeStyle={{
+                  fontWeight: 900,
+                  color: "white",
+                  backgroundColor: "#006C6C",
+                }}
+              >
                 <ListItem
                   onClick={() => props.closeDrawer()}
                   className={classes.accordionLinksItem}
                   button
-                  activeClassName={module.active ? classes.listItemActive : {}}
+                  style={{ backgroundColor: "inherit" }}
                 >
                   <ListItemIcon>
-                    <Icon>{module.icon}</Icon>
+                    <Icon style={{ color: "white" }}>{module.icon}</Icon>
                   </ListItemIcon>
                   <ListItemText primary={module.name} />
                 </ListItem>
-              </Link>
+              </NavLink>
             ))}
           </List>
         </AccordionDetails>
