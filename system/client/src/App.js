@@ -13,8 +13,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { Helmet } from "react-helmet";
 
 //views //TODO MOVE TO CONTROLLERS
-//import Components from "views/Components/Components.js";
-import ViewAuth from "views/ViewAuth/ViewAuth.js";
 import Dashboard from "views/Dashboard/Dashboard.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
@@ -161,6 +159,7 @@ class App extends Component {
   };
   render() {
     const { pathname } = this.props.location;
+    const basePath = pathname.substring(1).split('/');
     return (
       <React.Fragment>
         <Helmet>
@@ -169,7 +168,7 @@ class App extends Component {
 
         <MuiThemeProvider theme={this.getTheme()}>
           <CssBaseline />
-          {this.state.excludeHeader.indexOf(pathname.replaceAll("/", "")) ===
+          {this.state.excludeHeader.indexOf(basePath[0]) ===
           -1 ? (
             <Header
               mobileOpen={this.state.mobileOpen}
