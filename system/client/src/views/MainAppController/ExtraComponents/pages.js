@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import styles from "assets/jss/clear-crm/views/pages.js";
 
 import { Helmet } from "react-helmet";

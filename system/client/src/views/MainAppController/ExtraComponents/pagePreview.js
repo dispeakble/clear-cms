@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Suspense } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from "react-router-dom";
