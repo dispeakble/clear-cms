@@ -3,7 +3,7 @@ import { withRouter, Route, Switch } from "react-router-dom";
 
 //Wrappers
 import Header from "components/Header/Header.js";
-import HeaderLinks from "components/Header/HeaderLinks.js";
+import SideMenuLinks from "components/Header/SideMenuLinks.js";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
@@ -33,57 +33,86 @@ import WsService from "services/ws.service";
 class App extends Component {
   state = {
     services: {},
-    moduleList: [
-      {
-        //TODO get this from hub module list
-        toLink: "/pages",
-        name: "Pages",
-        icon: "web",
-        active: true,
-      },
-      {
-        toLink: "/categories",
-        name: "Categories",
-        icon: "category",
-        active: false,
-      },
-      {
-        toLink: "/themes",
-        name: "Themes",
-        icon: "brush",
-        active: false,
-      },
-      {
-        toLink: "/blog",
-        icon: "book",
-        name: "Blog",
-        active: false,
-      },
-      {
-        toLink: "/forum",
-        icon: "forum",
-        name: "Forum",
-        active: false,
-      },
-      {
-        toLink: "/video-conference",
-        icon: "video_call",
-        name: "Video Conference",
-        active: false,
-      },
-      {
-        toLink: "/file-transfer",
-        icon: "attachment",
-        name: "File Transfer",
-        active: false,
-      },
-      {
-        toLink: "/photo-gallery",
-        icon: "photo_library",
-        name: "Photo Gallery",
-        active: false,
-      },
-    ],
+    moduleList: {
+      list: [
+        {
+          id: 1,
+          title: "",
+          items: [
+            {
+              id: 1,
+              name: "All Modules",
+              icon: "apps",
+              subitems: [
+                {
+                  //TODO get this from hub module list
+                  toLink: "/pages",
+                  name: "Pages",
+                  icon: "web",
+                  active: true,
+                },
+                {
+                  toLink: "/categories",
+                  name: "Categories",
+                  icon: "category",
+                  active: false,
+                },
+                {
+                  toLink: "/themes",
+                  name: "Themes",
+                  icon: "brush",
+                  active: false,
+                },
+                {
+                  toLink: "/blog",
+                  icon: "book",
+                  name: "Blog",
+                  active: false,
+                },
+                {
+                  toLink: "/forum",
+                  icon: "forum",
+                  name: "Forum",
+                  active: false,
+                },
+                {
+                  toLink: "/video-conference",
+                  icon: "video_call",
+                  name: "Video Conference",
+                  active: false,
+                },
+                {
+                  toLink: "/file-transfer",
+                  icon: "attachment",
+                  name: "File Transfer",
+                  active: false,
+                },
+                {
+                  toLink: "/photo-gallery",
+                  icon: "photo_library",
+                  name: "Photo Gallery",
+                  active: false,
+                },
+              ],
+            },
+            {
+              id: 1,
+              name: "Settings",
+              icon: "settings",
+              subitems: [
+                {
+                  //TODO get this from hub module list
+                  toLink: "/general-settings",
+                  name: "General Settings",
+                  icon: "settings",
+                  active: false,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
     excludeHeader: ["pagePreview", "view-auth", "recover-password"],
     socket: {},
     mobileOpen: false,
@@ -176,7 +205,7 @@ class App extends Component {
               brand="Clear CRM"
               handleDrawerToggle={() => this.handleDrawerToggle()}
               leftLinks={
-                <HeaderLinks
+                <SideMenuLinks
                   closeDrawer={() => this.handleDrawerToggle()}
                   moduleList={this.state.moduleList}
                 />
