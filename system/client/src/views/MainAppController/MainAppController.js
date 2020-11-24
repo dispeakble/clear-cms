@@ -25,7 +25,8 @@ class MainAppController extends Component {
     const { location } = this.props;
 
     const currentPath = location.pathname;
-    const pathnames = this.props.moduleList;
+    const pathnames = this.props.moduleList.list[0].items[0].subitems;
+    console.log(pathnames);
     const pathObject = currentPath.split("/");
     let LazyComponent;
     if (this.hasModule(currentPath, pathnames) && !pathObject[2]) {
