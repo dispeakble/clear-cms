@@ -111,13 +111,8 @@ const profilePageStyle = {
   },
   button: {
     marginTop: "10%",
-    backgroundColor: "white",
-    color: "darkcyan",
-    border: "1px solid darkcyan",
-    fontWeight: "300",
-    transition: "all 0.5s",
+    marginBottom: "10%",
     cursor: "pointer",
-    "&:hover": { backgroundColor: "darkcyan", color: "white" },
   },
   syncAccountText: {
     textAlign: "left",
