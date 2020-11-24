@@ -2,13 +2,24 @@ FROM node:14.5.0-alpine As crm-nestjs
 
 RUN ["npm", "i", "-g", "@nestjs/cli"]
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /usr/src/api
+WORKDIR /usr/src/api
 
-COPY ./api/package*.json /usr/src/app/
+COPY ./api/package*.json /usr/src/api/
+COPY ./api/yarn.lock /usr/src/api/yarn.lock
+
 RUN npm install
-COPY ./api /usr/src/app
+
+COPY ./api/src /usr/src/api/src
+COPY ./api/.env /usr/src/api/.env
+COPY ./api/nest-cli.json /usr/src/api/nest-cli.json
+COPY ./api/tsconfig.build.json /usr/src/api/tsconfig.build.json
+COPY ./api/tsconfig.json /usr/src/api/tsconfig.json
 
 RUN npm run build
 
-#CMD ["docker", "tag", "clearcrm_crm-db", "localhost:5000/crm-db:latest", "&&", "docker", "push", "localhost:5000/crm-db:latest"]
+CMD ["rm", "-fr", "src"]
+CMD ["npm","run","start:prod"]
+
+#CMD ["docker", "tag", "clearcrm_crm-proxy", "localhost:5000/crm-proxy:latest", "&&", "docker", "push", "localhost:5000/crm-proxy:latest"]
+

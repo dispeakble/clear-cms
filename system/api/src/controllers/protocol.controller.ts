@@ -30,6 +30,7 @@ export class ProtocolController {
     };
 
     constructor(
+      @Inject('SystemService') private systemService,
       @Inject('ProtocolService') private protocolService,
       @Inject('HttpService') private httpService,
       @Inject('AuthService') private authService,
@@ -50,18 +51,31 @@ export class ProtocolController {
     async onApplicationBootstrap() {
         await this.protocolService.start();
         this.logger.log('system connected to redis');
-        this.registerModule({after: 0});
-        await this.protocolService.emitMessage({
+        let payload: ModuleInterface = {
+            name: 'proxy',
+            version: '20.10.25',
+            description: 'the main http proxy (gateway)',
+            started: new Date(),
+            config: {
+                restart: true,
+                stop: false
+            },
+            dependencies: [{
+                name: 'hub',
+                version: 'latest'
+            }],
+        };
+        this.systemService.registerModule(payload);
+        const response = await this.protocolService.sendMessage({
             channel: 'hub',
+            api: 'module',
+            act: 'mapPort',
             payload: {
-                api: 'module',
-                act: 'mapPort',
-                payload: {
-                    channel: 'system',
-                    port: process.env.backend_port
-                }
+                channel: 'system',
+                port: process.env.backend_port
             }
-        })
+        });
+        console.log(response);
     }
 
     private registerModule(params) {

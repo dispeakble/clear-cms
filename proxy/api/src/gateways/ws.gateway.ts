@@ -26,7 +26,7 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     private callbacks = {};
 
     afterInit(server: Server) {
-        this.logger.log('Initialized...');
+        console.log('Websocket Initialized...');
         this.wss.on('connect', function (socket) {
             socket.on('message', (data) => {
                 console.log(data);
