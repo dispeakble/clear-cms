@@ -3,7 +3,7 @@ import io from "socket.io-client";
 class WsService {
 
     client;
-    url = 'ws://127.0.0.1:9696/ws';//TODO GET FROM SERVER AND WSS AS WELL
+    url = 'ws://'+ window.location.host +'/ws';//TODO GET FROM SERVER AND WSS AS WELL
     options = {transports: ['websocket']};
     callbacks = {
         message: {}
@@ -11,6 +11,7 @@ class WsService {
 
     start(data) {
         return new Promise((resolve_start) => {
+            this.url = window.location.port === 3000 ? 'ws://127.0.0.1:9696/ws' : 'ws://'+ window.location.host +'/ws';
             this.client = io(this.url, this.options);
 
             //['message', 'disconnect'].map((e) => this.client.on(e, this['on' + e]));

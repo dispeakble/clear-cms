@@ -155,7 +155,7 @@ export class ModuleService {
         ports = ports || {};
         ports[data.port] = data.channel;
         await this.cacheService.set('ports', JSON.stringify(ports));
-        this.protocolService.emitEvent({
+        return this.protocolService.sendMessage({
             channel: 'proxy',
             payload: {
                 api: 'app',

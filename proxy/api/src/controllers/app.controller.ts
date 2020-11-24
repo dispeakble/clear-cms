@@ -31,6 +31,7 @@ export class AppController {
             };
             let response = await this.systemService.registerModule(payload);
             console.log(response);
+            //TODO make a retry. copy from protocol.controllers.ts
 
             this.wsGateway.registerCallbacks({
                 callbacks: {

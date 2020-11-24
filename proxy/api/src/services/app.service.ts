@@ -16,6 +16,8 @@ export class AppService {
 
     private updatePortMapping(data){
         this.portMappingCallback(data);
+        console.log(data);
+        return data;
     }
 
     public perform(data: any) {

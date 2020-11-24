@@ -5,8 +5,12 @@ RUN mkdir -p /usr/src/client/
 WORKDIR /usr/src/client
 
 COPY ./client/package*.json /usr/src/client/
+COPY ./client/yarn.lock /usr/src/client/yarn.lock
 RUN npm install
-COPY ./client /usr/src/client
+COPY ./client/public /usr/src/client/public
+COPY ./client/src /usr/src/client/src
+COPY ./client/.babelrc /usr/src/client/.babelrc
+COPY ./client/jsconfig.json /usr/src/client/jsconfig.json
 
 RUN npm run build
 WORKDIR /usr/src
@@ -17,8 +21,16 @@ WORKDIR /usr/src/api
 RUN npm i -g @nestjs/cli
 
 COPY ./api/package*.json /usr/src/api/
+COPY ./api/yarn.lock /usr/src/api/yarn.lock
+
 RUN npm install
-COPY ./api /usr/src/api
+
+COPY ./api/src /usr/src/api/src
+COPY ./api/config /usr/src/api/config
+COPY ./api/.env /usr/src/api/.env
+COPY ./api/nest-cli.json /usr/src/api/nest-cli.json
+COPY ./api/tsconfig.build.json /usr/src/api/tsconfig.build.json
+COPY ./api/tsconfig.json /usr/src/api/tsconfig.json
 
 RUN npm run build
 
