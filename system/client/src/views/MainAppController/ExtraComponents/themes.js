@@ -4,6 +4,7 @@ import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 
 import Editor from "./themeEditor/src/screen/editor";
+import { NavLink } from "react-router-dom";
 
 import styles from "assets/jss/clear-crm/views/themes.js";
 import Button from "components/CustomButtons/Button.js";
@@ -63,7 +64,8 @@ class Themes extends Component {
     adminThumbnails: [],
     createModal: false,
     showModal: false,
-    data: {
+    data: {},
+    defaults: {
       // de inlocuit newBgImage si editBgImage cu this.data.bgImage etc.
       title: "",
       bgcolor: "",
@@ -73,7 +75,16 @@ class Themes extends Component {
       fontfamily: "Arial",
       isdefault: false,
       html2canvasImage: "",
-      boxSpacingConfig: "",
+      boxSpacingConfig: {
+        layoutBoxSpacing: [10, 10],
+        layoutBoxPadding: {
+          lg: [1, 1],
+          md: [1, 1],
+          sm: [1, 1],
+          xs: [1, 1],
+          xxs: [1, 1],
+        },
+      },
       bgrepeat: "",
       bgstretch: "",
     },
@@ -96,12 +107,19 @@ class Themes extends Component {
     showEditorMenu: true,
     fullEditorData: "",
     defaultFontFamily: "Arial",
+    showEmptyTitleMessage: false,
+    rerenderedModal: false,
   };
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
 
   componentDidMount() {
+    let path = this.props.hist.location.pathname.split("/");
+    let side = path[2] === "public" ? 0 : 1;
+
+    this.setState({ side });
+
     let thumbnailsInStorage = JSON.parse(localStorage.getItem("publicThemes"));
     if (thumbnailsInStorage) {
       this.setState({ thumbnails: thumbnailsInStorage });
@@ -160,6 +178,7 @@ class Themes extends Component {
 
   onRemoveItem = async () => {
     if (this.state.side) {
+      //is admin theme
       let adminThumbnails = [...this.state.adminThumbnails];
 
       let newThumbnails = adminThumbnails.filter(
@@ -192,6 +211,12 @@ class Themes extends Component {
     return this.state.thumbnails.find((tbn) => tbn.id === passedId);
   };
 
+  enableAddMode = () => {
+    this.setState({
+      data: Object.assign({}, this.state.defaults),
+    });
+  };
+
   enableEditMode = async (id) => {
     const tbn = this.state.side
       ? this.state.adminThumbnails.find((tbn) => tbn.id === id)
@@ -199,31 +224,12 @@ class Themes extends Component {
 
     let data = {};
 
-    let fullEditorData = JSON.parse(localStorage.getItem("fullEditorData"));
+    let fontFamilyIndex = this.getFontFamilyIndex(tbn.fontfamily);
 
-    if (this.state.side) {
-      data = tbn;
+    data = Object.assign({}, tbn);
 
-      if (fullEditorData) {
-        fullEditorData.palette = data;
-      }
-    } else {
-      data.id = tbn.id;
-      data.title = tbn.title;
-      data.bgcolor = tbn.bgcolor;
-      data.bgimage = tbn.bgimage;
-      data.fontsize = tbn.fontsize;
-      data.textcolor = tbn.textcolor;
-      data.fontfamily = tbn.fontfamily;
-      data.isdefault = tbn.isdefault;
-      data.boxSpacingConfig = tbn.boxSpacingConfig;
-      data.bgrepeat = tbn.bgrepeat;
-      data.bgstretch = tbn.bgstretch;
-    }
-
-    this.setState({
-      data,
-      editMode: true,
+    let fullEditorData = createMuiTheme({
+      palette: data,
     });
 
     if (fullEditorData) {
@@ -232,13 +238,12 @@ class Themes extends Component {
       });
     }
 
-    let fontFamilyIndex = this.getFontFamilyIndex(tbn.fontfamily);
-
-    this.setState({
+    await this.setAsyncState({
       fontFamilyIndex,
+      data,
+      editMode: true,
+      createModal: true,
     });
-
-    this.setState({ createModal: true });
   };
 
   disableEditMode = () => {
@@ -247,6 +252,7 @@ class Themes extends Component {
 
   saveTbnInStorage = () => {
     if (this.state.side) {
+      //is admin theme
       localStorage.setItem(
         "adminThemes",
         JSON.stringify(this.state.adminThumbnails)
@@ -269,6 +275,7 @@ class Themes extends Component {
           >
             <CardActionArea>
               <CardMedia
+                onClick={() => this.enableEditMode(tbn.id)}
                 style={{ backgroundSize: "contain" }}
                 className={this.props.classes.media}
                 image={tbn.html2canvasImage}
@@ -278,7 +285,7 @@ class Themes extends Component {
               </CardContent>
             </CardActionArea>
             <CardActions style={{ justifyContent: "flex-end" }}>
-              <Tooltip title="Edit Thumbnail">
+              <Tooltip title="Edit Theme">
                 <IconButton
                   onClick={() => this.enableEditMode(tbn.id)}
                   style={{ cursor: "pointer" }}
@@ -288,7 +295,7 @@ class Themes extends Component {
                   <Edit />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Remove Thumbnail">
+              <Tooltip title="Remove Theme">
                 <IconButton
                   onClick={() => {
                     this.showRemoveTbnModal(tbn.id);
@@ -316,9 +323,9 @@ class Themes extends Component {
     return (
       <div className={this.props.classes.outerWrapper}>
         <div className={this.props.classes.thumbnailsWrapper}>
-          {!this.state.side
-            ? thumbnails.map((tbn) => createThumbnail(tbn))
-            : adminThumbnails.map((tbn) => createThumbnail(tbn))}
+          {this.state.side
+            ? adminThumbnails.map((tbn) => createThumbnail(tbn))
+            : thumbnails.map((tbn) => createThumbnail(tbn))}
         </div>
       </div>
     );
@@ -401,9 +408,9 @@ class Themes extends Component {
     });
   };
 
-  handleInputChange = (event, tbnOnEdit) => {
+  handleInputChange = (event) => {
     let data = this.state.data;
-    data.title = event.target.value + "";
+    data.title = event + "";
     this.setState({ data });
   };
 
@@ -491,26 +498,67 @@ class Themes extends Component {
     }
   };
 
-  handleDefault = () => {
+  handleDefault = (currentIsDefault) => {
     let thumbnails;
 
     if (this.state.side) {
+      //is admin theme
       thumbnails = [...this.state.adminThumbnails];
     } else {
       thumbnails = [...this.state.thumbnails];
     }
 
-    let newThumbnails = thumbnails.map((tbn) => {
-      let newTbn = tbn;
-      newTbn.isdefault = false;
-      return newTbn;
-    });
-    let data = this.state.data;
-    data.isdefault = !data.isdefault;
-    this.setState({ thumbnails: newThumbnails, data });
+    if (this.state.editMode) {
+      if (currentIsDefault) {
+        thumbnails = thumbnails.map((tbn) => {
+          let newTbn = tbn;
+          if (tbn.id !== this.state.data.id) {
+            newTbn.isdefault = false;
+          }
+          return newTbn;
+        });
+      }
+
+      let data = this.state.data;
+      //data.isdefault = !currentIsDefault;
+      this.setState({ thumbnails: thumbnails, data });
+    } else {
+      let newThumbnails = thumbnails.map((tbn) => {
+        let newTbn = tbn;
+        newTbn.isdefault = false;
+        return newTbn;
+      });
+
+      let data = this.state.data;
+      data.isdefault = !currentIsDefault;
+
+      this.setState({
+        thumbnails: newThumbnails,
+        data,
+      });
+    }
   };
 
-  saveChangedStyle = async (previewElement) => {
+  handleBgRepeat = (currentBgRepeat) => {
+    let data = this.state.data;
+    data.bgrepeat = !currentBgRepeat;
+
+    this.setState({ data });
+  };
+
+  handleBgStretch = (currentBgStretch) => {
+    let data = this.state.data;
+    data.bgstretch = !currentBgStretch;
+
+    this.setState({ data });
+  };
+
+  saveChangedStyle = async (
+    currentTitleInput,
+    currentIsDefault,
+    currentBgRepeat,
+    currentBgStretch
+  ) => {
     if (this.state.side) {
       let adminPreviewElement = document.querySelector("#adminPreviewElement");
 
@@ -528,11 +576,12 @@ class Themes extends Component {
 
       thumbnail = this.themeEditor.state.theme.palette;
 
-      thumbnail.title = this.state.data.title;
+      thumbnail.title = currentTitleInput;
 
       thumbnail.id = this.state.data.id || 0;
 
-      thumbnail.isdefault = this.state.data.isdefault;
+      thumbnail.isdefault = currentIsDefault;
+
       thumbnail.html2canvasImage = base64image;
 
       let adminThumbnails = this.state.adminThumbnails;
@@ -554,15 +603,16 @@ class Themes extends Component {
         );
 
         adminThumbnails[foundTbnIndex] = thumbnail;
-        fullEditorData.palette = thumbnail;
+        //fullEditorData.palette = thumbnail;
       }
 
       await this.setAsyncState({
         adminThumbnails,
       });
 
-      localStorage.setItem("fullEditorData", JSON.stringify(fullEditorData));
+      //localStorage.setItem("fullEditorData", JSON.stringify(fullEditorData));
     } else {
+      let previewElement = document.querySelector("#previewElement");
       let canvas;
       let base64image;
 
@@ -575,17 +625,17 @@ class Themes extends Component {
 
       let thumbnail = {
         id: this.state.data.id || 0,
-        title: this.state.data.title,
+        title: currentTitleInput,
         bgcolor: this.state.data.bgcolor,
         bgimage: this.state.data.bgimage,
         fontsize: this.state.data.fontsize,
         textcolor: this.state.data.textcolor,
         fontfamily: this.state.data.fontfamily,
-        isdefault: this.state.data.isdefault,
+        isdefault: currentIsDefault,
         html2canvasImage: base64image,
         boxSpacingConfig: this.state.data.boxSpacingConfig,
-        bgrepeat: this.state.data.bgrepeat,
-        bgstretch: this.state.data.bgstretch,
+        bgrepeat: currentBgRepeat,
+        bgstretch: currentBgStretch,
       };
 
       let thumbnails = this.state.thumbnails;
@@ -621,7 +671,7 @@ class Themes extends Component {
 
     this.closeNewThumbnailModal();
 
-    this.setState({ createModal: false });
+    this.setState({ createModal: false, showEmptyTitleMessage: false });
 
     this.props.tweakTheState();
   };
@@ -648,15 +698,15 @@ class Themes extends Component {
     ];
   }
 
-  createNewThumbnail() {
+  openEditor(reset) {
     const bgColorStyles = this.sendStyles(this.state.data.bgcolor);
     const textColorStyles = this.sendStyles(this.state.data.textcolor);
 
-    let tbnOnEdit = this.getTbnOnEdit(this.state.tbnOnEditId);
+    let currentTitleInput = this.state.data.title;
+    let currentIsDefault = this.state.data.isdefault;
 
-    let previewElement = document.querySelector("#previewElement");
-
-    let adminPreviewElement = document.querySelector("#adminPreviewElement");
+    let currentBgRepeat = this.state.data.bgrepeat;
+    let currentBgStretch = this.state.bgstretch;
 
     return (
       <Dialog
@@ -683,7 +733,7 @@ class Themes extends Component {
           className={this.props.classes.modalHeader}
         >
           <h4 style={{ textAlign: "center" }}>
-            {this.state.editMode ? "Edit Thumbnail" : "New Thumbnail"}
+            {this.state.editMode ? "Edit Theme" : "New Theme"}
           </h4>
         </DialogTitle>
         <DialogContent
@@ -693,36 +743,52 @@ class Themes extends Component {
         >
           {this.state.side ? (
             <React.Fragment>
-              <div className={this.props.classes.pageTitleInputWrapper}>
-                <CustomInput
-                  labelText="Theme Title"
-                  id="themeTitle"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) =>
-                      this.handleInputChange(event, tbnOnEdit),
-                  }}
-                  inputProps={{
-                    inputProps: {
-                      minLength: "3",
-                      maxLength: "50",
-                    },
-                    value: this.state.data.title,
+              <div className={this.props.classes.modalHeadWrapper}>
+                <div className={this.props.classes.modalHeadColumn}>
+                  {this.state.showEmptyTitleMessage ? (
+                    <div style={{ fontWeight: 900, color: "red" }}>
+                      Please type in a title for this theme
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <CustomInput
+                    labelText="Theme Title"
+                    id="themeTitle"
+                    required="required"
+                    formControlProps={{
+                      fullWidth: true,
+                      onChange: (event) => {
+                        currentTitleInput = event.target.value;
+                      },
+                      // this.handleInputChange(event, tbnOnEdit),
+                    }}
+                    inputProps={{
+                      inputProps: {
+                        minLength: "3",
+                        maxLength: "50",
+                      },
+                      defaultValue: this.state.data.title,
 
-                    type: "text",
-                  }}
-                />
-              </div>
-              <Typography gutterBottom>
-                <Tooltip title="Set as theme for all pages">
-                  <Switch
-                    checked={this.state.data.isdefault}
-                    onChange={this.handleDefault}
+                      type: "text",
+                    }}
                   />
-                </Tooltip>
-                Default Theme
-              </Typography>
+                </div>
+                <div className={this.props.classes.modalHeadWrapper}>
+                  <Typography gutterBottom>
+                    <Tooltip title="Set as theme for all pages">
+                      <Switch
+                        defaultChecked={this.state.data.isdefault}
+                        onChange={(event) => {
+                          currentIsDefault = event.target.checked;
+                        }}
+                      />
+                    </Tooltip>
+                    Default Theme
+                  </Typography>
+                </div>
+              </div>
+
               <Editor
                 visibleMenu={this.state.showEditorMenu}
                 id="themeEditor"
@@ -737,26 +803,49 @@ class Themes extends Component {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <div className={this.props.classes.pageTitleInputWrapper}>
-                <CustomInput
-                  labelText="Theme Title"
-                  id="themeTitle"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) =>
-                      this.handleInputChange(event, tbnOnEdit),
-                  }}
-                  inputProps={{
-                    inputProps: {
-                      minLength: "3",
-                      maxLength: "50",
-                    },
-                    value: this.state.data.title,
+              <div className={this.props.classes.modalHeadWrapper}>
+                {this.state.showEmptyTitleMessage ? (
+                  <div style={{ fontWeight: 900, color: "red" }}>
+                    Please type in a title for this theme
+                  </div>
+                ) : (
+                  ""
+                )}
+                <div className={this.props.classes.modalHeadColumn}>
+                  <CustomInput
+                    labelText="Theme Title"
+                    id="themeTitle"
+                    required="required"
+                    formControlProps={{
+                      fullWidth: true,
+                      onChange: (event) => {
+                        currentTitleInput = event.target.value;
+                      },
+                    }}
+                    inputProps={{
+                      inputProps: {
+                        minLength: "3",
+                        maxLength: "50",
+                      },
+                      defaultValue: this.state.data.title,
 
-                    type: "text",
-                  }}
-                />
+                      type: "text",
+                    }}
+                  />
+                </div>
+                <div className={this.props.classes.modalHeadColumn}>
+                  <Typography gutterBottom>
+                    <Tooltip title="Set as theme for all pages">
+                      <Switch
+                        defaultChecked={this.state.data.isdefault}
+                        onChange={(event) => {
+                          currentIsDefault = event.target.checked;
+                        }}
+                      />
+                    </Tooltip>
+                    Default Theme
+                  </Typography>
+                </div>
               </div>
 
               <div className={this.props.classes.newTbnStylesWrapper}>
@@ -786,9 +875,10 @@ class Themes extends Component {
                     <Typography id="discrete-slider" gutterBottom>
                       <Tooltip title="Background Repeat">
                         <Switch
-                          checked={this.state.data.bgrepeat}
-                          onChange={this.handleItemBgRepeat}
-                          value={this.state.data.bgrepeat}
+                          defaultChecked={this.state.data.bgrepeat}
+                          onChange={(event) => {
+                            currentBgRepeat = event.target.checked;
+                          }}
                         />
                       </Tooltip>
                       Background Repeat
@@ -799,8 +889,10 @@ class Themes extends Component {
                     <Typography id="discrete-slider" gutterBottom>
                       <Tooltip title="Background Stretch">
                         <Switch
-                          checked={this.state.data.bgstretch}
-                          onChange={this.handleItemBgStretch}
+                          defaultChecked={this.state.data.bgstretch}
+                          onChange={(event) => {
+                            currentBgStretch = event.target.checked;
+                          }}
                           value={this.state.data.bgstretch}
                         />
                       </Tooltip>
@@ -875,15 +967,6 @@ class Themes extends Component {
                   />
                 </div>
               </div>
-              <Typography gutterBottom>
-                <Tooltip title="Set as theme for all pages">
-                  <Switch
-                    checked={this.state.data.isdefault}
-                    onChange={this.handleDefault}
-                  />
-                </Tooltip>
-                Default Theme
-              </Typography>
 
               <div>
                 <h4 className={this.props.classes.previewHead}>Preview</h4>
@@ -981,11 +1064,29 @@ class Themes extends Component {
         <DialogActions className={this.props.classes.modalFooter}>
           <Button
             color="primary"
-            onClick={() =>
+            onClick={() => {
+              if (!currentTitleInput.length) {
+                this.setState({
+                  showEmptyTitleMessage: true,
+                  rerenderedModal: true,
+                });
+                return;
+              }
+
+              this.handleInputChange(currentTitleInput);
+              this.handleDefault(currentIsDefault);
+              if (!this.state.side) {
+                this.handleBgRepeat(currentBgRepeat);
+                this.handleBgStretch(currentBgStretch);
+              }
               this.saveChangedStyle(
-                this.state.side ? adminPreviewElement : previewElement
-              )
-            }
+                currentTitleInput,
+                currentIsDefault,
+                currentBgRepeat,
+                currentBgStretch
+              );
+              this.setState({ rerenderedModal: false });
+            }}
           >
             <div>Save</div>
           </Button>
@@ -993,7 +1094,11 @@ class Themes extends Component {
             color="danger"
             onClick={() => {
               this.disableEditMode();
-              this.setState({ createModal: false });
+              this.setState({
+                createModal: false,
+                rerenderedModal: false,
+                showEmptyTitleMessage: false,
+              });
             }}
           >
             Cancel
@@ -1005,6 +1110,7 @@ class Themes extends Component {
 
   changeTab = (event, newValue) => {
     this.setAsyncState({ side: newValue });
+    localStorage.setItem("side", JSON.stringify(newValue));
   };
 
   createRemoveTbnModal() {
@@ -1018,7 +1124,7 @@ class Themes extends Component {
         aria-describedby="classic-modal-slide-description"
       >
         <DialogTitle id="classic-modal-slide-title" disableTypography>
-          <h4>Remove Selected Thumbnail</h4>
+          <h4>Remove Selected Theme</h4>
         </DialogTitle>
         <DialogContent id="classic-modal-slide-description">
           <div>Are you sure you want to proceed ?</div>
@@ -1055,17 +1161,6 @@ class Themes extends Component {
       };
     };
 
-    let initialBoxSpacingConfig = {
-      layoutBoxSpacing: [10, 10],
-      layoutBoxPadding: {
-        lg: [1, 1],
-        md: [1, 1],
-        sm: [1, 1],
-        xs: [1, 1],
-        xxs: [1, 1],
-      },
-    };
-
     return (
       <MuiThemeProvider theme={this.getTheme()}>
         <React.Fragment>
@@ -1076,10 +1171,14 @@ class Themes extends Component {
             <Tabs
               value={this.state.side}
               onChange={this.changeTab}
-              indicatorColor="primary"
+              indicatorColor="secondary"
             >
-              <Tab label="Public" {...a11yProps(0)} />
-              <Tab label="Admin" {...a11yProps(1)} />
+              <NavLink to="/themes/public">
+                <Tab label="Public" {...a11yProps(0)} />
+              </NavLink>
+              <NavLink to="/themes/admin">
+                <Tab label="Admin" {...a11yProps(1)} />
+              </NavLink>
             </Tabs>
           </AppBar>
           <div style={{ display: "flex" }}>
@@ -1092,19 +1191,21 @@ class Themes extends Component {
               right: "1rem",
             }}
           >
-            <Fab
-              onClick={() => {
-                let data = this.state.data;
-                data.boxSpacingConfig = initialBoxSpacingConfig;
-                this.setState({ data, createModal: true });
-              }}
-              color="primary"
-              aria-label="add"
-            >
-              <AddIcon />
-            </Fab>
+            <Tooltip title="Add new theme">
+              <Fab
+                onClick={() => {
+                  this.enableAddMode();
+
+                  this.setState({ createModal: true });
+                }}
+                color="primary"
+                aria-label="add"
+              >
+                <AddIcon />
+              </Fab>
+            </Tooltip>
           </div>
-          {this.state.createModal ? this.createNewThumbnail() : ""}
+          {this.state.createModal ? this.openEditor(true) : ""}
           {this.createRemoveTbnModal()}
         </React.Fragment>
       </MuiThemeProvider>
