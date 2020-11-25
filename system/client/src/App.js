@@ -159,7 +159,7 @@ class App extends Component {
   };
   render() {
     const { pathname } = this.props.location;
-    const basePath = pathname.substring(1).split('/');
+    const basePath = pathname.substring(1).split("/");
     return (
       <React.Fragment>
         <Helmet>
@@ -168,8 +168,7 @@ class App extends Component {
 
         <MuiThemeProvider theme={this.getTheme()}>
           <CssBaseline />
-          {this.state.excludeHeader.indexOf(basePath[0]) ===
-          -1 ? (
+          {this.state.excludeHeader.indexOf(basePath[0]) === -1 ? (
             <Header
               mobileOpen={this.state.mobileOpen}
               color="transparent"

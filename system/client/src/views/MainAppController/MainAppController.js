@@ -27,8 +27,9 @@ class MainAppController extends Component {
     const currentPath = location.pathname;
     const pathnames = this.props.moduleList;
     const pathObject = currentPath.split("/");
+    console.log(pathObject);
     let LazyComponent;
-    if (this.hasModule(currentPath, pathnames) && !pathObject[2]) {
+    if (this.hasModule(currentPath, pathnames)) {
       LazyComponent = React.lazy(() =>
         import(`./ExtraComponents/${pathObject[1]}`)
       );
@@ -58,6 +59,7 @@ class MainAppController extends Component {
             }
           >
             <LazyComponent
+              hist={this.props.history}
               tweakTheState={this.props.tweakTheState}
               defaultTheme={this.props.defaultTheme}
             />
