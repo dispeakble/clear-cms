@@ -175,7 +175,9 @@ class App extends Component {
 
     return createMuiTheme({
       palette: defaultTheme,
-      overrides: {},
+      overrides: {
+        paperWidthSm: "100%",
+      },
     });
   };
 

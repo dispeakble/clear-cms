@@ -84,7 +84,8 @@ class PagesAdd extends React.PureComponent {
       { label: "Header Module" },
       { label: "Menu Module" },
       { label: "Text Module" },
-      { label: "Theme Module" },
+      { label: "Gallery Module" },
+      { label: "Calendar Module" },
     ],
     config: {
       layoutBoxSpacing: [10, 10],
@@ -411,22 +412,13 @@ class PagesAdd extends React.PureComponent {
     const loadingFallback = (() => {
       return <span>Loading...</span>;
     })();
-    switch (el.module) {
-      default:
-        LazyModule = false;
-        break;
-      case "Header Module": //TODO MAKE THIS DYNAMIC
-        LazyModule = React.lazy(() => import(`./modules/HeaderModule`));
-        break;
-      case "Menu Module":
-        LazyModule = React.lazy(() => import(`./modules/MenuModule`));
-        break;
-      case "Text Module":
-        LazyModule = React.lazy(() => import(`./modules/TextModule`));
-        break;
-      case "Theme Module":
-        LazyModule = React.lazy(() => import(`./modules/ThemeModule`));
-        break;
+
+    LazyModule = false;
+
+    let moduleType = el.module.replaceAll(" ", "");
+
+    if (el.module) {
+      LazyModule = React.lazy(() => import(`./modules/${moduleType}`));
     }
 
     let itemActions = [
