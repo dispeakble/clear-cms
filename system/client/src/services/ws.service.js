@@ -11,7 +11,7 @@ class WsService {
 
     start(data) {
         return new Promise((resolve_start) => {
-            this.url = window.location.port === 3000 ? 'ws://127.0.0.1:9696/ws' : 'ws://'+ window.location.host +'/ws';
+            this.url = Number(window.location.port) === 3000 ? 'ws://localhost:9696/ws' : 'ws://'+ window.location.host +'/ws';
             this.client = io(this.url, this.options);
 
             //['message', 'disconnect'].map((e) => this.client.on(e, this['on' + e]));
