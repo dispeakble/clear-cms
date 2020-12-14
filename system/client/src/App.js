@@ -64,9 +64,9 @@ class App extends Component {
                   active: false,
                 },
                 {
-                  toLink: "/blog",
-                  icon: "book",
-                  name: "Blog",
+                  toLink: "/fileUpload",
+                  icon: "publish",
+                  name: "File Upload",
                   active: false,
                 },
                 {
