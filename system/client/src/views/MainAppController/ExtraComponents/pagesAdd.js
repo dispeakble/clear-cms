@@ -86,6 +86,7 @@ class PagesAdd extends React.PureComponent {
       { label: "Text Module" },
       { label: "Gallery Module" },
       { label: "Calendar Module" },
+      { label: "Video Module" },
     ],
     config: {
       layoutBoxSpacing: [10, 10],
