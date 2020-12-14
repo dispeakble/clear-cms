@@ -177,7 +177,7 @@ class GalleryModule extends Component {
     // localStorage.setItem("adminThemes", JSON.stringify(newThumbnails));
   };
 
-  handleItemBgImage = async (event) => {
+  handleUploadedImage = async (event) => {
     let temporaryImageSources = [...this.state.imageSources];
 
     if (event.length) {
@@ -533,7 +533,7 @@ class GalleryModule extends Component {
                     clearOnUnmount={true}
                     filesLimit={100}
                     className={this.props.classes.dropzone}
-                    onChange={this.handleItemBgImage}
+                    onChange={this.handleUploadedImage}
                   />
                   <Button
                     onClick={() => {
