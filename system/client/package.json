@@ -30,6 +30,7 @@
     "react-datetime": "2.16.3",
     "react-dom": "16.13.1",
     "react-grid-layout": "^1.1.1",
+    "react-h5-audio-player": "^3.5.0",
     "react-helmet": "^6.1.0",
     "react-image-gallery": "^1.0.8",
     "react-password-strength-bar": "^0.3.2",

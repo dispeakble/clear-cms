@@ -87,6 +87,7 @@ class PagesAdd extends React.PureComponent {
       { label: "Gallery Module" },
       { label: "Calendar Module" },
       { label: "Video Module" },
+      { label: "Audio Module" },
     ],
     config: {
       layoutBoxSpacing: [10, 10],
@@ -417,6 +418,8 @@ class PagesAdd extends React.PureComponent {
     LazyModule = false;
 
     let moduleType = el.module.replaceAll(" ", "");
+
+    console.log(moduleType);
 
     if (el.module) {
       LazyModule = React.lazy(() => import(`./modules/${moduleType}`));

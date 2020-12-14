@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
-import ReactPlayer from "react-player/lazy";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
@@ -20,20 +21,18 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Switch from "@material-ui/core/Switch";
-import Typography from "@material-ui/core/Typography";
+
 import Slider from "@material-ui/core/Slider";
 
-class VideoModule extends Component {
+import Typography from "@material-ui/core/Typography";
+
+class AudioModule extends Component {
   state = {
     url: "",
     sourceTypes: [{ label: "Exact URL" }, { label: "Query String Variable" }],
-    mute: false,
-    controls: false,
-    loop: false,
     editSourceType: 0,
-    enablePlayer: true,
     editVolume: 50,
+    enablePlayer: true,
   };
   getTheme = () => {
     return createMuiTheme({
@@ -50,10 +49,6 @@ class VideoModule extends Component {
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
-
-  load = (url) => {
-    console.log(url);
-  };
 
   getIndex(name) {
     return Number(
@@ -85,8 +80,11 @@ class VideoModule extends Component {
   handleVolume = async (event, newValue) => {
     await this.setAsyncState({
       editVolume: newValue,
-      mute: false,
+      enablePlayer: false,
     });
+    setTimeout(() => {
+      this.setState({ enablePlayer: true });
+    }, 30);
   };
 
   handleInputChange = (event) => {
@@ -127,7 +125,7 @@ class VideoModule extends Component {
   render() {
     return (
       <div>
-        <Tooltip title="Video Module">
+        <Tooltip title="Audio Module">
           <IconButton
             onClick={() => this.handleEdit(this.props.boxId)}
             color="primary"
@@ -162,30 +160,29 @@ class VideoModule extends Component {
             className={this.props.classes.modalHeader}
           >
             <h4 className={this.props.classes.modalTitle}>
-              Edit Video Player Module
+              Edit Audio Player Module
             </h4>
           </DialogTitle>
           <DialogContent
             id="classic-modal-slide-description"
             className={this.props.classes.modalBody}
           >
-            <div style={{ height: "360px" }}>
+            <div
+              style={{
+                height: "78px",
+                margin: "5% 0 10% 0",
+              }}
+            >
               {this.state.enablePlayer ? (
-                <ReactPlayer
+                <AudioPlayer
+                  src={this.state.url}
                   volume={this.state.editVolume / 100}
-                  width="100%"
-                  playing
-                  mute={this.state.mute}
-                  controls={this.state.controls}
-                  loop={this.state.loop}
-                  url={this.state.url}
                 />
               ) : (
                 ""
               )}
             </div>
             <Autocomplete
-              style={{ margin: "5% 0" }}
               id="moduleDropdown"
               onChange={this.handleSourceType}
               className={this.props.classes.option}
@@ -201,82 +198,7 @@ class VideoModule extends Component {
                   variant="outlined"
                 />
               )}
-            />
-            <Typography id="discrete-slider" gutterBottom>
-              Default Volume
-              <Slider
-                defaultValue={this.state.editVolume}
-                onChangeCommitted={this.handleVolume}
-                aria-labelledby="discrete-slider"
-                valueLabelDisplay="auto"
-                min={0}
-                max={100}
-              />
-            </Typography>
-            <div style={{ display: "flex" }}>
-              <div style={{ width: "33%" }}>
-                <Typography id="discrete-slider" gutterBottom>
-                  <Tooltip title="Mute Video">
-                    <Switch
-                      checked={this.state.mute}
-                      onChange={async () => {
-                        await this.setAsyncState({
-                          mute: !this.state.mute,
-                        });
-                        if (this.state.mute) {
-                          this.setState({
-                            editVolume: 0,
-                          });
-                        } else {
-                          this.setState({
-                            editVolume: 50,
-                          });
-                        }
-                      }}
-                    />
-                  </Tooltip>
-                  Muted
-                </Typography>
-              </div>
-              <div style={{ width: "33%" }}>
-                <Typography id="discrete-slider" gutterBottom>
-                  <Tooltip title="Enable Controls">
-                    <Switch
-                      checked={this.state.controls}
-                      onChange={() => {
-                        this.setState({
-                          controls: !this.state.controls,
-                          enablePlayer: false,
-                        });
-                        setTimeout(() => {
-                          this.setState({ enablePlayer: true });
-                        }, 30);
-                      }}
-                    />
-                  </Tooltip>
-                  Controls{" "}
-                </Typography>
-              </div>
-              <div style={{ width: "33%" }}>
-                <Typography id="discrete-slider" gutterBottom>
-                  <Tooltip title="Allow looping through video">
-                    <Switch
-                      checked={this.state.loop}
-                      onChange={() => {
-                        this.setState({
-                          loop: !this.state.loop,
-                          enablePlayer: false,
-                        });
-                        setTimeout(() => {
-                          this.setState({ enablePlayer: true });
-                        }, 30);
-                      }}
-                    />
-                  </Tooltip>
-                  Loop
-                </Typography>
-              </div>
-            </div>
+            />{" "}
             {this.state.editSourceType === 0 ? (
               <CustomInput
                 labelText="URL"
@@ -320,7 +242,7 @@ class VideoModule extends Component {
                   }}
                 />
                 <CustomInput
-                  labelText="File Extension (e.g. mov, mp4)"
+                  labelText="File Extension"
                   id="fileExtension"
                   required="required"
                   formControlProps={{
@@ -334,6 +256,17 @@ class VideoModule extends Component {
                 />
               </React.Fragment>
             )}
+            <Typography id="discrete-slider" gutterBottom>
+              Default Volume
+              <Slider
+                defaultValue={Number(this.state.editVolume)}
+                onChangeCommitted={this.handleVolume}
+                aria-labelledby="discrete-slider"
+                valueLabelDisplay="auto"
+                min={0}
+                max={100}
+              />
+            </Typography>
           </DialogContent>
           <DialogActions className={this.props.classes.modalFooter}>
             <Button
@@ -366,4 +299,4 @@ class VideoModule extends Component {
   }
 }
 
-export default withStyles(styles)(VideoModule);
+export default withStyles(styles)(AudioModule);

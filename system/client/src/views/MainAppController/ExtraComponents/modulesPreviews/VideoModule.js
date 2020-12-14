@@ -3,9 +3,11 @@ import ReactPlayer from "react-player/lazy";
 
 class VideoModule extends Component {
   state = {
+    url: [],
     mute: false,
     controls: false,
     loop: false,
+    volume: 50,
   };
   render() {
     return (
@@ -14,7 +16,8 @@ class VideoModule extends Component {
         mute={this.state.mute}
         controls={this.state.controls}
         loop={this.state.loop}
-        url={["https://www.youtube.com/watch?v=4VuBio7fKO0&t=1s"]}
+        url={this.state.url}
+        volume={this.state.volume}
       />
     );
   }
