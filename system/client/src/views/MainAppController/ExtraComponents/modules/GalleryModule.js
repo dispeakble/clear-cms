@@ -35,6 +35,7 @@ import { ReactSortable } from "react-sortablejs";
 
 class GalleryModule extends Component {
   state = {
+    galleryTitle: "",
     galleryTypes: [{ label: "Carousel" }],
     editGalleryType: "",
     temporaryImageSources: [],
@@ -106,21 +107,16 @@ class GalleryModule extends Component {
     });
   }
 
-  handleItemLogo = async (event) => {
-    if (event.length) {
-      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-      this.setAsyncState({
-        logoImage: strings[0],
-      });
-    }
-  };
-
   handleInputChange = (event) => {
     switch (event.target.id) {
+      case "galleryTitle":
+        let galleryTitle = this.state.galleryTitle;
+        galleryTitle = event.target.value + "";
+        this.setState({ galleryTitle });
+        break;
       case "imageTitle":
         let editImageTitle = this.state.editImageTitle;
         editImageTitle = event.target.value + "";
-        console.log(event.target.value);
         this.setState({ editImageTitle });
         break;
       case "imageDescription":
