@@ -33,6 +33,7 @@
     "react-h5-audio-player": "^3.5.0",
     "react-helmet": "^6.1.0",
     "react-image-gallery": "^1.0.8",
+    "react-image-magnify": "^2.7.4",
     "react-password-strength-bar": "^0.3.2",
     "react-player": "^2.7.0",
     "react-resizable": "^1.11.0",
