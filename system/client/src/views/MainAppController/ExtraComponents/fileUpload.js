@@ -4,13 +4,10 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/themes.js";
 
 import Button from "components/CustomButtons/Button.js";
-import Tooltip from "@material-ui/core/Tooltip";
-import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/Icon";
 import {
   DeleteForever,
   Edit,
-  Backup,
   AddCircle,
   Clear,
   Check,
@@ -24,6 +21,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import MaterialTable from "material-table";
 
 import { DropzoneArea } from "material-ui-dropzone";
+
+import CustomInput from "components/CustomInput/CustomInput.js";
 
 class Themes extends Component {
   state = {
@@ -42,6 +41,15 @@ class Themes extends Component {
 
   closeMultipleDeleteModal = () => {
     this.setState({ showMultipleDeleteModal: false });
+  };
+
+  handleInputChange = (event) => {
+    switch (event.target.id) {
+      case "folder":
+        let folder = event.target.value;
+        this.setState({ folder });
+        break;
+    }
   };
 
   multipleDeleteCallback = async () => {
@@ -189,6 +197,10 @@ class Themes extends Component {
           editable: "never",
         },
         {
+          title: "Folder",
+          field: "folder",
+        },
+        {
           title: "File Size",
           field: "fileSize",
           editable: "never",
@@ -234,6 +246,8 @@ class Themes extends Component {
         };
 
         el.fileSize = dataSize();
+
+        el.folder = this.state.folder;
       });
 
       await this.setAsyncState({
@@ -275,6 +289,20 @@ class Themes extends Component {
           id="classic-modal-slide-description"
           className={this.props.classes.modalBody}
         >
+          {" "}
+          <CustomInput
+            labelText="Folder"
+            id="folder"
+            required="required"
+            formControlProps={{
+              fullWidth: true,
+              onChange: (event) => this.handleInputChange(event),
+            }}
+            inputProps={{
+              value: this.state.url,
+              type: "text",
+            }}
+          />
           <DropzoneArea
             filesLimit={10}
             className={this.props.classes.dropzone}
