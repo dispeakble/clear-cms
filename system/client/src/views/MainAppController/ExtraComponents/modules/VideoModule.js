@@ -51,10 +51,6 @@ class VideoModule extends Component {
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
 
-  load = (url) => {
-    console.log(url);
-  };
-
   getIndex(name) {
     return Number(
       this.state.sourceTypes.findIndex((type) => {
