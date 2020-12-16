@@ -8,12 +8,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import Close from "@material-ui/icons/Close";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
@@ -29,8 +27,6 @@ class TextModule extends Component {
     modalTitle: "Text content",
     richFormattedText: false,
   };
-
-  componentDidMount() {}
 
   getTheme = () => {
     return createMuiTheme({
@@ -53,7 +49,6 @@ class TextModule extends Component {
   }
 
   handleEdit = async (id) => {
-    this.props.onStartEditingModule();
     if (this.props.moduleOptions.data) {
       await this.setAsyncState({
         richFormattedText: this.props.moduleOptions.data.isRichFormattedText,
@@ -190,7 +185,6 @@ class TextModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.onEndEditingModule();
                 this.props.handleSave(this.state.itemModuleEditId, {
                   textData: this.state.richFormattedText
                     ? this.state.richTextContent
@@ -198,7 +192,6 @@ class TextModule extends Component {
                   isRichFormattedText: this.state.richFormattedText,
                 });
                 this.closeModuleOptionsModal();
-                console.log(this.state.textContent);
               }}
             >
               <div>Save</div>
@@ -206,7 +199,6 @@ class TextModule extends Component {
             <Button
               color="danger"
               onClick={async () => {
-                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >

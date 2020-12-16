@@ -134,7 +134,6 @@ class Themes extends Component {
   }
 
   getTheme = () => {
-    console.log(this.props.defaultTheme);
     return createMuiTheme({
       palette: this.props.defaultTheme,
       overrides: {
@@ -316,9 +315,6 @@ class Themes extends Component {
     let thumbnails = this.state.thumbnails;
 
     let adminThumbnails = this.state.adminThumbnails;
-
-    console.log(thumbnails);
-    console.log(adminThumbnails);
 
     return (
       <div className={this.props.classes.outerWrapper}>
@@ -866,10 +862,7 @@ class Themes extends Component {
                   )}
                   <h5>Background Image</h5>
                   <div className={this.props.classes.dropzoneAreaWrapper}>
-                    <DropzoneArea
-                      onChange={this.handleBgImage.bind(this)}
-                      onDrop={(acceptedFiles) => console.log(acceptedFiles)}
-                    />
+                    <DropzoneArea onChange={this.handleBgImage.bind(this)} />
                   </div>
                   <div>
                     <Typography id="discrete-slider" gutterBottom>

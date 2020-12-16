@@ -100,8 +100,6 @@ class GalleryModule extends Component {
       imgs.push(img);
     }
 
-    console.log(imgs);
-
     switch (galleryType) {
       case "Carousel": {
         return (

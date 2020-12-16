@@ -56,7 +56,6 @@ class Themes extends Component {
     let files = [...this.state.files];
     let filesIds = [];
     let multipleDeleteData = this.state.multipleDeleteData;
-    console.log(multipleDeleteData);
     multipleDeleteData.map((file) => filesIds.push(file.tableData.id));
     files = files.filter((file) => {
       return !filesIds.includes(file.tableData.id);
@@ -165,20 +164,16 @@ class Themes extends Component {
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(async () => {
-              console.log(this.state.files);
-
               delete newData.tableData;
               const dataUpdate = [...this.state.files];
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;
               await this.setAsyncState({ files: dataUpdate });
-              // this.getAllFiles();
               resolve();
             }, 100);
           }),
         onRowDelete: (oldData) =>
           new Promise((resolve, reject) => {
-            console.log(oldData);
             setTimeout(() => {
               const dataDelete = [...this.state.files];
               const index = oldData.tableData.id;
@@ -253,8 +248,6 @@ class Themes extends Component {
       await this.setAsyncState({
         files: temporaryFiles,
       });
-
-      console.log(temporaryFiles);
 
       await this.setAsyncState({
         createModal: false,

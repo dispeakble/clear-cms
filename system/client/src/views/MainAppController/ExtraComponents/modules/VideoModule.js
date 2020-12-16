@@ -345,11 +345,6 @@ class VideoModule extends Component {
             <Button
               color="danger"
               onClick={() => {
-                this.setState({
-                  logoTitle: this.props.moduleOptions.data.logoTitle,
-                  logoLink: this.props.moduleOptions.data.logoLink,
-                });
-                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >

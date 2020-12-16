@@ -286,7 +286,6 @@ class Categories extends Component {
     categories = categories.filter((categ) => {
       return !categIds.includes(categ.id);
     });
-    console.log(categories);
     await this.setAsyncState({ categories });
     localStorage.setItem("categories", JSON.stringify(categories));
     this.state.tableRef.current && this.state.tableRef.current.onQueryChange();

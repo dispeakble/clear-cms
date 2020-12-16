@@ -3,7 +3,7 @@ import Button from "components/CustomButtons/Button.js";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 import { DropzoneArea } from "material-ui-dropzone";
 
-import { DeleteForever, AddCircle, Edit } from "@material-ui/icons";
+import { DeleteForever, Edit } from "@material-ui/icons";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
@@ -149,8 +149,6 @@ class GalleryModule extends Component {
       (img) => img.path === this.state.imageOnEditPath
     );
 
-    console.log(this.state.editImageTitle);
-
     imageOnEdit.title = this.state.editImageTitle;
     imageOnEdit.description = this.state.editImageDescription;
     imageOnEdit.link = this.state.editImageLink;
@@ -159,9 +157,7 @@ class GalleryModule extends Component {
   };
 
   onRemoveItem = async (path) => {
-    console.log(path);
     let imageSources = [...this.state.imageSources];
-    console.log(imageSources);
 
     let newImageSources = imageSources.filter((img) => img.path !== path);
 
@@ -533,7 +529,6 @@ class GalleryModule extends Component {
                   />
                   <Button
                     onClick={() => {
-                      console.log(this.state.temporaryImageSources);
                       this.setState({
                         showDropZone: false,
                         imageSources: this.state.temporaryImageSources,
@@ -544,7 +539,6 @@ class GalleryModule extends Component {
                   </Button>
                   <Button
                     onClick={() => {
-                      console.log(this.state.temporaryImageSources);
                       this.setState({
                         showDropZone: false,
                       });
@@ -663,11 +657,6 @@ class GalleryModule extends Component {
             <Button
               color="danger"
               onClick={() => {
-                this.setState({
-                  logoTitle: this.props.moduleOptions.data.logoTitle,
-                  logoLink: this.props.moduleOptions.data.logoLink,
-                });
-                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >

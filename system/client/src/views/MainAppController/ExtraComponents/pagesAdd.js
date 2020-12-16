@@ -1,10 +1,9 @@
-import React, { Suspense, useCallback } from "react";
+import React, { Suspense } from "react";
 import _ from "lodash";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {
-  MoreVert,
   DeleteForever,
   AddCircle,
   Visibility,
@@ -28,13 +27,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import Close from "@material-ui/icons/Close";
 
 // for speed dial
 import Switch from "@material-ui/core/Switch";
-import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 
 // for the dropdown inside each field
 import TextField from "@material-ui/core/TextField";
@@ -69,7 +64,6 @@ class PagesAdd extends React.PureComponent {
   };
 
   state = {
-    //isDraggable: true,
     temporaryModuleOptions: {},
     showDiscardModal: false,
     itemOnDeleteIndex: "",
@@ -166,18 +160,6 @@ class PagesAdd extends React.PureComponent {
 
   defaultTheme = {};
   muiTheme = {};
-
-  onStartEditingModule() {
-    // this.setAsyncState({
-    //   isDraggable: false,
-    // });
-  }
-
-  onEndEditingModule() {
-    // this.setAsyncState({
-    //   isDraggable: true,
-    // });
-  }
 
   async componentDidMount() {
     let isEdit = this.props.location.pathname.indexOf("pageEdit") > -1;
@@ -421,8 +403,6 @@ class PagesAdd extends React.PureComponent {
 
     let moduleType = el.module.replaceAll(" ", "");
 
-    console.log(moduleType);
-
     if (el.module) {
       LazyModule = React.lazy(() => import(`./modules/${moduleType}`));
     }
@@ -444,28 +424,6 @@ class PagesAdd extends React.PureComponent {
         name: "Edit Item",
       },
     ];
-
-    // let moduleAction = {
-    //   icon: el.module ? (
-    //     <Suspense fallback={loadingFallback}>
-    //       <LazyModule
-    //         boxId={el.i}
-    //         moduleOptions={el.moduleOptions}
-    //         handleSave={(id, data, isVertical) => {
-    //           this.setTemporaryModuleOptions(id, data, isVertical);
-    //           this.saveModuleOptions(id, data, isVertical);
-    //         }}
-    //       />
-    //     </Suspense>
-    //   ) : (
-    //     ""
-    //   ),
-    //   name: "Edit Module",
-    // };
-
-    // if (el.module.length > 0) {
-    //   itemActions.push(moduleAction);
-    // }
 
     return (
       <div key={i} data-grid={el} style={itemStyle}>
@@ -518,22 +476,6 @@ class PagesAdd extends React.PureComponent {
       </div>
     );
   }
-
-  // handleItemModule = async (event, newValue) => {
-  //   let items = [...this.state.items];
-
-  //   let item = this.getItemById(this.state.itemEditId);
-  //   item.module = newValue.label;
-
-  //   items = items.map((box) => {
-  //     if (box.i === item.i) {
-  //       box = item;
-  //     }
-  //     return box;
-  //   });
-
-  //   await this.setAsyncState({ items });
-  // };
 
   onAddItem() {
     let newId = 0;
@@ -692,7 +634,6 @@ class PagesAdd extends React.PureComponent {
       itemEditId: id,
     });
     const item = this.getItemById(id);
-    console.log(item);
 
     await this.setAsyncState({
       editItemScrollbars: item.showScrollbars,
@@ -714,18 +655,10 @@ class PagesAdd extends React.PureComponent {
       editItemFontSizeShow: item.hasOwnProperty("fontSize"),
       editItemFontFamilyShow: item.hasOwnProperty("fontFamily"),
       editItemTextColorShow: item.hasOwnProperty("textColor"),
-      // editItemBorderRadius: item.borderRadius,
-      // editItemBorderRadius: item.borderRadius,
-      // editItemBorderRadius: item.borderRadius,
-      // editItemBorderRadius: item.borderRadius,
     });
     await this.setAsyncState({
       showEditMenu: !this.state.showEditMenu,
     });
-  };
-
-  handlePageSave = () => {
-    console.log(this.state.items);
   };
 
   handleDiscard = () => {
@@ -755,14 +688,7 @@ class PagesAdd extends React.PureComponent {
     await this.setAsyncState({ items });
   };
 
-  // callConfirmCallback = () => {
-  //   this.closeModal();
-  //   const { history } = this.props;
-  //   history.push("/pages");
-  // };
-
   // for speed dial
-
   handleSpeedDialClose = () => {
     this.setState({ speedDialState: false });
   };

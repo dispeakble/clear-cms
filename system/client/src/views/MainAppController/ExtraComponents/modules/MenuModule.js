@@ -417,7 +417,6 @@ class MenuModule extends Component {
             let filteredLinks = this.state.flatLinks.filter(
               (link) => link.id !== columnData.rowData.id
             );
-            console.log(filteredLinks);
             return (
               <Autocomplete
                 options={filteredLinks}
@@ -468,12 +467,10 @@ class MenuModule extends Component {
   };
 
   closeModuleOptionsModal() {
-    console.log("will close modal ");
     this.setState({ showModuleOptionsModal: false });
   }
 
   handleEdit = async (id) => {
-    this.props.onStartEditingModule();
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
@@ -514,7 +511,6 @@ class MenuModule extends Component {
             color="transparent"
             simple
             onClick={() => {
-              this.props.onEndEditingModule();
               this.props.handleSave(this.state.itemModuleEditId, {
                 links: this.state.menuOptions,
                 isVertical: this.state.isMenuVertical,
@@ -675,13 +671,11 @@ class MenuModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.onEndEditingModule();
                 let menuOptions = this.state.menuOptions;
 
                 if (!menuOptions.length) {
                   this.setState({ noLinksFound: true });
                 } else {
-                  this.props.onEndEditingModule();
                   this.props.handleSave(this.state.itemModuleEditId, {
                     links: this.state.menuOptions,
                     isVertical: this.state.isMenuVertical,
@@ -698,7 +692,6 @@ class MenuModule extends Component {
             <Button
               color="danger"
               onClick={() => {
-                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >
