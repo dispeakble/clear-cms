@@ -20,15 +20,11 @@ class MainAppController extends Component {
   }
 
   render() {
-    console.log(this.props.defaultTheme);
-
     const { location } = this.props;
 
     const currentPath = location.pathname;
     const pathnames = this.props.moduleList.list[0].items[0].subitems;
-    console.log(pathnames);
     const pathObject = currentPath.split("/");
-    console.log(pathObject);
     let LazyComponent;
     if (this.hasModule(currentPath, pathnames)) {
       LazyComponent = React.lazy(() =>

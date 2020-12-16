@@ -4,7 +4,6 @@ import ArtTrack from "@material-ui/icons/ArtTrack";
 import { DropzoneArea } from "material-ui-dropzone";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 // for the modal
@@ -14,13 +13,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import Close from "@material-ui/icons/Close";
 
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
-import Divider from "@material-ui/core/Divider";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import { BluetoothAudioSharp } from "@material-ui/icons";
 
 class HeaderModule extends Component {
   state = {
@@ -52,7 +48,6 @@ class HeaderModule extends Component {
   componentDidMount() {
     if (this.props.moduleOptions.data) {
       let moduleOptions = this.props.moduleOptions.data;
-      console.log(moduleOptions.logoTitle);
       this.setState({
         isModuleSticky: moduleOptions.isModuleSticky,
         backgroundRepeat: moduleOptions.backgroundRepeat,
@@ -70,7 +65,6 @@ class HeaderModule extends Component {
   }
 
   handleEdit = async (id) => {
-    this.props.onStartEditingModule();
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
@@ -284,7 +278,6 @@ class HeaderModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.onEndEditingModule();
                 this.props.handleSave(this.state.itemModuleEditId, {
                   bg: this.state.backgroundImage,
                   logoImage: this.state.logoImage,
@@ -306,7 +299,6 @@ class HeaderModule extends Component {
                   logoTitle: this.props.moduleOptions.data.logoTitle,
                   logoLink: this.props.moduleOptions.data.logoLink,
                 });
-                this.props.onEndEditingModule();
                 this.closeModuleOptionsModal();
               }}
             >

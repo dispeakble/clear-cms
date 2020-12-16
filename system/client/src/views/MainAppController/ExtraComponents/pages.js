@@ -139,7 +139,6 @@ class Pages extends Component {
           tooltip: "Page Preview",
           onClick: (event, rowData) => {
             window.open(`/pagePreview/${Number(rowData.tableData.id) + 1}`);
-            console.log(rowData);
           },
         },
         {
@@ -239,7 +238,6 @@ class Pages extends Component {
       pages = pages.filter((page) => {
         return !pagesIds.includes(page.id);
       });
-      console.log(pages);
 
       let pagesToSet = [];
 
@@ -263,7 +261,6 @@ class Pages extends Component {
 
   render() {
     const classes = this.props.classes;
-    console.log(this.state.pages);
     return (
       <React.Fragment>
         <Helmet>

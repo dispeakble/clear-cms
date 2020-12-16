@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Suspense } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from "react-router-dom";
@@ -38,7 +38,6 @@ class PagePreview extends React.PureComponent {
   navigateToUrl() {
     const { pathname } = this.props.location;
     let pathnameId = Number(pathname.split("/")[2]);
-    console.log(pathnameId);
 
     if (pathname === this.state.pathname) {
       return true;
@@ -64,16 +63,6 @@ class PagePreview extends React.PureComponent {
   }
 
   componentDidMount() {
-    // const allPages = JSON.parse(localStorage.getItem("pages"));
-    // const currentPage = allPages[Number(this.props.match.params.id) - 1];
-    // const items = currentPage.items;
-    // const pageConfig = currentPage.pageConfig;
-
-    // this.setState({
-    //   items: items,
-    //   pageConfig,
-    // });
-
     this.navigateToUrl();
   }
 
@@ -170,12 +159,6 @@ class PagePreview extends React.PureComponent {
 
   // for MuiThemeProvider
   getTheme = () => {
-    /*
-    error?: PaletteColorOptions;
-  warning?: PaletteColorOptions;
-  info?: PaletteColorOptions;
-  success?: PaletteColorOptions;
-    */
     return createMuiTheme({
       overrides: {
         MuiSpeedDial: {

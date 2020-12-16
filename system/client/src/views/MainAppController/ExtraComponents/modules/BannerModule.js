@@ -17,7 +17,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
 import Typography from "@material-ui/core/Typography";
-import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
 import TextField from "@material-ui/core/TextField";
@@ -95,13 +94,11 @@ class BannerModule extends Component {
       case "bannerTitle":
         let bannerTitle = this.state.bannerTitle;
         bannerTitle = event.target.value + "";
-        console.log(event.target.value);
         this.setState({ bannerTitle });
         break;
       case "bannerLink":
         let bannerLink = this.state.bannerLink;
         bannerLink = event.target.value + "";
-        console.log(event.target.value);
         this.setState({ bannerLink });
         break;
     }

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 class HeaderModule extends Component {
@@ -11,8 +10,14 @@ class HeaderModule extends Component {
 
     if (this.props.element.moduleOptions.data.bg) {
       style.backgroundImage = `url(${this.props.element.moduleOptions.data.bg})`;
-      style.backgroundRepeat = this.props.element.moduleOptions.data.backgroundRepeat ? "repeat" : "no-repeat";
-      style.backgroundSize = this.props.element.moduleOptions.data.backgroundStretch ? "cover" : "auto";
+      style.backgroundRepeat = this.props.element.moduleOptions.data
+        .backgroundRepeat
+        ? "repeat"
+        : "no-repeat";
+      style.backgroundSize = this.props.element.moduleOptions.data
+        .backgroundStretch
+        ? "cover"
+        : "auto";
       style.backgroundPosition = "center center";
     }
 

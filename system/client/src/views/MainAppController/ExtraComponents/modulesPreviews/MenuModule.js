@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import LinksMenu from "components/LinksMenu/LinksMenu";
 import styles from "assets/jss/clear-crm/views/menuModule.js";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
 
 // for accordion menu
 import List from "@material-ui/core/List";
@@ -111,7 +110,6 @@ class MenuModule extends Component {
     let isVertical = this.props.element.moduleOptions.data.isVertical;
     let showAsAccordion = this.props.element.moduleOptions.data.showAsAccordion;
     let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
-    let backgroundColor = this.props.element.moduleOptions.data.backgroundColor;
 
     let menuData = linksList.map((link) => ({
       id: link.id,
