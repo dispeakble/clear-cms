@@ -85,6 +85,7 @@ class PagesAdd extends React.PureComponent {
       { label: "Banner Module" },
       { label: "Chart Module" },
       { label: "Table Module" },
+      { label: "Accordion Module" },
     ],
     config: {
       layoutBoxSpacing: [10, 10],
