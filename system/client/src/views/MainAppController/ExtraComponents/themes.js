@@ -34,7 +34,7 @@ import { DropzoneArea } from "material-ui-dropzone";
 import Slider from "@material-ui/core/Slider";
 
 // for the dropdown inside each field
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import CustomInput from "components/CustomInput/CustomInput.js";

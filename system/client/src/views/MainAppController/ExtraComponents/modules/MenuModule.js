@@ -29,7 +29,7 @@ import {
 import * as Icons from "@material-ui/icons";
 
 // for the dropdown
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for the new color picker

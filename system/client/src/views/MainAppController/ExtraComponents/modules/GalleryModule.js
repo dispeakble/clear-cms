@@ -20,7 +20,7 @@ import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import Card from "@material-ui/core/Card";

@@ -25,7 +25,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "components/CustomButtons/Button.js";
 
 // for the dropdown
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 //todo import modal content to add category

@@ -26,7 +26,7 @@ import {
 import Button from "components/CustomButtons/Button.js";
 
 // for the dropdown
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import CustomInput from "components/CustomInput/CustomInput.js";

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { DateRangePicker } from "materialui-daterange-picker";
-import TextField from "@material-ui/core/textfield";
+import { TextField } from "@material-ui/core";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
