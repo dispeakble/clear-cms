@@ -169,6 +169,31 @@ class PagePreview extends React.PureComponent {
             },
           },
         },
+        MuiAccordionSummary: {
+          content: {
+            width: "calc(100% - 48px)",
+            "&$expanded": {
+              margin: "12px 0",
+            },
+            "& p": {
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              overflowX: "hidden",
+            },
+          },
+          root: {
+            "&$expanded": {
+              minHeight: "48px",
+            },
+          },
+        },
+        MuiAccordion: {
+          root: {
+            "&$expanded": {
+              margin: "0",
+            },
+          },
+        },
       },
     });
   };
