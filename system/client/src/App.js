@@ -153,7 +153,7 @@ class App extends Component {
         main: "#008B8B",
       },
       secondary: {
-        main: "#008B8B",
+        main: "#FFFFFF",
       },
     };
 

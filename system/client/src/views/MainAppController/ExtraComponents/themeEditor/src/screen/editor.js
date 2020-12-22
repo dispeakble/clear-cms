@@ -10,7 +10,6 @@ const styles = (theme) => ({
     display: "flex",
     flex: 1,
     flexDirection: "row",
-    height: "calc(100% - 73px)",
   },
   edition: {},
   preview: {

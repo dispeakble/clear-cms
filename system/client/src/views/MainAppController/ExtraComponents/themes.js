@@ -85,8 +85,8 @@ class Themes extends Component {
           xxs: [1, 1],
         },
       },
-      bgrepeat: "",
-      bgstretch: "",
+      bgrepeat: false,
+      bgstretch: false,
     },
     onPublic: false,
     onAdmin: false,
@@ -109,6 +109,7 @@ class Themes extends Component {
     defaultFontFamily: "Arial",
     showEmptyTitleMessage: false,
     rerenderedModal: false,
+    editorOnPublic: 0,
   };
 
   setAsyncState = (newState) =>
@@ -206,13 +207,9 @@ class Themes extends Component {
     this.props.tweakTheState();
   };
 
-  getTbnById = (passedId) => {
-    return this.state.thumbnails.find((tbn) => tbn.id === passedId);
-  };
-
   enableAddMode = () => {
     this.setState({
-      data: Object.assign({}, this.state.defaults),
+      data: Object.assign({}, { basic: this.state.defaults, mui: {} }),
     });
   };
 
@@ -228,7 +225,7 @@ class Themes extends Component {
     data = Object.assign({}, tbn);
 
     let fullEditorData = createMuiTheme({
-      palette: data,
+      palette: this.state.side ? data : data.mui,
     });
 
     if (fullEditorData) {
@@ -240,6 +237,9 @@ class Themes extends Component {
     await this.setAsyncState({
       fontFamilyIndex,
       data,
+    });
+
+    await this.setAsyncState({
       editMode: true,
       createModal: true,
     });
@@ -264,7 +264,7 @@ class Themes extends Component {
     }
   };
 
-  createAdminThumbnailsPage = (side) => {
+  createAdminThumbnailsPage = () => {
     const createThumbnail = (tbn) => {
       return (
         <React.Fragment>
@@ -352,14 +352,14 @@ class Themes extends Component {
         >
           <div style={styles.color} />
         </div>
-        {this.state[displayColorPicker] ? (
+        {this.state.data.basic[displayColorPicker] ? (
           <div style={styles.popover}>
             <div style={styles.cover} />
             <SketchPicker
-              color={this.state.data[targetedColor]}
+              color={this.state.data.basic[targetedColor]}
               onChangeComplete={(color) => {
                 let data = this.state.data;
-                data[targetedColor] = color.hex;
+                data.basic[targetedColor] = color.hex;
                 this.setAsyncState({
                   data,
                 });
@@ -404,37 +404,14 @@ class Themes extends Component {
     });
   };
 
-  handleInputChange = (event) => {
-    let data = this.state.data;
-    data.title = event + "";
-    this.setState({ data });
-  };
-
-  handleItemBgRepeat = async (event) => {
-    let data = { ...this.state.data };
-    data.bgrepeat = !this.state.data.bgrepeat;
-
-    this.setState({ data });
-  };
-
-  handleItemBgStretch = async (event) => {
-    let data = { ...this.state.data };
-    data.bgstretch = !this.state.data.bgstretch;
-    this.setState({ data });
-  };
-
   handleFontSize = (event, newValue) => {
-    let data = this.state.data;
-
-    data.fontsize = newValue;
-
-    this.setState({ data });
+    return newValue;
   };
 
   handleFontFamily = (event, newValue) => {
     if (this.state.editMode) {
       let data = this.state.data;
-      data.fontfamily = newValue.label;
+      data.basic.fontfamily = newValue.label;
 
       let fontFamilyIndex = this.getFontFamilyIndex(newValue.label);
 
@@ -453,8 +430,10 @@ class Themes extends Component {
   }
 
   handleBoxSpacing = async (event, newValue) => {
-    if (this.state.data.boxSpacingConfig.layoutBoxSpacing[0] !== newValue) {
-      let boxSpacingConfig = this.state.data.boxSpacingConfig;
+    if (
+      this.state.data.basic.boxSpacingConfig.layoutBoxSpacing[0] !== newValue
+    ) {
+      let boxSpacingConfig = this.state.data.basic.boxSpacingConfig;
       boxSpacingConfig = {
         layoutBoxSpacing: [newValue, newValue],
         layoutBoxPadding: {
@@ -466,11 +445,13 @@ class Themes extends Component {
         },
       };
 
-      let data = { ...this.state.data };
+      return boxSpacingConfig;
 
-      data.boxSpacingConfig = boxSpacingConfig;
+      // let data = { ...this.state.data };
 
-      this.setState({ data });
+      // data.basic.boxSpacingConfig = boxSpacingConfig;
+
+      // this.setState({ data });
     }
   };
 
@@ -494,18 +475,18 @@ class Themes extends Component {
     }
   };
 
-  handleDefault = (currentIsDefault) => {
+  handleDefault = () => {
     let thumbnails;
 
     if (this.state.side) {
       //is admin theme
-      thumbnails = [...this.state.adminThumbnails];
+      thumbnails = this.state.adminThumbnails;
     } else {
-      thumbnails = [...this.state.thumbnails];
+      thumbnails = this.state.thumbnails;
     }
 
     if (this.state.editMode) {
-      if (currentIsDefault) {
+      if (this.state.data.isdefault) {
         thumbnails = thumbnails.map((tbn) => {
           let newTbn = tbn;
           if (tbn.id !== this.state.data.id) {
@@ -515,9 +496,7 @@ class Themes extends Component {
         });
       }
 
-      let data = this.state.data;
-      //data.isdefault = !currentIsDefault;
-      this.setState({ thumbnails: thumbnails, data });
+      this.setState({ thumbnails: thumbnails });
     } else {
       let newThumbnails = thumbnails.map((tbn) => {
         let newTbn = tbn;
@@ -525,36 +504,15 @@ class Themes extends Component {
         return newTbn;
       });
 
-      let data = this.state.data;
-      data.isdefault = !currentIsDefault;
-
       this.setState({
         thumbnails: newThumbnails,
-        data,
       });
     }
   };
 
-  handleBgRepeat = (currentBgRepeat) => {
-    let data = this.state.data;
-    data.bgrepeat = !currentBgRepeat;
+  saveChangedStyle = async () => {
+    await this.setAsyncState({ editorOnPublic: this.state.side });
 
-    this.setState({ data });
-  };
-
-  handleBgStretch = (currentBgStretch) => {
-    let data = this.state.data;
-    data.bgstretch = !currentBgStretch;
-
-    this.setState({ data });
-  };
-
-  saveChangedStyle = async (
-    currentTitleInput,
-    currentIsDefault,
-    currentBgRepeat,
-    currentBgStretch
-  ) => {
     if (this.state.side) {
       let adminPreviewElement = document.querySelector("#adminPreviewElement");
 
@@ -568,15 +526,13 @@ class Themes extends Component {
         base64image = canvas.toDataURL("image/png");
       }
 
-      let fullEditorData = this.themeEditor.state.theme;
-
       thumbnail = this.themeEditor.state.theme.palette;
 
-      thumbnail.title = currentTitleInput;
+      thumbnail.title = this.state.data.title;
 
       thumbnail.id = this.state.data.id || 0;
 
-      thumbnail.isdefault = currentIsDefault;
+      thumbnail.isdefault = this.state.data.isdefault;
 
       thumbnail.html2canvasImage = base64image;
 
@@ -621,17 +577,20 @@ class Themes extends Component {
 
       let thumbnail = {
         id: this.state.data.id || 0,
-        title: currentTitleInput,
-        bgcolor: this.state.data.bgcolor,
-        bgimage: this.state.data.bgimage,
-        fontsize: this.state.data.fontsize,
-        textcolor: this.state.data.textcolor,
-        fontfamily: this.state.data.fontfamily,
-        isdefault: currentIsDefault,
+        title: this.state.data.title,
+        isdefault: this.state.data.isdefault,
         html2canvasImage: base64image,
-        boxSpacingConfig: this.state.data.boxSpacingConfig,
-        bgrepeat: currentBgRepeat,
-        bgstretch: currentBgStretch,
+        basic: {
+          bgcolor: this.state.data.basic.bgcolor,
+          bgimage: this.state.data.basic.bgimage,
+          fontsize: this.state.data.basic.fontsize,
+          textcolor: this.state.data.basic.textcolor,
+          fontfamily: this.state.data.basic.fontfamily,
+          boxSpacingConfig: this.state.data.basic.boxSpacingConfig,
+          bgrepeat: this.state.data.basic.bgrepeat,
+          bgstretch: this.state.data.basic.bgstretch,
+        },
+        mui: this.themeEditor.state.theme.palette,
       };
 
       let thumbnails = this.state.thumbnails;
@@ -672,12 +631,6 @@ class Themes extends Component {
     this.props.tweakTheState();
   };
 
-  getTbnOnEdit = (id) => {
-    let thumbnails = [...this.state.thumbnails];
-    let tbnOnEdit = thumbnails.find((tbn) => tbn.id === id);
-    return tbnOnEdit;
-  };
-
   showMenu() {
     this.setState({ showEditorMenu: true });
   }
@@ -694,15 +647,29 @@ class Themes extends Component {
     ];
   }
 
-  openEditor(reset) {
-    const bgColorStyles = this.sendStyles(this.state.data.bgcolor);
-    const textColorStyles = this.sendStyles(this.state.data.textcolor);
+  openEditor() {
+    // TODO - move bgcolor and textcolor to temporary variables
+    let basicData = {
+      bgrepeat: this.state.data.basic.bgrepeat,
+      bgstretch: this.state.data.basic.bgstretch,
+      fontsize: this.state.data.basic.fontsize,
+      fontfamily: this.state.data.basic.fontfamily,
+      boxSpacingConfig: this.state.data.basic.boxSpacingConfig,
+    };
 
-    let currentTitleInput = this.state.data.title;
-    let currentIsDefault = this.state.data.isdefault;
+    let bgColorStyles, textColorStyles;
 
-    let currentBgRepeat = this.state.data.bgrepeat;
-    let currentBgStretch = this.state.bgstretch;
+    if (!this.state.side) {
+      bgColorStyles = this.sendStyles(this.state.data.basic.bgcolor);
+      textColorStyles = this.sendStyles(this.state.data.basic.textcolor);
+    }
+
+    let a13yProps = (index) => {
+      return {
+        id: `simple-tab-${index}`,
+        "aria-controls": `simple-tabpanel-${index}`,
+      };
+    };
 
     return (
       <Dialog
@@ -755,9 +722,10 @@ class Themes extends Component {
                     formControlProps={{
                       fullWidth: true,
                       onChange: (event) => {
-                        currentTitleInput = event.target.value;
+                        let data = this.state.data;
+                        data.title = event.target.value;
+                        this.setState({ data });
                       },
-                      // this.handleInputChange(event, tbnOnEdit),
                     }}
                     inputProps={{
                       inputProps: {
@@ -776,7 +744,9 @@ class Themes extends Component {
                       <Switch
                         defaultChecked={this.state.data.isdefault}
                         onChange={(event) => {
-                          currentIsDefault = event.target.checked;
+                          let data = this.state.data;
+                          data.isdefault = event.target.checked;
+                          this.setState({ data });
                         }}
                       />
                     </Tooltip>
@@ -787,7 +757,7 @@ class Themes extends Component {
 
               <Editor
                 visibleMenu={this.state.showEditorMenu}
-                id="themeEditor"
+                id="adminPreviewElement"
                 currentTheme={
                   this.state.editMode ? this.state.fullEditorData : ""
                 }
@@ -800,6 +770,18 @@ class Themes extends Component {
           ) : (
             <React.Fragment>
               <div className={this.props.classes.modalHeadWrapper}>
+                <div>
+                  <AppBar position="static" style={{ width: "100%" }}>
+                    <Tabs
+                      value={this.state.editorOnPublic}
+                      onChange={this.toggleEditorOnPublic}
+                    >
+                      <Tab label="Basic Editor" {...a13yProps(0)} />
+                      <Tab label="Material UI Theme Editor" {...a13yProps(1)} />
+                    </Tabs>
+                  </AppBar>
+                </div>
+
                 {this.state.showEmptyTitleMessage ? (
                   <div style={{ fontWeight: 900, color: "red" }}>
                     Please type in a title for this theme
@@ -807,7 +789,8 @@ class Themes extends Component {
                 ) : (
                   ""
                 )}
-                <div className={this.props.classes.modalHeadColumn}>
+
+                <div>
                   <CustomInput
                     labelText="Theme Title"
                     id="themeTitle"
@@ -815,7 +798,9 @@ class Themes extends Component {
                     formControlProps={{
                       fullWidth: true,
                       onChange: (event) => {
-                        currentTitleInput = event.target.value;
+                        let data = this.state.data;
+                        data.title = event.target.value;
+                        this.setState({ data });
                       },
                     }}
                     inputProps={{
@@ -828,14 +813,14 @@ class Themes extends Component {
                       type: "text",
                     }}
                   />
-                </div>
-                <div className={this.props.classes.modalHeadColumn}>
                   <Typography gutterBottom>
                     <Tooltip title="Set as theme for all pages">
                       <Switch
                         defaultChecked={this.state.data.isdefault}
                         onChange={(event) => {
-                          currentIsDefault = event.target.checked;
+                          let data = this.state.data;
+                          data.isdefault = event.target.checked;
+                          this.setState({ data });
                         }}
                       />
                     </Tooltip>
@@ -844,208 +829,260 @@ class Themes extends Component {
                 </div>
               </div>
 
-              <div className={this.props.classes.newTbnStylesWrapper}>
-                <div
-                  className={
-                    this.props.classes.column +
-                    " " +
-                    this.props.classes.columnSeparator
+              <div
+                style={{
+                  height: "100%",
+                  display: this.state.editorOnPublic ? "block" : "none",
+                }}
+              >
+                <Editor
+                  visibleMenu={this.state.showEditorMenu}
+                  id="adminPreviewElement"
+                  currentTheme={
+                    this.state.editMode ? this.state.fullEditorData : ""
                   }
-                >
-                  <h4>Background</h4>
-                  <h5>Background Color</h5>
+                  style={{
+                    height: "100%",
+                    display: this.state.editorOnPublic ? "block" : "none",
+                  }}
+                  ref={(editor) => {
+                    this.themeEditor = editor;
+                  }}
+                />
+              </div>
 
-                  {this.createColorPicker(
-                    bgColorStyles,
-                    "displayBgColorPicker",
-                    "bgcolor"
-                  )}
-                  <h5>Background Image</h5>
-                  <div className={this.props.classes.dropzoneAreaWrapper}>
-                    <DropzoneArea onChange={this.handleBgImage.bind(this)} />
-                  </div>
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Background Repeat">
-                        <Switch
-                          defaultChecked={this.state.data.bgrepeat}
-                          onChange={(event) => {
-                            currentBgRepeat = event.target.checked;
-                          }}
-                        />
-                      </Tooltip>
-                      Background Repeat
-                    </Typography>
-                  </div>
+              <div
+                style={{
+                  display: !this.state.editorOnPublic ? "block" : "none",
+                }}
+              >
+                <div className={this.props.classes.newTbnStylesWrapper}>
+                  <div
+                    className={
+                      this.props.classes.column +
+                      " " +
+                      this.props.classes.columnSeparator
+                    }
+                  >
+                    <h4>Background</h4>
+                    <h5>Background Color</h5>
 
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Background Stretch">
-                        <Switch
-                          defaultChecked={this.state.data.bgstretch}
-                          onChange={(event) => {
-                            currentBgStretch = event.target.checked;
-                          }}
-                          value={this.state.data.bgstretch}
-                        />
-                      </Tooltip>
-                      Background Stretch
-                    </Typography>
+                    {this.createColorPicker(
+                      bgColorStyles,
+                      "displayBgColorPicker",
+                      "bgcolor"
+                    )}
+                    <h5>Background Image</h5>
+                    <div className={this.props.classes.dropzoneAreaWrapper}>
+                      <DropzoneArea onChange={this.handleBgImage.bind(this)} />
+                    </div>
+                    <div>
+                      <Typography id="discrete-slider" gutterBottom>
+                        <Tooltip title="Background Repeat">
+                          <Switch
+                            defaultChecked={basicData.bgrepeat}
+                            onChange={(event) => {
+                              basicData.bgrepeat = event.target.checked;
+                            }}
+                          />
+                        </Tooltip>
+                        Background Repeat
+                      </Typography>
+                    </div>
+
+                    <div>
+                      <Typography id="discrete-slider" gutterBottom>
+                        <Tooltip title="Background Stretch">
+                          <Switch
+                            defaultChecked={basicData.bgrepeat}
+                            onChange={(event) => {
+                              basicData.bgrepeat = event.target.checked;
+                            }}
+                          />
+                        </Tooltip>
+                        Background Stretch
+                      </Typography>
+                    </div>
                   </div>
-                </div>
-                <p />
-                <div className={this.props.classes.column}>
-                  <h4>Font </h4>
-                  <div>
+                  <p />
+                  <div className={this.props.classes.column}>
+                    <h4>Font </h4>
+                    <div>
+                      <Typography id="discrete-slider" gutterBottom>
+                        Font Size
+                      </Typography>
+                      <Slider
+                        className={this.props.classes.pageOptionsSlider}
+                        onChange={(event, newValue) => {
+                          basicData.fontsize = newValue;
+                        }}
+                        defaultValue={basicData.fontsize}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        min={5}
+                        max={50}
+                      />
+                    </div>
+                    <h5>Text Color</h5>
+
+                    {this.createColorPicker(
+                      textColorStyles,
+                      "displayTextColorPicker",
+                      "textcolor",
+                      basicData
+                    )}
+
+                    <h5>Font Family</h5>
+                    <Autocomplete
+                      id="fontFamilyDropdown"
+                      onChange={this.handleFontFamily}
+                      className={this.props.classes.option}
+                      options={this.state.fontFamilies}
+                      autoHighlight
+                      getOptionLabel={(option) => option.label}
+                      value={
+                        this.state.editMode
+                          ? this.state.fontFamilies[this.state.fontFamilyIndex]
+                          : this.getFontFamilyItem(this.state.defaultFontFamily)
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          className={this.props.classes.textfield}
+                          {...params}
+                          label="Choose a Font Family"
+                          variant="outlined"
+                        />
+                      )}
+                    />
                     <Typography id="discrete-slider" gutterBottom>
-                      Font Size
+                      Box Spacing
                     </Typography>
                     <Slider
                       className={this.props.classes.pageOptionsSlider}
-                      onChange={this.handleFontSize}
-                      value={this.state.data.fontsize}
+                      onChangeCommitted={(event, newValue) => {
+                        basicData.boxSpacingConfig = this.handleBoxSpacing(
+                          event,
+                          newValue
+                        );
+                      }}
+                      defaultValue={
+                        basicData.boxSpacingConfig.layoutBoxSpacing
+                          ? Number(
+                              basicData.boxSpacingConfig.layoutBoxSpacing[0]
+                            )
+                          : Number(
+                              this.state.defaults.boxSpacingConfig
+                                .layoutBoxSpacing[0]
+                            )
+                        // this.state.data.basic.boxSpacingConfig
+                        //   .layoutBoxSpacing[0]
+                      }
+                      getAriaValueText={
+                        () =>
+                          basicData.boxSpacingConfig.layoutBoxSpacing
+                            ? basicData.boxSpacingConfig.layoutBoxSpacing[0] +
+                              " pixels"
+                            : this.state.defaults.boxSpacingConfig
+                                .layoutBoxSpacing[0] + " pixels"
+                        // this.state.data.basic.boxSpacingConfig
+                        //   .layoutBoxSpacing[0] + " pixels"
+                      }
                       aria-labelledby="discrete-slider"
                       valueLabelDisplay="auto"
-                      min={5}
-                      max={50}
+                      min={0}
+                      max={150}
                     />
                   </div>
-                  <h5>Text Color</h5>
-
-                  {this.createColorPicker(
-                    textColorStyles,
-                    "displayTextColorPicker",
-                    "textcolor"
-                  )}
-
-                  <h5>Font Family</h5>
-                  <Autocomplete
-                    id="fontFamilyDropdown"
-                    onChange={this.handleFontFamily}
-                    className={this.props.classes.option}
-                    options={this.state.fontFamilies}
-                    autoHighlight
-                    getOptionLabel={(option) => option.label}
-                    value={
-                      this.state.editMode
-                        ? this.state.fontFamilies[this.state.fontFamilyIndex]
-                        : this.getFontFamilyItem(this.state.defaultFontFamily)
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        className={this.props.classes.textfield}
-                        {...params}
-                        label="Choose a Font Family"
-                        variant="outlined"
-                      />
-                    )}
-                  />
-                  <Typography id="discrete-slider" gutterBottom>
-                    Box Spacing
-                  </Typography>
-                  <Slider
-                    className={this.props.classes.pageOptionsSlider}
-                    onChangeCommitted={this.handleBoxSpacing}
-                    defaultValue={Number(
-                      this.state.data.boxSpacingConfig.layoutBoxSpacing[0]
-                    )}
-                    getAriaValueText={() =>
-                      this.state.data.boxSpacingConfig.layoutBoxSpacing[0] +
-                      " pixels"
-                    }
-                    aria-labelledby="discrete-slider"
-                    valueLabelDisplay="auto"
-                    min={0}
-                    max={150}
-                  />
                 </div>
-              </div>
 
-              <div>
-                <h4 className={this.props.classes.previewHead}>Preview</h4>
-                <div
-                  id="previewElement"
-                  className={this.props.classes.previewWrapper}
-                  style={{
-                    backgroundColor: this.state.data.bgcolor,
-                    backgroundImage: `url(${this.state.data.bgimage})`,
-                    color: this.state.data.textcolor,
-                    fontSize: this.state.data.fontsize,
-                    fontFamily: this.state.data.fontfamily,
-                    backgroundRepeat: this.state.data.bgrepeat
-                      ? "repeat"
-                      : "no-repeat",
-                    backgroundSize: this.state.data.bgstretch
-                      ? "cover"
-                      : "auto",
-                  }}
-                >
-                  <AppBar
-                    style={{
-                      backgroundColor: "inherit",
-                      color: "inherit",
-                      fontSize: "inherit",
-                      fontFamily: "inherit",
-                    }}
-                    position="static"
-                  >
-                    <h4 style={{ fontSize: "inherit", fontFamily: "inherit" }}>
-                      Header
-                    </h4>
-                  </AppBar>
-
+                <div>
+                  <h4 className={this.props.classes.previewHead}>Preview</h4>
                   <div
+                    id="previewElement"
+                    className={this.props.classes.previewWrapper}
                     style={{
-                      height: "calc(100% - 27px)",
-                      backgroundColor: "inherit",
-                      color: "inherit",
-                      fontSize: "inherit",
-                      fontFamily: this.state.data.fontfamily,
+                      backgroundColor: this.state.data.basic.bgcolor,
+                      backgroundImage: `url(${this.state.data.basic.bgimage})`,
+                      color: this.state.data.basic.textcolor,
+                      fontSize: this.state.data.basic.fontsize,
+                      fontFamily: this.state.data.basic.fontfamily,
+                      backgroundRepeat: this.state.data.basic.bgrepeat
+                        ? "repeat"
+                        : "no-repeat",
+                      backgroundSize: this.state.data.basic.bgstretch
+                        ? "cover"
+                        : "auto",
                     }}
-                    className={this.props.classes.previewBodyWrapper}
                   >
-                    <List
+                    <AppBar
                       style={{
-                        margin: "10px 15px 5px 5px",
+                        backgroundColor: "inherit",
+                        color: "inherit",
+                        fontSize: "inherit",
+                        fontFamily: "inherit",
                       }}
-                      className={this.props.classes.previewList}
-                      component="nav"
-                      aria-label="main mailbox folders"
+                      position="static"
                     >
-                      <ListItem button>
-                        <ListItemIcon>
-                          <InboxIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="First Link" />
-                      </ListItem>
-                      <ListItem button>
-                        <ListItemIcon>
-                          <DraftsIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Second Link" />
-                      </ListItem>
-                    </List>
-                    <div className={this.props.classes.previewText}>
-                      <h4>
-                        <b>Web Design</b>
+                      <h4
+                        style={{ fontSize: "inherit", fontFamily: "inherit" }}
+                      >
+                        Header
                       </h4>
-                      &nbsp;&nbsp; Web design encompasses many different skills
-                      and disciplines in the production and maintenance of
-                      websites. The different areas of web design include web
-                      graphic design; user interface design (UI design);
-                      authoring, including standardised code and proprietary
-                      software; user experience design (UX design); and search
-                      engine optimization. Often many individuals will work in
-                      teams covering different aspects of the design process,
-                      although some designers will cover them all.[1] The term
-                      "web design" is normally used to describe the design
-                      process relating to the front-end (client side) design of
-                      a website including writing markup. Web design partially
-                      overlaps web engineering in the broader scope of web
-                      development. Web designers are expected to have an
-                      awareness of usability and if their role involves creating
-                      markup then they are also expected to be up to date with
-                      web accessibility guidelines.
+                    </AppBar>
+
+                    <div
+                      style={{
+                        height: "calc(100% - 27px)",
+                        backgroundColor: "inherit",
+                        color: "inherit",
+                        fontSize: "inherit",
+                        fontFamily: this.state.data.basic.fontfamily,
+                      }}
+                      className={this.props.classes.previewBodyWrapper}
+                    >
+                      <List
+                        style={{
+                          margin: "10px 15px 5px 5px",
+                        }}
+                        className={this.props.classes.previewList}
+                        component="nav"
+                        aria-label="main mailbox folders"
+                      >
+                        <ListItem button>
+                          <ListItemIcon>
+                            <InboxIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="First Link" />
+                        </ListItem>
+                        <ListItem button>
+                          <ListItemIcon>
+                            <DraftsIcon />
+                          </ListItemIcon>
+                          <ListItemText primary="Second Link" />
+                        </ListItem>
+                      </List>
+                      <div className={this.props.classes.previewText}>
+                        <h4>
+                          <b>Web Design</b>
+                        </h4>
+                        &nbsp;&nbsp; Web design encompasses many different
+                        skills and disciplines in the production and maintenance
+                        of websites. The different areas of web design include
+                        web graphic design; user interface design (UI design);
+                        authoring, including standardised code and proprietary
+                        software; user experience design (UX design); and search
+                        engine optimization. Often many individuals will work in
+                        teams covering different aspects of the design process,
+                        although some designers will cover them all.[1] The term
+                        "web design" is normally used to describe the design
+                        process relating to the front-end (client side) design
+                        of a website including writing markup. Web design
+                        partially overlaps web engineering in the broader scope
+                        of web development. Web designers are expected to have
+                        an awareness of usability and if their role involves
+                        creating markup then they are also expected to be up to
+                        date with web accessibility guidelines.
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1057,27 +1094,21 @@ class Themes extends Component {
         <DialogActions className={this.props.classes.modalFooter}>
           <Button
             color="primary"
-            onClick={() => {
-              if (!currentTitleInput.length) {
-                this.setState({
+            onClick={async () => {
+              if (!this.state.data.title.length) {
+                await this.setAsyncState({
                   showEmptyTitleMessage: true,
                   rerenderedModal: true,
                 });
                 return;
               }
 
-              this.handleInputChange(currentTitleInput);
-              this.handleDefault(currentIsDefault);
-              if (!this.state.side) {
-                this.handleBgRepeat(currentBgRepeat);
-                this.handleBgStretch(currentBgStretch);
-              }
-              this.saveChangedStyle(
-                currentTitleInput,
-                currentIsDefault,
-                currentBgRepeat,
-                currentBgStretch
-              );
+              let data = this.state.data;
+              data.basic = basicData;
+              this.setState({ data });
+
+              this.handleDefault();
+              this.saveChangedStyle();
               this.setState({ rerenderedModal: false });
             }}
           >
@@ -1102,8 +1133,12 @@ class Themes extends Component {
   }
 
   changeTab = (event, newValue) => {
-    this.setAsyncState({ side: newValue });
+    this.setState({ side: newValue });
     localStorage.setItem("side", JSON.stringify(newValue));
+  };
+
+  toggleEditorOnPublic = (event, newValue) => {
+    this.setState({ editorOnPublic: newValue, showEmptyTitleMessage: false });
   };
 
   createRemoveTbnModal() {
@@ -1175,7 +1210,7 @@ class Themes extends Component {
             </Tabs>
           </AppBar>
           <div style={{ display: "flex" }}>
-            {this.createAdminThumbnailsPage(this.state.side)}
+            {this.createAdminThumbnailsPage()}
           </div>
           <div
             style={{
@@ -1198,7 +1233,7 @@ class Themes extends Component {
               </Fab>
             </Tooltip>
           </div>
-          {this.state.createModal ? this.openEditor(true) : ""}
+          {this.state.createModal ? this.openEditor() : ""}
           {this.createRemoveTbnModal()}
         </React.Fragment>
       </MuiThemeProvider>
