@@ -217,7 +217,7 @@ class Themes extends Component {
 
     let data = {};
 
-    let fontFamilyIndex = this.getFontFamilyIndex(tbn.fontfamily);
+    let fontFamilyIndex = this.getFontFamilyIndex(tbn.basic.fontfamily);
 
     data = Object.assign({}, tbn);
 
@@ -337,16 +337,16 @@ class Themes extends Component {
         >
           <div style={styles.color} />
         </div>
-        {this.state.data.basic[displayColorPicker] ? (
+        {this.state[displayColorPicker] ? (
           <div style={styles.popover}>
             <div style={styles.cover} />
             <SketchPicker
               color={this.state.data.basic[targetedColor]}
-              onChangeComplete={(color) => {
+              onChangeComplete={async (color) => {
                 let data = this.state.data;
                 data.basic[targetedColor] = color.hex;
-                this.setAsyncState({
-                  data,
+                await this.setAsyncState({
+                  data: data
                 });
                 this.closeColorPicker(displayColorPicker);
               }}
@@ -414,12 +414,11 @@ class Themes extends Component {
     return foundFontFamily;
   }
 
-  handleBoxSpacing = async (event, newValue) => {
+  handleBoxSpacing = (event, newValue) => {
     if (
       this.state.data.basic.boxSpacingConfig.layoutBoxSpacing[0] !== newValue
     ) {
-      let boxSpacingConfig = this.state.data.basic.boxSpacingConfig;
-      boxSpacingConfig = {
+      let boxSpacingConfig = {
         layoutBoxSpacing: [newValue, newValue],
         layoutBoxPadding: {
           lg: [1, 1],
@@ -432,11 +431,6 @@ class Themes extends Component {
 
       return boxSpacingConfig;
 
-      // let data = { ...this.state.data };
-
-      // data.basic.boxSpacingConfig = boxSpacingConfig;
-
-      // this.setState({ data });
     }
   };
 
@@ -658,27 +652,6 @@ class Themes extends Component {
   }
 
   openEditor() {
-    let basicData = {
-      bgrepeat: false,
-      bgstretch: false,
-      fontsize: "11",
-      fontfamily: "arial",
-      boxSpacingConfig: []
-    };
-    if(!this.state.side){
-      try {
-        basicData = {
-          bgrepeat: this.state.data.basic.bgrepeat,
-          bgstretch: this.state.data.basic.bgstretch,
-          fontsize: this.state.data.basic.fontsize,
-          fontfamily: this.state.data.basic.fontfamily,
-          boxSpacingConfig: this.state.data.basic.boxSpacingConfig
-        };
-      } catch (err){
-
-      }
-
-    }
 
     let bgColorStyles, textColorStyles;
 
@@ -902,9 +875,9 @@ class Themes extends Component {
                       <Typography id="discrete-slider" gutterBottom>
                         <Tooltip title="Background Repeat">
                           <Switch
-                            defaultChecked={!this.state.side && basicData.bgrepeat}
+                            defaultChecked={!this.state.side && this.state.data.basic.bgrepeat}
                             onChange={(event) => {
-                              basicData.bgrepeat = event.target.checked;
+                              this.state.data.basic.bgrepeat = event.target.checked;
                             }}
                           />
                         </Tooltip>
@@ -916,10 +889,10 @@ class Themes extends Component {
                       <Typography id="discrete-slider" gutterBottom>
                         <Tooltip title="Background Stretch">
                           <Switch
-                            defaultChecked={!this.state.side && basicData.bgrepeat}
+                            defaultChecked={!this.state.side && this.state.data.basic.bgrepeat}
                             onChange={(event) => {
                               if(this.state.side) return;
-                              basicData.bgrepeat = event.target.checked;
+                              this.state.data.basic.bgrepeat = event.target.checked;
                             }}
                           />
                         </Tooltip>
@@ -937,9 +910,9 @@ class Themes extends Component {
                       <Slider
                         className={this.props.classes.pageOptionsSlider}
                         onChange={(event, newValue) => {
-                          basicData.fontsize = newValue;
+                          this.state.data.basic.fontsize = newValue;
                         }}
-                        defaultValue={basicData.fontsize}
+                        defaultValue={this.state.data.basic.fontsize}
                         aria-labelledby="discrete-slider"
                         valueLabelDisplay="auto"
                         min={5}
@@ -951,8 +924,7 @@ class Themes extends Component {
                     {this.createColorPicker(
                       textColorStyles,
                       "displayTextColorPicker",
-                      "textcolor",
-                      basicData
+                      "textcolor"
                     )}
 
                     <h5>Font Family</h5>
@@ -983,15 +955,17 @@ class Themes extends Component {
                     <Slider
                       className={this.props.classes.pageOptionsSlider}
                       onChangeCommitted={(event, newValue) => {
-                        basicData.boxSpacingConfig = this.handleBoxSpacing(
-                          event,
-                          newValue
-                        );
+                        let boxSpacingConfig = this.handleBoxSpacing(event,newValue);
+                        let data = this.state.data;
+                        data.basic.boxSpacingConfig = boxSpacingConfig;
+                        this.setState({
+                          data
+                        });
                       }}
                       defaultValue={
-                        basicData.boxSpacingConfig.layoutBoxSpacing
+                        this.state.data.basic.boxSpacingConfig.layoutBoxSpacing
                           ? Number(
-                              basicData.boxSpacingConfig.layoutBoxSpacing[0]
+                          this.state.data.basic.boxSpacingConfig.layoutBoxSpacing[0]
                             )
                           : Number(
                               this.state.defaults.boxSpacingConfig
@@ -1002,8 +976,8 @@ class Themes extends Component {
                       }
                       getAriaValueText={
                         () =>
-                          basicData.boxSpacingConfig.layoutBoxSpacing
-                            ? basicData.boxSpacingConfig.layoutBoxSpacing[0] +
+                          this.state.data.basic.boxSpacingConfig.layoutBoxSpacing
+                            ? this.state.data.basic.boxSpacingConfig.layoutBoxSpacing[0] +
                               " pixels"
                             : this.state.defaults.boxSpacingConfig
                                 .layoutBoxSpacing[0] + " pixels"
@@ -1020,10 +994,15 @@ class Themes extends Component {
 
                 <div>
                   <h4 className={this.props.classes.previewHead}>Preview</h4>
-                  <div
-                    id="previewElement"
-                    className={this.props.classes.previewWrapper}
-                    style={{
+                  <div id="previewElement" style={{
+                    width: "700px",
+                    height: "700px",
+                  }}>
+                    <div style={{
+                      width: "700px",
+                      height: "700px",
+                      margin: "0 auto",
+                      padding: "10px",
                       backgroundColor: this.state.data.basic.bgcolor,
                       backgroundImage: `url(${this.state.data.basic.bgimage})`,
                       color: this.state.data.basic.textcolor,
@@ -1035,75 +1014,78 @@ class Themes extends Component {
                       backgroundSize: this.state.data.basic.bgstretch
                         ? "cover"
                         : "auto",
-                    }}
-                  >
-                    <AppBar
-                      style={{
-                        backgroundColor: "inherit",
-                        color: "inherit",
-                        fontSize: "inherit",
-                        fontFamily: "inherit",
-                      }}
-                      position="static"
-                    >
-                      <p style={{ fontSize: "inherit", fontFamily: "inherit" }}>Home page</p>
-                    </AppBar>
-
-                    <div
-                      style={{
-                        height: "calc(100% - 27px)",
-                        backgroundColor: "inherit",
-                        color: "inherit",
-                        fontSize: "inherit",
-                        fontFamily: this.state.data.basic.fontfamily,
-                      }}
-                      className={this.props.classes.previewBodyWrapper}
-                    >
-                      <List
+                    }} >
+                      <AppBar
                         style={{
-                          margin: "10px 15px 5px 5px",
+                          backgroundColor: "inherit",
+                          color: "inherit",
+                          fontSize: "inherit",
+                          fontFamily: "inherit",
                         }}
-                        className={this.props.classes.previewList}
-                        component="nav"
-                        aria-label="main mailbox folders"
+                        position="static"
                       >
-                        <ListItem button>
-                          <ListItemIcon>
-                            <InboxIcon />
-                          </ListItemIcon>
-                          <ListItemText primary="First Link" />
-                        </ListItem>
-                        <ListItem button>
-                          <ListItemIcon>
-                            <DraftsIcon />
-                          </ListItemIcon>
-                          <ListItemText primary="Second Link" />
-                        </ListItem>
-                      </List>
-                      <div className={this.props.classes.previewText}>
-                        <h4>
-                          <b>Web Design</b>
-                        </h4>
-                        &nbsp;&nbsp; Web design encompasses many different
-                        skills and disciplines in the production and maintenance
-                        of websites. The different areas of web design include
-                        web graphic design; user interface design (UI design);
-                        authoring, including standardised code and proprietary
-                        software; user experience design (UX design); and search
-                        engine optimization. Often many individuals will work in
-                        teams covering different aspects of the design process,
-                        although some designers will cover them all.[1] The term
-                        "web design" is normally used to describe the design
-                        process relating to the front-end (client side) design
-                        of a website including writing markup. Web design
-                        partially overlaps web engineering in the broader scope
-                        of web development. Web designers are expected to have
-                        an awareness of usability and if their role involves
-                        creating markup then they are also expected to be up to
-                        date with web accessibility guidelines.
+                        <p style={{ fontSize: "inherit", fontFamily: "inherit" }}>Home page</p>
+                      </AppBar>
+
+                      <div
+                        style={{
+                          height: "calc(100% - 27px)",
+                          backgroundColor: "inherit",
+                          color: "inherit",
+                          fontSize: "inherit",
+                          fontFamily: this.state.data.basic.fontfamily,
+                        }}
+                        className={this.props.classes.previewBodyWrapper}
+                      >
+                        <List
+                          style={{
+                            margin: "10px 15px 5px 5px",
+                          }}
+                          className={this.props.classes.previewList}
+                          component="nav"
+                          aria-label="main mailbox folders"
+                        >
+                          <ListItem button>
+                            <ListItemIcon>
+                              <InboxIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="First Link" />
+                          </ListItem>
+                          <ListItem button>
+                            <ListItemIcon>
+                              <DraftsIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Second Link" />
+                          </ListItem>
+                        </List>
+                        <div className={this.props.classes.previewText}>
+                          <h4>
+                            <b>Web Design</b>
+                          </h4>
+                          &nbsp;&nbsp; Web design encompasses many different
+                          skills and disciplines in the production and maintenance
+                          of websites. The different areas of web design include
+                          web graphic design; user interface design (UI design);
+                          authoring, including standardised code and proprietary
+                          software; user experience design (UX design); and search
+                          engine optimization. Often many individuals will work in
+                          teams covering different aspects of the design process,
+                          although some designers will cover them all.[1] The term
+                          "web design" is normally used to describe the design
+                          process relating to the front-end (client side) design
+                          of a website including writing markup. Web design
+                          partially overlaps web engineering in the broader scope
+                          of web development. Web designers are expected to have
+                          an awareness of usability and if their role involves
+                          creating markup then they are also expected to be up to
+                          date with web accessibility guidelines.
+                        </div>
                       </div>
                     </div>
                   </div>
+
+
+
                 </div>
               </div>
             </React.Fragment>
@@ -1123,7 +1105,12 @@ class Themes extends Component {
 
               if(!this.state.side){
                 let data = this.state.data;
-                data.basic = basicData;
+
+                  data.basic.bgrepeat =  this.state.data.basic.bgrepeat;
+                  data.basic.bgstretch =  this.state.data.basic.bgstretch;
+                  data.basic.fontsize =  this.state.data.basic.fontsize;
+                  data.basic.fontfamily =  this.state.data.basic.fontfamily;
+                  data.basic.boxSpacingConfig =  this.state.data.basic.boxSpacingConfig;
                 this.setState({ data });
               }
 
