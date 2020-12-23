@@ -217,8 +217,6 @@ class Themes extends Component {
 
     let data = {};
 
-    let fontFamilyIndex = this.getFontFamilyIndex(tbn.basic.fontfamily);
-
     data = Object.assign({}, tbn);
 
     let fullEditorData = createMuiTheme({
@@ -232,9 +230,14 @@ class Themes extends Component {
     }
 
     await this.setAsyncState({
-      fontFamilyIndex,
       data,
     });
+
+    if(this.state.side === 0){
+      await this.setAsyncState({
+        fontFamilyIndex: this.getFontFamilyIndex(tbn.basic.fontfamily)
+      })
+    }
 
     await this.setAsyncState({
       editMode: true,
