@@ -119,7 +119,7 @@ export default function HeaderLinks(props) {
                 activeStyle={{
                   fontWeight: 900,
                   color: "white",
-                  backgroundColor: "#006C6C",
+                  // backgroundColor: "#006C6C",
                 }}
               >
                 <ListItem

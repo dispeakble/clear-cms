@@ -159,8 +159,6 @@ class App extends Component {
 
     let defaultTheme;
 
-    console.log(themes);
-
     if (themes) {
       defaultTheme = themes.find((theme) => theme.isdefault === true);
       if (!defaultTheme) {
@@ -236,7 +234,7 @@ class App extends Component {
               fixed
               changeColorOnScroll={{
                 height: 10,
-                color: "info",
+                color: "primary",
               }}
             />
           ) : (

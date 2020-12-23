@@ -1,7 +1,3 @@
-// ##############################
-// // // Variables - Styles that are used on more than one component
-// #############################
-
 const drawerWidth = 260;
 
 const transition = {
@@ -53,13 +49,69 @@ const defaultFont = {
   lineHeight: "1.5em",
 };
 
-const primaryColor = "#006C6C";
-const warningColor = "#ff9800";
-const dangerColor = "#f44336";
-const successColor = "#4caf50";
-const infoColor = "#00acc1";
-const roseColor = "#e91e63";
-const grayColor = "#999999";
+const hardcodedStyles = {
+  text: {
+    //primary: "#F00",
+    //secondary: "#0F0",
+    disabled: "#00F",
+    hint: "#333",
+  },
+  error: {
+    main: "#FF0000",
+  },
+  warning: {
+    main: "#FF0000",
+  },
+  info: {
+    main: "#FF0000",
+  },
+  success: {
+    main: "#FF0000",
+  },
+  primary: {
+    main: "#008B8B",
+  },
+  secondary: {
+    main: "#FFFFFF",
+  },
+};
+
+let primaryColor = "#006C6C";
+let warningColor = "#ff9800";
+let dangerColor = "#f44336";
+let successColor = "#4caf50";
+let infoColor = "#00acc1";
+let roseColor = "#e91e63";
+let grayColor = "#999999";
+
+try {
+  //TODO get from main cache already!!!!!
+  let themes = localStorage.getItem("adminThemes");
+
+  let defaultTheme;
+
+  if (themes) {
+
+    themes = JSON.parse(themes);
+    defaultTheme = themes.find((theme) => theme.isdefault === true);
+    if (!defaultTheme) {
+      defaultTheme = hardcodedStyles;
+    }
+  } else {
+    defaultTheme = hardcodedStyles;
+  }
+
+  primaryColor = defaultTheme.primary.main;
+  warningColor = defaultTheme.warning.main;
+  dangerColor = defaultTheme.error.main;
+  successColor = defaultTheme.success.main;
+  infoColor = defaultTheme.info.main;
+  roseColor = defaultTheme.secondary.main;
+  grayColor = defaultTheme.grey.main;
+} catch (err) {
+
+}
+
 
 const primaryBoxShadow = {
   boxShadow:
@@ -165,7 +217,6 @@ const cardSubtitle = {
 };
 
 export {
-  //variables
   drawerWidth,
   transition,
   container,

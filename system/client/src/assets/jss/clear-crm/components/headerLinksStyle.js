@@ -43,9 +43,9 @@ const headerLinksStyle = (theme) => ({
   accordionLinks: {
     width: "100%",
     padding: "0",
-    "& :hover": {
-      backgroundColor: "#006C6C",
-    },
+    // "& :hover": {
+    //   backgroundColor: "#006C6C",
+    // },
   },
   accordionLinksItem: {
     "&:hover :nth-child(1)": { color: "white" },
@@ -128,14 +128,14 @@ const headerLinksStyle = (theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
-  menuCategory: {
-    "&:hover": {
-      backgroundColor: "#006C6C",
-    },
-    "&:hover :nth-child(1)": {
-      color: "white",
-    },
-  },
+  // menuCategory: {
+  //   "&:hover": {
+  //     backgroundColor: "#006C6C",
+  //   },
+  //   "&:hover :nth-child(1)": {
+  //     color: "white",
+  //   },
+  // },
   notificationNavLink: {
     color: "inherit",
     padding: "0.9375rem",

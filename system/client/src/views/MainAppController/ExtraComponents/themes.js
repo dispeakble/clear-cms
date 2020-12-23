@@ -736,8 +736,7 @@ class Themes extends Component {
                       type: "text",
                     }}
                   />
-                </div>
-                <div className={this.props.classes.modalHeadWrapper}>
+
                   <Typography gutterBottom>
                     <Tooltip title="Set as theme for all pages">
                       <Switch
@@ -789,7 +788,7 @@ class Themes extends Component {
                   ""
                 )}
 
-                <div>
+                <div style={{display:"flex"}}>
                   <CustomInput
                     labelText="Theme Title"
                     id="themeTitle"
