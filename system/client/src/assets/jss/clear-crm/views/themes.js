@@ -8,7 +8,7 @@ const javascriptStyles = {
     height: "100%",
     display: "flex",
   },
-  thumbnailsWrapper: {
+  themesWrapper: {
     display: "flex",
     flexWrap: "wrap",
     width: "100%",

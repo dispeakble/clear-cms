@@ -109,9 +109,6 @@ class Categories extends Component {
             },
           },
           MuiTypography: {
-            h6: {
-              textTransform: "capitalize",
-            },
           },
           MuiIconButton: {
             root: {

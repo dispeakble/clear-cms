@@ -65,7 +65,6 @@ const customInputStyle = {
     },
   },
   input: {
-    color: "#495057",
     height: "unset",
     "&,&::placeholder": {
       fontSize: "14px",

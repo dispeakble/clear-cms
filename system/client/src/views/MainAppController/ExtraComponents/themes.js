@@ -22,7 +22,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-// for 'new thumbnail' modal
+// for 'new theme' modal
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 
@@ -60,16 +60,16 @@ class Themes extends Component {
   state = {
     id: "",
     side: 0,
-    thumbnails: [],
-    adminThumbnails: [],
+    themes: [],
+    adminThemes: [],
     createModal: false,
-    showModal: false,
     data: {},
     defaults: {
-      // de inlocuit newBgImage si editBgImage cu this.data.bgImage etc.
       title: "",
       bgcolor: "",
       bgimage: "",
+      bgrepeat: false,
+      bgstretch: false,
       fontsize: "",
       textcolor: "#000000",
       fontfamily: "Arial",
@@ -83,10 +83,8 @@ class Themes extends Component {
           sm: [1, 1],
           xs: [1, 1],
           xxs: [1, 1],
-        },
-      },
-      bgrepeat: false,
-      bgstretch: false,
+        }
+      }
     },
     onPublic: false,
     onAdmin: false,
@@ -108,8 +106,7 @@ class Themes extends Component {
     fullEditorData: "",
     defaultFontFamily: "Arial",
     showEmptyTitleMessage: false,
-    rerenderedModal: false,
-    editorOnPublic: 0,
+    publicType: 0,
   };
 
   setAsyncState = (newState) =>
@@ -121,16 +118,16 @@ class Themes extends Component {
 
     this.setState({ side });
 
-    let thumbnailsInStorage = JSON.parse(localStorage.getItem("publicThemes"));
-    if (thumbnailsInStorage) {
-      this.setState({ thumbnails: thumbnailsInStorage });
+    let themesInStorage = JSON.parse(localStorage.getItem("publicThemes"));
+    if (themesInStorage) {
+      this.setState({ themes: themesInStorage });
     }
 
-    let adminThumbnailsInStorage = JSON.parse(
+    let adminThemesInStorage = JSON.parse(
       localStorage.getItem("adminThemes")
     );
-    if (adminThumbnailsInStorage) {
-      this.setState({ adminThumbnails: adminThumbnailsInStorage });
+    if (adminThemesInStorage) {
+      this.setState({ adminThemes: adminThemesInStorage });
     }
   }
 
@@ -179,29 +176,29 @@ class Themes extends Component {
   onRemoveItem = async () => {
     if (this.state.side) {
       //is admin theme
-      let adminThumbnails = [...this.state.adminThumbnails];
+      let adminThemes = [...this.state.adminThemes];
 
-      let newThumbnails = adminThumbnails.filter(
+      let newThemes = adminThemes.filter(
         (tbn) => tbn.id !== this.state.itemToRemoveId
       );
 
       await this.setAsyncState({
-        adminThumbnails: newThumbnails,
+        adminThemes: newThemes,
       });
 
-      localStorage.setItem("adminThemes", JSON.stringify(newThumbnails));
+      localStorage.setItem("adminThemes", JSON.stringify(newThemes));
     } else {
-      let thumbnails = [...this.state.thumbnails];
+      let themes = [...this.state.themes];
 
-      let newThumbnails = thumbnails.filter(
+      let newThemes = themes.filter(
         (tbn) => tbn.id !== this.state.itemToRemoveId
       );
 
       await this.setAsyncState({
-        thumbnails: newThumbnails,
+        themes: newThemes,
       });
 
-      localStorage.setItem("publicThemes", JSON.stringify(newThumbnails));
+      localStorage.setItem("publicThemes", JSON.stringify(newThemes));
     }
 
     this.props.tweakTheState();
@@ -215,8 +212,8 @@ class Themes extends Component {
 
   enableEditMode = async (id) => {
     const tbn = this.state.side
-      ? this.state.adminThumbnails.find((tbn) => tbn.id === id)
-      : this.state.thumbnails.find((tbn) => tbn.id === id);
+      ? this.state.adminThemes.find((tbn) => tbn.id === id)
+      : this.state.themes.find((tbn) => tbn.id === id);
 
     let data = {};
 
@@ -254,18 +251,18 @@ class Themes extends Component {
       //is admin theme
       localStorage.setItem(
         "adminThemes",
-        JSON.stringify(this.state.adminThumbnails)
+        JSON.stringify(this.state.adminThemes)
       );
     } else {
       localStorage.setItem(
         "publicThemes",
-        JSON.stringify(this.state.thumbnails)
+        JSON.stringify(this.state.themes)
       );
     }
   };
 
-  createAdminThumbnailsPage = () => {
-    const createThumbnail = (tbn) => {
+  adminThemeList = () => {
+    const createTheme = (tbn) => {
       return (
         <React.Fragment>
           <Card
@@ -312,28 +309,16 @@ class Themes extends Component {
       );
     };
 
-    let thumbnails = this.state.thumbnails;
-
-    let adminThumbnails = this.state.adminThumbnails;
-
     return (
       <div className={this.props.classes.outerWrapper}>
-        <div className={this.props.classes.thumbnailsWrapper}>
+        <div className={this.props.classes.themesWrapper}>
           {this.state.side
-            ? adminThumbnails.map((tbn) => createThumbnail(tbn))
-            : thumbnails.map((tbn) => createThumbnail(tbn))}
+            ? this.state.adminThemes.map((tbn) => createTheme(tbn))
+            : this.state.themes.map((tbn) => createTheme(tbn))}
         </div>
       </div>
     );
   };
-
-  showModal = () => {
-    this.setAsyncState({ showModal: true });
-  };
-
-  closeNewThumbnailModal() {
-    this.setAsyncState({ showModal: false });
-  }
 
   openColorPicker = (displayColorPicker) => {
     this.setState({ [displayColorPicker]: !this.state[displayColorPicker] });
@@ -476,18 +461,18 @@ class Themes extends Component {
   };
 
   handleDefault = () => {
-    let thumbnails;
+    let themes;
 
     if (this.state.side) {
       //is admin theme
-      thumbnails = this.state.adminThumbnails;
+      themes = this.state.adminThemes;
     } else {
-      thumbnails = this.state.thumbnails;
+      themes = this.state.themes;
     }
 
     if (this.state.editMode) {
       if (this.state.data.isdefault) {
-        thumbnails = thumbnails.map((tbn) => {
+        themes = themes.map((tbn) => {
           let newTbn = tbn;
           if (tbn.id !== this.state.data.id) {
             newTbn.isdefault = false;
@@ -496,86 +481,113 @@ class Themes extends Component {
         });
       }
 
-      this.setState({ thumbnails: thumbnails });
+      return this.setAsyncState({ themes: themes });
     } else {
-      let newThumbnails = thumbnails.map((tbn) => {
+      let newThemes = themes.map((tbn) => {
         let newTbn = tbn;
         newTbn.isdefault = false;
         return newTbn;
       });
 
-      this.setState({
-        thumbnails: newThumbnails,
+      return this.setAsyncState({
+        themes: newThemes,
       });
     }
   };
 
   saveChangedStyle = async () => {
-    await this.setAsyncState({ editorOnPublic: this.state.side });
+    if(this.state.side === 0){
+      await this.setAsyncState({ publicType: 0 });
+    }
 
     if (this.state.side) {
-      let adminPreviewElement = document.querySelector("#adminPreviewElement");
-
-      let thumbnail;
-
-      let canvas;
-      let base64image;
+      let adminPreviewElement = document.querySelector("#adminPreviewElement"),
+        theme,
+        canvas,
+        base64image = "";
 
       if (adminPreviewElement) {
-        canvas = await html2canvas(adminPreviewElement);
-        base64image = canvas.toDataURL("image/png");
+        try {
+          canvas = await (()=>{
+            return new Promise((resolve) => {
+              html2canvas(adminPreviewElement).then((value) => {
+                resolve(value);
+              }).catch(err=>{
+                console.log(err)
+                resolve(null);
+              });
+            });
+          })();
+          if(canvas){
+            base64image = canvas.toDataURL("image/png");
+          }
+
+        } catch (err){
+          console.log(err);
+        }
+
       }
 
-      thumbnail = this.themeEditor.state.theme.palette;
+      theme = Object.assign({}, this.themeEditor.state.theme.palette, {
+        title: this.state.data.title,
+        id: this.state.data.id || 0,
+        isdefault: this.state.data.isdefault,
+        html2canvasImage: base64image
+      });
 
-      thumbnail.title = this.state.data.title;
-
-      thumbnail.id = this.state.data.id || 0;
-
-      thumbnail.isdefault = this.state.data.isdefault;
-
-      thumbnail.html2canvasImage = base64image;
-
-      let adminThumbnails = this.state.adminThumbnails;
+      let adminThemes = this.state.adminThemes || [];
 
       if (!this.state.editMode) {
         let newId = 0;
 
-        this.state.adminThumbnails.map((tbn) => {
+        this.state.adminThemes.map((tbn) => {
           newId = Number(tbn.id) > Number(newId) ? Number(tbn.id) : newId;
           return tbn;
         });
         newId++;
-        thumbnail.id = newId;
+        theme.id = newId;
 
-        adminThumbnails = adminThumbnails.concat(thumbnail);
+        adminThemes.push(theme);
       } else {
-        let foundTbnIndex = adminThumbnails.findIndex(
+        let foundTbnIndex = adminThemes.findIndex(
           (tbn) => tbn.id === this.state.data.id
         );
 
-        adminThumbnails[foundTbnIndex] = thumbnail;
-        //fullEditorData.palette = thumbnail;
+        adminThemes[foundTbnIndex] = theme;
       }
 
       await this.setAsyncState({
-        adminThumbnails,
+        adminThemes,
       });
-
-      //localStorage.setItem("fullEditorData", JSON.stringify(fullEditorData));
     } else {
       let previewElement = document.querySelector("#previewElement");
       let canvas;
-      let base64image;
+      let base64image = "";
 
       this.hideMenu();
 
       if (previewElement) {
-        canvas = await html2canvas(previewElement);
-        base64image = canvas.toDataURL("image/png");
+        try {
+          canvas = await (()=>{
+            return new Promise((resolve) => {
+              html2canvas(previewElement).then((value) => {
+                resolve(value);
+              }).catch(err=>{
+                console.log(err)
+                resolve(null);
+              });
+            });
+          })();
+          if(canvas){
+            base64image = canvas.toDataURL("image/png");
+          }
+        } catch(err) {
+          console.log(err);
+        }
+
       }
 
-      let thumbnail = {
+      let theme = {
         id: this.state.data.id || 0,
         title: this.state.data.title,
         isdefault: this.state.data.isdefault,
@@ -593,29 +605,29 @@ class Themes extends Component {
         mui: this.themeEditor.state.theme.palette,
       };
 
-      let thumbnails = this.state.thumbnails;
+      let themes = this.state.themes || [];
 
       if (!this.state.editMode) {
         let newId = 0;
 
-        this.state.thumbnails.map((tbn) => {
+        this.state.themes.map((tbn) => {
           newId = Number(tbn.id) > Number(newId) ? Number(tbn.id) : newId;
           return tbn;
         });
 
         newId++;
-        thumbnail.id = newId;
-        thumbnails = thumbnails.concat(thumbnail);
+        theme.id = newId;
+        themes.push(theme);
       } else {
-        let foundTbnIndex = thumbnails.findIndex(
+        let foundTbnIndex = themes.findIndex(
           (tbn) => tbn.id === this.state.data.id
         );
 
-        thumbnails[foundTbnIndex] = thumbnail;
+        themes[foundTbnIndex] = theme;
       }
 
       await this.setAsyncState({
-        thumbnails,
+        themes,
       });
       this.showMenu();
     }
@@ -623,8 +635,6 @@ class Themes extends Component {
     this.saveTbnInStorage();
 
     this.disableEditMode();
-
-    this.closeNewThumbnailModal();
 
     this.setState({ createModal: false, showEmptyTitleMessage: false });
 
@@ -648,14 +658,27 @@ class Themes extends Component {
   }
 
   openEditor() {
-    // TODO - move bgcolor and textcolor to temporary variables
     let basicData = {
-      bgrepeat: this.state.data.basic.bgrepeat,
-      bgstretch: this.state.data.basic.bgstretch,
-      fontsize: this.state.data.basic.fontsize,
-      fontfamily: this.state.data.basic.fontfamily,
-      boxSpacingConfig: this.state.data.basic.boxSpacingConfig,
+      bgrepeat: false,
+      bgstretch: false,
+      fontsize: "11",
+      fontfamily: "arial",
+      boxSpacingConfig: []
     };
+    if(!this.state.side){
+      try {
+        basicData = {
+          bgrepeat: this.state.data.basic.bgrepeat,
+          bgstretch: this.state.data.basic.bgstretch,
+          fontsize: this.state.data.basic.fontsize,
+          fontfamily: this.state.data.basic.fontfamily,
+          boxSpacingConfig: this.state.data.basic.boxSpacingConfig
+        };
+      } catch (err){
+
+      }
+
+    }
 
     let bgColorStyles, textColorStyles;
 
@@ -773,8 +796,8 @@ class Themes extends Component {
                 <div>
                   <AppBar position="static" style={{ width: "100%" }}>
                     <Tabs
-                      value={this.state.editorOnPublic}
-                      onChange={this.toggleEditorOnPublic}
+                      value={this.state.publicType}
+                      onChange={this.togglePublicType}
                     >
                       <Tab label="Basic Editor" {...a13yProps(0)} />
                       <Tab label="Material UI Theme Editor" {...a13yProps(1)} />
@@ -832,7 +855,7 @@ class Themes extends Component {
               <div
                 style={{
                   height: "100%",
-                  display: this.state.editorOnPublic ? "block" : "none",
+                  display: this.state.publicType === 1 ? "block" : "none",
                 }}
               >
                 <Editor
@@ -843,7 +866,6 @@ class Themes extends Component {
                   }
                   style={{
                     height: "100%",
-                    display: this.state.editorOnPublic ? "block" : "none",
                   }}
                   ref={(editor) => {
                     this.themeEditor = editor;
@@ -853,7 +875,7 @@ class Themes extends Component {
 
               <div
                 style={{
-                  display: !this.state.editorOnPublic ? "block" : "none",
+                  display: this.state.publicType === 0 ? "block" : "none",
                 }}
               >
                 <div className={this.props.classes.newTbnStylesWrapper}>
@@ -880,7 +902,7 @@ class Themes extends Component {
                       <Typography id="discrete-slider" gutterBottom>
                         <Tooltip title="Background Repeat">
                           <Switch
-                            defaultChecked={basicData.bgrepeat}
+                            defaultChecked={!this.state.side && basicData.bgrepeat}
                             onChange={(event) => {
                               basicData.bgrepeat = event.target.checked;
                             }}
@@ -894,8 +916,9 @@ class Themes extends Component {
                       <Typography id="discrete-slider" gutterBottom>
                         <Tooltip title="Background Stretch">
                           <Switch
-                            defaultChecked={basicData.bgrepeat}
+                            defaultChecked={!this.state.side && basicData.bgrepeat}
                             onChange={(event) => {
+                              if(this.state.side) return;
                               basicData.bgrepeat = event.target.checked;
                             }}
                           />
@@ -1023,11 +1046,7 @@ class Themes extends Component {
                       }}
                       position="static"
                     >
-                      <h4
-                        style={{ fontSize: "inherit", fontFamily: "inherit" }}
-                      >
-                        Header
-                      </h4>
+                      <p style={{ fontSize: "inherit", fontFamily: "inherit" }}>Home page</p>
                     </AppBar>
 
                     <div
@@ -1098,18 +1117,18 @@ class Themes extends Component {
               if (!this.state.data.title.length) {
                 await this.setAsyncState({
                   showEmptyTitleMessage: true,
-                  rerenderedModal: true,
                 });
                 return;
               }
 
-              let data = this.state.data;
-              data.basic = basicData;
-              this.setState({ data });
+              if(!this.state.side){
+                let data = this.state.data;
+                data.basic = basicData;
+                this.setState({ data });
+              }
 
-              this.handleDefault();
+              await this.handleDefault();
               this.saveChangedStyle();
-              this.setState({ rerenderedModal: false });
             }}
           >
             <div>Save</div>
@@ -1120,7 +1139,6 @@ class Themes extends Component {
               this.disableEditMode();
               this.setState({
                 createModal: false,
-                rerenderedModal: false,
                 showEmptyTitleMessage: false,
               });
             }}
@@ -1137,8 +1155,8 @@ class Themes extends Component {
     localStorage.setItem("side", JSON.stringify(newValue));
   };
 
-  toggleEditorOnPublic = (event, newValue) => {
-    this.setState({ editorOnPublic: newValue, showEmptyTitleMessage: false });
+  togglePublicType = (event, newValue) => {
+    this.setState({ publicType: newValue, showEmptyTitleMessage: false });
   };
 
   createRemoveTbnModal() {
@@ -1190,7 +1208,6 @@ class Themes extends Component {
     };
 
     return (
-      <MuiThemeProvider theme={this.getTheme()}>
         <React.Fragment>
           <Helmet>
             <title>Themes</title>
@@ -1210,7 +1227,7 @@ class Themes extends Component {
             </Tabs>
           </AppBar>
           <div style={{ display: "flex" }}>
-            {this.createAdminThumbnailsPage()}
+            {this.adminThemeList()}
           </div>
           <div
             style={{
@@ -1236,7 +1253,6 @@ class Themes extends Component {
           {this.state.createModal ? this.openEditor() : ""}
           {this.createRemoveTbnModal()}
         </React.Fragment>
-      </MuiThemeProvider>
     );
   }
 }

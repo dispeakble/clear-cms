@@ -14,7 +14,6 @@ const navPillsStyle = theme => ({
     marginBottom: "0",
     overflow: "visible !important",
     lineHeight: "24px",
-    textTransform: "uppercase",
     fontSize: "12px",
     fontWeight: "500",
     position: "relative",
@@ -131,7 +130,6 @@ const navPillsStyle = theme => ({
     fontSize: "12px",
     lineHeight: "24px",
     fontWeight: "500",
-    textTransform: "uppercase",
     "&,& *": {
       letterSpacing: "normal"
     }

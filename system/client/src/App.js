@@ -176,6 +176,28 @@ class App extends Component {
     return createMuiTheme({
       palette: defaultTheme,
       overrides: {
+        MuiDialog: {
+          paper: {
+            width: "100%",
+          },
+          paperWidthSm: {
+            maxWidth: "100vw",
+          },
+        },
+        MuiDropzoneArea: {
+          root: {
+            height: "145px",
+            minHeight: "145px",
+          },
+          text: {
+            fontSize: "1rem",
+          },
+        },
+        MuiTab:{
+          root:{
+            textTransform:"none"
+          }
+        },
         paperWidthSm: "100%",
       },
     });

@@ -70,9 +70,6 @@ class Pages extends Component {
             },
           },
           MuiTypography: {
-            h6: {
-              textTransform: "capitalize",
-            },
           },
           MuiIconButton: {
             root: {

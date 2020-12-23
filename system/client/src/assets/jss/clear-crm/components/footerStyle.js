@@ -6,7 +6,6 @@ const footerStyle = {
     padding: "0.9375rem",
     fontWeight: "500",
     fontSize: "12px",
-    textTransform: "uppercase",
     borderRadius: "3px",
     textDecoration: "none",
     position: "relative",

@@ -259,9 +259,6 @@ class MenuModule extends Component {
             },
           },
           MuiTypography: {
-            h6: {
-              textTransform: "capitalize",
-            },
           },
           MuiIconButton: {
             root: {
