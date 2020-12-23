@@ -16,9 +16,7 @@ const javascriptStyles = {
   column: {
     flexBasis: "49%",
   },
-  modalHeadWrapper: {
-    display: "flex",
-  },
+  modalHeadWrapper: {},
   modalHeadColumn: {
     width: "50%",
   },
