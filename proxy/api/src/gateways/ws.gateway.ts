@@ -5,10 +5,11 @@ import {
     WsResponse,
     WebSocketServer,
     OnGatewayConnection,
-    OnGatewayDisconnect
+    OnGatewayDisconnect, ConnectedSocket, MessageBody
 } from '@nestjs/websockets';
-import {Logger} from '@nestjs/common';
+import {Logger, UseGuards} from '@nestjs/common';
 import {Socket, Server} from 'socket.io';
+import {WsAuthGuard} from "../guards/ws.auth.guard";
 
 /**
  *    Important URIs:
@@ -17,7 +18,6 @@ import {Socket, Server} from 'socket.io';
  *    https://socket.io/docs/client-api/
  */
 
-//@WebSocketGateway({serveClient: true})
 @WebSocketGateway({namespace: 'ws', transports: ['websocket']})
 export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
@@ -25,15 +25,20 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     private logger: Logger = new Logger('AppGateway');
     private callbacks = {};
 
+
     afterInit(server: Server) {
         console.log('Websocket Initialized...');
-        this.wss.on('connect', function (socket) {
+        this.wss.on('connect', (socket) => {
+            //TODO CHECK IF THE SESSION IS AUTHORIZED AND REJECT NON-LOGINS
+            console.log('Websocket Connected...');
             socket.on('message', (data) => {
-                console.log(data);
                 socket.send('handshake...')
             })
+            socket.on('disconnect', this.handleDisconnect);
             return {sid: socket.id}
         })
+
+
     }
 
     handleConnection(client: Socket, ...args: any[]) {
@@ -44,24 +49,33 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         this.logger.log(`Client disconnected: ${client.id}`);
     }
 
-    @SubscribeMessage('S')
-    onMessage(client: Socket, payload: any): Promise<WsResponse> {
-        this.logger.log(`Message received for ${client.id}`);
-        this.logger.log(payload);
-        try {
-            return new Promise<WsResponse>(async (resolve) => {
-                const data = {event: payload.channel, data: await this.callbacks['onMessage'](payload)}
-                resolve(data)
-            })
+    @SubscribeMessage('D')
+    onDisconnect(@ConnectedSocket() client: Socket){
+        client.disconnect(true);
+    }
 
-        } catch(err){
-            console.log('cannot call onMessage on parent', JSON.stringify(err));
-        }
+    @UseGuards(WsAuthGuard)
+    @SubscribeMessage('S')
+    onMessage(@ConnectedSocket() client: Socket, @MessageBody() params: any): Promise<WsResponse> {
+        //this.logger.log(`Message received for ${client.id}`);
+        //this.logger.log(params);
+        return new Promise<WsResponse>(async (resolve) => {
+            try {
+                const response = {
+                    event: params.channel,
+                    data: await this.callbacks['onMessage']({data: params, client: client})
+                };
+                resolve(response);
+            } catch (err) {
+                console.log('Failed to resolve onMessage', JSON.stringify(err));
+                resolve({event: params.channel, data: null});
+            }
+        })
     }
 
     //app functionality
-    registerCallbacks(params){
-        let cbNames = Object.keys(params.callbacks);
+    registerCallbacks(params) {
+        const cbNames = Object.keys(params.callbacks);
         cbNames.map((cb) => {
             this.callbacks[cb] = params.callbacks[cb];
         })

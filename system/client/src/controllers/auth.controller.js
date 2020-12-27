@@ -1,15 +1,15 @@
 import React, {Component} from "react";
 import ViewAuth from "templates/ViewAuth/ViewAuth";
 import * as shortId from "shortid";
+import PropTypes from "prop-types";
 
 class AuthController extends Component {
-
     services = {};
     messageCallbacks = {};
     config = {
         prefix: 'system/'
     };
-    control={
+    control = {
         login: (params) => this.login(params),
         logout: (params) => this.logout(params),
         recover: (params) => this.recover(params)
@@ -27,43 +27,51 @@ class AuthController extends Component {
         });
 
         this.sendMessage({
-            api:'auth',
-            act:'ping',
-            payload:'hi there'
+            module: 'system',
+            api: 'auth',
+            act: 'ping',
+            payload: 'hi there'
         }).then((response) => {
             console.log(response);
         })
 
     }
 
-    async login(params){
-        const response = await this.sendMessage({
-            module:'system',
-            api:'auth',
-            act:'doLogin',
-            payload:params
+    login(params) {
+        return new Promise((resolve) => {
+            this.sendPost({
+                module: 'system',
+                api: 'auth',
+                act: 'doLogin',
+                payload: params
+            }).then(response => {
+                if (response && response.email && response.email === params.email) {
+                    localStorage.setItem('admin', JSON.stringify({fullname: response.fullname}));
+                    this.props.services.ws.start();
+                    this.props.history.push('/');
+                    return resolve(response);
+                }
+
+                resolve(false);
+            });
         });
-
-        if(response && response.length){
-            //TODO set session
-            //TODO set cookie with name, email, full name
-            this.props.history.push('/');
-            return response[0];
-        }
-
-        return false;
-
     }
 
-    logout(params){
-        console.log('will call logout api', params);
+    logout() {
+        this.services.ws.client.emit('D', null);
+        return this.sendPost({
+                module: 'system',
+                api: 'auth',
+                act: 'doLogout'
+            }
+        )
     }
 
-    recover(params){
+    recover(params) {
         console.log('will call recover api', params);
     }
 
-    onMessage(params){
+    onMessage(params) {
         try {
             this.messageCallbacks[params.id](params.data);
         } catch (err) {
@@ -72,14 +80,14 @@ class AuthController extends Component {
         console.log('got message in auth controller', params);
     }
 
-    sendMessage(params){
+    sendMessage(params) {
         return new Promise((resolve_send, reject_send) => {
             const uniqueId = shortId.generate();
             this.messageCallbacks[uniqueId] = resolve_send;
             this.services.ws.emit({
                 id: uniqueId,
-                channel:'auth',
-                module:params.module,
+                channel: 'auth',
+                module: params.module,
                 api: params.api,
                 act: params.act,
                 payload: params.payload
@@ -87,10 +95,40 @@ class AuthController extends Component {
         });
     }
 
-    render(){
+    sendPost(params) {
+        return new Promise((resolve_send) => {
+            const uniqueId = shortId.generate();
+
+            fetch('/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id: uniqueId,
+                    module: params.module,
+                    api: params.api,
+                    act: params.act,
+                    payload: params.payload
+                })
+            }).then(async (response) => {
+                const resp = await response.json();
+                resolve_send(resp);
+            });
+        });
+    }
+
+    render() {
         return <ViewAuth control={this.control} {...this.props} />;
     }
 
 }
 
 export default AuthController;
+
+AuthController.defaultProp = {
+    color: "rgba(0,0,0,.87)",
+};
+
+AuthController.propTypes = {
+    services: PropTypes.object,
+    history: PropTypes.object,
+};

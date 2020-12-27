@@ -1,22 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
-import * as dotenv from 'dotenv';
-import * as fs from 'fs';
-import * as path from 'path';
-import { CONFIG_OPTIONS } from '../constants/config.constants';
-import { ConfigOptions } from '../interfaces/config-options.interface';
-import { EnvconfigInterface } from '../interfaces/envconfig.interface';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ConfigService {
-    private readonly envConfig: EnvconfigInterface;
-
-    constructor(@Inject(CONFIG_OPTIONS) options: ConfigOptions) {
-        const filePath = `${process.env.NODE_ENV || 'development'}.env`;
-        const envFile = path.resolve(__dirname, '../../', options.folder, filePath);
-        this.envConfig = dotenv.parse(fs.readFileSync(envFile));
-    }
-
-    get(key: string): string {
-        return this.envConfig[key];
-    }
+    public readonly REDIS_PORT = Number(process.env.redis_port);
+    public readonly REDIS_HOST = process.env.redis_server;
+    public readonly REDIS_PASSWORD = process.env.redis_password;
+    public readonly SESSION_SECRET = process.env.session_secret;
 }

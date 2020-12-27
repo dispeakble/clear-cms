@@ -24,7 +24,7 @@ const init = async (options) => {
         new ExpressAdapter(server),
     );
 
-    await app.connectMicroservice({
+    return app.connectMicroservice({
         transport: Transport.REDIS,
         options: {
             url:  'redis://' + process.env.redis_server,
@@ -33,8 +33,6 @@ const init = async (options) => {
         }
     });
 
-
-    return true;
 }
 
 const createServer = async (data) => {
@@ -76,6 +74,8 @@ async function bootstrap() {
         await app.startAllMicroservicesAsync();
 
         await app.listen(process.env.backend_port, '0.0.0.0');
+
+        logger.log('Proxy module started');
 
     } catch (e) {
         logger.log('Warning! Could not start the proxy module');

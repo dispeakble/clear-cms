@@ -11,7 +11,7 @@ export class AppService {
     }
 
     private portMappingListen(data){
-        this.portMappingCallback = data.cb;
+        this.portMappingCallback = data.callback;
     }
 
     private updatePortMapping(data){

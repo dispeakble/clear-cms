@@ -9,22 +9,15 @@ class WsService {
         message: {}
     };
 
-    start(data) {
+    start() {
         return new Promise((resolve_start) => {
             this.url = Number(window.location.port) === 3000 ? 'ws://localhost:9696/ws' : 'ws://'+ window.location.host +'/ws';
             this.client = io(this.url, this.options);
-
-            //['message', 'disconnect'].map((e) => this.client.on(e, this['on' + e]));
-
-
             this.client.on('disconnect', (e) => this.ondisconnect(e))
-
-
             this.client.on('connect', () => {
                 resolve_start(true);
-            })
+            });
         });
-
     }
 
     onmessage(params) {
@@ -42,14 +35,23 @@ class WsService {
     }
 
     emit(params){
+        if(!this.client){
+            return;
+        }
         return this.client.emit('S', params);
     }
 
     send(params){
+        if(!this.client){
+            return;
+        }
         return this.client.send('S', params);
     }
 
     subscribe(params){
+        if(!this.client){
+            return;
+        }
         this.callbacks.message[params.channel] = params.callbacks.message;
         this.client.off(params.channel);
         this.client.on(params.channel, (e) =>

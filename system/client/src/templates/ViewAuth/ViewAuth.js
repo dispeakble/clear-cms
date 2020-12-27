@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React, {Component} from "react";
+import {withStyles} from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 import AddAlert from "@material-ui/icons/AddAlert";
@@ -14,284 +14,284 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
 
 import styles from "assets/jss/clear-crm/views/viewAuth.js";
 
 import image from "assets/img/view-auth-bg.png";
+import PropTypes from "prop-types";
 
 class ViewAuth extends Component {
-  state = {
-    authButtonDisabled: { disabled: "disabled" },
-    buttonState: false,
-    credentialsPassed: false,
-    emailValid: false,
-    passwordValid: false,
-    email: "",
-    password: "",
-    credentialsErrorMessage: "",
-    removeResetMessage: "",
-  };
-
-  componentDidMount() {
-    if (this.props.location.pathname === "/logout") {
-      //TODO send logout message
-      setTimeout(() => {
-        this.props.history.push("/view-auth");
-      }, 0);
-    }
-  }
-
-  handleInputChange = (event) => {
-    switch (event.target.id) {
-      case "email":
-        let emailValid =
-          event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) &&
-          event.target.value.length <= 30;
-
-        this.setState({emailValid: emailValid, email: event.target.value,}, this.applyAuthButtonState);
-
-        break;
-      case "password":
-        this.setState(
-          {
-            passwordValid:
-              event.target.value.length >= 3 && event.target.value.length <= 30,
-            password: event.target.value,
-          },
-          this.applyAuthButtonState
-        );
-
-        break;
-    }
-
-    this.setState({removeResetMessage: "none", credentialsErrorMessage: "",});
-  };
-
-  applyAuthButtonState = () => {
-    if (
-      this.props.location.pathname === "/view-auth" ||
-      this.props.location.pathname === "/view-auth/recovered"
-    ){
-      this.setState({
-        authButtonDisabled:
-          this.state.emailValid && this.state.passwordValid
-            ? {}
-            : { disabled: "disabled" },
-      });
-    } else {
-      this.setState({
-        authButtonDisabled: this.state.emailValid
-          ? {}
-          : { disabled: "disabled" },
-      });
-    }
-  };
-
-  removeErrorMessage = () => {
-    this.setState({ credentialsPassed: true });
-  };
-
-  onSubmit = (event) => {
-    event.preventDefault();
-
-    const { history } = this.props;
-
-    if (
-      this.props.location.pathname === "/view-auth" ||
-      this.props.location.pathname === "/view-auth/recovered"
-    ) {
-
-      this.props.control.login({
-        email:this.state.email,
-        password:this.state.password
-      });
-
-      //history.push("/");
-
-    } else {
-      //this.setState({ removeResetMessage: "" });
-      //history.push("/view-auth/recovered");
-
-    }
-    let credentialsPassed = this.state.credentialsPassed;
-
-    const errorMessageContent =
-      this.props.location.pathname === "/view-auth" ||
-      this.props.location.pathname === "/view-auth/recovered"
-        ? "The entered credentials did not match any account."
-        : "We could not find the entered email address.";
-
-    if (!credentialsPassed) {
-      this.setState({
-        credentialsErrorMessage: (
-          <Snackbar
-            open
-            place="tc"
-            color="warning"
-            icon={AddAlert}
-            message={errorMessageContent}
-          />
-        ),
-      });
-    } else {
-      this.setState({
+    state = {
+        authButtonDisabled: {disabled: true},
+        buttonState: false,
+        emailValid: false,
+        passwordValid: false,
+        email: "",
+        password: "",
         credentialsErrorMessage: "",
-      });
-    }
-  };
+        removeResetMessage: "",
+        resetSuccessMessage: null,
+        loginText: "",
+        loginButton: "",
+        loginTitle: "",
+    };
 
-  render() {
-    const url = this.props.location.pathname;
+    setAsyncState = (newState) =>
+        new Promise((resolve) => this.setState(newState, resolve));
 
-    const classes = this.props.classes;
+    componentDidMount() {
+        if (this.props.location.pathname === "/logout") {
+            setTimeout(async () => {
+                await this.props.control.logout();
+                this.props.history.push("/view-auth");
+                this.changeTexts();
+            }, 0);
+        } else if (this.props.location.pathname === "/view-auth/recovered") {
+            this.setState({
+                resetSuccessMessage: (
+                    <div style={{display: this.state.removeResetMessage}}>
+                        <Snackbar
+                            open
+                            place="tc"
+                            color="success"
+                            icon={DoneOutline}
+                            message="Password successfully reset. Please check your e-mail."
+                        />
+                    </div>
+                )
+            });
+        }
 
-    let loginOrRetrievePasswordURL = url.startsWith("/view-auth");
+        this.changeTexts();
 
-    const loginText = loginOrRetrievePasswordURL
-      ? "Please type in your credentials"
-      : "Enter your email address";
-
-    const submitButtonText = loginOrRetrievePasswordURL
-      ? "Access account"
-      : "Recover Password";
-
-    let resetSuccessMessage;
-
-    if (this.props.location.pathname === "/view-auth/recovered") {
-      resetSuccessMessage = (
-        <div style={{ display: this.state.removeResetMessage }}>
-          <Snackbar
-            open
-            place="tc"
-            color="success"
-            icon={DoneOutline}
-            message="Password successfully reset. Please check your e-mail."
-          />
-        </div>
-      );
-    }
-
-    let headerText = "";
-
-    switch(this.props.location.pathname){
-      default:
-        headerText = "Admin login";
-        break;
-      case "/recover-password":
-        headerText = "Recover password";
-        break;
     }
 
-    return (
-      <div>
-        <Helmet>
-          <title>
-            {this.props.location.pathname === "/recover-password"
-              ? "Recover Password"
-              : "Authentication"}
-          </title>
-        </Helmet>
-        <div
-          className={classes.pageHeader}
-          style={{
-            backgroundImage: "url(" + image + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-          }}
-        >
-          {this.state.credentialsErrorMessage}
-          {resetSuccessMessage}
-          <div className={classes.container}>
-            <GridContainer justify="center">
-              <GridItem lg={3} md={4} sm={6} xs={10} xxs={12}>
-                <Card>
-                  <form onSubmit={this.onSubmit} className={classes.form}>
-                    <CardHeader color="primary" className={classes.cardHeader}>
-                      <h4>{headerText}</h4>
-                    </CardHeader>
-                    <p className={classes.divider}>{loginText}</p>
-                    <CardBody>
-                      <CustomInput
-                        name="email"
-                        labelText="Email"
-                        id="email"
-                        formControlProps={{
-                          fullWidth: true,
-                          onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                          type: "email",
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <Icon className={classes.inputIconsColor}>
-                                account_circle
-                              </Icon>
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                      {loginOrRetrievePasswordURL ||
-                      this.props.location.pathname ===
-                      "/view-auth/recovered" ? (
-                          <React.Fragment>
-                            <CustomInput
-                              labelText="Password"
-                              id="password"
-                              formControlProps={{
-                                fullWidth: true,
-                                onChange: (event) => this.handleInputChange(event),
-                              }}
-                              inputProps={{
-                                type: "password",
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <Icon className={classes.inputIconsColor}>
-                                      lock_outline
-                                    </Icon>
-                                  </InputAdornment>
-                                ),
-                                autoComplete: "off",
-                              }}
-                            />
-                            <Link className={classes.recoverPassword} to="/recover-password">
-                              <p onClick={this.removeErrorMessage}>
-                                I forgot my password
-                              </p>
-                            </Link>
-                          </React.Fragment>
+    changeTexts(){
+        const url = this.props.location.pathname;
 
-                      ) : (
-                        <Link className={classes.recoverPassword} to="/view-auth">
-                          <p onClick={this.removeErrorMessage}>
-                            Back to login
-                          </p>
-                        </Link>
-                      )}
+        if (url.startsWith("/view-auth") || url.startsWith("/logout")) {
+            this.setState({
+                loginText: "Please type in your credentials",
+                loginButton: "Access account",
+                loginTitle: "Access your admin account"
+            });
+        } else if(url.startsWith("/recover-password")) {
+            this.setState({
+                loginText: "Enter your email address",
+                loginButton: "Recover Password",
+                loginTitle: "Recover your admin password"
+            });
+        }
+    }
 
-                    </CardBody>
-                    <CardFooter className={classes.cardFooter}>
-                      <Button
-                        onClick={this.onSubmit}
-                        type="submit"
-                        color="primary"
-                        size="lg"
-                        {...this.state.authButtonDisabled}
-                      >
-                        {submitButtonText}
-                      </Button>
-                    </CardFooter>
-                  </form>
-                </Card>
-              </GridItem>
-            </GridContainer>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    handleInputChange = (event) => {
+        switch (event.target.id) {
+            case "email":
+                const emailValid =
+                    event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) &&
+                    event.target.value.length <= 30;
+
+                this.setState({emailValid: emailValid, email: event.target.value}, this.applyAuthButtonState);
+
+                break;
+            case "password":
+                this.setState(
+                    {
+                        passwordValid: event.target.value.length >= 3 && event.target.value.length <= 30,
+                        password: event.target.value
+                    },
+                    this.applyAuthButtonState
+                );
+
+                break;
+        }
+
+        this.setState({removeResetMessage: "none", credentialsErrorMessage: ""});
+    };
+
+    applyAuthButtonState = () => {
+        if(this.props.location.pathname === "/view-auth" || this.props.location.pathname === "/view-auth/recovered") {
+            this.setState({
+                authButtonDisabled: this.state.emailValid && this.state.passwordValid ? {} : {disabled: true}
+            });
+        } else {
+            this.setState({
+                authButtonDisabled: this.state.emailValid ? {} : {disabled: true}
+            });
+        }
+    };
+
+    removeErrorMessage = () => {
+        this.setState({credentialsErrorMessage: ""});
+    };
+
+    onSubmit = async (event) => {
+        event.preventDefault();
+
+        const {history} = this.props;
+        let errorMessage = "";
+        let credentialsPassed = true;
+
+        if (this.props.location.pathname === "/view-auth" || this.props.location.pathname === "/view-auth/recovered") {
+
+            const response = await this.props.control.login({
+                email: this.state.email,
+                password: this.state.password
+            });
+
+            if (response && response.email === this.state.email) {
+                history.push("/");
+                this.changeTexts();
+            } else {
+                credentialsPassed = false;
+                errorMessage = "The entered credentials did not match any account.";
+            }
+
+        } else if (this.props.location.pathname === "/recover-password") {
+            const response = this.props.control.recover({
+                email: this.state.email
+            });
+
+            if (response && response.email === this.state.email) {
+                history.push("/view-auth/recovered");
+                this.changeTexts();
+            } else {
+                credentialsPassed = false;
+                errorMessage = "Email not found. Please check the typed email and try again.";
+            }
+        }
+
+        if (!credentialsPassed) {
+            this.setState({
+                credentialsErrorMessage: (
+                    <Snackbar
+                        open
+                        place="tc"
+                        color="warning"
+                        icon={AddAlert}
+                        message={errorMessage}
+                    />
+                ),
+            });
+        } else {
+            this.setState({
+                credentialsErrorMessage: "",
+            });
+        }
+    };
+
+    render() {
+        const url = this.props.location.pathname;
+
+        const classes = this.props.classes;
+
+        let loginOrRetrievePasswordURL = url.startsWith("/view-auth");
+
+        return (
+            <div>
+                <Helmet>
+                    <title>
+                        {this.state.loginTitle}
+                    </title>
+                </Helmet>
+                <div
+                    className={classes.pageHeader}
+                    style={{
+                        backgroundImage: "url(" + image + ")",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center center",
+                    }}
+                >
+                    {this.state.credentialsErrorMessage}
+                    {this.state.resetSuccessMessage}
+                    <div className={classes.container}>
+                        <GridContainer justify="center">
+                            <GridItem lg={3} md={4} sm={6} xs={10} xxs={12}>
+                                <Card>
+                                    <form onSubmit={this.onSubmit} className={classes.form}>
+                                        <CardHeader color="primary" className={classes.cardHeader}>
+                                            <h4>{this.state.loginTitle}</h4>
+                                        </CardHeader>
+                                        <p className={classes.divider}>{this.state.loginText}</p>
+                                        <CardBody>
+                                            <CustomInput
+                                                name="email"
+                                                labelText="Email"
+                                                id="email"
+                                                formControlProps={{
+                                                    fullWidth: true,
+                                                    onChange: (event) => this.handleInputChange(event),
+                                                }}
+                                                inputProps={{
+                                                    type: "email",
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <Icon className={classes.inputIconsColor}>
+                                                                account_circle
+                                                            </Icon>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                            {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (
+                                                <React.Fragment>
+                                                    <CustomInput
+                                                        labelText="Password"
+                                                        id="password"
+                                                        formControlProps={{
+                                                            fullWidth: true,
+                                                            onChange: (event) => this.handleInputChange(event),
+                                                        }}
+                                                        inputProps={{
+                                                            type: "password",
+                                                            endAdornment: (
+                                                                <InputAdornment position="end">
+                                                                    <Icon className={classes.inputIconsColor}>
+                                                                        lock_outline
+                                                                    </Icon>
+                                                                </InputAdornment>
+                                                            ),
+                                                            autoComplete: "off",
+                                                        }}
+                                                    />
+                                                    <Link className={classes.recoverPassword} to="/recover-password">
+                                                        <p onClick={() => setTimeout(() => this.changeTexts(), 30)}>
+                                                            I forgot my password
+                                                        </p>
+                                                    </Link>
+                                                </React.Fragment>
+                                            ) : (
+                                                <Link className={classes.recoverPassword} to="/view-auth">
+                                                    <p onClick={() => setTimeout(() => this.changeTexts(), 30)}>
+                                                        Back to login
+                                                    </p>
+                                                </Link>
+                                            )}
+                                        </CardBody>
+                                        <CardFooter className={classes.cardFooter}>
+                                            <Button onClick={this.onSubmit} type="submit" color="primary" size="lg"
+                                                {...this.state.authButtonDisabled}>
+                                                {this.state.loginButton}
+                                            </Button>
+                                        </CardFooter>
+                                    </form>
+                                </Card>
+                            </GridItem>
+                        </GridContainer>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default withStyles(styles)(ViewAuth);
+
+ViewAuth.propTypes = {
+    location: PropTypes.object,
+    history: PropTypes.object,
+    control: PropTypes.object
+};
