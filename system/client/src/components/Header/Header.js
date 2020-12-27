@@ -1,23 +1,18 @@
-import React, { Component, useEffect, componentDidMount } from "react";
-// nodejs library that concatenates classes
+import React, { Component } from "react";
 import classNames from "classnames";
-// nodejs library to set properties for components
 import PropTypes from "prop-types";
-// @material-ui/core components
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Modal from "components/Modal/Modal";
 import { withRouter } from "react-router-dom";
 
-// @material-ui/icons
 import Menu from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-// core components
+
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 
@@ -26,6 +21,9 @@ class Header extends Component {
     mobileOpen: false,
     showAboutModal: false,
     showLicenseModal: false,
+    user:{
+      fullname:"Admin"
+    },
     licenseModal: {
       name: "licenseModal",
       title: "License Agreement",
@@ -71,6 +69,17 @@ class Header extends Component {
     if (this.props.changeColorOnScroll) {
       window.addEventListener("scroll", headerScroll);
     }
+    try {
+      let admin = JSON.parse(localStorage.getItem('admin'));
+      if(admin){
+        this.setState({
+          user: admin
+        })
+      }
+
+    } catch (err){
+      console.log(err);
+    }
   }
 
   headerColorChange(self) {
@@ -98,23 +107,22 @@ class Header extends Component {
       title: "Admin Profile",
       id: "adminProfile",
       modal: "adminProfile",
-      callback: () => {
-        console.log(1);
-      },
+      href: '#'
     },
     {
       title: "License",
       id: "license",
       modal: "License",
+      href: '#'
     },
     {
       title: "About",
       id: "about",
       modal: "About",
-      callback: () => {},
+      href: '#'
     },
     { divider: true },
-    { title: "Logout", href: "/logout", id: "logout" },
+    { title: "Logout", href: "/logout", id: "logout" }
   ];
 
   handleRightMenuClick = (event) => {
@@ -163,7 +171,7 @@ class Header extends Component {
             <div className={classes.rightDropdown}>
               <CustomDropdown
                 buttonIcon={AccountCircle}
-                buttonText="Logged in as Admin"
+                buttonText={`Logged in as ${this.state.user.fullname}`}
                 buttonProps={{
                   className: classes.navLink,
                   color: "transparent",

@@ -4,6 +4,7 @@
   "description": "Client UI for the System Pod",
   "private": true,
   "main": "src/index.js",
+  "proxy": "http://localhost:9696",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.9.1",

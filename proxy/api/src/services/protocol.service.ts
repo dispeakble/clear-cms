@@ -1,7 +1,8 @@
 import {ClientProxy} from "@nestjs/microservices";
-import {Inject, Injectable} from "@nestjs/common";
+import {Inject, Injectable, CACHE_MANAGER} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {Cache} from "cache-manager";
 
 
 @Injectable()
@@ -11,6 +12,7 @@ export class ProtocolService {
     private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "ping", "setValue", "getValue"];
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
+    @Inject(CACHE_MANAGER) private cacheManager: Cache;
 
     public start() {
         return this.redisService.connect();
@@ -44,9 +46,9 @@ export class ProtocolService {
 
     public sendPost(data: any) {
         const payload = {
-            api: 'http',
-            act: 'post',
-            payload: data.payload
+            api: data.api,
+            act: data.act,
+            payload: data.payload.body.payload
         };
         return this.redisService.send({message: data.channel}, payload).toPromise();
     }
@@ -68,8 +70,11 @@ export class ProtocolService {
     }
 
     public setValue(key: string, value: any){
-        console.log(key);
-        console.log(value);
+        return this.cacheManager.set(key, value, {ttl:0});
+    }
+
+    public getValue(key: string){
+        return this.cacheManager.get(key);
     }
 
     public perform(data: any, config?: ModuleInterface) {

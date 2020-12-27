@@ -7,11 +7,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import { NavLink } from "react-router-dom";
-import { AccountCircle, Apps, Settings, Web } from "@material-ui/icons";
 import Icon from "@material-ui/core/Icon";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import jssStyles from "assets/jss/clear-crm/views/categories.js";
 
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -48,7 +46,6 @@ class NestedList extends React.Component {
 
   render() {
     let items = this.props.moduleList;
-    console.log(items);
     const { classes } = this.props;
     return (
       <MuiThemeProvider theme={this.getTheme()}>
@@ -57,17 +54,16 @@ class NestedList extends React.Component {
             return (
               <List
                 className={classes.root}
-                key={list.id}
+                key={`list-${list.id}`}
                 subheader={<ListSubheader>{list.title}</ListSubheader>}
               >
                 {list.items.map((item) => {
                   return (
-                    <div key={item.id}>
+                    <div key={`cat-${list.id}-${item.id}`}>
                       {item.subitems != null ? (
-                        <div key={item.id}>
+                        <div>
                           <ListItem
                             button
-                            key={item.id}
                             onClick={this.handleClick.bind(this, item.name)}
                           >
                             <ListItemIcon>
@@ -81,7 +77,6 @@ class NestedList extends React.Component {
                             )}
                           </ListItem>
                           <Collapse
-                            key={list.items.id}
                             component="li"
                             in={this.state[item.name]}
                             timeout="auto"
@@ -89,10 +84,9 @@ class NestedList extends React.Component {
                           >
                             <List disablePadding>
                               {item.subitems.map((sitem) => {
-                                console.log(sitem.name);
                                 return (
                                   <NavLink
-                                    key={sitem.name}
+                                    key={`nav-${sitem.name}`}
                                     to={sitem.toLink}
                                     className={classes.links}
                                     activeStyle={{
@@ -103,14 +97,12 @@ class NestedList extends React.Component {
                                     <ListItem
                                       onClick={this.props.closeDrawer}
                                       button
-                                      key={sitem.id}
                                       className={classes.nested}
                                     >
                                       <ListItemIcon>
                                         <Icon>{sitem.icon}</Icon>
                                       </ListItemIcon>
                                       <ListItemText
-                                        key={sitem.id}
                                         primary={sitem.name}
                                       />
                                     </ListItem>
@@ -124,7 +116,7 @@ class NestedList extends React.Component {
                         <ListItem
                           button
                           onClick={this.handleClick.bind(this, item.name)}
-                          key={item.id}
+                          key={`subitem-${item.id}`}
                         >
                           <ListItemText primary={item.name} />
                         </ListItem>
@@ -132,7 +124,7 @@ class NestedList extends React.Component {
                     </div>
                   );
                 })}
-                <Divider key={list.id} absolute />
+                <Divider key={`divider-${list.id}`} absolute />
               </List>
             );
           })}

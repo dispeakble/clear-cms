@@ -96,7 +96,7 @@ class App extends Component {
               ],
             },
             {
-              id: 1,
+              id: 2,
               name: "Settings",
               icon: "settings",
               subitems: [
@@ -121,11 +121,11 @@ class App extends Component {
 
   constructor() {
     super();
+    //TODO ONLY IF THE LOGIN HAPPENED OR THE SESSION COOKIE IS VALID.
     this.state.services.ws = new WsService();
+    //TODO CHECK SESSION AND START WS HERE
     this.state.services.ws.start();
   }
-
-  defaultThemeToDispatch;
 
   getTheme = () => {
     const themes = JSON.parse(localStorage.getItem("adminThemes"));
@@ -169,7 +169,6 @@ class App extends Component {
     }
 
     this.defaultThemeToDispatch = defaultTheme;
-    console.log(this.defaultThemeToDispatch);
 
     return createMuiTheme({
       palette: defaultTheme,
@@ -192,6 +191,11 @@ class App extends Component {
           },
         },
         MuiTab:{
+          root:{
+            textTransform:"none"
+          }
+        },
+        MuiButton:{
           root:{
             textTransform:"none"
           }
