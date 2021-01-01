@@ -1,3 +1,16 @@
+-- Role: cms
+-- DROP ROLE cms;
+
+CREATE ROLE cms WITH
+  LOGIN
+  NOSUPERUSER
+  INHERIT
+  NOCREATEDB
+  NOCREATEROLE
+  NOREPLICATION
+  ENCRYPTED PASSWORD 'Ai0E6HNz38M6Rdv4ipHbu1&*GgFApO4s@5YW$$Tw^Yat2TaZv6';
+
+
 -- SEQUENCE: public.admin_themes_id_seq
 
 -- DROP SEQUENCE public.admin_themes_id_seq;
@@ -421,15 +434,3 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.public_themes
     OWNER to cms;
-
--- Role: cms
--- DROP ROLE cms;
-
-CREATE ROLE cms WITH
-  LOGIN
-  NOSUPERUSER
-  INHERIT
-  NOCREATEDB
-  NOCREATEROLE
-  NOREPLICATION
-  ENCRYPTED PASSWORD 'md5435aae228b373a0313b9d3b45756ab18';

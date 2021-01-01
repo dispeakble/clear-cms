@@ -90,12 +90,8 @@ class ViewAuth extends Component {
     handleInputChange = (event) => {
         switch (event.target.id) {
             case "email":
-                const emailValid =
-                    event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) &&
-                    event.target.value.length <= 30;
-
+                const emailValid = event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
                 this.setState({emailValid: emailValid, email: event.target.value}, this.applyAuthButtonState);
-
                 break;
             case "password":
                 this.setState(

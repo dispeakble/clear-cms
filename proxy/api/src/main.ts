@@ -16,18 +16,20 @@ const logger = new Logger('Main');
 let server;
 let app;
 
-const init = async (options) => {
+const init = async () => {
     server = express();
 
     app = await NestFactory.create(
         AppModule,
-        new ExpressAdapter(server),
+        new ExpressAdapter(server)
     );
+
+    await app.init();
 
     return app.connectMicroservice({
         transport: Transport.REDIS,
         options: {
-            url:  'redis://' + process.env.redis_server,
+            url: 'redis://' + process.env.redis_server,
             port: +process.env.redis_port,
             password: process.env.redis_password
         }
@@ -38,14 +40,17 @@ const init = async (options) => {
 const createServer = async (data) => {
     switch (data.protocol) {
         case 'http':
-            http.createServer(server).listen(data.port);
+            http.createServer(server).listen(data.port, '0.0.0.0');
             break;
-        case 'https':
-            const httpsOptions = {//TODO insert these from a volume or something
-                key: fs.readFileSync(join(__dirname, '..', 'certs/private-key.pem')),
-                cert: fs.readFileSync(join(__dirname, '..', 'certs/public-certificate.pem')),
-            };
-            https.createServer(httpsOptions, server).listen(data.port);
+        case 'https'://not needed behind load balancer
+            if (process.env.ssl_key && process.env.ssl_cert) {
+                const httpsOptions = {
+                    key: process.env.ssl_key,
+                    cert: process.env.ssl_cert
+                };
+                https.createServer(httpsOptions, server).listen(data.port, '0.0.0.0');
+            }
+
             break;
         case 'redis':
             await app.connectMicroservice({
@@ -54,7 +59,7 @@ const createServer = async (data) => {
                     url: data.protocol + '://' + data.name,
                     port: +data.port,
                     password: data.password
-                },
+                }
             });
 
             break;
@@ -67,18 +72,27 @@ const createServer = async (data) => {
 
 async function bootstrap() {
     try {
-        await init({
-            port: process.env.backend_port
-        });
-
+        await init();
         await app.startAllMicroservicesAsync();
+        console.log('init done');
 
-        await app.listen(process.env.backend_port, '0.0.0.0');
+        createServer({protocol: 'redis', name: process.env.redis_server, port: process.env.backend_port})
+        console.log('redis done');
 
-        logger.log('Proxy module started');
+        if (process.env.ssl_key && process.env.ssl_cert) {
+            createServer({protocol: 'https', port: process.env.backend_port})
+        } else {
+            createServer({protocol: 'http', port: process.env.backend_port})
+        }
+        console.log('http done');
+
+
+
+
+        console.log('Proxy module started');
 
     } catch (e) {
-        logger.log('Warning! Could not start the proxy module');
+        console.log('Warning! Could not start the proxy module');
     }
 }
 
