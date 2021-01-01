@@ -14,7 +14,6 @@ export class HttpAuthGuard implements CanActivate {
                 } else {
                     const response = context.switchToHttp().getResponse();
                     response.redirect('/view-auth') //TODO GET THIS REDIRECT FROM SOMEWHERE ELSE
-                    return true;
                 }
 
             } else {
