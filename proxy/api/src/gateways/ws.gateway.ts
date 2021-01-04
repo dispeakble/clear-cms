@@ -42,11 +42,11 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     }
 
     handleConnection(client: Socket, ...args: any[]) {
-        this.logger.log(`Client connected: ${client.id}`);
+        console.log(`Client connected: ${client.id}`);
     }
 
     handleDisconnect(client: Socket) {
-        this.logger.log(`Client disconnected: ${client.id}`);
+        console.log(`Client disconnected: ${client.id}`);
     }
 
     @SubscribeMessage('D')
@@ -57,8 +57,8 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     @UseGuards(WsAuthGuard)
     @SubscribeMessage('S')
     onMessage(@ConnectedSocket() client: Socket, @MessageBody() params: any): Promise<WsResponse> {
-        //this.logger.log(`Message received for ${client.id}`);
-        //this.logger.log(params);
+        //console.log(`Message received for ${client.id}`);
+        //console.log(params);
         return new Promise<WsResponse>(async (resolve) => {
             try {
                 const response = {

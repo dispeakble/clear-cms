@@ -50,7 +50,7 @@ export class ProtocolService {
             act: data.act,
             payload: data.payload.body.payload
         };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: data.channel}, payload);
     }
 
     public sendGet(data: any) {
@@ -59,7 +59,7 @@ export class ProtocolService {
             act: 'get',
             payload: data.payload
         };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: data.channel}, payload);
     }
 
     public ping(data: any, config: ModuleInterface){

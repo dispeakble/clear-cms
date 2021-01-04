@@ -1,39 +1,56 @@
 import {NestFactory} from '@nestjs/core';
 import {Logger} from '@nestjs/common';
 import {AppModule} from './app.module';
-import * as fs from 'fs';
 import express from 'express';
 import {Transport} from "@nestjs/microservices";
 import * as http from "http";
 import * as https from "https";
 import {ExpressAdapter} from "@nestjs/platform-express";
-import {join} from "path";
+import * as compression from 'compression';
 
 Logger.overrideLogger(['error']);
 
 const logger = new Logger('Main');
 
+let httpOptions;
 let server;
 let app;
 
 const init = async () => {
     server = express();
 
+    if(process.env.ssl_key && process.env.ssl_cert){
+        httpOptions = {
+            key: process.env.ssl_key,
+            cert: process.env.ssl_cert
+        };
+    }
+
     app = await NestFactory.create(
         AppModule,
-        new ExpressAdapter(server)
+        httpOptions
     );
+
+    app.use(compression.default());
 
     await app.init();
 
-    return app.connectMicroservice({
+    await app.connectMicroservice({
         transport: Transport.REDIS,
         options: {
+            return_buffers: true,
             url: 'redis://' + process.env.redis_server,
             port: +process.env.redis_port,
             password: process.env.redis_password
         }
     });
+
+    await app.startAllMicroservicesAsync();
+    console.log('init done');
+
+    app.listen(process.env.backend_port, '0.0.0.0');
+
+    console.log('Proxy module started');
 
 }
 
@@ -72,24 +89,8 @@ const createServer = async (data) => {
 
 async function bootstrap() {
     try {
-        await init();
-        await app.startAllMicroservicesAsync();
-        console.log('init done');
+        init();
 
-        createServer({protocol: 'redis', name: process.env.redis_server, port: process.env.backend_port})
-        console.log('redis done');
-
-        if (process.env.ssl_key && process.env.ssl_cert) {
-            createServer({protocol: 'https', port: process.env.backend_port})
-        } else {
-            createServer({protocol: 'http', port: process.env.backend_port})
-        }
-        console.log('http done');
-
-
-
-
-        console.log('Proxy module started');
 
     } catch (e) {
         console.log('Warning! Could not start the proxy module');

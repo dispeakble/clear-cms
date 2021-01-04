@@ -59,9 +59,7 @@ export class DbService {
     }
     private crud = {
         get: (params) => {
-
-            let
-                QUERY_STRING,
+            let QUERY_STRING,
                 FIELDS = params.fields.join(', ') || '*',
                 QUERY_PARAMS = [],
                 WHERE_STRING,
@@ -305,7 +303,7 @@ export class DbService {
                         console.error("error running query", err, query, params);
                         return resolve_query({
                             data: null,
-                            what: params.what
+                            what: params.data.what
                         });
                     }
 
@@ -313,7 +311,7 @@ export class DbService {
                         console.error("result undefined: ", err, query);
                         return resolve_query({
                             data: null,
-                            what: params.what
+                            what: params.data.what
                         });
                     }
 
@@ -334,7 +332,7 @@ export class DbService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
-            console.log("Db.appService." + data.act + " not found");
+            console.log("DB.appService." + data.act + " not found");
         }
         return null;
     }

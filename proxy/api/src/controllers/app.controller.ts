@@ -57,85 +57,181 @@ export class AppController {
         })
     }
 
+    //TODO ADD POST HTTP GUARD SEPARATELY
     @Post('/')
     async onPost(@Res() res: Response, @Req() req: Request, @Session() session) {
 
-        const port = req.headers.host.split(':')[1];
-        const channel = this.portMap[port];
+        try {
+            const start_date = new Date().getTime();
+            const port = req.headers.host.split(':')[1];
+            const channel = this.portMap[port];
 
-        const payload = {
-            channel: req.body.module,
-            api: req.body.api,
-            act: req.body.act,
-            payload: {
-                ip: req.ip,
-                hostname: req.hostname,
-                body: req.body,
-                params: req.params,
-                headers: req.headers
-            }
-        };
-
-        const response = await this.protocolService.sendPost(payload);
-
-        if (response && response.callback) {
-            const callback = response.callback;
-            const cb_payload = {
-                channel: channel,
-                api: callback.api,
-                act: callback.act,
-                payload: {data: callback.payload, session: session}
+            const payload = {
+                channel: req.body.module,
+                api: req.body.api,
+                act: req.body.act,
+                payload: {
+                    ip: req.ip,
+                    hostname: req.hostname,
+                    body: req.body,
+                    params: req.params,
+                    headers: req.headers
+                }
             };
-            response.data = await this.perform(cb_payload);
-            res.setHeader("Content-Type", response['mime']);
-            res.status(HttpStatus.OK);
 
-            switch (response.mime) {
-                case 'application/json':
-                    res.end(JSON.stringify(response.data));
-                    break;
-                case 'Buffer':
-                    res.end(Buffer.from(response.file.data));
-                    break;
+            const postSubscriber = this.protocolService.sendPost(payload);
+            let bigBuffer = Buffer.alloc(0);
+
+            let endPost = true;
+
+            postSubscriber.subscribe((data) => {
+                switch(data.type){
+                    case "meta":
+                        res.set('Cache-Control', 'public, max-age=0');
+                        res.status(HttpStatus.OK);
+                        break;
+                    case "String":
+
+                        if (data.callback) {
+                            endPost = false;
+                            const callback = data.callback;
+                            const cb_payload = {
+                                channel: 'proxy',
+                                api: callback.api,
+                                act: callback.act,
+                                payload: {data: callback.payload, session: session}
+                            };
+                            this.perform(cb_payload).then((response) => {
+                                res.send(response);
+                                res.end();
+                            });
+
+                        }
+                        break;
+                    case "Buffer":
+                        bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
+                        res.write(Buffer.from(data.data));
+                        break;
+                }
+
+            }, (error) => {
+                console.log(error);
+                const end_date = new Date().getTime();
+                const diffDate = new Date(end_date - start_date);
+                console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            }, () => {
+                endPost && res.end();
+            });
+        } catch (err) {
+            res.end(JSON.stringify(err));
         }
 
 
-        }
+
     }
 
     @UseGuards(HttpAuthGuard)
     @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
+        try {
+            const port = req.headers.host.split(':')[1];
+            const channel = this.portMap[port];
 
-        const port = req.headers.host.split(':')[1];
-        const channel = this.portMap[port];
+            const payload = {
+                channel: channel,
+                payload: {
+                    ip: req.ip,
+                    hostname: req.hostname,
+                    query: req.query,
+                    params: req.params,
+                    headers: req.headers
+                }
+            };
 
-        const payload = {
-            channel: channel,
-            payload: {
-                ip: req.ip,
-                hostname: req.hostname,
-                query: req.query,
-                params: req.params,
-                headers: req.headers
+            const start_date = new Date().getTime();
+            let cache_name = req.hostname + req.url;
+
+            if(Object.keys(req.query).length){
+                cache_name = cache_name + JSON.stringify(req.query);
             }
-        };
 
-        const app_data = await this.protocolService.sendGet(payload);
-        if(app_data){
-            res.setHeader("Content-Type", app_data['mime']);
+            //TODO check if the cache needs to be refreshed somehow...
+            const cachedrequest = await this.protocolService.getValue(cache_name);
 
-            switch (app_data.file.type) {
-                case 'Buffer':
-                    res.status(HttpStatus.OK);
-                    res.end(Buffer.from(app_data.file.data));
-                    break;
+            if(cachedrequest && new Date(cachedrequest.expires) > new Date()){
+                res.set("Content-Type", cachedrequest.content_type);
+                res.set("Content-Length", cachedrequest.content_length);
+                res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+                res.set('X-Frame-Options', 'SAMEORIGIN');
+                res.set('X-Content-Type-Options', 'nosniff');
+                res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
+                res.set('Cache-Control', 'public, max-age=604800');
+                res.status(HttpStatus.OK);
+                res.write(Buffer.from(cachedrequest.data));
+                res.end();
+                return true;
             }
-        } else {
-            res.status(HttpStatus.NOT_FOUND);
-            res.end();
+
+            const getSubscriber = this.protocolService.sendGet(payload);
+
+            let bigBuffer = Buffer.alloc(0);
+            const file_meta = {
+                content_length: 0,
+                content_type: ''
+            };
+
+            getSubscriber.subscribe((data) => {
+                switch (data.type) {
+                    case "meta":
+                        //TODO add this to every request
+                        res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+                        res.set('X-Frame-Options', 'SAMEORIGIN');
+                        res.set('X-Content-Type-Options', 'nosniff');
+                        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
+                        res.set('Cache-Control', 'public, max-age=604800');
+                        res.status(HttpStatus.OK);
+                        file_meta.content_type = data.content_type;
+                        file_meta.content_length = data.content_length;
+
+                        res.set("Content-Type", data.content_type);
+                        res.set("Content-Length", data.content_length);
+                        break;
+                    case "Buffer":
+                        bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
+                        res.write(Buffer.from(data.data));
+                        break;
+                }
+
+            }, (error) => {
+                console.log(error);
+                const end_date = new Date().getTime();
+                const diffDate = new Date(end_date - start_date);
+                console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                //res.end();
+            }, () => {
+                const end_date = new Date().getTime();
+                const diffDate = new Date(end_date - start_date);
+                console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis');
+
+                //getSubscriber.unsubscribe();
+                res.end();
+                const expireDate = new Date();
+
+                //TODO get from some env variable
+                const expire_seconds = 604800;
+                expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
+                this.protocolService.setValue(cache_name, {
+                    expires: expireDate,
+                    content_length: file_meta.content_length,
+                    content_type: file_meta.content_type,
+                    data: bigBuffer
+                });
+            });
+        } catch (err) {
+            res.end(JSON.stringify(err));
         }
-
 
 
     }
@@ -179,16 +275,16 @@ export class AppController {
             try {
                 response.data = await this.protocolService.sendMessage(payload);
 
-                if (response.data.callback) {
-                    const callback = response.data.callback;
-                    const cb_payload = {
-                        channel: params.module,
-                        api: callback.api,
-                        act: callback.act,
-                        payload: {data: callback.payload, client: params.client}
-                    };
-                    response.data = await this.perform(cb_payload);
-                }
+                // if (response.data.callback) {
+                //     const callback = response.data.callback;
+                //     const cb_payload = {
+                //         channel: params.module,
+                //         api: callback.api,
+                //         act: callback.act,
+                //         payload: {data: callback.payload, client: params.client}
+                //     };
+                //     response.data = await this.perform(cb_payload);
+                // }
             } catch (err) {
                 console.log(err);
             }

@@ -20,7 +20,7 @@ import {Helmet} from "react-helmet";
 
 import styles from "assets/jss/clear-crm/views/viewAuth.js";
 
-import image from "assets/img/view-auth-bg.png";
+import image from "assets/img/view-auth-bg.jpg";
 import PropTypes from "prop-types";
 
 class ViewAuth extends Component {
@@ -130,8 +130,9 @@ class ViewAuth extends Component {
         const {history} = this.props;
         let errorMessage = "";
         let credentialsPassed = true;
+        const normalViews = ["/view-auth", "/view-auth/recovered", "logout"];
 
-        if (this.props.location.pathname === "/view-auth" || this.props.location.pathname === "/view-auth/recovered") {
+        if (normalViews.includes(this.props.location.pathname)) {
 
             const response = await this.props.control.login({
                 email: this.state.email,

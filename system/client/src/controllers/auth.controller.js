@@ -109,9 +109,10 @@ class AuthController extends Component {
                     act: params.act,
                     payload: params.payload
                 })
-            }).then(async (response) => {
-                const resp = await response.json();
-                resolve_send(resp);
+            }).then((response) => {
+                return response.json();
+            }).then((json) => {
+                resolve_send(json);
             });
         });
     }

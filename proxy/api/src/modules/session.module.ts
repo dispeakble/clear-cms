@@ -22,7 +22,7 @@ export const Session = SessionModule.forRootAsync({
         store,
         saveUninitialized: true,
         secret: config.SESSION_SECRET,
-        resave: true,
+        resave: false,
         cookie: {
           signed: true,
           maxAge: 86400000

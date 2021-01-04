@@ -74,7 +74,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && rm -fr ../api/public/* && cp -Rf ./build/* ../api/public",
+    "build": "export INLINE_RUNTIME_CHUNK=false && react-scripts build && rm -fr ../api/public/* && cp -Rf ./build/* ../api/public",
     "test": "react-scripts test --env=jsdom",
     "compile-all": "npm run compile-css && babel src --out-dir dist",
     "compile-css": "node-sass src/assets/scss/clear-crm.scss dist/clear-crm.css",

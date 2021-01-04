@@ -20,8 +20,6 @@ import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 
 //styles
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
 import "assets/scss/clear-crm.scss";
 
 //Controllers
@@ -113,7 +111,7 @@ class App extends Component {
         },
       ],
     },
-    excludeHeader: ["pagePreview", "view-auth", "recover-password"],
+    excludeHeader: ["pagePreview", "view-auth", "recover-password", "logout"],
     socket: {},
     mobileOpen: false,
     someTweakedState: false,

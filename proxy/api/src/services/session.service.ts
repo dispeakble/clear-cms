@@ -12,20 +12,26 @@ export class SessionService {
         return false;
     }
 
-    public register(params): boolean {
-        if (params.session && params.data) {
-            params.session.user = params.data;
-            return params.data;
-        }
-        return false;
+    public register(params) {
+        return new Promise((resolve, reject) => {
+            if (params.session && params.data) {
+                params.session.user = params.data;
+                resolve(params.data);
+            }
+            resolve(false);
+        });
+
     }
 
-    public unregister(params): boolean {
-        if (params.session) {
-            delete params.session.user;
-            return true;
-        }
-        return false;
+    public unregister(params) {
+        return new Promise((resolve, reject) => {
+            if (params.session) {
+                delete params.session.user;
+                resolve(params.data);
+            }
+            resolve(false);
+        });
+
     }
 
     public perform(data: any) {
