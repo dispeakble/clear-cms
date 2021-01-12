@@ -7,9 +7,9 @@ import {
     OnGatewayConnection,
     OnGatewayDisconnect, ConnectedSocket, MessageBody
 } from '@nestjs/websockets';
-import {Logger, UseGuards} from '@nestjs/common';
+import {Session} from '@nestjs/common';
 import {Socket, Server} from 'socket.io';
-import {WsAuthGuard} from "../guards/ws.auth.guard";
+import {SessionService} from "../services/session.service";
 
 /**
  *    Important URIs:
@@ -22,31 +22,39 @@ import {WsAuthGuard} from "../guards/ws.auth.guard";
 export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() wss: Server;
-    private logger: Logger = new Logger('AppGateway');
     private callbacks = {};
+
+    constructor(private sessionService: SessionService) {
+    }
 
 
     afterInit(server: Server) {
         console.log('Websocket Initialized...');
-        this.wss.on('connect', (socket) => {
-            //TODO CHECK IF THE SESSION IS AUTHORIZED AND REJECT NON-LOGINS
-            console.log('Websocket Connected...');
-            socket.on('message', (data) => {
-                socket.send('handshake...')
-            })
+        server.on('connection', async (socket, ...rest) => {
+
+            const hasAccess = await this.sessionService.checkByCookie({cookies: socket.handshake.headers.cookie});
+
+            if(!hasAccess){
+                socket.emit('disconnect');
+                socket.disconnect(true);
+                return console.log('Client does not have access. Please go away');
+            }
+
             socket.on('disconnect', this.handleDisconnect);
+            console.log('Websocket Connected...', rest);
             return {sid: socket.id}
         })
 
 
     }
 
-    handleConnection(client: Socket, ...args: any[]) {
-        console.log(`Client connected: ${client.id}`);
+    async handleConnection(client: Socket, @Session() session) {
+
+
     }
 
-    handleDisconnect(client: Socket) {
-        console.log(`Client disconnected: ${client.id}`);
+    handleDisconnect() {
+        console.log(`Client disconnected`);
     }
 
     @SubscribeMessage('D')
@@ -54,7 +62,6 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         client.disconnect(true);
     }
 
-    @UseGuards(WsAuthGuard)
     @SubscribeMessage('S')
     onMessage(@ConnectedSocket() client: Socket, @MessageBody() params: any): Promise<WsResponse> {
         //console.log(`Message received for ${client.id}`);

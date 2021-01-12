@@ -21,7 +21,7 @@ export class SystemService {
     }
 
     public registerModule(data: ModuleInterface) {
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             api: 'module',
             act: 'register',
             channel: 'hub',

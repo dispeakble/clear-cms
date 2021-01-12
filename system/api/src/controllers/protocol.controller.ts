@@ -51,10 +51,10 @@ export class ProtocolController {
     async onApplicationBootstrap() {
         await this.protocolService.start();
         this.logger.log('system connected to redis');
-        let payload: ModuleInterface = {
-            name: 'proxy',
-            version: '20.10.25',
-            description: 'the main http proxy (gateway)',
+        const payload: ModuleInterface = {
+            name: 'system',
+            version: '21.01.12',
+            description: 'the system api and client',
             started: new Date(),
             config: {
                 restart: true,

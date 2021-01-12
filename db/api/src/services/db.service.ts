@@ -15,7 +15,7 @@ export class DbService {
     }
 
     private pool;
-    private methods = ["get"];
+    private methods = ["get", "add", "set", "rem"];
     private help = {
         is: {
             empty: (params) => {
@@ -284,6 +284,18 @@ export class DbService {
 
         const payload = {
             action: 'get',
+            data: params.data
+        }
+
+        const res = await this.query(payload);
+
+        return res;
+    }
+
+    async add(params) {
+
+        const payload = {
+            action: 'add',
             data: params.data
         }
 

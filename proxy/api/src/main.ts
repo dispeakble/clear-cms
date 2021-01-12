@@ -1,23 +1,13 @@
 import {NestFactory} from '@nestjs/core';
-import {Logger} from '@nestjs/common';
 import {AppModule} from './app.module';
-import express from 'express';
 import {Transport} from "@nestjs/microservices";
-import * as http from "http";
-import * as https from "https";
-import {ExpressAdapter} from "@nestjs/platform-express";
 import * as compression from 'compression';
-
-Logger.overrideLogger(['error']);
-
-const logger = new Logger('Main');
+//import {SessionAdapter} from "./adapters/session.adapter";
 
 let httpOptions;
-let server;
 let app;
 
 const init = async () => {
-    server = express();
 
     if(process.env.ssl_key && process.env.ssl_cert){
         httpOptions = {
@@ -32,6 +22,8 @@ const init = async () => {
     );
 
     app.use(compression.default());
+
+    //left here for example: app.useWebSocketAdapter(new SessionAdapter(app));
 
     await app.init();
 
@@ -54,44 +46,9 @@ const init = async () => {
 
 }
 
-const createServer = async (data) => {
-    switch (data.protocol) {
-        case 'http':
-            http.createServer(server).listen(data.port, '0.0.0.0');
-            break;
-        case 'https'://not needed behind load balancer
-            if (process.env.ssl_key && process.env.ssl_cert) {
-                const httpsOptions = {
-                    key: process.env.ssl_key,
-                    cert: process.env.ssl_cert
-                };
-                https.createServer(httpsOptions, server).listen(data.port, '0.0.0.0');
-            }
-
-            break;
-        case 'redis':
-            await app.connectMicroservice({
-                transport: Transport.REDIS,
-                options: {
-                    url: data.protocol + '://' + data.name,
-                    port: +data.port,
-                    password: data.password
-                }
-            });
-
-            break;
-    }
-
-    logger.log('https server started');
-
-    return true;
-}
-
 async function bootstrap() {
     try {
         init();
-
-
     } catch (e) {
         console.log('Warning! Could not start the proxy module');
     }

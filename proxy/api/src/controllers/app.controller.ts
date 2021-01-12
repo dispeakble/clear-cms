@@ -156,21 +156,35 @@ export class AppController {
                 cache_name = cache_name + JSON.stringify(req.query);
             }
 
-            //TODO check if the cache needs to be refreshed somehow...
-            const cachedrequest = await this.protocolService.getValue(cache_name);
+            const fileStats = await this.protocolService.getMeta(payload);
+            const cachedrequest = await this.protocolService.getValue(fileStats.file_name);
 
-            if(cachedrequest && new Date(cachedrequest.expires) > new Date()){
-                res.set("Content-Type", cachedrequest.content_type);
-                res.set("Content-Length", cachedrequest.content_length);
-                res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
-                res.set('X-Frame-Options', 'SAMEORIGIN');
-                res.set('X-Content-Type-Options', 'nosniff');
-                res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
-                res.set('Cache-Control', 'public, max-age=604800');
-                res.status(HttpStatus.OK);
-                res.write(Buffer.from(cachedrequest.data));
-                res.end();
-                return true;
+            cachedrequest.expires = 0;
+
+            if(cachedrequest){
+                const exp_date = new Date(cachedrequest.expires);
+
+                if(exp_date > new Date()){
+                    const modifiedDate = new Date(fileStats.modified);
+
+                    if(exp_date > modifiedDate && cachedrequest.ETag === fileStats.etagId){
+                        res.set("Content-Type", cachedrequest.content_type);
+                        res.set("Content-Length", cachedrequest.content_length);
+                        res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+                        res.set('X-Frame-Options', 'SAMEORIGIN');
+                        res.set('X-Content-Type-Options', 'nosniff');
+                        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
+                        res.set('Cache-Control', 'public, max-age=604800');
+                        res.set('ETag', fileStats.etagId);
+                        res.status(HttpStatus.OK);
+                        res.write(Buffer.from(cachedrequest.data));
+                        res.end();
+                        return true;
+                    }
+                }
+
+
+
             }
 
             const getSubscriber = this.protocolService.sendGet(payload);
@@ -190,6 +204,7 @@ export class AppController {
                         res.set('X-Content-Type-Options', 'nosniff');
                         res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
                         res.set('Cache-Control', 'public, max-age=604800');
+                        res.set('ETag', fileStats.etagId);
                         res.status(HttpStatus.OK);
                         file_meta.content_type = data.content_type;
                         file_meta.content_length = data.content_length;
@@ -222,8 +237,9 @@ export class AppController {
                 //TODO get from some env variable
                 const expire_seconds = 604800;
                 expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                this.protocolService.setValue(cache_name, {
+                this.protocolService.setValue(fileStats.file_name, {
                     expires: expireDate,
+                    ETag: fileStats.etagId,
                     content_length: file_meta.content_length,
                     content_type: file_meta.content_type,
                     data: bigBuffer
@@ -267,6 +283,10 @@ export class AppController {
                 act: data.act,
                 payload: data.payload
             };
+
+            if(data.payload.useSession){
+                payload.payload.client = params.client;
+            }
 
             const response = {
                 id: params.id,

@@ -29,7 +29,6 @@ export class ProtocolService {
         };
 
         return this.redisService.send({message: data.channel}, payload).toPromise();
-
     }
 
     public emitMessage(data: any) {

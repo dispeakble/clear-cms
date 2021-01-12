@@ -1,15 +1,46 @@
-import {Injectable} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
+import {SessionDataInterface} from "../interfaces/sessiondata.interface";
 
 @Injectable()
 export class SessionService {
 
-    private methods = ["check", "register", "unregister"];
+    private methods = ["check", "register", "unregister", "checkByCookie"];
 
     public check(params): boolean {
         if (params.session && params.session.hasOwnProperty('user') && !!params.session.user) {
             return true;
         }
         return false;
+    }
+
+    constructor( @Inject('ProtocolService') private protocolService ){
+
+    }
+
+    checkByCookie(params) {
+        return new Promise(async (resolve) => {
+            const cookies = params.cookies.split(';');
+            let cookie_id = "";
+            if (cookies.length) {
+                cookies.map((cookie_string => {
+                    const cookie_parts = cookie_string.split('=');
+                    if (cookie_parts.length) {
+                        if (cookie_parts[0] === 'connect.sid') {
+                            cookie_id = cookie_parts[1];
+                            cookie_id = cookie_id.split('.')[0].substring(4);
+                        }
+                    }
+                }));
+            }
+
+            const sessionData: SessionDataInterface = await this.protocolService.getValue('sess:' + cookie_id);
+            const expires = new Date(sessionData.cookie.expires);
+            if (expires && expires > new Date() && sessionData.user) {
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
     }
 
     public register(params) {

@@ -9,7 +9,7 @@ import {Cache} from "cache-manager";
 export class ProtocolService {
 
     //exposed methods
-    private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "ping", "setValue", "getValue"];
+    private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "getMeta", "ping", "setValue", "getValue"];
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
     @Inject(CACHE_MANAGER) private cacheManager: Cache;
@@ -62,6 +62,15 @@ export class ProtocolService {
         return this.redisService.send({message: data.channel}, payload);
     }
 
+    public getMeta(data: any){
+        const payload = {
+            api: 'http',
+            act: 'getMeta',
+            payload: data.payload
+        };
+        return this.redisService.send({message: data.channel}, payload).toPromise();
+    }
+
     public ping(data: any, config: ModuleInterface){
         return {
             name: config.name,
@@ -70,10 +79,12 @@ export class ProtocolService {
     }
 
     public setValue(key: string, value: any){
+        //TODO use master
         return this.cacheManager.set(key, value, {ttl:0});
     }
 
     public getValue(key: string){
+        //TODO use slave
         return this.cacheManager.get(key);
     }
 
