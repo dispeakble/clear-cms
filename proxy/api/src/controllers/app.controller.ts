@@ -159,8 +159,6 @@ export class AppController {
             const fileStats = await this.protocolService.getMeta(payload);
             const cachedrequest = await this.protocolService.getValue(fileStats.file_name);
 
-            cachedrequest.expires = 0;
-
             if(cachedrequest){
                 const exp_date = new Date(cachedrequest.expires);
 
