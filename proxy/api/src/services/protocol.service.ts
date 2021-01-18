@@ -9,7 +9,7 @@ import {Cache} from "cache-manager";
 export class ProtocolService {
 
     //exposed methods
-    private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "getMeta", "ping", "setValue", "getValue"];
+    private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "getMeta", "ping", "setValue", "getValue", "checkAccess"];
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
     @Inject(CACHE_MANAGER) private cacheManager: Cache;
@@ -20,7 +20,7 @@ export class ProtocolService {
 
     public sendMessage(data: payloadInterface) {
 
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             channel: data.channel,
             api: data.api,
             act: data.act,
@@ -42,6 +42,15 @@ export class ProtocolService {
 
         return this.redisService.emit({message: data.channel}, payload).toPromise();
 
+    }
+
+    public checkAccess(data: any){
+        const payload = {
+            api: 'http',
+            act: 'checkAccess',
+            payload: data.payload
+        };
+        return this.redisService.send({message: data.channel}, payload).toPromise();
     }
 
     public sendPost(data: any) {

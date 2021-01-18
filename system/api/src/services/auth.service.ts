@@ -73,7 +73,7 @@ export class AuthService {
                         where: {
                             email: params.email,
                             active: 1,
-                            'MD5(password)': md5.default(params.password)//TODO call MD5
+                            'MD5(password)': md5.default(params.password)
                         },
                         limit: [0, 1]
                     }
@@ -92,6 +92,12 @@ export class AuthService {
                             async: false,
                             payload: auth_response.data[0]
                         }
+                    });
+                } else {
+                    observer.next({
+                        type:'String',
+                        data: {error: "Credentials mismatch"},
+                        mime: 'application/json'
                     });
                 }
                 observer.complete();

@@ -13,6 +13,10 @@ import {
 } from "assets/jss/clear-crm.js";
 
 const headerStyle = {
+  navLink:{
+    paddingLeft:"12px",
+    paddingRight:"12px",
+  },
   appBar: {
     display: "flex",
     border: "0",
@@ -54,6 +58,7 @@ const headerStyle = {
     flex: 1,
   },
   title: {
+    whiteSpace:"nowrap",
     ...defaultFont,
     lineHeight: "30px",
     fontSize: "14px",

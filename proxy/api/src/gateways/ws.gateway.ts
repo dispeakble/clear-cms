@@ -35,6 +35,7 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
             const hasAccess = await this.sessionService.checkByCookie({cookies: socket.handshake.headers.cookie});
 
             if(!hasAccess){
+                socket.emit('auth', {method:"redirect", data:{location:'/view-auth'}});
                 socket.emit('disconnect');
                 socket.disconnect(true);
                 return console.log('Client does not have access. Please go away');

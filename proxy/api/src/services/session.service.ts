@@ -6,6 +6,10 @@ export class SessionService {
 
     private methods = ["check", "register", "unregister", "checkByCookie"];
 
+    constructor(@Inject('ProtocolService') private protocolService) {
+
+    }
+
     public check(params): boolean {
         if (params.session && params.session.hasOwnProperty('user') && !!params.session.user) {
             return true;
@@ -13,12 +17,11 @@ export class SessionService {
         return false;
     }
 
-    constructor( @Inject('ProtocolService') private protocolService ){
-
-    }
-
-    checkByCookie(params) {
+    parseCookie(params) {
         return new Promise(async (resolve) => {
+            if(!params || !params.cookies || !params.cookies.length){
+                return resolve(null);
+            }
             const cookies = params.cookies.split(';');
             let cookie_id = "";
             if (cookies.length) {
@@ -36,6 +39,18 @@ export class SessionService {
             const sessionData: SessionDataInterface = await this.protocolService.getValue('sess:' + cookie_id);
             const expires = new Date(sessionData.cookie.expires);
             if (expires && expires > new Date() && sessionData.user) {
+                resolve(sessionData);
+            } else {
+                resolve(null);
+            }
+        });
+    }
+
+
+    checkByCookie(params) {
+        return new Promise(async (resolve) => {
+            const sessionData = await this.parseCookie(params);
+            if(sessionData && sessionData.hasOwnProperty('user')){
                 resolve(true);
             } else {
                 resolve(false);

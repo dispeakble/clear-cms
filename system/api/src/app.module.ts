@@ -3,6 +3,7 @@ import { ProtocolController } from './controllers/protocol.controller';
 import { SystemService } from './services/system.service';
 import { HttpService } from './services/http.service';
 import { AuthService } from './services/auth.service';
+import { AdminProfileService } from './services/adminProfile.service';
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -23,7 +24,7 @@ import {ProtocolService} from "./services/protocol.service";
     ])
   ],
   controllers: [ProtocolController],
-  providers: [HttpService, ProtocolService, AuthService, SystemService]
+  providers: [HttpService, ProtocolService, AuthService, SystemService, AdminProfileService]
 })
 
 export class AppModule {}

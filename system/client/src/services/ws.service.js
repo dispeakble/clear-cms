@@ -17,13 +17,22 @@ class WsService {
             this.client.on('connect', () => {
                 resolve_start(true);
             });
+
+            setTimeout(() => {
+                resolve_start(true);
+            }, 3000)
         });
     }
 
     onmessage(params) {
         try {
-            if(params && params.channel && this.callbacks.message.hasOwnProperty(params.channel)){
-                this.callbacks.message[params.channel](params.data);//tricky...
+            if(params && params.channel){
+                if(this.callbacks.message.hasOwnProperty(params.channel)){
+                    this.callbacks.message[params.channel](params.data);
+                } else {
+
+                }
+
             }
         } catch (err) {
             console.error(err);
