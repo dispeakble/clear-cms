@@ -15,6 +15,7 @@ import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {HttpAuthGuard} from "../guards/http.auth.guard";
+import has = Reflect.has;
 
 @Controller()
 export class AppController {
@@ -152,7 +153,7 @@ export class AppController {
             };
 
             if(!session.hasOwnProperty('user')){
-                const hasAccess = await this.protocolService.checkAccess();
+                const hasAccess = await this.protocolService.checkAccess(payload);
                 if(!hasAccess.access){
                     res.status(hasAccess.location.status);
                     res.set('Location', hasAccess.location);
