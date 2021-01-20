@@ -8,7 +8,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 const styles = (theme) => ({
   root: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
   },
   item: {
     maxWidth: 500,

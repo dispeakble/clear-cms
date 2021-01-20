@@ -7,10 +7,10 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 
 const styles = (theme) => ({
   root: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
   },
 });
 

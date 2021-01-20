@@ -5,10 +5,10 @@ import MailIcon from '@material-ui/icons/Mail';
 
 const styles = (theme) => ({
   root: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
   },
   margin: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
   },
 });
 

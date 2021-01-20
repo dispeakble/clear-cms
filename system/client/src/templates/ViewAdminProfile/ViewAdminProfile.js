@@ -19,6 +19,7 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 import styles from "assets/jss/clear-crm/views/profilePage.js";
 
 import * as _ from "underscore";
+import {Divider} from "@material-ui/core";
 
 class ViewAdminProfile extends Component {
     state = {
@@ -186,16 +187,19 @@ class ViewAdminProfile extends Component {
         }
 
         if (!this.state.validation.password.empty) {
-            if (!this.state.validation.newPassword.valid || this.state.validation.newPassword.empty) {
-                errors.push('New password is not valid. Please fill in a password between 3 and 30 characters')
-            }
 
-            if (!this.state.validation.confirmPassword.valid || this.state.validation.confirmPassword.empty) {
-                errors.push('New password confirmation is not valid. Please fill in a password between 3 and 30 characters')
-            }
+            let passConfirmError = "";
 
             if (!newPasswordsCoincide) {
-                errors.push('Please confirm the exact password')
+                passConfirmError = 'Please confirm the exact password';
+            }
+
+            if (!this.state.validation.newPassword.valid || this.state.validation.newPassword.empty) {
+                passConfirmError = 'The New password is not valid. Please fill in a password between 3 and 30 characters';
+            }
+
+            if(passConfirmError.length) {
+                errors.push(passConfirmError);
             }
         }
 
@@ -277,7 +281,7 @@ class ViewAdminProfile extends Component {
             newPasswordStrengthTitle = "";
             for (var i = 0, t = this.state.newPassStrength; i <= t; i++) {
                 newPasswordStrength[i] = strengthColors[i];
-                newPasswordStrengthTitle = strengthTitle[i].replace('-', '') + ' password';
+                newPasswordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
             }
         }
 
@@ -306,11 +310,18 @@ class ViewAdminProfile extends Component {
                             {this.state.errors.length ? <Snackbar closeNotification={() => {
                                 this.setState({errors: ""})
                             }} open place="tc" color="warning" icon={AddAlert} message={this.state.errors}/> : ''}
+                            <h4 style={{
+                                lineHeight: "3.0em",
+                                paddingLeft: "15px",
+                                paddingRight: "15px",
+                                textAlign: "center"
+                            }}>Admin profile<Divider /></h4>
+
                             <div className={classes.container}>
 
                                 <div className={classes.profile}>
                                     <div className={classes.name}>
-                                        <form onSubmit={this.validateForm}>
+                                        <form onSubmit={this.validateForm} autocomplete={"off"}>
                                             <div style={{display: "flex"}}>
                                                 <CustomInput
                                                     className={classes.column} labelText="First Name" id="fname" required="required"
@@ -347,11 +358,12 @@ class ViewAdminProfile extends Component {
                                                 <p style={{width: "15px"}}></p>
 
                                                 <CustomInput
-                                                    className={classes.column} labelText="Email Address" id="email" required="required"
+                                                    className={classes.column} labelText="Email" id="email"
                                                     formControlProps={{
                                                         fullWidth: true,
                                                         onChange: this.handleInputChange
                                                     }} inputProps={{
+                                                        required:"required",
                                                     value: this.state.email,
                                                     type: "email",
                                                     endAdornment: (
@@ -364,6 +376,7 @@ class ViewAdminProfile extends Component {
                                             <CustomInput
                                                 labelText="Current password" id="password"
                                                 formControlProps={{
+                                                    autoComplete: "off",
                                                     fullWidth: true,
                                                     onChange: this.handleInputChange
                                                 }} inputProps={{
@@ -412,9 +425,10 @@ class ViewAdminProfile extends Component {
                                                 autoComplete: "off",
                                             }}/>
                                             <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit" color="primary" size="lg" className={classes.button}>Save Profile</Button>
+                                            <p style={{height: "15px", margin: 0}}>&nbsp;</p>
                                         </form>
                                     </div>
-                                    <div className={classes.syncToAccountWrapper}>
+                                    {/*<div className={classes.syncToAccountWrapper}>
                                         <Tooltip title={"Link Twitter Account"} placement={"top"} arrow={true}>
                                             <Button link>
                                                 <i className={"fab fa-twitter"}/>
@@ -433,7 +447,7 @@ class ViewAdminProfile extends Component {
                                                 <div className={classes.syncAccountText}>Google</div>
                                             </Button>
                                         </Tooltip>
-                                    </div>
+                                    </div>*/}
                                 </div>
 
                             </div>

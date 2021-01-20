@@ -10,7 +10,7 @@ const styles = (theme) => ({
     overflowY: "auto",
   },
   card: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
   },
   logo: {
     maxWidth: 150,

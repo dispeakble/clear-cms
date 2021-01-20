@@ -171,7 +171,7 @@ class Header extends Component {
             <div className={classes.rightDropdown}>
               <CustomDropdown
                 buttonIcon={AccountCircle}
-                buttonText={`Logged in as ${this.state.user.fullname}`}
+                buttonText={this.state.user.fullname}
                 buttonProps={{
                   className: classes.navLink,
                   color: "transparent",

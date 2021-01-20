@@ -14,7 +14,6 @@ import { Helmet } from "react-helmet";
 
 //views //TODO MOVE TO CONTROLLERS
 import Dashboard from "views/Dashboard/Dashboard.js";
-import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
@@ -269,16 +268,16 @@ class App extends Component {
               path="/recover-password"
               render={(props) => {
                 return (
-                  <AuthController {...props} services={this.state.services} />
+                    <AuthController {...props} services={this.state.services}/>
                 );
               }}
             />
             <Route path="/admin-profile"
-                render={(props) => {
-                  return (
-                      <AdminProfileController {...props} services={this.state.services} />
-                  );
-                }}
+              render={(props) => {
+               return (
+                   <AdminProfileController {...props} services={this.state.services}/>
+               );
+              }}
             />
             <Route path="/" exact component={Dashboard} />
             <Route path="/pagesAdd" component={PagesAdd} />

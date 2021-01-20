@@ -9,12 +9,15 @@ class WsService {
         message: {}
     };
 
+    isConnected = false;
+
     start() {
         return new Promise((resolve_start) => {
             this.url = Number(window.location.port) === 3000 ? 'ws://localhost:9696/ws' : this.url;
             this.client = io(this.url, this.options);
             this.client.on('disconnect', (e) => this.ondisconnect(e))
             this.client.on('connect', () => {
+                this.isConnected = true;
                 resolve_start(true);
             });
 
@@ -40,6 +43,7 @@ class WsService {
     }
 
     ondisconnect(params) {
+        this.isConnected = false;
         console.log(params);
     }
 

@@ -10,7 +10,7 @@ import ColorEditionListItem from "./color-edition-list-item";
 
 const styles = (theme) => ({
   root: {
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing(),
   },
   title: {
     fontSize: 14,

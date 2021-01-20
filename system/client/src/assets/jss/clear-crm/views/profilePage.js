@@ -12,6 +12,11 @@ const profilePageStyle = {
             margin: "0 auto",
             transform: "translate3d(0, -50%, 0)",
         },
+        "@media (max-width: 400px)":{
+            "& .MuiInputAdornment-root":{
+                display:"none"
+            }
+        }
     },
     description: {
         margin: "1.071rem auto 0",
