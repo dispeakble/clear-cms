@@ -51,6 +51,7 @@
     "shortid": "^2.2.15",
     "socket.io-client": "^2.3.0",
     "sortablejs": "^1.12.0",
+    "underscore": "^1.12.0",
     "websocket": "^1.0.32"
   },
   "devDependencies": {

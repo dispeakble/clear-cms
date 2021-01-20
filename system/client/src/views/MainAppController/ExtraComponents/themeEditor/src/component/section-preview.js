@@ -13,12 +13,12 @@ const styles = (theme) => ({
   },
   selector: {
     alignSelf: "center",
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
   },
   container: {
     alignSelf: "center",
     flex: 1,
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
     overflow: "auto",
     width: "100%",
   },

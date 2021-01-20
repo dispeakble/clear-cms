@@ -166,6 +166,7 @@ export class DbService {
                 WHERE_PIECES = [],
                 SET_STRING = '',
                 SET_PIECES = [],
+                HOW = params.how || 'AND',
                 x = 1;
 
             QUERY_STRING = 'UPDATE ' + params.what;
@@ -188,24 +189,46 @@ export class DbService {
 
             QUERY_STRING += ' SET ' + SET_PIECES.join(', ');
 
-            for (let i in params.where) {
-                if (params.where.hasOwnProperty(i)) {
-                    QUERY_PARAMS.push(params.where[i]);
+            if (params.where && Object.keys(params.where).length > 0) {
+                if (params.how && this.help.is.array(params.where)) {
+                    for (let col = 0, t = params.where.length; col < t; col++) {
+                        for (let row in params.where[col]) {
+                            if (params.where[col].hasOwnProperty(row)) {
+                                if (null === params.where[col][row]) {
+                                    WHERE_STRING = row + ' IS NULL';
+                                } else {
+                                    WHERE_STRING = row;
+                                    WHERE_STRING += '=';
+                                    WHERE_STRING += '$' + x;
+                                    QUERY_PARAMS.push(params.where[col][row]);
+                                }
 
-                    WHERE_STRING = i;
-                    WHERE_STRING += '=';
-                    WHERE_STRING += '$' + x;
-                    WHERE_PIECES.push(WHERE_STRING);
-
-                    if (/^\d+$/.test(params.where[i])) {
-                        params.where[i] = parseInt(params.where[i]);
+                                WHERE_PIECES.push(WHERE_STRING);
+                            }
+                        }
+                        x++;
                     }
-                    x++;
+                } else {
+                    for (let i in params.where) {
+                        if (params.where.hasOwnProperty(i)) {
+                            if (null === params.where[i]) {
+                                WHERE_STRING = i + ' IS NULL';
+                            } else {
+                                WHERE_STRING = i;
+                                WHERE_STRING += '=';
+                                WHERE_STRING += '$' + x;
+                                QUERY_PARAMS.push(params.where[i]);
+
+                                x++;
+                            }
+
+                            WHERE_PIECES.push(WHERE_STRING);
+                        }
+                    }
                 }
+
+                QUERY_STRING += ' WHERE ' + WHERE_PIECES.join(' ' + HOW + ' ');
             }
-
-
-            QUERY_STRING += '  WHERE ' + WHERE_PIECES.join(', ');
 
             if (params.order) {
                 if (this.help.is.array(params.order)) {
@@ -229,13 +252,6 @@ export class DbService {
                     QUERY_STRING += ' ORDER BY ' + order_params.join(', ');
                 }
             }
-
-
-            if (params.limit && params.limit.length > 0) {
-                QUERY_STRING += ' LIMIT ' + params.limit[1] + ' OFFSET ' + params.limit[0];
-            }
-
-            QUERY_STRING += ' RETURNING * ';
 
             return {string: QUERY_STRING, params: QUERY_PARAMS};
         },
@@ -296,6 +312,18 @@ export class DbService {
 
         const payload = {
             action: 'add',
+            data: params.data
+        }
+
+        const res = await this.query(payload);
+
+        return res;
+    }
+
+    async set(params) {
+
+        const payload = {
+            action: 'set',
             data: params.data
         }
 

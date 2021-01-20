@@ -129,7 +129,7 @@ class Header extends Component {
     const modalValue = event.target.getAttribute("modal");
     if (modalValue) {
       if (modalValue === "adminProfile") {
-        this.props.history.push("/profile-page");
+        this.props.history.push("/admin-profile");
       } else {
         setTimeout(() => {
           //TODO populate the modal content here
@@ -171,7 +171,7 @@ class Header extends Component {
             <div className={classes.rightDropdown}>
               <CustomDropdown
                 buttonIcon={AccountCircle}
-                buttonText={`Logged in as ${this.state.user.fullname}`}
+                buttonText={this.state.user.fullname}
                 buttonProps={{
                   className: classes.navLink,
                   color: "transparent",

@@ -109,9 +109,34 @@ class AuthController extends Component {
                     act: params.act,
                     payload: params.payload
                 })
-            }).then((response) => {
-                return response.json();
-            }).then((json) => {
+            })
+                .then(response => response.body)
+                .then(body => {
+                    const reader = body.getReader();
+
+                    return new ReadableStream({
+                        start(controller) {
+                            return pump();
+
+                            function pump() {
+                                return reader.read().then(({ done, value }) => {
+                                    // When no more data needs to be consumed, close the stream
+                                    if (done) {
+                                        controller.close();
+                                        return;
+                                    }
+
+                                    // Enqueue the next data chunk into our target stream
+                                    controller.enqueue(value);
+                                    return pump();
+                                });
+                            }
+                        }
+                    })
+                })
+                .then(stream => new Response(stream))
+                .then(response => response.json())
+                .then((json) => {
                 resolve_send(json);
             });
         });

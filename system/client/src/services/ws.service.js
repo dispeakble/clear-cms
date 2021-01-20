@@ -9,21 +9,33 @@ class WsService {
         message: {}
     };
 
+    isConnected = false;
+
     start() {
         return new Promise((resolve_start) => {
             this.url = Number(window.location.port) === 3000 ? 'ws://localhost:9696/ws' : this.url;
             this.client = io(this.url, this.options);
             this.client.on('disconnect', (e) => this.ondisconnect(e))
             this.client.on('connect', () => {
+                this.isConnected = true;
                 resolve_start(true);
             });
+
+            setTimeout(() => {
+                resolve_start(true);
+            }, 3000)
         });
     }
 
     onmessage(params) {
         try {
-            if(params && params.channel && this.callbacks.message.hasOwnProperty(params.channel)){
-                this.callbacks.message[params.channel](params.data);//tricky...
+            if(params && params.channel){
+                if(this.callbacks.message.hasOwnProperty(params.channel)){
+                    this.callbacks.message[params.channel](params.data);
+                } else {
+
+                }
+
             }
         } catch (err) {
             console.error(err);
@@ -31,6 +43,7 @@ class WsService {
     }
 
     ondisconnect(params) {
+        this.isConnected = false;
         console.log(params);
     }
 

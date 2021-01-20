@@ -32,6 +32,7 @@ export class ProtocolController {
     constructor(
       @Inject('SystemService') private systemService,
       @Inject('ProtocolService') private protocolService,
+      @Inject('AdminProfileService') private adminProfileService,
       @Inject('HttpService') private httpService,
       @Inject('AuthService') private authService,
       ) {

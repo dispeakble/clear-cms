@@ -14,7 +14,6 @@ import { Helmet } from "react-helmet";
 
 //views //TODO MOVE TO CONTROLLERS
 import Dashboard from "views/Dashboard/Dashboard.js";
-import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MainAppController from "views/MainAppController/MainAppController";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
@@ -22,11 +21,13 @@ import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 //styles
 import "assets/scss/clear-crm.scss";
 
-//Controllers
+//Controllers //TODO use lazy loading
 import AuthController from "controllers/auth.controller";
+import AdminProfileController from "./controllers/admin-profile.controller";
 
 //Services
 import WsService from "services/ws.service";
+import AuthGuardService from "./services/authGuard.service";
 
 class App extends Component {
   state = {
@@ -122,13 +123,17 @@ class App extends Component {
     //TODO ONLY IF THE LOGIN HAPPENED OR THE SESSION COOKIE IS VALID.
     this.state.services.ws = new WsService();
     //TODO CHECK SESSION AND START WS HERE
-    this.state.services.ws.start();
+    this.state.services.ws.start().then((connected) => {
+      if(!connected){
+        window.location.href = '/view-auth';
+      }
+    });
   }
 
   getTheme = () => {
     const themes = JSON.parse(localStorage.getItem("adminThemes"));
 
-    const hardcodedStyles = {
+    const hardcodedStyles = {//TODO GET THIS FROM A CONFIG OR GET RID OF THEM AND USE DB INSTEAD
       text: {
         //primary: "#F00",
         //secondary: "#0F0",
@@ -263,11 +268,17 @@ class App extends Component {
               path="/recover-password"
               render={(props) => {
                 return (
-                  <AuthController {...props} services={this.state.services} />
+                    <AuthController {...props} services={this.state.services}/>
                 );
               }}
             />
-            <Route path="/profile-page" component={ProfilePage} />
+            <Route path="/admin-profile"
+              render={(props) => {
+               return (
+                   <AdminProfileController {...props} services={this.state.services}/>
+               );
+              }}
+            />
             <Route path="/" exact component={Dashboard} />
             <Route path="/pagesAdd" component={PagesAdd} />
             <Route path="/pagePreview/:id" component={PagePreview} />
@@ -284,6 +295,7 @@ class App extends Component {
             />
           </Switch>
         </MuiThemeProvider>
+        <AuthGuardService services={{ws: this.state.services.ws}}/>
       </React.Fragment>
     );
   }

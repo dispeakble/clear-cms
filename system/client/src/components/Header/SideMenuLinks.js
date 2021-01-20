@@ -22,7 +22,7 @@ const styles = (theme) => ({
     background: theme.palette.background.paper,
   },
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing(4),
   },
   links: {
     "&:link": {

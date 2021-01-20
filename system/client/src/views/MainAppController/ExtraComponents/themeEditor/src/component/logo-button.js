@@ -5,7 +5,7 @@ const styles = (theme) => ({
   root: {
     display: "block",
     textAlign: "center",
-    padding: theme.spacing.unit,
+    padding: theme.spacing(),
     paddingBottom: 0,
   },
   image: {

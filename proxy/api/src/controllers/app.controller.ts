@@ -15,6 +15,7 @@ import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {HttpAuthGuard} from "../guards/http.auth.guard";
+import has = Reflect.has;
 
 @Controller()
 export class AppController {
@@ -101,12 +102,13 @@ export class AppController {
                                 act: callback.act,
                                 payload: {data: callback.payload, session: session}
                             };
-                            this.perform(cb_payload).then((response) => {
+                            return this.perform(cb_payload).then((response) => {
                                 res.send(response);
                                 res.end();
                             });
 
                         }
+                        res.send(data.data);
                         break;
                     case "Buffer":
                         bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
@@ -116,6 +118,7 @@ export class AppController {
 
             }, (error) => {
                 console.log(error);
+                res.send("error");
                 const end_date = new Date().getTime();
                 const diffDate = new Date(end_date - start_date);
                 console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
@@ -148,6 +151,15 @@ export class AppController {
                     headers: req.headers
                 }
             };
+
+            if(!session.hasOwnProperty('user')){
+                const hasAccess = await this.protocolService.checkAccess(payload);
+                if(!hasAccess.access){
+                    res.status(hasAccess.location.status);
+                    res.set('Location', hasAccess.location);
+                    res.status(hasAccess.status)
+                }
+            }
 
             const start_date = new Date().getTime();
             let cache_name = req.hostname + req.url;
@@ -283,11 +295,16 @@ export class AppController {
             };
 
             if(data.payload.useSession){
-                payload.payload.client = params.client;
+                const sessionData = await this.sessionService.parseCookie({cookies: params.client.handshake.headers.cookie});
+
+                if(sessionData){
+                    payload.payload.client = sessionData.user;
+                }
+
             }
 
             const response = {
-                id: params.id,
+                id: params.data.id,
                 data: null
             }
             try {
