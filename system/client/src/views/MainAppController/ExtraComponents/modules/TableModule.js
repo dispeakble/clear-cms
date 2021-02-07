@@ -107,13 +107,13 @@ class TableModule extends Component {
   multipleDeleteCallback = async () => {
     console.log(this.state.table);
     switch (this.state.table) {
-      case "main": {
+      case "main":
         let definedColumns = [...this.state.definedColumns];
         let definedColumnsIds = [];
-        let multipleDeleteData = this.state.multipleDeleteData;
-        multipleDeleteData.map((column) =>
-          definedColumnsIds.push(column.tableData.id)
-        );
+        this.state.multipleDeleteData.map((column) =>{
+          definedColumnsIds.push(column.tableData.id);
+          return column;
+        });
         definedColumns = definedColumns.filter((column) => {
           return !definedColumnsIds.includes(column.tableData.id);
         });
@@ -121,14 +121,14 @@ class TableModule extends Component {
         await this.setAsyncState({ definedColumns });
         this.state.tableRef.current &&
           this.state.tableRef.current.onQueryChange();
-      }
-      case "preview": {
+      break;
+      case "preview":
         let previewData = [...this.state.previewData];
         let previewDataIds = [];
-        let multipleDeleteData = this.state.multipleDeleteData;
-        multipleDeleteData.map((data) =>
+        this.state.multipleDeleteData.map((data) => {
           previewDataIds.push(data.tableData.id)
-        );
+          return data;
+        });
         previewData = previewData.filter((data) => {
           return !previewDataIds.includes(data.tableData.id);
         });
@@ -136,7 +136,9 @@ class TableModule extends Component {
         // localStorage.setItem("categories", JSON.stringify(categories));
         this.state.previewTableRef.current &&
           this.state.previewTableRef.current.onQueryChange();
-      }
+      break;
+      default:
+        break;
     }
 
     this.closeMultipleDeleteModal();
@@ -145,17 +147,16 @@ class TableModule extends Component {
   handleInputChange = async (event) => {
     switch (event.target.id) {
       case "rowsOnPage":
-        let rowsOnPage = this.state.rowsOnPage;
-        rowsOnPage = event.target.value;
-        await this.setAsyncState({ rowsOnPage });
+        await this.setAsyncState({ rowsOnPage: event.target.value });
         this.dataTableOptions.props.options.pageSize = this.state.rowsOnPage;
         this.tableOptions.actions.refreshPreview();
         break;
       case "dataUrl":
-        let dataUrl = this.state.dataUrl;
+        //TODO use this for dynamic tables
+        /*const dataUrl = this.state.dataUrl;
         dataUrl = event.target.value;
 
-        let data = new Promise((resolve, reject) => {
+        const data = new Promise((resolve, reject) => {
           let url = dataUrl;
           fetch(url)
             .then((response) => response.json())
@@ -168,13 +169,11 @@ class TableModule extends Component {
         });
 
         await this.setAsyncState({ dataUrl });
-        this.tableOptions.actions.refreshPreview();
+        this.tableOptions.actions.refreshPreview();*/
 
         break;
       case "leftNumber":
-        let leftNumber = this.state.leftNumber;
-        leftNumber = event.target.value;
-        await this.setAsyncState({ leftNumber });
+        await this.setAsyncState({ leftNumber: event.target.value });
         this.dataTableOptions.props.options.fixedColumns = {
           left: this.state.leftNumber,
           right: this.state.rightNumber,
@@ -185,9 +184,7 @@ class TableModule extends Component {
         break;
 
       case "rightNumber":
-        let rightNumber = this.state.rightNumber;
-        rightNumber = event.target.value;
-        await this.setAsyncState({ rightNumber });
+        await this.setAsyncState({ rightNumber: event.target.value });
         this.dataTableOptions.props.options.fixedColumns = {
           left: this.state.leftNumber,
           right: this.state.rightNumber,
@@ -195,6 +192,8 @@ class TableModule extends Component {
         this.tableOptions.actions.refreshPreview();
         console.log(this.state.leftNumber);
         console.log(this.state.rightNumber);
+        break;
+      default:
         break;
     }
   };
@@ -210,6 +209,7 @@ class TableModule extends Component {
               field: col.fieldName,
               render: (rowData) => (
                 <img
+                    alt={col.columnTitle}
                   style={{
                     maxHeight: "100%",
                     maxWidth: "100%",
@@ -230,7 +230,7 @@ class TableModule extends Component {
               title: col.columnTitle,
               field: col.fieldName,
               render: (rowData) => (
-                <a href={rowData[col.fieldName].href} target="_blank">
+                <a rel="noopener noreferrer" href={rowData[col.fieldName].href} target="_blank">
                   {rowData[col.fieldName].name}
                 </a>
               ),
@@ -242,6 +242,7 @@ class TableModule extends Component {
               type: col.dataType,
             });
           }
+          return col;
         });
         return tableCols;
       },
@@ -362,6 +363,7 @@ class TableModule extends Component {
             field: col.fieldName,
             type: col.dataType,
           });
+          return col;
         });
         return tableCols;
       },
@@ -866,6 +868,7 @@ class TableModule extends Component {
                           <a
                             href="https://reqres.in/api/users?per_page=5&page=1"
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             <Info color="info" />
                           </a>

@@ -13,14 +13,12 @@ const javascriptStyles = {
     left: 0,
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
+      boxSizing: "border-box",
     },
     "& .react-grid-placeholder": {},
     "& .react-grid-layout ": {},
     "& .layoutJSON": {},
     "& .columns": {},
-    "& .react-grid-item": {
-      boxSizing: "border-box",
-    },
     "& .react-grid-item:not(.react-grid-placeholder)": {},
     "& .react-grid-item.resizing": {
       opacity: "0.9",
@@ -44,10 +42,10 @@ const javascriptStyles = {
       cursor: "pointer",
     },
     "& .react-grid-dragHandleExample": {
-      cursor: "move",
+      cursor: "move"/*,
       cursor: "grab",
       cursor: "-moz-grab",
-      cursor: "-webkit-grab",
+      cursor: "-webkit-grab",*/
     },
 
     "& .toolbox": {

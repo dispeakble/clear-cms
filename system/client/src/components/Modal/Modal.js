@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 // nodejs library that concatenates classes
-import classNames from "classnames";
+//import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 // nodejs library to set properties for components
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 // @material-ui/core components
 import styles from "assets/jss/clear-crm/views/componentsSections/javascriptStyles.js";
 
@@ -15,9 +15,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
-import CustomInput from "components/CustomInput/CustomInput.js";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Icon from "@material-ui/core/Icon";
+//import CustomInput from "components/CustomInput/CustomInput.js";
+//import InputAdornment from "@material-ui/core/InputAdornment";
+//import Icon from "@material-ui/core/Icon";
 import { withRouter } from "react-router-dom";
 
 class Modal extends Component {

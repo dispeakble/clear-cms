@@ -1,9 +1,10 @@
-import { transition, boxShadow, drawerWidth } from "./clear-crm.js";
+//import { transition, boxShadow, drawerWidth } from "./clear-crm.js";
 
 const javascriptStyles = {
   gridLayout: {
     margin: "0 30px 0",
     "& .react-grid-item": {
+      boxSizing: "border-box",
       border: "1px solid rgba(0,0,0,0.14)",
     },
     "& .react-grid-placeholder": {},
@@ -18,9 +19,6 @@ const javascriptStyles = {
     },
     "& .columns": {
       columns: "120px",
-    },
-    "& .react-grid-item": {
-      boxSizing: "border-box",
     },
     "& .react-grid-item:not(.react-grid-placeholder)": {
       background: "#FFFFFF",
@@ -47,10 +45,10 @@ const javascriptStyles = {
       cursor: "pointer",
     },
     "& .react-grid-dragHandleExample": {
-      cursor: "move",
+      cursor: "move"/*,
       cursor: "grab",
       cursor: "-moz-grab",
-      cursor: "-webkit-grab",
+      cursor: "-webkit-grab",*/
     },
 
     "& .toolbox": {

@@ -13,7 +13,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 
 import Typography from "@material-ui/core/Typography";
-import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
 import { TextField } from "@material-ui/core";
@@ -89,6 +88,8 @@ class ChartModule extends Component {
         chartTitle = event.target.value + "";
         console.log(event.target.value);
         this.setState({ chartTitle });
+        break;
+      default:
         break;
     }
   };

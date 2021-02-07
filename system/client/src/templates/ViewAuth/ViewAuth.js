@@ -103,6 +103,8 @@ class ViewAuth extends Component {
                 );
 
                 break;
+            default:
+                break;
         }
 
         this.setState({removeResetMessage: "none", credentialsErrorMessage: ""});

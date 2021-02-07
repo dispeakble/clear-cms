@@ -137,9 +137,12 @@ class TextModule extends Component {
                     "insertdatetime media table paste code help wordcount",
                   ],
                   toolbar:
-                    "undo redo | formatselect | bold italic forecolor backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | removeformat",
+                      "undo redo"
+                      + " | formatselect"
+                      + " | bold italic forecolor backcolor"
+                      + " | alignleft aligncenter alignright alignjustify"
+                      +" | bullist numlist outdent indent"
+                      + " | removeformat",
                   init_instance_callback: function (editor) {
                     var annoyingMessage = document.querySelector(
                       ".tox-notifications-container"

@@ -113,6 +113,8 @@ class VideoModule extends Component {
           this.setState({ enablePlayer: true });
         }, 30);
         break;
+      default:
+        break;
     }
   };
 

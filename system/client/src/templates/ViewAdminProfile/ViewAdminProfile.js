@@ -18,7 +18,6 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 
 import styles from "assets/jss/clear-crm/views/profilePage.js";
 
-import * as _ from "underscore";
 import {Divider} from "@material-ui/core";
 
 class ViewAdminProfile extends Component {
@@ -45,10 +44,6 @@ class ViewAdminProfile extends Component {
         messages: "",
         notification: ""
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
@@ -146,6 +141,8 @@ class ViewAdminProfile extends Component {
                 break;
             case "confirmPassword":
                 currentEventId = "confirmPassStrength";
+                break;
+            default:
                 break;
         }
 
@@ -277,9 +274,8 @@ class ViewAdminProfile extends Component {
         });
 
         if (this.state.newPassStrength > -1) {
-
             newPasswordStrengthTitle = "";
-            for (var i = 0, t = this.state.newPassStrength; i <= t; i++) {
+            for (var i = 0; i <= this.state.newPassStrength; i++) {
                 newPasswordStrength[i] = strengthColors[i];
                 newPasswordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
             }
@@ -290,11 +286,10 @@ class ViewAdminProfile extends Component {
         });
 
         if (this.state.confirmPassStrength > -1) {
-
             newPasswordStrengthTitle = "";
-            for (var i = 0, t = this.state.confirmPassStrength; i <= t; i++) {
-                confirmPasswordStrength[i] = strengthColors[i];
-                confirmPasswordStrengthTitle = strengthTitle[i].replace('-', '') + ' password';
+            for (var x = 0; x <= this.state.confirmPassStrength; x++) {
+                confirmPasswordStrength[x] = strengthColors[x];
+                confirmPasswordStrengthTitle = strengthTitle[x].replace('-', ' ') + ' password';
             }
         }
 

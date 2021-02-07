@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+//import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 
 import Editor from "./themeEditor/src/screen/editor";
 import { NavLink } from "react-router-dom";
@@ -879,7 +879,9 @@ class Themes extends Component {
                           <Switch
                             defaultChecked={!this.state.side && this.state.data.basic.bgrepeat}
                             onChange={(event) => {
-                              this.state.data.basic.bgrepeat = event.target.checked;
+                              let data = this.state.data;
+                              data.basic.bgrepeat = event.target.checked;
+                              this.setState({data});
                             }}
                           />
                         </Tooltip>
@@ -894,7 +896,11 @@ class Themes extends Component {
                             defaultChecked={!this.state.side && this.state.data.basic.bgrepeat}
                             onChange={(event) => {
                               if(this.state.side) return;
-                              this.state.data.basic.bgrepeat = event.target.checked;
+                              let data = this.state.data;
+                              data.basic.bgrepeat = event.target.checked;
+                              this.setState({
+                                data
+                              })
                             }}
                           />
                         </Tooltip>
@@ -912,7 +918,9 @@ class Themes extends Component {
                       <Slider
                         className={this.props.classes.pageOptionsSlider}
                         onChange={(event, newValue) => {
-                          this.state.data.basic.fontsize = newValue;
+                          let data = this.state.data;
+                          data.basic.fontsize = newValue;
+                          this.setState({data});
                         }}
                         defaultValue={this.state.data.basic.fontsize}
                         aria-labelledby="discrete-slider"
@@ -1207,12 +1215,12 @@ class Themes extends Component {
               onChange={this.changeTab}
               indicatorColor="secondary"
             >
-              <NavLink to="/themes/public">
-                <Tab label="Public" {...a11yProps(0)} />
-              </NavLink>
-              <NavLink to="/themes/admin">
-                <Tab label="Admin" {...a11yProps(1)} />
-              </NavLink>
+              <Tab label="Public" href="/themes/public" component="a" onClick={(event) => {
+                event.preventDefault();
+              }} {...a11yProps(0)} />
+              <Tab label="Admin" href="/themes/admin" component="a" onClick={(event) => {
+                event.preventDefault();
+              }} {...a11yProps(1)} />
             </Tabs>
           </AppBar>
           <div style={{ display: "flex" }}>

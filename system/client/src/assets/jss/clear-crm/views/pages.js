@@ -1,9 +1,9 @@
-import { container, title } from "assets/jss/clear-crm.js";
+/*import { container, title } from "assets/jss/clear-crm.js";
 
 import modalStyle from "assets/jss/clear-crm/modalStyle.js";
 import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
 import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
-import { GpsFixed } from "@material-ui/icons";
+import { GpsFixed } from "@material-ui/icons";*/
 
 const javascriptStyles = {
   pagesPanel: {

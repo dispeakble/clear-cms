@@ -133,7 +133,7 @@ class App extends Component {
   getTheme = () => {
     const themes = JSON.parse(localStorage.getItem("adminThemes"));
 
-    const hardcodedStyles = {//TODO GET THIS FROM A CONFIG OR GET RID OF THEM AND USE DB INSTEAD
+    /*const hardcodedStyles = {//TODO GET THIS FROM A CONFIG OR GET RID OF THEM AND USE DB INSTEAD
       text: {
         //primary: "#F00",
         //secondary: "#0F0",
@@ -158,17 +158,17 @@ class App extends Component {
       secondary: {
         main: "#FFFFFF",
       },
-    };
+    };*/
 
-    let defaultTheme;
+    let defaultTheme = null;
 
     if (themes) {
       defaultTheme = themes.find((theme) => theme.isdefault === true);
       if (!defaultTheme) {
-        defaultTheme = hardcodedStyles;
+        //defaultTheme = hardcodedStyles;
       }
     } else {
-      defaultTheme = hardcodedStyles;
+      //defaultTheme = hardcodedStyles;
     }
 
     this.defaultThemeToDispatch = defaultTheme;

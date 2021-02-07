@@ -143,7 +143,7 @@ class Header extends Component {
   render() {
     const classes = this.props.classes;
 
-    const { color, absolute, fixed } = this.props;
+    const { color } = this.props;
 
     const appBarClasses = classNames({
       [classes.appBar]: true,

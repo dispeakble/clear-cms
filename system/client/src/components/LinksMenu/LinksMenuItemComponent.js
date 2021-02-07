@@ -1,7 +1,6 @@
 import React, { forwardRef } from "react";
 import ListItem from "@material-ui/core/ListItem";
-import { NavLink, NavLinkProps } from "react-router-dom";
-import Icon from "@material-ui/core/Icon";
+import { NavLink } from "react-router-dom";
 
 const LinksMenuItemComponent = (props) => {
   const { className, onClick, link, children } = props;
@@ -18,9 +17,8 @@ const LinksMenuItemComponent = (props) => {
         }}
         button
         className={className}
-        children={children}
         onClick={onClick}
-      />
+      >{children}</ListItem>
     );
   }
 
@@ -35,12 +33,13 @@ const LinksMenuItemComponent = (props) => {
         fontFamily: "inherit",
       }}
       className={className}
-      children={children}
       component={forwardRef((props, ref) => (
         <NavLink exact {...props} innerRef={ref} />
       ))}
       to={link}
-    />
+    >
+        {children}
+    </ListItem>
   );
 };
 

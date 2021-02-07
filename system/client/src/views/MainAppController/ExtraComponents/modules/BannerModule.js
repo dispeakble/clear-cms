@@ -101,6 +101,8 @@ class BannerModule extends Component {
         bannerLink = event.target.value + "";
         this.setState({ bannerLink });
         break;
+      default:
+        break;
     }
   };
 

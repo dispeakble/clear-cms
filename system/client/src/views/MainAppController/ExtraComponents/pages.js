@@ -48,6 +48,7 @@ class Pages extends Component {
 
           category: page.pageConfig.category,
         });
+        return page;
       });
       this.setState({ pages });
     }
@@ -248,6 +249,7 @@ class Pages extends Component {
           ),
           category: page.pageConfig.category,
         });
+        return page;
       });
 
       await this.setAsyncState({ pages: pagesToSet });

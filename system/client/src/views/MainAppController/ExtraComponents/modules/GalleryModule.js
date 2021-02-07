@@ -139,6 +139,8 @@ class GalleryModule extends Component {
         slideDuration = event.target.value;
         this.setState({ slideDuration });
         break;
+      default:
+        break;
     }
   };
 
@@ -174,16 +176,16 @@ class GalleryModule extends Component {
 
     if (event.length) {
       await Promise.all(
-        event.map((file) => {
-          if (!temporaryImageSources.includes(file)) {
-            temporaryImageSources.push({ path: file.path, title: file.title });
-          }
-          this.setState({ temporaryImageSources });
-        })
+          event.map((file) => {
+            if (!temporaryImageSources.includes(file)) {
+              temporaryImageSources.push({path: file.path, title: file.title});
+            }
+            return file;
+          })
       );
-    } else {
-      this.setState({ temporaryImageSources });
     }
+
+    this.setState({ temporaryImageSources });
   };
 
   closeEditSideMenu = () => {
@@ -485,7 +487,7 @@ class GalleryModule extends Component {
                           <CardContent style={{ textAlign: "center" }}>
                             <h3>{img.title}</h3>
                             <p>{img.description}</p>
-                            <img src="/assets/img/watermelon.jpg" />
+                            <img alt={img.title} src="/assets/img/watermelon.jpg" />
                           </CardContent>
                         </CardActionArea>
                         <CardActions style={{ justifyContent: "flex-end" }}>

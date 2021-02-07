@@ -14,6 +14,7 @@ class MainAppController extends Component {
       if (el.toLink.replace("/", "") === pathObject[1]) {
         componentExists = true;
       }
+      return el;
     });
 
     return componentExists;

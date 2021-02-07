@@ -178,6 +178,7 @@ class PagesAdd extends React.PureComponent {
           id: category.id,
           parentId: category.parentId,
         });
+        return category;
       });
       await this.setAsyncState({ categories });
 
@@ -318,12 +319,12 @@ class PagesAdd extends React.PureComponent {
   };
 
   createElement(el) {
-    const removeStyle = {
+    /*const removeStyle = {
       position: "absolute",
       right: "2px",
       top: 0,
       cursor: "pointer",
-    };
+    };*/
     const i = el.i;
 
     let itemStyle = {};
@@ -564,22 +565,16 @@ class PagesAdd extends React.PureComponent {
   handleInputChange = async (event) => {
     switch (event.target.id) {
       case "pageTitle":
-        let pageTitle = [this.state.pageTitle];
-        pageTitle = event.target.value;
-        this.setState({ pageTitle });
+        this.setState({ pageTitle: event.target.value });
         break;
       case "pageLink":
-        let pageLink = [this.state.pageLink];
-        pageLink = event.target.value;
-        this.setState({ pageLink });
+        this.setState({ pageLink: event.target.value });
         break;
       case "moduleOptions":
-        let editModuleOptions = [...this.state.editModuleOptions];
-        editModuleOptions = event.target.value;
-        this.setState({ editModuleOptions });
+        this.setState({ editModuleOptions: event.target.value });
         break;
       case "itemTitle":
-        let items = [...this.state.items];
+        /*let items = [...this.state.items];
 
         let item = this.getItemById(this.state.itemEditId);
         item.title = event.target.value;
@@ -588,8 +583,11 @@ class PagesAdd extends React.PureComponent {
           (item) => item.i === this.state.itemEditId
         );
 
-        items[itemIndex] = item;
+        items[itemIndex] = item;*/
         await this.setAsyncState({ editItemTitle: event.target.value + "" });
+        break;
+      default:
+        break;
     }
   };
 
@@ -701,8 +699,7 @@ class PagesAdd extends React.PureComponent {
 
   handleBoxSpacing = async (event, newValue) => {
     if (this.state.config.layoutBoxSpacing[0] !== newValue) {
-      let config = this.state.config;
-      config = {
+      const config = {
         layoutBoxSpacing: [newValue, newValue],
         layoutBoxPadding: {
           lg: [1, 1],
@@ -761,7 +758,7 @@ class PagesAdd extends React.PureComponent {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
 
-      this.setAsyncState({
+      this.setState({
         editItemBgImage: strings[0],
       });
     }
@@ -783,7 +780,7 @@ class PagesAdd extends React.PureComponent {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
 
-      this.setAsyncState({
+      this.setState({
         backgroundImage: strings[0],
       });
     }
@@ -801,6 +798,7 @@ class PagesAdd extends React.PureComponent {
         item = el;
         index = i;
       }
+      return el;
     });
     return { item: item, index: index };
   }
@@ -898,7 +896,7 @@ class PagesAdd extends React.PureComponent {
       reader.onerror = () => console.log("file reading has failed");
       reader.onload = () => {
         // Do whatever you want with the file contents
-        const binaryStr = reader.result;
+        //const binaryStr = reader.result;
       };
       reader.readAsArrayBuffer(file);
     });
@@ -1029,6 +1027,7 @@ class PagesAdd extends React.PureComponent {
           id: el.id,
           label: linkName,
         });
+        return el;
       });
 
       await this.setAsyncState({
@@ -1136,7 +1135,10 @@ class PagesAdd extends React.PureComponent {
     let pages = JSON.parse(localStorage.getItem("pages")) || [];
 
     if (this.state.defaultPage) {
-      pages.map((page) => (page.pageConfig.defaultPage = false));
+      pages.map((page) => {
+        page.pageConfig.defaultPage = false;
+        return page;
+      });
     }
 
     if (this.state.isEdit) {

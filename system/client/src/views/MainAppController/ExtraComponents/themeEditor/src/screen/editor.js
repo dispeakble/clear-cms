@@ -2,7 +2,7 @@ import React from "react";
 import { createMuiTheme, withStyles } from "@material-ui/core/styles";
 import SectionEdition from "../component/section-edition";
 import SectionPreview from "../component/section-preview";
-import DownloadButton from "../component/download-button";
+//import DownloadButton from "../component/download-button";
 
 const styles = (theme) => ({
   root: {

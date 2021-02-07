@@ -1,4 +1,4 @@
-import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
+//import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
 
 const javascriptStyles = {
   gridLayout: {

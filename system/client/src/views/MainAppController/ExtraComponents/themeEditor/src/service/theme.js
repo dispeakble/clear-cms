@@ -23,7 +23,7 @@ const download = (theme) => {
     type: "application/json",
     name: "theme.json",
   });
-  return Promise.resolve();
+  return Promise.resolve(fileToSave);
 };
 
 export default {

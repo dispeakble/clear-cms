@@ -71,7 +71,7 @@ class AccordionModule extends Component {
 
   multipleDeleteCallback = async () => {
     switch (this.state.table) {
-      case "main": {
+      case "main":
         let sections = [...this.state.sections];
         let sectionsIds = [];
         let multipleDeleteData = this.state.multipleDeleteData;
@@ -84,7 +84,9 @@ class AccordionModule extends Component {
         await this.setAsyncState({ sections });
         this.state.tableRef.current &&
           this.state.tableRef.current.onQueryChange();
-      }
+      break;
+      default:
+        break;
     }
 
     this.closeMultipleDeleteModal();
@@ -151,6 +153,7 @@ class AccordionModule extends Component {
             field: col.fieldName,
             type: col.dataType,
           });
+          return col;
         });
         return tableCols;
       },
@@ -323,7 +326,6 @@ class AccordionModule extends Component {
             <MaterialTable
               tableRef={this.state.tableRef}
               title="Accordion Sections"
-              tableRef={this.state.tableRef}
               columns={this.tableOptions.props.columns}
               data={() => this.tableOptions.actions.getData()}
               options={this.tableOptions.props.options}
@@ -372,9 +374,12 @@ class AccordionModule extends Component {
                             "insertdatetime media table paste code help wordcount",
                           ],
                           toolbar:
-                            "undo redo | formatselect | bold italic forecolor backcolor | \
-             alignleft aligncenter alignright alignjustify | \
-             bullist numlist outdent indent | removeformat",
+                            "undo redo" +
+                            " | formatselect" +
+                            " | bold italic forecolor backcolor" +
+                            " | alignleft aligncenter alignright alignjustify" +
+                            " | bullist numlist outdent indent" +
+                            " | removeformat",
                           init_instance_callback: function (editor) {
                             var annoyingMessage = document.querySelector(
                               ".tox-notifications-container"

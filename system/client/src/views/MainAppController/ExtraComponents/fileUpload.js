@@ -49,6 +49,8 @@ class Themes extends Component {
         let folder = event.target.value;
         this.setState({ folder });
         break;
+      default:
+        break;
     }
   };
 
@@ -228,14 +230,13 @@ class Themes extends Component {
       temporaryFiles.map((el) => {
         const milliseconds = Number(el.lastModified) * 1000;
         const dateObject = new Date(milliseconds);
-        const humanDateFormat = dateObject.toLocaleString();
-        el.date = humanDateFormat;
+        el.date = dateObject.toLocaleString();
 
         let bytes = Number(el.size);
 
         const dataSize = () => {
           let sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-          if (bytes == 0) return "0 Byte";
+          if (bytes === 0) return "0 Byte";
           let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
           return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
         };
@@ -243,6 +244,7 @@ class Themes extends Component {
         el.fileSize = dataSize();
 
         el.folder = this.state.folder;
+        return el;
       });
 
       await this.setAsyncState({

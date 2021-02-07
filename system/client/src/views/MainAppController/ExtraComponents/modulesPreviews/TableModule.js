@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+//import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+//import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import Icon from "@material-ui/core/Icon";
 
 class TableModule extends Component {
@@ -74,6 +74,7 @@ class TableModule extends Component {
               field: col.fieldName,
               render: (rowData) => (
                 <img
+                  alt={col.columnTitle}
                   style={{
                     maxHeight: "100%",
                     maxWidth: "100%",
@@ -94,7 +95,7 @@ class TableModule extends Component {
               title: col.columnTitle,
               field: col.fieldName,
               render: (rowData) => (
-                <a href={rowData[col.fieldName].href} target="_blank">
+                <a href={rowData[col.fieldName].href} target="_blank" rel="noopener noreferrer">
                   {rowData[col.fieldName].name}
                 </a>
               ),
@@ -106,6 +107,7 @@ class TableModule extends Component {
               type: col.dataType,
             });
           }
+          return col;
         });
         return tableCols;
       },

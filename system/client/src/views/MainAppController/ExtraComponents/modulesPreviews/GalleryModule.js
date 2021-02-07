@@ -69,7 +69,7 @@ class GalleryModule extends Component {
   }
 
   render() {
-    let galleryType = "Carousel";
+    //let galleryType = "Carousel";
 
     let imgs = [
       {
@@ -100,8 +100,21 @@ class GalleryModule extends Component {
       imgs.push(img);
     }
 
-    switch (galleryType) {
-      case "Carousel": {
+    return (
+        <React.Fragment>
+          <ImageGallery
+              {...this.state.gallery}
+              renderItem={(...args) => {
+                return this.renderZoom(args[0]);
+              }}
+              items={imgs}
+          />
+          <div id="myPortal" />
+        </React.Fragment>
+    );
+
+    /*switch (galleryType) {
+      case "Carousel":
         return (
           <React.Fragment>
             <ImageGallery
@@ -114,8 +127,10 @@ class GalleryModule extends Component {
             <div id="myPortal" />
           </React.Fragment>
         );
-      }
-    }
+      break;
+      default:
+        break;
+    }*/
   }
 }
 

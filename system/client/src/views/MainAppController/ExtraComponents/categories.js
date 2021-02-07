@@ -80,6 +80,7 @@ class Categories extends Component {
           id: el.id,
           label: catName,
         });
+        return el;
       });
 
       await this.setAsyncState({

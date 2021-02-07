@@ -206,6 +206,7 @@ class MenuModule extends Component {
           id: el.id,
           label: linkName,
         });
+        return el;
       });
 
       await this.setAsyncState({

@@ -36,6 +36,7 @@ class HeaderModule extends Component {
           title={this.props.element.moduleOptions.data.logoTitle}
           href={this.props.element.moduleOptions.data.logoLink}
           target="_blank"
+          rel="noopener noreferrer"
         >
           <img
             style={{ width: "20%" }}

@@ -110,6 +110,8 @@ class HeaderModule extends Component {
         logoLink = event.target.value;
         this.setState({ logoLink });
         break;
+      default:
+        break;
     }
   };
 
