@@ -275,7 +275,7 @@ export class DbService {
                     REM_PIECES.push(REM_STRING);
 
                     if (/^\d+$/.test(params.where[i])) {
-                        params.data[i] = parseInt(params.where[i]);
+                        params.where[i] = Number(params.where[i]);
                     }
                 }
             }
@@ -324,6 +324,18 @@ export class DbService {
 
         const payload = {
             action: 'set',
+            data: params.data
+        }
+
+        const res = await this.query(payload);
+
+        return res;
+    }
+
+    async rem(params) {
+
+        const payload = {
+            action: 'rem',
             data: params.data
         }
 

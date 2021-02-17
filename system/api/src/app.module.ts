@@ -4,6 +4,8 @@ import { SystemService } from './services/system.service';
 import { HttpService } from './services/http.service';
 import { AuthService } from './services/auth.service';
 import { AdminProfileService } from './services/adminProfile.service';
+import { AdminThemesService } from './services/adminThemes.service';
+import { PublicThemesService } from './services/publicThemes.service';
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -24,7 +26,7 @@ import {ProtocolService} from "./services/protocol.service";
     ])
   ],
   controllers: [ProtocolController],
-  providers: [HttpService, ProtocolService, AuthService, SystemService, AdminProfileService]
+  providers: [HttpService, ProtocolService, AuthService, SystemService, AdminProfileService, AdminThemesService, PublicThemesService]
 })
 
 export class AppModule {}

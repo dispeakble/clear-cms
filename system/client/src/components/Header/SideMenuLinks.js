@@ -45,88 +45,83 @@ class NestedList extends React.Component {
   };
 
   render() {
-    let items = this.props.moduleList;
     const { classes } = this.props;
     return (
       <MuiThemeProvider theme={this.getTheme()}>
         <div>
-          {items.list.map((list) => {
+          {this.props.moduleList.map((cat) => {
             return (
-              <List
-                className={classes.root}
-                key={`list-${list.id}`}
-                subheader={<ListSubheader>{list.title}</ListSubheader>}
-              >
-                {list.items.map((item) => {
-                  return (
-                    <div key={`cat-${list.id}-${item.id}`}>
-                      {item.subitems != null ? (
+                <List
+                    className={classes.root}
+                    key={`list-${cat.id}`}
+                    subheader={<ListSubheader>{cat.title}</ListSubheader>}
+                >
+                  <div key={`cat-${cat.id}`}>
+                    {cat.subitems != null ? (
                         <div>
                           <ListItem
-                            button
-                            onClick={this.handleClick.bind(this, item.name)}
+                              button
+                              onClick={this.handleClick.bind(this, cat.name)}
                           >
                             <ListItemIcon>
-                              <Icon>{item.icon}</Icon>
+                              <Icon>{cat.icon}</Icon>
                             </ListItemIcon>
-                            <ListItemText primary={item.name} />
-                            {this.state[item.name] ? (
-                              <ExpandLess />
+                            <ListItemText primary={cat.name}/>
+                            {this.state[cat.name] ? (
+                                <ExpandLess/>
                             ) : (
-                              <ExpandMore />
+                                <ExpandMore/>
                             )}
                           </ListItem>
                           <Collapse
-                            component="li"
-                            in={this.state[item.name]}
-                            timeout="auto"
-                            unmountOnExit
+                              component="li"
+                              in={this.state[cat.name]}
+                              timeout="auto"
+                              unmountOnExit
                           >
                             <List disablePadding>
-                              {item.subitems.map((sitem) => {
+                              {cat.subitems.map((nav) => {
                                 return (
-                                  <NavLink
-                                    key={`nav-${sitem.name}`}
-                                    to={sitem.toLink}
-                                    className={classes.links}
-                                    activeStyle={{
-                                      fontWeight: 900,
-                                      color: "white",
-                                    }}
-                                  >
-                                    <ListItem
-                                      onClick={this.props.closeDrawer}
-                                      button
-                                      className={classes.nested}
+                                    <NavLink
+                                        key={`nav-${nav.name}`}
+                                        to={nav.toLink}
+                                        className={classes.links}
+                                        activeStyle={{
+                                          fontWeight: 900,
+                                          color: "white",
+                                        }}
                                     >
-                                      <ListItemIcon>
-                                        <Icon>{sitem.icon}</Icon>
-                                      </ListItemIcon>
-                                      <ListItemText
-                                        primary={sitem.name}
-                                      />
-                                    </ListItem>
-                                  </NavLink>
+                                      <ListItem
+                                          onClick={this.props.closeDrawer}
+                                          button
+                                          className={classes.nested}
+                                      >
+                                        <ListItemIcon>
+                                          <Icon>{nav.icon}</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={nav.name}
+                                        />
+                                      </ListItem>
+                                    </NavLink>
                                 );
                               })}
                             </List>
                           </Collapse>{" "}
                         </div>
-                      ) : (
+                    ) : (
                         <ListItem
-                          button
-                          onClick={this.handleClick.bind(this, item.name)}
-                          key={`subitem-${item.id}`}
+                            button
+                            onClick={this.handleClick.bind(this, cat.name)}
+                            key={`subitem-${cat.id}`}
                         >
-                          <ListItemText primary={item.name} />
+                          <ListItemText primary={cat.name}/>
                         </ListItem>
-                      )}
-                    </div>
-                  );
-                })}
-                <Divider key={`divider-${list.id}`} absolute />
-              </List>
-            );
+                    )}
+                  </div>
+                  <Divider key={`divider-${cat.id}`} absolute/>
+                </List>
+            )
           })}
         </div>
       </MuiThemeProvider>

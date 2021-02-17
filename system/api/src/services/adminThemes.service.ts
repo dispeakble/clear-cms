@@ -1,0 +1,176 @@
+import {Inject, Injectable} from "@nestjs/common";
+import {payloadInterface} from "../interfaces/payload.interface";
+import {ModuleInterface} from "../interfaces/module.interface";
+//import * as md5 from "md5";
+
+@Injectable()
+export class AdminThemesService {
+
+    private methods = ["getOne", "getAll", "addInfo", "setInfo", "remInfo"];
+
+    constructor(@Inject('ProtocolService') private protocolService) {
+
+    }
+
+    onApplicationBootstrap() {
+
+    }
+
+    public async getAll() {
+        const payload: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'get',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'admin_themes',
+                    fields: ["id", "title", "isdefault", "thumbnail"]
+                }
+            }
+        };
+
+        const data = await this.protocolService.sendMessage(payload);
+
+        let response = null;
+
+        if (data && data.hasOwnProperty('data')) {
+            response = data.data;
+        }
+
+        return response;
+    }
+
+    public async getOne(params) {
+        const payload: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'get',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'admin_themes',
+                    fields: ["title", "isdefault", "thumbnail", "data"],
+                    where: params.where,
+                    limit: [0, 1]
+                }
+            }
+        };
+
+        const data = await this.protocolService.sendMessage(payload);
+
+        let response = {};
+
+        if (data && data.hasOwnProperty('data')) {
+            response = data.data[0];
+        }
+
+        return response;
+    }
+
+    public async setInfo(params) {
+
+        if(params.data.isdefault){
+            await this.setInfo({
+                where:{
+                    isdefault: 1
+                },
+                data:{
+                    isdefault: 0
+                }
+            })
+        }
+
+        const request: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'set',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'admin_themes',
+                    where: params.where,
+                    data: params.data
+                }
+            }
+        };
+
+        await this.protocolService.sendMessage(request);
+
+        return {
+            success: "The theme was updated",
+            data: null
+        };
+    }
+
+    public async addInfo(params) {
+
+        if(params.isdefault){
+            await this.setInfo({
+                where:{
+                    isdefault: 1
+                },
+                data:{
+                    isdefault: 0
+                }
+            })
+        }
+
+        const request: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'add',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'admin_themes',
+                    data: {
+                        title: params.title,
+                        isdefault: params.isdefault,
+                        thumbnail: params.thumbnail,
+                        data: params.data,
+                    }
+                }
+            }
+        };
+
+        await this.protocolService.sendMessage(request);
+
+        return {
+            success: "The theme was added",
+            data: null
+        };
+    }
+
+    public async remInfo(params) {
+        const request: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'rem',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'admin_themes',
+                    where: params
+                }
+            }
+        };
+
+        await this.protocolService.sendMessage(request);
+
+        return {
+            success: "The theme was removed",
+            data: null
+        };
+    }
+
+    public perform(data: any, config?: ModuleInterface) {
+        if (this.methods.includes(data.act)) {
+            return this[data.act](data.payload, config);
+        } else {
+            console.log("System.adminThemes." + data.act + " not found");
+        }
+        return null;
+    }
+
+}

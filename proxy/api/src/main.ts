@@ -4,22 +4,27 @@ import {Transport} from "@nestjs/microservices";
 import * as compression from 'compression';
 //import {SessionAdapter} from "./adapters/session.adapter";
 
-let httpOptions;
+let httpsOptions;
 let app;
 
 const init = async () => {
 
     if(process.env.ssl_key && process.env.ssl_cert){
-        httpOptions = {
+        httpsOptions = {
             key: process.env.ssl_key,
             cert: process.env.ssl_cert
         };
-    }
 
-    app = await NestFactory.create(
-        AppModule,
-        httpOptions
-    );
+        app = await NestFactory.create(
+            AppModule,{
+                httpsOptions: httpsOptions
+            }
+        );
+    } else {
+        app = await NestFactory.create(
+            AppModule
+        );
+    }
 
     app.use(compression.default());
 

@@ -21,8 +21,6 @@ const javascriptStyles = {
     width: "50%",
   },
   columnSeparator: {
-    borderRight: "1px solid darkcyan",
-    paddingRight: "1%",
   },
   newTbnStylesWrapper: {
     display: "flex",
@@ -40,12 +38,8 @@ const javascriptStyles = {
     },
   },
   dropzoneAreaWrapper: {
-    width: "90%",
-    margin: "0 auto",
   },
   pageOptionsSlider: {
-    width: "80%",
-    marginLeft: "10%",
   },
 
   previewHead: {
@@ -65,14 +59,22 @@ const javascriptStyles = {
 
   previewList: { width: "25%" },
 
-  previewText: { width: "75%", paddingTop: "15px" },
+  previewText: {width: "75%", paddingTop: "15px", textAlign: "justify"},
+
+  previewMenu: {
+    "& span": {
+      fontSize: "inherit !important",
+      fontFamily: "inherit !important"
+    }
+
+  },
 
   root: {
     maxWidth: "345px",
     padding: "5px",
   },
   media: {
-    height: 140,
+    height: 205
   },
   modalBody: {
     height: "calc(100% - 125px)",

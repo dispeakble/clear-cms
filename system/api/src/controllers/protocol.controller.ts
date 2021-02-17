@@ -33,6 +33,8 @@ export class ProtocolController {
       @Inject('SystemService') private systemService,
       @Inject('ProtocolService') private protocolService,
       @Inject('AdminProfileService') private adminProfileService,
+      @Inject('AdminThemesService') private adminThemesService,
+      @Inject('PublicThemesService') private publicThemesService,
       @Inject('HttpService') private httpService,
       @Inject('AuthService') private authService,
       ) {

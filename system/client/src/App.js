@@ -13,8 +13,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { Helmet } from "react-helmet";
 
 //views //TODO MOVE TO CONTROLLERS
-import Dashboard from "views/Dashboard/Dashboard.js";
-import MainAppController from "views/MainAppController/MainAppController";
+import MainController from "controllers/main.controller";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 
@@ -28,112 +27,87 @@ import AdminProfileController from "./controllers/admin-profile.controller";
 //Services
 import WsService from "services/ws.service";
 import AuthGuardService from "./services/authGuard.service";
+import * as shortId from "shortid";
 
 class App extends Component {
   state = {
     services: {},
-    moduleList: {
-      list: [
-        {
-          id: 1,
-          title: "",
-          items: [
-            {
-              id: 1,
-              name: "All Modules",
-              icon: "apps",
-              subitems: [
-                {
-                  //TODO get this from hub module list
-                  toLink: "/pages",
-                  name: "Pages",
-                  icon: "web",
-                  active: true,
-                },
-                {
-                  toLink: "/categories",
-                  name: "Categories",
-                  icon: "category",
-                  active: false,
-                },
-                {
-                  toLink: "/themes",
-                  name: "Themes",
-                  icon: "brush",
-                  active: false,
-                },
-                {
-                  toLink: "/fileUpload",
-                  icon: "publish",
-                  name: "File Upload",
-                  active: false,
-                },
-                {
-                  toLink: "/forum",
-                  icon: "forum",
-                  name: "Forum",
-                  active: false,
-                },
-                {
-                  toLink: "/video-conference",
-                  icon: "video_call",
-                  name: "Video Conference",
-                  active: false,
-                },
-                {
-                  toLink: "/file-transfer",
-                  icon: "attachment",
-                  name: "File Transfer",
-                  active: false,
-                },
-                {
-                  toLink: "/photo-gallery",
-                  icon: "photo_library",
-                  name: "Photo Gallery",
-                  active: false,
-                },
-              ],
-            },
-            {
-              id: 2,
-              name: "Settings",
-              icon: "settings",
-              subitems: [
-                {
-                  //TODO get this from hub module list
-                  toLink: "/general-settings",
-                  name: "General Settings",
-                  icon: "settings",
-                  active: false,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
+    moduleList: [
+      {
+        id: 1,
+        name: "All Modules",
+        icon: "apps",
+        subitems: [
+          {
+            //TODO get this from hub module list
+            toLink: "/pages",
+            name: "Pages",
+            icon: "web",
+            active: true,
+          },
+          {
+            toLink: "/categories",
+            name: "Categories",
+            icon: "category",
+            active: false,
+          },
+          {
+            toLink: "/themes",
+            name: "Themes",
+            icon: "brush",
+            active: false,
+          },
+          {
+            toLink: "/fileUpload",
+            icon: "publish",
+            name: "File Upload",
+            active: false,
+          },
+          {
+            toLink: "/forum",
+            icon: "forum",
+            name: "Forum",
+            active: false,
+          },
+          {
+            toLink: "/video-conference",
+            icon: "video_call",
+            name: "Video Conference",
+            active: false,
+          },
+          {
+            toLink: "/file-transfer",
+            icon: "attachment",
+            name: "File Transfer",
+            active: false,
+          },
+          {
+            toLink: "/photo-gallery",
+            icon: "photo_library",
+            name: "Photo Gallery",
+            active: false,
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "Settings",
+        icon: "settings",
+        subitems: [
+          {
+            //TODO get this from hub module list
+            toLink: "/general-settings",
+            name: "General Settings",
+            icon: "settings",
+            active: false,
+          },
+        ],
+      },
+    ],
     excludeHeader: ["pagePreview", "view-auth", "recover-password", "logout"],
     socket: {},
     mobileOpen: false,
-    someTweakedState: false,
-  };
-
-  constructor() {
-    super();
-    //TODO ONLY IF THE LOGIN HAPPENED OR THE SESSION COOKIE IS VALID.
-    this.state.services.ws = new WsService();
-    //TODO CHECK SESSION AND START WS HERE
-    this.state.services.ws.start().then((connected) => {
-      if(!connected){
-        window.location.href = '/view-auth';
-      }
-    });
-  }
-
-  getTheme = () => {
-    const themes = JSON.parse(localStorage.getItem("adminThemes"));
-
-    /*const hardcodedStyles = {//TODO GET THIS FROM A CONFIG OR GET RID OF THEM AND USE DB INSTEAD
+    defaultPalette: {//TODO GET THIS FROM A CONFIG OR GET RID OF THEM AND USE DB INSTEAD
       text: {
         //primary: "#F00",
         //secondary: "#0F0",
@@ -158,23 +132,77 @@ class App extends Component {
       secondary: {
         main: "#FFFFFF",
       },
-    };*/
-
-    let defaultTheme = null;
-
-    if (themes) {
-      defaultTheme = themes.find((theme) => theme.isdefault === true);
-      if (!defaultTheme) {
-        //defaultTheme = hardcodedStyles;
-      }
-    } else {
-      //defaultTheme = hardcodedStyles;
     }
+  };
 
-    this.defaultThemeToDispatch = defaultTheme;
+  messageCallbacks = {};
 
+  constructor() {
+    super();
+    this.state.services.ws = new WsService();
+    this.state.services.ws.start().then((connected) => {
+      if(!connected){
+        window.location.href = '/view-auth';
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.state.services.ws.subscribe({
+      channel: 'app',
+      callbacks: {
+        message: (response) => this.onMessage(response)
+      }
+    });
+
+    this.getTheme();
+
+  }
+
+  onMessage(params) {
+    try {
+      this.messageCallbacks[params.id](params.data);
+    } catch (err) {
+      console.log(err);
+    }
+    console.log('got message in app.js', params);
+  }
+
+  sendMessage(params) {
+    return new Promise((resolve_send) => {
+      const uniqueId = shortId.generate();
+      this.messageCallbacks[uniqueId] = resolve_send;
+      this.state.services.ws.emit({
+        id: uniqueId,
+        channel: 'app',
+        module: params.module,
+        api: params.api,
+        act: params.act,
+        payload: params.payload
+      });
+    });
+  }
+
+  getTheme = async () => {
+    const response = await this.sendMessage({
+      module: 'system',
+      api: 'adminThemes',
+      act: 'getOne',
+      payload: {
+        where: {
+          isdefault: 1
+        }
+      }
+    })
+
+    if (response && response.data && response.data.length) {
+      this.setState({defaultPalette: JSON.parse(response.data)});
+    }
+  }
+
+  createTheme = () => {
     return createMuiTheme({
-      palette: defaultTheme,
+      palette: this.state.defaultPalette,
       overrides: {
         MuiDialog: {
           paper: {
@@ -203,13 +231,14 @@ class App extends Component {
             textTransform:"none"
           }
         },
+        MuiFormControlLabel: {
+          label: {
+            color: "#000",
+          },
+        },
         paperWidthSm: "100%",
       },
     });
-  };
-
-  tweakTheState = () => {
-    this.setState({ someTweakedState: !this.state.someTweakedState });
   };
 
   handleDrawerToggle = () => {
@@ -224,7 +253,7 @@ class App extends Component {
           <title>App</title>
         </Helmet>
 
-        <MuiThemeProvider theme={this.getTheme()}>
+        <MuiThemeProvider theme={this.createTheme()}>
           <CssBaseline />
           {this.state.excludeHeader.indexOf(basePath[0]) === -1 ? (
             <Header
@@ -279,16 +308,15 @@ class App extends Component {
                );
               }}
             />
-            <Route path="/" exact component={Dashboard} />
             <Route path="/pagesAdd" component={PagesAdd} />
             <Route path="/pagePreview/:id" component={PagePreview} />
             <Route path="/pageEdit/:id" component={PagesAdd} />
             <Route
               render={(props) => (
-                <MainAppController
-                  tweakTheState={this.tweakTheState}
-                  defaultTheme={this.defaultThemeToDispatch}
+                <MainController
                   {...props}
+                  defaultTheme={this.state.defaultPalette}
+                  services={this.state.services}
                   moduleList={this.state.moduleList}
                 />
               )}

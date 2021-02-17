@@ -64,8 +64,13 @@ export class AppController {
 
         try {
             const start_date = new Date().getTime();
-            const port = req.headers.host.split(':')[1];
-            const channel = this.portMap[port];
+            const channel = this.portChannel(req.headers);
+
+            if(!channel){
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                res.end('Port not mapped');
+                return;
+            }
 
             const payload = {
                 channel: req.body.module,
@@ -138,8 +143,14 @@ export class AppController {
     @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
-            const port = req.headers.host.split(':')[1];
-            const channel = this.portMap[port];
+
+            const channel = this.portChannel(req.headers);
+
+            if(!channel){
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                res.end('Port not mapped');
+                return;
+            }
 
             const payload = {
                 channel: channel,
@@ -151,6 +162,7 @@ export class AppController {
                     headers: req.headers
                 }
             };
+
 
             if(!session.hasOwnProperty('user')){
                 const hasAccess = await this.protocolService.checkAccess(payload);
@@ -172,12 +184,11 @@ export class AppController {
             const cachedrequest = await this.protocolService.getValue(fileStats.file_name);
 
             if(cachedrequest){
-                const exp_date = new Date(cachedrequest.expires);
-
-                if(exp_date > new Date()){
+                if(cachedrequest.ETag === fileStats.etagId){
                     const modifiedDate = new Date(fileStats.modified);
+                    const exp_date = new Date(cachedrequest.expires);
 
-                    if(exp_date > modifiedDate && cachedrequest.ETag === fileStats.etagId){
+                    if(exp_date > new Date() && exp_date > modifiedDate){
                         res.set("Content-Type", cachedrequest.content_type);
                         res.set("Content-Length", cachedrequest.content_length);
                         res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
@@ -192,9 +203,6 @@ export class AppController {
                         return true;
                     }
                 }
-
-
-
             }
 
             const getSubscriber = this.protocolService.sendGet(payload);
@@ -262,6 +270,25 @@ export class AppController {
 
     }
 
+    private portChannel(headers){
+        let port = headers.host.split(':')[1];
+
+        if(!port){
+            if(headers.hasOwnProperty('x-forwarded-port') && headers['x-forwarded-port']){
+                port = +headers['x-forwarded-port'];
+            } else {
+                port = 0;
+            }
+        }
+
+        if(!this.portMap.hasOwnProperty(port) || !this.portMap[port]){
+            console.log(headers)
+            console.log(JSON.stringify(headers));
+            return null;
+        }
+        return this.portMap[port];
+    }
+
     async onApplicationBootstrap() {
         this.appService.perform({
             api: 'app',
@@ -294,7 +321,7 @@ export class AppController {
                 payload: data.payload
             };
 
-            if(data.payload.useSession){
+            if(data.payload && data.payload.useSession){
                 const sessionData = await this.sessionService.parseCookie({cookies: params.client.handshake.headers.cookie});
 
                 if(sessionData){
