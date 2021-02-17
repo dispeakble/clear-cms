@@ -1,14 +1,14 @@
 #!/bin/bash -e
-############################################
-#####   Ericom Shield Running Rancher  #####
-#######################################BH###
+
 APP="Rancher"
-APP_VERSION="v2.3.7"
-# This release comes with the latest Kubernetes versions, i.e. v1.13.10, v1.14.6, v1.15.3,
-# for Rancher launched Kubernetes clusters to address the Kubernetes security announcement.
-# Rancher recommends upgrading all Kubernetes clusters to these Kubernetes versions.
-ES_PATH="$HOME/ericomshield"
-ES_RANCHER_STORE="$ES_PATH/rancher-store"
+APP_VERSION="v2.4.8"
+#old_APP_VERSION="v2.3.7"
+#APP_VERSION="v2.1.0-rc2"
+RANCHER_STORE="/home/dosidoweb/rancher/rancher-store"
+
+    RANCHER_CERTIFICATE="/home/dosidoweb/rancher/ssl/cert.pem"
+	RANCHER_CERTIFICATE_KEY="/home/dosidoweb/rancher/ssl/key.pem"
+  	RACHER_CERTIFICATE_CA="/home/dosidoweb/rancher/ssl/cacerts.pem"
 
 if [ ! -z "$http_proxy" ] && [ -z "$HTTP_PROXY" ]; then
     HTTP_PROXY="$http_proxy"
@@ -16,11 +16,8 @@ fi
 if [ ! -z "$HTTP_PROXY" ]; then
     RANCHER_PROXY_VARS="-e HTTP_PROXY=${HTTP_PROXY} -e HTTPS_PROXY=${HTTPS_PROXY} -e NO_PROXY=localhost,127.0.0.1,0.0.0.0,${NO_PROXY}"
 fi
-if [ ! -z "$ES_OFFLINE_REGISTRY" ]; then
-    RANCHER_REGISTRY_VARS="-e CATTLE_SYSTEM_DEFAULT_REGISTRY=${ES_OFFLINE_REGISTRY}"
-    ES_OFFLINE_REGISTRY_PREFIX="$ES_OFFLINE_REGISTRY/"
-fi
-ES_RANCHER_IMAGE="${ES_OFFLINE_REGISTRY_PREFIX}rancher/rancher:$APP_VERSION"
+RANCHER_IMAGE="rancher/rancher:$APP_VERSION"
+#RANCHER_IMAGE="rancher/rancher"
 
 function usage() {
     echo " Usage: $0 [-h|--help] [--print-docker-images]"
@@ -31,7 +28,7 @@ while [ $# -ne 0 ]; do
     case "$arg" in
     -h | --help)
         #    *)
-        usage
+        #usage
         exit
         ;;
     --print-app-version)
@@ -39,42 +36,45 @@ while [ $# -ne 0 ]; do
         exit
         ;;
     --print-docker-images)
-        echo "${ES_RANCHER_IMAGE}"
+        echo "${RANCHER_IMAGE}"
         exit
         ;;
     esac
     shift
 done
 
-if ! [ -d "$ES_RANCHER_STORE" ]; then
-    mkdir -p "$ES_RANCHER_STORE"
+if ! [ -d "$RANCHER_STORE" ]; then
+    mkdir -p "$RANCHER_STORE"
 fi
 
-if ! ls -1qA "$ES_RANCHER_STORE" | grep -q .; then
+if ! ls -1qA "$RANCHER_STORE" | grep -q .; then
     docker run --rm -it \
-        -e CATTLE_SYSTEM_CATALOG=bundled ${RANCHER_PROXY_VARS} ${RANCHER_REGISTRY_VARS} \
-        -v $ES_RANCHER_STORE:/var-lib-rancher \
+        -e CATTLE_SYSTEM_CATALOG=bundled \
+        -v $RANCHER_STORE:/var-lib-rancher \
         --entrypoint /bin/sh \
-        "${ES_RANCHER_IMAGE}" \
+        "${RANCHER_IMAGE}" \
         -c "cp -rp /var/lib/rancher/. /var-lib-rancher/"
 fi
 
 if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
     echo
     echo "Running Rancher ($APP_VERSION)"
-    docker run -d --restart=unless-stopped \
-        -p 8443:443 \
-        -e CATTLE_SYSTEM_CATALOG=bundled ${RANCHER_PROXY_VARS} ${RANCHER_REGISTRY_VARS} \
-        -v $ES_RANCHER_STORE:/var/lib/rancher \
-        "${ES_RANCHER_IMAGE}"
 
-    # A workaround for offline: try to access Rancher metadata repository.
-    # This will halt execution until a timeout happens if there is no internet
-    # connection but DNS name resolution works. We need this to make sure that
-    # Rancher has initialized.
+
+
+    docker run -d --restart=always \
+	-p 9080:80 \
+        -p 9443:443 \
+        -v $RANCHER_STORE:/var/lib/rancher \
+        -v "${RANCHER_CERTIFICATE}":/etc/rancher/ssl/cert.pem \
+		-v "${RANCHER_CERTIFICATE_KEY}":/etc/rancher/ssl/key.pem \
+        -v "${RACHER_CERTIFICATE_CA}":/etc/rancher/ssl/cacerts.pem \
+    	--privileged \
+        "${RANCHER_IMAGE}"
+
     docker run --rm \
         --entrypoint /bin/sh \
-        "${ES_RANCHER_IMAGE}" \
+        "${RANCHER_IMAGE}" \
         -c 'curl -sSf https://github.com/rancher/kontainer-driver-metadata.git >/dev/null 2>&1 || (echo "Waiting (maximum) 10 minutes for Rancher to get ready..."; sleep 600)'
 else
     echo "Rancher is already running"
@@ -100,8 +100,8 @@ function get_my_ip() {
 }
 
 MY_IP="$(get_my_ip)"
-RANCHER_URL="https://$MY_IP:8443"
+RANCHER_URL="https://$MY_IP:9443"
 EXTERNAL_IP="$(curl -s http://whatismyip.akamai.com/ && echo)"
 
-echo " Rancher UI is available on port 8443"
+echo " Rancher UI is available on port 9443"
 echo $RANCHER_URL

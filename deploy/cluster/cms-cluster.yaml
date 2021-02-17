@@ -1,0 +1,166 @@
+#
+# Cluster Config
+#
+docker_root_dir: /var/lib/docker
+enable_cluster_alerting: false
+enable_cluster_monitoring: false
+enable_network_policy: false
+local_cluster_auth_endpoint:
+  ca_certs: |-
+    -----BEGIN CERTIFICATE-----
+    MIIFvDCCBKSgAwIBAgIQX7/sHO0aA7ldeEqu5biKJDANBgkqhkiG9w0BAQsFADCB
+    jzELMAkGA1UEBhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4G
+    A1UEBxMHU2FsZm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMTcwNQYDVQQD
+    Ey5TZWN0aWdvIFJTQSBEb21haW4gVmFsaWRhdGlvbiBTZWN1cmUgU2VydmVyIENB
+    MB4XDTIwMDkyNzAwMDAwMFoXDTIxMDkyNzIzNTk1OVowGDEWMBQGA1UEAxMNZG9z
+    aWRvd2ViLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAM9bbd6C
+    0xvZlHg+jvGNPYyC8PBNtVw+dOAplteC3cVyUPaKL/4xPhrOsiDQlgSmEPsY6FZZ
+    VCxmjHGCkY+QCLUMNdJWA5F1N2Er0kSJlgpm2e3r3nTdPQSuue6bGQbnAyAxvW8C
+    mDaF878PTlWascHACSe+vGr5sTGswY9GSrSPT6slEMh2tcvJtlifytvxg5E103dX
+    mJswenFFwt72K1dMyEFJbxJbfhxB7Fu+FxV6wvPX9hu4Q8VQ2hKXUdWv+K6/FPku
+    oSzg7nEI7ttlJaKrXL7Bk/f8cvsOiGIbDBTZT6tgclAuDR5hRgKV+x75LYNMMoAE
+    m2d+m9ezsHShgDkCAwEAAaOCAogwggKEMB8GA1UdIwQYMBaAFI2MXsRUrYrhd+mb
+    +ZsF4bgBjWHhMB0GA1UdDgQWBBRf6YiMHLDmYyQC7Ug/R5NiOSr60zAOBgNVHQ8B
+    Af8EBAMCBaAwDAYDVR0TAQH/BAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYB
+    BQUHAwIwSQYDVR0gBEIwQDA0BgsrBgEEAbIxAQICBzAlMCMGCCsGAQUFBwIBFhdo
+    dHRwczovL3NlY3RpZ28uY29tL0NQUzAIBgZngQwBAgEwgYQGCCsGAQUFBwEBBHgw
+    djBPBggrBgEFBQcwAoZDaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNB
+    RG9tYWluVmFsaWRhdGlvblNlY3VyZVNlcnZlckNBLmNydDAjBggrBgEFBQcwAYYX
+    aHR0cDovL29jc3Auc2VjdGlnby5jb20wKwYDVR0RBCQwIoINZG9zaWRvd2ViLmNv
+    bYIRd3d3LmRvc2lkb3dlYi5jb20wggEEBgorBgEEAdZ5AgQCBIH1BIHyAPAAdgB9
+    PvL4j/+IVWgkwsDKnlKJeSvFDngJfy5ql2iZfiLw1wAAAXTQN9i1AAAEAwBHMEUC
+    IB7oeQIiu3ZpIDoaXmvd/TUgbZg5UKFOFa/Ieq8mH7M8AiEA+QDQK4eezwtyrmQs
+    b49ktoGHlLjrV4ztWbQpx+KbltMAdgCUILwejtWNbIhzH4KLIiwN0dpNXmxPlD1h
+    204vWE2iwgAAAXTQN9jcAAAEAwBHMEUCIGPBswNt+56+RKB5YxUfQYZV8M547Tvj
+    ocMlDApBtnj2AiEAnRPx3gxWEoFzPIT9G68PVKT/1nYvzLAkt3vU0+doDFowDQYJ
+    KoZIhvcNAQELBQADggEBAH3UVaa0jkActQANT/Dhd2hbeSWaDZHTRfCFob8CZZjg
+    dCHjyQHtH7peDiRUeRrqIQd71nB5lFvr0HEfJgs+pXmbMI7wz7lt9F+XXM5YXRmJ
+    gTJ9uRC4SAy2NECqKVEur0GK93ptD01mRRTJBJB7qwa1Rjsb6d7Ep8AFN6cU7unk
+    nFpvk+ZhHvJvrxmwKzmDfFIDWurMvhZqaNLPmjD/8SxmRhwKa9P14+CK/4vxdFMb
+    QGSt21nSLMBM6vpu3iyqze4dkgO4FvZoOen5zQEoTr/cwDwANTwuaH0v878ptHDY
+    duRkxWDimNtmbYyh8snFbZj84acuLXEEL6PnDKJdNIM=
+    -----END CERTIFICATE-----
+  enabled: true
+  fqdn: dosidoweb.com
+#
+# Rancher Config
+#
+rancher_kubernetes_engine_config:
+  addon_job_timeout: 30
+  authentication:
+    strategy: x509|webhook
+  bastion_host:
+    ssh_agent_auth: false
+  dns:
+    nodelocal:
+      ip_address: ''
+  ignore_docker_version: true
+  #
+  # # Currently only nginx ingress provider is supported.
+  # # To disable ingress controller, set `provider: none`
+  # # To enable ingress on specific nodes, use the node_selector, eg:
+  #    provider: nginx
+  #    node_selector:
+  #      app: ingress
+  #
+  ingress:
+    provider: none
+  kubernetes_version: v1.18.12-rancher1-1
+  monitoring:
+    provider: metrics-server
+    replicas: 1
+  #
+  #   If you are using calico on AWS
+  #
+  #    network:
+  #      plugin: calico
+  #      calico_network_provider:
+  #        cloud_provider: aws
+  #
+  # # To specify flannel interface
+  #
+  #    network:
+  #      plugin: flannel
+  #      flannel_network_provider:
+  #      iface: eth1
+  #
+  # # To specify flannel interface for canal plugin
+  #
+  #    network:
+  #      plugin: canal
+  #      canal_network_provider:
+  #        iface: eth1
+  #
+  network:
+    mtu: 0
+    options:
+      flannel_backend_type: vxlan
+    plugin: canal
+  nodes:
+    - address: 188.214.30.235
+      hostname_override: server
+      node_id: 'c-mm8wb:m-cf1e8c14e545'
+      port: '22'
+      role:
+        - etcd
+        - controlplane
+        - worker
+      ssh_agent_auth: false
+      user: root
+  restore:
+    restore: false
+  #
+  #    services:
+  #      kube-api:
+  #        service_cluster_ip_range: 10.43.0.0/16
+  #      kube-controller:
+  #        cluster_cidr: 10.42.0.0/16
+  #        service_cluster_ip_range: 10.43.0.0/16
+  #      kubelet:
+  #        cluster_domain: cluster.local
+  #        cluster_dns_server: 10.43.0.10
+  #
+  services:
+    etcd:
+      backup_config:
+        enabled: true
+        interval_hours: 12
+        retention: 6
+        safe_timestamp: false
+      creation: 12h
+      extra_args:
+        election-timeout: '5000'
+        heartbeat-interval: '500'
+      gid: 0
+      retention: 72h
+      snapshot: false
+      uid: 0
+    kube_api:
+      always_pull_images: false
+      pod_security_policy: false
+      service_node_port_range: 30000-32767
+    kubelet:
+      fail_swap_on: false
+      generate_serving_certificate: false
+  ssh_agent_auth: false
+  upgrade_strategy:
+    drain: false
+    max_unavailable_controlplane: '1'
+    max_unavailable_worker: 10%
+    node_drain_input:
+      delete_local_data: false
+      force: false
+      grace_period: -1
+      ignore_daemon_sets: true
+      timeout: 120
+scheduled_cluster_scan:
+  enabled: false
+  scan_config:
+    cis_scan_config:
+      failures_only: false
+      override_benchmark_version: rke-cis-1.5
+      profile: permissive
+  schedule_config:
+    cron_schedule: 0 0 * * *
+    retention: 24
+windows_prefered_cluster: false

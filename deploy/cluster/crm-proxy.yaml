@@ -2,196 +2,225 @@
 kind: Deployment
 metadata:
   annotations:
-    deployment.kubernetes.io/revision: "3"
-    field.cattle.io/creatorId: user-zk4ns
-    field.cattle.io/publicEndpoints: '[{"addresses":["192.168.42.163"],"port":443,"protocol":"HTTPS","serviceName":"default:crm-proxy-service","ingressName":"default:crm-proxy-lb","hostname":"crm-dev.me","path":"/","allNodes":true}]'
-  creationTimestamp: null
-  generation: 1
+    deployment.kubernetes.io/revision: "2"
+    field.cattle.io/creatorId: user-f74d9
+  creationTimestamp: "2021-02-16T22:12:16Z"
+  generation: 2
   labels:
     cattle.io/creator: norman
-    workload.user.cattle.io/workloadselector: deployment-default-crm-proxy
+    workload.user.cattle.io/workloadselector: deployment-default-proxy
   managedFields:
-  - apiVersion: apps/v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:annotations:
-          .: {}
-          f:field.cattle.io/creatorId: {}
-          f:field.cattle.io/publicEndpoints: {}
-        f:labels:
-          .: {}
-          f:cattle.io/creator: {}
-          f:workload.user.cattle.io/workloadselector: {}
-      f:spec:
-        f:progressDeadlineSeconds: {}
-        f:replicas: {}
-        f:revisionHistoryLimit: {}
-        f:selector:
-          f:matchLabels:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
             .: {}
+            f:field.cattle.io/creatorId: {}
+          f:labels:
+            .: {}
+            f:cattle.io/creator: {}
             f:workload.user.cattle.io/workloadselector: {}
-        f:strategy:
-          f:rollingUpdate:
-            .: {}
-            f:maxSurge: {}
-            f:maxUnavailable: {}
-          f:type: {}
-        f:template:
-          f:metadata:
-            f:annotations:
-              .: {}
-              f:cattle.io/timestamp: {}
-              f:field.cattle.io/ports: {}
-            f:labels:
+        f:spec:
+          f:progressDeadlineSeconds: {}
+          f:replicas: {}
+          f:revisionHistoryLimit: {}
+          f:selector:
+            f:matchLabels:
               .: {}
               f:workload.user.cattle.io/workloadselector: {}
-          f:spec:
-            f:containers:
-              k:{"name":"crm-proxy"}:
+          f:strategy:
+            f:type: {}
+          f:template:
+            f:metadata:
+              f:annotations:
                 .: {}
-                f:env:
+                f:cattle.io/timestamp: {}
+              f:labels:
+                .: {}
+                f:workload.user.cattle.io/workloadselector: {}
+            f:spec:
+              f:containers:
+                k:{"name":"proxy"}:
                   .: {}
-                  k:{"name":"private_http_port"}:
+                  f:env:
                     .: {}
-                    f:name: {}
-                    f:value: {}
-                  k:{"name":"redis_port"}:
+                    k:{"name":"backend_port"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"public_port"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"redis_password"}:
+                      .: {}
+                      f:name: {}
+                      f:valueFrom:
+                        .: {}
+                        f:secretKeyRef:
+                          .: {}
+                          f:key: {}
+                          f:name: {}
+                          f:optional: {}
+                    k:{"name":"redis_port"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"redis_server"}:
+                      .: {}
+                      f:name: {}
+                      f:value: {}
+                    k:{"name":"session_secret"}:
+                      .: {}
+                      f:name: {}
+                      f:valueFrom:
+                        .: {}
+                        f:secretKeyRef:
+                          .: {}
+                          f:key: {}
+                          f:name: {}
+                  f:image: {}
+                  f:imagePullPolicy: {}
+                  f:name: {}
+                  f:resources: {}
+                  f:securityContext:
                     .: {}
-                    f:name: {}
-                    f:value: {}
-                  k:{"name":"redis_server"}:
-                    .: {}
-                    f:name: {}
-                    f:value: {}
-                f:image: {}
-                f:imagePullPolicy: {}
-                f:name: {}
-                f:ports:
+                    f:allowPrivilegeEscalation: {}
+                    f:capabilities: {}
+                    f:privileged: {}
+                    f:readOnlyRootFilesystem: {}
+                    f:runAsNonRoot: {}
+                  f:stdin: {}
+                  f:terminationMessagePath: {}
+                  f:terminationMessagePolicy: {}
+                  f:tty: {}
+              f:dnsPolicy: {}
+              f:imagePullSecrets:
+                .: {}
+                k:{"name":"dockerhub"}:
                   .: {}
-                  k:{"containerPort":6379,"protocol":"TCP"}:
-                    .: {}
-                    f:containerPort: {}
-                    f:name: {}
-                    f:protocol: {}
-                  k:{"containerPort":9000,"protocol":"TCP"}:
-                    .: {}
-                    f:containerPort: {}
-                    f:name: {}
-                    f:protocol: {}
-                f:resources: {}
-                f:securityContext:
-                  .: {}
-                  f:allowPrivilegeEscalation: {}
-                  f:capabilities: {}
-                  f:privileged: {}
-                  f:readOnlyRootFilesystem: {}
-                  f:runAsNonRoot: {}
-                f:stdin: {}
-                f:terminationMessagePath: {}
-                f:terminationMessagePolicy: {}
-                f:tty: {}
-            f:dnsPolicy: {}
-            f:imagePullSecrets:
-              .: { }
-              k:{"name":"dockerhub"}:
-                .: { }
-                f:name: { }
-            f:restartPolicy: {}
-            f:schedulerName: {}
-            f:securityContext: {}
-            f:terminationGracePeriodSeconds: {}
-    manager: Go-http-client
-    operation: Update
-    time: "2020-08-18T22:49:48Z"
-  - apiVersion: apps/v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:annotations:
-          f:deployment.kubernetes.io/revision: {}
-      f:status:
-        f:availableReplicas: {}
-        f:conditions:
-          .: {}
-          k:{"type":"Available"}:
+                  f:name: {}
+              f:restartPolicy: {}
+              f:schedulerName: {}
+              f:securityContext: {}
+              f:terminationGracePeriodSeconds: {}
+      manager: rancher
+      operation: Update
+      time: "2021-02-16T22:13:23Z"
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:deployment.kubernetes.io/revision: {}
+        f:status:
+          f:availableReplicas: {}
+          f:conditions:
             .: {}
-            f:lastTransitionTime: {}
-            f:lastUpdateTime: {}
-            f:message: {}
-            f:reason: {}
-            f:status: {}
-            f:type: {}
-          k:{"type":"Progressing"}:
-            .: {}
-            f:lastTransitionTime: {}
-            f:lastUpdateTime: {}
-            f:message: {}
-            f:reason: {}
-            f:status: {}
-            f:type: {}
-        f:observedGeneration: {}
-        f:readyReplicas: {}
-        f:replicas: {}
-        f:updatedReplicas: {}
-    manager: kube-controller-manager
-    operation: Update
-    time: "2020-08-18T22:49:49Z"
-  name: crm-proxy
-  selfLink: /apis/apps/v1/namespaces/default/deployments/crm-proxy
+            k:{"type":"Available"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Progressing"}:
+              .: {}
+              f:lastTransitionTime: {}
+              f:lastUpdateTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+          f:observedGeneration: {}
+          f:readyReplicas: {}
+          f:replicas: {}
+          f:updatedReplicas: {}
+      manager: kube-controller-manager
+      operation: Update
+      time: "2021-02-16T22:13:34Z"
+  name: proxy
+  namespace: default
+  resourceVersion: "15765"
+  selfLink: /apis/apps/v1/namespaces/default/deployments/proxy
+  uid: 71864172-88c6-4721-bd0c-dd840f45edc7
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      workload.user.cattle.io/workloadselector: deployment-default-crm-proxy
+      workload.user.cattle.io/workloadselector: deployment-default-proxy
   strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 25%
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       annotations:
-        cattle.io/timestamp: "2020-08-18T22:47:19Z"
-        field.cattle.io/ports: '[[{"containerPort":6379,"dnsName":"crm-proxy","hostPort":0,"kind":"ClusterIP","name":"6379tcp2","protocol":"TCP"},{"containerPort":9000,"dnsName":"crm-proxy-nodeport","hostPort":0,"kind":"NodePort","name":"9000tcp300001","protocol":"TCP","sourcePort":30000}]]'
+        cattle.io/timestamp: "2021-02-16T22:13:23Z"
       creationTimestamp: null
       labels:
-        workload.user.cattle.io/workloadselector: deployment-default-crm-proxy
+        workload.user.cattle.io/workloadselector: deployment-default-proxy
     spec:
       containers:
-      - env:
-        - name: private_http_port
-          value: "9000"
-        - name: redis_port
-          value: "6379"
-        - name: redis_server
-          value: redis-master
-        image: localhost:5000/crm-proxy:1597788319
-        imagePullPolicy: Always
-        name: crm-proxy
-        ports:
-        - containerPort: 6379
-          name: 6379tcp2
-          protocol: TCP
-        - containerPort: 9000
-          name: 9000tcp300001
-          protocol: TCP
-        resources: {}
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities: {}
-          privileged: false
-          readOnlyRootFilesystem: false
-          runAsNonRoot: false
-        stdin: true
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        tty: true
+        - env:
+            - name: backend_port
+              value: "30096"
+            - name: public_port
+              value: "30097"
+            - name: redis_port
+              value: "6379"
+            - name: redis_server
+              value: redis-headless
+            - name: redis_password
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: redis
+                  optional: false
+            - name: session_secret
+              valueFrom:
+                secretKeyRef:
+                  key: secret
+                  name: proxy-session
+          image: dispeakble/crm-proxy:1612122286
+          imagePullPolicy: Always
+          name: proxy
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {}
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+          stdin: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          tty: true
       dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: dockerhub
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}
+status:
+  availableReplicas: 1
+  conditions:
+    - lastTransitionTime: "2021-02-16T22:13:34Z"
+      lastUpdateTime: "2021-02-16T22:13:34Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    - lastTransitionTime: "2021-02-16T22:12:16Z"
+      lastUpdateTime: "2021-02-16T22:13:34Z"
+      message: ReplicaSet "proxy-6d467ddbdb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+  observedGeneration: 2
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
