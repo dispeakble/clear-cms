@@ -5,21 +5,21 @@ import { Transport } from '@nestjs/microservices';
 
 Logger.overrideLogger(['error']);
 // Create a logger instance
-const logger = new Logger('Main');
+const logger = new Logger('Storage');
 
 async function bootstrap() {
     try {
         const app = await NestFactory.createMicroservice(AppModule, {
             transport: Transport.REDIS,
             options: {
-                url: 'redis://' + process.env.redis_server,
-                port: +process.env.redis_port
-            },
+                url:  'redis://' + process.env.redis_server,
+                port: +process.env.redis_port,
+                password: process.env.redis_password
+            }
         });
-        //TODO AWAIT STORAGE CONFIRMATION HERE
-        await app.listen(() => console.log('storage is ready.', ...arguments));
+        await app.listen((...args) => console.log('Storage is ready.', args));
     } catch(e){
-        logger.log('Warning! Could not start event listener');
+        logger.log('Warning! Could not start Storage');
     }
 
 
