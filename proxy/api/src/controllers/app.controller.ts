@@ -145,6 +145,7 @@ export class AppController {
         try {
 
             const channel = this.portChannel(req.headers);
+            //TODO big threat here. use encrypted keys from now on
 
             if(!channel){
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
