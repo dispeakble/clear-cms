@@ -46,7 +46,7 @@ class AuthController extends Component {
                 payload: params
             }).then(response => {
                 if (response && response.email && response.email === params.email) {
-                    localStorage.setItem('admin', JSON.stringify({fullname: response.fullname}));
+                    localStorage.setItem('admin', JSON.stringify({fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email}));
                     this.props.services.ws.start();
                     this.props.history.push('/');
                     return resolve(response);

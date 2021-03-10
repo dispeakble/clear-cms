@@ -614,25 +614,6 @@ class ViewThemes extends Component {
                                                 type: "text",
                                             }}
                                         />
-
-                                        <Tooltip title="Set as default theme for all pages" arrow={true} placement="top">
-
-                                            <FormControlLabel
-                                                control={
-                                                    <Switch
-                                                        checked={this.state.data.isdefault}
-                                                        onChange={(event) => {
-                                                            let data = this.state.data;
-                                                            data.isdefault = event.target.checked;
-                                                            this.setState({data});
-                                                        }}
-                                                        name="default_theme"
-                                                        color="primary"
-                                                    />
-                                                }
-                                                label="Default Theme"
-                                            />
-                                        </Tooltip>
                                     </div>
                                 </div>
 
