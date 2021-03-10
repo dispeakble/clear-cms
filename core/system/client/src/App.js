@@ -12,7 +12,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { Helmet } from "react-helmet";
 
-//views //TODO MOVE TO CONTROLLERS
+//contollers
 import MainController from "controllers/main.controller";
 import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
 import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
@@ -20,7 +20,7 @@ import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 //styles
 import "assets/scss/clear-crm.scss";
 
-//Controllers //TODO use lazy loading
+//Controllers
 import AuthController from "controllers/auth.controller";
 import AdminProfileController from "./controllers/admin-profile.controller";
 

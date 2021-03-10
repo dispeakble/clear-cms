@@ -32,7 +32,7 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         console.log('Websocket Initialized...');
         server.on('connection', async (socket, ...rest) => {
 
-            const hasAccess = await this.sessionService.checkByCookie({cookies: socket.handshake.headers.cookie});
+            const hasAccess = await this.sessionService.checkByCookie({cookies: socket.handshake.headers.cookie.replace(/ /g,"")});
 
             if(!hasAccess){
                 socket.emit('auth', {method:"redirect", data:{location:'/view-auth'}});

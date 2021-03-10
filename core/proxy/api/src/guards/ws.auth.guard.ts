@@ -13,7 +13,7 @@ export class WsAuthGuard implements CanActivate {
             try {
                 const wsClient = context.switchToWs().getClient();
 
-                const cookies = wsClient.handshake.headers.cookie.split(';');
+                const cookies = wsClient.handshake.headers.cookie.replace(/ /g,"").split(';');
                 let cookie_id = "";
                 if (cookies.length) {
                     cookies.map((cookie_string => {

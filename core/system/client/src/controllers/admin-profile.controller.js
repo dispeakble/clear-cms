@@ -12,7 +12,6 @@ class AdminProfileController extends Component {
     control = {
         get: () => this.getData(),
         set: (params) => this.setData(params),
-        save: (params) => this.login(params)
     };
 
     async componentDidMount() {

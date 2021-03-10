@@ -59,7 +59,7 @@ export class AppController {
     }
 
     //TODO ADD POST HTTP GUARD SEPARATELY
-    @Post('/')
+    @Post('*')
     async onPost(@Res() res: Response, @Req() req: Request, @Session() session) {
 
         try {
@@ -73,7 +73,7 @@ export class AppController {
             }
 
             const payload = {
-                channel: req.body.module,
+                channel: channel,
                 api: req.body.api,
                 act: req.body.act,
                 payload: {
@@ -323,7 +323,7 @@ export class AppController {
             };
 
             if(data.payload && data.payload.useSession){
-                const sessionData = await this.sessionService.parseCookie({cookies: params.client.handshake.headers.cookie});
+                const sessionData = await this.sessionService.parseCookie({cookies: params.client.handshake.headers.cookie.replace(/ /g,"")});
 
                 if(sessionData){
                     payload.payload.client = sessionData.user;
