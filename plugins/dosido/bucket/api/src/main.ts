@@ -5,7 +5,7 @@ import { Transport } from '@nestjs/microservices';
 
 Logger.overrideLogger(['error']);
 // Create a logger instance
-const logger = new Logger('Storage');
+const logger = new Logger('Bucket');
 
 async function bootstrap() {
     try {
@@ -17,9 +17,9 @@ async function bootstrap() {
                 password: process.env.redis_password
             }
         });
-        await app.listen((...args) => console.log('Storage is ready.', args));
+        await app.listen(() => console.log('bucket is ready.', ...arguments));
     } catch(e){
-        logger.log('Warning! Could not start Storage');
+        logger.log('Warning! Could not start event listener');
     }
 
 

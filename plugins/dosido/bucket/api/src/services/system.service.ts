@@ -14,7 +14,7 @@ export class SystemService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
-            console.log("Db.systemService." + data.act + " not found");
+            console.log("Bucket.systemService." + data.act + " not found");
         }
         return null;
     }

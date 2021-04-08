@@ -7,9 +7,9 @@ import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/
 export class AppController {
 
     private config: ModuleInterface = {
-        name: 'storage',
-        version: '21.03.04',
-        description: 'Storage module',
+        name: 'bucket',
+        version: '21.04.08',
+        description: 'bucket module',
         started: new Date(),
         config: {
             restart: true,
@@ -26,6 +26,7 @@ export class AppController {
     constructor(
       @Inject('ProtocolService') private protocolService,
       @Inject('SystemService') private systemService,
+      @Inject('BucketService') private bucketService
     ) {
         this.protocolService.start().then(async () => {
             const response = await this.systemService.registerModule(this.config);
@@ -34,14 +35,14 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'storage'})
+    @MessagePattern({message: 'bucket'})
     public async onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         console.log(data);
         const resp = await this.perform(data);
         return resp;
     }
 
-    @EventPattern({event: 'storage'})
+    @EventPattern({event: 'bucket'})
     public async onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         console.log(data);
         const resp = await this.perform(data);
@@ -58,7 +59,7 @@ export class AppController {
         } catch (ex) {
             console.log(ex);
             return {
-                message: 'Storage could not find ' + data.api + ':' + data.act
+                message: 'Bucket could not find ' + data.api + ':' + data.act
             };
         }
     }
