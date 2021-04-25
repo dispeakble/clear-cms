@@ -1,9 +1,10 @@
-import {Injectable} from '@nestjs/common';
+import {Inject, Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as path from 'path';
 import * as fs from "fs";
 import {Observable} from "rxjs";
 import * as mime from "mime";
+
 
 const fsp = fs.promises;
 
@@ -14,92 +15,68 @@ export class BucketService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private methods = ["list", "write", "recycle", "permissions", "copy", "add", "move", "rename", "delete", "info", "get"];
-    private help = {
-        path: {
-            sanitize: (params) => params.path.replace(/(\.\.(\/|\\))+/g, ''),
-            realPath: (reqPath)=>path.join(this.config.mainPath, this.help.path.sanitize({path: reqPath.path}))
-        },
-        is: {
-            empty: (params) => {
-                switch (Object.prototype.toString.call(params)) {
-                    default:
-                        return undefined;
-                        break;
-                    case '[object Undefined]':
-                        return true;
-                        break;
-                    case '[object Null]':
-                        return true;
-                        break;
-                    case '[object Boolean]':
-                        return !params;
-                        break;
-                    case '[object Array]':
-                        return params.length === 0;
-                        break;
-                    case '[object Object]':
-                        return Object.keys(params).length === 0 && params.constructor === Object;
-                        break;
-                }
+    private methods = ["info", "chmod", "chown", "list", "upload", "write", "rename", "move", "copy", "paste", "rm", "mkdir", "recycle", "archive", "extract", "permissions"];
 
-            },
-            object: (params) => params instanceof Object,
-            array: (params) => params instanceof Array,
-            string: (params) => params instanceof String,
-            number: (params) => params instanceof Number,
-            boolean: (params) => params instanceof Boolean,
-            dir: (params) => {
-                try {
-                    return this.help.is.readable({path: params.path}) && fs.statSync(params.path).isDirectory();
-                } catch (err){
-                    return false;
-                }
-            },
-            readable: (params) => {
-                let fd;
-                try {
-                    fd = fs.openSync(params.path, 'r');
-                    return true;
-                } catch (err) {
-                    return false;
-                } finally {
-                    if (fd !== undefined){
-                        fs.closeSync(fd);
+    private help: any;
+
+    private tests: any = {
+        upload: async () => {
+            return new Observable((observer) => {
+                (async () => {
+                    let fileInfo;
+                    try {
+                        fileInfo = await fsp.stat(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}))
+                    } catch (err){
+
                     }
-                }
-            },
-            writeable: (params) => {
-                let fd;
-                try {
-                    fd = fs.openSync(params.path, 'wx');
-                    return true;
-                } catch (err) {
-                    return err.code === 'EEXIST';
-                } finally {
-                    if (fd !== undefined){
-                        fs.closeSync(fd);
-                    }
-                }
-            }
+
+                    const readableStream = fs.createReadStream(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}));
+                    var zipSize         = fileInfo.size;
+                    var uploadedSize    = 0; // Incremented by on('data') to keep track of the amount of data we've uploaded
+
+                    readableStream.on('data', (buffer)=>{
+                        var segmentLength   = buffer.length;
+
+                        // Increment the uploaded data counter
+                        uploadedSize        += segmentLength;
+                        observer.next(1);
+
+                        // Display the upload percentage
+                        console.log("Progress:\t",((uploadedSize/zipSize*100).toFixed(2)+"%"));
+                    })
+
+                    readableStream.on('close', (data) => {
+                        console.log('closed', data)
+                        observer.complete();
+                    })
+
+                    const obs = this.perform({
+                        act: 'upload',
+                        payload: {
+                            path: '.',
+                            name: 'ubuntu-20.04-copy.iso',
+                            readableStream: readableStream
+                        }
+                    });
+
+                    let status = 'started';
+
+                    obs.subscribe((response) => {
+                        if (response.data && response.data.length) {
+                            console.log(response.data);
+                        }
+                        status = `still in progress?`;
+                    }, (err) => {
+                        console.log(`ERROR: ${err}`);
+                        status = 'with catastrophic Exception';
+                    }, () => {
+                        console.log(`file transfer finished ${status}`)
+                    })
+                })();
+            })
         },
-        not: {
-            empty: (params) => !this.help.is.empty(params),
-            object: (params) => !this.help.is.object(params),
-            array: (params) => !this.help.is.array(params),
-            string: (params) => !this.help.is.string(params),
-            number: (params) => !this.help.is.number(params),
-            boolean: (params) => !this.help.is.boolean(params),
-            dir: (params) => !this.help.is.dir(params),
-            readable: (params) => !this.help.is.readable(params),
-            writeable: (params) => !this.help.is.writeable(params)
-        }
-
-    }
-
-    constructor() {
-        setTimeout(() => {
-            /*const obs = this.perform({
+        delete: () =>  {
+            const obs = this.perform({
                 act: 'delete',
                 payload: {
                     path: '../../../deltest'
@@ -111,14 +88,16 @@ export class BucketService {
                 console.log(error);
             }, () => {
 
-            });*/
-            /*const obs = this.perform({
+            });
+        },
+        list: () => {
+            const obs = this.perform({
                 act: 'list',
                 payload:{
                     path:'.'
                 }
-            });*/
-            /*obs.subscribe((response)=>{
+            });
+            obs.subscribe((response)=>{
                 if(response.data && response.data.length){
                     let testBuf = {};
                     response.data.forEach(el => {
@@ -143,7 +122,7 @@ export class BucketService {
                         }
                     });
                 }
-            })*/
+            })
             /*const obs = this.perform({
                 act: 'list',
                 payload:{
@@ -158,37 +137,80 @@ export class BucketService {
                     console.log(response.data)
                 }
             })*/
+        }
+    };
+
+    constructor(@Inject('HelpService') private helpService) {
+        this.help = helpService.help;
+        setTimeout(async () => {
+
+            let env = 'development';
+            /*****TESTS*******/
+
+            if(env !== 'production'){
+                this.tests.upload().obs.subscribe((response) => {
+                    if (response.data && response.data.length) {
+                        console.log('upload response');
+                    }
+
+                }, (err) => {
+                    console.log(`ERROR: ${err}`);
+                    console.log(`upload test failed`);
+                    status = 'with catastrophic Exception';
+                }, () => {
+                    console.log(`file transfer finished`)
+                })
+                //this.tests.delete();
 
 
-            const readableStream = fs.createReadStream(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}));
 
-            readableStream.on('close', (data) => {
-                console.log('closed', data)
-            })
+            }
 
-            const obs = this.perform({
-                act: 'add',
-                payload: {
-                    path: '.',
-                    name:'ubuntu-20.04-copy.iso',
-                    readableStream: readableStream
-                }
-            });
 
-            let status = 'started';
 
-            obs.subscribe((response) => {
-                if(response.data && response.data.length){
-                    console.log(response.data);
-                }
-                status = `still in progress??????`;
-            }, (err) => {
-                console.log(`ERROR: ${err}`);
-                status = 'with catastrophic Exception';
-            }, () => {
-                console.log(`file transfer finished ${status}`)
-            })
         }, 0);
+    }
+
+    info(params) {
+        return new Observable((observer) => {
+            const realPath = this.help.path.realPath(params.path);
+            try {
+                if (this.help.not.writeable({path: realPath})) {
+                    observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
+                    observer.complete();
+                    return;
+                }
+                (async () => {
+                    const stats = await fsp.stat(realPath);
+                    observer.next({
+                        type: 'object', content_type: "object", data: {
+                            size: stats.size,
+                            atime: stats.atime,
+                            mtime: stats.mtime,
+                            ctime: stats.ctime,
+                            birthtime: stats.birthtime
+                        }
+                    });
+                    observer.complete();
+                })()
+            } catch (err) {
+                console.log(err);
+                observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
+                observer.complete();
+            }
+        })
+    }
+
+    chmod(params) {
+        return new Observable((observer) => {
+
+        })
+    }
+
+    chown(params) {
+        return new Observable((observer) => {
+
+        })
     }
 
     list(params) {
@@ -196,7 +218,7 @@ export class BucketService {
 
             const realPath = this.help.path.realPath(params.path);
 
-            if(this.help.not.dir({path: realPath}) || this.help.not.writeable({path: realPath})){
+            if (this.help.not.dir({path: realPath}) || this.help.not.writeable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
                 observer.complete();
                 return;
@@ -206,7 +228,7 @@ export class BucketService {
                 (async () => {
                     const entries = fs.readdirSync(realPath, {withFileTypes: true});
                     let response = [];
-                    if(entries && entries.length){
+                    if (entries && entries.length) {
                         entries.forEach((el) => {
                             let stats = fs.statSync(path.join(realPath, el.name));
                             let entity = {
@@ -217,9 +239,9 @@ export class BucketService {
                                 stats: {
                                     size: stats.size,
                                     atime: stats.atime,
-                                    mtime:stats.mtime,
-                                    ctime:stats.ctime,
-                                    birthtime:stats.birthtime
+                                    mtime: stats.mtime,
+                                    ctime: stats.ctime,
+                                    birthtime: stats.birthtime
                                 }
                             };
                             response.push(entity);
@@ -236,33 +258,17 @@ export class BucketService {
         });
     }
 
-    write(params) {
-        //todo file
-    }
-
-    recycle(params) {
-        //todo dir or file
-    }
-
-    permissions(params) {
-        //todo dir or file
-    }
-
-    copy(params) {
-        //todo dir or file
-    }
-
-    add(params) {
+    upload(params) {
         return new Observable((observer) => {
-            const dir = this.help.path.realPath({ path: params.path });
+            const dir = this.help.path.realPath({path: params.path});
             const file = params.name;
             const realDestPath = path.join(dir, file);
             let message = "";
             try {
-                if(!(params.readableStream instanceof fs.ReadStream)){
+                if (!(params.readableStream instanceof fs.ReadStream)) {
                     throw new Error(`params.readableStream ! instanceof 'ReadStream'`)
                 }
-                if(this.help.not.readable({path: realDestPath})){
+                if (this.help.not.readable({path: realDestPath})) {
                     if (this.help.is.writeable({path: realDestPath})) {
                         fs.open(realDestPath, 'w', (err, fd) => {
                             if (err) {
@@ -278,12 +284,16 @@ export class BucketService {
                                 // use stat
 
                                 console.log('will add file')
-                                const destWriteStream = fs.createWriteStream(realDestPath, {fd:fd, autoClose: true, highWaterMark: 50 * 1024});
+                                const destWriteStream = fs.createWriteStream(realDestPath, {
+                                    fd: fd,
+                                    autoClose: true,
+                                    highWaterMark: 50 * 1024
+                                });
 
                                 let streamingFlag = false;
 
                                 let myIntId = setInterval(() => {
-                                    if(!streamingFlag){
+                                    if (!streamingFlag) {
                                         fs.close(fd, (err) => {
                                             if (err) throw err;
                                         });
@@ -302,14 +312,16 @@ export class BucketService {
                                 params.readableStream.on('data', (evt) => {
                                     streamingFlag = true;
                                     destWriteStream.write(evt, (err) => {
-                                        if(err){
+                                        if (err) {
                                             console.log(err);
                                         }
+
                                     });
                                 });
 
                                 params.readableStream.on('close', () => {
-
+                                    destWriteStream.close();
+                                    observer.complete();
                                 });
                             });
                         });
@@ -331,37 +343,8 @@ export class BucketService {
         })
     }
 
-    move(params) {
-        return new Observable((observer) => {
-            const source_name = this.help.path.sanitize({path: params.source_path});
-            const file = path.parse(source_name).base;
-
-            const realSourcePath = this.help.path.realPath(params.source_path);
-            const realDestPath = this.help.path.realPath(params.dest_path);
-
-            if (this.help.is.readable({path: realSourcePath}) && this.help.is.writeable({path: realSourcePath})){
-                //file source is readable and writeable. continue
-                if (this.help.is.readable({path: realDestPath}) && this.help.is.writeable({path: realDestPath})){
-                    //dest directory writeable. continue
-                    const dest_complete_path = path.join(realDestPath, file);
-                    if (this.help.not.readable({path: dest_complete_path}) && this.help.not.writeable({path: dest_complete_path})){
-                        //dest does not exits. continue
-                        fs.renameSync(realSourcePath, dest_complete_path);
-                        observer.next({type:'success', data: dest_complete_path})
-                    } else {
-                        observer.next({type:'error', data: null, message: `${realDestPath} already exists`})
-                    }
-
-                } else {
-                    observer.next({type:'error', data: null, message: `cannot rename ${realSourcePath} to ${realDestPath}. destination path unreachable`})
-                }
-            } else {
-                observer.next({type:'error', data: null, message: `cannot rename ${realSourcePath} to ${realDestPath}. source path unreachable`})
-            }
-
-            observer.complete();
-
-        })
+    write(params) {
+        //todo file
     }
 
     rename(params) {
@@ -370,17 +353,21 @@ export class BucketService {
             const realSourcePath = this.help.path.realPath(params.source_path);
             const realDestPath = this.help.path.realPath(params.dest_path);
 
-            if (this.help.is.readable({path: realSourcePath}) && this.help.is.writeable({path: realSourcePath})){
+            if (this.help.is.readable({path: realSourcePath}) && this.help.is.writeable({path: realSourcePath})) {
                 //file source is readable and writeable. continue
-                if (this.help.not.readable({path: realDestPath}) && this.help.not.writeable({path: realDestPath})){
+                if (this.help.not.readable({path: realDestPath}) && this.help.not.writeable({path: realDestPath})) {
                     //file destination name/path doesn't exist. continue
                     fs.renameSync(realSourcePath, realDestPath);
-                    observer.next({type:'success', data: realDestPath})
+                    observer.next({type: 'success', data: realDestPath})
                 } else {
-                    observer.next({type:'error', data: null, message: `cannot rename ${realSourcePath} to ${realDestPath}`})
+                    observer.next({
+                        type: 'error',
+                        data: null,
+                        message: `cannot rename ${realSourcePath} to ${realDestPath}`
+                    })
                 }
             } else {
-                observer.next({type:'error', data: null, message: `cannot find ${realSourcePath}`})
+                observer.next({type: 'error', data: null, message: `cannot find ${realSourcePath}`})
             }
 
             observer.complete();
@@ -388,17 +375,66 @@ export class BucketService {
         })
     }
 
-    delete(params) {
+    move(params) {
+        return new Observable((observer) => {
+            const source_name = this.help.path.sanitize({path: params.source_path});
+            const file = path.parse(source_name).base;
+
+            const realSourcePath = this.help.path.realPath(params.source_path);
+            const realDestPath = this.help.path.realPath(params.dest_path);
+
+            if (this.help.is.readable({path: realSourcePath}) && this.help.is.writeable({path: realSourcePath})) {
+                //file source is readable and writeable. continue
+                if (this.help.is.readable({path: realDestPath}) && this.help.is.writeable({path: realDestPath})) {
+                    //dest directory writeable. continue
+                    const dest_complete_path = path.join(realDestPath, file);
+                    if (this.help.not.readable({path: dest_complete_path}) && this.help.not.writeable({path: dest_complete_path})) {
+                        //dest does not exits. continue
+                        fs.renameSync(realSourcePath, dest_complete_path);
+                        observer.next({type: 'success', data: dest_complete_path})
+                    } else {
+                        observer.next({type: 'error', data: null, message: `${realDestPath} already exists`})
+                    }
+
+                } else {
+                    observer.next({
+                        type: 'error',
+                        data: null,
+                        message: `cannot rename ${realSourcePath} to ${realDestPath}. destination path unreachable`
+                    })
+                }
+            } else {
+                observer.next({
+                    type: 'error',
+                    data: null,
+                    message: `cannot rename ${realSourcePath} to ${realDestPath}. source path unreachable`
+                })
+            }
+
+            observer.complete();
+
+        })
+    }
+
+    copy(params) {
+        //todo dir or file
+    }
+
+    paste(params) {
+        //todo dir or file
+    }
+
+    rm(params) {
         return new Observable((observer) => {
             try {
                 const realPath = this.help.path.realPath(params.path);
 
                 const removeRecursively = (rem_path) => {
                     if (this.help.is.readable({path: rem_path}) && this.help.is.writeable({path: rem_path})) {
-                        if(this.help.is.dir({path: rem_path})) {
+                        if (this.help.is.dir({path: rem_path})) {
                             const entities = fs.readdirSync(rem_path);
-                            if(entities && entities.length){
-                                for(const entity of entities) {
+                            if (entities && entities.length) {
+                                for (const entity of entities) {
                                     removeRecursively(path.join(rem_path, entity));
                                 }
                             }
@@ -421,33 +457,31 @@ export class BucketService {
         })
     }
 
-    info(params) {
-        return new Observable((observer) => {
-            const realPath = this.help.path.realPath(params.path);
-            try {
-                if (this.help.not.writeable({path: realPath})) {
-                    observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
-                    observer.complete();
-                    return;
-                }
-                (async () => {
-                    const stats = await fsp.stat(realPath);
-                    observer.next({type: 'object', content_type: "object", data: {
-                        size: stats.size,
-                        atime: stats.atime,
-                        mtime: stats.mtime,
-                        ctime: stats.ctime,
-                        birthtime: stats.birthtime
-                    }});
-                    observer.complete();
-                })()
-            } catch (err) {
-                console.log(err);
-                observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
-                observer.complete();
-            }
-        })
+    mkdir(params){
+
     }
+
+    recycle(params) {
+        //todo dir or file
+    }
+
+    permissions(params) {
+        return new Promise((resolve) => {
+
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     get(params) {
         return new Observable((observer) => {
