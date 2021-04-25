@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
 APP="Rancher"
-APP_VERSION="v2.4.8"
-#old_APP_VERSION="v2.3.7"
-#APP_VERSION="v2.1.0-rc2"
-RANCHER_STORE="/home/dosidoweb/rancher/rancher-store"
+APP_VERSION="v2.5.7"
+#APP_VERSION="v2.4.15"
+APP_VERSION="v2.3.7"
+RANCHER_STORE="$HOME/rancher/rancher-store"
 
-    RANCHER_CERTIFICATE="/home/dosidoweb/rancher/ssl/cert.pem"
-	RANCHER_CERTIFICATE_KEY="/home/dosidoweb/rancher/ssl/key.pem"
-  	RACHER_CERTIFICATE_CA="/home/dosidoweb/rancher/ssl/cacerts.pem"
+#    RANCHER_CERTIFICATE="$HOME/rancher/ssl/cert.pem"
+#	RANCHER_CERTIFICATE_KEY="$HOME/rancher/ssl/key.pem"
+#  	RACHER_CERTIFICATE_CA="$HOME/rancher/ssl/cacerts.pem"
 
 if [ ! -z "$http_proxy" ] && [ -z "$HTTP_PROXY" ]; then
     HTTP_PROXY="$http_proxy"
@@ -22,26 +22,6 @@ RANCHER_IMAGE="rancher/rancher:$APP_VERSION"
 function usage() {
     echo " Usage: $0 [-h|--help] [--print-docker-images]"
 }
-
-while [ $# -ne 0 ]; do
-    arg="$1"
-    case "$arg" in
-    -h | --help)
-        #    *)
-        #usage
-        exit
-        ;;
-    --print-app-version)
-        echo "${APP_VERSION}"
-        exit
-        ;;
-    --print-docker-images)
-        echo "${RANCHER_IMAGE}"
-        exit
-        ;;
-    esac
-    shift
-done
 
 if ! [ -d "$RANCHER_STORE" ]; then
     mkdir -p "$RANCHER_STORE"
