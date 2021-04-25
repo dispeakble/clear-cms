@@ -184,7 +184,7 @@ spec:
                 secretKeyRef:
                   key: secret
                   name: proxy-session
-          image: dispeakble/crm-proxy:1612122286
+          image: dispeakble/crm-proxy:1614980935
           imagePullPolicy: Always
           name: proxy
           resources: {}
