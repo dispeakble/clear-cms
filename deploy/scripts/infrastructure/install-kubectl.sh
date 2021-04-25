@@ -13,21 +13,7 @@ function usage() {
     echo " Usage: $0 [-f|--force]"
 }
 
-while [ $# -ne 0 ]; do
-    arg="$1"
-    case "$arg" in
-    -f | --force)
-        FORCE_INSTALL=true
-        ;;
-    -h | --help)
-        usage
-        exit
-        ;;
-    esac
-    shift
-done
-
-if ! which "$APP_BIN" >/dev/null || [ $FORCE_INSTALL == true ]; then
+if ! which "$APP_BIN" >/dev/null; then
 
     if ! [ -d "${HOME}/.kube" ]; then
         mkdir -p "${HOME}/.kube"
@@ -60,6 +46,6 @@ EOF
     kubectl version --short --client
 
 else
-    echo "$APP was previously installed"
+    echo "$APP was already installed"
     kubectl version --short --client
 fi
