@@ -585,7 +585,7 @@ export class BucketService {
                 const zip = new AdmZip.default();
 
                 const source = this.help.path.realPath({path: params.path});
-                if(this.help.is.dir({path: source})){
+                if (this.help.is.dir({path: source})) {
                     zip.addLocalFolder(source);
                 } else {
                     zip.addLocalFile(source);
@@ -596,10 +596,7 @@ export class BucketService {
             } catch (err) {
                 console.log(err);
                 observer.next({
-                    type: 'error',
-                    content_length: 0,
-                    content_type: "500",
-                    message: "Internal server error"
+                    type: 'error', content_length: 0, content_type: "500", message: "Internal server error"
                 });
                 observer.complete();
             }
@@ -607,7 +604,26 @@ export class BucketService {
     }
 
     extract(params) {
+        return new Observable((observer) => {
+            try {
+                const source = this.help.path.realPath({path: params.path});
+                const destination = this.help.path.realPath({path: params.destination});
 
+                const zip = new AdmZip.default(source);
+
+                zip.extractAllTo(destination, true);
+
+                observer.next({type: 'file_list', data: "the files were extracted"});
+
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                observer.next({
+                    type: 'error', content_length: 0, content_type: "500", message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     readArchive(params) {
@@ -621,10 +637,7 @@ export class BucketService {
 
                 const fileNames = zipEntries.map((el) => {
                     return {
-                        name: el.entryName,
-                        directory: el.isDirectory,
-                        time: el.header.time,
-                        size: el.header.size
+                        name: el.entryName, directory: el.isDirectory, time: el.header.time, size: el.header.size
                     }
                 })
 
@@ -634,10 +647,7 @@ export class BucketService {
             } catch (err) {
                 console.log(err);
                 observer.next({
-                    type: 'error',
-                    content_length: 0,
-                    content_type: "500",
-                    message: "Internal server error"
+                    type: 'error', content_length: 0, content_type: "500", message: "Internal server error"
                 });
                 observer.complete();
             }
