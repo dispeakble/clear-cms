@@ -15,43 +15,42 @@ export class BucketService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private methods = ["info", "chmod", "chown", "list", "upload", "write", "rename", "move", "copy", "paste", "rm", "mkdir", "recycle", "archive", "extract", "permissions"];
+    private missing_methods = ["chmod", "chown", "write", "copy", "paste", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "upload", "read", "write", "rename", "move", "copy", "paste", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
     private tests: any = {
         permissions: (params) => {
-            return this.permissions(params);
-        },
-        printProgress: (progress) => {
+            return this.chmod(params);
+        }, printProgress: (progress) => {
             process.stdout.clearLine(0);
             process.stdout.cursorTo(0);
             process.stdout.write(progress);
-        },
-        upload: () => {
+        }, upload: () => {
             return new Observable((observer) => {
                 (async () => {
                     let fileInfo;
                     try {
                         fileInfo = await fsp.stat(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}))
-                    } catch (err){
+                    } catch (err) {
 
                     }
 
                     const readableStream = fs.createReadStream(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}));
-                    var zipSize         = fileInfo.size;
-                    var uploadedSize    = 0; // Incremented by on('data') to keep track of the amount of data we've uploaded
+                    var zipSize = fileInfo.size;
+                    var uploadedSize = 0; // Incremented by on('data') to keep track of the amount of data we've uploaded
 
-                    readableStream.on('data', (buffer)=>{
-                        var segmentLength   = buffer.length;
+                    readableStream.on('data', (buffer) => {
+                        var segmentLength = buffer.length;
 
                         // Increment the uploaded data counter
-                        uploadedSize        += segmentLength;
+                        uploadedSize += segmentLength;
                         observer.next(1);
 
                         // Display the upload percentage
                         //console.log("Progress:\t",((uploadedSize/zipSize*100).toFixed(2)+"%"));
-                        this.tests.printProgress(`Progress: ${(uploadedSize/zipSize*100).toFixed(2)}%`)
+                        this.tests.printProgress(`Progress: ${(uploadedSize / zipSize * 100).toFixed(2)}%`)
                     })
 
                     readableStream.on('close', (data) => {
@@ -60,11 +59,8 @@ export class BucketService {
                     })
 
                     const obs = this.perform({
-                        act: 'upload',
-                        payload: {
-                            path: '.',
-                            name: 'ubuntu-20.04-copy.iso',
-                            readableStream: readableStream
+                        act: 'upload', payload: {
+                            path: '.', name: 'ubuntu-20.04-copy.iso', readableStream: readableStream
                         }
                     });
 
@@ -83,11 +79,9 @@ export class BucketService {
                     })
                 })();
             })
-        },
-        delete: () =>  {
+        }, delete: () => {
             const obs = this.perform({
-                act: 'rm',
-                payload: {
+                act: 'rm', payload: {
                     path: '../../../deltest'
                 }
             });
@@ -98,23 +92,21 @@ export class BucketService {
             }, () => {
 
             });
-        },
-        list: () => {
+        }, list: () => {
             const obs = this.perform({
-                act: 'list',
-                payload:{
-                    path:'.'
+                act: 'list', payload: {
+                    path: '.'
                 }
             });
-            obs.subscribe((response)=>{
-                if(response.data && response.data.length){
+            obs.subscribe((response) => {
+                if (response.data && response.data.length) {
                     let testBuf = {};
                     response.data.forEach(el => {
                         if (el.isDirectory()) {
                             console.log(el);
                         } else if (el.isFile()) {
                             testBuf[el.name] = Buffer.from([]);
-                            this.get({path: el.name}).subscribe((fileData) => {
+                            this.read({path: el.name}).subscribe((fileData) => {
                                 if (Buffer.isBuffer(fileData)) {
                                     testBuf[el.name] = Buffer.concat([testBuf[el.name], fileData]);
                                 } else {
@@ -156,7 +148,7 @@ export class BucketService {
             let env = 'development';
             /*****TESTS*******/
 
-            if(env !== 'production'){
+            if (env !== 'production') {
 
                 /*this.tests.permissions({
                     path: 'file1.txt',
@@ -184,9 +176,7 @@ export class BucketService {
                 //this.tests.delete();
 
 
-
             }
-
 
 
         }, 0);
@@ -224,8 +214,22 @@ export class BucketService {
 
     chmod(params) {
         return new Observable((observer) => {
-
-        })
+            try {
+                const fd = fs.openSync(this.help.path.realPath({path: params.path}), 'r');
+                fs.fchmodSync(fd, params.mode);
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                const msg = "Internal server error";
+                observer.next({
+                    type: 'error',
+                    content_length: msg.length,
+                    content_type: "500",
+                    message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     chown(params) {
@@ -306,9 +310,7 @@ export class BucketService {
 
                                 console.log('will add file')
                                 const destWriteStream = fs.createWriteStream(realDestPath, {
-                                    fd: fd,
-                                    autoClose: true,
-                                    highWaterMark: 50 * 1024
+                                    fd: fd, autoClose: true, highWaterMark: 50 * 1024
                                 });
 
                                 let streamingFlag = false;
@@ -382,9 +384,7 @@ export class BucketService {
                     observer.next({type: 'success', data: realDestPath})
                 } else {
                     observer.next({
-                        type: 'error',
-                        data: null,
-                        message: `cannot rename ${realSourcePath} to ${realDestPath}`
+                        type: 'error', data: null, message: `cannot rename ${realSourcePath} to ${realDestPath}`
                     })
                 }
             } else {
@@ -478,7 +478,7 @@ export class BucketService {
         })
     }
 
-    mkdir(params){
+    mkdir(params) {
 
     }
 
@@ -486,33 +486,15 @@ export class BucketService {
         //todo dir or file
     }
 
-    permissions(params) {
-        return new Observable((observer) => {
-            try {
-                const fd = fs.openSync(this.help.path.realPath({path: params.path}), 'r');
-                fs.fchmodSync(fd, params.mode);
-                observer.complete();
-            } catch (err){
-                console.log(err);
-                observer.next({type: 'error', content_length: 0, content_type: "500", message: "Internal server error"});
-                observer.complete();
-            }
-        });
+    archive() {
+
     }
 
+    extract() {
 
+    }
 
-
-
-
-
-
-
-
-
-
-
-    get(params) {
+    read(params) {
         return new Observable((observer) => {
             const file_name = params.path;
             const realPath = this.help.path.realPath(params.path);
