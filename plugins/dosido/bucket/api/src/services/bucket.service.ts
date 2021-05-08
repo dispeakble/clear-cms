@@ -152,8 +152,8 @@ export class BucketService {
 
             if (env !== 'production') {
 
-                this.archive({
-                    source: 'trash',
+                /*this.archive({
+                    path: 'trash',
                     destination:'test.zip'
                 }).subscribe((response) => {
                     console.log(response);
@@ -161,7 +161,18 @@ export class BucketService {
                     console.log(response);
                 }, () => {
                     console.log('file was archived')
+                })*/
+
+                this.readArchive({
+                    path: 'test.zip'
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('archive contents listed')
                 })
+
 
                 /*this.recycle({
                     path: 'file1.txt'
@@ -571,9 +582,9 @@ export class BucketService {
     archive(params) {
         return new Observable((observer) => {
             try {
-                var zip = new AdmZip.default();
+                const zip = new AdmZip.default();
 
-                const source = this.help.path.realPath({path: params.source});
+                const source = this.help.path.realPath({path: params.path});
                 if(this.help.is.dir({path: source})){
                     zip.addLocalFolder(source);
                 } else {
@@ -600,7 +611,37 @@ export class BucketService {
     }
 
     readArchive(params) {
+        return new Observable((observer) => {
+            try {
+                const source = this.help.path.realPath({path: params.path});
 
+                const zip = new AdmZip.default(source);
+
+                var zipEntries = zip.getEntries();
+
+                const fileNames = zipEntries.map((el) => {
+                    return {
+                        name: el.entryName,
+                        directory: el.isDirectory,
+                        time: el.header.time,
+                        size: el.header.size
+                    }
+                })
+
+                observer.next({type: 'file_list', data: fileNames});
+
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                observer.next({
+                    type: 'error',
+                    content_length: 0,
+                    content_type: "500",
+                    message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     read(params) {
