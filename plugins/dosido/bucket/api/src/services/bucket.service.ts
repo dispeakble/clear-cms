@@ -15,8 +15,8 @@ export class BucketService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private missing_methods = ["write", "copy", "paste", "recycle", "archive", "extract"];
-    private methods = ["info", "chmod", "chown", "list", "upload", "read", "write", "rename", "move", "copy", "paste", "rm", "mkdir", "recycle", "archive", "extract"];
+    private missing_methods = ["write", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "upload", "read", "write", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
@@ -476,10 +476,6 @@ export class BucketService {
                 observer.complete();
             }
         });
-    }
-
-    paste(params) {
-        //todo dir or file
     }
 
     rm(params) {
