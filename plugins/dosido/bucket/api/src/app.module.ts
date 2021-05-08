@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
+import { BucketService } from './services/bucket.service';
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
 import {ProtocolService} from "./services/protocol.service";
 import {SystemService} from "./services/system.service";
-import {FileUtils} from "./utils/file.utils";
+import {HelpService} from "./services/help.service";
 
 
 @Module({
@@ -23,7 +24,7 @@ import {FileUtils} from "./utils/file.utils";
     ])
   ],
   controllers: [AppController],
-  providers: [ProtocolService, SystemService]
+  providers: [BucketService, ProtocolService, SystemService, HelpService]
 })
 
 export class AppModule {}

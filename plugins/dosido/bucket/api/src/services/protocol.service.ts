@@ -53,7 +53,7 @@ export class ProtocolService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
-            console.log("Db.protocolService." + data.act + " not found");
+            console.log("Bucket.protocolService." + data.act + " not found");
         }
         return null;
     }

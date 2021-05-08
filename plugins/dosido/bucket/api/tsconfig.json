@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "assets": [{"exclude": "./var"}],
     "esModuleInterop": true,
     "module": "commonjs",
     "declaration": true,
