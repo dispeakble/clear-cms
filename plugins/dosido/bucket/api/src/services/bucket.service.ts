@@ -15,8 +15,8 @@ export class BucketService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private missing_methods = ["write", "recycle", "archive", "extract"];
-    private methods = ["info", "chmod", "chown", "list", "upload", "read", "write", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private missing_methods = ["recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
@@ -313,7 +313,7 @@ export class BucketService {
                 if (!(params.readableStream instanceof fs.ReadStream)) {
                     throw new Error(`params.readableStream ! instanceof 'ReadStream'`)
                 }
-                if (this.help.not.readable({path: realDestPath})) {
+                if (this.help.not.readable({path: realDestPath}) || params.replace) {
                     if (this.help.is.writeable({path: realDestPath})) {
                         fs.open(realDestPath, 'w', (err, fd) => {
                             if (err) {
@@ -326,9 +326,7 @@ export class BucketService {
 
                             fs.fstat(fd, (err, stat) => {
                                 if (err) throw err;
-                                // use stat
 
-                                console.log('will add file')
                                 const destWriteStream = fs.createWriteStream(realDestPath, {
                                     fd: fd, autoClose: true, highWaterMark: 50 * 1024
                                 });
@@ -369,25 +367,21 @@ export class BucketService {
                             });
                         });
                     } else {
-                        message = `cannot add ${file} because the destination path needs write permissions`;
-                        throw new Error();
+                        message = `cannot upload ${file} because the destination path needs write permissions`;
+                        throw new Error(message);
                     }
                 } else {
-                    message = `cannot add ${file} because the destination path already exists`;
-                    throw new Error();
+                    message = `cannot add ${file} because the destination path already exists. Use params.replace for overwrite`;
+                    throw new Error(message);
                 }
 
             } catch (err) {
-                observer.error(message);
-                observer.next({type: 'error', message: message});
+                observer.error(err.message);
+                observer.next({type: 'error', message: err.message});
                 observer.complete();
             }
 
         })
-    }
-
-    write(params) {
-        //todo file
     }
 
     rename(params) {
