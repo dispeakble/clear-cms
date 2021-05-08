@@ -15,7 +15,7 @@ export class BucketService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private missing_methods = ["chmod", "chown", "write", "copy", "paste", "mkdir", "recycle", "archive", "extract"];
+    private missing_methods = ["write", "copy", "paste", "recycle", "archive", "extract"];
     private methods = ["info", "chmod", "chown", "list", "upload", "read", "write", "rename", "move", "copy", "paste", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
@@ -493,7 +493,22 @@ export class BucketService {
     }
 
     mkdir(params) {
-
+        return new Observable((observer) => {
+            try {
+                fs.mkdirSync(this.help.path.realPath(params.path), {recursive: params.recursive || false})
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                const msg = "Internal server error";
+                observer.next({
+                    type: 'error',
+                    content_length: msg.length,
+                    content_type: "500",
+                    message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     recycle(params) {
