@@ -15,7 +15,7 @@ export class BucketService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private missing_methods = ["recycle", "archive", "extract"];
+    private missing_methods = ["archive", "extract"];
     private methods = ["info", "chmod", "chown", "list", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
@@ -151,6 +151,16 @@ export class BucketService {
             /*****TESTS*******/
 
             if (env !== 'production') {
+
+                /*this.recycle({
+                    path: 'file1.txt'
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('file was trashed')
+                })*/
 
                 /*this.tests.copy({
                     source: 'file1.txt', destination: 'file2.txt', replace: true
@@ -522,7 +532,29 @@ export class BucketService {
     }
 
     recycle(params) {
-        //todo dir or file
+        return new Observable((observer) => {
+            try {
+                const realPath = this.help.path.realPath({path: params.path});
+                const trashPath = this.help.path.realPath({path: 'trash'});
+                if (!this.help.is.dir(trashPath)) {
+                    fs.mkdirSync(trashPath, {recursive: true})
+                }
+                const fd = fs.statSync(realPath);
+
+                if (fd) {
+                    const fileName = path.basename(realPath);
+                    fs.renameSync(realPath, path.join(trashPath, fileName))
+                }
+
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                observer.next({
+                    type: 'error', content_length: 0, content_type: "500", message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     archive() {
