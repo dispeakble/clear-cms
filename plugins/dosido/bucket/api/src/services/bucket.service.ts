@@ -11,16 +11,11 @@ const fsp = fs.promises;
 @Injectable()
 export class BucketService {
 
-    private config = {
-        mainPath: path.join(__dirname, '..', '..', '..', '/var')
-    }
-
-    private missing_methods = ["archive", "extract"];
     private methods = ["info", "chmod", "chown", "list", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
-    private tests: any = {
+    /*private tests: any = {
         copy: (params) => {
             return this.copy(params);
         }, permissions: (params) => {
@@ -126,33 +121,19 @@ export class BucketService {
                     });
                 }
             })
-            /*const obs = this.perform({
-                act: 'list',
-                payload:{
-                    path:'.'
-                }
-            });
-
-            obs.subscribe((response)=>{
-
-                if(response.data && response.data.length){
-
-                    console.log(response.data)
-                }
-            })*/
         }
-    };
+    };*/
 
     constructor(@Inject('HelpService') private helpService) {
         this.help = helpService.help;
-        setTimeout(async () => {
+        /*setTimeout(async () => {
 
             let env = 'development';
-            /*****TESTS*******/
+            /!*****TESTS*******!/
 
             if (env !== 'production') {
 
-                /*this.archive({
+                /!*this.archive({
                     path: 'trash',
                     destination:'test.zip'
                 }).subscribe((response) => {
@@ -161,9 +142,9 @@ export class BucketService {
                     console.log(response);
                 }, () => {
                     console.log('file was archived')
-                })*/
+                })*!/
 
-                this.readArchive({
+                /!*this.readArchive({
                     path: 'test.zip'
                 }).subscribe((response) => {
                     console.log(response);
@@ -171,10 +152,10 @@ export class BucketService {
                     console.log(response);
                 }, () => {
                     console.log('archive contents listed')
-                })
+                })*!/
 
 
-                /*this.recycle({
+                /!*this.recycle({
                     path: 'file1.txt'
                 }).subscribe((response) => {
                     console.log(response);
@@ -182,9 +163,9 @@ export class BucketService {
                     console.log(response);
                 }, () => {
                     console.log('file was trashed')
-                })*/
+                })*!/
 
-                /*this.tests.copy({
+                /!*this.tests.copy({
                     source: 'file1.txt', destination: 'file2.txt', replace: true
                 }).subscribe((response) => {
                     console.log(response);
@@ -192,9 +173,9 @@ export class BucketService {
                     console.log(response);
                 }, () => {
                     console.log('file was copied')
-                })*/
+                })*!/
 
-                /*this.tests.permissions({
+                /!*this.tests.permissions({
                     path: 'file1.txt',
                     mode: 0o777
                 }).subscribe((response) => {
@@ -203,9 +184,9 @@ export class BucketService {
                     console.log(response);
                 }, () => {
                     console.log('permissions set')
-                });*/
+                });*!/
 
-                /*this.tests.upload().subscribe((response) => {
+                /!*this.tests.upload().subscribe((response) => {
                     if (response.data && response.data.length) {
                         console.log('upload response');
                     }
@@ -216,14 +197,14 @@ export class BucketService {
                     status = 'with catastrophic Exception';
                 }, () => {
                     console.log(`file transfer finished`)
-                })*/
+                })*!/
                 //this.tests.delete();
 
 
             }
 
 
-        }, 0);
+        }, 0);*/
     }
 
     info(params) {
