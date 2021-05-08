@@ -29,6 +29,7 @@
     "@nestjs/microservices": "^7.3.2",
     "@nestjs/platform-express": "^7.0.0",
     "@types/mime": "^2.0.3",
+    "adm-zip": "^0.5.5",
     "nestjs-redis": "^1.2.8",
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",

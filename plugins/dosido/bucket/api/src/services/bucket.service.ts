@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as fs from "fs";
 import {Observable} from "rxjs";
 import * as mime from "mime";
-
+import * as AdmZip from "adm-zip";
 
 const fsp = fs.promises;
 
@@ -151,6 +151,17 @@ export class BucketService {
             /*****TESTS*******/
 
             if (env !== 'production') {
+
+                this.archive({
+                    source: 'trash',
+                    destination:'test.zip'
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('file was archived')
+                })
 
                 /*this.recycle({
                     path: 'file1.txt'
@@ -536,7 +547,7 @@ export class BucketService {
             try {
                 const realPath = this.help.path.realPath({path: params.path});
                 const trashPath = this.help.path.realPath({path: 'trash'});
-                if (!this.help.is.dir(trashPath)) {
+                if (!this.help.is.dir({path: trashPath})) {
                     fs.mkdirSync(trashPath, {recursive: true})
                 }
                 const fd = fs.statSync(realPath);
@@ -557,11 +568,38 @@ export class BucketService {
         });
     }
 
-    archive() {
+    archive(params) {
+        return new Observable((observer) => {
+            try {
+                var zip = new AdmZip.default();
+
+                const source = this.help.path.realPath({path: params.source});
+                if(this.help.is.dir({path: source})){
+                    zip.addLocalFolder(source);
+                } else {
+                    zip.addLocalFile(source);
+                }
+
+                zip.writeZip(this.help.path.realPath({path: params.destination}));
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                observer.next({
+                    type: 'error',
+                    content_length: 0,
+                    content_type: "500",
+                    message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
+    }
+
+    extract(params) {
 
     }
 
-    extract() {
+    readArchive(params) {
 
     }
 
