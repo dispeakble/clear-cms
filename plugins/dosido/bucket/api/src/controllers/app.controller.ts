@@ -37,27 +37,25 @@ export class AppController {
     //Microservice protocol
     @MessagePattern({message: 'bucket'})
     public async onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
-        console.log(data);
         const resp = await this.perform(data);
         return resp;
     }
 
     @EventPattern({event: 'bucket'})
     public async onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
-        console.log(data);
         const resp = await this.perform(data);
         return resp;
     }
 
     private perform(data: payloadInterface) {
         try {
-            console.log('calling ' + data.api + 'Service.perform(' + JSON.stringify({
-                act: data.act,
-                payload: data.payload
-            }) + ')');
+            // console.log('calling ' + data.api + 'Service.perform(' + JSON.stringify({
+            //     act: data.act,
+            //     payload: data.payload
+            // }) + ')');
             return this[data.api + 'Service'].perform({act: data.act, payload: data.payload}, this.config);
         } catch (ex) {
-            console.log(ex);
+            //console.log(ex);
             return {
                 message: 'Bucket could not find ' + data.api + ':' + data.act
             };
