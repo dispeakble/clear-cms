@@ -8,7 +8,7 @@ export class AppController {
 
     private config: ModuleInterface = {
         name: 'bucket',
-        version: '21.04.08',
+        version: '21.05.08',
         description: 'bucket module',
         started: new Date(),
         config: {

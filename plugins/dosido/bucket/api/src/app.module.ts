@@ -6,7 +6,7 @@ import {
 } from '@nestjs/microservices';
 import {ProtocolService} from "./services/protocol.service";
 import {SystemService} from "./services/system.service";
-import { Pool as PgPool } from "pg";
+import {HelpService} from "./services/help.service";
 
 
 @Module({
@@ -24,7 +24,7 @@ import { Pool as PgPool } from "pg";
     ])
   ],
   controllers: [AppController],
-  providers: [BucketService, ProtocolService, SystemService, {useValue: PgPool, provide:'PgPool'}]
+  providers: [BucketService, ProtocolService, SystemService, HelpService]
 })
 
 export class AppModule {}

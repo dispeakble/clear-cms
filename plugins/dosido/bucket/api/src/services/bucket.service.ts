@@ -20,7 +20,12 @@ export class BucketService {
     private help: any;
 
     private tests: any = {
-        upload: async () => {
+        printProgress: (progress) => {
+            process.stdout.clearLine(0);
+            process.stdout.cursorTo(0);
+            process.stdout.write(progress);
+        },
+        upload: () => {
             return new Observable((observer) => {
                 (async () => {
                     let fileInfo;
@@ -42,7 +47,8 @@ export class BucketService {
                         observer.next(1);
 
                         // Display the upload percentage
-                        console.log("Progress:\t",((uploadedSize/zipSize*100).toFixed(2)+"%"));
+                        //console.log("Progress:\t",((uploadedSize/zipSize*100).toFixed(2)+"%"));
+                        this.tests.printProgress(`Progress: ${(uploadedSize/zipSize*100).toFixed(2)}%`)
                     })
 
                     readableStream.on('close', (data) => {
@@ -77,7 +83,7 @@ export class BucketService {
         },
         delete: () =>  {
             const obs = this.perform({
-                act: 'delete',
+                act: 'rm',
                 payload: {
                     path: '../../../deltest'
                 }
@@ -148,7 +154,7 @@ export class BucketService {
             /*****TESTS*******/
 
             if(env !== 'production'){
-                this.tests.upload().obs.subscribe((response) => {
+                /*this.tests.upload().subscribe((response) => {
                     if (response.data && response.data.length) {
                         console.log('upload response');
                     }
@@ -159,7 +165,7 @@ export class BucketService {
                     status = 'with catastrophic Exception';
                 }, () => {
                     console.log(`file transfer finished`)
-                })
+                })*/
                 //this.tests.delete();
 
 
