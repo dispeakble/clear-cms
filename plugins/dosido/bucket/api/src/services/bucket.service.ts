@@ -20,6 +20,9 @@ export class BucketService {
     private help: any;
 
     private tests: any = {
+        permissions: (params) => {
+            return this.permissions(params);
+        },
         printProgress: (progress) => {
             process.stdout.clearLine(0);
             process.stdout.cursorTo(0);
@@ -154,6 +157,18 @@ export class BucketService {
             /*****TESTS*******/
 
             if(env !== 'production'){
+
+                /*this.tests.permissions({
+                    path: 'file1.txt',
+                    mode: 0o777
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('permissions set')
+                });*/
+
                 /*this.tests.upload().subscribe((response) => {
                     if (response.data && response.data.length) {
                         console.log('upload response');
@@ -472,8 +487,16 @@ export class BucketService {
     }
 
     permissions(params) {
-        return new Promise((resolve) => {
-
+        return new Observable((observer) => {
+            try {
+                const fd = fs.openSync(this.help.path.realPath({path: params.path}), 'r');
+                fs.fchmodSync(fd, params.mode);
+                observer.complete();
+            } catch (err){
+                console.log(err);
+                observer.next({type: 'error', content_length: 0, content_type: "500", message: "Internal server error"});
+                observer.complete();
+            }
         });
     }
 
