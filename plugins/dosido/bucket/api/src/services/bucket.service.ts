@@ -232,10 +232,24 @@ export class BucketService {
         });
     }
 
-    chown(params) {
+    chown(params) {//may we never need you :)
         return new Observable((observer) => {
-
-        })
+            try {
+                const fd = fs.openSync(this.help.path.realPath({path: params.path}), 'r');
+                fs.fchownSync(fd, params.uid, params.guid);
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                const msg = "Internal server error";
+                observer.next({
+                    type: 'error',
+                    content_length: msg.length,
+                    content_type: "500",
+                    message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     list(params) {
