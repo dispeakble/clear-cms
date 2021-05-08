@@ -21,7 +21,9 @@ export class BucketService {
     private help: any;
 
     private tests: any = {
-        permissions: (params) => {
+        copy: (params) => {
+            return this.copy(params);
+        }, permissions: (params) => {
             return this.chmod(params);
         }, printProgress: (progress) => {
             process.stdout.clearLine(0);
@@ -150,6 +152,16 @@ export class BucketService {
 
             if (env !== 'production') {
 
+                /*this.tests.copy({
+                    source: 'file1.txt', destination: 'file2.txt', replace: true
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('file was copied')
+                })*/
+
                 /*this.tests.permissions({
                     path: 'file1.txt',
                     mode: 0o777
@@ -222,10 +234,7 @@ export class BucketService {
                 console.log(err);
                 const msg = "Internal server error";
                 observer.next({
-                    type: 'error',
-                    content_length: msg.length,
-                    content_type: "500",
-                    message: "Internal server error"
+                    type: 'error', content_length: msg.length, content_type: "500", message: "Internal server error"
                 });
                 observer.complete();
             }
@@ -242,10 +251,7 @@ export class BucketService {
                 console.log(err);
                 const msg = "Internal server error";
                 observer.next({
-                    type: 'error',
-                    content_length: msg.length,
-                    content_type: "500",
-                    message: "Internal server error"
+                    type: 'error', content_length: msg.length, content_type: "500", message: "Internal server error"
                 });
                 observer.complete();
             }
@@ -452,7 +458,24 @@ export class BucketService {
     }
 
     copy(params) {
-        //todo dir or file
+
+        return new Observable((observer) => {
+            try {
+
+                const replace_dest = params.replace ? 0 : fs.constants.COPYFILE_EXCL;
+
+                fs.copyFileSync(this.help.path.realPath({path: params.source}), this.help.path.realPath({path: params.destination}), replace_dest);
+
+                observer.complete();
+            } catch (err) {
+                console.log(err);
+                const msg = "Internal server error";
+                observer.next({
+                    type: 'error', content_length: msg.length, content_type: "500", message: "Internal server error"
+                });
+                observer.complete();
+            }
+        });
     }
 
     paste(params) {
@@ -501,10 +524,7 @@ export class BucketService {
                 console.log(err);
                 const msg = "Internal server error";
                 observer.next({
-                    type: 'error',
-                    content_length: msg.length,
-                    content_type: "500",
-                    message: "Internal server error"
+                    type: 'error', content_length: msg.length, content_type: "500", message: "Internal server error"
                 });
                 observer.complete();
             }
