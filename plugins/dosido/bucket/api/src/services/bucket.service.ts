@@ -2,7 +2,7 @@ import {Inject, Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as path from 'path';
 import * as fs from "fs";
-import {Observable} from "rxjs";
+import {Observable, Subscriber} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
 
@@ -11,200 +11,15 @@ const fsp = fs.promises;
 @Injectable()
 export class BucketService {
 
-    private methods = ["info", "chmod", "chown", "list", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "upload",  "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
-    /*private tests: any = {
-        copy: (params) => {
-            return this.copy(params);
-        }, permissions: (params) => {
-            return this.chmod(params);
-        }, printProgress: (progress) => {
-            process.stdout.clearLine(0);
-            process.stdout.cursorTo(0);
-            process.stdout.write(progress);
-        }, upload: () => {
-            return new Observable((observer) => {
-                (async () => {
-                    let fileInfo;
-                    try {
-                        fileInfo = await fsp.stat(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}))
-                    } catch (err) {
+    private connections: any = {};
 
-                    }
-
-                    const readableStream = fs.createReadStream(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}));
-                    var zipSize = fileInfo.size;
-                    var uploadedSize = 0; // Incremented by on('data') to keep track of the amount of data we've uploaded
-
-                    readableStream.on('data', (buffer) => {
-                        var segmentLength = buffer.length;
-
-                        // Increment the uploaded data counter
-                        uploadedSize += segmentLength;
-                        observer.next(1);
-
-                        // Display the upload percentage
-                        //console.log("Progress:\t",((uploadedSize/zipSize*100).toFixed(2)+"%"));
-                        this.tests.printProgress(`Progress: ${(uploadedSize / zipSize * 100).toFixed(2)}%`)
-                    })
-
-                    readableStream.on('close', (data) => {
-                        console.log('closed', data)
-                        observer.complete();
-                    })
-
-                    const obs = this.perform({
-                        act: 'upload', payload: {
-                            path: '.', name: 'ubuntu-20.04-copy.iso', readableStream: readableStream
-                        }
-                    });
-
-                    let status = 'started';
-
-                    obs.subscribe((response) => {
-                        if (response.data && response.data.length) {
-                            console.log(response.data);
-                        }
-                        status = `still in progress?`;
-                    }, (err) => {
-                        console.log(`ERROR: ${err}`);
-                        status = 'with catastrophic Exception';
-                    }, () => {
-                        console.log(`file transfer finished ${status}`)
-                    })
-                })();
-            })
-        }, delete: () => {
-            const obs = this.perform({
-                act: 'rm', payload: {
-                    path: '../../../deltest'
-                }
-            });
-            obs.subscribe((response) => {
-                console.log(response)
-            }, (error) => {
-                console.log(error);
-            }, () => {
-
-            });
-        }, list: () => {
-            const obs = this.perform({
-                act: 'list', payload: {
-                    path: '.'
-                }
-            });
-            obs.subscribe((response) => {
-                if (response.data && response.data.length) {
-                    let testBuf = {};
-                    response.data.forEach(el => {
-                        if (el.isDirectory()) {
-                            console.log(el);
-                        } else if (el.isFile()) {
-                            testBuf[el.name] = Buffer.from([]);
-                            this.read({path: el.name}).subscribe((fileData) => {
-                                if (Buffer.isBuffer(fileData)) {
-                                    testBuf[el.name] = Buffer.concat([testBuf[el.name], fileData]);
-                                } else {
-                                    console.log(fileData)
-                                }
-
-                            }, (data) => {
-
-                            }, () => {
-                                if (Buffer.isBuffer(testBuf[el.name])) {
-                                    //console.log(Buffer.from(testBuf[el.name]).toString('utf-8'))
-                                }
-                            })
-                        }
-                    });
-                }
-            })
-        }
-    };*/
-
-    constructor(@Inject('HelpService') private helpService) {
+    constructor(@Inject('HelpService') private helpService,
+                @Inject('ProtocolService') private protocolService) {
         this.help = helpService.help;
-        /*setTimeout(async () => {
-
-            let env = 'development';
-            /!*****TESTS*******!/
-
-            if (env !== 'production') {
-
-                /!*this.archive({
-                    path: 'trash',
-                    destination:'test.zip'
-                }).subscribe((response) => {
-                    console.log(response);
-                }, (response) => {
-                    console.log(response);
-                }, () => {
-                    console.log('file was archived')
-                })*!/
-
-                /!*this.readArchive({
-                    path: 'test.zip'
-                }).subscribe((response) => {
-                    console.log(response);
-                }, (response) => {
-                    console.log(response);
-                }, () => {
-                    console.log('archive contents listed')
-                })*!/
-
-
-                /!*this.recycle({
-                    path: 'file1.txt'
-                }).subscribe((response) => {
-                    console.log(response);
-                }, (response) => {
-                    console.log(response);
-                }, () => {
-                    console.log('file was trashed')
-                })*!/
-
-                /!*this.tests.copy({
-                    source: 'file1.txt', destination: 'file2.txt', replace: true
-                }).subscribe((response) => {
-                    console.log(response);
-                }, (response) => {
-                    console.log(response);
-                }, () => {
-                    console.log('file was copied')
-                })*!/
-
-                /!*this.tests.permissions({
-                    path: 'file1.txt',
-                    mode: 0o777
-                }).subscribe((response) => {
-                    console.log(response);
-                }, (response) => {
-                    console.log(response);
-                }, () => {
-                    console.log('permissions set')
-                });*!/
-
-                /!*this.tests.upload().subscribe((response) => {
-                    if (response.data && response.data.length) {
-                        console.log('upload response');
-                    }
-
-                }, (err) => {
-                    console.log(`ERROR: ${err}`);
-                    console.log(`upload test failed`);
-                    status = 'with catastrophic Exception';
-                }, () => {
-                    console.log(`file transfer finished`)
-                })*!/
-                //this.tests.delete();
-
-
-            }
-
-
-        }, 0);*/
     }
 
     info(params) {
@@ -316,16 +131,35 @@ export class BucketService {
         });
     }
 
-    upload(params) {
+    uploadFiles(params) {return new Observable(subscriber => {
+        if(params.files && params.files.length){
+            let uploadPromises = [];
+            params.files.map(file => {
+                uploadPromises.push(this.upload({
+                    name: file.fieldname,
+                    path: params.data.path,
+                    data: file.buffer,
+                    replace: +params.data.replace || false
+                }).toPromise())
+            });
+            Promise.all(uploadPromises).then(() => {
+                subscriber.next('done');
+                subscriber.complete();
+            }).catch(err => {
+                subscriber.error(err);
+                subscriber.complete();
+            })
+        }
+    })}
+
+    upload(params: any) {
+        //TODO generate a unique string; send it back as a next(argument); emit back to the
         return new Observable((observer) => {
             const dir = this.help.path.realPath({path: params.path});
             const file = params.name;
             const realDestPath = path.join(dir, file);
             let message = "";
             try {
-                if (!(params.readableStream instanceof fs.ReadStream)) {
-                    throw new Error(`params.readableStream ! instanceof 'ReadStream'`)
-                }
                 if (this.help.not.readable({path: realDestPath}) || params.replace) {
                     if (this.help.is.writeable({path: realDestPath})) {
                         fs.open(realDestPath, 'w', (err, fd) => {
@@ -344,26 +178,30 @@ export class BucketService {
                                     fd: fd, autoClose: true, highWaterMark: 50 * 1024
                                 });
 
-                                let streamingFlag = false;
+                                try {
+                                    destWriteStream.write(params.data, (err) => {
+                                        if (err) {
+                                            console.log(err);
+                                        }
 
-                                let myIntId = setInterval(() => {
-                                    if (!streamingFlag) {
                                         fs.close(fd, (err) => {
                                             if (err) throw err;
+                                            observer.complete();
                                         });
-                                        clearInterval(myIntId);
-                                    }
-                                    streamingFlag = false;
-                                }, 1000);
+                                    });
+                                } catch (err) {
+                                    console.log(err);
+                                    observer.error(err);
+                                }
 
-                                params.readableStream.on('error', () => {
+                                /*params.bufferObserver.on('error', () => {
                                     fs.unlink(realDestPath, () => {
                                         fs.close(fd, (err) => {
                                             if (err) throw err;
                                         });
                                     });
                                 })
-                                params.readableStream.on('data', (evt) => {
+                                params.bufferObserver.on('data', (evt) => {
                                     streamingFlag = true;
                                     destWriteStream.write(evt, (err) => {
                                         if (err) {
@@ -373,10 +211,10 @@ export class BucketService {
                                     });
                                 });
 
-                                params.readableStream.on('close', () => {
+                                params.bufferObserver.on('close', () => {
                                     destWriteStream.close();
                                     observer.complete();
-                                });
+                                });*/
                             });
                         });
                     } else {
@@ -686,3 +524,191 @@ export class BucketService {
     }
 
 }
+/*setTimeout(async () => {
+
+            let env = 'development';
+            /!*****TESTS*******!/
+
+            if (env !== 'production') {
+
+                /!*this.archive({
+                    path: 'trash',
+                    destination:'test.zip'
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('file was archived')
+                })*!/
+
+                /!*this.readArchive({
+                    path: 'test.zip'
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('archive contents listed')
+                })*!/
+
+
+                /!*this.recycle({
+                    path: 'file1.txt'
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('file was trashed')
+                })*!/
+
+                /!*this.tests.copy({
+                    source: 'file1.txt', destination: 'file2.txt', replace: true
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('file was copied')
+                })*!/
+
+                /!*this.tests.permissions({
+                    path: 'file1.txt',
+                    mode: 0o777
+                }).subscribe((response) => {
+                    console.log(response);
+                }, (response) => {
+                    console.log(response);
+                }, () => {
+                    console.log('permissions set')
+                });*!/
+
+                /!*this.tests.upload().subscribe((response) => {
+                    if (response.data && response.data.length) {
+                        console.log('upload response');
+                    }
+
+                }, (err) => {
+                    console.log(`ERROR: ${err}`);
+                    console.log(`upload test failed`);
+                    status = 'with catastrophic Exception';
+                }, () => {
+                    console.log(`file transfer finished`)
+                })*!/
+                //this.tests.delete();
+
+
+            }
+
+
+        }, 0);*/
+
+/*private tests: any = {
+        copy: (params) => {
+            return this.copy(params);
+        }, permissions: (params) => {
+            return this.chmod(params);
+        }, printProgress: (progress) => {
+            process.stdout.clearLine(0);
+            process.stdout.cursorTo(0);
+            process.stdout.write(progress);
+        }, upload: () => {
+            return new Observable((observer) => {
+                (async () => {
+                    let fileInfo;
+                    try {
+                        fileInfo = await fsp.stat(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}))
+                    } catch (err) {
+
+                    }
+
+                    const readableStream = fs.createReadStream(this.help.path.realPath({path: 'ubuntu-20.04-desktop-amd64.iso'}));
+                    var zipSize = fileInfo.size;
+                    var uploadedSize = 0; // Incremented by on('data') to keep track of the amount of data we've uploaded
+
+                    readableStream.on('data', (buffer) => {
+                        var segmentLength = buffer.length;
+
+                        // Increment the uploaded data counter
+                        uploadedSize += segmentLength;
+                        observer.next(1);
+
+                        // Display the upload percentage
+                        //console.log("Progress:\t",((uploadedSize/zipSize*100).toFixed(2)+"%"));
+                        this.tests.printProgress(`Progress: ${(uploadedSize / zipSize * 100).toFixed(2)}%`)
+                    })
+
+                    readableStream.on('close', (data) => {
+                        console.log('closed', data)
+                        observer.complete();
+                    })
+
+                    const obs = this.perform({
+                        act: 'upload', payload: {
+                            path: '.', name: 'ubuntu-20.04-copy.iso', readableStream: readableStream
+                        }
+                    });
+
+                    let status = 'started';
+
+                    obs.subscribe((response) => {
+                        if (response.data && response.data.length) {
+                            console.log(response.data);
+                        }
+                        status = `still in progress?`;
+                    }, (err) => {
+                        console.log(`ERROR: ${err}`);
+                        status = 'with catastrophic Exception';
+                    }, () => {
+                        console.log(`file transfer finished ${status}`)
+                    })
+                })();
+            })
+        }, delete: () => {
+            const obs = this.perform({
+                act: 'rm', payload: {
+                    path: '../../../deltest'
+                }
+            });
+            obs.subscribe((response) => {
+                console.log(response)
+            }, (error) => {
+                console.log(error);
+            }, () => {
+
+            });
+        }, list: () => {
+            const obs = this.perform({
+                act: 'list', payload: {
+                    path: '.'
+                }
+            });
+            obs.subscribe((response) => {
+                if (response.data && response.data.length) {
+                    let testBuf = {};
+                    response.data.forEach(el => {
+                        if (el.isDirectory()) {
+                            console.log(el);
+                        } else if (el.isFile()) {
+                            testBuf[el.name] = Buffer.from([]);
+                            this.read({path: el.name}).subscribe((fileData) => {
+                                if (Buffer.isBuffer(fileData)) {
+                                    testBuf[el.name] = Buffer.concat([testBuf[el.name], fileData]);
+                                } else {
+                                    console.log(fileData)
+                                }
+
+                            }, (data) => {
+
+                            }, () => {
+                                if (Buffer.isBuffer(testBuf[el.name])) {
+                                    //console.log(Buffer.from(testBuf[el.name]).toString('utf-8'))
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+        }
+    };*/

@@ -1,26 +1,23 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './controllers/app.controller';
-import { AppService } from './services/app.service';
+import {HttpModule, Module} from '@nestjs/common';
+import {AppController} from './controllers/app.controller';
+import {DevService} from './services/dev.service';
 import {
-  ClientsModule, Transport,
+    ClientsModule, Transport
 } from '@nestjs/microservices';
 import {ProtocolService} from "./services/protocol.service";
+import {SystemService} from "./services/system.service";
+import {HelpService} from "./services/help.service";
+
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'REDIS_SERVICE',
-        transport: Transport.REDIS,
-        options: {
-          url: 'redis://' + process.env.redis_server,
-          port: +process.env.redis_port
+    imports: [HttpModule, ClientsModule.register([{
+        name: 'REDIS_SERVICE', transport: Transport.REDIS, options: {
+            url: 'redis://' + process.env.redis_server,
+            port: +process.env.redis_port,
+            password: process.env.redis_password
         }
-      },
-    ])
-  ],
-  controllers: [AppController],
-  providers: [AppService, ProtocolService]
+    }])], controllers: [AppController], providers: [DevService, ProtocolService, SystemService, HelpService]
 })
 
-export class AppModule {}
+export class AppModule {
+}

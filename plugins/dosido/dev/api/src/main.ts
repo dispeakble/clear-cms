@@ -5,16 +5,17 @@ import { Transport } from '@nestjs/microservices';
 
 Logger.overrideLogger(['error']);
 // Create a logger instance
-const logger = new Logger('Main');
+const logger = new Logger('Dev');
 
 async function bootstrap() {
     try {
         const app = await NestFactory.createMicroservice(AppModule, {
             transport: Transport.REDIS,
             options: {
-                url: 'redis://' + process.env.redis_server,
-                port: +process.env.redis_port
-            },
+                url:  'redis://' + process.env.redis_server,
+                port: +process.env.redis_port,
+                password: process.env.redis_password
+            }
         });
         await app.listen(() => console.log('dev is ready.', ...arguments));
     } catch(e){

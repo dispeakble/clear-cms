@@ -103,7 +103,7 @@ export class HelpService {
         if (this.methods.includes(data.act)) {
             return this.help[data.act](data.payload, config);
         } else {
-            console.log("Bucket.helpService." + data.act + " not found");
+            console.log("Dev.helpService." + data.act + " not found");
         }
         return null;
     }
