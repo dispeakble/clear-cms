@@ -1,58 +1,58 @@
-import {ClientProxy, Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
+import {ClientProxy} from "@nestjs/microservices";
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {Observable, Subscriber} from "rxjs";
 
 
 @Injectable()
 export class ProtocolService {
 
-    private methods = ["get"];
+    //exposed methods
+    private methods = ["sendMessage", "emitMessage", "ping", "setValue", "getValue"];
 
-    constructor(
-        @Inject('REDIS_SERVICE') private redisService: ClientProxy
-    ) {
-    }
-
-
+    @Inject('REDIS_SERVICE') private redisService: ClientProxy;
 
     public start() {
         return this.redisService.connect();
     }
 
-    public sendMessage(data: any){
-        return this.redisService.send({message: data.channel}, data.payload).toPromise();
-    }
+    public sendMessage(data: payloadInterface): Observable<any> {
 
-    public emitEvent(data: any){
-        return this.redisService.emit(data.channel, data.payload);
-    }
-
-    public registerModule(data: ModuleInterface) {
         let payload: payloadInterface = {
-            api: 'module',
-            act: 'register',
-            channel: 'dev',
-            config: {
-                restart: true,
-                stop: false
-            },
-            payload: data
+            channel: data.channel,
+            api: data.api,
+            act: data.act,
+            payload: data.payload || ""
         };
-        return this.redisService.send({message: 'hub'}, payload).toPromise();
+
+        return this.redisService.send({message: data.channel}, payload);
+
     }
 
-    private get(data: any){
-        return new Promise((resolve) => {
-            console.log(data);
-            resolve('Hello World')
-        })
+    public emitMessage(data: any) {
+
+        let payload: payloadInterface = {
+            api: data.module,
+            act: data.act,
+            channel: data.channel,
+            payload: data.payload || ""
+        };
+
+        return this.redisService.emit({message: data.channel}, payload);
+
     }
 
-    public perform(data: any) {
+    public ping(data: any, config: ModuleInterface){
+        return {
+            name: config.name,
+            version: config.version
+        };
+    }
+
+    public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
-            //console.log('ProtocolService.' + data.act + '(' + JSON.stringify(data.payload) + ')');
-            return this[data.act](data.payload);
+            return this[data.act](data.payload, config);
         } else {
             console.log("Dev.protocolService." + data.act + " not found");
         }

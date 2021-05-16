@@ -1,16 +1,15 @@
-import {Controller, OnApplicationBootstrap} from '@nestjs/common';
-import {ProtocolService} from '../services/protocol.service';
-import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Controller, Inject} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 
 @Controller()
 export class AppController {
 
     private config: ModuleInterface = {
         name: 'dev',
-        version: '20.07.19',
-        description: 'dev test',
+        version: '21.05.08',
+        description: 'dev module',
         started: new Date(),
         config: {
             restart: true,
@@ -18,117 +17,50 @@ export class AppController {
         },
         dependencies: [
             {
-                name: 'storage',
-                version: 'latest'
-            }, {
-                name: 'system',
-                version: 'latest'
-            }, {
                 name: 'hub',
                 version: 'latest'
             }
         ],
     };
 
-    constructor(private readonly protocolService: ProtocolService) {
-
+    constructor(
+      @Inject('ProtocolService') private protocolService,
+      @Inject('SystemService') private systemService,
+      @Inject('DevService') private devService
+    ) {
+        this.protocolService.start().then(() => {
+            this.systemService.registerModule(this.config).subscribe((response) => {
+                console.log(response);
+            }, (err) => {
+                console.error(err);
+            }, () => {
+                console.log('complete');
+            });
+        })
     }
 
+    //Microservice protocol
     @MessagePattern({message: 'dev'})
-    public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-        const resp = await this.perform(data);
-        return resp;
+    public onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
+        return this.perform(data);
     }
 
     @EventPattern({event: 'dev'})
-    public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-
-
-        const resp = await this.perform(data);
-        return resp;
+    public onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
+        return this.perform(data);
     }
 
-    async onApplicationBootstrap() {
-        await this.protocolService.start();
-        await this.registerModule({after: 0});
+    private perform(data: payloadInterface) {
         try {
-            await this.protocolService.sendMessage({//TODO ask HUB for this. Hub must check mappings.
-                channel: 'proxy',
-                payload: {api: 'protocol', act: 'mapRequest', payload: {channel: 'dev', type: 'get'}}
-            })
-
-            /*const t = await this.protocolService.sendMessage({
-                channel: 'storage',
-                payload: {
-                    api:'volume',
-                    act: 'writefile',
-                    payload:{
-                        name:'test.txt',
-                        content: 'lorem ipsum'
-                    }
-                }
-            })
-
-            console.log(t);*/
-
-        } catch (ex){
-            console.log(ex);
-        }
-
-    }
-
-    private registerModule(params) {
-        return new Promise((resolve_register) => {
-            setTimeout(async () => {
-                try {
-                    const moduleResponse = await this.protocolService.registerModule(this.config);
-
-                    switch (moduleResponse.status) {
-                        case 'failed':
-                            console.log(moduleResponse);
-                            switch (moduleResponse.resolution.action) {
-                                case 'retry':
-                                    await this.registerModule({
-                                        after: moduleResponse.resolution.after
-                                    });
-                                    resolve_register(true);
-                                    break;
-                                case 'restart':
-                                    console.log(JSON.stringify(moduleResponse));
-                                    console.log('DEV module cannot be registered');
-                                    process.exit;
-
-                                    break;
-                                default:
-                                    console.log(JSON.stringify(moduleResponse));
-                                    throw new Error('DEV module cannot be registered');
-
-                                    break;
-                            }
-                            break;
-                        case 'registered':
-                            resolve_register(true);
-                            console.log('Dev module registered');
-                            break;
-                    }
-
-                } catch (ex) {
-                    resolve_register(true);
-                    console.log(ex);
-                }
-
-            }, params.after * 1000);
-        });
-
-    }
-
-    private perform(data: payloadInterface){
-        try {
-            return this[data.api + 'Service'].perform(data);
+            // console.log('calling ' + data.api + 'Service.perform(' + JSON.stringify({
+            //     act: data.act,
+            //     payload: data.payload
+            // }) + ')');
+            return this[data.api + 'Service'].perform({act: data.act, payload: data.payload}, this.config);
         } catch (ex) {
-            console.log(ex);
+            //console.log(ex);
             return {
-                message:'Could not find ' + data.api + ':' + data.act
+                message: 'Dev could not find ' + data.api + ':' + data.act
             };
         }
     }

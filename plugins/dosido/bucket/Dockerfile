@@ -6,7 +6,6 @@ RUN mkdir -p /usr/src/api
 WORKDIR /usr/src/api
 
 COPY ./api/package*.json /usr/src/api/
-COPY ./api/yarn.lock /usr/src/api/yarn.lock
 
 RUN npm install
 

@@ -10,9 +10,17 @@ import { Session } from './modules/session.module';
 import * as redisStore from 'cache-manager-redis-store';
 import {SessionService} from "./services/session.service";
 import {ConfigService} from "./services/config.service";
+import {BucketService} from "./services/bucket.service";
+import {
+    GotModule,
+    GotModuleOptions
+} from '@t00nday/nestjs-got';
 
 @Module({
     imports: [
+        GotModule.registerAsync({
+            useFactory: (): GotModuleOptions => ({}),
+        }),
         CacheModule.register({
             store: redisStore,
             url: 'redis://' + process.env.redis_server,
@@ -33,7 +41,7 @@ import {ConfigService} from "./services/config.service";
         ])
     ],
     controllers: [AppController, ProtocolController],
-    providers: [AppService, ProtocolService, WsGateway, SystemService, SessionService, ConfigService]
+    providers: [AppService, ProtocolService, WsGateway, SystemService, SessionService, ConfigService, BucketService]
 })
 
 export class AppModule {

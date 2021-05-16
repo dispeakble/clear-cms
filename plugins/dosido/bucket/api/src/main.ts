@@ -1,27 +1,38 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
+import {NestFactory} from '@nestjs/core';
+import {AppModule} from './app.module';
+import {Transport} from "@nestjs/microservices";
 
-Logger.overrideLogger(['error']);
-// Create a logger instance
-const logger = new Logger('Bucket');
+const init = async () => {
 
-async function bootstrap() {
-    try {
-        const app = await NestFactory.createMicroservice(AppModule, {
-            transport: Transport.REDIS,
-            options: {
-                url:  'redis://' + process.env.redis_server,
-                port: +process.env.redis_port,
-                password: process.env.redis_password
-            }
-        });
-        await app.listen(() => console.log('bucket is ready.', ...arguments));
-    } catch(e){
-        logger.log('Warning! Could not start event listener');
-    }
+    let app = await NestFactory.create(
+        AppModule
+    );
 
+    //left here for example: app.useWebSocketAdapter(new SessionAdapter(app));
+
+    await app.init();
+
+    await app.connectMicroservice({
+        transport: Transport.REDIS,
+        options: {
+            return_buffers: true,
+            url: 'redis://' + process.env.redis_server,
+            port: +process.env.redis_port,
+            password: process.env.redis_password
+        }
+    });
+
+    await app.startAllMicroservicesAsync();
+    console.log('init done');
+
+    app.listen(+process.env.backend_port, '0.0.0.0');
+
+    console.log('Bucket module started');
 
 }
-bootstrap();
+
+try {
+    init();
+} catch (e) {
+    console.log('Warning! Could not start the bucket module');
+}
