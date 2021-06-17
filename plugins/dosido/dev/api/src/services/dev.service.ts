@@ -3,6 +3,9 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable, Subscriber} from "rxjs";
 import * as fs from "fs";
 const fsp = fs.promises;
+import {GotService} from "@t00nday/nestjs-got";
+import FormData from "form-data";
+import path from "path";
 
 @Injectable()
 export class DevService {
@@ -11,13 +14,80 @@ export class DevService {
 
     private help: any;
 
-    constructor(@Inject('HelpService') private helpService, @Inject('ProtocolService') private protocolService, private httpService: HttpService) {
+    private _id: number;
+
+    constructor(@Inject('HelpService') private helpService, @Inject('ProtocolService') private protocolService, private readonly gotService: GotService) {
         //this.help = helpService.help;
         this.postUpload()
+
+    }
+
+    testRandomness(params){
+        console.log(`hi from ${this._id}`);
     }
 
     postUpload(){
-        this.httpService.post('http://127.0.0.1:8686', {file:'hi'})
+        FormData.MAX_FILE_SIZE = Infinity
+        const form = new FormData();
+
+        form.maxDataSize = Infinity;
+        form.append("api", "bucketService");
+        form.append("act", "uploadFiles");
+        form.append("path", "/superSecret/");
+        form.append("replace", "1");
+
+        const rs1 = fs.createReadStream(path.join(__dirname, '..', '..', '..', 'var', 'nvidia_drivers.exe'), {
+            autoClose: true
+        })
+        const rs2 = fs.createReadStream(path.join(__dirname, '..', '..', '..', 'var', 'nvidia_drivers.exe'), {
+            autoClose: true
+        })
+
+        form.append('nvidia_drivers1.exe', rs1);
+        form.append('nvidia_drivers2.exe', rs2);
+        //form.append('nvidia_drivers2.exe', rs);
+        //form.append('nvidia_drivers3.exe', rs);
+
+        try {
+
+            rs1.on("ready", () => {
+                console.log('1 start')
+            })
+
+            rs1.on("data", () => {
+                //console.log('1')
+            });
+
+            rs1.on("end", () => {
+                console.log('1 end')
+            });
+
+            rs2.on("ready", () => {
+                console.log('2 start')
+            })
+
+            rs2.on("data", () => {
+                //console.log('2')
+            });
+
+            rs2.on("end", () => {
+                console.log('2 end')
+            });
+
+            const bucketObserver = this.gotService.post(`http://localhost:9696`, {
+                body: form
+            });
+
+            bucketObserver.subscribe((data) => {
+                //console.log(data);
+            }, (err) => {
+                console.log(err);
+            }, () => {
+                console.log('test upload complete')
+            });
+        } catch (err) {
+            console.log(err.message);
+        }
     }
 
     printProgress(progress) {

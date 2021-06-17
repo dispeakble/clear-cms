@@ -4,45 +4,57 @@ import {GotService} from "@t00nday/nestjs-got";
 import FormData from "form-data";
 import * as fs from "fs";
 import path from "path";
+import {Observable} from "rxjs";
+
 
 
 @Injectable()
 export class BucketService {
 
-    private bucketHost = process.env.bucket_server;
+    private bucketHost = process.env.bucket_server;//this is
 
-    constructor(private readonly gotService: GotService) {
-        this.tests();
+    constructor(private readonly gotService: GotService, @Inject('REDIS_SERVICE') private readonly protocolService) {
+        //this.tests();
     }
 
     //exposed methods
-    private methods = [];
+    private methods: string[] = [
+        "info",
+        "chmod",
+        "chown",
+        "list",
+        "uploadFiles",
+        "read",
+        "rename",
+        "move",
+        "copy",
+        "rm",
+        "mkdir",
+        "recycle",
+        "archive",
+        "extract"
+    ];
 
-    private async tests(){
+    private async tests() {
         try {
-            this.upload({
-                files: [/*{
-                    name: 'test1.txt',
+
+            const uploadObserver = this.upload({
+                replace:"1",
+                files: [{
+                    name: 'nvidia_drivers.exe',
                     path: '/',
-                    readStream: fs.createReadStream(path.join(__dirname, '..', '..', 'var', 'test.txt'), {
+                    readStream: fs.createReadStream(path.join(__dirname, '..', '..', 'var', 'nvidia_drivers.exe'), {
                         autoClose: true,
-                        highWaterMark: 52428800
-                    })
-                }, {
-                    name: 'test2.txt',
-                    path: '/',
-                    readStream: fs.createReadStream(path.join(__dirname, '..', '..', 'var', 'test.txt'), {
-                        autoClose: true,
-                        highWaterMark: 52428800
-                    })
-                }, */{
-                    name: 'test3.txt',
-                    path: '/',
-                    readStream: fs.createReadStream(path.join(__dirname, '..', '..', 'var', 'test.txt'), {
-                        autoClose: true,
-                        highWaterMark: 52428800
+                        highWaterMark: 128 * 1024
                     })
                 }]
+            });
+            uploadObserver.subscribe((data) => {
+                console.log(data);
+            }, err => {
+                console.log(err);
+            }, () => {
+                console.log('upload complete');
             })
 
         } catch (err) {
@@ -55,33 +67,51 @@ export class BucketService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
-            console.log("BucketService.protocolService." + data.act + " not found");
+            console.log("Proxy.bucketService." + data.act + " not found");
         }
         return null;
     }
 
-    private start() {
-
-    }
-
     private upload(params) {
-        const form = new FormData();
-        form.append("act", "uploadFiles");
-        form.append("path", "/");
-        form.append("replace", "1");
-        if(params && params.files && params.files.length){
-            params.files.map(file => {
-                form.append(file.name, file.readStream);
-                return file;
-            });
-        }
-        this.gotService.post(`${this.bucketHost}`, {
-            body: form
+        return new Observable(subscriber => {
+            const form = new FormData();
+            form.append("act", "uploadFiles");
+            form.append("path", "/");
+            form.append("replace", +params.replace || "0");
+            if(params && params.files && params.files.length) {
+                params.files.map(file => {
+                    form.append(file.name, file.readStream);
+                    return file;
+                });
+            }
+
+            try {
+                const bucketObserver = this.gotService.post(`${this.bucketHost}`, {
+                    body: form,
+                    responseType: 'json'
+                });
+
+                bucketObserver.subscribe((data) => {
+                    subscriber.next(data.body);
+                }, (err) => {
+                    subscriber.error(err);
+                }, () => {
+                    subscriber.complete();
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+
+
         });
+
     }
 
-    private remove(params) {
-
+    private remove(params) {//includes (empty) directories, files, recursive
+        return new Observable(subscriber => {
+            this.protocolService.sendMessage();
+            subscriber.next('hi')
+        });
     }
 
     private copy(params) {
@@ -95,5 +125,6 @@ export class BucketService {
     private mkdir(params){
 
     }
+
 
 }

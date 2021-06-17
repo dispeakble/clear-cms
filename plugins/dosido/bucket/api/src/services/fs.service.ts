@@ -5,20 +5,18 @@ import * as fs from "fs";
 import {Observable, Subscriber} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
+import { Readable } from 'stream';
 
 const fsp = fs.promises;
 
 @Injectable()
-export class BucketService {
+export class FsService {
 
-    private methods = ["info", "chmod", "chown", "list", "upload",  "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
-    private connections: any = {};
-
-    constructor(@Inject('HelpService') private helpService,
-                @Inject('ProtocolService') private protocolService) {
+    constructor(@Inject('HelpService') private helpService) {
         this.help = helpService.help;
     }
 
@@ -91,7 +89,7 @@ export class BucketService {
 
             const realPath = this.help.path.realPath(params.path);
 
-            if (this.help.not.dir({path: realPath}) || this.help.not.writeable({path: realPath})) {
+            if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
                 observer.complete();
                 return;
@@ -134,97 +132,95 @@ export class BucketService {
     uploadFiles(params) {return new Observable(subscriber => {
         if(params.files && params.files.length){
             let uploadPromises = [];
+            let uploadObs = [];
+            let resolve_upload;
             params.files.map(file => {
-                uploadPromises.push(this.upload({
+                const readable = new Readable()
+                readable._read = () => {} // _read is required but you can noop it
+                readable.push(file.buffer)
+                readable.push(null)
+                uploadObs[file.fieldname] = this.writeFile({
                     name: file.fieldname,
                     path: params.data.path,
-                    data: file.buffer,
+                    readable: readable,
                     replace: +params.data.replace || false
-                }).toPromise())
+                });
+                uploadPromises.push(new Promise((resolve) => {
+                    resolve_upload = resolve;
+                }))
+                uploadObs[file.fieldname].subscribe((data) => {
+
+                }, (err) => {
+                    resolve_upload(err);
+                }, () => {
+                    resolve_upload();
+                });
             });
-            Promise.all(uploadPromises).then(() => {
-                subscriber.next('done');
-                subscriber.complete();
+            Promise.all(uploadPromises).then((data: any[]) => {
+                subscriber.next({message: 'upload complete', data: data});
             }).catch(err => {
-                subscriber.error(err);
+                subscriber.error({message: err});
+            }).finally(() => {
                 subscriber.complete();
             })
         }
     })}
 
-    upload(params: any) {
-        //TODO generate a unique string; send it back as a next(argument); emit back to the
+    private writeFile(params: any): Observable<any> {
         return new Observable((observer) => {
             const dir = this.help.path.realPath({path: params.path});
             const file = params.name;
             const realDestPath = path.join(dir, file);
             let message = "";
             try {
-                if (this.help.not.readable({path: realDestPath}) || params.replace) {
-                    if (this.help.is.writeable({path: realDestPath})) {
-                        fs.open(realDestPath, 'w', (err, fd) => {
-                            if (err) {
-                                message = JSON.stringify(err);
+                if (this.help.is.readable({path: realDestPath}) && !params.replace) {
+                    throw new Error(`cannot upload ${file} because the destination path already exists. Use params.replace for overwrite`);
+                }
+                if (this.help.not.writeable({path: realDestPath})) {
+                    throw new Error(`cannot upload ${file} because the destination path needs write permissions`);
+                }
+
+                fs.open(realDestPath, 'w', (err, fd) => {
+                    if (err) {
+                        message = JSON.stringify(err);
+                        fs.close(fd, (err) => {
+                            if (err) throw err;
+                        });
+                        throw new Error(JSON.stringify(err));
+                    }
+
+                    fs.fstat(fd, (err, stat) => {
+                        if (err) throw err;
+
+                        const destWriteStream = fs.createWriteStream(realDestPath, {
+                            fd: fd, autoClose: true, highWaterMark: 50 * 1024
+                        });
+
+                        try {
+                            params.readable.pipe(destWriteStream)
+
+                            params.readable.on("error", (err) => {
                                 fs.close(fd, (err) => {
                                     if (err) throw err;
                                 });
-                                throw new Error(JSON.stringify(err));
-                            }
+                                observer.error(err);
+                                observer.complete();
+                            })
 
-                            fs.fstat(fd, (err, stat) => {
-                                if (err) throw err;
+                            params.readable.on("data", () => {
+                                observer.next('.');
+                            })
 
-                                const destWriteStream = fs.createWriteStream(realDestPath, {
-                                    fd: fd, autoClose: true, highWaterMark: 50 * 1024
-                                });
+                            params.readable.on("end", () => {
+                                observer.complete();
+                            })
 
-                                try {
-                                    destWriteStream.write(params.data, (err) => {
-                                        if (err) {
-                                            console.log(err);
-                                        }
-
-                                        fs.close(fd, (err) => {
-                                            if (err) throw err;
-                                            observer.complete();
-                                        });
-                                    });
-                                } catch (err) {
-                                    console.log(err);
-                                    observer.error(err);
-                                }
-
-                                /*params.bufferObserver.on('error', () => {
-                                    fs.unlink(realDestPath, () => {
-                                        fs.close(fd, (err) => {
-                                            if (err) throw err;
-                                        });
-                                    });
-                                })
-                                params.bufferObserver.on('data', (evt) => {
-                                    streamingFlag = true;
-                                    destWriteStream.write(evt, (err) => {
-                                        if (err) {
-                                            console.log(err);
-                                        }
-
-                                    });
-                                });
-
-                                params.bufferObserver.on('close', () => {
-                                    destWriteStream.close();
-                                    observer.complete();
-                                });*/
-                            });
-                        });
-                    } else {
-                        message = `cannot upload ${file} because the destination path needs write permissions`;
-                        throw new Error(message);
-                    }
-                } else {
-                    message = `cannot add ${file} because the destination path already exists. Use params.replace for overwrite`;
-                    throw new Error(message);
-                }
+                        } catch (err) {
+                            console.log(err);
+                            observer.error(err);
+                        }
+                    });
+                });
 
             } catch (err) {
                 observer.error(err.message);
