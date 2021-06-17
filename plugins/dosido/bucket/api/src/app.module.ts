@@ -1,6 +1,6 @@
 import {HttpModule, Module} from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
-import { BucketService } from './services/bucket.service';
+import { FsService } from './services/fs.service';
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -26,7 +26,7 @@ import {HelpService} from "./services/help.service";
     ])
   ],
   controllers: [AppController],
-  providers: [BucketService, ProtocolService, SystemService, HelpService]
+  providers: [FsService, ProtocolService, SystemService, HelpService]
 })
 
 export class AppModule {}

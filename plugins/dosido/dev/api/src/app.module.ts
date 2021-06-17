@@ -7,16 +7,26 @@ import {
 import {ProtocolService} from "./services/protocol.service";
 import {SystemService} from "./services/system.service";
 import {HelpService} from "./services/help.service";
+import {
+    GotModule,
+    GotModuleOptions
+} from '@t00nday/nestjs-got';
 
 
 @Module({
-    imports: [HttpModule, ClientsModule.register([{
+    imports: [
+        GotModule.registerAsync({
+            useFactory: (): GotModuleOptions => ({}),
+        }),
+        HttpModule, ClientsModule.register([{
         name: 'REDIS_SERVICE', transport: Transport.REDIS, options: {
             url: 'redis://' + process.env.redis_server,
             port: +process.env.redis_port,
             password: process.env.redis_password
         }
-    }])], controllers: [AppController], providers: [DevService, ProtocolService, SystemService, HelpService]
+    }])],
+    controllers: [AppController],
+    providers: [DevService, ProtocolService, SystemService, HelpService]
 })
 
 export class AppModule {

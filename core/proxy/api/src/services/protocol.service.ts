@@ -3,16 +3,24 @@ import {Inject, Injectable, CACHE_MANAGER} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Cache} from "cache-manager";
-
+import {Observable} from "rxjs";
+import {EventEmitter2} from "@nestjs/event-emitter";
+import {MainEvent} from "../events/Main.event";
 
 @Injectable()
 export class ProtocolService {
 
     //exposed methods
-    private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "getMeta", "ping", "setValue", "getValue", "checkAccess"];
+    private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "getMeta", "ping", "setValue", "getValue",
+        "checkAccess", "requestHandshake", "confirmHandshake"];
+
+    private handhakes = {};
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
     @Inject(CACHE_MANAGER) private cacheManager: Cache;
+
+    constructor() {
+    }
 
     public start() {
         return this.redisService.connect();
@@ -24,10 +32,11 @@ export class ProtocolService {
             channel: data.channel,
             api: data.api,
             act: data.act,
+            type: data.type,
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: data.channel}, payload);
 
     }
 
@@ -40,7 +49,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload).toPromise();
+        return this.redisService.emit({message: data.channel}, payload);
 
     }
 

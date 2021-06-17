@@ -3,5 +3,6 @@ export interface payloadInterface{
     act: string;
     channel: string;
     config?: any;
+    type?: string;
     payload?: any;
 }

@@ -3,15 +3,16 @@ import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
+import {Observable} from "rxjs";
 
 
 @Injectable()
 export class ProtocolService {
 
-    private methods = ["start", "sendMessage", "emitMessage", "registerModule", "ping"];
+    private methods = ["start", "sendMessage", "emitMessage", "registerModule", "ping", "startHandshake", "requestHandshake", "requestHandshake", "confirmHandshake"];
 
     constructor(
-        @Inject('REDIS_SERVICE') private redisService: ClientProxy
+        @Inject('REDIS_SERVICE') private redisService: ClientProxy,
     ) {
     }
 
@@ -28,7 +29,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: data.channel}, payload);
     }
 
     public emitMessage(data: any) {
@@ -40,7 +41,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload).toPromise();
+        return this.redisService.emit({message: data.channel}, payload);
 
     }
 
@@ -61,12 +62,23 @@ export class ProtocolService {
         };
     }
 
-    public perform(data: any, config?: ModuleInterface) {
-        if (this.methods.includes(data.act)) {
-            return this[data.act](data.payload, config);
+
+
+    public perform(params: any, config?: ModuleInterface) {
+        if(params.api){
+            try {
+                return this[params.api + 'Service'].perform(params);
+            } catch (ex) {
+                return 'Could not find ' + params.api + ':' + params.act;
+            }
         } else {
-            console.log("System.httpService." + data.act + " not found");
+            if (this.methods.includes(params.act)) {
+                return this[params.act](params.payload, config);
+            } else {
+                console.log("System.httpService." + params.act + " not found");
+            }
         }
+
         return null;
     }
 
