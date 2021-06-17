@@ -1,7 +1,6 @@
 #
 # Cluster Config
 #
-answers: {}
 docker_root_dir: /var/lib/docker
 enable_cluster_alerting: false
 enable_cluster_monitoring: false
@@ -15,23 +14,12 @@ name: cms-cluster
 rancher_kubernetes_engine_config:
   addon_job_timeout: 30
   authentication:
-    strategy: x509|webhook
-  authorization: {}
-  bastion_host:
-    ssh_agent_auth: false
-  cloud_provider: {}
+    strategy: x509
   dns:
-    linear_autoscaler_params: {}
-    node_selector: null
     nodelocal:
       ip_address: ''
       node_selector: null
       update_strategy: {}
-    reversecidrs: null
-    stubdomains: null
-    tolerations: null
-    update_strategy: {}
-    upstreamnameservers: null
   ignore_docker_version: true
   #
   # # Currently only nginx ingress provider is supported.
@@ -44,8 +32,8 @@ rancher_kubernetes_engine_config:
   ingress:
     http_port: 0
     https_port: 0
-    provider: none
-  kubernetes_version: v1.18.17-rancher1-1
+    provider: nginx
+  kubernetes_version: v1.18.18-rancher1-1
   monitoring:
     provider: metrics-server
     replicas: 1
@@ -76,8 +64,6 @@ rancher_kubernetes_engine_config:
     options:
       flannel_backend_type: vxlan
     plugin: flannel
-  restore:
-    restore: false
   #
   #    services:
   #      kube-api:
@@ -99,22 +85,16 @@ rancher_kubernetes_engine_config:
         timeout: 300
       creation: 12h
       extra_args:
-        election-timeout: '5000'
-        heartbeat-interval: '500'
+        election-timeout: 5000
+        heartbeat-interval: 500
       gid: 0
       retention: 72h
       snapshot: false
       uid: 0
-    kube-api:
+    kube_api:
       always_pull_images: false
       pod_security_policy: false
       service_node_port_range: 30000-32767
-    kube-controller: {}
-    kubelet:
-      fail_swap_on: false
-      generate_serving_certificate: false
-    kubeproxy: {}
-    scheduler: {}
   ssh_agent_auth: false
   upgrade_strategy:
     drain: false
@@ -126,12 +106,4 @@ rancher_kubernetes_engine_config:
       grace_period: -1
       ignore_daemon_sets: true
       timeout: 120
-scheduled_cluster_scan:
-  enabled: false
-  scan_config:
-    cis_scan_config:
-      override_benchmark_version: rke-cis-1.5
-      profile: permissive
-  schedule_config:
-    cron_schedule: 0 0 * * *
-    retention: 24
+windows_prefered_cluster: false

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+LOCAL_RANCHER_SERVER_URL="https://127.0.0.1:9443"
 CMS_PATH="$HOME/cms_local"
 LOGFILE="$CMS_PATH/cms.log"
 CMS_file_cluster_config="../cluster/cluster.json"
@@ -10,7 +10,7 @@ CLUSTER_NAME="cms-cluster"
 CLUSTER_CREATED="false"
 RANCHER_API_TOKEN="NDY"
 RANCHER_SERVER_URL="NDY"
-LOCAL_RANCHER_SERVER_URL="https://127.0.0.1:9443"
+
 
 if ((EUID != 0)); then
     usage
@@ -154,7 +154,7 @@ function new_cluster() {
 
 echo "creating cluster"
 
-#await_rancher
+await_rancher
 
 give_rancher_token
 

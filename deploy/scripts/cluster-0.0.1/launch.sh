@@ -1,30 +1,45 @@
 #!/bin/bash
-#TODO install rancher cli from net
 
 CMS_NAME="cms-cluster"
 CMS_PATH="$HOME/cms_app"
+DOCKERHUB_PASS="C7GIB8etX!N@"
 
-source ./rancher-login.sh
+source "${BASH_SOURCE%/*}/rancher-login.sh"
 
 function createCluster() {
+    sleep 5
     echo "Creating the Cluster $1:"
-    rancher context switch
-    rancher cluster create --network-provider flannel --rke-config ./config.yaml $1
+    rancher cluster create --network-provider flannel --rke-config ./cluster-0.0.1/config.yaml $1
     rancherLogin
+    sleep 5
+    rancher context switch
 
     sleep 5
     echo "Registering node:"
-    ADD_NODE_CMD=$(rancher cluster add-node $1 | grep docker)
-    ROLES_CMD=" --etcd --controlplane --worker --net=host"
+    ADD_NODE=$(rancher cluster add-node $1 | grep docker)
+    ROLES=" --etcd --controlplane --worker"
 
-    echo "$ADD_NODE_CMD$ROLES_CMD"
-    eval $ADD_NODE_CMD$ROLES_CMD
+    echo $ADD_NODE$ROLES
+
+    if [ -z "${ADD_NODE}" ]; then
+        return 1
+    else
+        eval $ADD_NODE$ROLES
+    fi
 
     checkCluster
 
+    rancherLogin
+
     rancher cluster kf $1 >~/.kube/config
 
-    kubectl create secret docker-registry dockerhub --docker-username=dispeakble --docker-password=pasarela
+    kubectl create secret docker-registry dockerhub --docker-username=dispeakble --docker-password=$DOCKERHUB_PASS
+
+    rancher cluster kf $CLUSTER_NAME >~/.kube/config
+
+    # Replacing localhost IP to real IP
+    MY_IP=$(get_my_ip)
+    sed -i -e "s/127.0.0.1/$MY_IP/g" ~/.kube/config
 
     return 0
 }
@@ -76,7 +91,7 @@ function waitForCatalog() {
 function waitForApp() {
   if [[ "$(rancher app ls -o yaml | grep $1)" == *"deploying" ]]; then
     printf '.' > /dev/tty
-    sleep 5
+    sleep 3
     waitForApp $1
     return 0;
   else
@@ -106,9 +121,8 @@ function launchLonghorn () {
   fi
 
   if [ -z "$(getApp longhorn)" ]; then
-    rancher app install --version 1.0.2 --no-prompt --namespace longhorn-system cattle-global-data:library-longhorn longhorn
+    rancher app install --version 1.1.1 --no-prompt --namespace longhorn-system cattle-global-data:library-longhorn longhorn
   fi
-  waitForApp "longhorn"
 }
 
 function checkApp() {
@@ -143,15 +157,14 @@ function launchRedis() {
   checkApp "bitnami-redis"
 
   rancher app install --no-prompt --namespace default \
-   --set cluster.enabled=false \
-   --set storageClass=longhorn \
-   --set service.type=NodePort \
-   --set service.NodePort=30637 \
+   --set architecture=standalone \
+   --set global.storageClass=longhorn \
+   --set master.service.type=NodePort \
+   --set master.service.nodePort=31652 \
+   --set global.redis.password=1gzHwbgfwR \
    --helm-timeout 300 \
    cattle-global-data:bitnami-redis redis
   rancher app show-notes redis
-  waitForApp "redis"
-  printf '\n' > /dev/tty
 }
 
 rancherForceLogin
@@ -159,11 +172,13 @@ rancherForceLogin
 clusterExists $CMS_NAME || createCluster $CMS_NAME
 checkCluster $CMS_NAME
 
-sleep 15
+sleep 5
 
 rancherLogin
 
 launchLonghorn
-sleep 15
+sleep 5
+waitForApp "longhorn"
 
 launchRedis
+waitForApp "redis"
