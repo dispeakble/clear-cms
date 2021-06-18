@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  generation: 1
+  labels:
+    cattle.io/creator: norman
+    workload.user.cattle.io/workloadselector: deployment-default-crm-hub
+  name: crm-hub
+  selfLink: /apis/apps/v1/namespaces/default/deployments/crm-hub
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: deployment-default-crm-hub
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        workload.user.cattle.io/workloadselector: deployment-default-crm-hub
+    spec:
+      containers:
+        - env:
+            - name: redis_port
+              value: {{ .Values.global.redis.port }}
+            - name: redis_server
+              value: {{ .Values.global.redis.port }}
+            - name: redis_password
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: redis
+                  optional: false
+          imagePullPolicy: Always
+          name: crm-hub
+          resources: {}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {}
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+          stdin: true
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          tty: true
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: dockerhub
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}

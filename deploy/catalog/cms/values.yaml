@@ -1,0 +1,39 @@
+namespace: default
+replicaCount: 1
+nameOverride: ''
+fullnameOverride: ''
+
+global:
+  version: "0.1.0"
+  images:
+    hub: dispeakble/crm-hub:1614980935
+  env: "local"
+  redis:
+    port: "6379"
+    redis_server: "redis-master"
+
+rancher:
+  enabled: false
+  system:
+    name: clear-cms
+minio:
+  enabled: false
+service:
+  type: ClusterIP
+  port: 80
+ingress:
+  enabled: false
+  annotations: {}
+  path: /
+  hosts:
+    - chart-example.local
+  tls: []
+resources: {}
+fullinstaller: true
+nodeSelector: {}
+tolerations:
+  - key: node.kubernetes.io/unreachable
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 60
+affinity: {}
