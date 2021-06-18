@@ -18,12 +18,8 @@ installService() {
   fi
 }
 
-installService "infrastructure/install-docker.sh"
-installService "infrastructure/install-kubectl.sh"
-installService "infrastructure/install-helm.sh"
+installService "cluster-0.0.1/run-rancher.sh"
 installService "infrastructure/install-rancher-cli.sh"
-installService "run-rancher.sh"
-installService "cluster-0.0.1/rancher-login.sh"
 installService "cluster-0.0.1/launch.sh"
 
 if [ $? != 0 ]; then

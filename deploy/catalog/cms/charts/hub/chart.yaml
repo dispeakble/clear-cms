@@ -1,0 +1,6 @@
+apiVersion: v1
+appVersion: 0.1.0
+description: Install Hub
+icon: https://as2.ftcdn.net/v2/jpg/03/78/06/07/1000_F_378060747_6Z3pohk90HAcfbGog7X1DizBU7NCQeqM.jpg
+name: cms-hub
+version: 0.1.0
