@@ -2,6 +2,7 @@ import {ClientProxy} from "@nestjs/microservices";
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {Observable} from "rxjs";
 
 
 @Injectable()
@@ -9,6 +10,7 @@ export class ProtocolService {
 
     //exposed methods
     private methods = ["sendMessage", "emitMessage", "ping", "setValue", "getValue"];
+    private handhakes: any = {};
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
 
@@ -48,6 +50,79 @@ export class ProtocolService {
             version: config.version
         };
     }
+
+    /*-- Start Redis subscriber bidirectional lock --*/
+    public startHandshake(params){
+        const myId = Math.round(Math.random() * 1000000);
+        return {
+            thePromise: new Promise((resolve) => {
+                this.handhakes[myId] = resolve;
+            }),
+            theObserver: this.sendMessage({
+                channel: params.channel,
+                api: 'protocol',
+                act: 'requestHandshake',
+                type: 'handshake',
+                payload: {
+                    callerId: myId,
+                    perform: params.perform,
+                    respond: {
+                        channel: 'proxy',
+                        api: 'protocol',
+                        act: 'confirmHandshake'
+                    }
+
+                }
+            })
+        }
+    }
+
+    public requestHandshake(params){
+        return new Observable(subscriber => {
+            const myId = Math.round(Math.random() * 1000000);//TODO use UUID
+            subscriber.next({
+                responderId: myId,
+                message: 'handshake accepted'
+            });
+
+            const initiator = this.sendMessage({
+                channel: params.respond.channel,
+                api: params.respond.api,
+                act: params.respond.act,
+                type: params.type,
+                payload: {
+                    message: 'Confirming handshake'
+                }
+            })
+
+            initiator.subscribe(data => {
+
+            }, err => {
+                params.error(err);
+            }, () => {
+                params.complete();
+                subscriber.complete();
+            })
+
+        })
+    }
+
+    public confirmHandshake(params) {
+        return new Observable(subscriber => {
+            try {
+                if(!this.handhakes.hasOwnProperty(params.callerId)){
+                    subscriber.complete();
+                }
+                this.handhakes[params.callerId]({
+                    responderId: params.responderId,
+                    thePusher: subscriber
+                });
+            } catch (err) {
+                console.log(err.message)
+            }
+        });
+    }
+    /*-- End Redis subscriber bidirectional lock --*/
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {

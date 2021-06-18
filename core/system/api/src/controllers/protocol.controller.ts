@@ -3,17 +3,20 @@ import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {Observable} from "rxjs";
 
 @Controller()
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
-    private config: ModuleInterface = {
+    public handhakes: any = {};
+    private moduleConfig: ModuleInterface = {
         name: 'system',
-        version: '20.07.19',
+        version: '21.06.16',
         description: 'System Module',
         started: new Date(),
         config: {
+            channel: 'system',
             permissions: {
                 stop: false,
                 restart: true,
@@ -23,22 +26,16 @@ export class ProtocolController {
         dependencies: [{
             name: 'hub',
             version: 'latest'
-        }/*, {
+        }, {
             name: 'proxy',
             version: 'latest'
-        }*/],
+        }]
     };
 
-    constructor(
-      @Inject('SystemService') private systemService,
-      @Inject('ProtocolService') private protocolService,
-      @Inject('AdminProfileService') private adminProfileService,
-      @Inject('AdminThemesService') private adminThemesService,
-      @Inject('PublicThemesService') private publicThemesService,
-      @Inject('HttpService') private httpService,
-      @Inject('AuthService') private authService,
-      ) {
+    private mainService;
 
+    constructor(@Inject('SystemService') private systemService, @Inject('ProtocolService') private protocolService, @Inject('AdminProfileService') private adminProfileService, @Inject('AdminThemesService') private adminThemesService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService) {
+        this.mainService = this;
     }
 
     @MessagePattern({message: 'system'})
@@ -47,8 +44,8 @@ export class ProtocolController {
     }
 
     @EventPattern({event: 'system'})
-    public onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
-        return this.perform(data);
+    public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
+        return this.perform(payload);
     }
 
     async onApplicationBootstrap() {
@@ -66,7 +63,7 @@ export class ProtocolController {
             dependencies: [{
                 name: 'hub',
                 version: 'latest'
-            }],
+            }]
         };
         this.systemService.registerModule(payload);
         const response = await this.protocolService.sendMessage({
@@ -77,14 +74,118 @@ export class ProtocolController {
                 channel: 'system',
                 port: process.env.backend_port
             }
-        });
+        }).toPromise();
         console.log(response);
     }
+
+    /*-- Start Redis handshake --*/
+
+    public startHandshake(params) {
+        const myId = Math.round(Math.random() * 1000000);
+        return {
+            thePromise: new Promise((resolve) => {
+                this.handhakes[myId] = resolve;
+            }),
+            theObserver: this.protocolService.sendMessage({
+                channel: params.channel,
+                api: 'main',
+                act: 'requestHandshake',
+                payload: {
+                    callerId: myId,
+                    respond: {
+                        channel: this.moduleConfig.config.channel,
+                        api: 'main',
+                        act: 'confirmHandshake'
+                    }
+
+                }
+            })
+        }
+    }
+
+    public requestHandshake(params) {
+        return new Observable(subscriber => {
+            const myId = Math.round(Math.random() * 1000000);//TODO use UUID
+            subscriber.next({
+                responderId: myId,
+                message: 'handshake request received'
+            });
+
+            const initiator = this.protocolService.sendMessage({
+                channel: params.respond.channel,
+                api: params.respond.api,
+                act: params.respond.act,
+                type: params.type,
+                payload: {
+                    responderId: myId,
+                    callerId: params.callerId,
+                    message: 'handshake confirmed'
+                }
+            })
+
+            const callbacks = {
+                onData: data => {
+                    this.perform({
+                        channel: params.respond.channel,
+                        type: data.type,
+                        api: params.respond.api,
+                        act: params.respond.act,
+                        payload: data
+                    }).subscribe(response => {
+                        console.log('loading...');
+                    }, err => {
+                        //TODO send to caller the error
+                        console.log('handshake callback error');
+                        console.log(err);
+                    }, () => {
+                        console.log('handshake callback complete');
+                    });
+                },
+                onError: err => {
+                    console.log(err);
+                },
+                onComplete: () => {
+                    console.log('handshake finished');
+                }
+            };
+
+            //TODO create a bucket handshake before confirming this handshake
+
+
+            initiator.subscribe(data => {
+                callbacks.onData(data);
+            }, err => {
+                callbacks.onError(err);
+            }, () => {
+                callbacks.onComplete();
+                subscriber.complete();
+            })
+
+        })
+    }
+
+    public confirmHandshake(params) {
+        return new Observable(subscriber => {
+            try {
+                if (!this.handhakes.hasOwnProperty(params.callerId)) {
+                    subscriber.complete();
+                }
+                this.handhakes[params.callerId]({
+                    responderId: params.responderId,
+                    thePusher: subscriber
+                });
+            } catch (err) {
+                console.log(err.message)
+            }
+        });
+    }
+
+    /*-- End Redis handshake --*/
 
     private registerModule(params) {
         setTimeout(async () => {
             try {
-                const moduleResponse = await this.protocolService.registerModule(this.config);
+                const moduleResponse = await this.protocolService.registerModule(this.moduleConfig);
 
                 switch (moduleResponse.status) {
                     case 'failed':
@@ -113,12 +214,16 @@ export class ProtocolController {
         }, params.after * 1000);
     }
 
-    private perform(data: payloadInterface){
+    private perform(params: payloadInterface) {
         try {
-            return this[data.api + 'Service'].perform(data, this.config);
+            if ('main' !== params.api) {
+                return this[params.api + 'Service'].perform(params, this.moduleConfig);
+            } else {
+                return this[params.act](params.payload, this.moduleConfig);
+            }
         } catch (ex) {
             return {
-                error:'Could not find ' + data.api + ':' + data.act
+                error: 'Could not find ' + params.api + ':' + params.act
             };
         }
     }

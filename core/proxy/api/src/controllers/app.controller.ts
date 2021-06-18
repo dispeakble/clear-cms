@@ -1,51 +1,42 @@
 import {
-    ArgumentsHost,
-    Catch,
-    Controller,
-    Get,
-    HttpStatus,
-    Inject,
-    Post,
-    Req,
-    Res,
-    Session, UnauthorizedException,
-    UseGuards
+    Controller, Get, HttpStatus, Inject, Post, Req, Res, Session, UseGuards
 } from "@nestjs/common";
 import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {HttpAuthGuard} from "../guards/http.auth.guard";
-import has = Reflect.has;
+import multer from "multer";
+import {Observable} from "rxjs";
+import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {MainEvent} from "../events/Main.event";
+import {EventEmitter2, OnEvent} from "@nestjs/event-emitter";
 
 @Controller()
 export class AppController {
 
     private portMap = {};
+    private handhakes = {};
 
-    constructor(
-        @Inject('ProtocolService') private protocolService,
-        @Inject('SystemService') private systemService,
-        @Inject('AppService') private appService,
-        @Inject('SessionService') private sessionService,
-        @Inject('WsGateway') private wsGateway
-    ) {
+    private moduleConfig: ModuleInterface = {
+        name: 'proxy',
+        version: '21.06.16',
+        description: 'the main http proxy (gateway)',
+        started: new Date(),
+        config: {
+            channel: 'proxy',
+            restart: true,
+            stop: false
+        },
+        dependencies: [{
+            name: 'hub',
+            version: 'latest'
+        }]
+    };
+
+    constructor(@Inject('ProtocolService') public protocolService, @Inject('SystemService') private systemService, @Inject('AppService') private appService, @Inject('SessionService') private sessionService, @Inject('WsGateway') private wsGateway, private eventEmitter: EventEmitter2) {
         this.protocolService.start().then(async () => {
-            this.portMap = await this.protocolService.getValue('portMap');
-            const payload: ModuleInterface = {
-                name: 'proxy',
-                version: '20.12.18',
-                description: 'the main http proxy (gateway)',
-                started: new Date(),
-                config: {
-                    restart: true,
-                    stop: false
-                },
-                dependencies: [{
-                    name: 'hub',
-                    version: 'latest'
-                }]
-            };
-            const response = await this.systemService.registerModule(payload);
+            this.portMap = await this.protocolService.getValue('portMap') || [];
+            const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
             console.log(response);
             this.wsGateway.registerCallbacks({
                 callbacks: {
@@ -56,17 +47,101 @@ export class AppController {
                 }
             });
         })
+        this.eventEmitter.emit('main', new MainEvent({
+            payload: "test"
+        }))
     }
 
     //TODO ADD POST HTTP GUARD SEPARATELY
     @Post('*')
     async onPost(@Res() res: Response, @Req() req: Request, @Session() session) {
-
         try {
+            const multerObj = multer({
+                storage: {
+                    _handleFile: (req, file, cb) => {
+                        //we will start a REDIS handshake with the consumer
+                        let handshake = this.startHandshake({
+                            channel: this.portChannel(req.headers),
+                            perform: {
+                                api: req.body.api,
+                                act: req.body.act
+                            }
+                        });
+
+                        //we subscribe to the consumer
+
+                        handshake.theObserver.subscribe(data => {
+                            console.log(data);
+                        }, err => {
+                            console.log(err);
+                        }, () => {
+                            console.log('upload complete');
+                        })
+
+                        //the consumer calls back with the caller ID and then subscribes to the pusher
+                        handshake.thePromise.then(handshakeResponse => {
+                            //we use the pusher to send the init file upload command
+                            handshakeResponse['thePusher'].next({
+                                type: 'init',
+                                api: req.body.api,
+                                act: req.body.act,
+                                payload: {
+                                    path: req.body.path,
+                                    filename: file.fieldname
+                                }
+                            });
+
+                            //TODO could be too late for data here. check md5 check sum
+                            //we listen to data events on the file stream and push the binaries
+                            file.stream.on('data', function (data) {
+                                handshakeResponse['thePusher'].next({
+                                    type: 'data',
+                                    payload: {
+                                        buffer: data
+                                    }
+                                });
+                            });
+
+                            file.stream.on('end', function () {
+                                handshakeResponse['thePusher'].complete();
+                            });
+                        });
+                    },
+                    _removeFile: (req, file, cb) => {
+
+                    }
+                }
+            }).any();
+
+            multerObj(req, res, (err) => {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+
+            });
+
+            /*const writeStream = createWriteStream(
+                '../../var/',
+            );
+            req.pipe(writeStream);
+
+            writeStream.on("data", (data) => {
+                console.log('...')
+            })*/
+
+            return;
+
+            await new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(true);
+                }, 3000);
+            })
+
             const start_date = new Date().getTime();
             const channel = this.portChannel(req.headers);
 
-            if(!channel){
+            if (!channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 res.end('Port not mapped');
                 return;
@@ -85,27 +160,28 @@ export class AppController {
                 }
             };
 
-            const postSubscriber = this.protocolService.sendPost(payload);
-            let bigBuffer = Buffer.alloc(0);
+            const postSubscriber = this.protocolService.sendMessage(payload);
 
             let endPost = true;
 
-            postSubscriber.subscribe((data) => {
-                switch(data.type){
+            postSubscriber.subscribe((response) => {
+                switch (response.type) {
                     case "meta":
                         res.set('Cache-Control', 'public, max-age=0');
                         res.status(HttpStatus.OK);
                         break;
                     case "String":
-
-                        if (data.callback) {
+                        if (response.callback) {
                             endPost = false;
-                            const callback = data.callback;
+                            const callback = response.callback;
                             const cb_payload = {
                                 channel: 'proxy',
                                 api: callback.api,
                                 act: callback.act,
-                                payload: {data: callback.payload, session: session}
+                                payload: {
+                                    data: callback.payload,
+                                    session: session
+                                }
                             };
                             return this.perform(cb_payload).then((response) => {
                                 res.send(response);
@@ -113,11 +189,10 @@ export class AppController {
                             });
 
                         }
-                        res.send(data.data);
+                        res.send(response.data);
                         break;
                     case "Buffer":
-                        bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
-                        res.write(Buffer.from(data.data));
+                        res.write(Buffer.from(response.data));
                         break;
                 }
 
@@ -135,19 +210,16 @@ export class AppController {
             res.end(JSON.stringify(err));
         }
 
-
-
     }
 
-    @UseGuards(HttpAuthGuard)
-    @Get('*')
+    @UseGuards(HttpAuthGuard) @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
 
             const channel = this.portChannel(req.headers);
             //TODO big threat here. use encrypted keys from now on
 
-            if(!channel){
+            if (!channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 res.end('Port not mapped');
                 return;
@@ -165,9 +237,9 @@ export class AppController {
             };
 
 
-            if(!session.hasOwnProperty('user')){
+            if (!session.hasOwnProperty('user')) {
                 const hasAccess = await this.protocolService.checkAccess(payload);
-                if(!hasAccess.access){
+                if (!hasAccess.access) {
                     res.status(hasAccess.location.status);
                     res.set('Location', hasAccess.location);
                     res.status(hasAccess.status)
@@ -177,19 +249,19 @@ export class AppController {
             const start_date = new Date().getTime();
             let cache_name = req.hostname + req.url;
 
-            if(Object.keys(req.query).length){
+            if (Object.keys(req.query).length) {
                 cache_name = cache_name + JSON.stringify(req.query);
             }
 
             const fileStats = await this.protocolService.getMeta(payload);
             const cachedrequest = await this.protocolService.getValue(fileStats.file_name);
 
-            if(cachedrequest){
-                if(cachedrequest.ETag === fileStats.etagId){
+            if (cachedrequest) {
+                if (cachedrequest.ETag === fileStats.etagId) {
                     const modifiedDate = new Date(fileStats.modified);
                     const exp_date = new Date(cachedrequest.expires);
 
-                    if(exp_date > new Date() && exp_date > modifiedDate){
+                    if (exp_date > new Date() && exp_date > modifiedDate) {
                         res.set("Content-Type", cachedrequest.content_type);
                         res.set("Content-Length", cachedrequest.content_length);
                         res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
@@ -271,24 +343,16 @@ export class AppController {
 
     }
 
-    private portChannel(headers){
-        let port = headers.host.split(':')[1];
-
-        if(!port){
-            if(headers.hasOwnProperty('x-forwarded-port') && headers['x-forwarded-port']){
-                port = +headers['x-forwarded-port'];
-            } else {
-                port = 0;
-            }
-        }
-
-        if(!this.portMap.hasOwnProperty(port) || !this.portMap[port]){
-            console.log(headers)
-            console.log(JSON.stringify(headers));
-            return null;
-        }
-        return this.portMap[port];
+    @OnEvent('main', { async: true })
+    HandleMainEvent(payload: MainEvent) {
+        console.log(payload)
     }
+
+    /*async asyncForEach(array: Array<any>, callback: (item: any, index: number, array: Array<any>) => void): Promise<void> {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    }*/
 
     async onApplicationBootstrap() {
         this.appService.perform({
@@ -307,6 +371,149 @@ export class AppController {
                 }
             }
         });
+
+
+    }
+
+    /*-- Start Redis subscriber bidirectional lock --*/
+    public startHandshake(params) {
+        const myId = Math.round(Math.random() * 1000000);
+        return {
+            thePromise: new Promise((resolve) => {
+                this.handhakes[myId] = resolve;
+            }),
+            theObserver: this.protocolService.sendMessage({
+                channel: params.channel,
+                api: 'main',
+                act: 'requestHandshake',
+                payload: {
+                    callerId: myId,
+                    respond: {
+                        channel: this.moduleConfig.config.channel,
+                        api: 'main',
+                        act: 'confirmHandshake'
+                    }
+
+                }
+            })
+        }
+    }
+
+    public requestHandshake(params) {
+        return new Observable(subscriber => {
+            const myId = Math.round(Math.random() * 1000000);//TODO use UUID
+            subscriber.next({
+                responderId: myId,
+                message: 'handshake request received'
+            });
+
+            const initiator = this.protocolService.sendMessage({
+                channel: params.respond.channel,
+                api: params.respond.api,
+                act: params.respond.act,
+                type: params.type,
+                payload: {
+                    responderId: myId,
+                    callerId: params.callerId,
+                    message: 'handshake confirmed'
+                }
+            })
+
+            const callbacks = {
+                onData: data => {
+                    this.perform({
+                        channel: params.payload.respond.channel,
+                        type: data.type,
+                        api: params.payload.respond.api,
+                        act: params.payload.respond.act,
+                        payload: data
+                    }).subscribe(response => {
+                        console.log('loading...');
+                    }, err => {
+                        //TODO send to caller the error
+                        console.log('handshake callback error');
+                        console.log(err);
+                    }, () => {
+                        console.log('handshake callback complete');
+                    });
+                },
+                onError: err => {
+                    console.log(err);
+                },
+                onComplete: () => {
+                    console.log('handshake finished');
+                }
+            };
+
+            //TODO create a bucket handshake before confirming this handshake
+
+
+            initiator.subscribe(data => {
+                this.perform({
+                    channel: 'system',
+                    api: params.payload.respond.api,
+                    act: params.payload.respond.act,
+                    payload: {
+                        data: data
+                    }
+                });
+                callbacks.onData(data);
+            }, err => {
+                callbacks.onError(err);
+            }, () => {
+                callbacks.onComplete();
+                subscriber.complete();
+            })
+
+        })
+    }
+
+    public confirmHandshake(params) {
+        return new Observable(subscriber => {
+            try {
+                if (!this.handhakes.hasOwnProperty(params.callerId)) {
+                    subscriber.complete();
+                }
+                this.handhakes[params.callerId]({
+                    responderId: params.responderId,
+                    thePusher: subscriber
+                });
+            } catch (err) {
+                console.log(err.message)
+            }
+        });
+    }
+
+    //Microservice protocol
+    @MessagePattern({message: 'proxy'})
+    public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
+        return this.perform(data);
+    }
+
+    @EventPattern({event: 'proxy'})
+    public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
+        return this.perform(data);
+    }
+
+    /*-- End Redis subscriber bidirectional lock --*/
+
+    private portChannel(headers) {
+        let port = headers.host.split(':')[1];
+
+        if (!port) {
+            if (headers.hasOwnProperty('x-forwarded-port') && headers['x-forwarded-port']) {
+                port = +headers['x-forwarded-port'];
+            } else {
+                port = 0;
+            }
+        }
+
+        if (!this.portMap.hasOwnProperty(port) || !this.portMap[port]) {
+            console.log(headers)
+            console.log(JSON.stringify(headers));
+            return null;
+        }
+        return this.portMap[port];
     }
 
     private onMessage(params) {
@@ -322,10 +529,10 @@ export class AppController {
                 payload: data.payload
             };
 
-            if(data.payload && data.payload.useSession){
-                const sessionData = await this.sessionService.parseCookie({cookies: params.client.handshake.headers.cookie.replace(/ /g,"")});
+            if (data.payload && data.payload.useSession) {
+                const sessionData = await this.sessionService.parseCookie({cookies: params.client.handshake.headers.cookie.replace(/ /g, "")});
 
-                if(sessionData){
+                if (sessionData) {
                     payload.payload.client = sessionData.user;
                 }
 
@@ -357,19 +564,22 @@ export class AppController {
         })
     }
 
-    private perform(data: payloadInterface) {
+    private perform(params: payloadInterface) {
         try {
-            console.log('calling ' + data.api + 'Service.perform(' + JSON.stringify({
-                act: data.act
+            console.log('calling ' + params.api + 'Service.perform(' + JSON.stringify({
+                act: params.act
             }) + ')');
-            const api = data.api;
-            const apiName = api + 'Service';
-            const payload = {act: data.act, payload: data.payload};
-            return this[apiName].perform(payload);
+
+            if (params.api !== 'main') {
+                return this[params.api + 'Service'].perform(params);
+            } else {
+                return this[params.act](params.payload);
+            }
+
         } catch (ex) {
             return {
                 status: 500,
-                message: 'App.Controller.ts: Invalid ' + data.api + ':' + data.act
+                message: 'App.Controller.ts: Invalid ' + params.api + ':' + params.act
             };
         }
     }

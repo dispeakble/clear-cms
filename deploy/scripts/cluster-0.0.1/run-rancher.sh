@@ -1,14 +1,19 @@
 #!/bin/bash -e
 
 APP="Rancher"
-APP_VERSION="v2.5.7"
-#APP_VERSION="v2.4.15"
-APP_VERSION="v2.3.7"
+#APP_VERSION="v2.5.7"
+APP_VERSION="v2.4.15"
+#APP_VERSION="v2.4.8"
+#APP_VERSION="v2.3.7"
+#APP_VERSION="latest"
 RANCHER_STORE="$HOME/rancher/rancher-store"
 
-#    RANCHER_CERTIFICATE="$HOME/rancher/ssl/cert.pem"
-#	RANCHER_CERTIFICATE_KEY="$HOME/rancher/ssl/key.pem"
-#  	RACHER_CERTIFICATE_CA="$HOME/rancher/ssl/cacerts.pem"
+#ABSOLUTE_PATH=$HOME
+ABSOLUTE_PATH="/home/dosidoweb"
+
+#RANCHER_CERTIFICATE="$ABSOLUTE_PATH/rancher/ssl/cert.pem"
+#RANCHER_CERTIFICATE_KEY="$ABSOLUTE_PATH/rancher/ssl/key.pem"
+#RACHER_CERTIFICATE_CA="$ABSOLUTE_PATH/rancher/ssl/cacerts.pem"
 
 if [ ! -z "$http_proxy" ] && [ -z "$HTTP_PROXY" ]; then
     HTTP_PROXY="$http_proxy"
@@ -40,22 +45,19 @@ if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
     echo
     echo "Running Rancher ($APP_VERSION)"
 
-
-
     docker run -d --restart=always \
-	-p 9080:80 \
+        -p 9080:80 \
         -p 9443:443 \
         -v $RANCHER_STORE:/var/lib/rancher \
-        -v "${RANCHER_CERTIFICATE}":/etc/rancher/ssl/cert.pem \
-		-v "${RANCHER_CERTIFICATE_KEY}":/etc/rancher/ssl/key.pem \
-        -v "${RACHER_CERTIFICATE_CA}":/etc/rancher/ssl/cacerts.pem \
-    	--privileged \
+        --privileged \
         "${RANCHER_IMAGE}"
 
     docker run --rm \
         --entrypoint /bin/sh \
         "${RANCHER_IMAGE}" \
         -c 'curl -sSf https://github.com/rancher/kontainer-driver-metadata.git >/dev/null 2>&1 || (echo "Waiting (maximum) 10 minutes for Rancher to get ready..."; sleep 600)'
+
+    while ! curl -k https://localhost:9443/ping; do sleep 3; done
 else
     echo "Rancher is already running"
 fi
