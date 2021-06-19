@@ -3,6 +3,9 @@
 CMS_NAME="cms-cluster"
 CMS_PATH="$HOME/cms_app"
 DOCKERHUB_PASS="C7GIB8etX!N@"
+CHART_PASSWORD="33qsygUp8irSv@E"
+REDIS_PASSWORD="1gzHwbgfwR"
+REDIS_NODE_PORT=31652
 
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 
@@ -123,6 +126,8 @@ function launchLonghorn () {
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --version 1.1.1 --no-prompt --namespace longhorn-system cattle-global-data:library-longhorn longhorn
   fi
+  waitForApp "longhorn"
+  printf '\n' > /dev/tty
 }
 
 function checkApp() {
@@ -160,11 +165,28 @@ function launchRedis() {
    --set architecture=standalone \
    --set global.storageClass=longhorn \
    --set master.service.type=NodePort \
-   --set master.service.nodePort=31652 \
-   --set global.redis.password=1gzHwbgfwR \
+   --set master.service.nodePort=$REDIS_NODE_PORT \
+   --set global.redis.password=$REDIS_PASSWORD \
    --helm-timeout 300 \
    cattle-global-data:bitnami-redis redis
   rancher app show-notes redis
+  waitForApp "redis"
+  printf '\n' > /dev/tty
+}
+
+function launchCmsApp() {
+  rancher context switch Default
+
+  addCatalog "cms-app" "helm_v3" "https://the_dispeakble_one:${CHART_PASSWORD}@bitbucket.org/the_dispeakble_one/cms-charts.git"
+
+  checkApp "cms"
+
+  rancher app install --no-prompt --namespace default \
+   --helm-timeout 300 \
+   cattle-global-data:cms-app-cms cms
+  rancher app show-notes cms
+  waitForApp "cms"
+  printf '\n' > /dev/tty
 }
 
 rancherForceLogin
@@ -178,7 +200,9 @@ rancherLogin
 
 launchLonghorn
 sleep 5
-waitForApp "longhorn"
 
 launchRedis
-waitForApp "redis"
+
+sleep 5
+
+launchCmsApp
