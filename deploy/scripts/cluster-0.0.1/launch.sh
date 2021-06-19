@@ -2,10 +2,19 @@
 
 CMS_NAME="cms-cluster"
 CMS_PATH="$HOME/cms_app"
+
 DOCKERHUB_PASS="C7GIB8etX!N@"
 CHART_PASSWORD="33qsygUp8irSv@E"
+
+#TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
 REDIS_NODE_PORT=31652
+
+PGADMIN_EMAIL="ovidiu.alexa@gmail.com"
+PGADMIN_PASSWORD="0MG9DtWxT@t89*6"
+PGADMIN_NODEPORT=31080
+
+POSTGRES_PASSWORD="0MG9DtWxT@t89*6"
 
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 
@@ -124,7 +133,11 @@ function launchLonghorn () {
   fi
 
   if [ -z "$(getApp longhorn)" ]; then
-    rancher app install --version 1.1.1 --no-prompt --namespace longhorn-system cattle-global-data:library-longhorn longhorn
+    rancher app install --version 1.1.1 --no-prompt --namespace longhorn-system \
+    --set persistence.defaultClassReplicaCount="1" \
+    --set service.ui.type="Rancher-Proxy" \
+    --set service.ui.nodePort="" \
+    cattle-global-data:library-longhorn longhorn
   fi
   waitForApp "longhorn"
   printf '\n' > /dev/tty
@@ -138,7 +151,12 @@ function checkApp() {
     checkApp $1
     return 0;
   fi
-
+  if [ -z "$(rancher app st $1)" ]; then
+    printf "$1 found but not loaded yet...\n" > /dev/tty
+    sleep 5
+    checkApp $1
+    return 0;
+  fi
   printf "$1 was found\n" > /dev/tty
 return 0
 }
@@ -159,7 +177,11 @@ function launchRedis() {
 
   addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 
-  checkApp "bitnami-redis"
+  sleep 15
+
+  checkApp "cattle-global-data:bitnami-redis"
+
+  sleep 5
 
   rancher app install --no-prompt --namespace default \
    --set architecture=standalone \
@@ -189,6 +211,41 @@ function launchCmsApp() {
   printf '\n' > /dev/tty
 }
 
+function launchPostgreSQL() {
+  checkApp "postgresql-ha"
+
+  rancher app install --no-prompt --namespace default \
+   --set postgresql.password=$POSTGRES_PASSWORD \
+   --set postgresql.repmgrPassword=$POSTGRES_PASSWORD \
+   --set pgpool.adminPassword=$POSTGRES_PASSWORD \
+   --set global.storageClass=longhorn \
+   --helm-timeout 300 \
+   cattle-global-data:bitnami-postgresql-ha postgresql-ha
+  rancher app show-notes postgresql-ha
+  waitForApp "postgresql-ha"
+  printf '\n' > /dev/tty
+}
+
+function launchPGAdmin() {
+  rancher context switch Default
+
+  addCatalog "runix" "helm_v3" "https://helm.runix.net"
+
+  checkApp "pgadmin4"
+
+  rancher app install --no-prompt --namespace default \
+   --set env.email=$PGADMIN_EMAIL \
+   --set env.password=$PGADMIN_PASSWORD \
+   --set global.storageClass=longhorn \
+   --set service.type=NodePort \
+   --set service.NodePort=$PGADMIN_NODEPORT \
+   --helm-timeout 300 \
+   cattle-global-data:runix-pgadmin4 pgadmin4
+  rancher app show-notes pgadmin4
+  waitForApp "pgadmin4"
+  printf '\n' > /dev/tty
+}
+
 rancherForceLogin
 
 clusterExists $CMS_NAME || createCluster $CMS_NAME
@@ -202,7 +259,12 @@ launchLonghorn
 sleep 5
 
 launchRedis
+sleep 15
 
+launchPostgreSQL
+sleep 5
+
+launchPGAdmin
 sleep 5
 
 launchCmsApp
