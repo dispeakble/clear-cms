@@ -1,4 +1,0 @@
-namespace: default
-forceNodeLabels: "yes"
-nameOverride: ""
-fullnameOverride: ""

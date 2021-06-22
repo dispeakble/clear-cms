@@ -75,6 +75,10 @@ function checkCluster() {
         exit 1
     fi
     echo "ok!"
+    rancher kubectl delete --all pods --namespace=ingress-nginx
+    rancher kubectl delete --all deployments --namespace=ingress-nginx
+    rancher kubectl delete --all services --namespace=ingress-nginx
+    rancher kubectl delete --all daemonsets --namespace=ingress-nginx
     return 0
 }
 
@@ -137,6 +141,8 @@ function launchLonghorn () {
     --set persistence.defaultClassReplicaCount="1" \
     --set service.ui.type="Rancher-Proxy" \
     --set service.ui.nodePort="" \
+    --helm-timeout 300 \
+    --helm-wait \
     cattle-global-data:library-longhorn longhorn
   fi
   waitForApp "longhorn"
@@ -144,7 +150,6 @@ function launchLonghorn () {
 }
 
 function checkApp() {
-  echo "$(rancher app lt | grep $1)"
   if [ -z "$(rancher app lt | grep $1)" ]; then
     printf "$1 is not ready yet...\n" > /dev/tty
     sleep 5
@@ -162,19 +167,14 @@ return 0
 }
 
 function addCatalog() {
-  echo "rancher catalog add --helm-version $2 $1 $3"
-  echo "rancher app lt | grep $1"
   if [ -z "$(rancher app lt | grep $1)" ]; then
     echo "adding catalog $1"
-    echo "rancher catalog add --helm-version $2 $1 $3"
     rancher catalog add --helm-version $2 $1 $3
     waitForCatalog $1
   fi
 }
 
 function launchRedis() {
-  rancher context switch Default
-
   addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 
   sleep 15
@@ -190,6 +190,7 @@ function launchRedis() {
    --set master.service.nodePort=$REDIS_NODE_PORT \
    --set global.redis.password=$REDIS_PASSWORD \
    --helm-timeout 300 \
+   --helm-wait \
    cattle-global-data:bitnami-redis redis
   rancher app show-notes redis
   waitForApp "redis"
@@ -197,14 +198,13 @@ function launchRedis() {
 }
 
 function launchCmsApp() {
-  rancher context switch Default
-
   addCatalog "cms-app" "helm_v3" "https://the_dispeakble_one:${CHART_PASSWORD}@bitbucket.org/the_dispeakble_one/cms-charts.git"
 
   checkApp "cms"
 
   rancher app install --no-prompt --namespace default \
    --helm-timeout 300 \
+   --helm-wait \
    cattle-global-data:cms-app-cms cms
   rancher app show-notes cms
   waitForApp "cms"
@@ -220,6 +220,7 @@ function launchPostgreSQL() {
    --set pgpool.adminPassword=$POSTGRES_PASSWORD \
    --set global.storageClass=longhorn \
    --helm-timeout 300 \
+   --helm-wait \
    cattle-global-data:bitnami-postgresql-ha postgresql-ha
   rancher app show-notes postgresql-ha
   waitForApp "postgresql-ha"
@@ -227,8 +228,6 @@ function launchPostgreSQL() {
 }
 
 function launchPGAdmin() {
-  rancher context switch Default
-
   addCatalog "runix" "helm_v3" "https://helm.runix.net"
 
   checkApp "pgadmin4"
@@ -240,10 +239,40 @@ function launchPGAdmin() {
    --set service.type=NodePort \
    --set service.NodePort=$PGADMIN_NODEPORT \
    --helm-timeout 300 \
+   --helm-wait \
    cattle-global-data:runix-pgadmin4 pgadmin4
   rancher app show-notes pgadmin4
   waitForApp "pgadmin4"
   printf '\n' > /dev/tty
+}
+
+function launchMetalLB(){
+
+createNamespace "metallb-system"
+sleep 5
+sed -e "s|MY_IP_RANGE|$(get_my_ip)-$(get_my_ip)|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
+rancher app install --no-prompt --namespace metallb-system \
+  --set existingConfigMap=metallbconfig \
+  --helm-timeout 300 \
+  --helm-wait \
+  cattle-global-data:bitnami-metallb metallb
+}
+
+function launchTraefik(){
+  rancher context switch System \
+
+  rancher app install --no-prompt --namespace kube-system \
+  --helm-timeout 300 \
+  --helm-wait \
+  cattle-global-data:library-traefik traefik
+}
+
+function createNamespace() {
+  rancher namespaces create $1
+}
+
+function createConfig() {
+  rancher kubectl apply -f "configMaps/$1"
 }
 
 rancherForceLogin
@@ -252,19 +281,14 @@ clusterExists $CMS_NAME || createCluster $CMS_NAME
 checkCluster $CMS_NAME
 
 sleep 5
-
 rancherLogin
 
+launchTraefik
+
 launchLonghorn
-sleep 5
-
+rancher context switch Default
 launchRedis
-sleep 15
-
+launchMetalLB
 launchPostgreSQL
-sleep 5
-
 launchPGAdmin
-sleep 5
-
 launchCmsApp
