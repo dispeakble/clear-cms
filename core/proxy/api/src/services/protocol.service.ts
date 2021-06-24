@@ -4,8 +4,6 @@ import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Cache} from "cache-manager";
 import {Observable} from "rxjs";
-import {EventEmitter2} from "@nestjs/event-emitter";
-import {MainEvent} from "../events/Main.event";
 
 @Injectable()
 export class ProtocolService {
@@ -14,12 +12,13 @@ export class ProtocolService {
     private methods = ["sendMessage", "emitMessage", "sendPost", "sendGet", "getMeta", "ping", "setValue", "getValue",
         "checkAccess", "requestHandshake", "confirmHandshake"];
 
-    private handhakes = {};
+    private handshakes = {};
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
     @Inject(CACHE_MANAGER) private cacheManager: Cache;
 
     constructor() {
+
     }
 
     public start() {
@@ -55,7 +54,7 @@ export class ProtocolService {
 
     public checkAccess(data: any){
         const payload = {
-            api: 'http',
+            api: 'bucket',
             act: 'checkAccess',
             payload: data.payload
         };
@@ -73,7 +72,7 @@ export class ProtocolService {
 
     public sendGet(data: any) {
         const payload = {
-            api: 'http',
+            api: 'bucket',
             act: 'get',
             payload: data.payload
         };
@@ -82,7 +81,7 @@ export class ProtocolService {
 
     public getMeta(data: any){
         const payload = {
-            api: 'http',
+            api: 'bucket',
             act: 'getMeta',
             payload: data.payload
         };
@@ -105,6 +104,81 @@ export class ProtocolService {
         //TODO use slave
         return this.cacheManager.get(key);
     }
+
+    /*-- Start Redis subscriber bidirectional lock --*/
+    public startHandshake(params, config) {
+        const myId = Math.round(Math.random() * 1000000);
+        return {
+            thePromise: new Promise((resolve) => {
+                this.handshakes[myId] = resolve;
+            }),
+            theObserver: this.sendMessage({
+                channel: params.channel,
+                api: 'protocol',
+                act: 'requestHandshake',
+                payload: {
+                    callerId: myId,
+                    indication: params.indication,
+                    respond: {
+                        channel: config.config.channel,
+                        api: 'protocol',
+                        act: 'confirmHandshake'
+                    }
+
+                }
+            })
+        }
+    }
+
+    public requestHandshake(params, config) {
+        return new Observable(subscriber => {
+            const myId = Math.round(Math.random() * 1000000);//TODO use UUID
+            subscriber.next({
+                responderId: myId,
+                message: 'handshake request received'
+            });
+
+            const initiator = this.sendMessage({
+                channel: params.respond.channel,
+                api: params.respond.api,
+                act: params.respond.act,
+                type: params.type,
+                payload: {
+                    responderId: myId,
+                    callerId: params.callerId,
+                    message: 'handshake confirmed'
+                }
+            });
+
+            params.perform({
+                channel: config.channel,
+                api: params.api,
+                act: params.act,
+                perform: params.perform,
+                payload: {
+                    initiator: initiator
+                }
+            })
+        })
+    }
+
+    public confirmHandshake(params) {
+        return new Observable(subscriber => {
+            try {
+                if (!this.handshakes.hasOwnProperty(params.callerId)) {
+                    subscriber.complete();
+                }
+                this.handshakes[params.callerId]({
+                    responderId: params.responderId,
+                    thePusher: subscriber
+                });
+            } catch (err) {
+                console.log(err.message)
+            }
+        });
+    }
+
+    /*-- End Redis subscriber bidirectional lock --*/
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {

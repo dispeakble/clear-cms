@@ -8,14 +8,12 @@ import {HttpAuthGuard} from "../guards/http.auth.guard";
 import multer from "multer";
 import {Observable} from "rxjs";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
-import {MainEvent} from "../events/Main.event";
-import {EventEmitter2, OnEvent} from "@nestjs/event-emitter";
+import {Readable} from "stream";
 
 @Controller()
 export class AppController {
 
     private portMap = {};
-    private handhakes = {};
 
     private moduleConfig: ModuleInterface = {
         name: 'proxy',
@@ -33,7 +31,7 @@ export class AppController {
         }]
     };
 
-    constructor(@Inject('ProtocolService') public protocolService, @Inject('SystemService') private systemService, @Inject('AppService') private appService, @Inject('SessionService') private sessionService, @Inject('WsGateway') private wsGateway, private eventEmitter: EventEmitter2) {
+    constructor(@Inject('ProtocolService') public protocolService, @Inject('SystemService') private systemService, @Inject('AppService') private appService, @Inject('SessionService') private sessionService, @Inject('WsGateway') private wsGateway) {
         this.protocolService.start().then(async () => {
             this.portMap = await this.protocolService.getValue('portMap') || [];
             const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
@@ -47,9 +45,7 @@ export class AppController {
                 }
             });
         })
-        this.eventEmitter.emit('main', new MainEvent({
-            payload: "test"
-        }))
+
     }
 
     //TODO ADD POST HTTP GUARD SEPARATELY
@@ -59,14 +55,30 @@ export class AppController {
             const multerObj = multer({
                 storage: {
                     _handleFile: (req, file, cb) => {
-                        //we will start a REDIS handshake with the consumer
-                        let handshake = this.startHandshake({
-                            channel: this.portChannel(req.headers),
-                            perform: {
-                                api: req.body.api,
-                                act: req.body.act
-                            }
+
+                        const readable = new Readable();
+                        readable._read = () => {} // _read is required but you can noop it
+
+
+                        //TODO could be too late for data here. check md5 check sum
+                        //we listen to data events on the file stream and push the binaries
+                        file.stream.on('data', function (data) {
+                            readable.push(data);
                         });
+
+                        file.stream.on('end', function () {
+                            readable.push(null);
+                        });
+
+
+                        //we will start a REDIS handshake with the consumer
+                        let handshake = this.protocolService.startHandshake({
+                            channel: this.portChannel(req.headers),
+                            indication: {
+                                api: 'bucket',
+                                act: 'uploadFiles'
+                            }
+                        }, this.moduleConfig);
 
                         //we subscribe to the consumer
 
@@ -75,6 +87,7 @@ export class AppController {
                         }, err => {
                             console.log(err);
                         }, () => {
+                            req.next();
                             console.log('upload complete');
                         })
 
@@ -82,29 +95,35 @@ export class AppController {
                         handshake.thePromise.then(handshakeResponse => {
                             //we use the pusher to send the init file upload command
                             handshakeResponse['thePusher'].next({
-                                type: 'init',
                                 api: req.body.api,
                                 act: req.body.act,
                                 payload: {
+                                    type: 'meta',
+                                    length: file.size,
                                     path: req.body.path,
-                                    filename: file.fieldname
+                                    filename: file.fieldname,
+                                    replace: "true" === req.body.replace
                                 }
                             });
 
-                            //TODO could be too late for data here. check md5 check sum
-                            //we listen to data events on the file stream and push the binaries
-                            file.stream.on('data', function (data) {
+                            readable.on("data", (data) => {
                                 handshakeResponse['thePusher'].next({
-                                    type: 'data',
                                     payload: {
+                                        type: 'data',
                                         buffer: data
                                     }
                                 });
-                            });
+                            })
 
-                            file.stream.on('end', function () {
+                            readable.on("error", (error) => {
+                                handshakeResponse['thePusher'].error(error);
                                 handshakeResponse['thePusher'].complete();
                             });
+
+                            readable.on("end", () => {
+                                handshakeResponse['thePusher'].complete();
+                            });
+
                         });
                     },
                     _removeFile: (req, file, cb) => {
@@ -120,23 +139,6 @@ export class AppController {
                 }
 
             });
-
-            /*const writeStream = createWriteStream(
-                '../../var/',
-            );
-            req.pipe(writeStream);
-
-            writeStream.on("data", (data) => {
-                console.log('...')
-            })*/
-
-            return;
-
-            await new Promise(resolve => {
-                setTimeout(() => {
-                    resolve(true);
-                }, 3000);
-            })
 
             const start_date = new Date().getTime();
             const channel = this.portChannel(req.headers);
@@ -343,11 +345,6 @@ export class AppController {
 
     }
 
-    @OnEvent('main', { async: true })
-    HandleMainEvent(payload: MainEvent) {
-        console.log(payload)
-    }
-
     /*async asyncForEach(array: Array<any>, callback: (item: any, index: number, array: Array<any>) => void): Promise<void> {
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
@@ -369,117 +366,6 @@ export class AppController {
 
                     this.portMap = data;
                 }
-            }
-        });
-
-
-    }
-
-    /*-- Start Redis subscriber bidirectional lock --*/
-    public startHandshake(params) {
-        const myId = Math.round(Math.random() * 1000000);
-        return {
-            thePromise: new Promise((resolve) => {
-                this.handhakes[myId] = resolve;
-            }),
-            theObserver: this.protocolService.sendMessage({
-                channel: params.channel,
-                api: 'main',
-                act: 'requestHandshake',
-                payload: {
-                    callerId: myId,
-                    respond: {
-                        channel: this.moduleConfig.config.channel,
-                        api: 'main',
-                        act: 'confirmHandshake'
-                    }
-
-                }
-            })
-        }
-    }
-
-    public requestHandshake(params) {
-        return new Observable(subscriber => {
-            const myId = Math.round(Math.random() * 1000000);//TODO use UUID
-            subscriber.next({
-                responderId: myId,
-                message: 'handshake request received'
-            });
-
-            const initiator = this.protocolService.sendMessage({
-                channel: params.respond.channel,
-                api: params.respond.api,
-                act: params.respond.act,
-                type: params.type,
-                payload: {
-                    responderId: myId,
-                    callerId: params.callerId,
-                    message: 'handshake confirmed'
-                }
-            })
-
-            const callbacks = {
-                onData: data => {
-                    this.perform({
-                        channel: params.payload.respond.channel,
-                        type: data.type,
-                        api: params.payload.respond.api,
-                        act: params.payload.respond.act,
-                        payload: data
-                    }).subscribe(response => {
-                        console.log('loading...');
-                    }, err => {
-                        //TODO send to caller the error
-                        console.log('handshake callback error');
-                        console.log(err);
-                    }, () => {
-                        console.log('handshake callback complete');
-                    });
-                },
-                onError: err => {
-                    console.log(err);
-                },
-                onComplete: () => {
-                    console.log('handshake finished');
-                }
-            };
-
-            //TODO create a bucket handshake before confirming this handshake
-
-
-            initiator.subscribe(data => {
-                this.perform({
-                    channel: 'system',
-                    api: params.payload.respond.api,
-                    act: params.payload.respond.act,
-                    payload: {
-                        data: data
-                    }
-                });
-                callbacks.onData(data);
-            }, err => {
-                callbacks.onError(err);
-            }, () => {
-                callbacks.onComplete();
-                subscriber.complete();
-            })
-
-        })
-    }
-
-    public confirmHandshake(params) {
-        return new Observable(subscriber => {
-            try {
-                if (!this.handhakes.hasOwnProperty(params.callerId)) {
-                    subscriber.complete();
-                }
-                this.handhakes[params.callerId]({
-                    responderId: params.responderId,
-                    thePusher: subscriber
-                });
-            } catch (err) {
-                console.log(err.message)
             }
         });
     }
@@ -566,16 +452,11 @@ export class AppController {
 
     private perform(params: payloadInterface) {
         try {
-            console.log('calling ' + params.api + 'Service.perform(' + JSON.stringify({
-                act: params.act
-            }) + ')');
-
-            if (params.api !== 'main') {
-                return this[params.api + 'Service'].perform(params);
-            } else {
-                return this[params.act](params.payload);
+            const callback = (response) => {
+                return this.perform(response)
             }
-
+            params.payload = Object.assign({}, params.payload, {perform: callback})
+            return this[params.api + 'Service'].perform(params, this.moduleConfig);
         } catch (ex) {
             return {
                 status: 500,

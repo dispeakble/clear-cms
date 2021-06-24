@@ -9,7 +9,6 @@ import {Observable} from "rxjs";
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
-    public handhakes: any = {};
     private moduleConfig: ModuleInterface = {
         name: 'system',
         version: '21.06.16',
@@ -65,8 +64,15 @@ export class ProtocolController {
                 version: 'latest'
             }]
         };
-        this.systemService.registerModule(payload);
-        const response = await this.protocolService.sendMessage({
+        this.systemService.registerModule(payload).subscribe(data => {
+            console.log(data);
+        }, err => {
+            console.log(err);
+        }, () => {
+            console.log('registration complete')
+        });
+
+        this.protocolService.sendMessage({
             channel: 'hub',
             api: 'module',
             act: 'mapPort',
@@ -74,113 +80,14 @@ export class ProtocolController {
                 channel: 'system',
                 port: process.env.backend_port
             }
-        }).toPromise();
-        console.log(response);
-    }
-
-    /*-- Start Redis handshake --*/
-
-    public startHandshake(params) {
-        const myId = Math.round(Math.random() * 1000000);
-        return {
-            thePromise: new Promise((resolve) => {
-                this.handhakes[myId] = resolve;
-            }),
-            theObserver: this.protocolService.sendMessage({
-                channel: params.channel,
-                api: 'main',
-                act: 'requestHandshake',
-                payload: {
-                    callerId: myId,
-                    respond: {
-                        channel: this.moduleConfig.config.channel,
-                        api: 'main',
-                        act: 'confirmHandshake'
-                    }
-
-                }
-            })
-        }
-    }
-
-    public requestHandshake(params) {
-        return new Observable(subscriber => {
-            const myId = Math.round(Math.random() * 1000000);//TODO use UUID
-            subscriber.next({
-                responderId: myId,
-                message: 'handshake request received'
-            });
-
-            const initiator = this.protocolService.sendMessage({
-                channel: params.respond.channel,
-                api: params.respond.api,
-                act: params.respond.act,
-                type: params.type,
-                payload: {
-                    responderId: myId,
-                    callerId: params.callerId,
-                    message: 'handshake confirmed'
-                }
-            })
-
-            const callbacks = {
-                onData: data => {
-                    this.perform({
-                        channel: params.respond.channel,
-                        type: data.type,
-                        api: params.respond.api,
-                        act: params.respond.act,
-                        payload: data
-                    }).subscribe(response => {
-                        console.log('loading...');
-                    }, err => {
-                        //TODO send to caller the error
-                        console.log('handshake callback error');
-                        console.log(err);
-                    }, () => {
-                        console.log('handshake callback complete');
-                    });
-                },
-                onError: err => {
-                    console.log(err);
-                },
-                onComplete: () => {
-                    console.log('handshake finished');
-                }
-            };
-
-            //TODO create a bucket handshake before confirming this handshake
-
-
-            initiator.subscribe(data => {
-                callbacks.onData(data);
-            }, err => {
-                callbacks.onError(err);
-            }, () => {
-                callbacks.onComplete();
-                subscriber.complete();
-            })
-
-        })
-    }
-
-    public confirmHandshake(params) {
-        return new Observable(subscriber => {
-            try {
-                if (!this.handhakes.hasOwnProperty(params.callerId)) {
-                    subscriber.complete();
-                }
-                this.handhakes[params.callerId]({
-                    responderId: params.responderId,
-                    thePusher: subscriber
-                });
-            } catch (err) {
-                console.log(err.message)
-            }
+        }).subscribe(data => {
+            console.log(data);
+        }, err => {
+            console.log(err);
+        }, () => {
+            console.log('registration complete')
         });
     }
-
-    /*-- End Redis handshake --*/
 
     private registerModule(params) {
         setTimeout(async () => {
@@ -216,11 +123,11 @@ export class ProtocolController {
 
     private perform(params: payloadInterface) {
         try {
-            if ('main' !== params.api) {
-                return this[params.api + 'Service'].perform(params, this.moduleConfig);
-            } else {
-                return this[params.act](params.payload, this.moduleConfig);
+            const callback = (response) => {
+                return this.perform(response)
             }
+            params.payload = Object.assign({}, params.payload, {perform: callback})
+            return this[params.api + 'Service'].perform(params, this.moduleConfig);
         } catch (ex) {
             return {
                 error: 'Could not find ' + params.api + ':' + params.act

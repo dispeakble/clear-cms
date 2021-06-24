@@ -13,89 +13,12 @@ import {
 @Injectable()
 export class BucketService {
 
-    private methods = ["getMeta", "get", "chmod", "chown", "list", "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["checkAccess", "getMeta", "get", "chmod", "chown", "list", "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private bucketUrl = process.env.bucket_server;
+    private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
 
 
     constructor(@Inject('ProtocolService') private protocolService, private gotService: GotService) {
-    }
-
-    public getMeta(data: any) {
-        return new Promise((resolve) => {
-
-            const params = data.params;
-            let file_name = '';
-
-            if (data.params[0] && data.params[0].length) {
-                file_name = params[0];
-            }
-
-            try {
-                const file_path = __dirname + '/../../public/';
-                if (!fs.existsSync(file_path + file_name)) {
-                    file_name = 'index.html';
-                }
-                const stats = fs.statSync(file_path + file_name);
-                const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
-                resolve({modified: stats.mtimeMs, size: stats.size, "etagId": etagId, file_name: file_name});
-            } catch (err) {
-                console.log(err);
-            }
-
-        });
-    }
-
-    public get(data: any) {//TODO change hard-coded paths
-        return new Observable((observer) => {
-            const params = data.params;
-            let file_name = 'index.html';
-
-            if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
-                file_name = params[0];
-            }
-
-            try {
-                let file_path = path.join(__dirname, '..', '..', 'public', file_name);
-                if (!fs.existsSync(file_path)) {
-                    file_name = 'index.html';
-                    file_path = path.join(__dirname, '..', '..', 'public', file_name);
-                }
-
-                if(file_name.split("/").find((val, index) => index === 0 && val === "bucket")){
-                    this.getBucketBuffer({
-                        file_path
-                    }).subscribe((data) => {
-                        console.log('Buffering - ' + file_name);
-                        observer.next(data)
-                    }, (err) => {
-                        observer.error(err)
-                    }, () => {
-                        console.log('Done - ' + file_name);
-                        observer.complete()
-                    })
-                    return;
-                }
-
-                const stats = fs.statSync(file_path);
-                observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(file_name)});
-
-                const readStream = fs.createReadStream(file_path, {highWaterMark: 52428800});
-
-                readStream.on('data', function (chunk) {
-                    console.log('Buffering - ' + file_name);
-                    observer.next(chunk);
-                }).on('end', function () {
-                    console.log('Done - ' + file_name);
-                    observer.complete();
-                });
-            } catch (err) {
-                observer.next({content_type: '404'})
-                fs.readFile(__dirname + '/../../public/index.html', (err, buffer) => {
-                    observer.next(buffer);
-                    observer.complete();
-                });
-            }
-        });
     }
 
     private getBucketMeta(params: any, options: any) {
@@ -161,40 +84,142 @@ export class BucketService {
         });
     }
 
-    private initUpload(data: any){
+    private uploadFiles(params: any, config){
         return new Observable(subscriber => {
-            //console.log(data);
 
-            if(data){
+            //TODO do a handshake with the bucket module
 
-            }
+            const handshake = params.perform({
+                channel: config.config.channel,
+                api: 'protocol',
+                act: 'startHandshake',
+                payload: {
+                    channel: 'bucket',
+                    indication: {
+                        api: 'fs',
+                        act: 'uploadFiles'
+                    }
+                }
+            })
 
+            handshake.theObserver.subscribe(data => {
+                //console.log(data);
+            }, err => {
+                console.log(err);
+            }, () => {
+                console.log('upload complete');
+            })
 
+            handshake.thePromise.then(handshakeResponse => {
+                params.initiator.subscribe(data => {
+                    handshakeResponse.thePusher.next(data)
+                    //console.log('.')
+                }, err => {
+                    console.log(err);
+                    subscriber.complete()
+                }, () => {
+                    console.log(JSON.stringify(params), 'uploaded complete')
+                    subscriber.complete();
+                });
 
+                //console.log('.')
 
-            subscriber.next('blah')
+                subscriber.next('.');
+            });
+
         });
     }
 
-    private uploadFiles(data: any){
-        return new Observable(subscriber => {
+    private checkPaths(data: any){
+        const params = data.params;
+        let file_name = '';
 
-            console.log(data);
+        if (data.params[0] && data.params[0].length) {
+            file_name = params[0];
+        }
+        this.publicPaths.forEach((e, i) => {
+            if(file_name.indexOf(e) === 0){
+                return true;
+            }
+        });
+        return false;
+    }
 
-            switch (data.type) {
-                case "init":
-                    //TODO make a handshake with the bucket service
-
-                    subscriber.next('done')
-                    break;
-                case "data":
-                    break;
+    public checkAccess(data: any) {
+        return new Promise((resolve) => {
+            if(!this.checkPaths(data)){
+                return resolve({
+                    access: false,
+                    status: HttpStatus.TEMPORARY_REDIRECT,
+                    location: this.publicPaths[0]
+                });
             }
 
+            return resolve({
+                access: true
+            });
+        });
+    }
 
+    public getMeta(data: any) {
+        return new Promise((resolve) => {
 
+            const params = data.params;
+            let file_name = '';
 
+            if (data.params[0] && data.params[0].length) {
+                file_name = params[0];
+            }
 
+            try {
+                const file_path = __dirname + '/../../public/';
+                if (!fs.existsSync(file_path + file_name)) {
+                    file_name = 'index.html';
+                }
+                const stats = fs.statSync(file_path + file_name);
+                const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
+                resolve({modified: stats.mtimeMs, size: stats.size, "etagId": etagId, file_name: file_name});
+            } catch (err) {
+                console.log(err);
+            }
+
+        });
+    }
+
+    public get(data: any) {
+        return new Observable((observer) => {
+            const params = data.params;
+            let file_name = 'index.html';
+
+            if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
+                file_name = params[0];
+            }
+
+            try {
+                let file_path = __dirname + '/../../public/' + file_name;
+                if (!fs.existsSync(file_path)) {
+                    file_name = 'index.html';
+                    file_path = __dirname + '/../../public/index.html';
+                }
+
+                const stats = fs.statSync(file_path);
+                observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(file_name)});
+
+                const readStream = fs.createReadStream(file_path, {highWaterMark: 52428800});
+
+                readStream.on('data', function (chunk) {
+                    console.log('Buffering - ' + file_name);
+                    observer.next(chunk);
+                }).on('end', function () {
+                    console.log('Done - ' + file_name);
+                    observer.complete();
+                });
+            } catch (err) {
+                fs.readFile(__dirname + '/../../public/index.html', (err, buffer) => {
+                    observer.next(buffer);
+                    observer.complete();
+                });
+            }
         });
     }
 

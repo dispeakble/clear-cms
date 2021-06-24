@@ -9,7 +9,7 @@ import {Observable} from "rxjs";
 export class ProtocolService {
 
     //exposed methods
-    private methods = ["sendMessage", "emitMessage", "ping", "setValue", "getValue"];
+    private methods = ["sendMessage", "emitMessage", "ping", "setValue", "getValue", "startHandshake", "requestHandshake", "confirmHandshake"];
     private handhakes: any = {};
 
     @Inject('REDIS_SERVICE') private redisService: ClientProxy;
@@ -52,7 +52,7 @@ export class ProtocolService {
     }
 
     /*-- Start Redis subscriber bidirectional lock --*/
-    public startHandshake(params){
+    public startHandshake(params, config) {
         const myId = Math.round(Math.random() * 1000000);
         return {
             thePromise: new Promise((resolve) => {
@@ -62,12 +62,11 @@ export class ProtocolService {
                 channel: params.channel,
                 api: 'protocol',
                 act: 'requestHandshake',
-                type: 'handshake',
                 payload: {
                     callerId: myId,
-                    perform: params.perform,
+                    indication: params.indication,
                     respond: {
-                        channel: 'proxy',
+                        channel: config.config.channel,
                         api: 'protocol',
                         act: 'confirmHandshake'
                     }
@@ -77,31 +76,38 @@ export class ProtocolService {
         }
     }
 
-    public requestHandshake(params){
+    public requestHandshake(params, config) {
         return new Observable(subscriber => {
             const myId = Math.round(Math.random() * 1000000);//TODO use UUID
             subscriber.next({
                 responderId: myId,
-                message: 'handshake accepted'
+                message: 'handshake request received'
             });
 
             const initiator = this.sendMessage({
                 channel: params.respond.channel,
                 api: params.respond.api,
                 act: params.respond.act,
-                type: params.type,
                 payload: {
-                    message: 'Confirming handshake'
+                    responderId: myId,
+                    callerId: params.callerId,
+                    message: 'handshake confirmed'
                 }
-            })
+            });
 
-            initiator.subscribe(data => {
-
-            }, err => {
-                params.error(err);
+            params.perform({
+                channel: config.config.channel,
+                api: params.indication.api,
+                act: params.indication.act,
+                payload: {
+                    initiator: initiator
+                }
+            }, config).subscribe((response) => {
+                subscriber.next(response);
+            }, (errResponse) => {
+                subscriber.error(errResponse);
             }, () => {
-                params.complete();
-                subscriber.complete();
+
             })
 
         })
@@ -110,7 +116,7 @@ export class ProtocolService {
     public confirmHandshake(params) {
         return new Observable(subscriber => {
             try {
-                if(!this.handhakes.hasOwnProperty(params.callerId)){
+                if (!this.handhakes.hasOwnProperty(params.callerId)) {
                     subscriber.complete();
                 }
                 this.handhakes[params.callerId]({
@@ -122,6 +128,7 @@ export class ProtocolService {
             }
         });
     }
+
     /*-- End Redis subscriber bidirectional lock --*/
 
     public perform(data: any, config?: ModuleInterface) {

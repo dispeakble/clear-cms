@@ -12,8 +12,11 @@ async function bootstrap() {
         const app = await NestFactory.createMicroservice(AppModule, {
             transport: Transport.REDIS,
             options: {
-                url: 'redis://' + process.env.redis_server,
-                port: +process.env.redis_port
+                url:  'redis://' + process.env.redis_server,
+                port: +process.env.redis_port,
+                password: process.env.redis_password,
+                retryAttempts: 20,
+                retryDelay: 3000,
             },
         });
         await app.listen(() => console.log('pages module is ready.', ...arguments));

@@ -25,7 +25,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: data.channel}, payload);
 
     }
 
@@ -38,7 +38,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload).toPromise();
+        return this.redisService.emit({message: data.channel}, payload);
 
     }
 

@@ -28,25 +28,29 @@ export class AppController {
       @Inject('SystemService') private systemService,
       @Inject('DbService') private dbService
     ) {
-        this.protocolService.start().then(async () => {
-            let response = await this.systemService.registerModule(this.config);
-            console.log(response);
+        this.protocolService.start().then(() => {
+            this.systemService.registerModule(this.config).subscribe(data => {
+                console.log(data);
+            }, err => {
+                console.log(err);
+            }, () => {
+
+            });
+
         })
     }
 
     //Microservice protocol
     @MessagePattern({message: 'db'})
-    public async onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
+    public onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         console.log(data);
-        const resp = await this.perform(data);
-        return resp;
+        return this.perform(data);
     }
 
     @EventPattern({event: 'db'})
-    public async onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
+    public onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         console.log(data);
-        const resp = await this.perform(data);
-        return resp;
+        return this.perform(data);
     }
 
     private perform(data: payloadInterface) {
