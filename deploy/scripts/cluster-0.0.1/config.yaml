@@ -30,7 +30,9 @@ rancher_kubernetes_engine_config:
   #      app: ingress
   #
   ingress:
-    provider: "none"
+    http_port: 0
+    https_port: 0
+    provider: none
   kubernetes_version: v1.18.18-rancher1-1
   monitoring:
     provider: metrics-server
