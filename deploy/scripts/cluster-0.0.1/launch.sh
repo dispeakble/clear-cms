@@ -14,19 +14,21 @@ PGADMIN_EMAIL="ovidiu.alexa@gmail.com"
 PGADMIN_PASSWORD="0MG9DtWxT@t89*6"
 PGADMIN_NODEPORT=31080
 
+POSTGRES_USERNAME="cms"
 POSTGRES_PASSWORD="0MG9DtWxT@t89*6"
+POSTGRES_DB="cms"
 
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 
 function createCluster() {
-    sleep 5
+    sleep 2
     echo "Creating the Cluster $1:"
-    rancher cluster create --network-provider flannel --rke-config ./cluster-0.0.1/config.yaml $1
+    rancher cluster create --network-provider flannel --rke-config "${BASH_SOURCE%/*}/config.yaml" $1
     rancherLogin
-    sleep 5
+    sleep 2
     rancher context switch
 
-    sleep 5
+    sleep 2
     echo "Registering node:"
     ADD_NODE=$(rancher cluster add-node $1 | grep docker)
     ROLES=" --etcd --controlplane --worker"
@@ -66,7 +68,7 @@ function checkCluster() {
     wait_count=0
     while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 90)); do
         echo -n .
-        sleep 10
+        sleep 5
         wait_count=$((wait_count + 1))
         CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
     done
@@ -75,10 +77,6 @@ function checkCluster() {
         exit 1
     fi
     echo "ok!"
-    rancher kubectl delete --all pods --namespace=ingress-nginx
-    rancher kubectl delete --all deployments --namespace=ingress-nginx
-    rancher kubectl delete --all services --namespace=ingress-nginx
-    rancher kubectl delete --all daemonsets --namespace=ingress-nginx
     return 0
 }
 
@@ -96,7 +94,7 @@ function waitForCatalog() {
     sleep 3
   else
     printf '.' > /dev/tty
-    sleep 5
+    sleep 3
     waitForApp $1
     return 0;
   fi
@@ -152,13 +150,13 @@ function launchLonghorn () {
 function checkApp() {
   if [ -z "$(rancher app lt | grep $1)" ]; then
     printf "$1 is not ready yet...\n" > /dev/tty
-    sleep 5
+    sleep 3
     checkApp $1
     return 0;
   fi
   if [ -z "$(rancher app st $1)" ]; then
     printf "$1 found but not loaded yet...\n" > /dev/tty
-    sleep 5
+    sleep 3
     checkApp $1
     return 0;
   fi
@@ -175,9 +173,6 @@ function addCatalog() {
 }
 
 function launchRedis() {
-  addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
-
-  sleep 15
 
   checkApp "cattle-global-data:bitnami-redis"
 
@@ -212,10 +207,16 @@ function launchCmsApp() {
 }
 
 function launchPostgreSQL() {
+
+  rancher kubectl create configmap dbconfig --from-file=setup1.sql="${BASH_SOURCE%/*}/../../pg.db/db.schema.sql"
+
   checkApp "postgresql-ha"
 
   rancher app install --no-prompt --namespace default \
+   --set postgresql.initdbScriptsCM=dbconfig \
+   --set postgresql.username=$POSTGRES_USERNAME \
    --set postgresql.password=$POSTGRES_PASSWORD \
+   --set global.postgresql.database=$POSTGRES_DB \
    --set postgresql.repmgrPassword=$POSTGRES_PASSWORD \
    --set pgpool.adminPassword=$POSTGRES_PASSWORD \
    --set global.storageClass=longhorn \
@@ -249,6 +250,7 @@ function launchPGAdmin() {
 function launchMetalLB(){
 
 createNamespace "metallb-system"
+checkApp "cattle-global-data:bitnami-metallb"
 sleep 5
 sed -e "s|MY_IP_RANGE|$(get_my_ip)-$(get_my_ip)|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
 rancher app install --no-prompt --namespace metallb-system \
@@ -259,7 +261,13 @@ rancher app install --no-prompt --namespace metallb-system \
 }
 
 function launchTraefik(){
-  rancher context switch System \
+
+  rancher context switch System
+
+  rancher kubectl delete --all pods --namespace=ingress-nginx
+  rancher kubectl delete --all deployments --namespace=ingress-nginx
+  rancher kubectl delete --all services --namespace=ingress-nginx
+  rancher kubectl delete --all daemonsets --namespace=ingress-nginx
 
   rancher app install --no-prompt --namespace kube-system \
   --helm-timeout 300 \
@@ -280,15 +288,20 @@ rancherForceLogin
 clusterExists $CMS_NAME || createCluster $CMS_NAME
 checkCluster $CMS_NAME
 
-sleep 5
+sleep 2
 rancherLogin
+sleep 2
+rancher context switch Default
+addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
+sleep 10
+launchMetalLB
 
 launchTraefik
 
 launchLonghorn
 rancher context switch Default
 launchRedis
-launchMetalLB
+
 launchPostgreSQL
 launchPGAdmin
 launchCmsApp
