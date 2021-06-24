@@ -2,7 +2,6 @@ import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {Transport} from "@nestjs/microservices";
 import * as compression from 'compression';
-//import {SessionAdapter} from "./adapters/session.adapter";
 
 let httpsOptions;
 let app;

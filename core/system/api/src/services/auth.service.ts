@@ -56,7 +56,8 @@ export class AuthService {
 
     public doLogin(params: any) {
         return new Observable((observer) => {
-            if (!params.hasOwnProperty('email') || !params.hasOwnProperty('password') || !params.email.length || !params.password.length) {
+            const request = params.body.payload;
+            if (!request.hasOwnProperty('email') || !request.hasOwnProperty('password') || !request.email.length || !request.password.length) {
                 observer.complete();
                 return;
             }
@@ -71,16 +72,16 @@ export class AuthService {
                         what: this.config.admin_table,
                         fields: this.config.admin_fields,
                         where: {
-                            email: params.email,
+                            email: request.email,
                             active: 1,
-                            'MD5(password)': md5.default(params.password)
+                            'MD5(password)': md5.default(request.password)
                         },
                         limit: [0, 1]
                     }
                 }
             }
             observer.next({type: 'meta', content_type: 'application/json'});
-            this.protocolService.sendMessage(payload).then((auth_response) => {
+            this.protocolService.sendMessage(payload).subscribe((auth_response) => {
                 if (auth_response && auth_response.data && auth_response.data.length) {
                     observer.next({
                         type:'String',
@@ -100,6 +101,10 @@ export class AuthService {
                         mime: 'application/json'
                     });
                 }
+                observer.complete();
+            }, err => {
+                console.log(err)
+            }, () => {
                 observer.complete();
             });
         });

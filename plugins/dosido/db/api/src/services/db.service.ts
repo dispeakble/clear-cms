@@ -1,6 +1,7 @@
 import {Inject, Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Pool} from "pg";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class DbService {
@@ -345,7 +346,7 @@ export class DbService {
     }
 
     query(params) {
-        return new Promise(async (resolve_query, reject_query) => {
+        return new Observable((subscriber) => {
             try {
                 const query = this.crud[params.action](params.data);//returns query string and params
 
@@ -353,29 +354,35 @@ export class DbService {
 
                     if (err) {
                         console.error("error running query", err, query, params);
-                        return resolve_query({
+                        subscriber.error({
                             data: null,
                             what: params.data.what
                         });
+                        subscriber.complete();
+                        return;
                     }
 
                     if ("undefined" === typeof result) {
                         console.error("result undefined: ", err, query);
-                        return resolve_query({
+                        subscriber.next({
                             data: null,
                             what: params.data.what
                         });
+                        subscriber.complete();
+                        return;
                     }
 
-                    resolve_query({
+                    subscriber.next({
                         data: result.rows,
                         what: params.data.what
                     });
+                    subscriber.complete();
 
                 });
             } catch (err) {
-                resolve_query(null);
-                return console.log(err);
+                console.log(err);
+                subscriber.error(err);
+                subscriber.complete();
             }
         });
     }

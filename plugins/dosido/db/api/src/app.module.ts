@@ -18,7 +18,9 @@ import { Pool as PgPool } from "pg";
         options: {
           url:  'redis://' + process.env.redis_server,
           port: +process.env.redis_port,
-          password: process.env.redis_password
+          password: process.env.redis_password,
+          retryAttempts: 20,
+          retryDelay: 3000,
         }
       },
     ])

@@ -34,7 +34,7 @@ export class DevService {
         form.append("api", "bucketService");
         form.append("act", "uploadFiles");
         form.append("path", "/superSecret/");
-        form.append("replace", "1");
+        form.append("replace", "true");
 
         const rs1 = fs.createReadStream(path.join(__dirname, '..', '..', '..', 'var', 'nvidia_drivers.exe'), {
             autoClose: true

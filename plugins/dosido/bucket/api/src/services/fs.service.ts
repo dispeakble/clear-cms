@@ -130,7 +130,54 @@ export class FsService {
     }
 
     uploadFiles(params) {return new Observable(subscriber => {
-        if(params.files && params.files.length){
+        //TODO get initial metadata
+        const readable = new Readable()
+        readable._read = () => {} // _read is required but you can noop it
+
+        let uploadObs;
+
+        let options: any = {};
+
+
+        params.initiator.subscribe(data => {
+            //first will be the meta data
+            //create a write stream
+            if(data && data.payload && data.payload.type){
+                switch(data.payload.type) {
+                    case 'meta':
+                        uploadObs = this.writeFile({
+                            name: data.payload.filename,
+                            size: data.payload.size,
+                            path: data.payload.path,
+                            readable: readable,
+                            replace: data.payload.replace || false
+                        });
+                        uploadObs.subscribe((data) => {
+                            subscriber.next(data);
+                        }, (err) => {
+                            subscriber.error(err);
+                        }, () => {
+                            subscriber.complete();
+                        });
+                        break;
+                    case 'data':
+                        readable.push(Buffer.from(data.payload.buffer.data))
+                        break;
+                }
+
+
+            }
+           /* readable.push(data.buffer)
+            readable.push(null)*/
+        }, err => {
+            readable.push(null);
+            readable.emit("close");
+        }, () => {
+            readable.push(null);
+            readable.emit("close");
+        });
+
+        /*if(params.files && params.files.length){
             let uploadPromises = [];
             let uploadObs = [];
             let resolve_upload;
@@ -163,7 +210,7 @@ export class FsService {
             }).finally(() => {
                 subscriber.complete();
             })
-        }
+        }*/
     })}
 
     private writeFile(params: any): Observable<any> {
@@ -173,6 +220,9 @@ export class FsService {
             const realDestPath = path.join(dir, file);
             let message = "";
             try {
+                if(this.help.not.dir({path: dir})){
+                    fs.mkdirSync(dir, {recursive: true, mode: 0o777})
+                }
                 if (this.help.is.readable({path: realDestPath}) && !params.replace) {
                     throw new Error(`cannot upload ${file} because the destination path already exists. Use params.replace for overwrite`);
                 }

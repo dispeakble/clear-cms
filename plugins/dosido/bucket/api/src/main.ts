@@ -12,20 +12,22 @@ const init = async () => {
 
     await app.init();
 
-    await app.connectMicroservice({
+    /*await app.connectMicroservice({
         transport: Transport.REDIS,
         options: {
             return_buffers: true,
             url: 'redis://' + process.env.redis_server,
             port: +process.env.redis_port,
-            password: process.env.redis_password
+            password: process.env.redis_password,
+            retryAttempts: 20,
+            retryDelay: 3000,
         }
-    });
+    });*/
 
     await app.startAllMicroservicesAsync();
     console.log('init done');
 
-    app.listen(+process.env.backend_port, '0.0.0.0');
+    //app.listen(+process.env.backend_port, '0.0.0.0');
 
     console.log('Bucket module started');
 

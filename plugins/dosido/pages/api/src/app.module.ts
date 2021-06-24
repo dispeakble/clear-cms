@@ -14,7 +14,9 @@ import {ProtocolService} from "./services/protocol.service";
         transport: Transport.REDIS,
         options: {
           url: 'redis://' + process.env.redis_server,
-          port: +process.env.redis_port
+          port: +process.env.redis_port,
+          retryAttempts: 20,
+          retryDelay: 3000,
         }
       },
     ])
