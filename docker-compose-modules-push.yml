@@ -1,13 +1,13 @@
 version: '3.3'
 services:
-  crm-bucket:
-    container_name: crm-bucket
-    working_dir: /usr/src/app
-    build:
-      context: ./plugins/dosido/bucket
-      dockerfile: Dockerfile
-    image:
-      dispeakble/crm-bucket:${CRM_IMG_TAG}
+#  crm-bucket:
+#    container_name: crm-bucket
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./plugins/dosido/bucket
+#      dockerfile: Dockerfile
+#    image:
+#      dispeakble/crm-bucket:${CRM_IMG_TAG}
   crm-hub:
     container_name: crm-hub
     working_dir: /usr/src/app
@@ -38,36 +38,36 @@ services:
 #      - .env
 #    image:
 #      dispeakble/crm-pages:${CRM_IMG_TAG}
-  crm-system:
-    container_name: crm-system
-    working_dir: /usr/src/app
-    build:
-      context: ./core/system
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-system:${CRM_IMG_TAG}
-#  crm-db:
-#    container_name: crm-db
+#  crm-system:
+#    container_name: crm-system
 #    working_dir: /usr/src/app
 #    build:
-#      context: ./plugins/db
+#      context: ./core/system
 #      dockerfile: Dockerfile
 #    env_file:
 #      - .env
 #    image:
-#      dispeakble/crm-db:${CRM_IMG_TAG}
-  crm-proxy:
-    container_name: crm-proxy
-    working_dir: /usr/src/api
+#      dispeakble/crm-system:${CRM_IMG_TAG}
+  crm-db:
+    container_name: crm-db
+    working_dir: /usr/src/app
     build:
-      context: ./core/proxy
+      context: ./plugins/dosido/db
       dockerfile: Dockerfile
     env_file:
       - .env
     image:
-      dispeakble/crm-proxy:${CRM_IMG_TAG}
+      dispeakble/crm-db:${CRM_IMG_TAG}
+#  crm-proxy:
+#    container_name: crm-proxy
+#    working_dir: /usr/src/api
+#    build:
+#      context: ./core/proxy
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-proxy:${CRM_IMG_TAG}
 # crm-under-construction:
 #    container_name: crm-under-construction
 #    working_dir: /usr/src/api

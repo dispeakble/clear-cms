@@ -1,6 +1,7 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
+import {Observable} from "rxjs";
 //import * as md5 from "md5";
 
 @Injectable()
@@ -16,56 +17,67 @@ export class AdminThemesService {
 
     }
 
-    public async getAll() {
-        const payload: payloadInterface = {
-            channel: 'db',
-            api: 'db',
-            act: 'get',
-            payload: {
-                channel: 'system',
-                data: {
-                    what: 'admin_themes',
-                    fields: ["id", "title", "isdefault", "thumbnail"]
+    public getAll() {
+        return new Observable((subscriber) => {
+            const payload: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'get',
+                payload: {
+                    channel: 'system',
+                    data: {
+                        what: 'admin_themes',
+                        fields: ["id", "title", "isdefault", "thumbnail"]
+                    }
                 }
-            }
-        };
+            };
 
-        const data = await this.protocolService.sendMessage(payload);
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                let response = null;
 
-        let response = null;
+                if (data && data.hasOwnProperty('data')) {
+                    response = data.data;
+                }
+                subscriber.next(response);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
 
-        if (data && data.hasOwnProperty('data')) {
-            response = data.data;
-        }
-
-        return response;
     }
 
-    public async getOne(params) {
-        const payload: payloadInterface = {
-            channel: 'db',
-            api: 'db',
-            act: 'get',
-            payload: {
-                channel: 'system',
-                data: {
-                    what: 'admin_themes',
-                    fields: ["title", "isdefault", "thumbnail", "data"],
-                    where: params.where,
-                    limit: [0, 1]
+    public getOne(params) {
+        return new Observable((subscriber) => {
+            const payload: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'get',
+                payload: {
+                    channel: 'system',
+                    data: {
+                        what: 'admin_themes',
+                        fields: ["title", "isdefault", "thumbnail", "data"],
+                        where: params.where,
+                        limit: [0, 1]
+                    }
                 }
-            }
-        };
+            };
 
-        const data = await this.protocolService.sendMessage(payload);
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                let response = {};
 
-        let response = {};
-
-        if (data && data.hasOwnProperty('data')) {
-            response = data.data[0];
-        }
-
-        return response;
+                if (data && data.hasOwnProperty('data')) {
+                    response = data.data[0];
+                }
+                    subscriber.next(response);
+                }, err => {
+                    subscriber.error(err);
+                }, () => {
+                    subscriber.complete();
+            });
+        });
     }
 
     public async setInfo(params) {
@@ -81,30 +93,35 @@ export class AdminThemesService {
             })
         }
 
-        const request: payloadInterface = {
-            channel: 'db',
-            api: 'db',
-            act: 'set',
-            payload: {
-                channel: 'system',
-                data: {
-                    what: 'admin_themes',
-                    where: params.where,
-                    data: params.data
+        return new Observable((subscriber) => {
+            const request: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'set',
+                payload: {
+                    channel: 'system',
+                    data: {
+                        what: 'admin_themes',
+                        where: params.where,
+                        data: params.data
+                    }
                 }
-            }
-        };
+            };
 
-        await this.protocolService.sendMessage(request);
-
-        return {
-            success: "The theme was updated",
-            data: null
-        };
+            this.protocolService.sendMessage(request).subscribe(data => {
+                subscriber.next({
+                    success: "The theme was updated",
+                    data: null
+                });
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        });
     }
 
     public async addInfo(params) {
-
         if(params.isdefault){
             await this.setInfo({
                 where:{
@@ -115,53 +132,65 @@ export class AdminThemesService {
                 }
             })
         }
-
-        const request: payloadInterface = {
-            channel: 'db',
-            api: 'db',
-            act: 'add',
-            payload: {
-                channel: 'system',
-                data: {
-                    what: 'admin_themes',
+        return new Observable((subscriber) => {
+            const request: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'add',
+                payload: {
+                    channel: 'system',
                     data: {
-                        title: params.title,
-                        isdefault: params.isdefault,
-                        thumbnail: params.thumbnail,
-                        data: params.data,
+                        what: 'admin_themes',
+                        data: {
+                            title: params.title,
+                            isdefault: params.isdefault,
+                            thumbnail: params.thumbnail,
+                            data: params.data,
+                        }
                     }
                 }
-            }
-        };
+            };
 
-        await this.protocolService.sendMessage(request);
+            this.protocolService.sendMessage(request).subscribe(data => {
+                subscriber.next({
+                    success: "The theme was added",
+                    data: null
+                })
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
 
-        return {
-            success: "The theme was added",
-            data: null
-        };
     }
 
-    public async remInfo(params) {
-        const request: payloadInterface = {
-            channel: 'db',
-            api: 'db',
-            act: 'rem',
-            payload: {
-                channel: 'system',
-                data: {
-                    what: 'admin_themes',
-                    where: params
+    public remInfo(params) {
+        return new Observable((subscriber) => {
+            const request: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'rem',
+                payload: {
+                    channel: 'system',
+                    data: {
+                        what: 'admin_themes',
+                        where: params
+                    }
                 }
-            }
-        };
+            };
 
-        await this.protocolService.sendMessage(request);
-
-        return {
-            success: "The theme was removed",
-            data: null
-        };
+            this.protocolService.sendMessage(request).subscribe(data => {
+                subscriber.next({
+                    success: "The theme was removed",
+                    data: null
+                })
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
     }
 
     public perform(data: any, config?: ModuleInterface) {
