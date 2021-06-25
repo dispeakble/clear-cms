@@ -43,22 +43,16 @@ export class AppController {
     //Microservice protocol
     @MessagePattern({message: 'db'})
     public onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
-        console.log(data);
         return this.perform(data);
     }
 
     @EventPattern({event: 'db'})
     public onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
-        console.log(data);
         return this.perform(data);
     }
 
     private perform(data: payloadInterface) {
         try {
-            console.log('calling ' + data.api + 'Service.perform(' + JSON.stringify({
-                act: data.act,
-                payload: data.payload
-            }) + ')');
             return this[data.api + 'Service'].perform({act: data.act, payload: data.payload}, this.config);
         } catch (ex) {
             console.log(ex);

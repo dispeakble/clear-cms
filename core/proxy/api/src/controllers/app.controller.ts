@@ -429,7 +429,13 @@ export class AppController {
                 data: null
             }
             try {
-                response.data = await this.protocolService.sendMessage(payload);
+                this.protocolService.sendMessage(payload).subscribe(data => {
+                    resolve(data);
+                }, err => {
+                    resolve(err);
+                }, () => {
+
+                });
 
                 // if (response.data.callback) {
                 //     const callback = response.data.callback;
@@ -444,8 +450,6 @@ export class AppController {
             } catch (err) {
                 console.log(err);
             }
-
-            resolve(response);
 
         })
     }

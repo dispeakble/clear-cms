@@ -15,6 +15,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
+import {withTheme} from "@material-ui/styles";
 
 class Header extends Component {
   state = {
@@ -83,22 +84,22 @@ class Header extends Component {
   }
 
   headerColorChange(self) {
-    const { color, changeColorOnScroll, classes } = self.props;
+    const {color, changeColorOnScroll, classes} = self.props;
     const windowsScrollTop = window.pageYOffset;
+    const header = document.body
+        .getElementsByTagName("header")[0];
     if (windowsScrollTop > changeColorOnScroll.height) {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(classes[color]);
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(classes[changeColorOnScroll.color]);
+      header.setAttribute('color', changeColorOnScroll.color);
+      header
+          .classList.remove(classes[color]);
+      header
+          .classList.add(classes[changeColorOnScroll.color]);
     } else {
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.add(classes[color]);
-      document.body
-        .getElementsByTagName("header")[0]
-        .classList.remove(classes[changeColorOnScroll.color]);
+      header.setAttribute('color', color);
+      header
+          .classList.add(classes[color]);
+      header
+          .classList.remove(classes[changeColorOnScroll.color]);
     }
   }
 
@@ -206,7 +207,7 @@ class Header extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Header));
+export default withRouter(withTheme(withStyles(styles)(Header)));
 
 Header.defaultProp = {
   color: "rgba(0,0,0,.87)",
