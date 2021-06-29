@@ -3,8 +3,14 @@
 CMS_NAME="cms-cluster"
 CMS_PATH="$HOME/cms_app"
 
-DOCKERHUB_PASS="C7GIB8etX!N@"
-CHART_PASSWORD="33qsygUp8irSv@E"
+read -p 'Dockerhub Username: ' DOCKERHUB_USERNAME
+read -sp 'Dockerhub Password: ' DOCKERHUB_PASS
+
+read -p 'Bitbucket Username: ' BITBUCKET_USERNAME
+read -sp 'Bitbucket Password: ' BITBUCKET_PASS
+
+#DOCKERHUB_PASS="C7GIB8etX!N@"
+#CHART_PASSWORD="33qsygUp8irSv@E"
 
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
@@ -47,7 +53,7 @@ function createCluster() {
 
     rancher cluster kf $1 >~/.kube/config
 
-    kubectl create secret docker-registry dockerhub --docker-username=dispeakble --docker-password=$DOCKERHUB_PASS
+    kubectl create secret docker-registry dockerhub --docker-username=$DOCKERHUB_USERNAME --docker-password=$DOCKERHUB_PASS
 
     rancher cluster kf $CLUSTER_NAME >~/.kube/config
 
@@ -193,7 +199,7 @@ function launchRedis() {
 }
 
 function launchCmsApp() {
-  addCatalog "cms-app" "helm_v3" "https://the_dispeakble_one:${CHART_PASSWORD}@bitbucket.org/the_dispeakble_one/cms-charts.git"
+  addCatalog "cms-app" "helm_v3" "https://${BITBUCKET_USERNAME}:${BITBUCKET_PASS}@bitbucket.org/the_dispeakble_one/cms-charts.git"
 
   checkApp "cms"
 
