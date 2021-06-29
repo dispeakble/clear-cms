@@ -9,6 +9,8 @@
 @import "~react-grid-layout/css/styles.css";
 @import "~react-resizable/css/styles.css";
 
+/* start image gallery */
+
 .image-gallery-description {
   display: block;
   right: 0;
@@ -44,3 +46,46 @@
 .image-gallery-slide div {
   position: relative;
 }
+
+/* end image gallery */
+
+/* start the conky file explorer*/
+.chonky-toolbarContainer {
+  flex-direction: row-reverse;
+}
+
+.chonky-toolbarLeft {
+  flex-grow: 0 !important;
+}
+
+.chonky-toolbarRight {
+  flex-grow: 10000 !important;
+}
+
+.chonky-searchFieldContainer {
+  width: 15vw !important;
+}
+
+div[class^="gridFileEntryNameContainer"] span[class^="gridFileEntryName"] {
+  display: inline-block;
+  max-height: 3em;
+  overflow: hidden;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .chonky-searchFieldInput {
+    width: 78vw;
+  }
+  .chonky-infoContainer {
+    width: 20vw;
+  }
+  .chonky-searchFieldContainer {
+    width: 100% !important;
+  }
+  .chonky-toolbarLeft {
+    flex: 100%;
+  }
+}
+
+/* end the conky file explorer*/

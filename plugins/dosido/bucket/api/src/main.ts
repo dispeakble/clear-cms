@@ -12,7 +12,7 @@ const init = async () => {
 
     await app.init();
 
-    /*await app.connectMicroservice({
+    await app.connectMicroservice({
         transport: Transport.REDIS,
         options: {
             return_buffers: true,
@@ -22,7 +22,7 @@ const init = async () => {
             retryAttempts: 20,
             retryDelay: 3000,
         }
-    });*/
+    });
 
     await app.startAllMicroservicesAsync();
     console.log('init done');

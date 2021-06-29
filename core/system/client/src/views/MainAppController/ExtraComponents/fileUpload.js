@@ -261,7 +261,9 @@ class Themes extends Component {
     return (
       <Dialog
         style={{ width: "100%" }}
-        onBackdropClick="false"
+        onBackdropClick={() => {
+          console.log('dasfjhfkdsfhs')
+        }}
         classes={{
           root: this.props.classes.center,
           paper: this.props.classes.modal,

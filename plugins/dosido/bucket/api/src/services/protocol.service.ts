@@ -102,7 +102,7 @@ export class ProtocolService {
                 payload: {
                     initiator: initiator
                 }
-            }, config).subscribe((response) => {
+            }).subscribe((response) => {
                 subscriber.next(response);
             }, (errResponse) => {
                 subscriber.error(errResponse);

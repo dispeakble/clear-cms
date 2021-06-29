@@ -58,9 +58,9 @@ class App extends Component {
             active: false,
           },
           {
-            toLink: "/fileUpload",
+            toLink: "/bucket",
             icon: "publish",
-            name: "File Upload",
+            name: "Bucket",
             active: false,
           },
           {
@@ -228,7 +228,7 @@ class App extends Component {
         },
         MuiButton:{
           root:{
-            textTransform:"none"
+            textTransform: "none !important"
           }
         },
         MuiFormControlLabel: {

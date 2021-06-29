@@ -23,7 +23,7 @@ export class BucketService {
         "chmod",
         "chown",
         "list",
-        "uploadFiles",
+        "upload",
         "read",
         "rename",
         "move",

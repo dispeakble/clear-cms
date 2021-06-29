@@ -69,11 +69,13 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         //console.log(params);
         return new Promise<WsResponse>(async (resolve) => {
             try {
-                const response = {
+                const response = await this.callbacks['onMessage']({data: params, client: client});
+                response.id = params.id;
+                const payload = {
                     event: params.channel,
-                    data: await this.callbacks['onMessage']({data: params, client: client})
+                    data: response
                 };
-                resolve(response);
+                resolve(payload);
             } catch (err) {
                 console.log('Failed to resolve onMessage', JSON.stringify(err));
                 resolve({event: params.channel, data: null});

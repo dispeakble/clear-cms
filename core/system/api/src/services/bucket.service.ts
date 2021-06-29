@@ -13,7 +13,7 @@ import {
 @Injectable()
 export class BucketService {
 
-    private methods = ["checkAccess", "getMeta", "get", "chmod", "chown", "list", "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private bucketUrl = process.env.bucket_server;
     private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
 
@@ -21,7 +21,7 @@ export class BucketService {
     constructor(@Inject('ProtocolService') private protocolService, private gotService: GotService) {
     }
 
-    private getBucketMeta(params: any, options: any) {
+    private info(params: any, options: any) {
         return new Promise((resolve) => {
             try {
                 const metaPayload: payloadInterface = {
@@ -61,11 +61,11 @@ export class BucketService {
         });
     }
 
-    private getBucketBuffer(params: any) {
+    private read(params: any) {
         return new Observable((observer) => {
             try {
                 (async () => {
-                    const stats = await this.getBucketMeta({path: params.path}, {defaultFileName: 'index.html'});
+                    const stats = await this.getMeta({path: params.path, defaultFileName: 'index.html'});
                     observer.next({type: 'meta', content_length: stats['size'], content_type: mime.getType(stats['file_name']), file_name: stats['file_name']});
 
                     this.gotService.get(`${this.bucketUrl}/${params.path}`, {}).subscribe((data) => {
@@ -84,10 +84,8 @@ export class BucketService {
         });
     }
 
-    private uploadFiles(params: any, config){
+    private upload(params: any, config){
         return new Observable(subscriber => {
-
-            //TODO do a handshake with the bucket module
 
             const handshake = params.perform({
                 channel: config.config.channel,
@@ -97,7 +95,7 @@ export class BucketService {
                     channel: 'bucket',
                     indication: {
                         api: 'fs',
-                        act: 'uploadFiles'
+                        act: 'upload'
                     }
                 }
             })
@@ -113,16 +111,13 @@ export class BucketService {
             handshake.thePromise.then(handshakeResponse => {
                 params.initiator.subscribe(data => {
                     handshakeResponse.thePusher.next(data)
-                    //console.log('.')
                 }, err => {
                     console.log(err);
                     subscriber.complete()
                 }, () => {
-                    console.log(JSON.stringify(params), 'uploaded complete')
+                    console.log('uploaded complete')
                     subscriber.complete();
                 });
-
-                //console.log('.')
 
                 subscriber.next('.');
             });
@@ -174,7 +169,7 @@ export class BucketService {
             try {
                 const file_path = __dirname + '/../../public/';
                 if (!fs.existsSync(file_path + file_name)) {
-                    file_name = 'index.html';
+                    file_name = data.defaultFileName;
                 }
                 const stats = fs.statSync(file_path + file_name);
                 const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
@@ -221,6 +216,44 @@ export class BucketService {
                 });
             }
         });
+    }
+
+    public list (params: any){
+        return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'list',
+                payload: {
+                    path: params.path
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
+
+    public rm (params: any){
+        return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'rm',
+                payload: params
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
     }
 
     public perform(data: any, config?: ModuleInterface) {

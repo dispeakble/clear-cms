@@ -8,16 +8,16 @@ services:
 #      dockerfile: Dockerfile
 #    image:
 #      dispeakble/crm-bucket:${CRM_IMG_TAG}
-  crm-hub:
-    container_name: crm-hub
-    working_dir: /usr/src/app
-    build:
-      context: ./core/hub
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-hub:${CRM_IMG_TAG}
+#  crm-hub:
+#    container_name: crm-hub
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./core/hub
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-hub:${CRM_IMG_TAG}
 #  crm-dev:
 #    container_name: crm-dev
 #    working_dir: /usr/src/app

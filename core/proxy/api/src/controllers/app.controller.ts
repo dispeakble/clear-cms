@@ -1,4 +1,5 @@
 import {
+    Body,
     Controller, Get, HttpStatus, Inject, Post, Req, Res, Session, UseGuards
 } from "@nestjs/common";
 import {Request, Response} from "express";
@@ -50,17 +51,17 @@ export class AppController {
 
     //TODO ADD POST HTTP GUARD SEPARATELY
     @Post('*')
-    async onPost(@Res() res: Response, @Req() req: Request, @Session() session) {
+    async onPost(@Res() res: Response, @Req() req: Request, @Session() session, @Body() body) {
         try {
+            const totalFiles = +req.body.totalFiles | 0;
+            let fileCount = 0;
             const multerObj = multer({
                 storage: {
-                    _handleFile: (req, file, cb) => {
+                    /*_handleFile: (req, file, cb) => {
 
                         const readable = new Readable();
                         readable._read = () => {} // _read is required but you can noop it
 
-
-                        //TODO could be too late for data here. check md5 check sum
                         //we listen to data events on the file stream and push the binaries
                         file.stream.on('data', function (data) {
                             readable.push(data);
@@ -76,7 +77,7 @@ export class AppController {
                             channel: this.portChannel(req.headers),
                             indication: {
                                 api: 'bucket',
-                                act: 'uploadFiles'
+                                act: 'upload'
                             }
                         }, this.moduleConfig);
 
@@ -118,10 +119,76 @@ export class AppController {
                             readable.on("error", (error) => {
                                 handshakeResponse['thePusher'].error(error);
                                 handshakeResponse['thePusher'].complete();
+                                res.end(JSON.stringify({message: 'upload error'}));
                             });
 
                             readable.on("end", () => {
                                 handshakeResponse['thePusher'].complete();
+                                fileCount++;
+                                if(totalFiles === fileCount){
+                                    res.end(JSON.stringify({message: 'upload complete'}));
+                                }
+                            });
+
+                        });
+                    },*/
+                    _handleFile: (req, file, cb) => {
+                        //we will start a REDIS handshake with the consumer
+                        let handshake = this.protocolService.startHandshake({
+                            channel: this.portChannel(req.headers),
+                            indication: {
+                                api: 'bucket',
+                                act: 'upload'
+                            }
+                        }, this.moduleConfig);
+
+                        //we subscribe to the consumer
+                        handshake.theObserver.subscribe(data => {
+                            console.log(data);
+                        }, err => {
+                            console.log(err);
+                        }, () => {
+                            req.next();
+                            console.log('upload complete');
+                        })
+
+                        //the consumer calls back with the caller ID and then subscribes to the pusher
+                        handshake.thePromise.then(handshakeResponse => {
+
+                            //we use the pusher to send the init file upload command
+                            handshakeResponse['thePusher'].next({
+                                api: req.body.api,
+                                act: req.body.act,
+                                payload: {
+                                    type: 'meta',
+                                    length: file.size,
+                                    path: req.body.path,
+                                    filename: file.fieldname,
+                                    replace: "true" === req.body.replace
+                                }
+                            });
+
+                            file.stream.on('data', (data) => {
+                                handshakeResponse['thePusher'].next({
+                                    payload: {
+                                        type: 'data',
+                                        buffer: data
+                                    }
+                                });
+                            });
+
+                            file.stream.on('end', () => {
+                                handshakeResponse['thePusher'].complete();
+                                fileCount++;
+                                if(totalFiles === fileCount){
+                                    res.end(JSON.stringify({message: 'upload complete'}));
+                                }
+                            });
+
+                            file.stream.on('error', (error) => {
+                                handshakeResponse['thePusher'].error(error);
+                                handshakeResponse['thePusher'].complete();
+                                res.end(JSON.stringify({message: 'upload error'}));
                             });
 
                         });
@@ -139,6 +206,10 @@ export class AppController {
                 }
 
             });
+
+            if(req.headers["content-type"].indexOf('multipart/form-data') > -1){
+                return;
+            }
 
             const start_date = new Date().getTime();
             const channel = this.portChannel(req.headers);
