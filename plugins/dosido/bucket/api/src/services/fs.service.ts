@@ -12,7 +12,7 @@ const fsp = fs.promises;
 @Injectable()
 export class FsService {
 
-    private methods = ["info", "chmod", "chown", "list", "uploadFiles","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "upload","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
@@ -87,7 +87,7 @@ export class FsService {
     list(params) {
         return new Observable((observer) => {
 
-            const realPath = this.help.path.realPath(params.path);
+            const realPath = this.help.path.realPath({path: params.path});
 
             if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
@@ -129,7 +129,7 @@ export class FsService {
         });
     }
 
-    uploadFiles(params) {return new Observable(subscriber => {
+    upload(params) {return new Observable(subscriber => {
         //TODO get initial metadata
         const readable = new Readable()
         readable._read = () => {} // _read is required but you can noop it
@@ -147,7 +147,6 @@ export class FsService {
                     case 'meta':
                         uploadObs = this.writeFile({
                             name: data.payload.filename,
-                            size: data.payload.size,
                             path: data.payload.path,
                             readable: readable,
                             replace: data.payload.replace || false
@@ -372,7 +371,7 @@ export class FsService {
     rm(params) {
         return new Observable((observer) => {
             try {
-                const realPath = this.help.path.realPath(params.path);
+                const realPath = this.help.path.realPath({path: params.path});
 
                 const removeRecursively = (rem_path) => {
                     if (this.help.is.readable({path: rem_path}) && this.help.is.writeable({path: rem_path})) {
@@ -392,7 +391,13 @@ export class FsService {
                     }
                 }
 
-                removeRecursively(realPath);
+                if(params.selection && params.selection.length){
+                    params.selection.forEach(sel => {
+                        removeRecursively(path.join(realPath, sel));
+                    })
+                }
+
+                observer.next({type: 'message', message: 'done'});
                 observer.complete();
             } catch (err) {
                 console.log(err);

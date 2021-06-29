@@ -12,10 +12,11 @@ class ThemesController extends Component {
         add: (params) => this.addData(params),
         rem: (params) => this.remData(params)
     };
+    channel = 'themes';
 
     async componentDidMount() {
         this.props.services.ws.subscribe({
-            channel: 'themes',
+            channel: this.channel,
             callbacks: {
                 message: (response) => this.onMessage(response)
             }
@@ -88,7 +89,7 @@ class ThemesController extends Component {
             this.messageCallbacks[uniqueId] = resolve_send;
             this.props.services.ws.emit({
                 id: uniqueId,
-                channel: 'themes',
+                channel: this.channel,
                 module: params.module,
                 api: params.api,
                 act: params.act,

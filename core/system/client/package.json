@@ -13,6 +13,9 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@tinymce/tinymce-react": "^3.7.0",
+    "axios": "^0.21.1",
+    "chonky": "^2.2.0",
+    "chonky-icon-fontawesome": "^2.2.0",
     "classnames": "2.2.6",
     "events": "^3.2.0",
     "generate-password": "^1.5.1",
@@ -53,7 +56,7 @@
     "react-swipeable-views": "0.13.9",
     "reactcss": "^1.2.3",
     "shortid": "^2.2.15",
-    "socket.io-client": "^4.1.2",
+    "socket.io-client": "^2.3.0",
     "sortablejs": "^1.12.0",
     "underscore": "^1.13.1",
     "websocket": "^1.0.32"
