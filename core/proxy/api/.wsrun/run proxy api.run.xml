@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="run proxy api" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/core/proxy/api/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start:dev" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="redis_server" value="localhost" />
+      <env name="public_port" value="9797" />
+      <env name="backend_port" value="9696" />
+      <env name="session_secret" value="1qaz" />
+      <env name="redis_port" value="31652" />
+      <env name="redis_password" value="1gzHwbgfwR" />
+      <env name="bucket_server" value="http://127.0.0.1:8686" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
