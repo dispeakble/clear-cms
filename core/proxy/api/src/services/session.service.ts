@@ -37,6 +37,10 @@ export class SessionService {
             }
 
             const sessionData: SessionDataInterface = await this.protocolService.getValue('sess:' + cookie_id);
+            if(!sessionData){
+                resolve(null);
+                return;
+            }
             const expires = new Date(sessionData.cookie.expires);
             if (expires && expires > new Date() && sessionData.user) {
                 resolve(sessionData);

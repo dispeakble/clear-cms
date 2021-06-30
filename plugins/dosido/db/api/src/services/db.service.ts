@@ -8,6 +8,7 @@ export class DbService {
 
     private config = {
         host: process.env.pg_host,
+        port: process.env.pg_port || 5432,
         database: process.env.pg_db,
         user: process.env.pg_user,
         password: process.env.pg_password,
