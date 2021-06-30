@@ -74,7 +74,7 @@ export class AuthService {
                         where: {
                             email: request.email,
                             active: 1,
-                            'MD5(password)': md5.default(request.password)
+                            'password': md5.default(request.password)
                         },
                         limit: [0, 1]
                     }
