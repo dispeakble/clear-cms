@@ -13,6 +13,11 @@ const javascriptStyles = {
   },
   dropzone:{
 
+  },
+  renameInput:{
+    width:'100%',
+    lineHeight:'2rem',
+    fontSize:'1rem'
   }
 };
 

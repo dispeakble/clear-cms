@@ -16,11 +16,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "../../components/CustomButtons/Button";
-import {DropzoneArea} from "material-ui-dropzone";
-import Switch from "@material-ui/core/Switch";
-import {FormControlLabel} from "@material-ui/core";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
 
 class ViewBucket extends Component {
     state = {
@@ -31,6 +26,14 @@ class ViewBucket extends Component {
         },
         createModal: false,
         deleteModal: false,
+        renameModal: false,
+        infoModal: {
+            title:'',
+            message:'',
+            confirm:{},
+            cancel:{},
+            visible: false
+        },
         uploadQue: [],
         uploadProgress: 0,
         uploadType: 'files',
@@ -61,7 +64,9 @@ class ViewBucket extends Component {
                 toolbar: true,
                 contextMenu: true,
                 icon: 'delete'
-            }
+            },
+            requiresSelection: true,
+
         },
         ({ reduxDispatch, getReduxState }) => {
             const reduxState = getReduxState();
@@ -70,11 +75,48 @@ class ViewBucket extends Component {
         },
     )
 
+    renameAction = defineFileAction(
+        {
+            id: 'rename',
+            button: {
+                name: 'Rename',
+                toolbar: false,
+                contextMenu: true,
+                icon: 'rename'
+            },
+            requiresSelection: true
+        },
+        ({ reduxDispatch, getReduxState }) => {
+            const reduxState = getReduxState();
+
+            if(Object.keys(reduxState.selectionMap).length > 1){
+                this.setState({
+                    infoModal: {
+                        visible: true,
+                        title: 'Rename conflict',
+                        message: 'Please select only one item for this action',
+                        confirm: {
+                            label: 'Ok',
+                            callback: () => new Promise(resolve=>resolve())
+                        },
+                        cancel: {
+                            label: 'Cancel',
+                            callback: () => new Promise(resolve=>resolve())
+                        }
+                    }
+                })
+            } else {
+                this.setState({ selectedFiles: reduxState.selectionMap, renameModal: true })
+            }
+        },
+    )
+
     fileActions = [];
 
     constructor(props) {
         super(props);
         this.fileActions.push(this.uploadAction);
+        this.fileActions.push(this.renameAction);
         this.fileActions.push(this.deleteAction);
 
     }
@@ -115,6 +157,11 @@ class ViewBucket extends Component {
                 },
             },
         });
+    }
+
+    onFileAction(ref){
+        console.log(ref);
+        return false;
     }
 
     list() {
@@ -251,7 +298,7 @@ class ViewBucket extends Component {
                     disableTypography
                     className={this.props.classes.modalHeader}
                 >
-                    <h4 style={{ textAlign: "center" }}>Upload Files to "{this.state.currentPath}"</h4>
+                    <h4 style={{ textAlign: "center" }}>Confirm delete</h4>
                 </DialogTitle>
                 <DialogContent
                     style={{ overflow: "auto" }}
@@ -301,6 +348,146 @@ class ViewBucket extends Component {
         );
     }
 
+    openRenameModal() {
+        let newItemName = "";
+        const onConfirm = () => {
+            this.props.control.rename({
+                path: this.state.currentPath,
+                source: Object.keys(this.state.selectedFiles)[0],
+                dest: newItemName
+            }).then(() => {
+                this.setState({
+                    renameModal: false,
+                });
+                this.list();
+            });
+        };
+        const onCancel = () => {
+            this.setState({
+                renameModal: false,
+            });
+        };
+        const onFocusRenameInput = (evt) => {
+            evt.target.value = Object.keys(this.state.selectedFiles)[0];
+            evt.target.select();
+            const filename = evt.target.value.split('.').slice(0, -1).join('.');
+            evt.target.setSelectionRange(0, filename.length);
+        }
+        return (
+            <Dialog
+                style={{ width: "100%" }}
+                classes={{
+                    root: this.props.classes.center,
+                    paper: this.props.classes.modal,
+                }}
+                open={true}
+                TransitionComponent={this.transition}
+                keepMounted
+                aria-labelledby="classic-modal-slide-title"
+                aria-describedby="classic-modal-slide-description"
+            >
+                <DialogTitle
+                    id="classic-modal-slide-title"
+                    disableTypography
+                    className={this.props.classes.modalHeader}
+                >
+                    <h4 style={{ textAlign: "center" }}>Rename selected item</h4>
+                </DialogTitle>
+                <DialogContent
+                    style={{ overflow: "auto" }}
+                    id="classic-modal-slide-description"
+                    className={this.props.classes.modalBody}
+                >
+                    <div>Rename {Object.keys(this.state.selectedFiles).map((fileSelected) => {
+                            return (<span>{fileSelected}</span>);
+                        })} to
+                    </div>
+                    <input className={this.props.classes.renameInput} type="text"
+                           autoFocus={true}
+                           onFocus={onFocusRenameInput}
+                           onChange={(evt) => {
+                        newItemName = evt.currentTarget.value
+                    }}/>
+                </DialogContent>
+
+                <DialogActions style={{
+                    display: 'flex',
+                    justifyContent: 'space-around'
+                }}>
+                    <Button color="primary" onClick={onConfirm}>Rename</Button>
+                    <Button color="danger" onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
+    openInfoModal() {
+        return (
+            <Dialog
+                style={{ width: "100%" }}
+                classes={{
+                    root: this.props.classes.center,
+                    paper: this.props.classes.modal,
+                }}
+                open={true}
+                TransitionComponent={this.transition}
+                keepMounted
+                aria-labelledby="classic-modal-slide-title"
+                aria-describedby="classic-modal-slide-description"
+            >
+                <DialogTitle
+                    id="classic-modal-slide-title"
+                    disableTypography
+                    className={this.props.classes.modalHeader}
+                >
+                    <h4 style={{ textAlign: "center" }}>{this.state.infoModal.title}</h4>
+                </DialogTitle>
+                <DialogContent
+                    style={{ overflow: "auto" }}
+                    id="classic-modal-slide-description"
+                    className={this.props.classes.modalBody}
+                >
+                    {this.state.infoModal.message}
+                </DialogContent>
+
+                <DialogActions style={{
+                    display: 'flex',
+                    justifyContent: 'space-around'
+                }}>
+                    <Button
+                        color={this.state.infoModal.confirm.color || 'primary'}
+                        onClick={() => {
+                            this.state.infoModal.confirm.callback().then(() => {
+                                this.setState({
+                                    infoModal: {
+                                        visible: false
+                                    },
+                                });
+                            })
+                        }}
+                    >
+                        {this.state.infoModal.confirm.label}
+                    </Button>
+                    <Button
+                        color={this.state.infoModal.cancel.color || 'secondary'}
+                        onClick={() => {
+                            this.state.infoModal.cancel.callback().then(() => {
+                                this.setState({
+                                    infoModal: {
+                                        visible: false
+                                    }
+                                });
+                            })
+
+                        }}
+                    >
+                        {this.state.infoModal.cancel.label}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
     async handleUploadedFile(event) {
         if (event.target.files.length) {
             this.setState({
@@ -318,7 +505,7 @@ class ViewBucket extends Component {
                         <title>Bucket (file manager)</title>
                     </Helmet>
                     <div style={{ height: '100vh', paddingTop: '60px' }}>
-                        <FileBrowser fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
+                        <FileBrowser onFileAction={this.onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
                             <FileToolbar classes={classes.FileToolbar} />
                             <FileNavbar classes={classes.FileNavbar}/>
                             <FileContextMenu />
@@ -329,6 +516,8 @@ class ViewBucket extends Component {
                 <React.Fragment>
                     {this.state.createModal ? this.openEditor(true) : ""}
                     {this.state.deleteModal ? this.openDeleteModal() : ""}
+                    {this.state.renameModal ? this.openRenameModal() : ""}
+                    {this.state.infoModal.visible ? this.openInfoModal() : ""}
                 </React.Fragment>
             </MuiThemeProvider>
         );

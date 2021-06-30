@@ -22,7 +22,7 @@ export class FsService {
 
     info(params) {
         return new Observable((observer) => {
-            const realPath = this.help.path.realPath(params.path);
+            const realPath = this.help.path.realPath({path: params.path});
             try {
                 if (this.help.not.writeable({path: realPath})) {
                     observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
@@ -283,22 +283,30 @@ export class FsService {
     rename(params) {
         return new Observable((observer) => {
 
-            const realSourcePath = this.help.path.realPath(params.source_path);
-            const realDestPath = this.help.path.realPath(params.dest_path);
+            const realSourcePath = this.help.path.realPath({path: params.source_path});
+            const realDestPath = this.help.path.realPath({path: params.dest_path});
 
-            if (this.help.is.readable({path: realSourcePath}) && this.help.is.writeable({path: realSourcePath})) {
+            if (this.help.is.readable({path: realSourcePath})) {
                 //file source is readable and writeable. continue
-                if (this.help.not.readable({path: realDestPath}) && this.help.not.writeable({path: realDestPath})) {
+                if (this.help.not.readable({path: realDestPath})) {
                     //file destination name/path doesn't exist. continue
-                    fs.renameSync(realSourcePath, realDestPath);
-                    observer.next({type: 'success', data: realDestPath})
+                    fs.rename(realSourcePath, realDestPath, (err) => {
+                        if(err){
+                            observer.error({
+                                type: 'error', data: null, message: `cannot rename ${params.source_path} to ${params.dest_path}`
+                            });
+                            return;
+                        }
+                        observer.next({type: 'success', data: realDestPath})
+                    });
+
                 } else {
                     observer.next({
-                        type: 'error', data: null, message: `cannot rename ${realSourcePath} to ${realDestPath}`
+                        type: 'error', data: null, message: `cannot rename ${params.source_path} to ${params.dest_path}`
                     })
                 }
             } else {
-                observer.next({type: 'error', data: null, message: `cannot find ${realSourcePath}`})
+                observer.next({type: 'error', data: null, message: `cannot find ${params.source_path}`})
             }
 
             observer.complete();
@@ -311,27 +319,34 @@ export class FsService {
             const source_name = this.help.path.sanitize({path: params.source_path});
             const file = path.parse(source_name).base;
 
-            const realSourcePath = this.help.path.realPath(params.source_path);
-            const realDestPath = this.help.path.realPath(params.dest_path);
+            const realSourcePath = this.help.path.realPath({path: params.source_path});
+            const realDestPath = this.help.path.realPath({path: params.dest_path});
 
-            if (this.help.is.readable({path: realSourcePath}) && this.help.is.writeable({path: realSourcePath})) {
+            if (this.help.is.readable({path: realSourcePath})) {
                 //file source is readable and writeable. continue
-                if (this.help.is.readable({path: realDestPath}) && this.help.is.writeable({path: realDestPath})) {
+                if (this.help.is.readable({path: realDestPath})) {
                     //dest directory writeable. continue
                     const dest_complete_path = path.join(realDestPath, file);
                     if (this.help.not.readable({path: dest_complete_path}) && this.help.not.writeable({path: dest_complete_path})) {
                         //dest does not exits. continue
-                        fs.renameSync(realSourcePath, dest_complete_path);
-                        observer.next({type: 'success', data: dest_complete_path})
+                        fs.rename(realSourcePath, realDestPath, (err) => {
+                            if(err){
+                                observer.error({
+                                    type: 'error', data: null, message: `cannot rename ${params.source_path} to ${params.dest_path}`
+                                });
+                                return;
+                            }
+                            observer.next({type: 'success', data: params.dest_path})
+                        });
                     } else {
-                        observer.next({type: 'error', data: null, message: `${realDestPath} already exists`})
+                        observer.next({type: 'error', data: null, message: `${params.dest_path} already exists`})
                     }
 
                 } else {
                     observer.next({
                         type: 'error',
                         data: null,
-                        message: `cannot rename ${realSourcePath} to ${realDestPath}. destination path unreachable`
+                        message: `cannot rename ${params.source_path} to ${params.dest_path}. destination path unreachable`
                     })
                 }
             } else {
@@ -527,7 +542,7 @@ export class FsService {
     read(params) {
         return new Observable((observer) => {
             const file_name = params.path;
-            const realPath = this.help.path.realPath(params.path);
+            const realPath = this.help.path.realPath({path: params.path});
 
             try {
                 if (this.help.not.readable({path: realPath})) {
