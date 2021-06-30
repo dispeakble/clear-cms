@@ -256,6 +256,29 @@ export class BucketService {
         })
     }
 
+
+    public rename (params: any){
+        return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'rename',
+                payload: {
+                    source_path: path.join(params.path, params.source),
+                    dest_path: path.join(params.path, params.dest),
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
+
+
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
