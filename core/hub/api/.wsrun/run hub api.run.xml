@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="run hub api" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/core/hub/api/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start:dev" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="redis_server" value="localhost" />
+      <env name="redis_port" value="31652" />
+      <env name="redis_password" value="1gzHwbgfwR" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
