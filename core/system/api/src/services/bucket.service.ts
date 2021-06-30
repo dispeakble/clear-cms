@@ -256,7 +256,6 @@ export class BucketService {
         })
     }
 
-
     public rename (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
@@ -278,6 +277,26 @@ export class BucketService {
         })
     }
 
+    public mkdir (params: any){
+        return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'mkdir',
+                payload: {
+                    path: params.path,
+                    name: params.name
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {

@@ -27,6 +27,7 @@ class ViewBucket extends Component {
         createModal: false,
         deleteModal: false,
         renameModal: false,
+        newFolderModal: false,
         infoModal: {
             title:'',
             message:'',
@@ -109,12 +110,31 @@ class ViewBucket extends Component {
                 this.setState({ selectedFiles: reduxState.selectionMap, renameModal: true })
             }
         },
+    );
+
+    newDirectoryAction = defineFileAction(
+        {
+            id: 'newfolder',
+            button: {
+                name: 'New Folder',
+                toolbar: true,
+                contextMenu: false,
+                icon: 'folder'
+            },
+            requiresSelection: false
+        },
+        ({ reduxDispatch, getReduxState }) => {
+            const reduxState = getReduxState();
+
+            this.setState({ newFolderModal: true })
+        },
     )
 
     fileActions = [];
 
     constructor(props) {
         super(props);
+        this.fileActions.push(this.newDirectoryAction);
         this.fileActions.push(this.uploadAction);
         this.fileActions.push(this.renameAction);
         this.fileActions.push(this.deleteAction);
@@ -406,8 +426,11 @@ class ViewBucket extends Component {
                            autoFocus={true}
                            onFocus={onFocusRenameInput}
                            onChange={(evt) => {
-                        newItemName = evt.currentTarget.value
-                    }}/>
+                               newItemName = evt.currentTarget.value
+                           }}
+                           onKeyPress={(evt) => {
+                               evt.key === 'Enter' && onConfirm(evt)
+                           }} />
                 </DialogContent>
 
                 <DialogActions style={{
@@ -415,6 +438,71 @@ class ViewBucket extends Component {
                     justifyContent: 'space-around'
                 }}>
                     <Button color="primary" onClick={onConfirm}>Rename</Button>
+                    <Button color="danger" onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
+    openNewFolderModal() {
+        let folderName = "";
+        const onConfirm = () => {
+            this.props.control.mkdir({
+                path: this.state.currentPath,
+                name: folderName
+            }).then(() => {
+                this.setState({
+                    newFolderModal: false,
+                });
+                this.list();
+            });
+        };
+        const onCancel = () => {
+            this.setState({
+                newFolderModal: false,
+            });
+        };
+        return (
+            <Dialog
+                style={{ width: "100%" }}
+                classes={{
+                    root: this.props.classes.center,
+                    paper: this.props.classes.modal,
+                }}
+                open={true}
+                TransitionComponent={this.transition}
+                keepMounted
+                aria-labelledby="classic-modal-slide-title"
+                aria-describedby="classic-modal-slide-description"
+            >
+                <DialogTitle
+                    id="classic-modal-slide-title"
+                    disableTypography
+                    className={this.props.classes.modalHeader}
+                >
+                    <h4 style={{ textAlign: "center" }}>Add new folder</h4>
+                </DialogTitle>
+                <DialogContent
+                    style={{ overflow: "auto" }}
+                    id="classic-modal-slide-description"
+                    className={this.props.classes.modalBody}
+                >
+                    <input className={this.props.classes.renameInput} type="text"
+                           autoFocus={true}
+                           onChange={(evt) => {
+                               folderName = evt.currentTarget.value
+                           }}
+                           onKeyPress={(evt) => {
+                               evt.key === 'Enter' && onConfirm(evt)
+                           }}
+                    />
+                </DialogContent>
+
+                <DialogActions style={{
+                    display: 'flex',
+                    justifyContent: 'space-around'
+                }}>
+                    <Button color="primary" onClick={onConfirm}>Add folder</Button>
                     <Button color="danger" onClick={onCancel}>Cancel</Button>
                 </DialogActions>
             </Dialog>
@@ -517,6 +605,7 @@ class ViewBucket extends Component {
                     {this.state.createModal ? this.openEditor(true) : ""}
                     {this.state.deleteModal ? this.openDeleteModal() : ""}
                     {this.state.renameModal ? this.openRenameModal() : ""}
+                    {this.state.newFolderModal ? this.openNewFolderModal() : ""}
                     {this.state.infoModal.visible ? this.openInfoModal() : ""}
                 </React.Fragment>
             </MuiThemeProvider>

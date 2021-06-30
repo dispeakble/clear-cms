@@ -13,6 +13,7 @@ class BucketController extends Component {
         //set: (params) => this.setData(params),
         upload: (params) => this.upload(params),
         rename: (params) => this.rename(params),
+        mkdir: (params) => this.mkdir(params),
         delete: (params) => this.delete(params),
         //rem: (params) => this.remData(params)
     };
@@ -119,6 +120,22 @@ class BucketController extends Component {
                     module: 'system',
                     api: 'bucket',
                     act: 'rename',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    mkdir(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'mkdir',
                     payload: params
                 });
                 resolve(response)

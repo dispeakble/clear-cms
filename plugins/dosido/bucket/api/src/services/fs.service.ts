@@ -425,8 +425,19 @@ export class FsService {
     mkdir(params) {
         return new Observable((observer) => {
             try {
-                fs.mkdirSync(this.help.path.realPath(params.path), {recursive: params.recursive || false})
-                observer.complete();
+                const real_dest_path = this.help.path.realPath({path: path.join(params.path, params.name)});
+                if(this.help.not.readable({path: real_dest_path})){
+                    fs.mkdir(real_dest_path, {recursive: params.recursive || false}, () => {
+                        observer.next({type: 'message', message: 'done'});
+                        observer.complete();
+                    });
+
+                } else {
+                    observer.next({
+                        type: 'error', message: "Folder already exists"
+                    });
+                    observer.complete();
+                }
             } catch (err) {
                 console.log(err);
                 const msg = "Internal server error";
