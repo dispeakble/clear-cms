@@ -565,4 +565,4 @@ CREATE UNIQUE INDEX email_idx ON public.auth_admin USING btree (email COLLATE "C
 
 INSERT INTO public.auth_admin(
 	email, fullname, fname, lname, password, active)
-	VALUES ('ovidiu.alexa@gmail.com', 'Ovidiu Alexa', 'Ovidiu', 'Alexa', 'MD5(1qaz)', 1);
+	VALUES ('ovidiu.alexa@gmail.com', 'Ovidiu Alexa', 'Ovidiu', 'Alexa', "MD5('1qaz')", 1);
