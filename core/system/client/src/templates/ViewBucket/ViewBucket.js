@@ -7,7 +7,9 @@ import {
     FileList,
     FileNavbar,
     FileToolbar,
-    defineFileAction
+    defineFileAction,
+    ChonkyActions,
+    FileActionHandler
 } from 'chonky';
 import {Helmet} from "react-helmet";
 import PropTypes from "prop-types";
@@ -138,7 +140,6 @@ class ViewBucket extends Component {
         this.fileActions.push(this.uploadAction);
         this.fileActions.push(this.renameAction);
         this.fileActions.push(this.deleteAction);
-
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -179,8 +180,31 @@ class ViewBucket extends Component {
         });
     }
 
-    onFileAction(ref){
+    async onFileAction(ref){
         console.log(ref);
+        switch(ref.id){
+            case 'open_files':
+                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id)){
+                    const paths = [];
+                    let found = false;
+                    for(let x = 0, t = this.state.folderChain.length; x<t; x++){
+                        paths.push(this.state.folderChain[x].name);
+                        if(this.state.folderChain[x].id === ref.payload.targetFile.id){
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found){
+                        paths.push(ref.payload.targetFile.name);
+                    }
+                    await this.setAsyncState({
+                        currentPath: paths.join('/')
+                    });
+                    this.list();
+                }
+                console.log('wanted to navigate here')
+                break;
+        }
         return false;
     }
 
@@ -188,7 +212,6 @@ class ViewBucket extends Component {
         return new Promise(async resolve => {
 
             try {
-                let folderChain = [{ id: this.state.currentDir.id, name: this.state.currentDir.name, isDir: true }];
                 let objects = [];
                 let response = await this.props.control.list({
                     path: this.state.currentPath
@@ -197,12 +220,17 @@ class ViewBucket extends Component {
                 if(response && response.length){
                     response.forEach(obj => {
                         objects.push({
-                            id: obj.name,
+                            id: obj.id,
                             name: obj.name,
                             isDir: obj.dir
                         })
                     });
                 }
+
+                let folderChain = await this.props.control.completePath({
+                    path: this.state.currentPath
+                });
+
 
                 this.setState({
                     files: objects,
@@ -586,6 +614,11 @@ class ViewBucket extends Component {
 
     render() {
         const classes = this.props.classes;
+        const onFileAction = (data) => {
+            console.log('File action data:', data);
+            this.onFileAction(data);
+        };
+
         return (
             <MuiThemeProvider theme={this.getTheme()}>
                 <React.Fragment>
@@ -593,7 +626,7 @@ class ViewBucket extends Component {
                         <title>Bucket (file manager)</title>
                     </Helmet>
                     <div style={{ height: '100vh', paddingTop: '60px' }}>
-                        <FileBrowser onFileAction={this.onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
+                        <FileBrowser onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
                             <FileToolbar classes={classes.FileToolbar} />
                             <FileNavbar classes={classes.FileNavbar}/>
                             <FileContextMenu />
