@@ -133,7 +133,7 @@ class ViewThemes extends Component {
 
         await this.setAsyncState({side});
 
-        await this.getThemes();
+        this.getThemes();
 
     }
 

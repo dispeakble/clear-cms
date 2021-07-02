@@ -10,6 +10,7 @@ class BucketController extends Component {
     control = {
         //getOne: (params) => this.getOne(params),
         list: (params) => this.list(params),
+        completePath: (params) => this.completePath(params),
         //set: (params) => this.setData(params),
         upload: (params) => this.upload(params),
         rename: (params) => this.rename(params),
@@ -102,6 +103,24 @@ class BucketController extends Component {
                     module: 'system',
                     api: 'bucket',
                     act: 'list',
+                    payload: {
+                        path: params.path
+                    }
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    completePath(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'completePath',
                     payload: {
                         path: params.path
                     }

@@ -13,7 +13,7 @@ import {
 @Injectable()
 export class BucketService {
 
-    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private bucketUrl = process.env.bucket_server;
     private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
 
@@ -238,6 +238,25 @@ export class BucketService {
         })
     }
 
+    public completePath (params: any){
+        return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'completePath',
+                payload: {
+                    path: params.path
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
     public rm (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
