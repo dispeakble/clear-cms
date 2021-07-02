@@ -38,7 +38,7 @@ export class AdminThemesService {
                 if (data && data.hasOwnProperty('data')) {
                     response = data.data;
                 }
-                subscriber.next(response);
+                subscriber.next({type: 'admin_themes_list', data: response});
             }, err => {
                 subscriber.error(err);
             }, () => {
@@ -71,7 +71,7 @@ export class AdminThemesService {
                 if (data && data.hasOwnProperty('data')) {
                     response = data.data[0];
                 }
-                    subscriber.next(response);
+                    subscriber.next({type: 'admin_theme', data: response});
                 }, err => {
                     subscriber.error(err);
                 }, () => {
