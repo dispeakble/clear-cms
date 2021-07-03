@@ -6,11 +6,10 @@ CMS_PATH="$HOME/cms_app"
 read -p 'Dockerhub Username: ' DOCKERHUB_USERNAME
 read -sp 'Dockerhub Password: ' DOCKERHUB_PASS
 
+printf '\nDockerhub credentials received\n' > /dev/tty
+
 read -p 'Bitbucket Username: ' BITBUCKET_USERNAME
 read -sp 'Bitbucket Password: ' BITBUCKET_PASS
-
-#DOCKERHUB_PASS="C7GIB8etX!N@"
-#CHART_PASSWORD="33qsygUp8irSv@E"
 
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
