@@ -299,9 +299,9 @@ sleep 2
 rancher context switch Default
 addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 sleep 10
-launchMetalLB
+#launchMetalLB
 
-launchTraefik
+#launchTraefik
 
 launchLonghorn
 rancher context switch Default
