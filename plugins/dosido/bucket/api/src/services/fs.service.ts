@@ -2,6 +2,7 @@ import {Inject, Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as path from 'path';
 import * as fs from "fs";
+import {v4 as uuid} from "uuid";
 import {Observable, Subscriber} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
@@ -12,7 +13,7 @@ const fsp = fs.promises;
 @Injectable()
 export class FsService {
 
-    private methods = ["info", "chmod", "chown", "list", "upload","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "completePath", "upload","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
@@ -84,6 +85,44 @@ export class FsService {
         });
     }
 
+    completePath(params) {
+        //reading the path up a folder until the top level is reached
+        return new Observable((observer) => {
+
+            const realPath = this.help.path.realPath({path: params.path});
+            const topPath = this.help.path.realPath({path: '/'});
+
+            if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
+                observer.next({type: 'error', data: null, message: 'cannot read directory'});
+                observer.complete();
+                return;
+            }
+
+            let cpath = realPath;
+            let entity = {};
+            const paths = [];
+            if(cpath !== topPath){
+                while(cpath !== topPath){
+                    entity = {
+                        id: uuid(),
+                        name: path.basename(cpath)
+                    };
+                    paths.push(entity);
+                    cpath = path.join(cpath, '../');
+                }
+            }
+
+            let topEntity = {
+                id: uuid(),
+                name: '/'
+            };
+            paths.push(topEntity);
+            observer.next({type: 'folder_chain', data: paths.reverse()});
+            observer.complete();
+
+        });
+    }
+
     list(params) {
         return new Observable((observer) => {
 
@@ -96,31 +135,30 @@ export class FsService {
             }
 
             try {
-                (async () => {
-                    const entries = fs.readdirSync(realPath, {withFileTypes: true});
-                    let response = [];
-                    if (entries && entries.length) {
-                        entries.forEach((el) => {
-                            let stats = fs.statSync(path.join(realPath, el.name));
-                            let entity = {
-                                dir: el.isDirectory(),
-                                file: el.isFile(),
-                                symlink: el.isSymbolicLink(),
-                                name: el.name,
-                                stats: {
-                                    size: stats.size,
-                                    atime: stats.atime,
-                                    mtime: stats.mtime,
-                                    ctime: stats.ctime,
-                                    birthtime: stats.birthtime
-                                }
-                            };
-                            response.push(entity);
-                        })
-                    }
-                    observer.next({type: 'file_list', data: response});
-                    observer.complete();
-                })();
+                const entries = fs.readdirSync(realPath, {withFileTypes: true});
+                let response = [];
+                if (entries && entries.length) {
+                    entries.forEach((el) => {
+                        let stats = fs.statSync(path.join(realPath, el.name));
+                        let entity = {
+                            id: (stats.dev + stats.ino),
+                            dir: el.isDirectory(),
+                            file: el.isFile(),
+                            symlink: el.isSymbolicLink(),
+                            name: el.name,
+                            stats: {
+                                size: stats.size,
+                                atime: stats.atime,
+                                mtime: stats.mtime,
+                                ctime: stats.ctime,
+                                birthtime: stats.birthtime
+                            }
+                        };
+                        response.push(entity);
+                    })
+                }
+                observer.next({type: 'file_list', data: response});
+                observer.complete();
 
             } catch (err) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
