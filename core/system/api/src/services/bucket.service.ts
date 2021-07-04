@@ -296,6 +296,29 @@ export class BucketService {
         })
     }
 
+    public move (params: any){
+        return new Observable(subscriber => {
+            //check if the file already exists in the selected folder
+            //if it already exists then ask the user to overwrite
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'move',
+                payload: {
+                    source_path: path.join(params.path, params.source),
+                    dest_path: path.join(params.path, params.dest),
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
+
     public mkdir (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
