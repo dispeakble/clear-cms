@@ -57,7 +57,7 @@ if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
         "${RANCHER_IMAGE}" \
         -c 'curl -sSf https://github.com/rancher/kontainer-driver-metadata.git >/dev/null 2>&1 || (echo "Waiting (maximum) 10 minutes for Rancher to get ready..."; sleep 600)'
 
-    while ! curl -k https://localhost:9443/ping; do sleep 3; done
+    while ! curl -k https://localhost:9443/ping; do sleep 10; done
 else
     echo "Rancher is already running"
 fi

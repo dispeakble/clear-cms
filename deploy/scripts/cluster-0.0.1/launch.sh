@@ -243,7 +243,22 @@ function launchPGAdmin() {
    --set env.password=$PGADMIN_PASSWORD \
    --set global.storageClass=longhorn \
    --set service.type=NodePort \
-   --set service.NodePort=$PGADMIN_NODEPORT \
+   --set service.nodePort=$PGADMIN_NODEPORT \
+   #--set extraSecretMounts.name=pgpassfile \
+   #--set extraSecretMounts.secret=$(awk '{print $1}' "${BASH_SOURCE%/*}/../../pg.db/pgadmin_passfile.txt") \
+   #--set extraSecretMounts.mountPath="/var/lib/pgadmin/storage/pgadmin/file.pgpass" \
+   #--set extraSecretMounts.readOnly=true \
+   #--set serverDefinitions.enabled=true \
+#   --set serverDefinitions.servers='"1": { \
+#      "Name": "CMS Server", \
+#      "Group": "CMS Server Group", \
+#      "Port": 5432, \
+#      "Username": "cms", \
+#      "Passfile": "/var/lib/pgadmin/storage/pgadmin/file.pgpass", \
+#      "Host": "postgresql-ha-pgpool", \
+#      "SSLMode": "prefer", \
+#      "MaintenanceDB": "postgres" \
+#    }' \
    --helm-timeout 300 \
    --helm-wait \
    cattle-global-data:runix-pgadmin4 pgadmin4
@@ -257,7 +272,7 @@ function launchMetalLB(){
 createNamespace "metallb-system"
 checkApp "cattle-global-data:bitnami-metallb"
 sleep 5
-sed -e "s|MY_IP_RANGE|$(get_my_ip)-$(get_my_ip)|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
+sed -e "s|MY_IP_RANGE|127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
 rancher app install --no-prompt --namespace metallb-system \
   --set existingConfigMap=metallbconfig \
   --helm-timeout 300 \
@@ -299,7 +314,7 @@ sleep 2
 rancher context switch Default
 addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 sleep 10
-#launchMetalLB
+launchMetalLB
 
 #launchTraefik
 

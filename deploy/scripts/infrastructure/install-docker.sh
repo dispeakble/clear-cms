@@ -10,7 +10,7 @@ if [ ! -x "$APP_BINARY" ] || [ "$($APP_BINARY version | grep -c $APP_VERSION)" -
     sudo systemctl enable docker
     sudo systemctl start docker
     sudo usermod -aG docker "$USER" 
-    echo "Docker is instlled"
+    echo "Docker is installed"
 else
     echo "Docker was already installed"
 fi
