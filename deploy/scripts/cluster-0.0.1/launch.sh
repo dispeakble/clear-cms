@@ -23,6 +23,13 @@ POSTGRES_USERNAME="cms"
 POSTGRES_PASSWORD="0MG9DtWxT@t89*6"
 POSTGRES_DB="cms"
 
+
+if [ -z "$(dpkg --list | grep open-iscsi)" ]; then
+  apt-get update
+  apt-get install -y open-iscsi
+fi
+
+
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 
 function createCluster() {
@@ -238,27 +245,28 @@ function launchPGAdmin() {
 
   checkApp "pgadmin4"
 
+  #   --set extraSecretMounts.name=pgpassfile \
+#   --set extraSecretMounts.secret=$(awk '{print $1}' "${BASH_SOURCE%/*}/../../pg.db/pgadmin_passfile.txt") \
+#   --set extraSecretMounts.mountPath="/var/lib/pgadmin/storage/pgadmin/file.pgpass" \
+#   --set extraSecretMounts.readOnly=true \
+#   --set serverDefinitions.enabled=true \
+##   --set serverDefinitions.servers='"1": { \
+##      "Name": "CMS Server", \
+##      "Group": "CMS Server Group", \
+##      "Port": 5432, \
+##      "Username": "cms", \
+##      "Passfile": "/var/lib/pgadmin/storage/pgadmin/file.pgpass", \
+##      "Host": "postgresql-ha-pgpool", \
+##      "SSLMode": "prefer", \
+##      "MaintenanceDB": "postgres" \
+##    }' \
+
   rancher app install --no-prompt --namespace default \
    --set env.email=$PGADMIN_EMAIL \
    --set env.password=$PGADMIN_PASSWORD \
    --set global.storageClass=longhorn \
    --set service.type=NodePort \
    --set service.nodePort=$PGADMIN_NODEPORT \
-   #--set extraSecretMounts.name=pgpassfile \
-   #--set extraSecretMounts.secret=$(awk '{print $1}' "${BASH_SOURCE%/*}/../../pg.db/pgadmin_passfile.txt") \
-   #--set extraSecretMounts.mountPath="/var/lib/pgadmin/storage/pgadmin/file.pgpass" \
-   #--set extraSecretMounts.readOnly=true \
-   #--set serverDefinitions.enabled=true \
-#   --set serverDefinitions.servers='"1": { \
-#      "Name": "CMS Server", \
-#      "Group": "CMS Server Group", \
-#      "Port": 5432, \
-#      "Username": "cms", \
-#      "Passfile": "/var/lib/pgadmin/storage/pgadmin/file.pgpass", \
-#      "Host": "postgresql-ha-pgpool", \
-#      "SSLMode": "prefer", \
-#      "MaintenanceDB": "postgres" \
-#    }' \
    --helm-timeout 300 \
    --helm-wait \
    cattle-global-data:runix-pgadmin4 pgadmin4
