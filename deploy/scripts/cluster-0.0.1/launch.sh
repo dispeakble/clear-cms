@@ -3,14 +3,6 @@
 CMS_NAME="cms-cluster"
 CMS_PATH="$HOME/cms_app"
 
-read -p 'Dockerhub Username: ' DOCKERHUB_USERNAME
-read -sp 'Dockerhub Password: ' DOCKERHUB_PASS
-
-printf '\nDockerhub credentials received\n' > /dev/tty
-
-read -p 'Bitbucket Username: ' BITBUCKET_USERNAME
-read -sp 'Bitbucket Password: ' BITBUCKET_PASS
-
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
 REDIS_NODE_PORT=31652
@@ -156,6 +148,8 @@ function launchLonghorn () {
     cattle-global-data:library-longhorn longhorn
   fi
   waitForApp "longhorn"
+  rancher wait --timeout 300 longhorn
+  sleep 10
   printf '\n' > /dev/tty
 }
 
