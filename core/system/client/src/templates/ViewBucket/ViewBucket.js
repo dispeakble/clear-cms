@@ -8,6 +8,7 @@ import {
     FileNavbar,
     FileToolbar,
     defineFileAction,
+    FileHelper,
     ChonkyActions,
     FileActionHandler
 } from 'chonky';
@@ -18,6 +19,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "../../components/CustomButtons/Button";
+import path from "path";
 
 class ViewBucket extends Component {
     state = {
@@ -40,7 +42,8 @@ class ViewBucket extends Component {
         uploadQue: [],
         uploadProgress: 0,
         uploadType: 'files',
-        selectedFiles: []
+        selectedFiles: [],
+        moveClipboard: {}
     };
 
     uploadAction = defineFileAction(
@@ -114,6 +117,35 @@ class ViewBucket extends Component {
         },
     );
 
+    cutAction = defineFileAction(
+        {
+            id: 'cut',
+            hotkeys: ['ctrl+x'],
+            button: {
+                name: 'Cut',
+                toolbar: false,
+                contextMenu: true,
+                icon: 'folder'
+            },
+            requiresSelection: true
+        }
+    );
+
+    pasteAction = defineFileAction(
+        {
+            id: 'paste',
+            hotkeys: ['ctrl+v'],
+            button: {
+                name: 'Paste',
+                toolbar: false,
+                contextMenu: true,
+                icon: 'folder'
+            },
+            requiresSelection: true,
+            fileFilter: (file) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src,
+        }
+    );
+
     newDirectoryAction = defineFileAction(
         {
             id: 'newfolder',
@@ -140,6 +172,8 @@ class ViewBucket extends Component {
         this.fileActions.push(this.uploadAction);
         this.fileActions.push(this.renameAction);
         this.fileActions.push(this.deleteAction);
+        this.fileActions.push(this.cutAction);
+        this.fileActions.push(this.pasteAction);
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -203,6 +237,73 @@ class ViewBucket extends Component {
                     this.list();
                 }
                 console.log('wanted to navigate here')
+                break;
+            case 'cut':
+                this.setState({
+                    moveClipboard: {
+                        src: ref.state.selectedFiles[0].name,
+                        source_path: this.state.currentPath
+                    }
+                })
+                break;
+            case 'paste':
+                if(path.resolve(this.state.moveClipboard.source_path) === path.join(this.state.currentPath, ref.state.selectedFiles[0].name)){
+                    this.setState({
+                        infoModal: {
+                            visible: true,
+                            title: 'Same folder',
+                            message: 'Cannot paste in the same folder',
+                            confirm: {
+                                label: 'ok',
+                                callback: () => new Promise(async resolve => resolve())
+                            }
+                        }
+                    })
+                    break;
+                }
+
+                const moveFile = () => {
+                    return new Promise((resolve) => {
+                        this.props.control.move({
+                            ...this.state.moveClipboard,
+                            dest: ref.state.selectedFiles[0].name,
+                            dest_path: this.state.currentPath,
+                        }).then(() => {
+                            this.setState({
+                                moveClipboard: {}
+                            })
+                            this.list();
+                            resolve()
+                        })
+                    })
+                }
+
+                let response = await this.props.control.list({
+                    path:  path.join(this.state.currentPath, ref.state.selectedFiles[0].name)
+                });
+
+                if(response && response.length && response.some(obj => obj.name === this.state.moveClipboard.src)){
+                    this.setState({
+                        infoModal: {
+                            visible: true,
+                            title: 'File already exist',
+                            message: 'Do you want to overwrite the file?',
+                            confirm: {
+                                label: 'Yes',
+                                callback: () => new Promise(async resolve=> {
+                                    await moveFile()
+                                    resolve()
+                                })
+                            },
+                            cancel: {
+                                label: 'Cancel',
+                                callback: () => new Promise(resolve=>resolve())
+                            }
+                        }
+                    })
+                } else {
+                    await moveFile()
+                }
                 break;
         }
         return false;
@@ -584,7 +685,7 @@ class ViewBucket extends Component {
                     >
                         {this.state.infoModal.confirm.label}
                     </Button>
-                    <Button
+                    {this.state.infoModal.cancel && <Button
                         color={this.state.infoModal.cancel.color || 'secondary'}
                         onClick={() => {
                             this.state.infoModal.cancel.callback().then(() => {
@@ -598,7 +699,7 @@ class ViewBucket extends Component {
                         }}
                     >
                         {this.state.infoModal.cancel.label}
-                    </Button>
+                    </Button>}
                 </DialogActions>
             </Dialog>
         );

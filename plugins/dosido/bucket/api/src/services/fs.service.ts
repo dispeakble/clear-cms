@@ -365,20 +365,21 @@ export class FsService {
                 if (this.help.is.readable({path: realDestPath})) {
                     //dest directory writeable. continue
                     const dest_complete_path = path.join(realDestPath, file);
-                    if (this.help.not.readable({path: dest_complete_path}) && this.help.not.writeable({path: dest_complete_path})) {
+
+                    // if (this.help.not.readable({path: dest_complete_path}) && this.help.not.writeable({path: dest_complete_path})) {
                         //dest does not exits. continue
-                        fs.rename(realSourcePath, realDestPath, (err) => {
-                            if(err){
-                                observer.error({
-                                    type: 'error', data: null, message: `cannot rename ${params.source_path} to ${params.dest_path}`
-                                });
-                                return;
-                            }
+                        try {
+                            fs.renameSync(realSourcePath, dest_complete_path)
                             observer.next({type: 'success', data: params.dest_path})
-                        });
-                    } else {
-                        observer.next({type: 'error', data: null, message: `${params.dest_path} already exists`})
-                    }
+                        } catch(err) {
+                            observer.error({
+                                type: 'error', data: null, message: `cannot rename ${params.source_path} to ${params.dest_path}`
+                            });
+                            return;
+                        }
+                    // } else {
+                    //     observer.next({type: 'error', data: null, message: `${params.dest_path} already exists`})
+                    // }
 
                 } else {
                     observer.next({
@@ -394,7 +395,6 @@ export class FsService {
                     message: `cannot rename ${realSourcePath} to ${realDestPath}. source path unreachable`
                 })
             }
-
             observer.complete();
 
         })
