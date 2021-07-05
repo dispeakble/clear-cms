@@ -31,24 +31,24 @@ if [ -z "$(command -v kubectl)" ]; then
   installService "infrastructure/install-kubectl.sh"
 fi
 
-DOCKERHUB_USERNAME=""
-DOCKERHUB_PASS=""
+DOCKERHUB_USERNAME="cmsobt"
+DOCKERHUB_PASS="5GCcHO4$Q$*f"
 BITBUCKET_USERNAME=""
 BITBUCKET_PASS=""
 
-DOCKERHUB_CRED_FILE=./dockerhub_credentials.txt
-if [[ -f "$DOCKERHUB_CRED_FILE" ]]; then
-    echo "$DOCKERHUB_CRED_FILE exists."
-    DOCKERHUB_USERNAME=$(awk '{print $1}' ./$DOCKERHUB_CRED_FILE)
-    DOCKERHUB_PASS=$(awk '{print $2}' ./$DOCKERHUB_CRED_FILE)
-else
-  read -p 'Dockerhub Username: ' DOCKERHUB_USERNAME
-  echo -n "$DOCKERHUB_USERNAME" >> $DOCKERHUB_CRED_FILE
-  read -sp 'Dockerhub Password: ' DOCKERHUB_PASS
-  echo -n " $DOCKERHUB_PASS" >> $DOCKERHUB_CRED_FILE
-  chown 1000:1000 $DOCKERHUB_CRED_FILE
-  printf '\nDockerhub credentials received\n' > /dev/tty
-fi
+#DOCKERHUB_CRED_FILE=./dockerhub_credentials.txt
+#if [[ -f "$DOCKERHUB_CRED_FILE" ]]; then
+#    echo "$DOCKERHUB_CRED_FILE exists."
+#    DOCKERHUB_USERNAME=$(awk '{print $1}' ./$DOCKERHUB_CRED_FILE)
+#    DOCKERHUB_PASS=$(awk '{print $2}' ./$DOCKERHUB_CRED_FILE)
+#else
+#  read -p 'Dockerhub Username: ' DOCKERHUB_USERNAME
+#  echo -n "$DOCKERHUB_USERNAME" >> $DOCKERHUB_CRED_FILE
+#  read -sp 'Dockerhub Password: ' DOCKERHUB_PASS
+# echo -n " $DOCKERHUB_PASS" >> $DOCKERHUB_CRED_FILE
+#  chown 1000:1000 $DOCKERHUB_CRED_FILE
+#  printf '\nDockerhub credentials received\n' > /dev/tty
+#fi
 
 BITBUCKET_CRED_FILE=./bitbucket_credentials.txt
 if [[ -f "$BITBUCKET_CRED_FILE" ]]; then
