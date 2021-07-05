@@ -3,6 +3,7 @@ import * as shortId from "shortid";
 import PropTypes from "prop-types";
 import ViewBucket from "../templates/ViewBucket/ViewBucket";
 import axios from 'axios';
+import path from "path";
 
 class BucketController extends Component {
 
@@ -16,6 +17,7 @@ class BucketController extends Component {
         rename: (params) => this.rename(params),
         mkdir: (params) => this.mkdir(params),
         delete: (params) => this.delete(params),
+        move: (params) => this.move(params),
         //rem: (params) => this.remData(params)
     };
     channel = 'bucket';
@@ -139,6 +141,22 @@ class BucketController extends Component {
                     module: 'system',
                     api: 'bucket',
                     act: 'rename',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    move(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'move',
                     payload: params
                 });
                 resolve(response)
