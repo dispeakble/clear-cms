@@ -43,7 +43,8 @@ class ViewBucket extends Component {
         uploadProgress: 0,
         uploadType: 'files',
         selectedFiles: [],
-        moveClipboard: {}
+        moveClipboard: {},
+        autoRefresh: null,
     };
 
     uploadAction = defineFileAction(
@@ -146,6 +147,35 @@ class ViewBucket extends Component {
         }
     );
 
+    refreshAction = defineFileAction(
+        {
+            id: 'refresh',
+            button: {
+                name: 'Refresh',
+                toolbar: true,
+                contextMenu: false,
+                icon: 'loading'
+            },
+            requiresSelection: false,
+            // fileFilter: (file) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src,
+        }
+    );
+
+    autoRefreshAction = defineFileAction(
+        {
+            id: 'autorefresh',
+            button: {
+                name: 'Auto Refresh',
+                toolbar: true,
+                contextMenu: false,
+                icon: 'loading'
+            },
+            option: true,
+            requiresSelection: false,
+            // fileFilter: (file) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src,
+        }
+    );
+
     newDirectoryAction = defineFileAction(
         {
             id: 'newfolder',
@@ -174,6 +204,8 @@ class ViewBucket extends Component {
         this.fileActions.push(this.deleteAction);
         this.fileActions.push(this.cutAction);
         this.fileActions.push(this.pasteAction);
+        this.fileActions.push(this.refreshAction);
+        this.fileActions.push(this.autoRefreshAction);
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -237,6 +269,23 @@ class ViewBucket extends Component {
                     this.list();
                 }
                 console.log('wanted to navigate here')
+                break;
+            case 'refresh':
+                this.list();
+                break;
+            case 'autorefresh':
+                if(this.state.autoRefresh){
+                    clearInterval(this.state.autoRefresh)
+                    this.setState({
+                        autoRefresh: null
+                    })
+                } else {
+                    this.setState({
+                        autoRefresh: setInterval(() => {
+                            this.list();
+                        },30000)
+                    })
+                }
                 break;
             case 'cut':
                 this.setState({
@@ -311,7 +360,7 @@ class ViewBucket extends Component {
 
     list() {
         return new Promise(async resolve => {
-
+            console.log("refereshing....")
             try {
                 let objects = [];
                 let response = await this.props.control.list({
