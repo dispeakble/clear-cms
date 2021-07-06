@@ -48,26 +48,26 @@ services:
 #      - .env
 #    image:
 #      dispeakble/crm-system:${CRM_IMG_TAG}
-  crm-db:
-    container_name: crm-db
-    working_dir: /usr/src/app
-    build:
-      context: ./plugins/dosido/db
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    image:
-      dispeakble/crm-db:${CRM_IMG_TAG}
-#  crm-proxy:
-#    container_name: crm-proxy
-#    working_dir: /usr/src/api
+#  crm-db:
+#    container_name: crm-db
+#    working_dir: /usr/src/app
 #    build:
-#      context: ./core/proxy
+#      context: ./plugins/dosido/db
 #      dockerfile: Dockerfile
 #    env_file:
 #      - .env
 #    image:
-#      dispeakble/crm-proxy:${CRM_IMG_TAG}
+#      dispeakble/crm-db:${CRM_IMG_TAG}
+  crm-proxy:
+    container_name: crm-proxy
+    working_dir: /usr/src/api
+    build:
+      context: ./core/proxy
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    image:
+      dispeakble/crm-proxy:${CRM_IMG_TAG}
 # crm-under-construction:
 #    container_name: crm-under-construction
 #    working_dir: /usr/src/api
