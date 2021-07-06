@@ -157,7 +157,6 @@ class ViewBucket extends Component {
                 icon: 'loading'
             },
             requiresSelection: false,
-            // fileFilter: (file) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src,
         }
     );
 
@@ -172,7 +171,6 @@ class ViewBucket extends Component {
             },
             option: true,
             requiresSelection: false,
-            // fileFilter: (file) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src,
         }
     );
 
