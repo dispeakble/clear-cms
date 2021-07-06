@@ -300,7 +300,7 @@ export class BucketService {
         return new Observable(subscriber => {
             //check if the file already exists in the selected folder
             //if it already exists then ask the user to overwrite
-            console.log("hbucket service",params)
+            console.log("bucket service",params)
             const payload: payloadInterface = {
                 channel: 'bucket',
                 api: 'fs',

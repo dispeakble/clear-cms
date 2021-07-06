@@ -247,6 +247,43 @@ class ViewBucket extends Component {
     async onFileAction(ref){
         console.log(ref);
         switch(ref.id){
+            case 'move_files':
+
+
+                const checkMoveResponse = await this.props.control.list({
+                    path:  path.join(this.state.currentPath, ref.state.selectedFiles[0].name)
+                });
+
+                if(checkMoveResponse && checkMoveResponse.length && checkMoveResponse.some(obj => obj.name === this.state.moveClipboard.src)){
+                    this.setState({
+                        infoModal: {
+                            visible: true,
+                            title: 'File already exist',
+                            message: 'Do you want to overwrite the file?',
+                            confirm: {
+                                label: 'Yes',
+                                callback: () => new Promise(async resolve => {
+                                    await moveFile()
+                                    resolve()
+                                })
+                            },
+                            cancel: {
+                                label: 'Cancel',
+                                callback: () => new Promise(resolve => resolve())
+                            }
+                        }
+                    })
+                } else {
+                    this.props.control.move({
+                        src: ref.payload.draggedFile.name,
+                        source_path: this.state.currentPath,
+                        dest: ref.payload.destination.name,
+                        dest_path: this.state.currentPath,
+                    }).then(() => {
+                        this.list();
+                    })
+                }
+                break;
             case 'open_files':
                 if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id)){
                     const paths = [];
