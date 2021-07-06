@@ -51,7 +51,7 @@ function createCluster() {
 
     rancher cluster kf $1 >~/.kube/config
 
-    kubectl create secret docker-registry dockerhub --docker-username=$DOCKERHUB_USERNAME --docker-password=$DOCKERHUB_PASS
+    kubectl create secret docker-registry dockerhub --docker-username=$DOCKERHUB_USERNAME --docker-password="$DOCKERHUB_PASS"
 
     rancher cluster kf $CLUSTER_NAME >~/.kube/config
 
@@ -67,12 +67,17 @@ clusterExists() {
 }
 
 function checkCluster() {
-    echo "Checking cluster state"
+    echo "The cluster is being built. Please wait..."
     CLUSTER_STATE=0
     wait_count=0
-    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 90)); do
-        echo -n .
-        sleep 5
+    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 300)); do
+      if [ "$wait_count" -gt 190 ]; then
+        echo -en "\r If this message does not go away please contact the administrator"
+        else
+        echo -en "\r$(echo $wait_count*190/100 | bc)% - complete"
+      fi
+
+        sleep 1
         wait_count=$((wait_count + 1))
         CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
     done
@@ -119,6 +124,19 @@ function waitForApp() {
   printf '\n' > /dev/tty
 }
 
+function waitForLonghornStorageClass(){
+  echo "$(rancher inspect --type storageClass longhorn | grep default-class)"
+  if [[ -z "$(rancher inspect --type storageClass longhorn | grep default-class)" ]]; then
+    printf '.' > /dev/tty
+    sleep 3
+    waitForLonghornStorageClass
+    return 0;
+  else
+    printf "Storage class available" > /dev/tty
+  fi
+
+  printf '\n' > /dev/tty
+}
 
 
 function launchLonghorn () {
@@ -149,7 +167,7 @@ function launchLonghorn () {
   fi
   waitForApp "longhorn"
   rancher wait --timeout 300 longhorn
-  sleep 10
+  waitForLonghornStorageClass
   printf '\n' > /dev/tty
 }
 
@@ -180,6 +198,7 @@ function addCatalog() {
 
 function launchRedis() {
 
+  rancher context switch Default
   checkApp "cattle-global-data:bitnami-redis"
 
   sleep 5
@@ -200,6 +219,8 @@ function launchRedis() {
 
 function launchCmsApp() {
   addCatalog "cms-app" "helm_v3" "https://${BITBUCKET_USERNAME}:${BITBUCKET_PASS}@bitbucket.org/the_dispeakble_one/cms-charts.git"
+
+  waitForCatalog "cms-app"
 
   checkApp "cms"
 
@@ -313,15 +334,14 @@ checkCluster $CMS_NAME
 sleep 2
 rancherLogin
 sleep 2
+launchLonghorn
 rancher context switch Default
 addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 sleep 10
-launchMetalLB
 
+launchMetalLB
 #launchTraefik
 
-launchLonghorn
-rancher context switch Default
 launchRedis
 
 launchPostgreSQL
