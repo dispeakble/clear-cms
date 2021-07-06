@@ -252,7 +252,6 @@ class ViewThemes extends Component {
                 <React.Fragment key={theme.id}>
                     <Card
                         className={this.props.classes.root}
-                        style={{margin: "20px", width: "20%"}}
                     >
                         <CardActionArea>
                             <CardMedia
@@ -615,7 +614,6 @@ class ViewThemes extends Component {
                                         />
                                     </div>
                                 </div>
-
                                 <Editor
                                     preview={this.state.preview}
                                     id="adminPreviewElement"
@@ -684,8 +682,14 @@ class ViewThemes extends Component {
                                     currentTheme={
                                         this.state.editMode ? this.state.fullEditorData : {}
                                     }
+                                        classes={{
+                                            root:{
+                                                backgroundColor:this.props.theme.palette.background.paper
+                                            }
+                                        }}
                                     style={{
                                         height: "100%",
+                                        backgroundColor: this.props.theme.palette.paper.main
                                     }}
                                     ref={(editor) => {
                                         this.themeEditor = editor;
@@ -1048,7 +1052,7 @@ class ViewThemes extends Component {
                         }} {...a11yProps(1)} />
                     </Tabs>
                 </AppBar>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", "& > :lastChild":{marginRight: "0px"}}}>
                     {this.adminThemeList()}
                 </div>
                 <div
