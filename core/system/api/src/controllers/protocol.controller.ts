@@ -33,7 +33,7 @@ export class ProtocolController {
 
     private mainService;
 
-    constructor(@Inject('SystemService') private systemService, @Inject('ProtocolService') private protocolService, @Inject('AdminProfileService') private adminProfileService, @Inject('AdminThemesService') private adminThemesService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService) {
+    constructor(@Inject('SystemService') private systemService, @Inject('ProtocolService') private protocolService, @Inject('AdminProfileService') private adminProfileService, @Inject('AdminThemesService') private adminThemesService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService, @Inject('CategoriesService') private categoriesService) {
         this.mainService = this;
     }
 

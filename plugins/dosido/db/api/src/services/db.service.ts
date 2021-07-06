@@ -267,22 +267,33 @@ export class DbService {
 
             for (let i in params.where) {
                 if (params.where.hasOwnProperty(i)) {
-                    QUERY_PARAMS.push(params.where[i]);
 
-                    x++;
+                    if(this.help.is.array(params.where)){
+                        /*params.where.map(where_param => {
+                            QUERY_PARAMS.push(where_param);
+                        })*/
+                    } else {
+                        QUERY_PARAMS.push(params.where[i]);
 
-                    REM_STRING = i;
-                    REM_STRING += '=';
-                    REM_STRING += '$' + x + '';
-                    REM_PIECES.push(REM_STRING);
+                        x++;
 
-                    if (/^\d+$/.test(params.where[i])) {
-                        params.where[i] = Number(params.where[i]);
+                        REM_STRING = i;
+                        REM_STRING += '=';
+                        REM_STRING += '$' + x + '';
+                        REM_PIECES.push(REM_STRING);
+
+                        if (/^\d+$/.test(params.where[i])) {
+                            params.where[i] = Number(params.where[i]);
+                        }
                     }
+
+
+
+
                 }
             }
 
-            QUERY_STRING = 'DELETE FROM ' + params.what + ' WHERE ' + REM_PIECES.join(' AND ');
+            QUERY_STRING = 'DELETE FROM ' + params.what + ' WHERE ' + REM_PIECES.join(` ${params.how || 'AND'} `);
 
             QUERY_STRING += ' RETURNING * ';
 
