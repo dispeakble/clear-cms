@@ -7,7 +7,7 @@ import SideMenuLinks from "components/Header/SideMenuLinks.js";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/categories.js";
+import styles from "assets/jss/clear-crm/global.js";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { Helmet } from "react-helmet";
@@ -252,7 +252,6 @@ class App extends Component {
         <Helmet>
           <title>App</title>
         </Helmet>
-
         <MuiThemeProvider theme={this.createTheme()}>
           <CssBaseline />
           {this.state.excludeHeader.indexOf(basePath[0]) === -1 ? (

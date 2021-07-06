@@ -70,11 +70,18 @@ const javascriptStyles = {
   },
 
   root: {
-    maxWidth: "345px",
-    padding: "5px",
+    '@media (min-width: 240px)': {
+      flex: "1 0 50%"
+    },
+    '@media (min-width: 1024px)': {
+      flex: "1 0 25%"
+    },
+    margin:"0 5px 5px 0"
   },
   media: {
-    height: 205
+    height: 205,
+    margin: "5px",
+    flexGrow: 1
   },
   modalBody: {
     height: "calc(100% - 125px)",
