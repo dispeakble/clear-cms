@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ProtocolController } from './controllers/protocol.controller';
 import { SystemService } from './services/system.service';
 import { BucketService } from './services/bucket.service';
+import { CategoriesService } from './services/categories.service';
 import { AuthService } from './services/auth.service';
 import { AdminProfileService } from './services/adminProfile.service';
 import { AdminThemesService } from './services/adminThemes.service';
@@ -29,7 +30,7 @@ import { MainService } from './services/main.service';
     ])
   ],
   controllers: [ProtocolController],
-  providers: [BucketService, ProtocolService, AuthService, SystemService, AdminProfileService, AdminThemesService, PublicThemesService, MainService]
+  providers: [BucketService, CategoriesService,ProtocolService, AuthService, SystemService, AdminProfileService, AdminThemesService, PublicThemesService, MainService]
 })
 
 export class AppModule {}
