@@ -128,7 +128,8 @@ class ViewBucket extends Component {
                 contextMenu: true,
                 icon: 'folder'
             },
-            requiresSelection: true
+            requiresSelection: true,
+            fileFilter: (file,index, selected) =>  selected.length === 1
         }
     );
 
@@ -143,7 +144,22 @@ class ViewBucket extends Component {
                 icon: 'folder'
             },
             requiresSelection: true,
-            fileFilter: (file) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src,
+            fileFilter: (file,index, selected) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src && selected.length === 1
+        }
+    );
+
+    downloadAction = defineFileAction(
+        {
+            id: 'download',
+            button: {
+                name: 'Download',
+                toolbar: false,
+                contextMenu: true,
+                icon: 'download'
+            },
+            requiresSelection: true,
+            fileFilter: (file, index, selected) => !FileHelper.isDirectory(file) && selected.length === 1
+
         }
     );
 
@@ -202,6 +218,7 @@ class ViewBucket extends Component {
         this.fileActions.push(this.deleteAction);
         this.fileActions.push(this.cutAction);
         this.fileActions.push(this.pasteAction);
+        this.fileActions.push(this.downloadAction);
         this.fileActions.push(this.refreshAction);
         this.fileActions.push(this.autoRefreshAction);
     }
@@ -304,6 +321,12 @@ class ViewBucket extends Component {
                     this.list();
                 }
                 console.log('wanted to navigate here')
+                break;
+            case 'download':
+                this.props.control.download({
+                    src: ref.state.selectedFiles[0].name,
+                    source_path: this.state.currentPath
+                })
                 break;
             case 'refresh':
                 this.list();

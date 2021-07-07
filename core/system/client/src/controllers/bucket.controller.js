@@ -18,6 +18,7 @@ class BucketController extends Component {
         mkdir: (params) => this.mkdir(params),
         delete: (params) => this.delete(params),
         move: (params) => this.move(params),
+        download: (params) => this.download(params),
         //rem: (params) => this.remData(params)
     };
     channel = 'bucket';
@@ -77,6 +78,44 @@ class BucketController extends Component {
             });
         });
 
+    }
+
+    download(params){
+        return new Promise(async resolve => {
+            try {
+                function base64ToArrayBuffer(base64) {
+                    let binaryString = window.atob(base64);
+                    let binaryLen = binaryString.length;
+                    let bytes = new Uint8Array(binaryLen);
+                    for (let i = 0; i < binaryLen; i++) {
+                        let ascii = binaryString.charCodeAt(i);
+                        bytes[i] = ascii;
+                    }
+                    return bytes;
+                }
+
+                function saveByteArray(reportName, byte, mimeType) {
+                    let blob = new Blob([byte], {type: mimeType});
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    let fileName = reportName;
+                    link.download = fileName;
+                    link.click();
+                }
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'download',
+                    payload: params
+                });
+
+                let bufArr = base64ToArrayBuffer(response.file);
+                saveByteArray(response.fileName, bufArr, response.mimeType);
+                resolve()
+            } catch (err) {
+                resolve(null);
+            }
+        });
     }
 
     delete (params) {
