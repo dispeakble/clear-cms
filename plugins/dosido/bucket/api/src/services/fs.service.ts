@@ -13,7 +13,7 @@ const fsp = fs.promises;
 @Injectable()
 export class FsService {
 
-    private methods = ["info", "chmod", "chown", "list", "completePath", "upload","read", "rename", "move", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "completePath", "upload","read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
@@ -349,6 +349,35 @@ export class FsService {
 
             observer.complete();
 
+        })
+    }
+
+    download(params){
+        return new Observable((observer) => {
+           console.log("fs res", params)
+            const source_name = this.help.path.sanitize({path: params.path});
+            const file = path.parse(source_name).base;
+            const realSourcePath = this.help.path.realPath({path: params.path});
+            try {
+                let mimeType = mime.getType(realSourcePath)
+                let bs64 = fs.readFileSync(realSourcePath, {encoding: 'base64'})
+                observer.next({
+                    type: "success",
+                    data: {
+                        file: bs64,
+                        fileName: file,
+                        mimeType: mimeType,
+                    }
+                })
+            } catch(e) {
+                observer.next({
+                    type: 'error',
+                    data: null,
+                    message: "Cannot read file"
+                })
+            }
+
+            observer.complete()
         })
     }
 
