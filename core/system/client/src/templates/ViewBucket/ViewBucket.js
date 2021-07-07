@@ -323,13 +323,12 @@ class ViewBucket extends Component {
                 }
                 console.log('wanted to navigate here')
                 break;
-<<<<<<< HEAD
             case 'download':
                 this.props.control.download({
                     src: ref.state.selectedFiles[0].name,
                     source_path: this.state.currentPath
                 })
-=======
+                break;
             case 'refresh':
                 this.list();
                 break;
@@ -346,7 +345,6 @@ class ViewBucket extends Component {
                         },30000)
                     })
                 }
->>>>>>> 1e670f9e1fb217b02e0150f0109c80fef67c8cdd
                 break;
             case 'cut':
                 this.setState({
