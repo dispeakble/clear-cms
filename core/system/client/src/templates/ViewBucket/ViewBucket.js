@@ -129,7 +129,7 @@ class ViewBucket extends Component {
                 icon: 'folder'
             },
             requiresSelection: true,
-            fileFilter: (file,index, selected) =>  selected.length <= 1
+            fileFilter: (file,index, selected) =>  selected.length === 1
         }
     );
 
@@ -144,14 +144,13 @@ class ViewBucket extends Component {
                 icon: 'folder'
             },
             requiresSelection: true,
-            fileFilter: (file,index, selected) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src && selected.length <= 1
+            fileFilter: (file,index, selected) => FileHelper.isDirectory(file) && !!this.state.moveClipboard.src && selected.length === 1
         }
     );
 
     downloadAction = defineFileAction(
         {
             id: 'download',
-            hotkeys: ['ctrl+v'],
             button: {
                 name: 'Download',
                 toolbar: false,
@@ -159,7 +158,7 @@ class ViewBucket extends Component {
                 icon: 'download'
             },
             requiresSelection: true,
-            fileFilter: (file, index, selected) => !FileHelper.isDirectory(file) && selected.length <= 1
+            fileFilter: (file, index, selected) => !FileHelper.isDirectory(file) && selected.length === 1
 
         }
     );
