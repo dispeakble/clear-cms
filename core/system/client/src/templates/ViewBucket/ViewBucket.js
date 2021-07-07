@@ -43,7 +43,8 @@ class ViewBucket extends Component {
         uploadProgress: 0,
         uploadType: 'files',
         selectedFiles: [],
-        moveClipboard: {}
+        moveClipboard: {},
+        autoRefresh: null,
     };
 
     uploadAction = defineFileAction(
@@ -163,6 +164,33 @@ class ViewBucket extends Component {
         }
     );
 
+    refreshAction = defineFileAction(
+        {
+            id: 'refresh',
+            button: {
+                name: 'Refresh',
+                toolbar: true,
+                contextMenu: false,
+                icon: 'loading'
+            },
+            requiresSelection: false,
+        }
+    );
+
+    autoRefreshAction = defineFileAction(
+        {
+            id: 'autorefresh',
+            button: {
+                name: 'Auto Refresh',
+                toolbar: true,
+                contextMenu: false,
+                icon: 'loading'
+            },
+            option: true,
+            requiresSelection: false,
+        }
+    );
+
     newDirectoryAction = defineFileAction(
         {
             id: 'newfolder',
@@ -192,6 +220,8 @@ class ViewBucket extends Component {
         this.fileActions.push(this.cutAction);
         this.fileActions.push(this.pasteAction);
         this.fileActions.push(this.downloadAction);
+        this.fileActions.push(this.refreshAction);
+        this.fileActions.push(this.autoRefreshAction);
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -235,6 +265,43 @@ class ViewBucket extends Component {
     async onFileAction(ref){
         console.log(ref);
         switch(ref.id){
+            case 'move_files':
+
+
+                const checkMoveResponse = await this.props.control.list({
+                    path:  path.join(this.state.currentPath, ref.state.selectedFiles[0].name)
+                });
+
+                if(checkMoveResponse && checkMoveResponse.length && checkMoveResponse.some(obj => obj.name === this.state.moveClipboard.src)){
+                    this.setState({
+                        infoModal: {
+                            visible: true,
+                            title: 'File already exist',
+                            message: 'Do you want to overwrite the file?',
+                            confirm: {
+                                label: 'Yes',
+                                callback: () => new Promise(async resolve => {
+                                    await moveFile()
+                                    resolve()
+                                })
+                            },
+                            cancel: {
+                                label: 'Cancel',
+                                callback: () => new Promise(resolve => resolve())
+                            }
+                        }
+                    })
+                } else {
+                    this.props.control.move({
+                        src: ref.payload.draggedFile.name,
+                        source_path: this.state.currentPath,
+                        dest: ref.payload.destination.name,
+                        dest_path: this.state.currentPath,
+                    }).then(() => {
+                        this.list();
+                    })
+                }
+                break;
             case 'open_files':
                 if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id)){
                     const paths = [];
@@ -256,11 +323,30 @@ class ViewBucket extends Component {
                 }
                 console.log('wanted to navigate here')
                 break;
+<<<<<<< HEAD
             case 'download':
                 this.props.control.download({
                     src: ref.state.selectedFiles[0].name,
                     source_path: this.state.currentPath
                 })
+=======
+            case 'refresh':
+                this.list();
+                break;
+            case 'autorefresh':
+                if(this.state.autoRefresh){
+                    clearInterval(this.state.autoRefresh)
+                    this.setState({
+                        autoRefresh: null
+                    })
+                } else {
+                    this.setState({
+                        autoRefresh: setInterval(() => {
+                            this.list();
+                        },30000)
+                    })
+                }
+>>>>>>> 1e670f9e1fb217b02e0150f0109c80fef67c8cdd
                 break;
             case 'cut':
                 this.setState({
@@ -335,7 +421,7 @@ class ViewBucket extends Component {
 
     list() {
         return new Promise(async resolve => {
-
+            console.log("refereshing....")
             try {
                 let objects = [];
                 let response = await this.props.control.list({

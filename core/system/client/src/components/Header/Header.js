@@ -15,7 +15,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
-import {withTheme} from "@material-ui/styles";
+import {withTheme, withStyles as themeStyles} from "@material-ui/styles";
 
 class Header extends Component {
   state = {
@@ -94,12 +94,14 @@ class Header extends Component {
           .classList.remove(classes[color]);
       header
           .classList.add(classes[changeColorOnScroll.color]);
+      header.style.backgroundColor = this.props.theme.palette.primary.main;
     } else {
       header.setAttribute('color', color);
       header
           .classList.add(classes[color]);
       header
           .classList.remove(classes[changeColorOnScroll.color]);
+      header.style.backgroundColor = 'transparent';
     }
   }
 
@@ -214,6 +216,7 @@ Header.defaultProp = {
 };
 
 Header.propTypes = {
+  theme: PropTypes.object,
   leftLinks: PropTypes.node,
   brand: PropTypes.string,
   fixed: PropTypes.bool,

@@ -74,7 +74,9 @@ export class AppController {
 
                         //we will start a REDIS handshake with the consumer
                         let handshake = this.protocolService.startHandshake({
-                            channel: this.portChannel(req.headers),
+                            channel: this.portChannel({
+                headers: req.headers
+            }),
                             indication: {
                                 api: 'bucket',
                                 act: 'upload'
@@ -135,7 +137,9 @@ export class AppController {
                     _handleFile: (req, file, cb) => {
                         //we will start a REDIS handshake with the consumer
                         let handshake = this.protocolService.startHandshake({
-                            channel: this.portChannel(req.headers),
+                            channel: this.portChannel({
+                                headers: req.headers
+                            }),
                             indication: {
                                 api: 'bucket',
                                 act: 'upload'
@@ -212,7 +216,14 @@ export class AppController {
             }
 
             const start_date = new Date().getTime();
-            const channel = this.portChannel(req.headers);
+            const channel = this.portChannel({
+                headers: req.headers
+            });
+
+            if(typeof channel !== "string") {
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                res.end(`Port ${channel} not mapped`);
+            }
 
             if (!channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -289,7 +300,9 @@ export class AppController {
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
 
-            const channel = this.portChannel(req.headers);
+            const channel = this.portChannel({
+                headers: req.headers
+            });
             //TODO big threat here. use encrypted keys from now on
 
             if (!channel) {
@@ -454,7 +467,8 @@ export class AppController {
 
     /*-- End Redis subscriber bidirectional lock --*/
 
-    private portChannel(headers) {
+    private portChannel(params) {
+        const headers = params.headers;
         let port = headers.host.split(':')[1];
 
         if (!port) {
@@ -470,7 +484,14 @@ export class AppController {
             console.log(JSON.stringify(headers));
             return null;
         }
-        return this.portMap[port];
+        if(params.returnPort) {
+            if(this.portMap.hasOwnProperty(port)){
+                return +port;
+            }
+        } else {
+            return this.portMap[port];
+        }
+
     }
 
     private onMessage(params) {
