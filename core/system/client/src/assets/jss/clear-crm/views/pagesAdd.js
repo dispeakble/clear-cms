@@ -100,8 +100,8 @@ const javascriptStyles = {
   // for the 2 icons on the right side of the page
 
   iconsWrapper: {
-    flex: "0 0 112px",
-    width: "112px",
+    flex: "0 0 1",
+    width: "auto",
     whiteSpace: "nowrap",
   },
   rightSideIcon: {

@@ -31,11 +31,12 @@ class MainController extends Component {
 
         const currentPath = location.pathname;
         const pathnames = this.props.moduleList;
-        const pathObject = currentPath.split("/");
+        const pathObject = currentPath.substring(1).split("/");
+        this.props.location.pathObject = pathObject;
         let LazyComponent;
         if (this.hasModule(currentPath, pathnames)) {
             LazyComponent = React.lazy(() =>
-                import(`./${pathObject[1]}.controller`)
+                import(`./${pathObject[0]}.controller`)
             );
         } else {
             LazyComponent = NotFound;
