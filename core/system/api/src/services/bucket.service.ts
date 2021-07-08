@@ -341,6 +341,29 @@ export class BucketService {
         })
     }
 
+    public archive (params: any){
+        return new Observable(subscriber => {
+
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'archive',
+                payload: {
+                    basePath: params.basePath,
+                    files: params.files,
+                    fileName: params.fileName,
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
+
     public mkdir (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {

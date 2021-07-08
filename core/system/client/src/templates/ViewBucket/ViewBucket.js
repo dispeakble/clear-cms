@@ -45,6 +45,7 @@ class ViewBucket extends Component {
         selectedFiles: [],
         moveClipboard: {},
         autoRefresh: null,
+        archiveModal: null,
     };
 
     uploadAction = defineFileAction(
@@ -190,6 +191,19 @@ class ViewBucket extends Component {
         }
     );
 
+    archiveAction = defineFileAction(
+        {
+            id: 'archive',
+            button: {
+                name: 'Archive',
+                toolbar: false,
+                contextMenu: true,
+                icon: 'archive'
+            },
+            requiresSelection: true,
+        }
+    );
+
     newDirectoryAction = defineFileAction(
         {
             id: 'newfolder',
@@ -221,6 +235,7 @@ class ViewBucket extends Component {
         this.fileActions.push(this.downloadAction);
         this.fileActions.push(this.refreshAction);
         this.fileActions.push(this.autoRefreshAction);
+        this.fileActions.push(this.archiveAction);
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -326,6 +341,31 @@ class ViewBucket extends Component {
                 this.props.control.download({
                     src: ref.state.selectedFiles[0].name,
                     source_path: this.state.currentPath
+                })
+                break;
+            case 'archive':
+                let fileName = ""
+                const onChange = (evt) => {
+                    fileName = evt.currentTarget.value
+                }
+                const onConfirm = () => {
+                    this.setState({
+                        archiveModal: null,
+                    })
+                    const selectedFiles = ref.state.selectedFiles.map(file => file.name)
+                    this.props.control.archive({basePath: this.state.currentPath, files: selectedFiles, fileName}).then(() => {
+                        this.list()
+                    })
+                }
+
+                const onCancel = () => {
+                    this.setState({
+                        archiveModal: null
+                    })
+                }
+
+                this.setState({
+                    archiveModal: () => this.modalWithInput("Archive name", "Create archive", onChange, onConfirm, onCancel)
                 })
                 break;
             case 'refresh':
@@ -698,6 +738,15 @@ class ViewBucket extends Component {
                 newFolderModal: false,
             });
         };
+        const onChange = (evt) => {
+            folderName = evt.currentTarget.value
+        }
+        return (
+            this.modalWithInput("Add new folder", "Add folder", onChange, onConfirm, onCancel)
+        );
+    }
+
+    modalWithInput(heading, primaryBtnLabel, onChange, onConfirm, onCancel) {
         return (
             <Dialog
                 style={{ width: "100%" }}
@@ -716,7 +765,7 @@ class ViewBucket extends Component {
                     disableTypography
                     className={this.props.classes.modalHeader}
                 >
-                    <h4 style={{ textAlign: "center" }}>Add new folder</h4>
+                    <h4 style={{ textAlign: "center" }}>{heading}</h4>
                 </DialogTitle>
                 <DialogContent
                     style={{ overflow: "auto" }}
@@ -725,9 +774,7 @@ class ViewBucket extends Component {
                 >
                     <input className={this.props.classes.renameInput} type="text"
                            autoFocus={true}
-                           onChange={(evt) => {
-                               folderName = evt.currentTarget.value
-                           }}
+                           onChange={onChange}
                            onKeyPress={(evt) => {
                                evt.key === 'Enter' && onConfirm(evt)
                            }}
@@ -738,11 +785,11 @@ class ViewBucket extends Component {
                     display: 'flex',
                     justifyContent: 'space-around'
                 }}>
-                    <Button color="primary" onClick={onConfirm}>Add folder</Button>
+                    <Button color="primary" onClick={onConfirm}>{primaryBtnLabel}</Button>
                     <Button color="danger" onClick={onCancel}>Cancel</Button>
                 </DialogActions>
             </Dialog>
-        );
+        )
     }
 
     openInfoModal() {
@@ -848,6 +895,7 @@ class ViewBucket extends Component {
                     {this.state.renameModal ? this.openRenameModal() : ""}
                     {this.state.newFolderModal ? this.openNewFolderModal() : ""}
                     {this.state.infoModal.visible ? this.openInfoModal() : ""}
+                    {this.state.archiveModal && this.state.archiveModal()}
                 </React.Fragment>
             </MuiThemeProvider>
         );

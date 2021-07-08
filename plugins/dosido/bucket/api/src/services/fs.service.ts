@@ -546,15 +546,17 @@ export class FsService {
         return new Observable((observer) => {
             try {
                 const zip = new AdmZip.default();
-
-                const source = this.help.path.realPath({path: params.path});
-                if (this.help.is.dir({path: source})) {
-                    zip.addLocalFolder(source);
-                } else {
-                    zip.addLocalFile(source);
-                }
-
-                zip.writeZip(this.help.path.realPath({path: params.destination}));
+                params.files.forEach((file,i) => {
+                    const baseSource = this.help.path.realPath({path: params.basePath});
+                    const source = path.join(baseSource, file)
+                    if (this.help.is.dir({path: source})) {
+                        zip.addLocalFolder(source);
+                    } else {
+                        zip.addLocalFile(source);
+                    }
+                })
+                zip.writeZip(this.help.path.realPath({path: path.join(params.basePath,params.fileName + ".zip")}));
+                observer.next({type: 'success', data: params.basePath})
                 observer.complete();
             } catch (err) {
                 console.log(err);

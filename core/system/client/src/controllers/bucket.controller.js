@@ -19,6 +19,7 @@ class BucketController extends Component {
         delete: (params) => this.delete(params),
         move: (params) => this.move(params),
         download: (params) => this.download(params),
+        archive: (params) => this.archive(params),
         //rem: (params) => this.remData(params)
     };
     channel = 'bucket';
@@ -196,6 +197,22 @@ class BucketController extends Component {
                     module: 'system',
                     api: 'bucket',
                     act: 'move',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    archive(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'archive',
                     payload: params
                 });
                 resolve(response)
