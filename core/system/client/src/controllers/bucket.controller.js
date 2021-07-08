@@ -20,6 +20,7 @@ class BucketController extends Component {
         move: (params) => this.move(params),
         download: (params) => this.download(params),
         archive: (params) => this.archive(params),
+        extract: (params) => this.extract(params)
         //rem: (params) => this.remData(params)
     };
     channel = 'bucket';
@@ -213,6 +214,22 @@ class BucketController extends Component {
                     module: 'system',
                     api: 'bucket',
                     act: 'archive',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    extract(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'extract',
                     payload: params
                 });
                 resolve(response)

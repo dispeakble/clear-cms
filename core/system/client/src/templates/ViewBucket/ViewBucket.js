@@ -204,6 +204,20 @@ class ViewBucket extends Component {
         }
     );
 
+    extractAction = defineFileAction(
+        {
+            id: 'extract',
+            button: {
+                name: 'Extract',
+                toolbar: false,
+                contextMenu: true,
+                icon: 'archive'
+            },
+            requiresSelection: true,
+            fileFilter: (file, index, selected) => !FileHelper.isDirectory(file) && selected.length === 1 && file.name.split(".").pop() === "zip"
+        }
+    );
+
     newDirectoryAction = defineFileAction(
         {
             id: 'newfolder',
@@ -236,6 +250,7 @@ class ViewBucket extends Component {
         this.fileActions.push(this.refreshAction);
         this.fileActions.push(this.autoRefreshAction);
         this.fileActions.push(this.archiveAction);
+        this.fileActions.push(this.extractAction);
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -366,6 +381,37 @@ class ViewBucket extends Component {
 
                 this.setState({
                     archiveModal: () => this.modalWithInput("Archive name", "Create archive", onChange, onConfirm, onCancel)
+                })
+                break;
+            case 'extract':
+                const extractFile = () => {
+                    return new Promise((resolve) => {
+                        this.props.control.extract({
+                            file: ref.state.selectedFiles[0].name,
+                            dest_path: this.state.currentPath,
+                        }).then(() => {
+                            this.list();
+                            resolve()
+                        })
+                    })
+                }
+                this.setState({
+                    infoModal: {
+                        visible: true,
+                        title: 'Overwrite Files',
+                        message: 'Do you want to overwrite the files?',
+                        confirm: {
+                            label: 'Yes',
+                            callback: () => new Promise(async resolve=> {
+                                await extractFile()
+                                resolve()
+                            })
+                        },
+                        cancel: {
+                            label: 'Cancel',
+                            callback: () => new Promise(resolve=>resolve())
+                        }
+                    }
                 })
                 break;
             case 'refresh':

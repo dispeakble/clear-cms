@@ -571,8 +571,8 @@ export class FsService {
     extract(params) {
         return new Observable((observer) => {
             try {
-                const source = this.help.path.realPath({path: params.path});
-                const destination = this.help.path.realPath({path: params.destination});
+                const source = this.help.path.realPath({path: path.join(params.dest_path, params.file)});
+                const destination = this.help.path.realPath({path: params.dest_path});
 
                 const zip = new AdmZip.default(source);
 
