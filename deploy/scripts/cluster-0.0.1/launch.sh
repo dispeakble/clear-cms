@@ -70,11 +70,12 @@ function checkCluster() {
     echo "The cluster is being built. Please wait..."
     CLUSTER_STATE=0
     wait_count=0
-    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 300)); do
-      if [ "$wait_count" -gt 190 ]; then
+    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 230)); do
+      if [ "$wait_count" -gt 230 ]; then
+
         echo -en "\r If this message does not go away please contact the administrator"
         else
-        echo -en "\r$(echo $wait_count*190/100 | bc)% - complete"
+        echo -en "\r$(echo "scale=2; 100 / 230 * $wait_count" | bc)% - ( $wait_count seconds ) complete"
       fi
 
         sleep 1
@@ -85,7 +86,7 @@ function checkCluster() {
         echo "Cluster cannot be detected. Check Rancher UI"
         exit 1
     fi
-    echo "ok!"
+    echo "\nCluster created!\n"
     return 0
 }
 

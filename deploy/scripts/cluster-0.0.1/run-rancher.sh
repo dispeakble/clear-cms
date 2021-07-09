@@ -57,7 +57,19 @@ if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
         "${RANCHER_IMAGE}" \
         -c 'curl -sSf https://github.com/rancher/kontainer-driver-metadata.git >/dev/null 2>&1 || (echo "Waiting (maximum) 10 minutes for Rancher to get ready..."; sleep 600)'
 
-    while ! curl -k https://localhost:9443/ping; do sleep 10; done
+    #while ! curl -k https://localhost:9443/ping; do sleep 10; done
+    wait_count=0
+    while ! curl -a -k -s https://localhost:9443/ping && ((wait_count < 20)); do
+      if [ "$wait_count" -gt 20 ]; then
+
+        echo -en "\r If this message does not go away please contact the administrator"
+        else
+        echo -en "\rWaiting for Rancher: $(echo "scale=2; 100 / 20 * $wait_count" | bc)% $wait_count seconds - complete"
+      fi
+
+        sleep 1
+        wait_count=$((wait_count + 1))
+    done
 else
     echo "Rancher is already running"
 fi
