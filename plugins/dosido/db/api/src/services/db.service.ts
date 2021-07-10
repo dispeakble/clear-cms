@@ -145,18 +145,44 @@ export class DbService {
                 QUERY_PARAMS = [],
                 ADD_PIECES_COLUMNS = [],
                 ADD_PIECES_VALUES = [],
+                ADD_PIECES_ENTRIES = [],
                 x = 1;
 
-            for (let i in params.data) {
-                if (params.data.hasOwnProperty(i)) {
-                    ADD_PIECES_COLUMNS.push(i);
-                    ADD_PIECES_VALUES.push('$' + x);
-                    QUERY_PARAMS.push(params.data[i]);
-                    x++;
+            if(this.help.is.array(params.data)){
+                //QUERY_STRING = 'INSERT INTO ' + params.what + ' (' + ADD_PIECES_COLUMNS.join(', ') + ') VALUES(' + ADD_PIECES_VALUES.join(', ') + ') RETURNING *';
+                QUERY_STRING = 'INSERT INTO ' + params.what + ' (' + ADD_PIECES_COLUMNS.join(', ') + ') ';
+                params.data.map((el, i) => {
+                    x = 1;
+                    for (let y in el) {
+                        if (el.hasOwnProperty(y)) {
+                            ADD_PIECES_COLUMNS.push(y);
+                            ADD_PIECES_VALUES.push('$' + x);
+                            QUERY_PARAMS.push(el[y]);
+                            x++;
+                        }
+                    }
+
+                    QUERY_STRING += '(' + ADD_PIECES_VALUES.join(', ') + ') ';
+                    ADD_PIECES_ENTRIES.push(QUERY_STRING);
+                })
+                QUERY_STRING += 'VALUES' + ADD_PIECES_ENTRIES.join(', ');
+                QUERY_STRING += ' RETURNING *';
+            } else {
+                for (let i in params.data) {
+                    if (params.data.hasOwnProperty(i)) {
+                        ADD_PIECES_COLUMNS.push(i);
+                        ADD_PIECES_VALUES.push('$' + x);
+                        QUERY_PARAMS.push(params.data[i]);
+                        x++;
+                    }
                 }
+
+                QUERY_STRING = 'INSERT INTO ' + params.what + ' (' + ADD_PIECES_COLUMNS.join(', ') + ') VALUES(' + ADD_PIECES_VALUES.join(', ') + ') RETURNING *';
             }
 
-            QUERY_STRING = 'INSERT INTO ' + params.what + ' (' + ADD_PIECES_COLUMNS.join(', ') + ') VALUES(' + ADD_PIECES_VALUES.join(', ') + ') RETURNING *';
+
+
+
 
             return {string: QUERY_STRING, params: QUERY_PARAMS};
         },
@@ -306,7 +332,10 @@ export class DbService {
 
     constructor(@Inject('PgPool') private pgPool: Pool) {
         this.pool = new this.pgPool(this.config);
+        this.add({
+            what: 'categories',
 
+        })
     }
 
     async get(params) {
