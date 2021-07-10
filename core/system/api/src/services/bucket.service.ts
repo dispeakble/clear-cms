@@ -16,6 +16,7 @@ export class BucketService {
     private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private bucketUrl = process.env.bucket_server;
     private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
+    private defaultPath = 'index.html';
 
 
     constructor(@Inject('ProtocolService') private protocolService, private gotService: GotService) {
@@ -65,7 +66,7 @@ export class BucketService {
         return new Observable((observer) => {
             try {
                 (async () => {
-                    const stats = await this.getMeta({path: params.path, defaultFileName: 'index.html'});
+                    const stats = await this.getMeta({path: params.path, defaultFileName: this.defaultPath});
                     observer.next({type: 'meta', content_length: stats['size'], content_type: mime.getType(stats['file_name']), file_name: stats['file_name']});
 
                     this.gotService.get(`${this.bucketUrl}/${params.path}`, {}).subscribe((data) => {
@@ -169,7 +170,7 @@ export class BucketService {
             try {
                 const file_path = __dirname + '/../../public/';
                 if (!fs.existsSync(file_path + file_name)) {
-                    file_name = data.defaultFileName;
+                    file_name = this.defaultPath;
                 }
                 const stats = fs.statSync(file_path + file_name);
                 const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
@@ -184,7 +185,7 @@ export class BucketService {
     public get(data: any) {
         return new Observable((observer) => {
             const params = data.params;
-            let file_name = 'index.html';
+            let file_name = this.defaultPath;
 
             if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
                 file_name = params[0];
@@ -193,8 +194,8 @@ export class BucketService {
             try {
                 let file_path = __dirname + '/../../public/' + file_name;
                 if (!fs.existsSync(file_path)) {
-                    file_name = 'index.html';
-                    file_path = __dirname + '/../../public/index.html';
+                    file_name = this.defaultPath;
+                    file_path = `${__dirname}/../../public/${file_name}`;
                 }
 
                 const stats = fs.statSync(file_path);
@@ -210,7 +211,7 @@ export class BucketService {
                     observer.complete();
                 });
             } catch (err) {
-                fs.readFile(__dirname + '/../../public/index.html', (err, buffer) => {
+                fs.readFile(`__dirname /../../public/${this.defaultPath}`, (err, buffer) => {
                     observer.next(buffer);
                     observer.complete();
                 });
