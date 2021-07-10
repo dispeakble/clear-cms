@@ -162,8 +162,8 @@ export class DbService {
                         }
                     }
 
-                    QUERY_STRING += '(' + ADD_PIECES_VALUES.join(', ') + ') ';
-                    ADD_PIECES_ENTRIES.push(QUERY_STRING);
+                    ADD_PIECES_ENTRIES.push('(' + ADD_PIECES_VALUES.join(', ') + ') ');
+                    return el;
                 })
                 QUERY_STRING += 'VALUES' + ADD_PIECES_ENTRIES.join(', ');
                 QUERY_STRING += ' RETURNING *';
