@@ -148,14 +148,20 @@ export class DbService {
                 ADD_PIECES_ENTRIES = [],
                 x = 1;
 
+            for (let y in params.data[0]) {
+                if (params.data[0].hasOwnProperty(y)) {
+                    ADD_PIECES_COLUMNS.push(y);
+                }
+            }
+
             if(this.help.is.array(params.data)){
                 //QUERY_STRING = 'INSERT INTO ' + params.what + ' (' + ADD_PIECES_COLUMNS.join(', ') + ') VALUES(' + ADD_PIECES_VALUES.join(', ') + ') RETURNING *';
                 QUERY_STRING = 'INSERT INTO ' + params.what + ' (' + ADD_PIECES_COLUMNS.join(', ') + ') ';
+                x = 1;
                 params.data.map((el, i) => {
-                    x = 1;
+                    ADD_PIECES_VALUES = [];
                     for (let y in el) {
                         if (el.hasOwnProperty(y)) {
-                            ADD_PIECES_COLUMNS.push(y);
                             ADD_PIECES_VALUES.push('$' + x);
                             QUERY_PARAMS.push(el[y]);
                             x++;
