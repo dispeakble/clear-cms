@@ -9,6 +9,7 @@ class PagesController extends Component {
     messageCallbacks = {};
     control = {
         list: (params) => this.list(params),
+        get: (params) => this.get(params),
         add: (params) => this.add(params),
         edit: (params) => this.edit(params),
         remove: (params) => this.remove(params),
@@ -74,6 +75,22 @@ class PagesController extends Component {
                     api: 'pages',
                     act: 'list',
                     payload: {}
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    get(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'pages',
+                    act: 'get',
+                    payload: params
                 });
                 resolve(response)
             } catch (err) {

@@ -166,8 +166,10 @@ class ViewPagesEditor extends React.PureComponent {
   muiTheme = {};
 
   async componentDidMount() {
-    let editing = this.props.location.pathname.indexOf("pageEdit") > -1;
-    let pageId = Number(this.props.match.params.id);
+    let editing = this.props.location.pathname.indexOf("edit") > -1;
+    // TODO: debug why match.params is empty
+    // let pageId = Number(this.props.match.params.id);
+    let pageId = this.props.location.pathObject[2]
 
     let categoriesFromStorage = await this.props.control.listCategories();
 
@@ -188,17 +190,13 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     if (editing) {
-      let pages = JSON.parse(localStorage.getItem("pages"));
-
-      let currentPage = pages.find((page) => {
-        return Number(page.id) === pageId;
-      });
+      let currentPage = await this.props.control.get({id: parseInt(pageId)})
       const pageConfig = currentPage.pageConfig;
-      const items = JSON.parse(localStorage.getItem("items"));
-
+      const items = currentPage.items
       if (items !== null) {
         this.setState({
           items,
+          category: pageConfig.category
         });
       }
 
@@ -514,6 +512,7 @@ class ViewPagesEditor extends React.PureComponent {
         y: Infinity, // puts it at the bottom
         w: 2,
         h: 20,
+        ...(this.state.editing && {toBeSave: true})
       });
 
       this.setState({
@@ -1134,50 +1133,30 @@ class ViewPagesEditor extends React.PureComponent {
       category: this.state.category,
     };
 
-    let pages = JSON.parse(localStorage.getItem("pages")) || [];
-
+    // TODO: set other pages default to false in DB
     if (this.state.defaultPage) {
-      pages.map((page) => {
-        page.pageConfig.defaultPage = false;
-        return page;
-      });
+      // pages.map((page) => {
+      //   page.pageConfig.defaultPage = false;
+      //   return page;
+      // });
     }
 
     if (this.state.editing) {
-      if (pages.length) {
-        pages = pages.map((page) => {
-          if (page.id === this.state.pageId) {
-            return {
-              id: page.id,
-              pageConfig: pageConfig,
-              items: this.state.items,
-            };
-          } else {
-            return page;
-          }
-        });
+      let page = {
+        id: this.state.pageId,
+        pageConfig: pageConfig,
+        items: this.state.items,
       }
+      this.props.control.edit({...page})
+
     } else {
-      let newPageId = 0;
-
-      if (pages.length) {
-        pages.map((page) => {
-          newPageId = Number(page.id) > newPageId ? Number(page.id) : newPageId;
-          return page;
-        });
-      }
-
-      newPageId++;
-
       let newPage = {
-        id: newPageId,
         pageConfig: pageConfig,
         items: this.state.items,
       };
-      pages.push(newPage);
-    }
+      this.props.control.add(newPage)
 
-    localStorage.setItem("pages", JSON.stringify(pages));
+    }
 
     this.props.history.push("/pages");
   };
