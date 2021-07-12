@@ -83,14 +83,25 @@ export class AdminThemesService {
     public async setInfo(params) {
 
         if(params.data.isdefault){
-            await this.setInfo({
-                where:{
-                    isdefault: 1
-                },
-                data:{
-                    isdefault: 0
+            const request: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'set',
+                payload: {
+                    channel: 'system',
+                    data: {
+                        what: 'admin_themes',
+                        where: {
+                            isdefault: 1
+                        },
+                        data: {
+                            isdefault: 0
+                        }
+                    }
                 }
-            })
+            };
+
+            await this.protocolService.sendMessage(request).toPromise();
         }
 
         return new Observable((subscriber) => {
