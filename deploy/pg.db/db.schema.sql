@@ -230,20 +230,29 @@ ALTER TABLE public.gallery_module OWNER TO cms;
 -- Name: page_box; Type: TABLE; Schema: public; Owner: cms
 --
 
-CREATE TABLE public.page_box (
-    id integer DEFAULT nextval('public.box_style_id_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
-    module character varying,
+CREATE TABLE IF NOT EXISTS public.page_box
+(
+    id integer NOT NULL DEFAULT nextval('box_style_id_seq'::regclass),
+    title character varying COLLATE pg_catalog."default" NOT NULL,
+    module character varying COLLATE pg_catalog."default",
     fontsize smallint,
-    fontfamily character varying,
-    textcolor character varying,
-    bgcolor character varying,
-    bgimage character varying,
+    fontfamily character varying COLLATE pg_catalog."default",
+    textcolor character varying COLLATE pg_catalog."default",
+    bgcolor character varying COLLATE pg_catalog."default",
+    bgimage character varying COLLATE pg_catalog."default",
     borderwidth smallint,
-    bordercolor character varying,
+    bordercolor character varying COLLATE pg_catalog."default",
     borderradius smallint,
     bgrepeat smallint,
-    bgstretch smallint
+    bgstretch smallint,
+    height smallint,
+    width smallint,
+    moduleoptions character varying COLLATE pg_catalog."default",
+    x smallint,
+    y smallint,
+    borderstyle character varying COLLATE pg_catalog."default",
+    showscrollbars smallint,
+    CONSTRAINT box_style_pkey PRIMARY KEY (id)
 );
 
 
@@ -304,12 +313,15 @@ ALTER TABLE public.pages_id_seq OWNER TO cms;
 -- Name: pages; Type: TABLE; Schema: public; Owner: cms
 --
 
-CREATE TABLE public.pages (
-    id integer DEFAULT nextval('public.pages_id_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
+CREATE TABLE IF NOT EXISTS public.pages
+(
+    id integer NOT NULL DEFAULT nextval('pages_id_seq'::regclass),
+    title character varying COLLATE pg_catalog."default" NOT NULL,
     is_default smallint NOT NULL,
     publish smallint NOT NULL,
-    cat_id integer
+    cat_id integer,
+    pagelink character varying COLLATE pg_catalog."default",
+    CONSTRAINT pages_pkey PRIMARY KEY (id)
 );
 
 

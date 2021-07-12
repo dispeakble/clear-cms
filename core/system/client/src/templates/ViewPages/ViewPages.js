@@ -32,10 +32,14 @@ class Pages extends Component {
         deleteQty: 0,
     };
 
-    async componentDidMount() {
+    componentDidMount() {
+        this.fetchPages();
+    }
+
+    async fetchPages() {
         let pages = [];
-        //let pagesFromStorage = await this.props.control.list();
-        let pagesFromStorage = JSON.parse(localStorage.getItem("pages"));
+        let pagesFromStorage = await this.props.control.list();
+
         if(pagesFromStorage && pagesFromStorage.length){
             pagesFromStorage.map((page) => {
                 pages.push({
@@ -144,7 +148,7 @@ class Pages extends Component {
                     ),
                     onClick: (event, rowData) => {
                         this.props.history.push(
-                            `/pages/edit/${Number(rowData.tableData.id) + 1}`
+                            `/pages/edit/${Number(rowData.id)}`
                         );
                     },
                 },
@@ -154,7 +158,9 @@ class Pages extends Component {
                         <DeleteForever color="error" />
                     ),
                     tooltip: "Delete",
-                    onClick: async (evt, data) => this.showDeleteModal(evt, data, 1),
+                    onClick: async (evt, data) => {
+                        this.showDeleteModal(evt, data, 1)
+                    },
                 },
             ],
         },
@@ -198,7 +204,7 @@ class Pages extends Component {
         this.setState({
             deleteData: data,
             showDeleteModal: true,
-            pageToDeleteId: data.tableData.id,
+            pageToDeleteId: data.id,
             deleteQty: deleteQty,
         });
     };
@@ -211,42 +217,26 @@ class Pages extends Component {
         if (this.state.deleteQty === 1) {
             const pages = [...this.state.pages];
             const index = this.state.pageToDeleteId;
-            pages.splice(index, 1);
 
-            let pagesInStorage = JSON.parse(localStorage.getItem("pages"));
-            let newPagesInStorage = [...pagesInStorage];
-            newPagesInStorage.splice(index, 1);
+            await this.props.control.remove({id: index})
 
-            await localStorage.setItem("pages", JSON.stringify(newPagesInStorage));
+            const newPages = pages.filter(function( obj ) {
+                return obj.id !== index;
+            });
 
-            await this.setAsyncState({ pages, deleteQty: 0 });
+            await this.setAsyncState({ pages: newPages, deleteQty: 0 });
             this.closeDeleteModal();
         } else {
-            let pages = [...JSON.parse(localStorage.getItem("pages"))];
+            let pages = [...this.state.pages]
             let pagesIds = [];
             let deleteData = this.state.deleteData;
             deleteData.map((page) => pagesIds.push(page.id));
-            pages = pages.filter((page) => {
+            this.props.control.remove({id: pagesIds})
+            let newPages = pages.filter((page) => {
                 return !pagesIds.includes(page.id);
             });
 
-            let pagesToSet = [];
-
-            pages.map((page) => {
-                pagesToSet.push({
-                    id: page.id,
-                    title: page.pageConfig.pageTitle,
-                    publish: <Checkbox disabled checked={page.pageConfig.publish} />,
-                    defaultPage: (
-                        <Checkbox disabled checked={page.pageConfig.defaultPage} />
-                    ),
-                    category: page.pageConfig.category,
-                });
-                return page;
-            });
-
-            await this.setAsyncState({ pages: pagesToSet });
-            localStorage.setItem("pages", JSON.stringify(pages));
+            await this.setAsyncState({ pages: newPages });
             this.closeDeleteModal();
         }
     };
