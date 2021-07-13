@@ -11,9 +11,6 @@ const javascriptStyles = {
   modal: {
     overflow: "initial",
   },
-  dropzone:{
-
-  },
   renameInput:{
     width:'100%',
     lineHeight:'2rem',

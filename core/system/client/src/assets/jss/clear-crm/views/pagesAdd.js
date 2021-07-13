@@ -142,7 +142,7 @@ const javascriptStyles = {
     right: 0,
   },
   removeItemIcon: {
-    color: "#F44336",
+    color: "danger",
   },
   editItemIconWrapper: {
     color: "#008B8B",

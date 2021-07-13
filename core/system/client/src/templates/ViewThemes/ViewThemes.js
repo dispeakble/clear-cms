@@ -552,7 +552,7 @@ class ViewThemes extends Component {
                     this.setState({data});
                 }}
                 style={{width: "100%"}}
-                onBackdropClick={() => false}
+                onBackdropClick={() => "false"}
                 classes={{
                     root: this.props.classes.center,
                     paper: this.props.classes.modal,

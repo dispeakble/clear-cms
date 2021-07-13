@@ -1103,7 +1103,7 @@ class PagesAdd extends React.PureComponent {
             />
             <SketchPicker
               color={this.state[targetedColor]}
-              onChangeComplete={(color) => {
+              onChange={(color) => {
                 this.setState({
                   [targetedColor]: color.hex,
                 });

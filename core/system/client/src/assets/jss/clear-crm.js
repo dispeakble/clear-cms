@@ -38,9 +38,7 @@ const card = {
   width: "100%",
   margin: "25px 0",
   boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.14)",
-  borderRadius: "3px",
-  color: "rgba(0, 0, 0, 0.87)",
-  background: "#fff",
+  borderRadius: "3px"
 };
 
 const defaultFont = {
@@ -85,29 +83,15 @@ let roseColor = "#e91e63";
 let grayColor = "#999999";
 
 try {
-  //TODO get from main cache already!!!!!
-  let themes = localStorage.getItem("adminThemes");
+  const theme = JSON.parse(localStorage.getItem("adminTheme"));
 
-  let defaultTheme;
-
-  if (themes) {
-
-    themes = JSON.parse(themes);
-    defaultTheme = themes.find((theme) => theme.isdefault === true);
-    if (!defaultTheme) {
-      defaultTheme = hardcodedStyles;
-    }
-  } else {
-    defaultTheme = hardcodedStyles;
-  }
-
-  primaryColor = defaultTheme.primary.main;
-  warningColor = defaultTheme.warning.main;
-  dangerColor = defaultTheme.error.main;
-  successColor = defaultTheme.success.main;
-  infoColor = defaultTheme.info.main;
-  roseColor = defaultTheme.secondary.main;
-  grayColor = defaultTheme.grey.main;
+  primaryColor = theme.primary.main;
+  warningColor = theme.warning.main;
+  dangerColor = theme.error.main;
+  successColor = theme.success.main;
+  infoColor = theme.info.main;
+  roseColor = theme.secondary.main;
+  grayColor = theme.grey.main;
 } catch (err) {
 
 }

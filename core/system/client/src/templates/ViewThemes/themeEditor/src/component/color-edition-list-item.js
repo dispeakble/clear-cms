@@ -60,7 +60,7 @@ class ColorEditionListItem extends React.Component {
         >
           <SketchPicker
             color={this.props.value}
-            onChangeComplete={this.handleChange}
+            onChange={this.handleChange}
           />
         </Popover>
       </React.Fragment>

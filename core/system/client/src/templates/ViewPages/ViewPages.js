@@ -116,7 +116,7 @@ class Pages extends Component {
                     tooltip: "Add Page",
                     isFreeAction: true,
                     iconProps: {
-                        style: { color: "darkcyan" },
+                        style: { color: this.props.defaultTheme.primary.main },
                     },
                     onClick: (event) => {
                         this.props.history.push(`/pages/add`);

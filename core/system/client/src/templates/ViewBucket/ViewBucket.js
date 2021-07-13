@@ -8,9 +8,7 @@ import {
     FileNavbar,
     FileToolbar,
     defineFileAction,
-    FileHelper,
-    ChonkyActions,
-    FileActionHandler
+    FileHelper
 } from 'chonky';
 import {Helmet} from "react-helmet";
 import PropTypes from "prop-types";
@@ -916,12 +914,10 @@ class ViewBucket extends Component {
     render() {
         const classes = this.props.classes;
         const onFileAction = (data) => {
-            console.log('File action data:', data);
             this.onFileAction(data);
         };
 
         return (
-            <MuiThemeProvider theme={this.getTheme()}>
                 <React.Fragment>
                     <Helmet>
                         <title>Bucket (file manager)</title>
@@ -934,8 +930,6 @@ class ViewBucket extends Component {
                             <FileList />
                         </FileBrowser>
                     </div>
-                </React.Fragment>
-                <React.Fragment>
                     {this.state.createModal ? this.openEditor(true) : ""}
                     {this.state.deleteModal ? this.openDeleteModal() : ""}
                     {this.state.renameModal ? this.openRenameModal() : ""}
@@ -943,7 +937,6 @@ class ViewBucket extends Component {
                     {this.state.infoModal.visible ? this.openInfoModal() : ""}
                     {this.state.archiveModal && this.state.archiveModal()}
                 </React.Fragment>
-            </MuiThemeProvider>
         );
     }
 }

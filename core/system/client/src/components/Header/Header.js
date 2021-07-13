@@ -188,9 +188,6 @@ class Header extends Component {
             variant="temporary"
             anchor={"left"}
             open={this.props.mobileOpen}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
             onClose={this.props.handleDrawerToggle}
           >
             <div className={classes.appResponsive}>{this.props.leftLinks}</div>
