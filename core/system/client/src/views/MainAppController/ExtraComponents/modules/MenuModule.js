@@ -597,7 +597,7 @@ class MenuModule extends Component {
                     />
                     <SketchPicker
                       color={this.state.bgColor}
-                      onChangeComplete={async (color) => {
+                      onChange={async (color) => {
                         await this.setAsyncState({
                           bgColor: color.hex,
                         });

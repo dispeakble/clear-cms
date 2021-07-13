@@ -53,7 +53,7 @@ class ColorEditionSquare extends React.Component {
         >
           <SketchPicker
             color={this.props.value}
-            onChangeComplete={this.handleChange}
+            onChange={this.handleChange}
             onChange={this.handleChange}
           />
         </Popover>

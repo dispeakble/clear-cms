@@ -415,7 +415,7 @@ class ViewPagesEditor extends React.PureComponent {
         callback: () => {
           this.onRemoveItem(el.i);
         },
-        icon: <DeleteForever className={this.props.classes.removeItemIcon} />,
+        icon: <DeleteForever style={{color:this.props.defaultTheme.secondary.main}} />,
         name: "Delete Item",
       },
       {
@@ -423,7 +423,7 @@ class ViewPagesEditor extends React.PureComponent {
           this.addPagePadding();
           this.handleEdit(el.i);
         },
-        icon: <Edit className={this.props.classes.editItemIcon} />,
+        icon: <Edit style={{color:this.props.defaultTheme.primary.main}} />,
         name: "Edit Item",
       },
     ];
@@ -436,7 +436,7 @@ class ViewPagesEditor extends React.PureComponent {
           <Tooltip title="Drag Box">
             <Icon
               style={{ cursor: "grab" }}
-              class="MyDragHandleClassName"
+              className="MyDragHandleClassName"
               color="primary"
               size="medium"
             >
@@ -1104,7 +1104,7 @@ class ViewPagesEditor extends React.PureComponent {
             />
             <SketchPicker
               color={this.state[targetedColor]}
-              onChangeComplete={(color) => {
+              onChange={(color) => {
                 this.setState({
                   [targetedColor]: color.hex,
                 });

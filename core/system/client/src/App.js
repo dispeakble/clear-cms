@@ -107,32 +107,7 @@ class App extends Component {
     excludeHeader: ["pagePreview", "view-auth", "recover-password", "logout"],
     socket: {},
     mobileOpen: false,
-    defaultPalette: {//TODO GET THIS FROM A CONFIG OR GET RID OF THEM AND USE DB INSTEAD
-      text: {
-        //primary: "#F00",
-        //secondary: "#0F0",
-        disabled: "#00F",
-        hint: "#333",
-      },
-      error: {
-        main: "#FF0000",
-      },
-      warning: {
-        main: "#FF0000",
-      },
-      info: {
-        main: "#FF0000",
-      },
-      success: {
-        main: "#FF0000",
-      },
-      primary: {
-        main: "#008B8B",
-      },
-      secondary: {
-        main: "#FFFFFF",
-      },
-    }
+    defaultPalette: {}
   };
 
   messageCallbacks = {};
@@ -197,6 +172,7 @@ class App extends Component {
 
     if (response && response.data && response.data.length) {
       this.setState({defaultPalette: JSON.parse(response.data)});
+      localStorage.setItem('adminTheme', response.data)
     }
   }
 

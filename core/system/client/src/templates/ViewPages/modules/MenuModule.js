@@ -195,7 +195,7 @@ class MenuModule extends Component {
   getAllLinks = async () => {
     let result = [];
 
-    if (this.state.menuOptions.length) {
+    if (this.state.menuOptions && this.state.menuOptions.length) {
       let links = this.state.menuOptions;
       links.map((el) => {
         let linkName = el.text;
@@ -597,7 +597,7 @@ class MenuModule extends Component {
                     />
                     <SketchPicker
                       color={this.state.bgColor}
-                      onChangeComplete={async (color) => {
+                      onChange={async (color) => {
                         await this.setAsyncState({
                           bgColor: color.hex,
                         });
