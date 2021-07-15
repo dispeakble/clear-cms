@@ -1,6 +1,6 @@
 #!/bin/bash
 RANCHER_CLI="false"
-RANCHER_CLI_VERSION="v2.4.10"
+RANCHER_CLI_VERSION="v2.4.11"
 CMS_repo_rancher_cli="https://github.com/rancher/cli/releases/download/$RANCHER_CLI_VERSION/rancher-linux-amd64-$RANCHER_CLI_VERSION.tar.xz"
 CMS_file_rancher_cli="rancher-linux-amd64-$RANCHER_CLI_VERSION.tar.xz"
 
