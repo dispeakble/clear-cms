@@ -22,6 +22,7 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "components/CustomButtons/Button.js";
+import {DeleteForever} from "@material-ui/icons";
 
 class BannerModule extends Component {
   state = {
@@ -43,6 +44,7 @@ class BannerModule extends Component {
     linkNav: 0,
     linkNavs: [{ label: "On Page" }, { label: "New Tab" }],
     bgImage: "",
+    bgImageFile: "",
   };
   getTheme = () => {
     return createMuiTheme({
@@ -155,6 +157,7 @@ class BannerModule extends Component {
 
       this.setAsyncState({
         bgImage: strings[0],
+        bgImageFile: event[0]
       });
     }
   };
@@ -272,7 +275,17 @@ class BannerModule extends Component {
                 )}
               />{" "}
               <Typography id="discrete-slider" gutterBottom>
-                Image
+
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                  <div>Image</div>
+                  {this.state.bgImage && <DeleteForever onClick={() => this.setState({
+                    bgImage: "",
+                    bgImageFile: ""
+                  })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                </div>
                 <DropzoneArea
                   clearOnUnmount={true}
                   filesLimit={1}

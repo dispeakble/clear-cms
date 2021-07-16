@@ -454,23 +454,26 @@ export class FsService {
         return new Observable((observer) => {
             try {
                 const realPath = this.help.path.realPath({path: params.path});
-
+                // TODO: does not work 100% correctly need fix
                 const removeRecursively = (rem_path) => {
-                    if (this.help.is.readable({path: rem_path}) && this.help.is.writeable({path: rem_path})) {
+                    // if (this.help.is.readable({path: rem_path}) && this.help.is.writeable({path: rem_path})) {
                         if (this.help.is.dir({path: rem_path})) {
-                            const entities = fs.readdirSync(rem_path);
-                            if (entities && entities.length) {
-                                for (const entity of entities) {
-                                    removeRecursively(path.join(rem_path, entity));
-                                }
-                            }
-                            fs.rmdirSync(rem_path);
+                            // console.log("enter dir", rem_path)
+                            // const entities = fs.readdirSync(rem_path);
+                            // if (entities && entities.length) {
+                            //     for (const entity of entities) {
+                            //         removeRecursively(path.join(rem_path, entity));
+                            //     }
+                            // }
+                            //
+                            fs.rmdirSync(rem_path, {recursive: true})
+
                         } else {
                             fs.unlinkSync(rem_path);
                         }
-                    } else {
-                        observer.next({type: 'error', data: null, message: `${rem_path} not writeable`});
-                    }
+                    // } else {
+                    //     observer.next({type: 'error', data: null, message: `${rem_path} not writeable`});
+                    // }
                 }
 
                 if(params.selection && params.selection.length){

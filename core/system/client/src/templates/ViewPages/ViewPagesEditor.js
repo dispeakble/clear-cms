@@ -106,6 +106,7 @@ class ViewPagesEditor extends React.PureComponent {
     editItemTitle: "",
     editItemModule: "",
     editItemBgImage: "",
+    editItemBgImageFile: "",
     editItemBorderRadius: "",
     editItemBorderWidth: 0,
     editItemBorderColor: "",
@@ -125,6 +126,7 @@ class ViewPagesEditor extends React.PureComponent {
     ],
     bgColor: "",
     backgroundImage: "",
+    backgroundImageFile: "",
     fontSize: 11,
     textColor: "#000000",
     fontFamily: "Arial",
@@ -160,6 +162,7 @@ class ViewPagesEditor extends React.PureComponent {
     itemTextColorStyles: {},
     itemBgColorStyles: {},
     itemBorderColorStyles: {},
+    editPage: null
   };
 
   defaultTheme = {};
@@ -232,6 +235,7 @@ class ViewPagesEditor extends React.PureComponent {
       await this.setAsyncState({
         items: currentPage.items,
         pageConfig: currentPage.pageConfig,
+        editPage: currentPage.editPage,
       });
     } else {
       const publicThemes = JSON.parse(localStorage.getItem("publicThemes"));
@@ -505,6 +509,7 @@ class ViewPagesEditor extends React.PureComponent {
         borderWidth: "0",
         borderRadius: "0",
         backgroundImage: "",
+        backgroundImageFile: "",
         backgroundRepeat: "",
         backgroundStretch: "",
         i: newId + "",
@@ -648,6 +653,7 @@ class ViewPagesEditor extends React.PureComponent {
       editItemFontSize: item.fontSize || 5,
       editItemBackgroundColor: item.backgroundColor || "",
       editItemBgImage: item.backgroundImage,
+      editItemBgImageFile: item.backgroundImageFile,
       editItemBgRepeat: item.backgroundRepeat,
       editItemBgStretch: item.backgroundStretch,
       editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
@@ -761,6 +767,7 @@ class ViewPagesEditor extends React.PureComponent {
 
       this.setState({
         editItemBgImage: strings[0],
+        editItemBgImageFile: event[0]
       });
     }
   };
@@ -783,6 +790,7 @@ class ViewPagesEditor extends React.PureComponent {
 
       this.setState({
         backgroundImage: strings[0],
+        backgroundImageFile: event[0]
       });
     }
   };
@@ -811,6 +819,7 @@ class ViewPagesEditor extends React.PureComponent {
     foundItem.module = this.state.modulesList[this.state.editItemModule];
     foundItem.module = foundItem.module ? foundItem.module.label : "";
     foundItem.backgroundImage = this.state.editItemBgImage;
+    foundItem.backgroundImageFile = this.state.editItemBgImageFile;
     foundItem.backgroundRepeat = this.state.editItemBgRepeat;
     foundItem.backgroundStretch = this.state.editItemBgStretch;
 
@@ -1116,10 +1125,11 @@ class ViewPagesEditor extends React.PureComponent {
     );
   };
 
-  savePage = () => {
+  savePage = async () => {
     let pageConfig = {
       backgroundColor: this.state.bgColor,
       backgroundImage: this.state.backgroundImage,
+      backgroundImageFile: this.state.backgroundImageFile,
       fontSize: this.state.fontSize,
       textColor: this.state.textColor,
       fontFamily: this.state.fontFamily,
@@ -1147,14 +1157,14 @@ class ViewPagesEditor extends React.PureComponent {
         pageConfig: pageConfig,
         items: this.state.items,
       }
-      this.props.control.edit({...page})
+      await this.props.control.edit({...page, editPage: this.state.editPage})
 
     } else {
       let newPage = {
         pageConfig: pageConfig,
         items: this.state.items,
       };
-      this.props.control.add(newPage)
+      await this.props.control.add(newPage)
 
     }
 
@@ -1413,7 +1423,17 @@ class ViewPagesEditor extends React.PureComponent {
                   </div>
 
                   <div>
-                    <Typography gutterBottom>Background Image</Typography>
+                    <div style={{
+                      display: "flex",
+                      justifyContent: "space-between"
+                    }}>
+                      <Typography gutterBottom>Background Image</Typography>
+                      {this.state.editItemBgImage && <DeleteForever onClick={() => this.setState({
+                        editItemBgImage: "",
+                        editItemBgImageFile: ""
+                      })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                    </div>
+
                     <div className={this.props.classes.dropzoneAreaWrapper}>
                       <DropzoneArea
                         filesLimit={1}
@@ -1558,7 +1578,16 @@ class ViewPagesEditor extends React.PureComponent {
                           "bgColor"
                         )}
 
-                        <h5>Background Image</h5>
+                        <div style={{
+                          display: "flex",
+                          justifyContent: "space-between"
+                        }}>
+                          <h5>Background Image</h5>
+                          {this.state.backgroundImage && <DeleteForever onClick={() => this.setState({
+                            backgroundImage: "",
+                            backgroundImageFile: ""
+                          })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                        </div>
                         <div className={this.props.classes.dropzoneAreaWrapper}>
                           <DropzoneArea
                             filesLimit={1}

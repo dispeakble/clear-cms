@@ -17,6 +17,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import {DeleteForever} from "@material-ui/icons";
 
 class HeaderModule extends Component {
   state = {
@@ -55,7 +56,9 @@ class HeaderModule extends Component {
         logoTitle: moduleOptions.logoTitle,
         logoLink: moduleOptions.logoLink,
         backgroundImage: moduleOptions.bg,
+        backgroundImageFile: moduleOptions.file,
         logoImage: moduleOptions.logoImage,
+        logoImageFile: moduleOptions.logoImageFile,
       });
     }
   }
@@ -85,6 +88,7 @@ class HeaderModule extends Component {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
       this.setAsyncState({
         backgroundImage: strings[0],
+        backgroundImageFile: event[0]
       });
     }
   };
@@ -94,6 +98,7 @@ class HeaderModule extends Component {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
       this.setAsyncState({
         logoImage: strings[0],
+        logoImageFile: event[0]
       });
     }
   };
@@ -255,7 +260,17 @@ class HeaderModule extends Component {
             </div>
             <div className={classes.dropzoneColumn}>
               <Typography id="discrete-slider" gutterBottom>
-                Upload Background Image
+
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                  <div>Upload Background Image</div>
+                  {this.state.backgroundImage && <DeleteForever onClick={() => this.setState({
+                    backgroundImage: "",
+                    backgroundImageFile: ""
+                  })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                </div>
                 <DropzoneArea
                   filesLimit={1}
                   className={classes.dropzone}
@@ -265,7 +280,17 @@ class HeaderModule extends Component {
             </div>
             <div className={classes.dropzoneColumn}>
               <Typography id="discrete-slider" gutterBottom>
-                Upload Logo Image
+
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                  <div>Upload Logo Image</div>
+                  {this.state.logoImage && <DeleteForever onClick={() => this.setState({
+                    backgroundImage: "",
+                    logoImageFile: ""
+                  })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                </div>
                 <DropzoneArea
                   filesLimit={1}
                   className={classes.dropzone}
@@ -282,7 +307,9 @@ class HeaderModule extends Component {
               onClick={() => {
                 this.props.handleSave(this.state.itemModuleEditId, {
                   bg: this.state.backgroundImage,
+                  file: this.state.backgroundImageFile,
                   logoImage: this.state.logoImage,
+                  logoImageFile: this.state.logoImageFile,
                   logoTitle: this.state.logoTitle,
                   logoLink: this.state.logoLink,
                   isModuleSticky: this.state.isModuleSticky,
