@@ -77,7 +77,6 @@ class AuthController extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in auth controller', params);
     }
 
     sendMessage(params) {

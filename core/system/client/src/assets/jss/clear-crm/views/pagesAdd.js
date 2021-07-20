@@ -1,7 +1,11 @@
 //import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
 
 const javascriptStyles = {
+  body:{},
   gridLayout: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
     margin: "0 15px 0",
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
@@ -95,6 +99,11 @@ const javascriptStyles = {
     marginTop: "5px",
     padding: "0",
     background: "#FFF",
+    display: "flex",
+    justifyContent: "space-between",
+    "& > :not(:last-child)" : {
+      paddingRight: "15px"
+    }
   },
 
   // for the 2 icons on the right side of the page
@@ -150,7 +159,6 @@ const javascriptStyles = {
   editModuleActionsWrapper: {
     position: "absolute",
     bottom: 0,
-    height: "48px",
     right: 0,
     left: 0,
   },
@@ -164,6 +172,7 @@ const javascriptStyles = {
   },
   option: {
     width: "100%",
+    marginBottom: "15px",
     fontSize: 15,
     "& > span": {
       marginRight: 10,
@@ -175,23 +184,16 @@ const javascriptStyles = {
     bottom: "0",
     left: "0",
     right: "0",
-    background: "white",
     display: "flex",
-    justifyContent: "space-between",
-    width: "80%",
-    margin: "0 auto",
+    justifyContent: "space-around",
   },
-  savePageButton: {
+  bottomPane:{
     position: "fixed",
-    right: "13rem",
-    bottom: "1rem",
-  },
-  cancelPageButton: {
-    position: "fixed",
-    right: "6rem",
-    bottom: "1rem",
+    right: 0,
+    bottom: 0
   },
   bodyWrapper: {
+    height: "100%",
     background: "white",
   },
   textfield: {
@@ -209,6 +211,10 @@ const javascriptStyles = {
     overflow: "visible",
   },
   accordionDetails: {
+    justifyContent: "space-between",
+    "@media screen and (max-width: 800px)": {
+      flexDirection: "column"
+    },
     "& div h4": {
       textAlign: "center",
       fontWeight: "400",
@@ -220,14 +226,24 @@ const javascriptStyles = {
     "& > p": {
       width: "1%",
     },
+
+  },
+  accordionSummaryRoot:{
+    paddingLeft: 0
+  },
+  accordionSummaryExpanded: {
+    marginTop: "0 !important",
+    marginBottom: "0 !important",
+    minHeight: "0 !important"
+  },
+  accordionSummaryContent:{
+    justifyContent: "space-between",
+    margin: 0,
+    alignItems: "center"
   },
   dropzoneAreaWrapper: {
-    width: "90%",
-    margin: "0 auto",
   },
   pageOptionsSlider: {
-    width: "80%",
-    marginLeft: "10%",
   },
 
   sideMenu: {
@@ -240,13 +256,17 @@ const javascriptStyles = {
     width: "100%",
   },
   sideMenuEditorForm: {
-    width: "80%",
-    margin: "0 auto",
+    margin: "0 15px"
   },
   sideMenuEditor: {
     width: "300px",
     height: "calc(100% - 60px)",
     overflowY: "auto",
+  },
+  sideMenuOption: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   typography: {
     fontSize: "120%",

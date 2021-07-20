@@ -17,12 +17,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
+import {DeleteForever} from "@material-ui/icons";
 
 class HeaderModule extends Component {
   state = {
-    itemModuleEditId: "",
-    showModuleOptionsModal: false,
-    modalTitle: "Header Module Options",
+    moduleId: "",
+    openEditor: false,
+    editorTitle: "Header Module Options",
     isModuleSticky: false,
     logoTitle: "",
     logoLink: "",
@@ -54,20 +55,19 @@ class HeaderModule extends Component {
         backgroundStretch: moduleOptions.backgroundStretch,
         logoTitle: moduleOptions.logoTitle,
         logoLink: moduleOptions.logoLink,
-        backgroundImage: moduleOptions.bg,
-        logoImage: moduleOptions.logoImage,
+        files: moduleOptions.files
       });
     }
   }
 
   closeModuleOptionsModal() {
-    this.setState({ showModuleOptionsModal: false });
+    this.setState({ openEditor: false });
   }
 
   handleEdit = async (id) => {
     await this.setAsyncState({
-      itemModuleEditId: id,
-      showModuleOptionsModal: true,
+      moduleId: id,
+      openEditor: true,
     });
   };
 
@@ -80,20 +80,22 @@ class HeaderModule extends Component {
     });
   }
 
-  handleItemBgImage = async (event) => {
+  handleBackground = async (event) => {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
       this.setAsyncState({
         backgroundImage: strings[0],
+        backgroundImageFile: event[0]
       });
     }
   };
 
-  handleItemLogo = async (event) => {
+  handleLogo = async (event) => {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
       this.setAsyncState({
         logoImage: strings[0],
+        logoImageFile: event[0]
       });
     }
   };
@@ -115,6 +117,11 @@ class HeaderModule extends Component {
     }
   };
 
+  fileExtension = (string) => {
+    const p = string.split('.');
+    return p[p.length - 1];
+  }
+
   render() {
     const classes = this.props.classes;
 
@@ -133,12 +140,12 @@ class HeaderModule extends Component {
         </IconButton>
 
         <Dialog
-          onBackdropClick="false"
+          onBackdropClick={() => false}
           classes={{
             root: classes.center,
             paper: classes.modal,
           }}
-          open={this.state.showModuleOptionsModal}
+          open={this.state.openEditor}
           TransitionComponent={this.transition}
           keepMounted
           onClose={() => this.closeModuleOptionsModal()}
@@ -150,7 +157,7 @@ class HeaderModule extends Component {
             disableTypography
             className={classes.modalHeader}
           >
-            <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
+            <h4 className={classes.editorTitle}>{this.state.editorTitle}</h4>
           </DialogTitle>
           <DialogContent
             id="classic-modal-slide-description"
@@ -160,7 +167,7 @@ class HeaderModule extends Component {
               style={{
                 flex: '0 1 ~ "calc(33% - 15px)"',
               }}
-              id="discrete-slider"
+              
               gutterBottom
             >
               <Tooltip title="Make the header permanently visible">
@@ -177,7 +184,7 @@ class HeaderModule extends Component {
               Sticky Header
             </Typography>
 
-            <Typography id="discrete-slider" gutterBottom>
+            <Typography  gutterBottom>
               <Tooltip title="Background Repeat">
                 <Switch
                   checked={this.state.backgroundRepeat}
@@ -192,7 +199,7 @@ class HeaderModule extends Component {
               Background Repeat
             </Typography>
 
-            <Typography id="discrete-slider" gutterBottom>
+            <Typography  gutterBottom>
               <Tooltip title="Background Stretch">
                 <Switch
                   checked={this.state.backgroundStretch}
@@ -254,24 +261,38 @@ class HeaderModule extends Component {
               </div>
             </div>
             <div className={classes.dropzoneColumn}>
-              <Typography id="discrete-slider" gutterBottom>
-                Upload Background Image
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                  <div><Typography gutterBottom>Upload Background Image</Typography></div>
+                  {this.state.backgroundImageFile && <DeleteForever onClick={() => this.setState({
+                    backgroundImage: "",
+                    backgroundImageFile: ""
+                  })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                </div>
                 <DropzoneArea
                   filesLimit={1}
                   className={classes.dropzone}
-                  onChange={this.handleItemBgImage.bind(this)}
+                  onChange={this.handleBackground.bind(this)}
                 />
-              </Typography>
             </div>
             <div className={classes.dropzoneColumn}>
-              <Typography id="discrete-slider" gutterBottom>
-                Upload Logo Image
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between"
+                }}>
+                  <div><Typography  gutterBottom>Upload Logo Image</Typography></div>
+                  {this.state.logoImageFile && <DeleteForever onClick={() => this.setState({
+                    backgroundImage: "",
+                    logoImageFile: ""
+                  })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                </div>
                 <DropzoneArea
                   filesLimit={1}
                   className={classes.dropzone}
-                  onChange={this.handleItemLogo.bind(this)}
+                  onChange={this.handleLogo.bind(this)}
                 />
-              </Typography>
             </div>
           </DialogContent>
 
@@ -280,9 +301,23 @@ class HeaderModule extends Component {
               disabled={this.state.isBtnDisabled}
               color="primary"
               onClick={() => {
-                this.props.handleSave(this.state.itemModuleEditId, {
-                  bg: this.state.backgroundImage,
-                  logoImage: this.state.logoImage,
+                let files = [];
+                if(this.state.backgroundImageFile) {
+                  files.push({
+                    sel: 'bg',
+                    name: `background.${this.fileExtension(this.state.backgroundImageFile.name)}`,
+                    file: this.state.backgroundImageFile
+                  });
+                }
+                if(this.state.logoImageFile){
+                  files.push({
+                    sel: 'logo',
+                    name: `logo.${this.fileExtension(this.state.logoImageFile.name)}`,
+                    file: this.state.logoImageFile
+                  });
+                }
+                this.props.handleSave(this.state.moduleId, {
+                  files: files,
                   logoTitle: this.state.logoTitle,
                   logoLink: this.state.logoLink,
                   isModuleSticky: this.state.isModuleSticky,

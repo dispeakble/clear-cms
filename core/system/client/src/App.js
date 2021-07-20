@@ -14,8 +14,6 @@ import { Helmet } from "react-helmet";
 
 //contollers
 import MainController from "controllers/main.controller";
-import PagesAdd from "views/MainAppController/ExtraComponents/pagesAdd";
-import PagePreview from "views/MainAppController/ExtraComponents/pagePreview";
 
 //styles
 import "assets/scss/clear-crm.scss";
@@ -104,7 +102,7 @@ class App extends Component {
         ],
       },
     ],
-    excludeHeader: ["pagePreview", "view-auth", "recover-password", "logout"],
+    excludeHeader: ["pages/preview", "view-auth", "recover-password", "logout"],
     socket: {},
     mobileOpen: false,
     defaultPalette: {}
@@ -222,7 +220,7 @@ class App extends Component {
   };
   render() {
     const { pathname } = this.props.location;
-    const basePath = pathname.substring(1).split("/");
+    const locationPath = pathname.substring(1);
     return (
       <React.Fragment>
         <Helmet>
@@ -230,26 +228,29 @@ class App extends Component {
         </Helmet>
         <MuiThemeProvider theme={this.createTheme()}>
           <CssBaseline />
-          {this.state.excludeHeader.indexOf(basePath[0]) === -1 ? (
-            <Header
-              mobileOpen={this.state.mobileOpen}
-              color="transparent"
-              brand="Clear CRM"
-              handleDrawerToggle={() => this.handleDrawerToggle()}
-              leftLinks={
-                <SideMenuLinks
-                  closeDrawer={() => this.handleDrawerToggle()}
-                  moduleList={this.state.moduleList}
-                />
-              }
-              fixed
-              changeColorOnScroll={{
-                height: 10,
-                color: "primary",
-              }}
-            />
+          {this.state.excludeHeader.find((path) => {
+            return !(locationPath.indexOf(path) === -1)
+          }) ? (
+              ""
           ) : (
-            ""
+              <Header
+                  mobileOpen={this.state.mobileOpen}
+                  color="transparent"
+                  brand="Clear CRM"
+                  handleDrawerToggle={() => this.handleDrawerToggle()}
+                  leftLinks={
+                    <SideMenuLinks
+                        closeDrawer={() => this.handleDrawerToggle()}
+                        moduleList={this.state.moduleList}
+                    />
+                  }
+                  fixed
+                  changeColorOnScroll={{
+                    height: 10,
+                    color: "primary",
+                  }}
+              />
+
           )}
           <Switch>
             <Route
@@ -283,18 +284,19 @@ class App extends Component {
                );
               }}
             />
-            <Route path="/pagesAdd" component={PagesAdd} />
-            <Route path="/pagePreview/:id" component={PagePreview} />
-            <Route path="/pageEdit/:id" component={PagesAdd} />
             <Route
-              render={(props) => (
+              render={(props) => {
+                props.host = 'http://localhost:9696';
+                return (
+
                 <MainController
                   {...props}
                   defaultTheme={this.state.defaultPalette}
                   services={this.state.services}
                   moduleList={this.state.moduleList}
                 />
-              )}
+              );
+              }}
             />
           </Switch>
         </MuiThemeProvider>

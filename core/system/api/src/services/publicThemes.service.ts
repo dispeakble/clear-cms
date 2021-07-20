@@ -61,6 +61,7 @@ export class PublicThemesService {
                     "boxspacing",
                     "bgrepeat",
                     "bgstretch",
+                    "bggradient",
                     "mui"],
                     where: params.where,
                     limit: [0, 1]
@@ -147,6 +148,7 @@ export class PublicThemesService {
                         "boxspacing": params.boxspacing,
                         "bgrepeat": params.bgrepeat,
                         "bgstretch": params.bgstretch,
+                        "bggradient": params.bggradient,
                         "mui": params.mui
                     }
                 }

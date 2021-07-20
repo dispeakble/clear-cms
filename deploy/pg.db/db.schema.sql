@@ -244,6 +244,7 @@ CREATE TABLE public.page_box (
     borderradius smallint,
     bgrepeat smallint,
     bgstretch smallint,
+    bggradient smallint,
     height smallint,
     width smallint,
     moduleoptions character varying,
@@ -286,6 +287,7 @@ CREATE TABLE public.page_config (
     boxsizing smallint,
     bgrepeat smallint,
     bgstretch smallint
+    bggradient smallint
 );
 
 
@@ -443,6 +445,7 @@ CREATE TABLE public.public_themes (
     boxspacing smallint,
     bgrepeat smallint,
     bgstretch smallint,
+    bggradient smallint,
     mui character varying
 );
 

@@ -62,7 +62,7 @@ export class DbService {
     private crud = {
         get: (params) => {
             let QUERY_STRING,
-                FIELDS = params.fields.join(', ') || '*',
+                FIELDS = params.fields && params.fields.length && params.fields.join(', ') || '*',
                 QUERY_PARAMS = [],
                 WHERE_STRING,
                 WHERE_PIECES = [],

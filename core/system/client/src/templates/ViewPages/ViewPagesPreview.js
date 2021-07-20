@@ -10,7 +10,7 @@ import { Helmet } from "react-helmet";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-class PagePreview extends React.PureComponent {
+class ViewPagesPreview extends React.Component {
   static defaultProps = {
     className: "layout",
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
@@ -30,40 +30,50 @@ class PagePreview extends React.PureComponent {
       pageTitleFontSize: "",
       pageTitleTextColor: "",
     },
+    layouts: {},
     fontUnit: "px",
     openedAccordionLink: {},
-    pathname: "",
+    page_id:0
   };
 
   navigateToUrl() {
-    const { pathname } = this.props.location;
-    let pathnameId = Number(pathname.split("/")[2]);
-
-    if (pathname === this.state.pathname) {
-      return true;
-    }
-
-    const allPages = JSON.parse(localStorage.getItem("pages"));
-    let currentPage;
-    currentPage = allPages.find((el) => el.id === pathnameId);
-
-    const items = currentPage ? currentPage.items : "";
-    const pageConfig = currentPage ? currentPage.pageConfig : "";
-
-    this.setState({
-      items: items,
-      pageConfig,
-      pathname,
-    });
-  }
-
-  shouldComponentUpdate() {
-    this.navigateToUrl();
-    return true;
+    // const { pathname } = this.props.location;
+    // const pathnameId = Number(pathname.split("/")[2]);
+    //
+    // if (pathname === this.state.pathname) {
+    //   return true;
+    // }
+    //
+    // // const allPages = JSON.parse(localStorage.getItem("pages"));
+    // // let currentPage;
+    // // currentPage = allPages.find((el) => el.id === pathnameId);
+    // //
+    // // const items = currentPage ? currentPage.items : "";
+    // // const pageConfig = currentPage ? currentPage.pageConfig : "";
+    //
+    // const
+    //
+    // this.setState({
+    //   items: items,
+    //   pageConfig,
+    //   pathname,
+    // });
   }
 
   componentDidMount() {
-    this.navigateToUrl();
+    this.loadPage();
+  }
+
+  async loadPage(){
+    const page_id = Number(this.props.location.pathObject[2]);
+    const page = await this.props.control.get({
+      id: page_id
+    });
+    this.setState({
+      page_id: page_id,
+      items: page.items,
+      pageConfig: page.pageConfig
+    });
   }
 
   createElement(el) {
@@ -73,7 +83,7 @@ class PagePreview extends React.PureComponent {
     let style = {};
 
     if (el.backgroundImage) {
-      style.backgroundImage = `url(${el.backgroundImage})`;
+      style.backgroundImage = `url(/files/pages/page-${this.state.page_id}/box-${i}/${el.backgroundImage})`;
     }
 
     if (el.backgroundRepeat) {
@@ -146,9 +156,9 @@ class PagePreview extends React.PureComponent {
       }
 
       return (
-        <div key={i} data-grid={el} style={style}>
+        <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent i={i} element={el} style={style} />
+            <LazyComponent i={i} element={el} style={style} pageOptions={{page_id: this.state.page_id}} />
           </Suspense>
         </div>
       );
@@ -198,6 +208,14 @@ class PagePreview extends React.PureComponent {
     });
   };
 
+  onLayoutChange = (layout, layouts) => {
+    try {
+      this.setState({ layouts: layouts });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   render() {
     const classes = this.props.classes;
 
@@ -216,7 +234,7 @@ class PagePreview extends React.PureComponent {
               <div
                 className={classes.gridLayout}
                 style={{
-                  backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
+                  backgroundImage: `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
                   backgroundRepeat: this.state.pageConfig.backgroundRepeat
                     ? "repeat"
                     : "no-repeat",
@@ -231,20 +249,20 @@ class PagePreview extends React.PureComponent {
               >
                 <ResponsiveReactGridLayout
                   style={{
-                    backgroundImage: `url(${this.state.pageConfig.backgroundImage})`,
-                    backgroundRepeat: this.state.pageConfig.backgroundRepeat
-                      ? "repeat"
-                      : "no-repeat",
-                    backgroundSize: this.state.pageConfig.backgroundStretch
-                      ? "cover"
-                      : "auto",
-                    backgroundColor: this.state.pageConfig.backgroundColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.pageConfig.textColor,
                   }}
                   margin={this.state.pageConfig.layoutBoxSpacing}
                   {...this.props}
+                  measureBeforeMount={true}
+                  layouts={this.state.layouts}
+                  onLayoutChange={(layout, layouts) => {
+                    return this.onLayoutChange(layout, layouts);
+                  }}
+                  compactType="vertical"
+                  cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+                  useCSSTransforms={false}
                 >
                   {this.state.items
                     ? _.map(this.state.items, (el) => this.createElement(el))
@@ -259,4 +277,4 @@ class PagePreview extends React.PureComponent {
   }
 }
 
-export default withRouter(withStyles(styles)(PagePreview));
+export default withRouter(withStyles(styles)(ViewPagesPreview));

@@ -53,88 +53,14 @@ export class AppController {
     @Post('*')
     async onPost(@Res() res: Response, @Req() req: Request, @Session() session, @Body() body) {
         try {
-            const totalFiles = +req.body.totalFiles | 0;
+            let totalFiles = 0;
             let fileCount = 0;
+            let multerFinish = false;
             const multerObj = multer({
                 storage: {
-                    /*_handleFile: (req, file, cb) => {
-
-                        const readable = new Readable();
-                        readable._read = () => {} // _read is required but you can noop it
-
-                        //we listen to data events on the file stream and push the binaries
-                        file.stream.on('data', function (data) {
-                            readable.push(data);
-                        });
-
-                        file.stream.on('end', function () {
-                            readable.push(null);
-                        });
-
-
-                        //we will start a REDIS handshake with the consumer
-                        let handshake = this.protocolService.startHandshake({
-                            channel: this.portChannel({
-                headers: req.headers
-            }),
-                            indication: {
-                                api: 'bucket',
-                                act: 'upload'
-                            }
-                        }, this.moduleConfig);
-
-                        //we subscribe to the consumer
-
-                        handshake.theObserver.subscribe(data => {
-                            console.log(data);
-                        }, err => {
-                            console.log(err);
-                        }, () => {
-                            req.next();
-                            console.log('upload complete');
-                        })
-
-                        //the consumer calls back with the caller ID and then subscribes to the pusher
-                        handshake.thePromise.then(handshakeResponse => {
-                            //we use the pusher to send the init file upload command
-                            handshakeResponse['thePusher'].next({
-                                api: req.body.api,
-                                act: req.body.act,
-                                payload: {
-                                    type: 'meta',
-                                    length: file.size,
-                                    path: req.body.path,
-                                    filename: file.fieldname,
-                                    replace: "true" === req.body.replace
-                                }
-                            });
-
-                            readable.on("data", (data) => {
-                                handshakeResponse['thePusher'].next({
-                                    payload: {
-                                        type: 'data',
-                                        buffer: data
-                                    }
-                                });
-                            })
-
-                            readable.on("error", (error) => {
-                                handshakeResponse['thePusher'].error(error);
-                                handshakeResponse['thePusher'].complete();
-                                res.end(JSON.stringify({message: 'upload error'}));
-                            });
-
-                            readable.on("end", () => {
-                                handshakeResponse['thePusher'].complete();
-                                fileCount++;
-                                if(totalFiles === fileCount){
-                                    res.end(JSON.stringify({message: 'upload complete'}));
-                                }
-                            });
-
-                        });
-                    },*/
                     _handleFile: (req, file, cb) => {
+                        totalFiles = Number(req.body.totalFiles);
+                        multerFinish = true;
                         //we will start a REDIS handshake with the consumer
                         let handshake = this.protocolService.startHandshake({
                             channel: this.portChannel({
@@ -211,23 +137,14 @@ export class AppController {
 
             });
 
-            if(req.headers["content-type"].indexOf('multipart/form-data') > -1){
-                return;
-            }
-
             const start_date = new Date().getTime();
             const channel = this.portChannel({
                 headers: req.headers
             });
 
-            if(typeof channel !== "string") {
+            if(typeof channel !== "string" || !channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 res.end(`Port ${channel} not mapped`);
-            }
-
-            if (!channel) {
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                res.end('Port not mapped');
                 return;
             }
 
@@ -268,8 +185,10 @@ export class AppController {
                                 }
                             };
                             return this.perform(cb_payload).then((response) => {
-                                res.send(response);
-                                res.end();
+                                if(!multerFinish){
+                                    res.send(response);
+                                    res.end();
+                                }
                             });
 
                         }
@@ -288,7 +207,9 @@ export class AppController {
                 console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
             }, () => {
-                endPost && res.end();
+                if(!multerFinish){
+                    endPost && res.end();
+                }
             });
         } catch (err) {
             res.end(JSON.stringify(err));
@@ -333,29 +254,28 @@ export class AppController {
             }
 
             const start_date = new Date().getTime();
-            let cache_name = req.hostname + req.url;
-
-            if (Object.keys(req.query).length) {
-                cache_name = cache_name + JSON.stringify(req.query);
-            }
 
             const fileStats = await this.protocolService.getMeta(payload);
-            const cachedrequest = await this.protocolService.getValue(fileStats.file_name);
+            if(fileStats && fileStats.type === 'error'){
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                res.end();
+            }
+            const cachedrequest = await this.protocolService.getValue(fileStats.data.file_name);
 
             if (cachedrequest) {
-                if (cachedrequest.ETag === fileStats.etagId) {
-                    const modifiedDate = new Date(fileStats.modified);
+                if (cachedrequest.ETag === fileStats.data.etagId) {
+                    const modifiedDate = new Date(fileStats.data.modified);
                     const exp_date = new Date(cachedrequest.expires);
 
                     if (exp_date > new Date() && exp_date > modifiedDate) {
                         res.set("Content-Type", cachedrequest.content_type);
                         res.set("Content-Length", cachedrequest.content_length);
-                        res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+                        res.set('Content-Security-Policy', "img-src; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
                         res.set('X-Frame-Options', 'SAMEORIGIN');
                         res.set('X-Content-Type-Options', 'nosniff');
                         res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
                         res.set('Cache-Control', 'public, max-age=604800');
-                        res.set('ETag', fileStats.etagId);
+                        res.set('ETag', fileStats.data.etagId);
                         res.status(HttpStatus.OK);
                         res.write(Buffer.from(cachedrequest.data));
                         res.end();
@@ -381,7 +301,7 @@ export class AppController {
                         res.set('X-Content-Type-Options', 'nosniff');
                         res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
                         res.set('Cache-Control', 'public, max-age=604800');
-                        res.set('ETag', fileStats.etagId);
+                        res.set('ETag', fileStats.data.etagId);
                         res.status(HttpStatus.OK);
                         file_meta.content_type = data.content_type;
                         file_meta.content_length = data.content_length;
@@ -409,18 +329,22 @@ export class AppController {
 
                 //getSubscriber.unsubscribe();
                 res.end();
-                const expireDate = new Date();
 
-                //TODO get from some env variable
-                const expire_seconds = 604800;
-                expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                this.protocolService.setValue(fileStats.file_name, {
-                    expires: expireDate,
-                    ETag: fileStats.etagId,
-                    content_length: file_meta.content_length,
-                    content_type: file_meta.content_type,
-                    data: bigBuffer
-                });
+                if(bigBuffer && bigBuffer.length){
+                    const expireDate = new Date();
+
+                    //TODO get from some env variable
+                    const expire_seconds = 604800;
+                    expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
+                    this.protocolService.setValue(fileStats.data.file_name, {
+                        expires: expireDate,
+                        ETag: fileStats.data.etagId,
+                        content_length: file_meta.content_length,
+                        content_type: file_meta.content_type,
+                        data: bigBuffer
+                    });
+                }
+
             });
         } catch (err) {
             res.end(JSON.stringify(err));

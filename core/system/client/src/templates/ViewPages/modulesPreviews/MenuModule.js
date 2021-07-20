@@ -11,11 +11,11 @@ class MenuModule extends Component {
   createMenu(params, options) {
     const createLink = (elm) => {
       return (
-        <li style={options.style}>
+        <li key={`menu-item-${elm.id}`} style={options.style}>
           <a
             onClick={() => this.props.updateCurrentPath()}
             style={options.style}
-            href={`/pagePreview/${elm.id}`}
+            href={elm.href}
             title={elm.title}
             target={elm.target}
           >
@@ -99,8 +99,8 @@ class MenuModule extends Component {
     const classes = this.props.classes;
     const style = {
       color: this.props.style.color || "inherit",
-      backgroundColor: this.props.style.backgroundColor || "inherit",
-      fontSize: this.props.style.fontSize + "px" || "inherit",
+      backgroundColor: this.props.element.moduleOptions.data.backgroundColor || "inherit",
+      fontSize: this.props.style.fontSize || "inherit",
       fontFamily: this.props.style.fontFamily || "inherit",
     };
 
@@ -112,6 +112,7 @@ class MenuModule extends Component {
     let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
 
     let menuData = linksList.map((link) => ({
+      moduleOptions: this.props.element.moduleOptions,
       id: link.id,
       title: link.title,
       text: link.text,

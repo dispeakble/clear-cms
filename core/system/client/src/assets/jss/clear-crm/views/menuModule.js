@@ -37,7 +37,7 @@ const javascriptStyles = {
           color: "#fff",
           transition: "0.3s",
           "&:hover": {
-            background: "#8497AF",
+            background: "rgba(255,255,255,0.1) !important",
           },
         },
         "&:hover": {

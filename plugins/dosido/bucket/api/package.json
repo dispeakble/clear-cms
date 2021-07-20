@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "@types/mime": "^2.0.3",
     "adm-zip": "^0.5.5",
+    "etag": "^1.8.1",
     "nestjs-minio-client": "^1.0.6",
     "nestjs-redis": "^1.2.8",
     "redis": "^3.0.2",
