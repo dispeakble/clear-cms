@@ -30,7 +30,7 @@ const customDropdownStyle = theme => ({
     fontSize: "14px",
     textAlign: "left",
     listStyle: "none",
-    backgroundColor: "#fff",
+    backgroundColor: theme.palette.background.paper,
     backgroundClip: "padding-box"
   },
   menuList: {
