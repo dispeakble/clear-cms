@@ -7,6 +7,7 @@ import {Observable, Subscriber} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
 import { Readable } from 'stream';
+import * as etag from "etag";
 
 const fsp = fs.promises;
 
@@ -32,8 +33,10 @@ export class FsService {
                 }
                 (async () => {
                     const stats = await fsp.stat(realPath);
+                    const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
                     observer.next({
                         type: 'object', content_type: "object", data: {
+                            etagId: etagId,
                             size: stats.size,
                             atime: stats.atime,
                             mtime: stats.mtime,
@@ -453,7 +456,7 @@ export class FsService {
     rm(params) {
         return new Observable((observer) => {
             try {
-                const realPath = this.help.path.realPath({path: params.path});
+                //const realPath = this.help.path.realPath({path: params.path});
                 // TODO: does not work 100% correctly need fix
                 const removeRecursively = (rem_path) => {
                     // if (this.help.is.readable({path: rem_path}) && this.help.is.writeable({path: rem_path})) {
@@ -478,7 +481,7 @@ export class FsService {
 
                 if(params.selection && params.selection.length){
                     params.selection.forEach(sel => {
-                        removeRecursively(path.join(realPath, sel));
+                        removeRecursively(this.help.path.realPath({path: sel}));
                     })
                 }
 
@@ -629,7 +632,7 @@ export class FsService {
 
             try {
                 if (this.help.not.readable({path: realPath})) {
-                    observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
+                    observer.error({type: 'error', content_length: 0, content_type: "404", message: "not found"});
                     observer.complete();
                     return;
                 }
@@ -647,17 +650,17 @@ export class FsService {
                     const readStream = fs.createReadStream(realPath);
 
                     readStream.on('data', function (chunk) {
-                        console.log('Buffering - ' + file_name);
+                        //console.log('Buffering - ' + file_name);
                         observer.next(chunk);
                     }).on('end', function () {
-                        console.log('Done - ' + file_name);
+                        //console.log('Done - ' + file_name);
                         observer.complete();
                     });
                 })();
 
             } catch (err) {
                 console.log(err);
-                observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
+                observer.error({type: 'error', content_length: 0, content_type: "404", message: "not found"});
                 observer.complete();
             }
         });

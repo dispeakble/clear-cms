@@ -16,6 +16,33 @@ export class PagesService {
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
+    private help = {
+        giveBoxValues: (values) => {
+            return {
+                title: values.title,
+                module: values.module,
+                fontsize: values.fontSize || null,
+                fontfamily: values.fontFamily || null,
+                textcolor: values.textColor || null,
+                bgcolor: values.backgroundColor || null,
+                bgimage: values.backgroundImage || "",
+                borderwidth: values.borderWidth || 0,
+                bordercolor: values.borderColor || "#ffffff",
+                borderradius: values.borderRadius || 0,
+                bgrepeat: values.backgroundRepeat ? 1 : 0,
+                bgstretch: values.backgroundStretch ? 1 : 0,
+                bggradient: values.backgroundGradient ? 1 : 0,
+                height: values.h,
+                width: values.w,
+                moduleoptions: values.moduleOptions,
+                x: values.x,
+                y: values.y,
+                borderstyle: values.borderStyle || "solid",
+                showscrollbars: values.showScrollbars? 1 : 0,
+            }
+        }
+    }
+
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
@@ -71,7 +98,7 @@ export class PagesService {
                           channel: 'system',
                           data: {
                               what: 'pages',
-                              fields: ["*"],
+                              fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
                                   id: params.id
@@ -90,7 +117,7 @@ export class PagesService {
                           channel: 'system',
                           data: {
                               what: 'pages_to_config',
-                              fields: ["*"],
+                              fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
                                   page_id: params.id
@@ -108,7 +135,7 @@ export class PagesService {
                           channel: 'system',
                           data: {
                               what: 'page_config',
-                              fields: ["*"],
+                              fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
                                   id: pagesToConfig.data[0].config_id
@@ -126,7 +153,7 @@ export class PagesService {
                           channel: 'system',
                           data: {
                               what: 'pages_to_boxes',
-                              fields: ["*"],
+                              fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
                                   page_id: params.id
@@ -144,7 +171,7 @@ export class PagesService {
                           channel: 'system',
                           data: {
                               what: 'page_box',
-                              fields: ["*"],
+                              fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: pageToBoxes.data.map(({box_id}) => {
                                   return {
@@ -163,6 +190,7 @@ export class PagesService {
                           backgroundImage: config.bgimage,
                           backgroundRepeat: !!config.bgrepeat,
                           backgroundStretch: !!config.bgstretch,
+                          backgroundGradient: !!config.bggradient,
                           category: page.cat_id,
                           defaultPage: !!page.is_default,
                           fontFamily: config.fontfamily,
@@ -179,6 +207,7 @@ export class PagesService {
                               backgroundImage: box.bgimage,
                               backgroundRepeat: !!box.bgrepeat,
                               backgroundStretch: !!box.bgstretch,
+                              backgroundGradient: !!box.bggradient,
                               borderColor: box.bordercolor,
                               borderRadius: box.borderradius,
                               borderStyle: box.borderstyle,
@@ -186,6 +215,7 @@ export class PagesService {
                               h: box.height,
                               w: box.width,
                               i: box.id.toString(),
+                              id: box.id,
                               module: box.module,
                               moduleOptions: JSON.parse(box.moduleoptions),
                               showScrollbars: !!box.showscrollbars,
@@ -252,6 +282,7 @@ export class PagesService {
                                     boxsizing: pageConfig.layoutBoxSpacing[0],
                                     bgrepeat: pageConfig.backgroundRepeat ? 1: 0,
                                     bgstretch: pageConfig.backgroundStretch ? 1: 0,
+                                    bggradient: pageConfig.backgroundGradient ? 1: 0,
                                 }
                             }
                         }
@@ -300,6 +331,7 @@ export class PagesService {
                                             borderradius: item.borderRadius || 0,
                                             bgrepeat: item.backgroundRepeat ? 1 : 0,
                                             bgstretch: item.backgroundStretch ? 1 : 0,
+                                            bggradient: item.backgroundGradient ? 1 : 0,
                                             height: item.h,
                                             width: item.w,
                                             moduleoptions: item.moduleOptions,
@@ -356,7 +388,8 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try {
-                    const {items, pageConfig} = params
+                    const {items, pageConfig} = params;
+                    const newBoxesDetails = [];
                     const pageReq: payloadInterface = {
                         channel: 'db',
                         api: 'db',
@@ -378,6 +411,7 @@ export class PagesService {
                             }
                         }
                     };
+
                     const page =  await this.protocolService.sendMessage(pageReq).toPromise();
 
                     const pagesToConfigReq: payloadInterface = {
@@ -388,7 +422,7 @@ export class PagesService {
                             channel: 'system',
                             data: {
                                 what: 'pages_to_config',
-                                fields: ["*"],
+                                fields: ["*"],//it's optional. defaults to *
                                 how: "OR",
                                 where: {
                                     page_id: params.id
@@ -397,6 +431,44 @@ export class PagesService {
                         }
                     };
                     const pagesToConfig = await this.protocolService.sendMessage(pagesToConfigReq).toPromise()
+
+                    if(!pageConfig.backgroundImage){
+                        //try to delete the existing background image
+                        const oldConfigReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'get',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'page_config',
+                                    where: {
+                                        id: pagesToConfig.data[0].config_id
+                                    }
+                                }
+                            }
+                        };
+
+                        const oldConfig = await this.protocolService.sendMessage(oldConfigReq).toPromise();
+
+                        if(oldConfig.data && oldConfig.data.length){
+                            if(oldConfig.data[0].bgimage.length){
+                                try {
+                                    await this.protocolService.sendMessage({
+                                        channel: 'bucket',
+                                        api: 'fs',
+                                        act: 'rm',
+                                        payload: {
+                                            selection: [`/pages/page-${params.id}/${oldConfig.data[0].bgimage}`]
+                                        }
+                                    }).toPromise();
+                                } catch (err) {
+                                    console.log(err);
+                                }
+
+                            }
+                        }
+                    }
 
                     const configReq: payloadInterface = {
                         channel: 'db',
@@ -418,17 +490,19 @@ export class PagesService {
                                     boxsizing: pageConfig.layoutBoxSpacing[0],
                                     bgrepeat: pageConfig.backgroundRepeat ? 1: 0,
                                     bgstretch: pageConfig.backgroundStretch ? 1: 0,
+                                    bggradient: pageConfig.backgroundGradient ? 1: 0,
                                 }
                             }
                         }
                     };
 
-                    const config =  await  this.protocolService.sendMessage(configReq).toPromise();
+                    const config = await this.protocolService.sendMessage(configReq).toPromise();
 
-                   // Update multiple existing boxes
-                    const updateItems = items.filter((item) => !item.toBeSave)
-                    const keepItems = updateItems.map(item =>  parseInt(item.i))
-                    const boxGetReq: payloadInterface = {
+                    /*
+                    1. get pages_to_boxes
+                    */
+
+                    const ptb_req: payloadInterface = {
                         channel: 'db',
                         api: 'db',
                         act: 'get',
@@ -436,7 +510,6 @@ export class PagesService {
                             channel: 'system',
                             data: {
                                 what: 'pages_to_boxes',
-                                fields: ["*"],
                                 how: "OR",
                                 where: {
                                     page_id: params.id
@@ -444,49 +517,117 @@ export class PagesService {
                             }
                         }
                     };
-                    const allBoxes = await this.protocolService.sendMessage(boxGetReq).toPromise()
-                    const allBoxIds = [...new Set(allBoxes.data.map(item => item.box_id))]
-                    const deleteIds = allBoxIds.filter(el => !keepItems.includes(el))
-                    if(deleteIds.length){
-                        const pagesToBoxDelReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'db',
-                            act: 'rem',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'pages_to_boxes',
-                                    how: 'OR',
-                                    where: {
-                                        box_id: deleteIds
-                                    }
-                                }
-                            }
-                        };
-                        await this.protocolService.sendMessage(pagesToBoxDelReq).toPromise()
 
-                        const boxesDelReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'db',
-                            act: 'rem',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'page_box',
-                                    how: 'OR',
-                                    where: {
-                                        id: deleteIds
-                                    }
-                                }
-                            }
-                        };
+                    const ptb = await this.protocolService.sendMessage(ptb_req).toPromise();
+                    /*
+                    2. see what boxes are missing and delete them and the files
+                    */
+                    if(ptb.data && ptb.data.length){
 
-                        await this.protocolService.sendMessage(boxesDelReq).toPromise()
+                        let missing_box_ids = ptb.data.map(item => item['box_id']);
+                        missing_box_ids = missing_box_ids.filter(box_id => {
+                            let found = false;
+                            params.items.forEach(item => {
+                                found = found || (!!item.id && item.id === box_id);
+                            })
+                            return !found;
+                        });
+
+                        if(missing_box_ids.length){
+                            await Promise.all(missing_box_ids.map(async box_id => {
+                                await this.protocolService.sendMessage({
+                                    channel: 'db',
+                                    api: 'db',
+                                    act: 'rem',
+                                    payload: {
+                                        channel: 'system',
+                                        data: {
+                                            what: 'page_box',
+                                            how: 'OR',
+                                            where: {
+                                                id: box_id
+                                            }
+                                        }
+                                    }
+                                }).toPromise();
+                                await this.protocolService.sendMessage({
+                                    channel: 'db',
+                                    api: 'db',
+                                    act: 'rem',
+                                    payload: {
+                                        channel: 'system',
+                                        data: {
+                                            what: 'pages_to_boxes',
+                                            how: 'OR',
+                                            where: {
+                                                box_id: box_id
+                                            }
+                                        }
+                                    }
+                                }).toPromise();
+                                await this.protocolService.sendMessage({
+                                    channel: 'bucket',
+                                    api: 'fs',
+                                    act: 'rm',
+                                    payload: {
+                                        selection: [`/pages/page-${params.id}/box-${box_id}`]
+                                    }
+                                }).toPromise();
+                            }))
+                        }
                     }
 
+                    /*
+                    3. add new boxes and pages_to_boxes
+                    */
 
-                    await Promise.all(updateItems.map(async (item) => {
-                        const pageBoxReq: payloadInterface = {
+                    const newBoxes = params.items.filter(item => !item.hasOwnProperty('id'));
+
+                    if(newBoxes.length) {
+                       await Promise.all(newBoxes.map(async newBox => {
+                           const newBoxDetail = await this.protocolService.sendMessage({
+                               channel: 'db',
+                               api: 'db',
+                               act: 'add',
+                               payload: {
+                                   channel: 'system',
+                                   data: {
+                                       what: 'page_box',
+                                       data: this.help.giveBoxValues(newBox)
+                                   }
+                               }
+                           }).toPromise();
+
+                           await this.protocolService.sendMessage({
+                               channel: 'db',
+                               api: 'db',
+                               act: 'add',
+                               payload: {
+                                   channel: 'system',
+                                   data: {
+                                       what: 'pages_to_boxes',
+                                       data:{
+                                           page_id: params.id,
+                                           box_id: newBoxDetail.data[0].id
+                                       }
+                                   }
+                               }
+                           }).toPromise();
+
+                           newBoxDetail.data[0].ref = newBox.i;//for reference number
+
+                           newBoxesDetails.push(newBoxDetail.data[0]);
+                       }))
+                    }
+
+                    /*
+                    4. update existing boxes no matter what. could be a resize
+                    */
+
+                    const existingBoxes = params.items.filter(item => item.hasOwnProperty('id'));
+
+                    await Promise.all(existingBoxes.map(async box => {
+                        await this.protocolService.sendMessage({
                             channel: 'db',
                             api: 'db',
                             act: 'set',
@@ -494,105 +635,36 @@ export class PagesService {
                                 channel: 'system',
                                 data: {
                                     what: 'page_box',
+                                    data: this.help.giveBoxValues(box),
                                     where: {
-                                        id: parseInt(item.i)
-                                    },
-                                    data: {
-                                        title: item.title,
-                                        module: item.module,
-                                        fontsize: item.fontSize || null,
-                                        fontfamily: item.fontFamily || null,
-                                        textcolor: item.textColor || null,
-                                        bgcolor: item.backgroundColor || null,
-                                        bgimage: item.backgroundImage || "",
-                                        borderwidth: item.borderWidth || 0,
-                                        bordercolor: item.borderColor || "#ffffff",
-                                        borderradius: item.borderRadius || 0,
-                                        bgrepeat: item.backgroundRepeat ? 1 : 0,
-                                        bgstretch: item.backgroundStretch ? 1 : 0,
-                                        height: item.h,
-                                        width: item.w,
-                                        moduleoptions: item.moduleOptions,
-                                        x: item.x,
-                                        y: item.y,
-                                        borderstyle: item.borderStyle || "solid",
-                                        showscrollbars: item.showScrollbars? 1 : 0,
+                                        id: box.id
                                     }
                                 }
                             }
-                        };
-                        await this.protocolService.sendMessage(pageBoxReq).toPromise();
-                    }))
+                        }).toPromise();
+                    }));
 
+                    const boxesIds = [];
 
-                    // create boxes which don't exist
-                    const createItems = items.filter((item) => item.toBeSave)
-                    let boxesData = {
-                        data: []
-                    }
-                    if(createItems.length){
-                        const pageBoxReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'db',
-                            act: 'add',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'page_box',
-                                    data: createItems.map((item) => {
-                                        return {
-                                            title: item.title,
-                                            module: item.module,
-                                            fontsize: item.fontSize || null,
-                                            fontfamily: item.fontFamily || null,
-                                            textcolor: item.textColor || null,
-                                            bgcolor: item.backgroundColor || null,
-                                            bgimage: item.backgroundImage || "",
-                                            borderwidth: item.borderWidth || 0,
-                                            bordercolor: item.borderColor || "#ffffff",
-                                            borderradius: item.borderRadius || 0,
-                                            bgrepeat: item.backgroundRepeat ? 1 : 0,
-                                            bgstretch: item.backgroundStretch ? 1 : 0,
-                                            height: item.h,
-                                            width: item.w,
-                                            moduleoptions: item.moduleOptions,
-                                            x: item.x,
-                                            y: item.y,
-                                            borderstyle: item.borderStyle || "solid",
-                                            showscrollbars: item.showScrollbars? 1 : 0,
-                                        }
-                                    })
-                                }
-                            }
-                        };
-
-                        const boxes =  await  this.protocolService.sendMessage(pageBoxReq).toPromise();
-                        boxesData = {...boxes}
-                        const pageToBoxReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'db',
-                            act: 'add',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'pages_to_boxes',
-                                    data: boxes.data.map((box) => {
-                                        return {
-                                            page_id: params.id,
-                                            box_id: box.id,
-                                        }
-                                    })
-                                }
-                            }
-                        };
-
-                        const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
+                    if(newBoxesDetails.length){
+                        newBoxesDetails.map(newBox => {
+                            boxesIds.push({id: newBox.id, ref: newBox.ref})
+                        });
                     }
 
+
+                    if(existingBoxes.length){
+                        existingBoxes.map(box => {
+                            boxesIds.push({id: box.id, ref: existingBoxes.i})
+                        });
+                    }
 
                     subscriber.next({
                         success: "The page was saved",
-                        data: {pageId: params.id, items: boxesData.data.map(box => box.id)}
+                        data: {
+                            pageId: params.id,
+                            items: boxesIds
+                        }
                     })
                     subscriber.complete();
                 } catch(err) {
@@ -609,6 +681,12 @@ export class PagesService {
 
             (async () => {
                 try {
+                    await this._removeFiles({
+                        where: {
+                            id: params.id
+                        }
+                    })
+
                     // delete page_to_boxes
                     const pagesToBoxReq: payloadInterface = {
                         channel: 'db',
@@ -647,7 +725,8 @@ export class PagesService {
                             }
                         };
 
-                        const boxes = await this.protocolService.sendMessage(boxesReq).toPromise()
+                        const boxes = await this.protocolService.sendMessage(boxesReq).toPromise();
+
                     }
 
                     // delete page_to_config
@@ -722,6 +801,19 @@ export class PagesService {
             })()
 
         })
+    }
+
+    private async _removeFiles(params) {
+
+        this.protocolService.sendMessage({
+            channel: 'bucket',
+            api: 'fs',
+            act: 'rm',
+            payload: {
+                selection: [`/pages/page-${params.where.page_id}`]
+            }
+        }).toPromise();
+
     }
 
     public perform(data: any, config?: ModuleInterface) {

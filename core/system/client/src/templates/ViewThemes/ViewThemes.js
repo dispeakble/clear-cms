@@ -74,6 +74,7 @@ class ViewThemes extends Component {
             bgimage: "",
             bgrepeat: false,
             bgstretch: false,
+            bggradient: false,
             fontsize: 13,
             textcolor: "#000000",
             fontfamily: "Arial",
@@ -87,6 +88,7 @@ class ViewThemes extends Component {
             bgimage: "",
             bgrepeat: false,
             bgstretch: false,
+            bggradient: false,
             fontsize: 13,
             textcolor: "#000000",
             fontfamily: "Arial",
@@ -421,6 +423,7 @@ class ViewThemes extends Component {
 
             data.bgrepeat = this.state.data.bgrepeat;
             data.bgstretch = this.state.data.bgstretch;
+            data.bggradient = this.state.data.bggradient;
             data.fontsize = this.state.data.fontsize;
             data.fontfamily = this.state.data.fontfamily;
             data.boxspacing = this.state.data.boxspacing;
@@ -492,6 +495,7 @@ class ViewThemes extends Component {
                 boxspacing: this.state.data.boxspacing,
                 bgrepeat: this.state.data.bgrepeat ? 1 : 0,
                 bgstretch: this.state.data.bgstretch ? 1 : 0,
+                bggradient: this.state.data.bggradient ? 1 : 0,
                 thumbnail: base64image,
                 mui: data
             };

@@ -116,7 +116,7 @@ class Pages extends Component {
                     tooltip: "Add Page",
                     isFreeAction: true,
                     iconProps: {
-                        style: { color: this.props.defaultTheme.primary.main },
+                        style: { color: this.props.defaultTheme.primary?.main || "green" },
                     },
                     onClick: (event) => {
                         this.props.history.push(`/pages/add`);
@@ -137,7 +137,7 @@ class Pages extends Component {
                     ),
                     tooltip: "Page Preview",
                     onClick: (event, rowData) => {
-                        window.open(`/pagePreview/${Number(rowData.tableData.id) + 1}`);
+                        window.open(`/pages/preview/${Number(rowData.id)}`);
                     },
                 },
                 {

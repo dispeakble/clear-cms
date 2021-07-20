@@ -2,6 +2,7 @@ import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as md5 from "md5";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class AdminProfileService {
@@ -17,33 +18,40 @@ export class AdminProfileService {
     }
 
     public async getInfo(params) {
-        const payload: payloadInterface = {
-            channel: 'db',
-            api: 'db',
-            act: 'get',
-            payload: {
-                channel: 'system',
-                data: {
-                    what: 'auth_admin',
-                    fields: ["fname", "lname", "email"],
-                    where: {
-                        id: params.client.id,
-                        active: 1
-                    },
-                    limit: [0, 1]
+        return new Observable(subscriber => {
+            (async () => {
+                const payload: payloadInterface = {
+                    channel: 'db',
+                    api: 'db',
+                    act: 'get',
+                    payload: {
+                        channel: 'system',
+                        data: {
+                            what: 'auth_admin',
+                            fields: ["fname", "lname", "email"],
+                            where: {
+                                id: params.client.id,
+                                active: 1
+                            },
+                            limit: [0, 1]
+                        }
+                    }
+                };
+
+                const data = await this.protocolService.sendMessage(payload).toPromise();
+
+                let response = {};
+
+                if (data && data.hasOwnProperty('data')) {
+                    response = data.data[0];
                 }
-            }
-        };
 
-        const data = await this.protocolService.sendMessage(payload);
+                subscriber.next(response);
+                subscriber.complete();
+            })()
 
-        let response = {};
+        })
 
-        if (data && data.hasOwnProperty('data')) {
-            response = data.data[0];
-        }
-
-        return response;
     }
 
     public async setInfo(params) {

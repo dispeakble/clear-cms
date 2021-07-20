@@ -99,7 +99,7 @@ export class BucketService {
                         act: 'upload'
                     }
                 }
-            })
+            });
 
             handshake.theObserver.subscribe(data => {
                 //console.log(data);
@@ -114,9 +114,11 @@ export class BucketService {
                     handshakeResponse.thePusher.next(data)
                 }, err => {
                     console.log(err);
-                    subscriber.complete()
+                    handshakeResponse.thePusher.error(err);
+                    subscriber.error(err);
                 }, () => {
-                    console.log('uploaded complete')
+                    console.log('Bucket.service: upload complete');
+                    handshakeResponse.thePusher.complete();
                     subscriber.complete();
                 });
 
@@ -157,7 +159,51 @@ export class BucketService {
         });
     }
 
+    private _getBucketMeta(params) {
+        return new Promise((resolve) => {
+            const path_parts = params.path.split('/');
+            this.protocolService.sendMessage({
+                channel: 'bucket',
+                api: 'fs',
+                act: 'info',
+                payload: {
+                    path: '/' + path_parts.slice(1).join('/')
+                }
+            }).subscribe(response => {
+                try {
+                    resolve({
+                        type: 'object',
+                        data: {
+                            modified: response.data.mtime,
+                            size: response.data.size,
+                            "etagId": response.data.etagId,
+                            file_name: params.path
+                        }
+                    });
+                } catch (err) {
+                    resolve({
+                        type: 'error',
+                        message: {
+                            type: '404 not found',
+                            path: params.path
+                        }
+                    })
+                }
+
+            }, err => {
+                resolve(err);
+            }, () => {
+
+            })
+        });
+    }
+
     public getMeta(data: any) {
+        if(this._isBucket({path: data.params[0]})){
+            return this._getBucketMeta({
+                path: data.params[0]
+            });
+        }
         return new Promise((resolve) => {
 
             const params = data.params;
@@ -174,43 +220,85 @@ export class BucketService {
                 }
                 const stats = fs.statSync(file_path + file_name);
                 const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
-                resolve({modified: stats.mtimeMs, size: stats.size, "etagId": etagId, file_name: file_name});
+                resolve({
+                    type: 'object',
+                    content_type: 'object',
+                    data: {
+                        modified: stats.mtimeMs,
+                        size: stats.size,
+                        "etagId": etagId,
+                        file_name: file_name
+                    }
+                });
             } catch (err) {
+                resolve(null)
                 console.log(err);
             }
 
         });
     }
 
+    private _getFromBucket(params: any) {
+        const path_parts = params.path.split('/');
+        this.protocolService.sendMessage({
+            channel: 'bucket',
+            api: 'fs',
+            act: 'read',
+            payload: {
+                path: '/' + path_parts.slice(1).join('/')
+            }
+        }).subscribe(data => {
+            params.observer.next(data);
+        }, err => {
+            params.observer.error(err);
+        }, () => {
+            params.observer.complete();
+        })
+    }
+
+    private _isBucket(params) {
+        const path_parts = params.path.split('/');
+        return (path_parts[0] === 'files')
+    }
+
+
     public get(data: any) {
         return new Observable((observer) => {
             const params = data.params;
-            let file_name = this.defaultPath;
+            let complete_path = this.defaultPath;
 
             if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
-                file_name = params[0];
+                complete_path = params[0];
+                if(this._isBucket({path: complete_path})){
+                    this._getFromBucket({
+                        path: complete_path,
+                        observer
+                    });
+                    return;
+                }
             }
 
             try {
-                let file_path = __dirname + '/../../public/' + file_name;
+                let file_path = __dirname + '/../../public/' + complete_path;
                 if (!fs.existsSync(file_path)) {
-                    file_name = this.defaultPath;
-                    file_path = `${__dirname}/../../public/${file_name}`;
+                    complete_path = this.defaultPath;
+                    file_path = `${__dirname}/../../public/${complete_path}`;
                 }
 
                 const stats = fs.statSync(file_path);
-                observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(file_name)});
+                observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(complete_path)});
 
                 const readStream = fs.createReadStream(file_path, {highWaterMark: 52428800});
 
                 readStream.on('data', function (chunk) {
-                    console.log('Buffering - ' + file_name);
+                    console.log('Buffering - ' + complete_path);
                     observer.next(chunk);
                 }).on('end', function () {
-                    console.log('Done - ' + file_name);
+                    console.log('Done - ' + complete_path);
                     observer.complete();
                 });
             } catch (err) {
+                //TODO should return 404
                 fs.readFile(`__dirname /../../public/${this.defaultPath}`, (err, buffer) => {
                     observer.next(buffer);
                     observer.complete();

@@ -1,24 +1,17 @@
-import React, { Suspense } from "react";
+import React, {Suspense} from "react";
 import _ from "lodash";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import {createMuiTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-import {
-  DeleteForever,
-  AddCircle,
-  Visibility,
-  Edit,
-  OpenWith,
-} from "@material-ui/icons";
+import {AddCircle, DeleteForever, Edit, OpenWith, Visibility,} from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
-import { WidthProvider, Responsive } from "react-grid-layout";
+import {Responsive, WidthProvider} from "react-grid-layout";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import MoreMenu from "components/MoreMenu/MoreMenu.js";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
 
 // for the modal
 import Dialog from "@material-ui/core/Dialog";
@@ -32,88 +25,57 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
-import { TextField } from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for the styling side-menu
-import Drawer from "@material-ui/core/Drawer";
 
-// for accordeon
+// for accordion
 import clsx from "clsx";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
-import { DropzoneArea } from "material-ui-dropzone";
+import {DropzoneArea} from "material-ui-dropzone";
 
 // for the new color picker
-import { SketchPicker } from "react-color";
+import {SketchPicker} from "react-color";
 import reactCSS from "reactcss";
 
 import Icon from "@material-ui/core/Icon";
+import ViewBoxEditor from "./ViewBoxEditor";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class ViewPagesEditor extends React.PureComponent {
-  //TODO GET THIS LIST FROM THE DB
   static defaultProps = {
     className: "layout",
-    //colsClient: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },//PUT THIS ON PRODUCTION AND PREVIEW
-    
-    cols: { lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 },
+    cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
     rowHeight: 1,
+    transformScale: 1
   };
-
+  
   state = {
-    temporaryModuleOptions: {},
+    configStates:{
+      showBackgroundColor: false
+    },
     showDiscardModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
     items: [],
-    itemSdId: 0,
-    newCounter: 0,
     flatCategories: [],
-
     speedDialState: false,
-    modulesList: [
-      { label: "Header Module" },
-      { label: "Menu Module" },
-      { label: "Text Module" },
-      { label: "Gallery Module" },
-      { label: "Calendar Module" },
-      { label: "Video Module" },
-      { label: "Audio Module" },
-      { label: "Banner Module" },
-      { label: "Chart Module" },
-      { label: "Table Module" },
-      { label: "Accordion Module" },
-    ],
     config: {
       layoutBoxSpacing: [10, 10],
       layoutBoxPadding: {
-        lg: [1, 1],
-        md: [1, 1],
-        sm: [1, 1],
-        xs: [1, 1],
-        xxs: [1, 1],
+        lg: [0, 0],
+        md: [0, 0],
+        sm: [0, 0],
+        xs: [0, 0],
+        xxs: [0, 0],
       },
     },
-    editItemFontSizeShow: false,
-    editItemFontFamilyShow: false,
-    editItemTextColorShow: false,
-    editItemBackgroundColorShow: false,
-    editItemTitle: "",
-    editItemModule: "",
-    editItemBgImage: "",
-    editItemBgImageFile: "",
-    editItemBorderRadius: "",
-    editItemBorderWidth: 0,
-    editItemBorderColor: "",
-    editItemBackgroundColor: "",
-    editItemFontSize: 0,
-    editItemFontFamily: -1,
-    editItemTextColor: "",
     showEditMenu: false,
     itemEditId: "",
     itemModuleEditId: "",
@@ -125,6 +87,7 @@ class ViewPagesEditor extends React.PureComponent {
       { label: "Verdana" },
     ],
     bgColor: "",
+    pageBase64Image: false,
     backgroundImage: "",
     backgroundImageFile: "",
     fontSize: 11,
@@ -132,47 +95,39 @@ class ViewPagesEditor extends React.PureComponent {
     fontFamily: "Arial",
     pageTitle: "",
     pageLink: "",
-    pageOrItemFontFamily: "",
-    pageOrItemTextColor: "",
-    displayBgColorPicker: false,
-    displayTextColorPicker: false,
-    displayItemTextColorPicker: false,
-    displayItemBgColorPicker: false,
-    displayItemBorderColorPicker: false,
+    showBgColorPicker: false,
+    showTextColorPicker: false,
+    showItemTextColorPicker: false,
     fontUnit: "px",
     publish: false,
     pageBackgroundRepeat: false,
     pageBackgroundStretch: false,
+    pageBackgroundGradient: false,
     defaultPage: false,
     categories: [],
     category: 0,
     editing: false, // we will reuse this component to edit and add pages
-    editItemModuleOptions: {},
-    editModuleOptions: "",
     pageTransitionPadding: "",
-    editItemScrollbars: false,
     addAnItem: false,
-
     backgroundRepeat: false,
     backgroundStretch: false,
-    editItemBgRepeat: false,
-    editItemBgStretch: false,
     bgColorStyles: {},
     textColorStyles: {},
-    itemTextColorStyles: {},
-    itemBgColorStyles: {},
-    itemBorderColorStyles: {},
-    editPage: null
+    editPage: null,
+    boxEditorProps:{
+      item:{
+
+      }
+    }
   };
 
-  defaultTheme = {};
   muiTheme = {};
 
   async componentDidMount() {
     let editing = this.props.location.pathname.indexOf("edit") > -1;
     // TODO: debug why match.params is empty
-    // let pageId = Number(this.props.match.params.id);
-    let pageId = this.props.location.pathObject[2]
+    // let page_id = Number(this.props.match.params.id);
+    let page_id = this.props.location.pathObject[2]
 
     let categoriesFromStorage = await this.props.control.listCategories();
 
@@ -193,9 +148,8 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     if (editing) {
-      let currentPage = await this.props.control.get({id: parseInt(pageId)})
-      const pageConfig = currentPage.pageConfig;
-      const items = currentPage.items
+      let currentPage = await this.props.control.get({id: parseInt(page_id)})
+      const {pageConfig, items} = currentPage;
       if (items !== null) {
         this.setState({
           items,
@@ -207,11 +161,11 @@ class ViewPagesEditor extends React.PureComponent {
         let savedLayoutBoxSpacing = {
           layoutBoxSpacing: pageConfig.layoutBoxSpacing,
           layoutBoxPadding: {
-            lg: [1, 1],
-            md: [1, 1],
-            sm: [1, 1],
-            xs: [1, 1],
-            xxs: [1, 1],
+            lg: [0, 0],
+            md: [0, 0],
+            sm: [0, 0],
+            xs: [0, 0],
+            xxs: [0, 0],
           },
         };
 
@@ -230,6 +184,7 @@ class ViewPagesEditor extends React.PureComponent {
           publish: pageConfig.publish,
           pageBackgroundRepeat: pageConfig.backgroundRepeat,
           pageBackgroundStretch: pageConfig.backgroundStretch,
+          pageBackgroundGradient: pageConfig.pageBackgroundGradient,
         });
       }
       await this.setAsyncState({
@@ -248,8 +203,6 @@ class ViewPagesEditor extends React.PureComponent {
         );
       }
 
-      this.defaultTheme = this.props.defaultTheme;
-
       this.muiTheme = this.createDefaultTheme();
 
       if (defaultPublicTheme) {
@@ -267,6 +220,11 @@ class ViewPagesEditor extends React.PureComponent {
             pageBackgroundStretch: defaultPublicTheme.bgstretch,
           });
         }
+        if (defaultPublicTheme.bggradient) {
+          this.setState({
+            pageBackgroundGradient: defaultPublicTheme.bggradient,
+          });
+        }
         if (defaultPublicTheme.fontsize) {
           this.setState({ fontSize: defaultPublicTheme.fontsize });
         }
@@ -276,45 +234,22 @@ class ViewPagesEditor extends React.PureComponent {
         if (defaultPublicTheme.fontfamily) {
           this.setState({ fontFamily: defaultPublicTheme.fontfamily });
         }
-        if (defaultPublicTheme.boxSpacingConfig) {
-          this.setState({ config: defaultPublicTheme.boxSpacingConfig });
-        }
       }
     }
 
     await this.setAsyncState({
       bgColorStyles: this.sendStyles(this.state.bgColor),
-      textColorStyles: this.sendStyles(this.state.textColor),
-      itemTextColorStyles: this.sendStyles(this.state.editItemTextColor),
-      itemBgColorStyles: this.sendStyles(this.state.editItemBackgroundColor),
-      itemBorderColorStyles: this.sendStyles(this.state.editItemBorderColor),
+      textColorStyles: this.sendStyles(this.state.textColor)
     });
 
-    await this.setAsyncState({
+    this.setState({
       editing: editing,
-      pageId: pageId,
+      page_id: page_id,
     });
   }
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
-
-  addPagePadding = async () => {
-    await this.setAsyncState({ pageTransitionPadding: "300px" });
-  };
-
-  removePagePadding = () => {
-    this.setState({ pageTransitionPadding: "" });
-  };
-
-  async toggleItemSD(id, state) {
-    if (!state) {
-      id = 0;
-    }
-    await this.setAsyncState({
-      itemSdId: id,
-    });
-  }
 
   setTemporaryModuleOptions = (id, data, isVertical) => {
     let allTempModuleOptions = this.state.temporaryModuleOptions;
@@ -323,12 +258,6 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   createElement(el) {
-    /*const removeStyle = {
-      position: "absolute",
-      right: "2px",
-      top: 0,
-      cursor: "pointer",
-    };*/
     const i = el.i;
 
     let itemStyle = {};
@@ -356,8 +285,15 @@ class ViewPagesEditor extends React.PureComponent {
       itemStyle.color = this.state.textColor;
     }
 
-    if (el.backgroundImage) {
-      itemStyle.backgroundImage = `url(${el.backgroundImage})`;
+    if (el.backgroundImageString) {
+      itemStyle.backgroundImage = `url(${el.backgroundImageString})`;
+    } else {
+      itemStyle.backgroundImage = `url(/files/pages/page-${this.state.page_id}/box-${i}/${el.backgroundImage})`;
+    }
+
+    if(el.backgroundImage.indexOf('__delete__') === 0) {
+      el.backgroundImageString = "";
+      itemStyle.backgroundImage = "";
     }
 
     if (el.backgroundRepeat) {
@@ -424,8 +360,7 @@ class ViewPagesEditor extends React.PureComponent {
       },
       {
         callback: () => {
-          this.addPagePadding();
-          this.handleEdit(el.i);
+          this.handleEditItem(el.i);
         },
         icon: <Edit style={{color:this.props.defaultTheme.primary.main}} />,
         name: "Edit Item",
@@ -456,35 +391,34 @@ class ViewPagesEditor extends React.PureComponent {
           style={{
             position: "absolute",
             bottom: 0,
-            height: "48px",
             right: 0,
             left: 0,
           }}
         >
-          <span className={this.props.classes.editModuleIconWrapper}>
-            {el.module && LazyModule ? (
+          {el.module && LazyModule ? (
               <Suspense fallback={loadingFallback}>
                 <LazyModule
-                  defaultTheme={this.props.defaultTheme}
-                  onStartEditingModule={() => this.onStartEditingModule()}
-                  onEndEditingModule={() => this.onEndEditingModule()}
-                  boxId={el.i}
-                  moduleOptions={el.moduleOptions}
-                  handleSave={(id, data) => {
-                    this.saveModuleOptions(id, data);
-                  }}
+                    defaultTheme={this.props.defaultTheme}
+                    onStartEditingModule={() => this.onStartEditingModule()}
+                    onEndEditingModule={() => this.onEndEditingModule()}
+                    boxId={el.i}
+                    moduleOptions={el.moduleOptions}
+                    handleSave={(id, data) => {
+                      this.saveModuleOptions(id, data);
+                    }}
                 />
               </Suspense>
-            ) : (
+          ) : (
               ""
-            )}
-          </span>
+          )}
         </div>
       </div>
     );
   }
 
-  onAddItem() {
+  onAddItem(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
     let newId = 0;
     this.setState({
       // Add a new item. It must have a unique key!
@@ -500,24 +434,24 @@ class ViewPagesEditor extends React.PureComponent {
 
       let items = this.state.items;
       items.push({
+        newItem: true,
         title: "New Box",
-        showScrollbars: "",
+        showScrollbars: false,
         module: "",
         moduleOptions: { data: "" },
         borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
         borderStyle: "solid",
-        borderWidth: "0",
-        borderRadius: "0",
+        borderWidth: 0,
+        borderRadius: 0,
         backgroundImage: "",
         backgroundImageFile: "",
-        backgroundRepeat: "",
-        backgroundStretch: "",
+        backgroundRepeat: false,
+        backgroundStretch: false,
         i: newId + "",
         x: 0,
         y: Infinity, // puts it at the bottom
         w: 2,
-        h: 20,
-        ...(this.state.editing && {toBeSave: true})
+        h: 20
       });
 
       this.setState({
@@ -541,7 +475,7 @@ class ViewPagesEditor extends React.PureComponent {
     return this.state.items.find((item) => item.i === passedId);
   };
 
-  onLayoutChange = (layout) => {
+  onLayoutChange = (layout, layouts) => {
     try {
       let newItems = layout.map((item) => {
         let oldItem = this.getItemById(item.i);
@@ -552,8 +486,7 @@ class ViewPagesEditor extends React.PureComponent {
         return oldItem;
       });
 
-      //let renderedItems = [...this.state.items];
-      this.setState({ items: newItems });
+      this.setState({ items: newItems, layouts });
     } catch (err) {
       console.log(err);
     }
@@ -575,22 +508,6 @@ class ViewPagesEditor extends React.PureComponent {
         break;
       case "pageLink":
         this.setState({ pageLink: event.target.value });
-        break;
-      case "moduleOptions":
-        this.setState({ editModuleOptions: event.target.value });
-        break;
-      case "itemTitle":
-        /*let items = [...this.state.items];
-
-        let item = this.getItemById(this.state.itemEditId);
-        item.title = event.target.value;
-
-        let itemIndex = items.findIndex(
-          (item) => item.i === this.state.itemEditId
-        );
-
-        items[itemIndex] = item;*/
-        await this.setAsyncState({ editItemTitle: event.target.value + "" });
         break;
       default:
         break;
@@ -635,36 +552,18 @@ class ViewPagesEditor extends React.PureComponent {
     ];
   }
 
-  handleEdit = async (id) => {
+  handleEditItem = async (id) => {
     await this.setAsyncState({
-      itemEditId: id,
+      itemEditId: id
     });
     const item = this.getItemById(id);
 
     await this.setAsyncState({
-      editItemScrollbars: item.showScrollbars,
-      editItemTitle: item.title,
-      editItemModule: this.getModuleIndex(item.module),
-      editItemModuleOptions: item.moduleOptions,
-      editItemBorderRadius: item.borderRadius || 0,
-      editItemBorderWidth: item.borderWidth || 0,
-      editItemBorderColor: item.borderColor,
-      editItemBorderStyle: item.borderStyle,
-      editItemFontSize: item.fontSize || 5,
-      editItemBackgroundColor: item.backgroundColor || "",
-      editItemBgImage: item.backgroundImage,
-      editItemBgImageFile: item.backgroundImageFile,
-      editItemBgRepeat: item.backgroundRepeat,
-      editItemBgStretch: item.backgroundStretch,
-      editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
-      editItemTextColor: item.textColor || "",
-      editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
-      editItemFontSizeShow: item.hasOwnProperty("fontSize"),
-      editItemFontFamilyShow: item.hasOwnProperty("fontFamily"),
-      editItemTextColorShow: item.hasOwnProperty("textColor"),
-    });
-    await this.setAsyncState({
+      boxEditorProps: {
+        item
+      },
       showEditMenu: !this.state.showEditMenu,
+      pageTransitionPadding: "300px"
     });
   };
 
@@ -677,22 +576,6 @@ class ViewPagesEditor extends React.PureComponent {
       itemModuleEditId: id,
       showModuleOptionsModal: true,
     });
-  };
-
-  saveModuleOptions = async (passedId, data, isVertical) => {
-    let items = [...this.state.items];
-
-    let item = this.getItemById(passedId);
-
-    item.moduleOptions = { data: data, isVertical: isVertical };
-
-    let itemIndex = items.findIndex(
-      (item) => Number(item.i) === Number(passedId)
-    );
-
-    items[itemIndex] = item;
-
-    await this.setAsyncState({ items });
   };
 
   // for speed dial
@@ -709,40 +592,17 @@ class ViewPagesEditor extends React.PureComponent {
       const config = {
         layoutBoxSpacing: [newValue, newValue],
         layoutBoxPadding: {
-          lg: [1, 1],
-          md: [1, 1],
-          sm: [1, 1],
-          xs: [1, 1],
-          xxs: [1, 1],
+          lg: [0, 0],
+          md: [0, 0],
+          sm: [0, 0],
+          xs: [0, 0],
+          xxs: [0, 0],
         },
       };
       this.setState({ config: config });
     }
   };
-
-  handleBorderWidth = async (event, newValue) => {
-    await this.setAsyncState({ editItemBorderWidth: newValue });
-  };
-
-  handleBorderRadius = async (event, newValue) => {
-    await this.setAsyncState({ editItemBorderRadius: newValue });
-  };
-
-  handleItemFontSize = async (event, newValue) => {
-    await this.setAsyncState({
-      editItemFontSize: newValue,
-    });
-  };
-
-  handleItemFontFamily = async (event, newValue) => {
-    const fontFamily = newValue ? this.getFontFamilyIndex(newValue.label) : "";
-
-    await this.setAsyncState({
-      editItemFontFamily: +fontFamily,
-      pageOrItemFontFamily: "item",
-    });
-  };
-
+  
   handleItemModule = async (event, newValue) => {
     if (!newValue || !newValue.label) {
       return;
@@ -761,42 +621,15 @@ class ViewPagesEditor extends React.PureComponent {
     });
   }
 
-  handleItemBgImage = async (event) => {
-    if (event.length) {
-      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-
-      this.setState({
-        editItemBgImage: strings[0],
-        editItemBgImageFile: event[0]
-      });
-    }
-  };
-
-  handleItemBgRepeat = async (event) => {
-    this.setState({
-      editItemBgRepeat: !this.state.editItemBgRepeat,
-    });
-  };
-
-  handleItemBgStretch = async (event) => {
-    this.setState({
-      editItemBgStretch: !this.state.editItemBgStretch,
-    });
-  };
-
   handleBgImage = async (event) => {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
 
       this.setState({
-        backgroundImage: strings[0],
+        pageBase64Image: strings[0],
         backgroundImageFile: event[0]
       });
     }
-  };
-
-  closeEditSideMenu = () => {
-    this.setState({ showEditMenu: false });
   };
 
   getBoxById(id) {
@@ -812,104 +645,27 @@ class ViewPagesEditor extends React.PureComponent {
     return { item: item, index: index };
   }
 
-  saveChangedStyle = () => {
-    let foundItem = this.getItemById(this.state.itemEditId);
-
-    foundItem.title = this.state.editItemTitle;
-    foundItem.module = this.state.modulesList[this.state.editItemModule];
-    foundItem.module = foundItem.module ? foundItem.module.label : "";
-    foundItem.backgroundImage = this.state.editItemBgImage;
-    foundItem.backgroundImageFile = this.state.editItemBgImageFile;
-    foundItem.backgroundRepeat = this.state.editItemBgRepeat;
-    foundItem.backgroundStretch = this.state.editItemBgStretch;
-
-    //foundItem.moduleOptions = this.state.moduleOptions;
-
-    if (this.state.editItemBackgroundColorShow) {
-      foundItem.backgroundColor = this.state.editItemBackgroundColor;
-    } else {
-      delete foundItem.backgroundColor;
-    }
-
-    if (this.state.editItemFontSizeShow) {
-      foundItem.fontSize = this.state.editItemFontSize;
-    } else {
-      delete foundItem.fontSize;
-    }
-
-    if (this.state.editItemFontFamilyShow) {
-      foundItem.fontFamily = this.state.fontFamilies[
-        this.state.editItemFontFamily
-      ];
-
-      foundItem.fontFamily = foundItem.fontFamily
-        ? foundItem.fontFamily.label
-        : "";
-
-      if (!foundItem.fontFamily) {
-        delete foundItem.fontFamily;
-      }
-    } else {
-      delete foundItem.fontFamily;
-    }
-
-    if (this.state.editItemTextColorShow) {
-      foundItem.textColor = this.state.editItemTextColor;
-    } else {
-      delete foundItem.textColor;
-    }
-
-    if (this.state.editItemScrollbars) {
-      foundItem.showScrollbars = this.state.editItemScrollbars;
-    } else {
-      delete foundItem.showScrollbars;
-    }
-
-    if (Number(this.state.editItemBorderWidth)) {
-      foundItem.borderColor = this.state.editItemBorderColor;
-      foundItem.borderWidth = this.state.editItemBorderWidth;
-      foundItem.borderRadius = this.state.editItemBorderRadius;
-      foundItem.borderStyle = "solid";
-    } else {
-      delete foundItem.borderColor;
-      delete foundItem.borderWidth;
-      delete foundItem.borderRadius;
-      delete foundItem.borderStyle;
-    }
+  saveBox = (params) => {
+    
+    let box = params;
 
     let items = this.state.items;
-    let foundItemIndex = items.findIndex(
+    let boxIndex = items.findIndex(
       (item) => item.i === this.state.itemEditId
     );
 
-    items[foundItemIndex] = foundItem;
+    items[boxIndex] = box;
 
     this.setAsyncState({
       items,
     });
-
-    this.closeEditSideMenu();
   };
 
-  getImage = () => {
-    if (this.state.itemImgSrc !== "") {
-      let bg = require("assets/img/watermelon.jpg");
-      return bg;
-    }
-  };
-
-  handleBgImage(acceptedFiles) {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        //const binaryStr = reader.result;
-      };
-      reader.readAsArrayBuffer(file);
-    });
+  handleBackgroundDelete(){
+    this.setState({
+      pageBase64Image: "",
+      backgroundImageFile: ""
+    })
   }
 
   // for MuiThemeProvider
@@ -979,7 +735,20 @@ class ViewPagesEditor extends React.PureComponent {
           },
           text: {
             fontSize: "1rem",
+            margin: "0 !important"
+          }
+        },
+        MuiDropzonePreviewList: {
+          root: {
+            margin: "0 !important"
           },
+          image:{
+            height: "auto !important"
+          },
+          imageContainer: {
+            padding: "0 !important",
+            width: "100% !important"
+          }
         },
         MuiDialog: {
           paper: {
@@ -987,7 +756,7 @@ class ViewPagesEditor extends React.PureComponent {
           },
           paperWidthSm: {
             maxWidth: "100vw",
-          },
+          }
         },
       },
     });
@@ -1001,8 +770,7 @@ class ViewPagesEditor extends React.PureComponent {
 
   handleFontFamily = async (event, newValue) => {
     await this.setAsyncState({
-      fontFamily: newValue.label,
-      pageOrItemFontFamily: "page",
+      fontFamily: newValue.label
     });
   };
 
@@ -1139,21 +907,14 @@ class ViewPagesEditor extends React.PureComponent {
       publish: this.state.publish,
       backgroundRepeat: this.state.pageBackgroundRepeat,
       backgroundStretch: this.state.pageBackgroundStretch,
+      pageBackgroundGradient: this.state.pageBackgroundGradient,
       defaultPage: this.state.defaultPage,
       category: this.state.category,
     };
 
-    // TODO: set other pages default to false in DB
-    if (this.state.defaultPage) {
-      // pages.map((page) => {
-      //   page.pageConfig.defaultPage = false;
-      //   return page;
-      // });
-    }
-
     if (this.state.editing) {
       let page = {
-        id: this.state.pageId,
+        id: this.state.page_id,
         pageConfig: pageConfig,
         items: this.state.items,
       }
@@ -1165,7 +926,6 @@ class ViewPagesEditor extends React.PureComponent {
         items: this.state.items,
       };
       await this.props.control.add(newPage)
-
     }
 
     this.props.history.push("/pages");
@@ -1177,472 +937,224 @@ class ViewPagesEditor extends React.PureComponent {
         <Helmet>
           <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
         </Helmet>
-        <div
-          style={{
+        <div className={this.props.classes.bodyWrapper}
+            style={{
             marginTop: "60px",
             paddingBottom: "60px",
             paddingLeft: this.state.pageTransitionPadding,
           }}
-          className={this.props.classes.bodyWrapper}
         >
           <MuiThemeProvider theme={this.muiTheme}>
-            <Drawer
-              BackdropProps={{ invisible: true }}
-              variant="temporary"
-              anchor={"left"}
-              open={this.state.showEditMenu}
-              onClose={this.handleEditMenu}
-              className={this.props.classes.sideMenu}
-            >
-              <div className={this.props.classes.sideMenuEditor}>
-                <div className={this.props.classes.sideMenuEditorForm}>
-                  <h3>Edit Box Properties</h3>
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Show scrollbars if the content exceeds the box">
-                        <Switch
-                          checked={this.state.editItemScrollbars}
-                          onChange={() => {
-                            this.setState({
-                              editItemScrollbars: !this.state
-                                .editItemScrollbars,
-                            });
-                          }}
-                          value={this.state.editItemScrollbars}
-                        />
-                      </Tooltip>
-                      Scrollbars
-                    </Typography>
-                  </div>
-                  <div>
-                    <CustomInput
-                      labelText="Title"
-                      id="itemTitle"
-                      required="required"
-                      formControlProps={{
-                        fullWidth: true,
-                        onChange: (event) => this.handleInputChange(event),
-                      }}
-                      inputProps={{
-                        value: this.state.editItemTitle,
-                        type: "text",
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Autocomplete
-                      id="moduleDropdown"
-                      onChange={this.handleItemModule}
-                      className={this.props.classes.option}
-                      autoHighlight
-                      getOptionLabel={(option) => option.label}
-                      defaultValue={
-                        this.state.modulesList[this.state.editItemModule]
-                      }
-                      options={this.state.modulesList}
-                      renderInput={(params) => (
-                        <TextField
-                          className={this.props.classes.textfield}
-                          {...params}
-                          label="Choose a module"
-                          variant="outlined"
-                        />
-                      )}
-                    />
-                  </div>
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Enable Custom Font Size">
-                        <Switch
-                          checked={this.state.editItemFontSizeShow}
-                          onChange={() => {
-                            this.setState({
-                              editItemFontSizeShow: !this.state
-                                .editItemFontSizeShow,
-                            });
-                          }}
-                          value={this.state.editItemFontSizeShow}
-                        />
-                      </Tooltip>
-                      Font Size
-                    </Typography>
-                    <div
-                      style={
-                        this.state.editItemFontSizeShow
-                          ? {}
-                          : { display: "none" }
-                      }
-                    >
-                      <Slider
-                        defaultValue={Number(this.state.editItemFontSize)}
-                        onChangeCommitted={this.handleItemFontSize}
-                        aria-labelledby="discrete-slider"
-                        valueLabelDisplay="auto"
-                        min={5}
-                        max={50}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Enable Custom Font Family">
-                        <Switch
-                          checked={this.state.editItemFontFamilyShow}
-                          onChange={() => {
-                            this.setState({
-                              editItemFontFamily: -1,
-                              editItemFontFamilyShow: !this.state
-                                .editItemFontFamilyShow,
-                            });
-                          }}
-                          value={this.state.editItemFontFamilyShow}
-                        />
-                      </Tooltip>
-                      Font Family
-                    </Typography>
-                    <div
-                      style={
-                        this.state.editItemFontFamilyShow
-                          ? {}
-                          : { display: "none" }
-                      }
-                    >
-                      <Autocomplete
-                        onChange={this.handleItemFontFamily}
-                        className={this.props.classes.option}
-                        value={
-                          this.state.fontFamilies[this.state.editItemFontFamily]
-                        }
-                        options={this.state.fontFamilies}
-                        autoHighlight
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => (
-                          <TextField
-                            className={this.props.classes.textfield}
-                            {...params}
-                            label="Choose a Font Family"
-                            variant="outlined"
-                          />
-                        )}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Typography gutterBottom>
-                      <Tooltip title="Enable Custom Text Color">
-                        <Switch
-                          checked={this.state.editItemTextColorShow}
-                          onChange={() => {
-                            this.setState({
-                              editItemTextColor: "#000000",
-                              editItemTextColorShow: !this.state
-                                .editItemTextColorShow,
-                            });
-                          }}
-                          value={this.state.editItemTextColorShow}
-                        />
-                      </Tooltip>
-                      Text Color
-                    </Typography>
-                    <div
-                      style={
-                        this.state.editItemTextColorShow
-                          ? { position: "relative" }
-                          : { display: "none" }
-                      }
-                    >
-                      {this.createColorPicker(
-                        "itemTextColorStyles",
-                        "displayItemTextColorPicker",
-                        "editItemTextColor"
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <Typography gutterBottom>
-                      <Tooltip title="Enable Custom Text Color">
-                        <Switch
-                          onChange={() => {
-                            this.setState({
-                              editItemBackgroundColorShow: !this.state
-                                .editItemBackgroundColorShow,
-                            });
-                          }}
-                          checked={this.state.editItemBackgroundColorShow}
-                        />
-                      </Tooltip>
-                      Background Color
-                    </Typography>
-                    <div
-                      style={
-                        this.state.editItemBackgroundColorShow
-                          ? { position: "relative" }
-                          : { display: "none" }
-                      }
-                    >
-                      {this.createColorPicker(
-                        "itemBgColorStyles",
-                        "displayItemBgColorPicker",
-                        "editItemBackgroundColor"
-                      )}
-                    </div>
-                  </div>
-                  <div style={{ position: "relative" }}>
-                    <Typography gutterBottom>Border Color</Typography>
-                    {this.createColorPicker(
-                      "itemBorderColorStyles",
-                      "displayItemBorderColorPicker",
-                      "editItemBorderColor"
-                    )}
-                  </div>
-                  <div>
-                    <Typography gutterBottom>Border Width</Typography>
-                    <Slider
-                      defaultValue={Number(this.state.editItemBorderWidth)}
-                      className={this.props.classes.sideMenuSlider}
-                      onChangeCommitted={this.handleBorderWidth}
-                      aria-labelledby="discrete-slider"
-                      valueLabelDisplay="auto"
-                      min={0}
-                      max={10}
-                    />
-                  </div>
-                  <div>
-                    <Typography gutterBottom>Border Radius</Typography>
-                    <Slider
-                      defaultValue={Number(this.state.editItemBorderRadius)}
-                      className={this.props.classes.sideMenuSlider}
-                      onChangeCommitted={this.handleBorderRadius}
-                      aria-labelledby="discrete-slider"
-                      valueLabelDisplay="auto"
-                      min={0}
-                      max={30}
-                    />
-                  </div>
-
-                  <div>
-                    <div style={{
-                      display: "flex",
-                      justifyContent: "space-between"
-                    }}>
-                      <Typography gutterBottom>Background Image</Typography>
-                      {this.state.editItemBgImage && <DeleteForever onClick={() => this.setState({
-                        editItemBgImage: "",
-                        editItemBgImageFile: ""
-                      })} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                    </div>
-
-                    <div className={this.props.classes.dropzoneAreaWrapper}>
-                      <DropzoneArea
-                        filesLimit={1}
-                        className={this.props.classes.dropzone}
-                        onChange={this.handleItemBgImage.bind(this)}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Background Repeat">
-                        <Switch
-                          checked={this.state.editItemBgRepeat}
-                          onChange={this.handleItemBgRepeat.bind(this)}
-                          value={this.state.editItemBgRepeat}
-                        />
-                      </Tooltip>
-                      Background Repeat
-                    </Typography>
-                  </div>
-
-                  <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                      <Tooltip title="Background Stretch">
-                        <Switch
-                          checked={this.state.editItemBgStretch}
-                          onChange={this.handleItemBgStretch.bind(this)}
-                          value={this.state.editItemBgStretch}
-                        />
-                      </Tooltip>
-                      Background Stretch
-                    </Typography>
-                  </div>
-                </div>
-              </div>
-              <div className={this.props.classes.sideMenuActionHolder}>
-                <Button
-                  className={this.props.classes.sideMenuSaveBtn}
-                  color="primary"
-                  onClick={() => {
-                    this.removePagePadding();
-                    this.saveChangedStyle();
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  className={this.props.classes.sideMenuCancelBtn}
-                  color="danger"
-                  onClick={() => {
-                    this.removePagePadding();
-                    this.closeEditSideMenu();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Drawer>
+            {this.state.showEditMenu && <ViewBoxEditor
+                onCancel={() => {
+                  this.setState({
+                    showEditMenu: false,
+                    pageTransitionPadding: ""
+                  });
+                }}
+              onSave={(item) => {
+                this.setState({
+                  editItem: item,
+                  showEditMenu: false,
+                  pageTransitionPadding: ""
+                });
+            }}
+                defaultTheme={this.props.defaultTheme}
+                data={this.state.boxEditorProps} />}
             <Dialog
-              classes={{
-                root: this.props.classes.center,
-                paper: this.props.classes.modal,
-              }}
               open={this.state.showDiscardModal}
               TransitionComponent={this.transition}
               keepMounted
               onClose={() => this.closeDiscardModal()}
               aria-labelledby="classic-modal-slide-title"
               aria-describedby="classic-modal-slide-description"
+              classes={{
+                root: this.props.classes.center,
+                paper: this.props.classes.modal,
+              }}
             >
-              <DialogTitle
-                id="classic-modal-slide-title"
-                disableTypography
-                className={this.props.classes.modalHeader}
-              >
+              <DialogTitle id="classic-modal-slide-title" disableTypography className={this.props.classes.modalHeader}>
                 <h4 className={this.props.classes.modalTitle}>
                   {this.state.modalTitle}
                 </h4>
               </DialogTitle>
-              <DialogContent
-                id="classic-modal-slide-description"
-                className={this.props.classes.modalBody}
-              >
+              <DialogContent id="classic-modal-slide-description" className={this.props.classes.modalBody}>
                 <div>Are you sure you want to proceed ?</div>
               </DialogContent>
 
               <DialogActions className={this.props.classes.modalFooter}>
-                <Button
-                  disabled={this.state.isBtnDisabled}
-                  color="transparent"
-                  simple
-                  onClick={() => this.props.history.push("/pages")}
-                >
+                <Button disabled={this.state.isBtnDisabled} color="transparent" simple onClick={() => this.props.history.push("/pages")}>
                   <div>Proceed</div>
                 </Button>
-                <Button
-                  color="danger"
-                  simple
-                  onClick={() => {
-                    this.closeDiscardModal();
-                  }}
-                >
-                  Cancel
-                </Button>
+                <Button color="danger" simple onClick={() => { this.closeDiscardModal(); }}>Cancel</Button>
               </DialogActions>
             </Dialog>
-
-            <div className={this.props.classes.gridLayout}>
+            <div className={ this.props.classes.gridLayout }>
+              <div className={this.props.classes.pageTitleInputWrapper}>
+                <CustomInput labelText="Page Title" id="pageTitle" required="required"
+                    formControlProps={{
+                      fullWidth: true,
+                      onChange: (event) => this.handleInputChange(event),
+                    }}
+                    inputProps={{
+                      inputProps: {
+                        minLength: "3",
+                        maxLength: "50",
+                      },
+                      value: this.state.pageTitle,
+                      type: "text",
+                    }}
+                /> <CustomInput labelText="Page Link" id="pageLink" required="required"
+                  formControlProps={{
+                    fullWidth: true,
+                    onChange: (event) =>
+                        this.handleInputChange(event),
+                  }}
+                  inputProps={{
+                    inputProps: {
+                      minLength: "3",
+                      maxLength: "50",
+                    },
+                    value: this.state.pageLink,
+                    type: "text",
+                  }}
+              />
+              </div>
               <div style={{ display: "flex" }}>
                 <div style={{ flex: 1 }}>
-                  <Accordion className={this.props.classes.accordion}>
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1c-content"
-                      id="panel1c-header"
-                    >
-                      <div className={this.props.classes.column}>
-                        <Typography className={this.props.classes.typography}>
-                          Page Options
-                        </Typography>
+                  <Accordion classes={{ root: this.props.classes.accordion }}>
+                    <AccordionSummary classes={{
+                      root: this.props.classes.accordionSummaryRoot,
+                      expanded: this.props.classes.accordionSummaryExpanded,
+                      content: this.props.classes.accordionSummaryContent
+                    }} expandIcon={<ExpandMoreIcon />} aria-controls="panel1c-content" id="panel1c-header">
+                      <div className={this.props.classes.iconsWrapper}>
+                        <div>
+                          <Tooltip title="Add a new box">
+                            <IconButton onClick={(evt) => this.onAddItem(evt)}>
+                              <AddCircle className={this.props.classes.rightSideIcon} color="primary" />{" "}
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                        {this.props.history.location.pathname.includes("pageEdit") ? (
+                            <Tooltip title="Go to preview page">
+                              <IconButton color="primary"
+                                  onClick={() => {
+                                    window.open(
+                                        `/pagePreview/${this.props.match.params.id}`
+                                    );
+                                  }}
+                              >
+                                <Visibility className={this.props.classes.rightSideIcon} color="primary" />{" "}
+                              </IconButton>
+                            </Tooltip>
+                        ) : (
+                            ""
+                        )}
                       </div>
+                      <Typography className={this.props.classes.typography}>
+                        Page Options
+                      </Typography>
                     </AccordionSummary>
                     <Divider />
-
-                    <AccordionDetails
-                      className={this.props.classes.accordionDetails}
-                    >
-                      <div
-                        className={
-                          this.props.classes.column +
-                          " " +
-                          this.props.classes.columnSeparator
-                        }
-                      >
+                    <AccordionDetails className={this.props.classes.accordionDetails} >
+                      <div className={ this.props.classes.column + " " + this.props.classes.columnSeparator }>
                         <h4>Background</h4>
-                        <h5>Background Color</h5>
+                        <div style={{display: "flex", justifyContent:"space-between"}}>
+                          <div style={{display: "block"}}>
+                            <div style={{display: "flex", justifyContent:"space-between", alignItems: "center"}}>
 
-                        {this.createColorPicker(
-                          "bgColorStyles",
-                          "displayBgColorPicker",
-                          "bgColor"
-                        )}
+                              <h5 style={{marginRight: "15px"}}>Color</h5>
 
-                        <div style={{
-                          display: "flex",
-                          justifyContent: "space-between"
-                        }}>
+                              <Tooltip title="Compose a background gradient instead of a solid color">
+                                {this.createColorPicker(
+                                    "bgColorStyles",
+                                    "showBgColorPicker",
+                                    "bgColor"
+                                )}
+                              </Tooltip>
+                            </div>
+                            <div style={{display: "flex", justifyContent:"space-between"}}>
+                              <Typography gutterBottom>
+                                Gradient
+                              </Typography>
+                              <Tooltip title="Compose a background gradient instead of a solid color">
+                                <Switch checked={this.state.pageBackgroundGradient} value={this.state.pageBackgroundGradient}
+                                    onChange={() => {
+                                      this.setState({
+                                        pageBackgroundGradient: !this.state.pageBackgroundGradient
+                                      });
+                                    }} />
+                              </Tooltip>
+                            </div>
+                          </div>
+                          <div>
+                            <div style={{display: "flex", justifyContent:"space-between"}}>
+                              <Typography gutterBottom>
+                                Repeat
+                                <Tooltip title="Repeat the background to fit the page">
+                                  <Switch value={this.state.pageBackgroundRepeat}
+                                      checked={this.state.pageBackgroundRepeat}
+                                      onChange={() => {
+                                        this.setState({
+                                          pageBackgroundRepeat: !this.state.pageBackgroundRepeat
+                                        });
+                                      }} />
+                                </Tooltip>
+                              </Typography>
+                            </div>
+                            <div style={{display: "flex", justifyContent:"space-between"}}>
+                              <Typography gutterBottom>
+                                Stretch
+                                <Tooltip title="Stretch the background to fit the page">
+                                  <Switch checked={this.state.pageBackgroundStretch} value={this.state.pageBackgroundStretch}
+                                      onChange={() => {
+                                        this.setState({
+                                          pageBackgroundStretch: !this.state.pageBackgroundStretch,
+                                        });
+                                      }} />
+                                </Tooltip>
+                              </Typography>
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                           <h5>Background Image</h5>
-                          {this.state.backgroundImage && <DeleteForever onClick={() => this.setState({
+                          {
+                            (this.state.backgroundImage || this.state.pageBase64Image)
+                            && <DeleteForever onClick={() => this.setState({
                             backgroundImage: "",
                             backgroundImageFile: ""
                           })} style={{color: this.props.defaultTheme.secondary.main}}/>}
                         </div>
                         <div className={this.props.classes.dropzoneAreaWrapper}>
-                          <DropzoneArea
-                            filesLimit={1}
-                            className={this.props.classes.dropzone}
-                            onChange={this.handleBgImage.bind(this)}
-                          />
-                        </div>
-
-                        <div>
-                          <Typography id="discrete-slider" gutterBottom>
-                            <Tooltip title="Background Repeat">
-                              <Switch
-                                checked={this.state.pageBackgroundRepeat}
-                                onChange={() => {
-                                  this.setState({
-                                    pageBackgroundRepeat: !this.state
-                                      .pageBackgroundRepeat,
-                                  });
-                                }}
-                                value={this.state.pageBackgroundRepeat}
-                              />
-                            </Tooltip>
-                            Background Repeat
-                          </Typography>
-                        </div>
-
-                        <div>
-                          <Typography id="discrete-slider" gutterBottom>
-                            <Tooltip title="Background Stretch">
-                              <Switch
-                                checked={this.state.pageBackgroundStretch}
-                                onChange={() => {
-                                  this.setState({
-                                    pageBackgroundStretch: !this.state
-                                      .pageBackgroundStretch,
-                                  });
-                                }}
-                                value={this.state.pageBackgroundStretch}
-                              />
-                            </Tooltip>
-                            Background Stretch
-                          </Typography>
+                          <DropzoneArea filesLimit={1} className={this.props.classes.dropzone} onChange={this.handleBgImage.bind(this)} onDelete={this.handleBackgroundDelete.bind(this)} />
                         </div>
                       </div>
                       <p />
                       <div
-                        className={
-                          this.props.classes.column +
-                          " " +
-                          this.props.classes.columnSeparator
-                        }
+                        className={ this.props.classes.column + " " + this.props.classes.columnSeparator }
                       >
                         <h4>Font </h4>
-                        <div>
-                          <Typography id="discrete-slider" gutterBottom>
+                        <div style={{marginTop: "15px"}}>
+                          <Autocomplete
+                              id="fontFamilyDropdown"
+                              onChange={this.handleFontFamily}
+                              className={this.props.classes.option}
+                              options={this.state.fontFamilies}
+                              autoHighlight
+                              getOptionLabel={(option) => option.label}
+                              value={this.getFontFamilyItem(this.state.fontFamily)}
+                              renderInput={(params) => (
+                                  <TextField
+                                      className={this.props.classes.textfield}
+                                      {...params}
+                                      label="Select a Font Family"
+                                      variant="outlined"
+                                  />
+                              )}
+                          />
+                          <Typography gutterBottom>
                             Font Size
                           </Typography>
                           <Slider
@@ -1657,31 +1169,14 @@ class ViewPagesEditor extends React.PureComponent {
                             max={50}
                           />
                         </div>
-                        <h5>Text Color</h5>
-                        {this.createColorPicker(
-                          "textColorStyles",
-                          "displayTextColorPicker",
-                          "textColor"
-                        )}
-
-                        <h5>Font Family</h5>
-                        <Autocomplete
-                          id="fontFamilyDropdown"
-                          onChange={this.handleFontFamily}
-                          className={this.props.classes.option}
-                          options={this.state.fontFamilies}
-                          autoHighlight
-                          getOptionLabel={(option) => option.label}
-                          value={this.getFontFamilyItem(this.state.fontFamily)}
-                          renderInput={(params) => (
-                            <TextField
-                              className={this.props.classes.textfield}
-                              {...params}
-                              label="Choose a Font Family"
-                              variant="outlined"
-                            />
+                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                          <h5>Text Color</h5>
+                          {this.createColorPicker(
+                              "textColorStyles",
+                              "showTextColorPicker",
+                              "textColor"
                           )}
-                        />
+                        </div>
                       </div>
                       <p />
                       <div
@@ -1691,221 +1186,118 @@ class ViewPagesEditor extends React.PureComponent {
                         )}
                       >
                         <h4>Miscellaneous</h4>
-                        <div>
-                          <Typography id="discrete-slider" gutterBottom>
+                        <div style={{marginTop: "15px"}}>
+                          <div>
+                            <Autocomplete
+                                id="categoryDropdown"
+                                onChange={this.handleCategory}
+                                className={this.props.classes.option}
+                                options={this.state.flatCategories}
+                                autoHighlight
+                                getOptionLabel={(option) => option.label}
+                                // value={this.getCategoryItem(this.state.category)}
+                                // onChange={(ev, value) => {
+                                //   columnData.onRowDataChange({
+                                //     ...columnData.rowData,
+                                //     parentid: value.id,
+                                //   });
+                                // }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        className={this.props.classes.textfield}
+                                        label="Select a category"
+                                        {...params}
+                                        variant="outlined"
+                                    />
+                                )}
+                            />
+                          </div>
+                          <Typography gutterBottom>
                             Box Spacing
                           </Typography>
                           <Slider
-                            className={this.props.classes.pageOptionsSlider}
-                            onChange={this.handleBoxSpacing}
-                            value={this.state.config.layoutBoxSpacing[0]}
-                            getAriaValueText={() =>
-                              this.state.config.layoutBoxSpacing[0] + " pixels"
-                            }
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="auto"
-                            min={0}
-                            max={150}
+                              className={this.props.classes.pageOptionsSlider}
+                              onChange={this.handleBoxSpacing}
+                              value={this.state.config.layoutBoxSpacing[0]}
+                              getAriaValueText={() =>
+                                  this.state.config.layoutBoxSpacing[0] + " pixels"
+                              }
+                              aria-labelledby="discrete-slider"
+                              valueLabelDisplay="auto"
+                              min={0}
+                              max={150}
                           />
-                        </div>
-                        <div>
-                          <Typography id="discrete-slider" gutterBottom>
-                            <Tooltip title="Enable Publishing">
-                              <Switch
-                                checked={this.state.publish}
-                                onChange={() => {
-                                  this.setState({
-                                    publish: !this.state.publish,
-                                  });
-                                }}
-                                value={this.state.publish}
-                              />
-                            </Tooltip>
-                            Publish
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography id="discrete-slider" gutterBottom>
+                          <div>
+                            <Typography gutterBottom style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                              <span>Publish</span>
+                              <Tooltip title="Enable Publishing">
+                                <Switch checked={this.state.publish} value={this.state.publish}
+                                    onChange={() => {
+                                      this.setState({
+                                        publish: !this.state.publish,
+                                      });
+                                    }} />
+                              </Tooltip>
+                            </Typography>
+                          </div>
+                          <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                            <Typography gutterBottom>
+                              Default Page
+                            </Typography>
                             <Tooltip title="Set as default page">
-                              <Switch
-                                checked={this.state.defaultPage}
-                                onChange={() => {
-                                  this.setState({
-                                    defaultPage: !this.state.defaultPage,
-                                  });
-                                }}
-                                value={true}
-                              />
+                              <Switch checked={this.state.defaultPage} value={true}
+                                  onChange={() => {
+                                    this.setState({
+                                      defaultPage: !this.state.defaultPage,
+                                    });
+                                  }} />
                             </Tooltip>
-                            Default Page
-                          </Typography>
-                        </div>
-                        <div>
-                          <Autocomplete
-                            id="categoryDropdown"
-                            onChange={this.handleCategory}
-                            className={this.props.classes.option}
-                            options={this.state.flatCategories}
-                            autoHighlight
-                            getOptionLabel={(option) => option.label}
-                            // value={this.getCategoryItem(this.state.category)}
-                            // onChange={(ev, value) => {
-                            //   columnData.onRowDataChange({
-                            //     ...columnData.rowData,
-                            //     parentid: value.id,
-                            //   });
-                            // }}
-                            renderInput={(params) => (
-                              <TextField
-                                className={this.props.classes.textfield}
-                                {...params}
-                                label="Choose a category"
-                                variant="outlined"
-                              />
-                            )}
-                          />
-                        </div>
-                        <div>
-                          <CustomInput
-                            labelText="Page Link"
-                            id="pageLink"
-                            required="required"
-                            formControlProps={{
-                              fullWidth: true,
-                              onChange: (event) =>
-                                this.handleInputChange(event),
-                            }}
-                            inputProps={{
-                              inputProps: {
-                                minLength: "3",
-                                maxLength: "50",
-                              },
-                              value: this.state.pageLink,
-                              type: "text",
-                            }}
-                          />
+                          </div>
                         </div>
                       </div>
                     </AccordionDetails>
                   </Accordion>
                 </div>
-                <div className={this.props.classes.iconsWrapper}>
-                  <Tooltip title="Add a new box">
-                    <IconButton
-                      onClick={() => this.onAddItem()}
-                    >
-                      <AddCircle
-                        className={this.props.classes.rightSideIcon}
-                        color="primary"
-                      />{" "}
-                    </IconButton>
-                  </Tooltip>
-
-                  {this.props.history.location.pathname.includes("pageEdit") ? (
-                    <Tooltip title="Go to preview page">
-                      <IconButton
-                        color="primary"
-                        onClick={() => {
-                          window.open(
-                            `/pagePreview/${this.props.match.params.id}`
-                          );
-                        }}
-                      >
-                        <Visibility
-                          className={this.props.classes.rightSideIcon}
-                          color="primary"
-                        />{" "}
-                      </IconButton>
-                    </Tooltip>
-                  ) : (
-                    ""
-                  )}
-                </div>
               </div>
-
-              <div className={this.props.classes.pageTitleInputWrapper}>
-                <CustomInput
-                  labelText="Page Title"
-                  id="pageTitle"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) => this.handleInputChange(event),
-                  }}
-                  inputProps={{
-                    inputProps: {
-                      minLength: "3",
-                      maxLength: "50",
-                    },
-                    value: this.state.pageTitle,
-                    type: "text",
-                  }}
-                />
-              </div>
-
-              {/* titleAndContentWrapper */}
-              <div
-                style={{
-                  backgroundImage: `url(${this.state.backgroundImage})`,
-                  backgroundRepeat: this.state.pageBackgroundRepeat
-                    ? "repeat"
-                    : "no-repeat",
-                  backgroundSize: this.state.pageBackgroundStretch
-                    ? "cover"
-                    : "auto",
+              <div style={{
+                  flexGrow: 1,
+                  backgroundImage: `url(${this.state.pageBase64Image || `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`}`,
+                  backgroundRepeat: this.state.pageBackgroundRepeat ? "repeat" : "no-repeat",
+                  backgroundSize: this.state.pageBackgroundStretch ? "cover" : "auto",
                   backgroundColor: this.state.bgColor,
                   fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,
                   color: this.state.textColor,
-                }}
-              >
+                  paddingBottom: "55px"
+                  }}>
                 <ResponsiveReactGridLayout
-                  style={{
-                    backgroundImage: `url(${this.state.backgroundImage})`,
-                    backgroundRepeat: this.state.pageBackgroundRepeat
-                      ? "repeat"
-                      : "no-repeat",
-                    backgroundSize: this.state.pageBackgroundStretch
-                      ? "cover"
-                      : "auto",
-                    backgroundColor: this.state.bgColor,
-                    fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                    fontFamily: this.state.fontFamily,
-                    color: this.state.textColor,
-                  }}
-                  // margin={this.state.boxSpacing} gets an array with 2 values
-                  isBounded={true}
-                  margin={this.state.config.layoutBoxSpacing}
-                  containerPadding={this.state.config.layoutBoxPadding}
-                  draggableHandle=".MyDragHandleClassName"
-                  onLayoutChange={(layout) => {
-                    return this.onLayoutChange(layout);
-                  }}
-                  onBreakpointChange={() => this.onBreakpointChange}
-                  {...this.props}
-                >
+                    style={{
+                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                      fontFamily: this.state.fontFamily,
+                      color: this.state.textColor,
+                    }}
+                    layouts={this.state.layouts}
+                    isBounded={true}
+                    margin={this.state.config.layoutBoxSpacing}
+                    containerPadding={this.state.config.layoutBoxPadding}
+                    draggableHandle=".MyDragHandleClassName"
+                    onLayoutChange={(layout, layouts) => {
+                      return this.onLayoutChange(layout, layouts);
+                    }}
+                    compactType="vertical"
+                    onBreakpointChange={() => this.onBreakpointChange}{...this.props}>
                   {_.map(this.state.items, (el) => this.createElement(el))}
                 </ResponsiveReactGridLayout>
+                <div className={this.props.classes.bottomPane}>
+                  <Button disabled={this.state.pageTitle.length === 0} onClick={() => { this.savePage(); }} color="primary">
+                    <div>Save</div>
+                  </Button>
+                  <Button onClick={() => this.handleDiscard()} color="danger">
+                    Discard
+                  </Button>
+                </div>
               </div>
             </div>
-
-            <Button
-              disabled={this.state.pageTitle.length === 0}
-              onClick={() => {
-                this.savePage();
-              }}
-              className={this.props.classes.savePageButton}
-              color="primary"
-            >
-              <div>Save</div>
-            </Button>
-            <Button
-              onClick={() => this.handleDiscard()}
-              className={this.props.classes.cancelPageButton}
-              color="danger"
-            >
-              Discard
-            </Button>
           </MuiThemeProvider>
         </div>
       </React.Fragment>
