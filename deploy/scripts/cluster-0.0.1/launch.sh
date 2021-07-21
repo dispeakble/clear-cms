@@ -341,7 +341,7 @@ addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 sleep 10
 
 launchMetalLB
-#launchTraefik
+launchTraefik
 
 launchRedis
 
