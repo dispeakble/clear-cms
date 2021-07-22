@@ -456,7 +456,6 @@ export class FsService {
     rm(params) {
         return new Observable((observer) => {
             try {
-                //const realPath = this.help.path.realPath({path: params.path});
                 // TODO: does not work 100% correctly need fix
                 const removeRecursively = (rem_path) => {
                     // if (this.help.is.readable({path: rem_path}) && this.help.is.writeable({path: rem_path})) {
@@ -481,7 +480,7 @@ export class FsService {
 
                 if(params.selection && params.selection.length){
                     params.selection.forEach(sel => {
-                        removeRecursively(this.help.path.realPath({path: sel}));
+                        removeRecursively(this.help.path.realPath({path: path.join(params.path, sel)}));
                     })
                 }
 

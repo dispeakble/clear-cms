@@ -174,7 +174,7 @@ class PagesController extends Component {
         return new Promise(async resolve => {
             try {
 
-                if(params.pageConfig.backgroundImage && params.pageConfig.backgroundImageFile) {
+                if(params.pageConfig.backgroundImageFile) {
                     params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                 }
 
@@ -268,11 +268,34 @@ class PagesController extends Component {
                 if(params.pageConfig.backgroundImageFile) {
                     params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                     if(params.pageConfig.backgroundImageFile){
+                        if (params.pageConfig.oldBackgroundImage) {
+                            await this.sendMessage({
+                                module: 'system',
+                                api: 'bucket',
+                                act: 'rm',
+                                payload: {
+                                    path: `/pages/page-${params.id}`,
+                                    selection: [params.pageConfig.oldBackgroundImage]
+                                }
+                            });
+                        }
+
                         await this.uploadImages({
                             path: "/pages/page-" + params.id + "/",
                             files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
-                        })
+                        });
+
                     }
+                } else if (params.pageConfig.oldBackgroundImage && !params.pageConfig.backgroundImage.length) {
+                    this.sendMessage({
+                        module: 'system',
+                        api: 'bucket',
+                        act: 'rm',
+                        payload: {
+                            path: `/pages/page-${params.id}`,
+                            selection: [params.pageConfig.oldBackgroundImage]
+                        }
+                    });
                 }
 
                 const paramsClone = _.cloneDeep(params);
@@ -322,11 +345,12 @@ class PagesController extends Component {
                         })
                     } else if(item.backgroundImage.indexOf('__delete__') === 0){
                         await this.sendMessage({
-                            channel: 'system',
+                            module: 'system',
                             api: 'bucket',
                             act: 'rm',
                             payload: {
-                                path: `/pages/page-${params.id}/box-${item.id}/${item.backgroundImage.replace('__delete__', '')}`
+                                path: `/pages/page-${params.id}/box-${item.id}/`,
+                                selection: [item.backgroundImage.replace('__delete__', '')]
                             }
                         });
                     }
@@ -356,25 +380,6 @@ class PagesController extends Component {
             }
         });
     }
-    delete (params) {
-        return new Promise(async resolve => {
-            try {
-                const response = await this.sendMessage({
-                    module: 'system',
-                    api: 'bucket',
-                    act: 'rm',
-                    payload: {
-                        path: params.path,
-                        selection: params.selection
-                    }
-                });
-                resolve(response)
-            } catch (err) {
-                resolve(null);
-            }
-        });
-    }
-
 
     uploadImages(params) {
         return new Promise(resolve => {

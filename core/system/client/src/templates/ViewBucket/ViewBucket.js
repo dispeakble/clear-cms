@@ -8,7 +8,9 @@ import {
     FileNavbar,
     FileToolbar,
     defineFileAction,
-    FileHelper
+    FileHelper,
+    ChonkyActions,
+    FileActionHandler
 } from 'chonky';
 import {Helmet} from "react-helmet";
 import PropTypes from "prop-types";
@@ -75,9 +77,7 @@ class ViewBucket extends Component {
 
         },
         ({ reduxDispatch, getReduxState }) => {
-            const reduxState = getReduxState();
 
-            this.setState({ selectedFiles: reduxState.selectionMap, deleteModal: true })
         },
     )
 
@@ -93,27 +93,7 @@ class ViewBucket extends Component {
             requiresSelection: true
         },
         ({ reduxDispatch, getReduxState }) => {
-            const reduxState = getReduxState();
 
-            if(Object.keys(reduxState.selectionMap).length > 1){
-                this.setState({
-                    infoModal: {
-                        visible: true,
-                        title: 'Rename conflict',
-                        message: 'Please select only one item for this action',
-                        confirm: {
-                            label: 'Ok',
-                            callback: () => new Promise(resolve=>resolve())
-                        },
-                        cancel: {
-                            label: 'Cancel',
-                            callback: () => new Promise(resolve=>resolve())
-                        }
-                    }
-                })
-            } else {
-                this.setState({ selectedFiles: reduxState.selectionMap, renameModal: true })
-            }
         },
     );
 
@@ -232,7 +212,13 @@ class ViewBucket extends Component {
 
             this.setState({ newFolderModal: true })
         },
-    )
+    );
+
+    help = {
+        getName: (items, id) => {
+            return items[id].name;
+        }
+    }
 
     fileActions = [];
 
@@ -292,9 +278,31 @@ class ViewBucket extends Component {
     async onFileAction(ref){
         console.log(ref);
         switch(ref.id){
+            case 'delete':
+                this.setState({ selectedFiles: ref.state.selectedFiles, deleteModal: true })
+                break;
+            case 'rename':
+                if(ref.state.selectedFiles.length > 1){
+                    this.setState({
+                        infoModal: {
+                            visible: true,
+                            title: 'Rename conflict',
+                            message: 'Please select only one item for this action',
+                            confirm: {
+                                label: 'Ok',
+                                callback: () => new Promise(resolve=>resolve())
+                            },
+                            cancel: {
+                                label: 'Cancel',
+                                callback: () => new Promise(resolve=>resolve())
+                            }
+                        }
+                    })
+                } else {
+                    this.setState({ selectedFiles: ref.state.selectedFiles, renameModal: true })
+                }
+                break;
             case 'move_files':
-
-
                 const checkMoveResponse = await this.props.control.list({
                     path:  path.join(this.state.currentPath, ref.state.selectedFiles[0].name)
                 });
@@ -647,8 +655,8 @@ class ViewBucket extends Component {
                 >
                     Are you sure you want to delete the selected items?
                     <div>
-                        {Object.keys(this.state.selectedFiles).map((fileSelected) => {
-                            return (<div>{fileSelected}</div>);
+                        {this.state.selectedFiles.map((fileSelected) => {
+                            return (<div>{fileSelected.name}</div>);
                             })}
                     </div>
                 </DialogContent>
@@ -662,7 +670,7 @@ class ViewBucket extends Component {
                         onClick={() => {
                             this.props.control.delete({
                                 path: this.state.currentPath,
-                                selection: Object.keys(this.state.selectedFiles)
+                                selection: this.state.selectedFiles.map(item => item.name)
                             }).then(() => {
                                 this.setState({
                                     deleteModal: false,
@@ -693,7 +701,7 @@ class ViewBucket extends Component {
         const onConfirm = () => {
             this.props.control.rename({
                 path: this.state.currentPath,
-                source: Object.keys(this.state.selectedFiles)[0],
+                source: this.state.selectedFiles[0].name,
                 dest: newItemName
             }).then(() => {
                 this.setState({
@@ -708,9 +716,12 @@ class ViewBucket extends Component {
             });
         };
         const onFocusRenameInput = (evt) => {
-            evt.target.value = Object.keys(this.state.selectedFiles)[0];
+            evt.target.value = this.state.selectedFiles[0].name;
             evt.target.select();
-            const filename = evt.target.value.split('.').slice(0, -1).join('.');
+            let filename = evt.target.value;
+            if(evt.target.value.indexOf('.') > 0) {
+                filename = filename.split('.').slice(0, -1).join('.');
+            }
             evt.target.setSelectionRange(0, filename.length);
         }
         return (
@@ -738,8 +749,8 @@ class ViewBucket extends Component {
                     id="classic-modal-slide-description"
                     className={this.props.classes.modalBody}
                 >
-                    <div>Rename {Object.keys(this.state.selectedFiles).map((fileSelected) => {
-                            return (<span>{fileSelected}</span>);
+                    <div>Rename {this.state.selectedFiles.map((fileSelected) => {
+                            return fileSelected.name;
                         })} to
                     </div>
                     <input className={this.props.classes.renameInput} type="text"
