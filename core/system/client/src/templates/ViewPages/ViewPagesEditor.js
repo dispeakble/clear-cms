@@ -148,7 +148,7 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     if (editing) {
-      let currentPage = await this.props.control.get({id: parseInt(page_id)})
+      let currentPage = await this.props.control.get({id: parseInt(page_id)});
       const {pageConfig, items} = currentPage;
       if (items !== null) {
         this.setState({
@@ -172,6 +172,7 @@ class ViewPagesEditor extends React.PureComponent {
         await this.setAsyncState({
           bgColor: pageConfig.backgroundColor,
           backgroundImage: pageConfig.backgroundImage,
+          oldBackgroundImage: pageConfig.backgroundImage,
           fontSize: pageConfig.fontSize,
           textColor: pageConfig.textColor,
           fontFamily: pageConfig.fontFamily,
@@ -897,6 +898,7 @@ class ViewPagesEditor extends React.PureComponent {
     let pageConfig = {
       backgroundColor: this.state.bgColor,
       backgroundImage: this.state.backgroundImage,
+      oldBackgroundImage: this.state.oldBackgroundImage,
       backgroundImageFile: this.state.backgroundImageFile,
       fontSize: this.state.fontSize,
       textColor: this.state.textColor,

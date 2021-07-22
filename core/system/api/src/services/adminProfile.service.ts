@@ -46,7 +46,9 @@ export class AdminProfileService {
                     response = data.data[0];
                 }
 
-                subscriber.next(response);
+                subscriber.next({
+                    data: response
+                });
                 subscriber.complete();
             })()
 
