@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "../../assets/jss/clear-crm/views/notFound.js";
 
-class NotFound extends Component {
+class ViewNotFound extends Component {
   render() {
     const classes = this.props.classes;
     return (
@@ -14,4 +14,4 @@ class NotFound extends Component {
   }
 }
 
-export default withStyles(styles)(NotFound);
+export default withStyles(styles)(ViewNotFound);

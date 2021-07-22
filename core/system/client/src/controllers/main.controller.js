@@ -1,6 +1,6 @@
 import React, { Component, Suspense } from "react";
 import { Route } from "react-router-dom";
-import NotFound from "views/NotFound/NotFound";
+import NotFound from "templates/ViewNotFound/ViewNotFound";
 import ClipLoader from "react-spinners/ClipLoader";
 
 class MainController extends Component {
