@@ -620,7 +620,6 @@ class ViewThemes extends Component {
                                 </div>
                                 <Editor
                                     preview={this.state.preview}
-                                    id="adminPreviewElement"
                                     currentTheme={
                                         this.state.editMode ? this.state.fullEditorData : {}
                                     }
@@ -682,18 +681,18 @@ class ViewThemes extends Component {
                                 </div>
                             </div>
                             <div style={{ height: "100%", display: this.state.publicType === 1 ? "block" : "none"}} >
-                                <Editor id="adminPreviewElement"
+                                <Editor
                                     currentTheme={
                                         this.state.editMode ? this.state.fullEditorData : {}
                                     }
                                         classes={{
                                             root:{
-                                                backgroundColor:this.props.theme.palette.background.paper
+                                                backgroundColor:this.props.theme?.palette.background.paper
                                             }
                                         }}
                                     style={{
                                         height: "100%",
-                                        backgroundColor: this.props.theme.palette.paper.main
+                                        backgroundColor: this.props.theme?.palette.paper.main
                                     }}
                                     ref={(editor) => {
                                         this.themeEditor = editor;

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Button from "components/CustomButtons/Button.js";
-import ArtTrack from "@material-ui/icons/ArtTrack";
+import { WidgetsSharp } from "@material-ui/icons";
 import { DropzoneArea } from "material-ui-dropzone";
 
 import { withStyles, createMuiTheme } from "@material-ui/core/styles";
@@ -136,7 +136,7 @@ class HeaderModule extends Component {
           color="primary"
           size="medium"
         >
-          <ArtTrack />
+          <WidgetsSharp />
         </IconButton>
 
         <Dialog

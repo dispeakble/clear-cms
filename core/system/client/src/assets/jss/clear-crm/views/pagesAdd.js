@@ -10,6 +10,12 @@ const javascriptStyles = {
     "& .react-grid-item": {
       border: "1px solid rgba(0,0,0,0.14)",
       boxSizing: "border-box",
+      "&:hover > $boxContent" : {
+        opacity: 1,
+        "& $itemSpeedDialWrapper": {
+          display: "flex"
+        }
+      }
     },
     "& .react-grid-placeholder": {},
     "& .react-grid-layout ": {
@@ -122,6 +128,9 @@ const javascriptStyles = {
     transform: "translateZ(0px)",
     flexGrow: 1,
   },
+  itemSpeedDialWrapper: {
+    display: "none"
+  },
   pageSpeedDial: {
     position: "fixed",
     right: "1rem",
@@ -145,10 +154,30 @@ const javascriptStyles = {
     padding: "0",
     boxSizing: "border-box",
   },
-  itemSpeedDialWrapper: {
+  renderBoxTitle: {
+    zIndex: "-1",
     position: "absolute",
-    top: "0.5rem",
-    right: 0,
+    top: "0",
+    right: "0",
+    bottom: "0",
+    left: "0",
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    overflow: "hidden",
+    "& > h1": {
+      color: "rgba(0,0,0,0.2)"
+    }
+  },
+  boxContent: {
+    transition: "opacity 0.3s",
+    opacity: "0",
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  itemSpeedDial:{
+    display: "none"
   },
   removeItemIcon: {
     color: "danger",
