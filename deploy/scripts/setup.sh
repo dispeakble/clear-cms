@@ -31,8 +31,8 @@ if [ -z "$(command -v kubectl)" ]; then
   installService "infrastructure/install-kubectl.sh"
 fi
 
-DOCKERHUB_USERNAME="cmsbot"
-DOCKERHUB_PASS="yTazvEWhtEbk4mv"
+DOCKERHUB_USERNAME="dispeakble"
+DOCKERHUB_PASS="C7GIB8etX!N@"
 BITBUCKET_USERNAME="the_dispeakble_one"
 BITBUCKET_PASS="33qsygUp8irSv@E"
 
