@@ -787,7 +787,21 @@ export class PagesService {
                         }
                     };
 
-                    const pages = await this.protocolService.sendMessage(pagesReq).toPromise()
+                    await this.protocolService.sendMessage(pagesReq).toPromise();
+
+                    //delete the media
+                    const mediaReq: payloadInterface = {
+                        channel: 'bucket',
+                        api: 'fs',
+                        act: 'rm',
+                        payload: {
+                            path: '/pages',
+                            selection: [`page-${params.id}`]
+                        }
+                    };
+
+                    await this.protocolService.sendMessage(mediaReq).toPromise();
+
 
                     subscriber.next({
                         success: "The page was removed",

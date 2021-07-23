@@ -278,6 +278,10 @@ class ViewBucket extends Component {
     async onFileAction(ref){
         console.log(ref);
         switch(ref.id){
+            case 'preview':
+                //TODO check if the file is an image
+                //TODO open a new dialog with the image and close button
+                break;
             case 'delete':
                 this.setState({ selectedFiles: ref.state.selectedFiles, deleteModal: true })
                 break;

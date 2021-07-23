@@ -340,14 +340,10 @@ class MenuModule extends Component {
         Check: () => <Check color="primary" />,
         Clear: () => <Clear color="error" />,
         Edit: () => (
-          <IconButton color="primary">
-            <Edit color="primary" />{" "}
-          </IconButton>
+            <Edit color="primary" />
         ),
         Delete: () => (
-          <IconButton color="primary">
-            <DeleteForever color="error" />{" "}
-          </IconButton>
+            <DeleteForever color="error" />
         ),
       },
       columns: [
@@ -542,6 +538,7 @@ class MenuModule extends Component {
     return (
       <div
         style={{
+          display: "inline-block",
           textAlign: "center",
         }}
       >
@@ -556,7 +553,7 @@ class MenuModule extends Component {
         </Tooltip>
 
         <Dialog
-          onBackdropClick="false"
+          onBackdropClick={() => false}
           classes={{
             root: classes.center,
             paper: classes.modal,
@@ -580,6 +577,7 @@ class MenuModule extends Component {
           >
             <Typography gutterBottom>
               <span style={{ display: "inline" }}>Background Color</span>
+            </Typography>
               <div>
                 <div
                   style={bgColorStyles.swatch}
@@ -599,14 +597,13 @@ class MenuModule extends Component {
                       color={this.state.bgColor}
                       onChange={async (color) => {
                         await this.setAsyncState({
-                          bgColor: color.hex,
+                          bgColor: color.rgb,
                         });
                       }}
                     />
                   </div>
                 ) : null}
               </div>
-            </Typography>
 
             <Typography id="discrete-slider" gutterBottom>
               <Tooltip title="Show the menu links in vertical order">

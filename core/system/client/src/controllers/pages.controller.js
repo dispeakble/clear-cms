@@ -180,15 +180,20 @@ class PagesController extends Component {
 
                 const paramsClone = _.cloneDeep(params);
 
+                //we will add new boxes to get the IDs
+
                 paramsClone.items = paramsClone.items.map((item) => {
+                    if(item.backgroundImageFile){
+                        item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
+                    }
+                    item.backgroundImageFile = "";//for the DB we don't need to send binaries
                     if(item.moduleOptions && item.moduleOptions.data && item.moduleOptions.data.files){
                         item.moduleOptions.data.files = item.moduleOptions.data.files.map(itemFile => {
-                            return {name: itemFile.name, sel: itemFile.sel}
+                            return {
+                                name: itemFile.name,
+                                sel: itemFile.sel
+                            }
                         });
-                    }
-                    if(item.backgroundImage && item.backgroundImage.length){
-                        item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
-                        delete item.backgroundImageFile;
                     }
                     return item;
                 });
@@ -199,7 +204,7 @@ class PagesController extends Component {
                     act: 'add',
                     payload: paramsClone
                 });
-                console.log(response)
+
                 // uploading images (response should have page + boxes ID)
                 if(params.pageConfig.backgroundImageFile){
                     await this.uploadImages({
@@ -217,7 +222,7 @@ class PagesController extends Component {
                             });
                         }
 
-                        if(item.module && item.moduleOptions.data.files && item.moduleOptions.data.files.length){
+                        if(item.module && item.moduleOptions.data?.files && item.moduleOptions.data?.files.length){
                             const fileList = [];
                             item.moduleOptions.data.files.forEach((fileData) => {
                                 fileList.push({file: fileData.file, name: fileData.name})

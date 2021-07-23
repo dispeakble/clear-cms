@@ -370,52 +370,57 @@ class ViewPagesEditor extends React.PureComponent {
 
     return (
       <div key={i} data-grid={el} style={itemStyle}>
-        <div
-          style={{ fontSize: "12px", color: "black", verticalAlign: "middle" }}
-        >
-          <Tooltip title="Drag Box">
-            <Icon
-              style={{ cursor: "grab" }}
-              className="MyDragHandleClassName"
-              color="primary"
-              size="medium"
-            >
-              <OpenWith />
-            </Icon>
-          </Tooltip>
-          &nbsp; {el.title}
+        <div className={this.props.classes.boxContent}>
+          <div className={this.props.classes.renderBoxTitle}><h1>{el.title}</h1></div>
+          <div style={{ color: "black", verticalAlign: "middle" }} >
+            <Tooltip title="Drag Box">
+              <IconButton className="MyDragHandleClassName"  color="primary">
+                <OpenWith color="primary" />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <div>
+            {el.module && LazyModule ? (
+                <Suspense fallback={loadingFallback}>
+                  <LazyModule
+                      defaultTheme={this.props.defaultTheme}
+                      onStartEditingModule={() => this.onStartEditingModule()}
+                      onEndEditingModule={() => this.onEndEditingModule()}
+                      boxId={el.i}
+                      moduleOptions={el.moduleOptions}
+                      handleSave={(id, data) => {
+                        this.saveModuleOptions(id, data);
+                      }}
+                  />
+                </Suspense>
+            ) : (
+                ""
+            )}
+          </div>
+          <div className={this.props.classes.itemSpeedDialWrapper}>
+            <MoreMenu itemActions={itemActions} />
+          </div>
         </div>
-        <span className={this.props.classes.itemSpeedDialWrapper}>
-          <MoreMenu itemActions={itemActions} />
-        </span>
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            left: 0,
-          }}
-        >
-          {el.module && LazyModule ? (
-              <Suspense fallback={loadingFallback}>
-                <LazyModule
-                    defaultTheme={this.props.defaultTheme}
-                    onStartEditingModule={() => this.onStartEditingModule()}
-                    onEndEditingModule={() => this.onEndEditingModule()}
-                    boxId={el.i}
-                    moduleOptions={el.moduleOptions}
-                    handleSave={(id, data) => {
-                      this.saveModuleOptions(id, data);
-                    }}
-                />
-              </Suspense>
-          ) : (
-              ""
-          )}
-        </div>
+
       </div>
     );
   }
+
+  saveModuleOptions = async (passedId, data, isVertical) => {
+    let items = [...this.state.items];
+
+    let item = this.getItemById(passedId);
+
+    item.moduleOptions = { data: data, isVertical: isVertical };
+
+    let itemIndex = items.findIndex(
+        (item) => Number(item.i) === Number(passedId)
+    );
+
+    items[itemIndex] = item;
+
+    await this.setAsyncState({ items });
+  };
 
   onAddItem(evt) {
     evt.preventDefault();
@@ -590,20 +595,19 @@ class ViewPagesEditor extends React.PureComponent {
 
   handleBoxSpacing = async (event, newValue) => {
     if (this.state.config.layoutBoxSpacing[0] !== newValue) {
-      const config = {
-        layoutBoxSpacing: [newValue, newValue],
-        layoutBoxPadding: {
-          lg: [0, 0],
-          md: [0, 0],
-          sm: [0, 0],
-          xs: [0, 0],
-          xxs: [0, 0],
-        },
-      };
-      this.setState({ config: config });
+      this.setState({ config: JSON.parse(`{
+          "layoutBoxSpacing": [${newValue}, ${newValue}],
+          "layoutBoxPadding": {
+            "lg": [0, 0],
+            "md": [0, 0],
+            "sm": [0, 0],
+            "xs": [0, 0],
+            "xxs": [0, 0]
+          }
+        }`) });
     }
   };
-  
+
   handleItemModule = async (event, newValue) => {
     if (!newValue || !newValue.label) {
       return;
@@ -647,7 +651,7 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   saveBox = (params) => {
-    
+
     let box = params;
 
     let items = this.state.items;
@@ -764,9 +768,9 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   handleFontSize = (event, newValue) => {
-    this.setState({
-      fontSize: newValue,
-    });
+    if (this.state.fontSize !== newValue) {
+      this.setState({ fontSize: newValue});
+    }
   };
 
   handleFontFamily = async (event, newValue) => {
@@ -1077,17 +1081,19 @@ class ViewPagesEditor extends React.PureComponent {
                               </Tooltip>
                             </div>
                             <div style={{display: "flex", justifyContent:"space-between"}}>
+
                               <Typography gutterBottom>
                                 Gradient
+                                <Tooltip title="Compose a background gradient instead of a solid color">
+                                  <Switch value={this.state.pageBackgroundGradient}
+                                      checked={this.state.pageBackgroundGradient}
+                                      onChange={() => {
+                                        this.setState({
+                                          pageBackgroundGradient: !this.state.pageBackgroundGradient
+                                        });
+                                      }} />
+                                </Tooltip>
                               </Typography>
-                              <Tooltip title="Compose a background gradient instead of a solid color">
-                                <Switch checked={this.state.pageBackgroundGradient} value={this.state.pageBackgroundGradient}
-                                    onChange={() => {
-                                      this.setState({
-                                        pageBackgroundGradient: !this.state.pageBackgroundGradient
-                                      });
-                                    }} />
-                              </Tooltip>
                             </div>
                           </div>
                           <div>
@@ -1124,10 +1130,11 @@ class ViewPagesEditor extends React.PureComponent {
                           <h5>Background Image</h5>
                           {
                             (this.state.backgroundImage || this.state.pageBase64Image)
-                            && <DeleteForever onClick={() => this.setState({
-                            backgroundImage: "",
-                            backgroundImageFile: ""
-                          })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                            && <Tooltip title="Delete background image"><DeleteForever onClick={() => this.setState({
+                              backgroundImage: "",
+                              backgroundImageFile: ""
+                            })} style={{color: this.props.defaultTheme.secondary.main}}/></Tooltip>
+                          }
                         </div>
                         <div className={this.props.classes.dropzoneAreaWrapper}>
                           <DropzoneArea filesLimit={1} className={this.props.classes.dropzone} onChange={this.handleBgImage.bind(this)} onDelete={this.handleBackgroundDelete.bind(this)} />

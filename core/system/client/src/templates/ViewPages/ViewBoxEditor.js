@@ -192,23 +192,6 @@ class ViewBoxEditor extends React.PureComponent {
         });
     };
 
-
-    saveModuleOptions = async (passedId, data, isVertical) => {
-        let items = [...this.state.items];
-
-        let item = this.getItemById(passedId);
-
-        item.moduleOptions = { data: data, isVertical: isVertical };
-
-        let itemIndex = items.findIndex(
-            (item) => Number(item.i) === Number(passedId)
-        );
-
-        items[itemIndex] = item;
-
-        await this.setAsyncState({ items });
-    };
-
     handleBorderWidth = async (event, newValue) => {
         await this.setAsyncState({ editItemBorderWidth: newValue });
     };
