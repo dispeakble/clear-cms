@@ -70,12 +70,12 @@ function checkCluster() {
     echo "The cluster is being built. Please wait..."
     CLUSTER_STATE=0
     wait_count=0
-    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 190)); do
-      if [ "$wait_count" -gt 95 ]; then
+    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 600)); do
+      if [ "$wait_count" -gt 130 ]; then
 
         echo -en "\r If this message does not go away please contact the administrator"
         else
-        echo -en "\r$(echo "scale=2; 100 / 95 * $wait_count" | bc)% - ( $wait_count seconds ) complete"
+        echo -en "\r$(echo "scale=2; 100 / 130 * $wait_count" | bc)% - ( $wait_count seconds ) complete"
       fi
 
         sleep 1
@@ -158,7 +158,7 @@ function launchLonghorn () {
   fi
 
   if [ -z "$(getApp longhorn)" ]; then
-    rancher app install --version 1.1.1 --no-prompt --namespace longhorn-system \
+    rancher app install --no-prompt --namespace longhorn-system \
     --set persistence.defaultClassReplicaCount="1" \
     --set service.ui.type="Rancher-Proxy" \
     --set service.ui.nodePort="" \
@@ -340,8 +340,8 @@ rancher context switch Default
 addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 sleep 10
 
-launchMetalLB
-launchTraefik
+#launchMetalLB # TODO LEAVE THIS COMMENTED FOR DEVELOPERS
+#launchTraefik # TODO LEAVE THIS COMMENTED FOR DEVELOPERS
 
 launchRedis
 
