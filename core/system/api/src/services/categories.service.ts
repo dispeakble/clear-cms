@@ -26,7 +26,7 @@ export class CategoriesService {
                     channel: 'system',
                     data: {
                         what: 'categories',
-                        fields: ["id", "title", "description", "parentid"]
+                        fields: ["id", "title", "description", "backgroundimage", "parentid"]
                     }
                 }
             };
@@ -48,33 +48,40 @@ export class CategoriesService {
 
     public add (params: any){
         return new Observable(subscriber => {
-            const request: payloadInterface = {
-                channel: 'db',
-                api: 'db',
-                act: 'add',
-                payload: {
-                    channel: 'system',
-                    data: {
-                        what: 'categories',
-                        data: {
-                            title: params.title,
-                            description: params.description,
-                            parentid: params.parentid
-                        }
-                    }
-                }
-            };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
-                subscriber.next({
-                    success: "The category was added",
-                    data: null
-                })
-            }, err => {
-                subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
+            (async () => {
+                try {
+                    const request: payloadInterface = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'categories',
+                                data: {
+                                    title: params.title,
+                                    description: params.description,
+                                    backgroundimage: params.backgroundimage,
+                                    parentid: params.parentid
+                                }
+                            }
+                        }
+                    };
+
+                    const cat = await this.protocolService.sendMessage(request).toPromise();
+
+                    subscriber.next({
+                        success: "The category was added",
+                        data: {categoryId: cat.data[0].id}
+                    })
+                    subscriber.complete();
+                } catch(err) {
+                    subscriber.error(err);
+                    subscriber.complete();
+                }
+            })()
+
         })
     }
 
@@ -94,6 +101,7 @@ export class CategoriesService {
                         data: {
                             title: params.title,
                             description: params.description,
+                            backgroundimage: params.backgroundimage,
                             parentid: params.parentid
                         }
                     }
