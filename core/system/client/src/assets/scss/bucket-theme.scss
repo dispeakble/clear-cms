@@ -1,0 +1,30 @@
+:root {
+    --paper-bg: #fff;
+    --paper-color: #000;
+}
+
+.chonky-chonkyRoot {
+    color: unset !important;
+    background-color: unset !important;
+}
+
+.chonky-chonkyRoot .MuiButton-root:not(.Mui-disabled), .chonky-chonkyRoot .MuiInputBase-root {
+    color: unset !important;
+}
+div[class*=folderBackSideTop]::after {
+    border-color: transparent;
+}
+.MuiPaper-root:not(header) {
+    color: var(--paper-color) !important;
+    background-color: var(--paper-bg) !important;
+}
+
+header.MuiPaper-root {
+    background-color: transparent !important;
+    box-shadow: none;
+}
+
+header .MuiButton-root {
+    font-size: unset !important;
+    font-weight: unset !important;
+}
