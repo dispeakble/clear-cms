@@ -157,6 +157,13 @@ class Categories extends Component {
                         this.list();
                         resolve();
                     }),
+                onRowUpdateCancelled: () =>
+                    new Promise(async (resolve) => {
+                        this.setState({
+                            removeBg: {}
+                        })
+                        resolve()
+                    }),
                 onRowDelete: (oldData) =>
                     new Promise(async (resolve, reject) => {
                         await this.props.control.remove({
@@ -205,7 +212,7 @@ class Categories extends Component {
                     render: (rowData) => <Checkbox disabled checked={!!rowData.backgroundimage} />,
                     editComponent: (columnData) => {
                         let renderCheckbox = false
-                        if((!_.isEmpty(columnData.rowData)) && columnData.rowData.backgroundimage && columnData?.rowData?.tableData){
+                        if((!_.isEmpty(columnData.rowData)) && columnData.rowData.backgroundimage && columnData?.rowData?.tableData && !this.state.removeBg[columnData.rowData.id] && !columnData.rowData.backgroundimage.name){
                             renderCheckbox = true
                         }
                         return (
@@ -224,14 +231,11 @@ class Categories extends Component {
                                 />
                                 {renderCheckbox &&
                                     (<Tooltip title="Remove background Image">
-                                        <Checkbox
-                                            checked={this.state.removeBg[columnData.rowData.id]}
-                                            onChange={(event, checked) => {
-                                                this.setState({
-                                                    removeBg: {...this.state.removeBg, [columnData.rowData.id]: checked}
-                                                })
-                                            }}
-                                        />
+                                        <DeleteForever onClick={() => {
+                                            this.setState({
+                                                removeBg: {...this.state.removeBg, [columnData.rowData.id]: true}
+                                            })
+                                        }} style={{color: this.props.defaultTheme.secondary.main}} />
                                     </Tooltip>
                                     )
                                 }
