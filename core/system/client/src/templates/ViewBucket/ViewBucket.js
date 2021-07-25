@@ -251,10 +251,7 @@ class ViewBucket extends Component {
     componentDidUpdate(prevProps, prevState) {
         if(prevState.folderChain !== undefined && prevState.folderChain !== this.state.folderChain && prevState.folderChain?.length !== this.state.folderChain?.length){
             const folderPath = this.state.folderChain.reduce((prevPath, currentPath, i) => {
-                if(i === 0){
-                    return prevPath + currentPath.name
-                }
-                return prevPath +  currentPath.name + "/";
+                return prevPath +  currentPath.name + (i === 0 ? "" : "/");
             }, "/bucket")
             if(folderPath !== this.props.location.pathname){
                 this.props.history.push(folderPath)
