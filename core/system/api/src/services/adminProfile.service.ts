@@ -105,7 +105,7 @@ export class AdminProfileService {
                 }
             };
 
-            const response = await this.protocolService.sendMessage(checkPasswordRequest);
+            const response = await this.protocolService.sendMessage(checkPasswordRequest).toPromise();
 
             if (response && response.data && response.data.length && response.data[0].password === params.payload.password) {
                 request.payload.data.data.password = request.payload.data.data.confirmPassword + "";
@@ -121,7 +121,7 @@ export class AdminProfileService {
         delete request.payload.data.data.newPassword;
         delete request.payload.data.data.confirmPassword;
 
-        await this.protocolService.sendMessage(request);
+        await this.protocolService.sendMessage(request).toPromise();
 
         return {
             success: "Your details were saved successfully",
