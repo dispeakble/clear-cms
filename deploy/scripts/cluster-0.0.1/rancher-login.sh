@@ -1,5 +1,5 @@
 CMS_NAME="cms-cluster"
-CMS_PATH="$HOME/cms_app"
+CMS_PATH="$HOME/sources"
 RANCHER_URL_FILE="$CMS_PATH/rancher_url.txt"
 RANCHER_TOKEN_FILE="$CMS_PATH/rancher_token.txt"
 RANCHER_API_TOKEN="NDY"
