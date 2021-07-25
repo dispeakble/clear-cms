@@ -27,7 +27,9 @@ import Button from "components/CustomButtons/Button.js";
 // for the dropdown
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
+import Checkbox from "@material-ui/core/Checkbox";
+import Tooltip from '@material-ui/core/Tooltip';
+import _ from 'lodash';
 //todo import modal content to add category
 
 class Categories extends Component {
@@ -39,6 +41,7 @@ class Categories extends Component {
         showMultipleDeleteModal: false,
         flatCategories: [],
         defaultTheme: "",
+        removeBg: {},
     };
 
     async componentDidMount() {
@@ -132,6 +135,7 @@ class Categories extends Component {
                         await this.props.control.add({
                             title: newData.title,
                             description: newData.description,
+                            backgroundimage: newData.backgroundimage,
                             parentid: newData.parentid || 0,
                         });
                         this.list()
@@ -143,15 +147,28 @@ class Categories extends Component {
                             id: oldData.id,
                             title: newData.title,
                             description: newData.description,
-                            parentid: newData.parentid
+                            backgroundimage: newData.backgroundimage,
+                            parentid: newData.parentid,
+                            removeBg: this.state.removeBg[oldData.id]
                         });
+                        this.setState({
+                            removeBg: {...this.state.removeBg, [oldData.id]: false}
+                        })
                         this.list();
                         resolve();
+                    }),
+                onRowUpdateCancelled: () =>
+                    new Promise(async (resolve) => {
+                        this.setState({
+                            removeBg: {}
+                        })
+                        resolve()
                     }),
                 onRowDelete: (oldData) =>
                     new Promise(async (resolve, reject) => {
                         await this.props.control.remove({
-                            id: [oldData.id]
+                            id: [oldData.id],
+                            backgroundimage: oldData.backgroundimage
                         });
                         this.list();
                         resolve();
@@ -188,6 +205,43 @@ class Categories extends Component {
                 {
                     title: "Description",
                     field: "description",
+                },
+                {
+                    title: "Background Image",
+                    field: "backgroundimage",
+                    render: (rowData) => <Checkbox disabled checked={!!rowData.backgroundimage} />,
+                    editComponent: (columnData) => {
+                        let renderCheckbox = false
+                        if((!_.isEmpty(columnData.rowData)) && columnData.rowData.backgroundimage && columnData?.rowData?.tableData && !this.state.removeBg[columnData.rowData.id] && !columnData.rowData.backgroundimage.name){
+                            renderCheckbox = true
+                        }
+                        return (
+                            <div>
+                                <input
+                                    type="file"
+                                    onChange={(event) => {
+                                        if ( event.target?.files?.length) {
+                                            columnData.onRowDataChange({
+                                                ...columnData.rowData,
+                                                backgroundimage: event.target.files[0],
+                                            });
+                                        }
+                                    }}
+                                    name={"backgroundimage"}
+                                />
+                                {renderCheckbox &&
+                                    (<Tooltip title="Remove background Image">
+                                        <DeleteForever onClick={() => {
+                                            this.setState({
+                                                removeBg: {...this.state.removeBg, [columnData.rowData.id]: true}
+                                            })
+                                        }} style={{color: this.props.defaultTheme.secondary.main}} />
+                                    </Tooltip>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
                 },
                 {
                     title: "Parent Id",
