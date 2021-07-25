@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {createMuiTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
+import { ThemeProvider } from 'react-jss'
 import styles from "assets/jss/clear-crm/views/bucket.js";
+import 'assets/scss/bucket-theme.scss'
 import {
     FileBrowser,
     FileContextMenu,
@@ -241,6 +243,8 @@ class ViewBucket extends Component {
 
     componentDidMount() {
         this.list();
+        document.documentElement.style.setProperty('--paper-bg', this.props.defaultTheme?.background?.paper);
+        document.documentElement.style.setProperty('--paper-color', this.props.defaultTheme?.text?.primary);
     }
 
     getTheme() {
@@ -939,10 +943,17 @@ class ViewBucket extends Component {
                     </Helmet>
                     <div style={{ height: '100vh', paddingTop: '60px' }}>
                         <FileBrowser onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
-                            <FileToolbar classes={classes.FileToolbar} />
-                            <FileNavbar classes={classes.FileNavbar}/>
-                            <FileContextMenu />
-                            <FileList />
+                            <ThemeProvider theme={{
+                                merged: true,
+                                colors: {
+                                    textActive: this.props.defaultTheme?.primary?.main,
+                                },
+                            }}>
+                                <FileToolbar classes={classes.FileToolbar} />
+                                <FileNavbar classes={classes.FileNavbar}/>
+                                <FileContextMenu />
+                                <FileList />
+                            </ThemeProvider>
                         </FileBrowser>
                     </div>
                     {this.state.createModal ? this.openEditor(true) : ""}
