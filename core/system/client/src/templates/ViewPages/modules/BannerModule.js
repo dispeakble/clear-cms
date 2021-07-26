@@ -162,6 +162,11 @@ class BannerModule extends Component {
     }
   };
 
+  fileExtension = (string) => {
+    const p = string.split('.');
+    return p[p.length - 1];
+  }
+
   render() {
     return (
       <MuiThemeProvider theme={this.createDefaultTheme}>
@@ -299,7 +304,19 @@ class BannerModule extends Component {
                 disabled={this.state.isBtnDisabled}
                 color="primary"
                 onClick={() => {
-                  this.props.handleSave(this.state.itemModuleEditId);
+                  let files = [];
+                  if(this.state.bgImageFile){
+                    files.push({
+                      sel: 'banner',
+                      name: `banner.${this.fileExtension(this.state.bgImageFile.name)}`,
+                      file: this.state.bgImageFile
+                    });
+                  }
+                  this.props.handleSave(this.state.itemModuleEditId, {
+                    files: files,
+                    bannerTitle: this.state.bannerTitle,
+                    bannerSize: this.state.bannerSize,
+                    bannerSizes: this.state.bannerSizes});
                   this.closeModuleOptionsModal();
                 }}
               >
