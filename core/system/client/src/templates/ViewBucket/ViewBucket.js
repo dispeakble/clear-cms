@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import {createMuiTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
+import { ThemeProvider } from 'react-jss'
+import { withRouter } from "react-router-dom";
 import styles from "assets/jss/clear-crm/views/bucket.js";
+import 'assets/scss/bucket-theme.scss'
 import {
     FileBrowser,
     FileContextMenu,
@@ -19,11 +22,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "../../components/CustomButtons/Button";
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import path from "path";
 
 class ViewBucket extends Component {
     state = {
-        currentPath: '/',
+        currentPath: this.props.location.pathname.slice(7) ? this.props.location.pathname.slice(7) : '/',
         currentDir:{
             id: 'abc',
             name: '/'
@@ -33,11 +38,12 @@ class ViewBucket extends Component {
         renameModal: false,
         newFolderModal: false,
         infoModal: {
-            title:'',
-            message:'',
-            confirm:{},
-            cancel:{},
-            visible: false
+          title: '',
+          message: '',
+          confirm: {},
+          cancel: {},
+          visible: false,
+          close: false,
         },
         uploadQue: [],
         uploadProgress: 0,
@@ -241,6 +247,19 @@ class ViewBucket extends Component {
 
     componentDidMount() {
         this.list();
+        document.documentElement.style.setProperty('--paper-bg', this.props.defaultTheme?.background?.paper);
+        document.documentElement.style.setProperty('--paper-color', this.props.defaultTheme?.text?.primary);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.folderChain !== undefined && prevState.folderChain !== this.state.folderChain && prevState.folderChain?.length !== this.state.folderChain?.length){
+            const folderPath = this.state.folderChain.reduce((prevPath, currentPath, i) => {
+                return prevPath +  currentPath.name + (i === 0 ? "" : "/");
+            }, "/bucket")
+            if(folderPath !== this.props.location.pathname){
+                this.props.history.push(folderPath)
+            }
+        }
     }
 
     getTheme() {
@@ -359,8 +378,25 @@ class ViewBucket extends Component {
                         currentPath: paths.join('/')
                     });
                     this.list();
+                } else {
+                  this.setState({
+                    infoModal: {
+                      visible: true,
+                      title: ref.payload.targetFile.name.replace('.jpg', ''),
+                      message: (
+                        <img
+                          style={{ width: '60%', display: 'block', margin: 'auto' }}
+                          src={`http://localhost:9696/files/${ref.payload.targetFile.name}`}
+                        />
+                      ),
+                      confirm: {
+                        label: 'Close',
+                        callback: () => new Promise((resolve) => resolve()),
+                      },
+                      close: true,
+                    },
+                  });
                 }
-                console.log('wanted to navigate here')
                 break;
             case 'download':
                 this.props.control.download({
@@ -870,6 +906,25 @@ class ViewBucket extends Component {
                     disableTypography
                     className={this.props.classes.modalHeader}
                 >
+                   {this.state.infoModal.close ? (
+                <IconButton
+                    aria-label='close'
+                    className={this.props.classes.closeButton}
+                    onClick={() =>
+                          this.setState({
+                                infoModal: {
+                                 visible: false,
+                                 title: '',
+                                 message: '',
+                                 confirm: {},
+                                 close: false,
+                     },
+                })
+              }
+            >
+              <CloseIcon />
+            </IconButton>
+          ) : null}
                     <h4 style={{ textAlign: "center" }}>{this.state.infoModal.title}</h4>
                 </DialogTitle>
                 <DialogContent
@@ -939,10 +994,17 @@ class ViewBucket extends Component {
                     </Helmet>
                     <div style={{ height: '100vh', paddingTop: '60px' }}>
                         <FileBrowser onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
-                            <FileToolbar classes={classes.FileToolbar} />
-                            <FileNavbar classes={classes.FileNavbar}/>
-                            <FileContextMenu />
-                            <FileList />
+                            <ThemeProvider theme={{
+                                merged: true,
+                                colors: {
+                                    textActive: this.props.defaultTheme?.primary?.main,
+                                },
+                            }}>
+                                <FileToolbar classes={classes.FileToolbar} />
+                                <FileNavbar classes={classes.FileNavbar}/>
+                                <FileContextMenu />
+                                <FileList />
+                            </ThemeProvider>
                         </FileBrowser>
                     </div>
                     {this.state.createModal ? this.openEditor(true) : ""}
@@ -956,7 +1018,7 @@ class ViewBucket extends Component {
     }
 }
 
-export default withStyles(styles)(ViewBucket);
+export default withRouter(withStyles(styles)(ViewBucket));
 
 ViewBucket.propTypes = {
     classes: PropTypes.object,
