@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {createMuiTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
 import { ThemeProvider } from 'react-jss'
+import { withRouter } from "react-router-dom";
 import styles from "assets/jss/clear-crm/views/bucket.js";
 import 'assets/scss/bucket-theme.scss'
 import {
@@ -25,7 +26,7 @@ import path from "path";
 
 class ViewBucket extends Component {
     state = {
-        currentPath: '/',
+        currentPath: this.props.location.pathname.slice(7) ? this.props.location.pathname.slice(7) : '/',
         currentDir:{
             id: 'abc',
             name: '/'
@@ -245,6 +246,17 @@ class ViewBucket extends Component {
         this.list();
         document.documentElement.style.setProperty('--paper-bg', this.props.defaultTheme?.background?.paper);
         document.documentElement.style.setProperty('--paper-color', this.props.defaultTheme?.text?.primary);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.folderChain !== undefined && prevState.folderChain !== this.state.folderChain && prevState.folderChain?.length !== this.state.folderChain?.length){
+            const folderPath = this.state.folderChain.reduce((prevPath, currentPath, i) => {
+                return prevPath +  currentPath.name + (i === 0 ? "" : "/");
+            }, "/bucket")
+            if(folderPath !== this.props.location.pathname){
+                this.props.history.push(folderPath)
+            }
+        }
     }
 
     getTheme() {
@@ -967,7 +979,7 @@ class ViewBucket extends Component {
     }
 }
 
-export default withStyles(styles)(ViewBucket);
+export default withRouter(withStyles(styles)(ViewBucket));
 
 ViewBucket.propTypes = {
     classes: PropTypes.object,
