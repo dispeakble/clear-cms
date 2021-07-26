@@ -11,9 +11,7 @@ import {
     FileNavbar,
     FileToolbar,
     defineFileAction,
-    FileHelper,
-    ChonkyActions,
-    FileActionHandler
+    FileHelper
 } from 'chonky';
 import {Helmet} from "react-helmet";
 import PropTypes from "prop-types";
@@ -53,6 +51,8 @@ class ViewBucket extends Component {
         autoRefresh: null,
         archiveModal: null,
     };
+
+    muiTheme = {};
 
     uploadAction = defineFileAction(
         {
@@ -246,6 +246,7 @@ class ViewBucket extends Component {
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
+        this.muiTheme = this.getTheme();
         this.list();
         document.documentElement.style.setProperty('--paper-bg', this.props.defaultTheme?.background?.paper);
         document.documentElement.style.setProperty('--paper-color', this.props.defaultTheme?.text?.primary);
@@ -266,30 +267,21 @@ class ViewBucket extends Component {
         return createMuiTheme({
             palette: this.props.defaultTheme,
             overrides: {
-                MuiFab: {
+                MuiDialogTitle: {
                     root: {
-                        boxShadow: "",
-                    },
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }
                 },
                 MuiDialog: {
                     paper: {
-                        width: "50%",
+                        width: "100%",
                     },
                     paperWidthSm: {
                         maxWidth: "100vw",
-                        maxHeight: "60vh",
-                    },
-                },
-                MuiDropzoneArea: {
-                    root: {
-                        display: "flex",
-                        justifyContent: "space-between",
-                        flexDirection: "column"
-                    },
-                    text: {
-                        fontSize: "1rem",
-                    },
-                },
+                    }
+                }
             },
         });
     }
@@ -379,23 +371,26 @@ class ViewBucket extends Component {
                     });
                     this.list();
                 } else {
-                  this.setState({
-                    infoModal: {
-                      visible: true,
-                      title: ref.payload.targetFile.name.replace('.jpg', ''),
-                      message: (
-                        <img
-                          style={{ width: '60%', display: 'block', margin: 'auto' }}
-                          src={`http://localhost:9696/files/${ref.payload.targetFile.name}`}
-                        />
-                      ),
-                      confirm: {
-                        label: 'Close',
-                        callback: () => new Promise((resolve) => resolve()),
-                      },
-                      close: true,
-                    },
-                  });
+                    if(ref.payload.targetFile.name.match(/.(jpg|jpeg|webp|png|gif)$/i)) {
+                        this.setState({
+                            infoModal: {
+                                visible: true,
+                                title: `${this.state.currentPath}${ref.payload.targetFile.name}`,
+                                message: (
+                                    <img
+                                        style={{ width: '100%', display: 'block', margin: 'auto' }}
+                                        src={`/files/${this.state.currentPath}/${ref.payload.targetFile.name}`}
+                                    />
+                                ),
+                                confirm: {
+                                    label: 'Close',
+                                    callback: () => new Promise((resolve) => resolve()),
+                                },
+                                close: true
+                            },
+                        });
+                    }
+
                 }
                 break;
             case 'download':
@@ -906,26 +901,27 @@ class ViewBucket extends Component {
                     disableTypography
                     className={this.props.classes.modalHeader}
                 >
-                   {this.state.infoModal.close ? (
-                <IconButton
-                    aria-label='close'
-                    className={this.props.classes.closeButton}
-                    onClick={() =>
-                          this.setState({
-                                infoModal: {
-                                 visible: false,
-                                 title: '',
-                                 message: '',
-                                 confirm: {},
-                                 close: false,
-                     },
-                })
-              }
-            >
-              <CloseIcon />
-            </IconButton>
-          ) : null}
                     <h4 style={{ textAlign: "center" }}>{this.state.infoModal.title}</h4>
+                   {this.state.infoModal.close ? (
+                        <IconButton
+                            aria-label='close'
+                            className={this.props.classes.closeButton}
+                            onClick={() =>
+                                  this.setState({
+                                        infoModal: {
+                                         visible: false,
+                                         title: '',
+                                         message: '',
+                                         confirm: {},
+                                         close: false,
+                             },
+                        })
+                      }
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  ) : null}
+
                 </DialogTitle>
                 <DialogContent
                     style={{ overflow: "auto" }}
@@ -992,27 +988,29 @@ class ViewBucket extends Component {
                     <Helmet>
                         <title>Bucket (file manager)</title>
                     </Helmet>
-                    <div style={{ height: '100vh', paddingTop: '60px' }}>
-                        <FileBrowser onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
-                            <ThemeProvider theme={{
-                                merged: true,
-                                colors: {
-                                    textActive: this.props.defaultTheme?.primary?.main,
-                                },
-                            }}>
-                                <FileToolbar classes={classes.FileToolbar} />
-                                <FileNavbar classes={classes.FileNavbar}/>
-                                <FileContextMenu />
-                                <FileList />
-                            </ThemeProvider>
-                        </FileBrowser>
-                    </div>
-                    {this.state.createModal ? this.openEditor(true) : ""}
-                    {this.state.deleteModal ? this.openDeleteModal() : ""}
-                    {this.state.renameModal ? this.openRenameModal() : ""}
-                    {this.state.newFolderModal ? this.openNewFolderModal() : ""}
-                    {this.state.infoModal.visible ? this.openInfoModal() : ""}
-                    {this.state.archiveModal && this.state.archiveModal()}
+                    <MuiThemeProvider theme={this.muiTheme}>
+                        <div style={{ height: '100vh', paddingTop: '60px' }}>
+                            <FileBrowser onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
+                                <ThemeProvider theme={{
+                                    merged: true,
+                                    colors: {
+                                        textActive: this.props.defaultTheme?.primary?.main,
+                                    },
+                                }}>
+                                    <FileToolbar classes={classes.FileToolbar} />
+                                    <FileNavbar classes={classes.FileNavbar}/>
+                                    <FileContextMenu />
+                                    <FileList />
+                                </ThemeProvider>
+                            </FileBrowser>
+                        </div>
+                        {this.state.createModal ? this.openEditor(true) : ""}
+                        {this.state.deleteModal ? this.openDeleteModal() : ""}
+                        {this.state.renameModal ? this.openRenameModal() : ""}
+                        {this.state.newFolderModal ? this.openNewFolderModal() : ""}
+                        {this.state.infoModal.visible ? this.openInfoModal() : ""}
+                        {this.state.archiveModal && this.state.archiveModal()}
+                    </MuiThemeProvider>
                 </React.Fragment>
         );
     }
