@@ -70,7 +70,7 @@ class Categories extends Component {
             categories
         })
 
-        if (categories.length) {
+        if (categories && categories.length) {
             let links = categories;
             links.map((el) => {
                 let catTitle = el.title;
