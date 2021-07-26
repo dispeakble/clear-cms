@@ -113,6 +113,7 @@ CREATE TABLE public.categories (
     id integer DEFAULT nextval('public.categories_id_seq'::regclass) NOT NULL,
     title character varying NOT NULL,
     description character varying,
+    backgroundimage character varying,
     parentid integer DEFAULT 0 NOT NULL
 );
 

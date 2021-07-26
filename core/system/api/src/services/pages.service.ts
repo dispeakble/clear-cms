@@ -789,20 +789,6 @@ export class PagesService {
 
                     await this.protocolService.sendMessage(pagesReq).toPromise();
 
-                    //delete the media
-                    const mediaReq: payloadInterface = {
-                        channel: 'bucket',
-                        api: 'fs',
-                        act: 'rm',
-                        payload: {
-                            path: '/pages',
-                            selection: [`page-${params.id}`]
-                        }
-                    };
-
-                    await this.protocolService.sendMessage(mediaReq).toPromise();
-
-
                     subscriber.next({
                         success: "The page was removed",
                         data: params.id
@@ -819,12 +805,13 @@ export class PagesService {
 
     private async _removeFiles(params) {
 
-        this.protocolService.sendMessage({
+        return this.protocolService.sendMessage({
             channel: 'bucket',
             api: 'fs',
             act: 'rm',
             payload: {
-                selection: [`/pages/page-${params.where.page_id}`]
+                path: `/pages`,
+                selection: [`/page-${params.where.id}`]
             }
         }).toPromise();
 
