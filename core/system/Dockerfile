@@ -5,7 +5,6 @@ RUN mkdir -p /usr/src/client/
 WORKDIR /usr/src/client
 
 COPY ./client/package*.json /usr/src/client/
-COPY ./client/yarn.lock /usr/src/client/yarn.lock
 RUN npm install
 COPY ./client/public /usr/src/client/public
 COPY ./client/src /usr/src/client/src
@@ -21,7 +20,6 @@ WORKDIR /usr/src/api
 RUN npm i -g @nestjs/cli
 
 COPY ./api/package*.json /usr/src/api/
-COPY ./api/yarn.lock /usr/src/api/yarn.lock
 
 RUN npm install
 

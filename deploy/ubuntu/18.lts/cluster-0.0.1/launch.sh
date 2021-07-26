@@ -162,12 +162,12 @@ function launchLonghorn () {
     --set persistence.defaultClassReplicaCount="1" \
     --set service.ui.type="Rancher-Proxy" \
     --set service.ui.nodePort="" \
-    --helm-timeout 300 \
+    --helm-timeout 1200 \
     --helm-wait \
     cattle-global-data:library-longhorn longhorn
   fi
   waitForApp "longhorn"
-  rancher wait --timeout 300 longhorn
+  rancher wait --timeout 1200 longhorn
   waitForLonghornStorageClass
   printf '\n' > /dev/tty
 }
@@ -210,7 +210,7 @@ function launchRedis() {
    --set master.service.type=NodePort \
    --set master.service.nodePort=$REDIS_NODE_PORT \
    --set global.redis.password=$REDIS_PASSWORD \
-   --helm-timeout 300 \
+   --helm-timeout 1200 \
    --helm-wait \
    cattle-global-data:bitnami-redis redis
   rancher app show-notes redis
@@ -226,7 +226,7 @@ function launchCmsApp() {
   checkApp "cms"
 
   rancher app install --no-prompt --namespace default \
-   --helm-timeout 300 \
+   --helm-timeout 1200 \
    --helm-wait \
    cattle-global-data:cms-app-cms cms
   rancher app show-notes cms
@@ -238,7 +238,31 @@ function launchPostgreSQL() {
 
   rancher kubectl create configmap dbconfig --from-file=setup1.sql="${BASH_SOURCE%/*}/../../pg.db/db.schema.sql"
 
-  checkApp "postgresql-ha"
+  checkApp "postgresql"
+
+  checkApp "postgresql"
+
+  rancher app install --no-prompt --namespace default \
+   --set postgresql.initdbScriptsCM=dbconfig \
+   --set postgresqlUsername=$POSTGRES_USERNAME \
+   --set postgresqlPassword=$POSTGRES_PASSWORD \
+   --set global.storageClass=longhorn \
+   --helm-timeout 1200 \
+   --helm-wait \
+   cattle-global-data:bitnami-postgresql postgresql
+  rancher app show-notes postgresql
+  waitForApp "postgresql"
+  printf '\n' > /dev/tty
+
+
+}
+
+function launchPostgreSQLHighAvail() {
+rancher kubectl create configmap dbconfig --from-file=setup1.sql="${BASH_SOURCE%/*}/../../pg.db/db.schema.sql"
+
+checkApp "postgresql-ha"
+
+checkApp "postgresql-ha"
 
   rancher app install --no-prompt --namespace default \
    --set postgresql.initdbScriptsCM=dbconfig \
@@ -248,7 +272,7 @@ function launchPostgreSQL() {
    --set postgresql.repmgrPassword=$POSTGRES_PASSWORD \
    --set pgpool.adminPassword=$POSTGRES_PASSWORD \
    --set global.storageClass=longhorn \
-   --helm-timeout 300 \
+   --helm-timeout 1200 \
    --helm-wait \
    cattle-global-data:bitnami-postgresql-ha postgresql-ha
   rancher app show-notes postgresql-ha
@@ -283,7 +307,7 @@ function launchPGAdmin() {
    --set global.storageClass=longhorn \
    --set service.type=NodePort \
    --set service.nodePort=$PGADMIN_NODEPORT \
-   --helm-timeout 300 \
+   --helm-timeout 1200 \
    --helm-wait \
    cattle-global-data:runix-pgadmin4 pgadmin4
   rancher app show-notes pgadmin4
@@ -299,7 +323,7 @@ sleep 5
 sed -e "s|MY_IP_RANGE|127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
 rancher app install --no-prompt --namespace metallb-system \
   --set existingConfigMap=metallbconfig \
-  --helm-timeout 300 \
+  --helm-timeout 1200 \
   --helm-wait \
   cattle-global-data:bitnami-metallb metallb
 }
@@ -314,7 +338,7 @@ function launchTraefik(){
   rancher kubectl delete --all daemonsets --namespace=ingress-nginx
 
   rancher app install --no-prompt --namespace kube-system \
-  --helm-timeout 300 \
+  --helm-timeout 1200 \
   --helm-wait \
   cattle-global-data:library-traefik traefik
 }
