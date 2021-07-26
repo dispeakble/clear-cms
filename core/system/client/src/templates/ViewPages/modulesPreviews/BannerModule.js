@@ -41,8 +41,8 @@ class BannerModule extends Component {
     const banner_size = this.props.element.moduleOptions.data.bannerSize;
 
     if (banner_size) {
-      height = this.state.bannerSizes[banner_size].height;
-      width = this.state.bannerSizes[banner_size].width;
+      height = this.state.bannerSizes[banner_size]?.height;
+      width = this.state.bannerSizes[banner_size]?.width;
     }
 
     return (
@@ -55,7 +55,7 @@ class BannerModule extends Component {
                 height: `${height}px`,
               }}
 
-              src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${banner.name}`}
+              src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.id}/module/${banner.name}`}
               alt={this.state.title}
             />
           </a>
@@ -66,7 +66,7 @@ class BannerModule extends Component {
                   width: `${width}px`,
                   height: `${height}px`,
                 }}
-              src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${banner.name}`}
+              src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.id}/module/${banner.name}`}
               alt={this.state.title}
             />
           </Link>
