@@ -26,7 +26,7 @@ import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
 import {TextField} from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
 
 // for the styling side-menu
 
@@ -47,6 +47,8 @@ import Icon from "@material-ui/core/Icon";
 import ViewBoxEditor from "./ViewBoxEditor";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
+
+const filter = createFilterOptions();
 
 class ViewPagesEditor extends React.PureComponent {
   static defaultProps = {
@@ -118,7 +120,12 @@ class ViewPagesEditor extends React.PureComponent {
       item:{
 
       }
-    }
+    },
+    dialogValue: {
+      title: "",
+      description: "",
+    },
+    open: false
   };
 
   muiTheme = {};
@@ -779,12 +786,22 @@ class ViewPagesEditor extends React.PureComponent {
     });
   };
 
+  
   handleCategory = async (event, newValue) => {
     let newCatId = newValue && newValue.id ? newValue.id : 0;
     await this.setAsyncState({
-      category: newCatId,
-    });
-  };
+     category: newCatId,
+   });
+
+    if (newValue && newValue.value) {
+     this.setState({
+       open: true,
+       dialogValue: {
+         title: newValue.value,
+       },
+      });
+   }
+ };
 
   getCategoriesNested(id) {
     let result = "";
@@ -936,6 +953,35 @@ class ViewPagesEditor extends React.PureComponent {
 
     this.props.history.push("/pages");
   };
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+    this.props.control.addCategory({ title: this.state.dialogValue.title,description:this.state.dialogValue.description });
+
+    if(this.state.dialogValue.title!==''){
+      let categoriesFromStorage =  await this.props.control.listCategories();
+      const categories = this.state.categories;
+      const newCategorie =  categoriesFromStorage.find(e => e.title === this.state.dialogValue.title)
+       categories.push({
+        label: newCategorie.title,
+        id: newCategorie.id,
+        parentid: newCategorie.parentid,
+     })
+     this.setState(({
+       category: newCategorie.id,
+     }))
+     await this.setAsyncState({ categories });
+     this.getAllCategories();
+    }
+    
+    this.setState({
+      dialogValue: {
+       title: "",
+       description: "",
+      },
+      open: false,
+    });   
+  }
 
   render() {
     return (
@@ -1195,31 +1241,109 @@ class ViewPagesEditor extends React.PureComponent {
                         )}
                       >
                         <h4>Miscellaneous</h4>
-                        <div style={{marginTop: "15px"}}>
+                          <div style={{ marginTop: "15px" }}>
                           <div>
-                            <Autocomplete
-                                id="categoryDropdown"
-                                onChange={this.handleCategory}
-                                className={this.props.classes.option}
-                                options={this.state.flatCategories}
-                                autoHighlight
-                                getOptionLabel={(option) => option.label}
-                                // value={this.getCategoryItem(this.state.category)}
-                                // onChange={(ev, value) => {
-                                //   columnData.onRowDataChange({
-                                //     ...columnData.rowData,
-                                //     parentid: value.id,
-                                //   });
-                                // }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        className={this.props.classes.textfield}
-                                        label="Select a category"
-                                        {...params}
-                                        variant="outlined"
-                                    />
-                                )}
-                            />
+                          <Autocomplete
+                            id="categoryDropdown"
+                            onChange={this.handleCategory}
+                            className={this.props.classes.option}
+                            value={this.getCategoryItem(this.state.category)}
+                            filterOptions={(options, params) => {
+                              const filtered = filter(options, params);
+                              if (params.inputValue !== "") {
+                                filtered.push({
+                                  value: params.inputValue,
+                                  label: `Add "${params.inputValue}"`,
+                                });
+                              }
+                              return filtered;
+                            }}
+                            options={this.state.flatCategories}
+                            autoHighlight
+                            getOptionLabel={(option) => option.value ? option.value : option.label}
+                            selectOnFocus
+                            clearOnBlur
+                            handleHomeEndKeys
+                            renderOption={(option) => option.label}
+                            freeSolo
+                            renderInput={(params) => (
+                              <TextField
+                                className={this.props.classes.textfield}
+                                label="Select a category"
+                                {...params}
+                                variant="outlined"
+                              />
+                            )}
+                          />
+
+                            <Dialog
+                            open={this.state.open}
+                            onClose={() =>
+                              this.setState({
+                                dialogValue: {
+                                  title: "",
+                                  description: "",
+                                },
+                                open: false,
+                              })
+                            }
+                            aria-labelledby="form-dialog-title"
+                          >
+                            <form onSubmit={this.handleSubmit}>
+                              <DialogTitle style={{textAlign:'center'}} id="form-dialog-title">
+                                Add a new category
+                              </DialogTitle>
+                              <DialogContent style={{display:'flex',justifyContent:'space-evenly'}}>
+                                <TextField
+                                  autoFocus
+                                  disabled
+                                  margin="dense"
+                                  id="title"
+                                  value={this.state.dialogValue.title}
+                                  label="title"
+                                  type="text"
+                                />
+
+                                <TextField
+                                  autoFocus
+                                  margin="dense"
+                                  id="description"
+                                  value={this.state.dialogValue.description}
+                                  onChange={(event) =>
+                                    this.setState({
+                                      dialogValue: {
+                                        ...this.state.dialogValue,
+                                        description: event.target.value,
+                                      },
+                                    })
+                                  }
+                                  label="description"
+                                  type="text"
+                                />
+                            
+                              </DialogContent>
+                              <DialogActions>
+                                <Button
+                                  onClick={() =>
+                                    this.setState({
+                                      dialogValue: {
+                                        title: "",
+                                        description: "",
+                                      },
+                                      open: false,
+                                    })
+                                  }
+                                  color="primary"
+                                >
+                                  Cancel
+                                </Button>
+                                <Button type="submit" color="primary">
+                                  Add
+                                </Button>
+                              </DialogActions>
+                            </form>
+                          </Dialog>
+
                           </div>
                           <Typography gutterBottom>
                             Box Spacing

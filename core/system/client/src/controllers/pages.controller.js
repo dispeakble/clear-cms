@@ -14,6 +14,7 @@ class PagesController extends Component {
         list: (params) => this.list(params),
         get: (params) => this.get(params),
         add: (params) => this.add(params),
+        addCategory: (params) => this.addCategory(params),
         edit: (params) => this.edit(params),
         remove: (params) => this.remove(params),
         listCategories: (params) => this.listCategories(params),
@@ -406,6 +407,18 @@ class PagesController extends Component {
                     // params.progress(evt)
                 }
             });
+        });
+    }
+
+    addCategory(params) {
+         return  this.sendMessage({
+            module: 'system',
+            api: 'categories',
+            act: 'add',
+            payload: {
+                title: params.title,
+                description:params.description
+            }
         });
     }
 
