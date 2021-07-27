@@ -4,8 +4,8 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pages.js";
 
 import { Helmet } from "react-helmet";
-
-import IconButton from "@material-ui/core/IconButton";
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import { withRouter } from "react-router-dom";
 
@@ -26,10 +26,12 @@ class Pages extends Component {
         showModal: false,
         cat_list: [],
         pages: [],
+        templates: [],
         currentPage: 1,
         showDeleteModal: false,
         pageToDeleteId: "",
         deleteQty: 0,
+        isTemplate: false,
     };
 
     componentDidMount() {
@@ -38,6 +40,7 @@ class Pages extends Component {
 
     async fetchPages() {
         let pages = [];
+        let templates = [];
         let pagesFromStorage = await this.props.control.list();
 
         if(pagesFromStorage && pagesFromStorage.length){
@@ -49,12 +52,12 @@ class Pages extends Component {
                     defaultPage: (
                         <Checkbox disabled checked={page.pageConfig.defaultPage} />
                     ),
-
+                    isTemplate: page.pageConfig.isTemplate,
                     category: page.pageConfig.category,
                 });
                 return page;
             });
-            this.setState({ pages });
+            this.setState({ pages, templates });
         }
 
     }
@@ -243,6 +246,7 @@ class Pages extends Component {
 
     render() {
         const classes = this.props.classes;
+        const currentList = this.state.pages.filter(el => el.isTemplate === this.state.isTemplate)
         return (
             <React.Fragment>
                 <Helmet>
@@ -250,11 +254,29 @@ class Pages extends Component {
                 </Helmet>
                 <div className={classes.pagesPanel}>
                     <div className={classes.pagesWrapper}>
+                        <div style={{marginBottom: "15px", textAlign: 'right'}}>
+                            <ToggleButtonGroup
+                                value={this.state.isTemplate}
+                                exclusive
+                                onChange={(e, newValue) => {
+                                    this.setState({
+                                        isTemplate: newValue
+                                    })
+                                }}
+                               >
+                                <ToggleButton value={false}>
+                                    Pages
+                                </ToggleButton>
+                                <ToggleButton value={true}>
+                                    Templates
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </div>
                         <MuiThemeProvider theme={this.tableOptions.getTheme()}>
                             <MaterialTable
-                                title="Pages List"
+                                title={this.state.isTemplate ? "Templates List" : "Pages List"}
                                 columns={this.tableOptions.props.columns}
-                                data={this.state.pages} // if u use getData() it won't work
+                                data={currentList} // if u use getData() it won't work
                                 options={this.tableOptions.props.options}
                                 actions={this.tableOptions.actions.customActions}
                             />
