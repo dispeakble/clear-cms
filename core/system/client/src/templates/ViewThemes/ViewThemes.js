@@ -416,6 +416,10 @@ class ViewThemes extends Component {
                 showEmptyTitleMessage: true,
             });
             return;
+        }else {
+            this.setAsyncState({
+                showEmptyTitleMessage: false,
+            });
         }
 
         if (!this.state.side) {
