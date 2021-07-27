@@ -125,7 +125,8 @@ class ViewPagesEditor extends React.PureComponent {
       title: "",
       description: "",
     },
-    open: false
+    open: false,
+    isUniqueTitle: false
   };
 
   muiTheme = {};
@@ -961,7 +962,7 @@ class ViewPagesEditor extends React.PureComponent {
     if(this.state.dialogValue.title!==''){
       let categoriesFromStorage =  await this.props.control.listCategories();
       const categories = this.state.categories;
-      const newCategorie =  categoriesFromStorage.find(e => e.title === this.state.dialogValue.title)
+      const newCategorie =  categoriesFromStorage?.find(e => e.title === this.state.dialogValue.title)
        categories.push({
         label: newCategorie.title,
         id: newCategorie.id,
@@ -984,7 +985,7 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   render() {
-    return (
+     return (
       <React.Fragment>
         <Helmet>
           <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
@@ -1246,11 +1247,14 @@ class ViewPagesEditor extends React.PureComponent {
                           <Autocomplete
                             id="categoryDropdown"
                             onChange={this.handleCategory}
+                            onInputChange={(e)=>this.setState({
+                              isUniqueTitle:!this.state.flatCategories.find(el=>el.label===e.target.value)
+                            })}
                             className={this.props.classes.option}
                             value={this.getCategoryItem(this.state.category)}
                             filterOptions={(options, params) => {
                               const filtered = filter(options, params);
-                              if (params.inputValue !== "") {
+                              if (params.inputValue !== "" && this.state.isUniqueTitle) {
                                 filtered.push({
                                   value: params.inputValue,
                                   label: `Add "${params.inputValue}"`,
