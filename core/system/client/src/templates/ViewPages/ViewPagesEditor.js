@@ -1004,33 +1004,37 @@ class ViewPagesEditor extends React.PureComponent {
     });
   };
 
-  handleSubmit = async (event) => {
+  handleNewCategory = async (event) => {
     event.preventDefault();
     event.persist();
-    let categoriesFromStorage = await this.props.control.listCategories();
 
+    let categoriesFromStorage = await this.props.control.listCategories();
     const notExistInDataBase = !categoriesFromStorage.find(
       (el) => el.title === event.target.value
     );
     if (this.state.dialogValue.title !== "" && notExistInDataBase) {
-      this.props.control.addCategory({
-        title: this.state.dialogValue.title,
-        description: this.state.dialogValue.description,
-      });
-      const categories = this.state.categories;
-      const newCategory = categoriesFromStorage?.find(
-        (e) => e.title === this.state.dialogValue.title
-      );
-      categories.push({
-        label: newCategory.title,
-        id: newCategory.id,
-        parentid: newCategory.parentid,
-      });
-      this.setState({
-        category: newCategory.id,
-      });
-      await this.setAsyncState({ categories });
-      this.getAllCategories();
+      await this.props.control
+        .addCategory({
+          title: this.state.dialogValue.title,
+          description: this.state.dialogValue.description,
+        })
+        .then(async (e) => {
+          let categoriesFromStorage = await this.props.control.listCategories();
+          const categories = this.state.categories;
+          const newCategory = categoriesFromStorage.find(
+            (el) => el.id === e.categoryId
+          );
+          categories.push({
+            label: newCategory.title,
+            id: newCategory.id,
+            parentid: newCategory.parentid,
+          });
+          this.setState({
+            category: newCategory,
+          });
+          await this.setAsyncState({ categories });
+          this.getAllCategories();
+        });
     } else {
       this.setState({ dialogErr: true });
     }
@@ -1472,7 +1476,7 @@ class ViewPagesEditor extends React.PureComponent {
                               }
                               aria-labelledby="form-dialog-title"
                             >
-                              <form onSubmit={this.handleSubmit}>
+                              <form onSubmit={this.handleNewCategory}>
                                 <DialogTitle
                                   style={{ textAlign: "center" }}
                                   id="form-dialog-title"
