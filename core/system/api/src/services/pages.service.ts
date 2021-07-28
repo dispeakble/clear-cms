@@ -53,7 +53,9 @@ export class PagesService {
                     channel: 'system',
                     data: {
                         what: 'pages',
-                        fields: ["id", "title", "is_default", "publish", "cat_id"]
+                        fields: ["id", "title", "is_default", "publish", "cat_id", "istemplate"],
+                        ...(params.isTemplate && {how: "OR"}),
+                        ...(params.isTemplate && {where: {istemplate: 1}}),
                     }
                 }
             };
@@ -70,6 +72,7 @@ export class PagesService {
                                 defaultPage: !!page.is_default,
                                 publish: !!page.publish,
                                 category: page.cat_id,
+                                isTemplate: !!page.istemplate,
                             }
 
                         }
@@ -162,26 +165,29 @@ export class PagesService {
                       }
                   };
                   const pageToBoxes = await this.protocolService.sendMessage(pagesToBoxReq).toPromise()
-
-                  const boxReq: payloadInterface = {
-                      channel: 'db',
-                      api: 'db',
-                      act: 'get',
-                      payload: {
-                          channel: 'system',
-                          data: {
-                              what: 'page_box',
-                              fields: ["*"],//it's optional. defaults to *
-                              how: "OR",
-                              where: pageToBoxes.data.map(({box_id}) => {
-                                  return {
-                                      id: box_id,
-                                  }
-                              })
+                  let boxes = {data: []}
+                  if(pageToBoxes.data.length){
+                      const boxReq: payloadInterface = {
+                          channel: 'db',
+                          api: 'db',
+                          act: 'get',
+                          payload: {
+                              channel: 'system',
+                              data: {
+                                  what: 'page_box',
+                                  fields: ["*"],//it's optional. defaults to *
+                                  how: "OR",
+                                  where: pageToBoxes.data.map(({box_id}) => {
+                                      return {
+                                          id: box_id,
+                                      }
+                                  })
+                              }
                           }
-                      }
-                  };
-                  const boxes = await this.protocolService.sendMessage(boxReq).toPromise()
+                      };
+                       boxes = await this.protocolService.sendMessage(boxReq).toPromise()
+                  }
+
 
                   const formattedPage = {
                       id: params.id,
@@ -197,9 +203,11 @@ export class PagesService {
                           fontSize: config.fontsize,
                           layoutBoxSpacing: [config.boxsizing, config.boxsizing],
                           pageLink: page.pagelink,
+                          isTemplate: !!page.istemplate,
                           pageTitle: page.title,
                           publish: !!page.publish,
                           textColor: config.textcolor,
+                          templateUsed: config.templateused,
                       },
                       items: boxes.data.map((box) => {
                           return {
@@ -261,6 +269,7 @@ export class PagesService {
                                     publish: pageConfig.publish ? 1 : 0,
                                     cat_id: pageConfig.category,
                                     pagelink: pageConfig.pageLink || "",
+                                    istemplate: pageConfig.isTemplate ? 1 : 0,
                                 }
                             }
                         }
@@ -283,6 +292,7 @@ export class PagesService {
                                     bgrepeat: pageConfig.backgroundRepeat ? 1: 0,
                                     bgstretch: pageConfig.backgroundStretch ? 1: 0,
                                     bggradient: pageConfig.backgroundGradient ? 1: 0,
+                                    templateused: pageConfig.templateUsed || "",
                                 }
                             }
                         }
@@ -407,6 +417,7 @@ export class PagesService {
                                     publish: pageConfig.publish ? 1 : 0,
                                     cat_id: pageConfig.category,
                                     pagelink: pageConfig.pageLink || "",
+                                    istemplate: pageConfig.isTemplate ? 1 : 0,
                                 }
                             }
                         }

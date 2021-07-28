@@ -17,6 +17,7 @@ class PagesController extends Component {
         edit: (params) => this.edit(params),
         remove: (params) => this.remove(params),
         listCategories: (params) => this.listCategories(params),
+        listTemplates: (params) => this.listTemplates(params),
     };
 
     help = {
@@ -85,6 +86,22 @@ class PagesController extends Component {
                     api: 'pages',
                     act: 'list',
                     payload: {}
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    listTemplates(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'pages',
+                    act: 'list',
+                    payload: {isTemplate: true}
                 });
                 resolve(response)
             } catch (err) {
