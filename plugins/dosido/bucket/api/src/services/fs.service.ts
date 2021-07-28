@@ -6,6 +6,7 @@ import {v4 as uuid} from "uuid";
 import {Observable, Subscriber} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
+import * as ZipFile from "adm-zip/zipFile";
 import { Readable } from 'stream';
 import * as etag from "etag";
 
@@ -94,8 +95,9 @@ export class FsService {
 
             const realPath = this.help.path.realPath({path: params.path});
             const topPath = this.help.path.realPath({path: '/'});
+            if(params.path.includes(".zip")){
 
-            if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
+            } else if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
                 observer.complete();
                 return;
@@ -129,44 +131,78 @@ export class FsService {
     list(params) {
         return new Observable((observer) => {
 
-            const realPath = this.help.path.realPath({path: params.path});
+            let realPath = this.help.path.realPath({path: params.path});
+            // if zip read and return arrau of file
+            if(params.path.includes(".zip")){
+                if (realPath.charAt(realPath.length - 1) == '/') {
+                    realPath = realPath.substr(0, realPath.length - 1);
+                }
+                const zip = new AdmZip.default(realPath);
+                let response = [];
+                zip.getEntries().forEach(async function(entry, i) {
+                    var entryName = entry.entryName;
+                    console.log(ZipFile)
+                    let tempZip = new ZipFile.default(entry.getData())
+                    let children = tempZip.getEntryChildren(entry)
 
-            if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
+                    // let stats = fs.statSync(decompressedData);
+                    let entity = {
+                        id: 1235 + i,
+                        dir: entry.isDirectory,
+                        file: !entry.isDirectory,
+                        symlink: false,
+                        name: entry.entryName,
+                        stats: {
+                            // size: stats.size,
+                            // atime: stats.atime,
+                            // mtime: stats.mtime,
+                            // ctime: stats.ctime,
+                            // birthtime: stats.birthtime
+                        }
+                    };
+                    response.push(entity);
+                });
+                observer.next({type: 'file_list', data: response});
+                observer.complete();
+                return;
+            } else if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
                 observer.complete();
                 return;
-            }
+            }else {
+                try {
+                    const entries = fs.readdirSync(realPath, {withFileTypes: true});
+                    let response = [];
+                    if (entries && entries.length) {
+                        entries.forEach((el) => {
+                            let stats = fs.statSync(path.join(realPath, el.name));
+                            let entity = {
+                                id: (stats.dev + stats.ino),
+                                dir: el.isDirectory(),
+                                file: el.isFile(),
+                                symlink: el.isSymbolicLink(),
+                                name: el.name,
+                                stats: {
+                                    size: stats.size,
+                                    atime: stats.atime,
+                                    mtime: stats.mtime,
+                                    ctime: stats.ctime,
+                                    birthtime: stats.birthtime
+                                }
+                            };
+                            response.push(entity);
+                        })
+                    }
+                    observer.next({type: 'file_list', data: response});
+                    observer.complete();
 
-            try {
-                const entries = fs.readdirSync(realPath, {withFileTypes: true});
-                let response = [];
-                if (entries && entries.length) {
-                    entries.forEach((el) => {
-                        let stats = fs.statSync(path.join(realPath, el.name));
-                        let entity = {
-                            id: (stats.dev + stats.ino),
-                            dir: el.isDirectory(),
-                            file: el.isFile(),
-                            symlink: el.isSymbolicLink(),
-                            name: el.name,
-                            stats: {
-                                size: stats.size,
-                                atime: stats.atime,
-                                mtime: stats.mtime,
-                                ctime: stats.ctime,
-                                birthtime: stats.birthtime
-                            }
-                        };
-                        response.push(entity);
-                    })
+                } catch (err) {
+                    observer.next({type: 'error', data: null, message: 'cannot read directory'});
+                    observer.complete();
                 }
-                observer.next({type: 'file_list', data: response});
-                observer.complete();
-
-            } catch (err) {
-                observer.next({type: 'error', data: null, message: 'cannot read directory'});
-                observer.complete();
             }
+
+
         });
     }
 

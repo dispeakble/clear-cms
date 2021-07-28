@@ -353,7 +353,8 @@ class ViewBucket extends Component {
                 }
                 break;
             case 'open_files':
-                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id)){
+                console.log("OPENING")
+                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id) || ref.payload.targetFile.name.includes(".zip")){
                     const paths = [];
                     let found = false;
                     for(let x = 0, t = this.state.folderChain.length; x<t; x++){
@@ -369,6 +370,7 @@ class ViewBucket extends Component {
                     await this.setAsyncState({
                         currentPath: paths.join('/')
                     });
+                    console.log(this.state.currentPath)
                     this.list();
                 } else {
                     if(ref.payload.targetFile.name.match(/.(jpg|jpeg|webp|png|gif)$/i)) {
