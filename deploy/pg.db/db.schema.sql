@@ -251,17 +251,20 @@ ALTER TABLE public.page_config_id_seq OWNER TO cms;
 -- Name: page_config; Type: TABLE; Schema: public; Owner: cms
 --
 
-CREATE TABLE public.page_config (
-    id integer DEFAULT nextval('public.page_config_id_seq'::regclass) NOT NULL,
-    bgcolor character varying,
-    bgimage character varying,
+CREATE TABLE IF NOT EXISTS public.page_config
+(
+    id integer NOT NULL DEFAULT nextval('page_config_id_seq'::regclass),
+    bgcolor character varying COLLATE pg_catalog."default",
+    bgimage character varying COLLATE pg_catalog."default",
     fontsize smallint,
-    fontfamily character varying,
-    textcolor character varying,
+    fontfamily character varying COLLATE pg_catalog."default",
+    textcolor character varying COLLATE pg_catalog."default",
     boxsizing smallint,
     bgrepeat smallint,
     bgstretch smallint,
-    bggradient smallint
+    bggradient smallint,
+    templateused character varying COLLATE pg_catalog."default",
+    CONSTRAINT page_config_pkey PRIMARY KEY (id)
 );
 
 
@@ -287,13 +290,16 @@ ALTER TABLE public.pages_id_seq OWNER TO cms;
 -- Name: pages; Type: TABLE; Schema: public; Owner: cms
 --
 
-CREATE TABLE public.pages (
-    id integer DEFAULT nextval('public.pages_id_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
+CREATE TABLE IF NOT EXISTS public.pages
+(
+    id integer NOT NULL DEFAULT nextval('pages_id_seq'::regclass),
+    title character varying COLLATE pg_catalog."default" NOT NULL,
     is_default smallint NOT NULL,
     publish smallint NOT NULL,
     cat_id integer,
-    pagelink character varying
+    pagelink character varying COLLATE pg_catalog."default",
+    istemplate smallint,
+    CONSTRAINT pages_pkey PRIMARY KEY (id)
 );
 
 

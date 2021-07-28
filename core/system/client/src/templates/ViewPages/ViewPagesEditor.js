@@ -35,7 +35,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
-import { TextField } from "@material-ui/core";
+import { TextField, Checkbox } from "@material-ui/core";
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
@@ -121,6 +121,9 @@ class ViewPagesEditor extends React.PureComponent {
     categories: [],
     category: 0,
     editing: false, // we will reuse this component to edit and add pages
+    isTemplate: false,
+    template: null,
+    templates: [],
     pageTransitionPadding: "",
     addAnItem: false,
     backgroundRepeat: false,
@@ -141,12 +144,68 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   muiTheme = {};
+  async fetchAndSet(page_id, isForTemplate) {
+    let currentPage = await this.props.control.get({ id: parseInt(page_id) });
+    const { pageConfig, items } = currentPage;
+    if (items !== null) {
+      this.setState({
+        items,
+        category: pageConfig.category,
+      });
+    }
 
+    if (pageConfig !== null) {
+      let savedLayoutBoxSpacing = {
+        layoutBoxSpacing: pageConfig.layoutBoxSpacing,
+        layoutBoxPadding: {
+          lg: [0, 0],
+          md: [0, 0],
+          sm: [0, 0],
+          xs: [0, 0],
+          xxs: [0, 0],
+        },
+      };
+
+      await this.setAsyncState({
+        bgColor: pageConfig.backgroundColor,
+        backgroundImage: pageConfig.backgroundImage,
+        oldBackgroundImage: pageConfig.backgroundImage,
+        fontSize: pageConfig.fontSize,
+        textColor: pageConfig.textColor,
+        fontFamily: pageConfig.fontFamily,
+        ...(!isForTemplate && { pageTitle: pageConfig.pageTitle }),
+        pageLink: pageConfig.pageLink,
+        defaultConfig: savedLayoutBoxSpacing,
+        config: savedLayoutBoxSpacing,
+        category: pageConfig.category,
+        defaultPage: pageConfig.defaultPage,
+        publish: pageConfig.publish,
+        pageBackgroundRepeat: pageConfig.backgroundRepeat,
+        pageBackgroundStretch: pageConfig.backgroundStretch,
+        pageBackgroundGradient: pageConfig.pageBackgroundGradient,
+        ...(!isForTemplate && { isTemplate: pageConfig.isTemplate }),
+        ...(!isForTemplate && { template: { label: pageConfig.templateUsed } }),
+      });
+    }
+    await this.setAsyncState({
+      items: currentPage.items,
+      pageConfig: currentPage.pageConfig,
+      editPage: currentPage.editPage,
+    });
+  }
   async componentDidMount() {
     let editing = this.props.location.pathname.indexOf("edit") > -1;
     // TODO: debug why match.params is empty
     // let page_id = Number(this.props.match.params.id);
     let page_id = this.props.location.pathObject[2];
+
+    let temps = await this.props.control.listTemplates();
+    let templates = temps.map((temp) => {
+      return {
+        id: temp.id,
+        label: temp.pageConfig.pageTitle,
+      };
+    });
 
     let categoriesFromStorage = await this.props.control.listCategories();
 
@@ -167,51 +226,7 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     if (editing) {
-      let currentPage = await this.props.control.get({ id: parseInt(page_id) });
-      const { pageConfig, items } = currentPage;
-      if (items !== null) {
-        this.setState({
-          items,
-          category: pageConfig.category,
-        });
-      }
-
-      if (pageConfig !== null) {
-        let savedLayoutBoxSpacing = {
-          layoutBoxSpacing: pageConfig.layoutBoxSpacing,
-          layoutBoxPadding: {
-            lg: [0, 0],
-            md: [0, 0],
-            sm: [0, 0],
-            xs: [0, 0],
-            xxs: [0, 0],
-          },
-        };
-
-        await this.setAsyncState({
-          bgColor: pageConfig.backgroundColor,
-          backgroundImage: pageConfig.backgroundImage,
-          oldBackgroundImage: pageConfig.backgroundImage,
-          fontSize: pageConfig.fontSize,
-          textColor: pageConfig.textColor,
-          fontFamily: pageConfig.fontFamily,
-          pageTitle: pageConfig.pageTitle,
-          pageLink: pageConfig.pageLink,
-          defaultConfig: savedLayoutBoxSpacing,
-          config: savedLayoutBoxSpacing,
-          category: pageConfig.category,
-          defaultPage: pageConfig.defaultPage,
-          publish: pageConfig.publish,
-          pageBackgroundRepeat: pageConfig.backgroundRepeat,
-          pageBackgroundStretch: pageConfig.backgroundStretch,
-          pageBackgroundGradient: pageConfig.pageBackgroundGradient,
-        });
-      }
-      await this.setAsyncState({
-        items: currentPage.items,
-        pageConfig: currentPage.pageConfig,
-        editPage: currentPage.editPage,
-      });
+      await this.fetchAndSet(page_id);
     } else {
       const publicThemes = JSON.parse(localStorage.getItem("publicThemes"));
 
@@ -265,6 +280,7 @@ class ViewPagesEditor extends React.PureComponent {
     this.setState({
       editing: editing,
       page_id: page_id,
+      templates,
     });
   }
 
@@ -801,6 +817,14 @@ class ViewPagesEditor extends React.PureComponent {
       fontFamily: newValue.label,
     });
   };
+  handleTemplateChange = async (event, newValue) => {
+    await this.setAsyncState({
+      template: newValue || {},
+    });
+    if (newValue) {
+      this.fetchAndSet(newValue?.id, true);
+    }
+  };
 
   handleCategory = async (event, newValue) => {
     let newCatId = newValue && newValue.id ? newValue.id : 0;
@@ -948,6 +972,8 @@ class ViewPagesEditor extends React.PureComponent {
       pageBackgroundGradient: this.state.pageBackgroundGradient,
       defaultPage: this.state.defaultPage,
       category: this.state.category,
+      isTemplate: this.state.isTemplate,
+      templateUsed: this.state.template?.label,
     };
 
     if (this.state.editing) {
@@ -992,16 +1018,16 @@ class ViewPagesEditor extends React.PureComponent {
         description: this.state.dialogValue.description,
       });
       const categories = this.state.categories;
-      const newCategorie = categoriesFromStorage?.find(
+      const newCategory = categoriesFromStorage?.find(
         (e) => e.title === this.state.dialogValue.title
       );
       categories.push({
-        label: newCategorie.title,
-        id: newCategorie.id,
-        parentid: newCategorie.parentid,
+        label: newCategory.title,
+        id: newCategory.id,
+        parentid: newCategory.parentid,
       });
       this.setState({
-        category: newCategorie.id,
+        category: newCategory.id,
       });
       await this.setAsyncState({ categories });
       this.getAllCategories();
@@ -1518,6 +1544,35 @@ class ViewPagesEditor extends React.PureComponent {
                               </form>
                             </Dialog>
                           </div>
+                          {!this.state.editing ? (
+                            <div>
+                              <Autocomplete
+                                id="templateDropdown"
+                                onChange={this.handleTemplateChange}
+                                disabled={this.state.editing}
+                                className={this.props.classes.option}
+                                options={this.state.templates}
+                                autoHighlight
+                                getOptionLabel={(option) => option.label}
+                                // value={this.state.template}
+                                renderInput={(params) => (
+                                  <TextField
+                                    className={this.props.classes.textfield}
+                                    {...params}
+                                    label="Select a template"
+                                    variant="outlined"
+                                  />
+                                )}
+                              />
+                            </div>
+                          ) : (
+                            <div style={{ marginBottom: "15px" }}>
+                              Template used:{" "}
+                              <strong>
+                                {this.state.template?.label || "none"}
+                              </strong>
+                            </div>
+                          )}
                           <Typography gutterBottom>Box Spacing</Typography>
                           <Slider
                             className={this.props.classes.pageOptionsSlider}
@@ -1573,6 +1628,17 @@ class ViewPagesEditor extends React.PureComponent {
                                 }}
                               />
                             </Tooltip>
+                          </div>
+                          <div style={{ marginLeft: "-10px" }}>
+                            <Checkbox
+                              checked={this.state.isTemplate}
+                              onChange={(event, checked) => {
+                                this.setState({
+                                  isTemplate: checked,
+                                });
+                              }}
+                            />
+                            <span>Save as template</span>
                           </div>
                         </div>
                       </div>
