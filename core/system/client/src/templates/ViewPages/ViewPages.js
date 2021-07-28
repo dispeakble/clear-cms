@@ -259,9 +259,11 @@ class Pages extends Component {
                                 value={this.state.isTemplate}
                                 exclusive
                                 onChange={(e, newValue) => {
-                                    this.setState({
-                                        isTemplate: newValue
-                                    })
+                                    if(newValue !== null){
+                                        this.setState({
+                                            isTemplate: newValue
+                                        })
+                                    }
                                 }}
                                >
                                 <ToggleButton value={false}>
