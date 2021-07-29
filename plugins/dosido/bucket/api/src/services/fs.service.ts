@@ -9,7 +9,7 @@ import * as AdmZip from "adm-zip";
 import * as ZipFile from "adm-zip/zipFile";
 import { Readable } from 'stream';
 import * as etag from "etag";
-
+const { randomUUID } = require('crypto');
 const fsp = fs.promises;
 
 @Injectable()
@@ -132,36 +132,53 @@ export class FsService {
         return new Observable((observer) => {
 
             let realPath = this.help.path.realPath({path: params.path});
-            // if zip read and return arrau of file
             if(params.path.includes(".zip")){
+                // if nested zip returrn empty array for that
+                if((params.path.match(/.zip/g) || []).length > 1){
+                    observer.next({type: 'file_list', data: []});
+                    observer.complete();
+                    return;
+                }
                 if (realPath.charAt(realPath.length - 1) == '/') {
                     realPath = realPath.substr(0, realPath.length - 1);
                 }
-                const zip = new AdmZip.default(realPath);
+                const nestPaths = realPath.split(".zip")
+                const zip = new AdmZip.default(nestPaths[0]+ ".zip");
                 let response = [];
                 zip.getEntries().forEach(async function(entry, i) {
-                    var entryName = entry.entryName;
-                    console.log(ZipFile)
-                    let tempZip = new ZipFile.default(entry.getData())
-                    let children = tempZip.getEntryChildren(entry)
-
-                    // let stats = fs.statSync(decompressedData);
                     let entity = {
-                        id: 1235 + i,
+                        id: randomUUID(),
                         dir: entry.isDirectory,
                         file: !entry.isDirectory,
                         symlink: false,
                         name: entry.entryName,
                         stats: {
-                            // size: stats.size,
-                            // atime: stats.atime,
-                            // mtime: stats.mtime,
-                            // ctime: stats.ctime,
-                            // birthtime: stats.birthtime
+                            size: entry.header.size,
+                            birthtime: entry.header.time
                         }
                     };
                     response.push(entity);
                 });
+                // if a nested folder is selected filter out everything else
+                if(nestPaths.length > 1 && nestPaths[1]){
+                    const p = nestPaths[1].substr(1, nestPaths[1].length)
+                    response = response.reduce((result, res) => {
+                        if(res.name.includes(p) && (res.name !== p+'/')){
+                            let newName = res.name.substr(p.length+1, res.name.length)
+                            result.push({...res, name: newName})
+                        }
+                        return result
+                    }, [])
+                }
+                // filtering nested files
+                response = response.filter(res => {
+                    let p = res.name.split('/')
+                    if(p.length > 1){
+                        return !p[1]
+                    }
+                    return true
+                })
+
                 observer.next({type: 'file_list', data: response});
                 observer.complete();
                 return;
