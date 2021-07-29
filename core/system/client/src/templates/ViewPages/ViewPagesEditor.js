@@ -1031,21 +1031,19 @@ class ViewPagesEditor extends React.PureComponent {
           });
           this.setState({
             category: newCategory,
+            dialogValue: {
+              title: "",
+              description: "",
+            },
+            open: false,
           });
+
           await this.setAsyncState({ categories });
           this.getAllCategories();
         });
     } else {
       this.setState({ dialogErr: true });
     }
-
-    this.setState({
-      dialogValue: {
-        title: "",
-        description: "",
-      },
-      open: false,
-    });
   };
 
   render() {
