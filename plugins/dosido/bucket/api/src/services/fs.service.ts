@@ -6,7 +6,6 @@ import {v4 as uuid} from "uuid";
 import {Observable, Subscriber} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
-import * as ZipFile from "adm-zip/zipFile";
 import { Readable } from 'stream';
 import * as etag from "etag";
 const { randomUUID } = require('crypto');
