@@ -223,6 +223,15 @@ class ViewBucket extends Component {
     help = {
         getName: (items, id) => {
             return items[id].name;
+        },
+        insideZip: (pathToCheck = "") => {
+            let res = false
+            pathToCheck.split('/').forEach((item) => {
+                if(item && path.extname(item) === ".zip"){
+                    res = true
+                }
+            })
+            return res
         }
     }
 
@@ -353,7 +362,7 @@ class ViewBucket extends Component {
                 }
                 break;
             case 'open_files':
-                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id) || ref.payload.targetFile.name.includes(".zip")){
+                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id) || (path.extname(ref.payload.targetFile.name) === ".zip" || this.help.insideZip(this.state.currentPath))){
                     const paths = [];
                     let found = false;
                     for(let x = 0, t = this.state.folderChain.length; x<t; x++){

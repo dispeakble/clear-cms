@@ -95,7 +95,7 @@ export class FsService {
 
             const realPath = this.help.path.realPath({path: params.path});
             const topPath = this.help.path.realPath({path: '/'});
-            if(params.path.includes(".zip")){
+            if(this.help.isZip(params.path)){
 
             } else if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
@@ -132,18 +132,14 @@ export class FsService {
         return new Observable((observer) => {
 
             let realPath = this.help.path.realPath({path: params.path});
-            if(params.path.includes(".zip")){
-                // if nested zip returrn empty array for that
-                if((params.path.match(/.zip/g) || []).length > 1){
-                    observer.next({type: 'file_list', data: []});
-                    observer.complete();
-                    return;
-                }
+            if(this.help.isZip(params.path)){
+
                 if (realPath.charAt(realPath.length - 1) == '/') {
                     realPath = realPath.substr(0, realPath.length - 1);
                 }
-                const nestPaths = realPath.split(".zip")
-                const zip = new AdmZip.default(nestPaths[0]+ ".zip");
+
+                const { zipPath, insideZipPath } = this.help.zipPathParse(realPath)
+                const zip = new AdmZip.default(zipPath);
                 let response = [];
                 zip.getEntries().forEach(async function(entry, i) {
                     let entity = {
@@ -160,11 +156,11 @@ export class FsService {
                     response.push(entity);
                 });
                 // if a nested folder is selected filter out everything else
-                if(nestPaths.length > 1 && nestPaths[1]){
-                    const p = nestPaths[1].substr(1, nestPaths[1].length)
+                if(insideZipPath.length){
+                    const p = insideZipPath + "/"
                     response = response.reduce((result, res) => {
-                        if(res.name.includes(p) && (res.name !== p+'/')){
-                            let newName = res.name.substr(p.length+1, res.name.length)
+                        if(p === res.name.substr(0, p.length) && (res.name !== p)){
+                            let newName = res.name.substr(p.length, res.name.length)
                             result.push({...res, name: newName})
                         }
                         return result
