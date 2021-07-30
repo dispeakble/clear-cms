@@ -34,7 +34,7 @@ fi
 DOCKERHUB_USERNAME="cmsbot"
 DOCKERHUB_PASS="@u*82fmVP^GVx2$"
 BITBUCKET_USERNAME="the_dispeakble_one"
-BITBUCKET_PASS="33qsygUp8irSv@E"
+BITBUCKET_PASS="He@cmkGN7q^cl2n"
 
 #DOCKERHUB_CRED_FILE=./dockerhub_credentials.txt
 #if [[ -f "$DOCKERHUB_CRED_FILE" ]]; then
