@@ -313,10 +313,14 @@ class Categories extends Component {
         this.props.control.remove({
             id: categIds
         }).then(() => {
-                this.setState({
-                    categories: [],
-                });
-            });
+          const newCatgs = this.state.categories.filter(
+              (cat) =>
+                  !this.state.multipleDeleteData.find(({ id }) => id === cat.id)
+          );
+          this.setState({
+            categories: newCatgs,
+          });
+        });
         // categories = categories.filter((categ) => {
         //     return !categIds.includes(categ.id);
         // });
