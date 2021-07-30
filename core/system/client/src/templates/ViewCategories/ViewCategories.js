@@ -64,7 +64,10 @@ class Categories extends Component {
     list = async () => {
         let result = [];
 
-        const categories = await this.props.control.list();
+        let categories = await this.props.control.list();
+        if(!categories) {
+            categories = [];
+        }
 
         await this.setAsyncState({
             categories
