@@ -174,6 +174,16 @@ export class FsService {
                     return true
                 })
 
+                response = response.map(res => {
+                    let newName = res.name;
+                    if (res.name.charAt(res.name.length - 1) == '/') {
+                        newName = res.name.substr(0, res.name.length - 1);
+                    }
+                    return {
+                        ...res,
+                        name: newName
+                    }
+                })
                 observer.next({type: 'file_list', data: response});
                 observer.complete();
                 return;
