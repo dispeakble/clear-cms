@@ -63,14 +63,16 @@ class PagesController extends Component {
         });
     }
 
-    listCategories(){
+    listCategories(params) {
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'categories',
                     act: 'list',
-                    payload: {}
+                    payload: {
+                        where: params?.where
+                    }
                 });
                 resolve(response)
             } catch (err) {
@@ -114,72 +116,13 @@ class PagesController extends Component {
     get(params){
         return new Promise(async resolve => {
             try {
-                /*const downloadParams = {
-                    module: 'system',
-                    api: 'bucket',
-                    act: 'download',
-                }*/
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'pages',
                     act: 'get',
                     payload: params
                 });
-                const editPage = _.cloneDeep(response)
-                /*const file = await this.sendMessage({
-                    ...downloadParams,
-                    payload: {
-                        src: response.pageConfig.backgroundImage,
-                        source_path: '/pages/page-'+response.id+'/'
-                    }
-                });
-                response.pageConfig.backgroundImage = file && "data:"+file.mimeType+";base64," +file.file*/
-                /*await Promise.all(response.items.map(async (item, i) => {
-                    if(item.backgroundImage){
-                        const file = await this.sendMessage({
-                            ...downloadParams,
-                            payload: {
-                                src: item.backgroundImage,
-                                source_path: '/pages/page-'+response.id+'/box-'+item.i+'/'
-                            }
-                        });
-                        response.items[i].backgroundImage = file &&  "data:"+file.mimeType+";base64," +file.file
-                    }
-
-                    if(item.module === "Header Module"  ){
-                        if(item.moduleOptions.data.bg){
-                            const file = await this.sendMessage({
-                                ...downloadParams,
-                                payload: {
-                                    src: item.moduleOptions.data.bg,
-                                    source_path: '/pages/page-'+response.id+'/box-'+item.i+'/'
-                                }
-                            });
-                            editPage.items[i] = {...editPage.items[i], module: item.module, modulePath1: '/pages/page-'+response.id+'/box-'+item.i+'/'+item.moduleOptions.data.bg}
-                            response.items[i].moduleOptions.data.bg = file && "data:"+file.mimeType+";base64," +file.file
-                        }
-                        if(item.moduleOptions.data.logoImage){
-                            const file = await this.sendMessage({
-                                ...downloadParams,
-                                payload: {
-                                    src: item.moduleOptions.data.logoImage,
-                                    source_path: '/pages/page-'+response.id+'/box-'+item.i+'/'
-                                }
-                            });
-                            editPage.items[i] = {...editPage.items[i], module: item.module, modulePath2: '/pages/page-'+response.id+'/box-'+item.i+'/'+item.moduleOptions.data.logoImage}
-                            response.items[i].moduleOptions.data.logoImage = file && "data:"+file.mimeType+";base64," +file.file
-                        }
-                    } else if(item.module === "Banner Module" && item.moduleOptions.data?.backgroundImageFile) {
-                        const file = await this.sendMessage({
-                           ...downloadParams,
-                            payload: {
-                                src: item.moduleOptions.data.backgroundImage,
-                                source_path: '/pages/page-'+response.id+'/box-'+item.i+'/'
-                            }
-                        });
-                        response.items[i].moduleOptions.data.backgroundImage = file && "data:"+file.mimeType+";base64," +file.file
-                    }
-                }))*/
+                const editPage = _.cloneDeep(response);
                 response.editPage = editPage
                 resolve(response)
             } catch (err) {

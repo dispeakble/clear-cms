@@ -119,7 +119,8 @@ class ViewPagesEditor extends React.PureComponent {
     pageBackgroundGradient: false,
     defaultPage: false,
     categories: [],
-    category: 0,
+    categoryId: 0,
+    currentCategory: null,
     editing: false, // we will reuse this component to edit and add pages
     isTemplate: false,
     template: null,
@@ -138,7 +139,7 @@ class ViewPagesEditor extends React.PureComponent {
       title: "",
       description: "",
     },
-    open: false,
+    openNewCategory: false,
     isUniqueTitle: false,
     dialogErr: false,
   };
@@ -148,9 +149,11 @@ class ViewPagesEditor extends React.PureComponent {
     let currentPage = await this.props.control.get({ id: parseInt(page_id) });
     const { pageConfig, items } = currentPage;
     if (items !== null) {
+      
       this.setState({
         items,
-        category: pageConfig.category,
+        categoryId: pageConfig.categoryId,
+        currentCategory: this.getCategoryItem(pageConfig.categoryId)
       });
     }
 
@@ -166,6 +169,7 @@ class ViewPagesEditor extends React.PureComponent {
         },
       };
 
+      
       await this.setAsyncState({
         bgColor: pageConfig.backgroundColor,
         backgroundImage: pageConfig.backgroundImage,
@@ -177,7 +181,8 @@ class ViewPagesEditor extends React.PureComponent {
         pageLink: pageConfig.pageLink,
         defaultConfig: savedLayoutBoxSpacing,
         config: savedLayoutBoxSpacing,
-        category: pageConfig.category,
+        categoryId: pageConfig.categoryId,
+        currentCategory: this.getCategoryItem(pageConfig.categoryId),
         defaultPage: pageConfig.defaultPage,
         publish: pageConfig.publish,
         pageBackgroundRepeat: pageConfig.backgroundRepeat,
@@ -827,13 +832,20 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   handleCategory = async (event, category) => {
+    
     await this.setAsyncState({
-      category,
+      categoryId: category.id
     });
 
-    if (category && category.value) {
+    if(category.id) {
+      await this.setAsyncState({
+        currentCategory: this.getCategoryItem(category.id)
+      });
+    }
+
+    if (!category.id) {
       this.setState({
-        open: true,
+        openNewCategory: true,
         dialogValue: {
           title: category.value,
         },
@@ -970,7 +982,7 @@ class ViewPagesEditor extends React.PureComponent {
       backgroundStretch: this.state.pageBackgroundStretch,
       pageBackgroundGradient: this.state.pageBackgroundGradient,
       defaultPage: this.state.defaultPage,
-      category: this.state.category.id,
+      categoryId: this.state.categoryId,
       isTemplate: this.state.isTemplate,
       templateUsed: this.state.template?.label,
     };
@@ -994,55 +1006,64 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   handleCategoryUniqueness = async (event) => {
-    event.persist();
-    let categoriesFromStorage = await this.props.control.listCategories();
+    if(!event?.target?.value?.length) {
+      return null;
+    }
+    let categoriesFromStorage = await this.props.control.listCategories({
+      where: {
+        title: event.target.value
+      }
+    });
     this.setState({
-      isUniqueTitle: !categoriesFromStorage.find(
-        (el) => el.title === event.target.value
-      ),
+      isUniqueTitle: !categoriesFromStorage?.length
     });
   };
 
   handleNewCategory = async (event) => {
     event.preventDefault();
     event.persist();
+    const newTitle = `${this.state.dialogValue.title}`;
+    const newDescription = `${this.state.dialogValue.title}`;
 
-    let categoriesFromStorage = await this.props.control.listCategories();
-    const notExistInDataBase = !categoriesFromStorage.find(
-      (el) => el.title === event.target.value
-    );
-    if (this.state.dialogValue.title !== "" && notExistInDataBase) {
-      await this.props.control
-        .addCategory({
-          title: this.state.dialogValue.title,
-          description: this.state.dialogValue.description,
-        })
-        .then(async (e) => {
-          let categoriesFromStorage = await this.props.control.listCategories();
-          const categories = this.state.categories;
-          const newCategory = categoriesFromStorage.find(
-            (el) => el.id === e.categoryId
-          );
-          categories.push({
-            label: newCategory.title,
-            id: newCategory.id,
-            parentid: newCategory.parentid,
-          });
-          this.setState({
-            category: newCategory,
-            dialogValue: {
-              title: "",
-              description: "",
-            },
-            open: false,
-          });
+    let categoriesFromStorage = await this.props.control.listCategories({
+      where: {
+        title: this.state.dialogValue.title
+      }
+    });
 
-          await this.setAsyncState({ categories });
-          this.getAllCategories();
+    if(!categoriesFromStorage?.length) {
+      const newCategory = await this.props.control.addCategory({
+        title: newTitle,
+        description: newDescription,
+      });
+
+      categoriesFromStorage = await this.props.control.listCategories();
+
+      const categories = [];
+
+      categoriesFromStorage.map((category) => {
+        categories.push({
+          label: category.title,
+          id: category.id,
+          parentid: category.parentid,
         });
+        return category;
+      });
+      await this.setAsyncState({ categories });
+
+      this.getAllCategories();
+
+      this.setState({
+        categoryId: newCategory.categoryId,
+        currentCategory: this.getCategoryItem(newCategory.categoryId)
+      });
     } else {
-      this.setState({ dialogErr: true });
+      this.getAllCategories();
     }
+
+    this.setState({
+      openNewCategory: false
+    })
   };
 
   render() {
@@ -1426,7 +1447,7 @@ class ViewPagesEditor extends React.PureComponent {
                               onChange={this.handleCategory}
                               onInputChange={this.handleCategoryUniqueness}
                               className={this.props.classes.option}
-                              value={this.getCategoryItem(this.state.category)}
+                              value={this.state.currentCategory}
                               filterOptions={(options, params) => {
                                 const filtered = filter(options, params);
                                 if (
@@ -1442,14 +1463,7 @@ class ViewPagesEditor extends React.PureComponent {
                               }}
                               options={this.state.flatCategories}
                               autoHighlight
-                              getOptionLabel={(option) =>
-                                option.value ? option.value : option.label
-                              }
-                              selectOnFocus
-                              clearOnBlur
-                              handleHomeEndKeys
-                              renderOption={(option) => option.label}
-                              freeSolo
+                              getOptionLabel={(option) => option.label}
                               renderInput={(params) => (
                                 <TextField
                                   className={this.props.classes.textfield}
@@ -1461,14 +1475,14 @@ class ViewPagesEditor extends React.PureComponent {
                             />
 
                             <Dialog
-                              open={this.state.open}
+                              open={this.state.openNewCategory}
                               onClose={() =>
                                 this.setState({
                                   dialogValue: {
                                     title: "",
                                     description: "",
                                   },
-                                  open: false,
+                                  openNewCategory: false,
                                 })
                               }
                               aria-labelledby="form-dialog-title"
@@ -1514,6 +1528,9 @@ class ViewPagesEditor extends React.PureComponent {
                                   />
                                 </DialogContent>
                                 <DialogActions>
+                                  <Button type="submit" color="primary">
+                                    Add
+                                  </Button>
                                   <Button
                                     onClick={() =>
                                       this.setState({
@@ -1521,16 +1538,14 @@ class ViewPagesEditor extends React.PureComponent {
                                           title: "",
                                           description: "",
                                         },
-                                        open: false,
+                                        openNewCategory: false,
                                       })
                                     }
-                                    color="primary"
+                                    color="secondary"
                                   >
                                     Cancel
                                   </Button>
-                                  <Button type="submit" color="primary">
-                                    Add
-                                  </Button>
+
                                 </DialogActions>
                                 {this.state.dialogErr && (
                                   <p
