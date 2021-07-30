@@ -166,7 +166,7 @@ export class PagesService {
                   };
                   const pageToBoxes = await this.protocolService.sendMessage(pagesToBoxReq).toPromise()
                   let boxes = {data: []}
-                  if(pageToBoxes.data.length){
+                  if(pageToBoxes.data?.length){
                       const boxReq: payloadInterface = {
                           channel: 'db',
                           api: 'db',
@@ -188,6 +188,27 @@ export class PagesService {
                        boxes = await this.protocolService.sendMessage(boxReq).toPromise()
                   }
 
+                  const pagesToCategoriesReq: payloadInterface = {
+                      channel: 'db',
+                      api: 'db',
+                      act: 'get',
+                      payload: {
+                          channel: 'system',
+                          data: {
+                              what: 'pages_to_categories',
+                              fields: ["category_id"],
+                              where: {
+                                  page_id: params.id
+                              }
+                          }
+                      }
+                  };
+
+                  const pagesToCategories = await this.protocolService.sendMessage(pagesToCategoriesReq).toPromise();
+                  let categoryId = 0;
+                  if(pagesToCategories.data?.length) {
+                      categoryId = pagesToCategories.data[0].category_id;
+                  }
 
                   const formattedPage = {
                       id: params.id,
@@ -197,12 +218,12 @@ export class PagesService {
                           backgroundRepeat: !!config.bgrepeat,
                           backgroundStretch: !!config.bgstretch,
                           backgroundGradient: !!config.bggradient,
-                          category: page.cat_id,
                           defaultPage: !!page.is_default,
                           fontFamily: config.fontfamily,
                           fontSize: config.fontsize,
                           layoutBoxSpacing: [config.boxsizing, config.boxsizing],
                           pageLink: page.pagelink,
+                          categoryId: categoryId,
                           isTemplate: !!page.istemplate,
                           pageTitle: page.title,
                           publish: !!page.publish,
@@ -236,6 +257,9 @@ export class PagesService {
                           }
                       })
                   }
+
+
+
                   subscriber.next({type: 'page', data: formattedPage});
                   subscriber.complete();
               } catch(err) {
@@ -317,6 +341,25 @@ export class PagesService {
                     };
 
                     const pageToConfig =  await  this.protocolService.sendMessage(pageToConfigReq).toPromise();
+
+                    const pageToCategoryReq = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pages_to_categories',
+                                data: {
+                                    page_id: page.data[0].id,
+                                    category_id: config.data[0].categoryId,
+                                }
+                            }
+                        }
+                    };
+
+                    const pageToCategory = await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
+
                     let boxesIds = []
                     if(items.length){
                         const pageBoxReq: payloadInterface = {
@@ -376,7 +419,7 @@ export class PagesService {
                         };
 
                         const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
-                        boxesIds = boxes.data.map((box) => box.id)
+                        boxesIds = boxes.data.map((box) => box.id);
                     }
 
                     subscriber.next({
@@ -663,12 +706,50 @@ export class PagesService {
                         });
                     }
 
-
                     if(existingBoxes.length){
                         existingBoxes.map(box => {
                             boxesIds.push({id: box.id, ref: existingBoxes.i})
                         });
                     }
+
+                    /*
+                    * 5. delete old category association and add a new one
+                    * */
+
+                    const pageToCategoryDelReq = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'rem',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pages_to_categories',
+                                where: {
+                                    page_id: params.id
+                                }
+                            }
+                        }
+                    };
+
+                    await this.protocolService.sendMessage(pageToCategoryDelReq).toPromise();
+
+                    const pageToCategoryReq = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pages_to_categories',
+                                data: {
+                                    page_id: Number(params.id),
+                                    category_id: Number(params.pageConfig.categoryId),
+                                }
+                            }
+                        }
+                    };
+
+                    await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
 
                     subscriber.next({
                         success: "The page was saved",

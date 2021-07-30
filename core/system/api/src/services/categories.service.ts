@@ -26,7 +26,8 @@ export class CategoriesService {
                     channel: 'system',
                     data: {
                         what: 'categories',
-                        fields: ["id", "title", "description", "backgroundimage", "parentid"]
+                        fields: ["id", "title", "description", "backgroundimage", "parentid"],
+                        where: params?.where
                     }
                 }
             };
