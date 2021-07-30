@@ -92,6 +92,34 @@ export class HelpService {
         utils: {
             UID: (len) => Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, len),
             test: () => true
+        },
+        isZip:(pathToCheck = "") => {
+            let res = false
+            pathToCheck.split('/').forEach((item,index) => {
+                if(item && path.extname(item) === ".zip"){
+                    res = true
+                }
+            })
+            return res
+        },
+        zipPathParse:(pathToParse = "") => {
+            let zipPath = [];
+            let insideZipPath = [];
+            let zip = false;
+            pathToParse.split('/').forEach(item => {
+                if(zip){
+                    insideZipPath.push(item)
+                } else {
+                    zipPath.push(item)
+                }
+                if(this.help.isZip(item) && !zip){
+                    zip = true
+                }
+            })
+            return {
+                zipPath: zipPath.join('/'),
+                insideZipPath: insideZipPath.join('/')
+            }
         }
 
     }

@@ -11,7 +11,7 @@ import {
     FileNavbar,
     FileToolbar,
     defineFileAction,
-    FileHelper
+    FileHelper, ChonkyActions
 } from 'chonky';
 import {Helmet} from "react-helmet";
 import PropTypes from "prop-types";
@@ -223,6 +223,15 @@ class ViewBucket extends Component {
     help = {
         getName: (items, id) => {
             return items[id].name;
+        },
+        insideZip: (pathToCheck = "") => {
+            let res = false
+            pathToCheck.split('/').forEach((item) => {
+                if(item && path.extname(item) === ".zip"){
+                    res = true
+                }
+            })
+            return res
         }
     }
 
@@ -353,7 +362,7 @@ class ViewBucket extends Component {
                 }
                 break;
             case 'open_files':
-                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id)){
+                if(ref.payload.targetFile.isDir || this.state.folderChain.find(el => el.id === ref.payload.targetFile.id) || (path.extname(ref.payload.targetFile.name) === ".zip" || (this.help.insideZip(this.state.currentPath) && ref.payload.targetFile.isDir))){
                     const paths = [];
                     let found = false;
                     for(let x = 0, t = this.state.folderChain.length; x<t; x++){
@@ -982,7 +991,8 @@ class ViewBucket extends Component {
         const onFileAction = (data) => {
             this.onFileAction(data);
         };
-
+        const defaultActionsDisabled = this.help.insideZip(this.state.currentPath) ? [ChonkyActions.ClearSelection.id, ChonkyActions.SelectAllFiles.id] : false
+        const disableSelection = this.help.insideZip(this.state.currentPath)
         return (
                 <React.Fragment>
                     <Helmet>
@@ -990,7 +1000,7 @@ class ViewBucket extends Component {
                     </Helmet>
                     <MuiThemeProvider theme={this.muiTheme}>
                         <div style={{ height: '100vh', paddingTop: '60px' }}>
-                            <FileBrowser onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
+                            <FileBrowser disableSelection={disableSelection} disableDefaultFileActions={defaultActionsDisabled} onFileAction={onFileAction} fileActions={this.fileActions} files={this.state.files} folderChain={this.state.folderChain}>
                                 <ThemeProvider theme={{
                                     merged: true,
                                     colors: {

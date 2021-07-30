@@ -8,7 +8,7 @@ import * as mime from "mime";
 import * as AdmZip from "adm-zip";
 import { Readable } from 'stream';
 import * as etag from "etag";
-
+const { randomUUID } = require('crypto');
 const fsp = fs.promises;
 
 @Injectable()
@@ -94,8 +94,9 @@ export class FsService {
 
             const realPath = this.help.path.realPath({path: params.path});
             const topPath = this.help.path.realPath({path: '/'});
+            if(this.help.isZip(params.path)){
 
-            if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
+            } else if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
                 observer.complete();
                 return;
@@ -129,44 +130,101 @@ export class FsService {
     list(params) {
         return new Observable((observer) => {
 
-            const realPath = this.help.path.realPath({path: params.path});
+            let realPath = this.help.path.realPath({path: params.path});
+            if(this.help.isZip(params.path)){
 
-            if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
+                if (realPath.charAt(realPath.length - 1) == '/') {
+                    realPath = realPath.substr(0, realPath.length - 1);
+                }
+
+                const { zipPath, insideZipPath } = this.help.zipPathParse(realPath)
+                const zip = new AdmZip.default(zipPath);
+                let response = [];
+                zip.getEntries().forEach(async function(entry, i) {
+                    let entity = {
+                        id: randomUUID(),
+                        dir: entry.isDirectory,
+                        file: !entry.isDirectory,
+                        symlink: false,
+                        name: entry.entryName,
+                        stats: {
+                            size: entry.header.size,
+                            birthtime: entry.header.time
+                        }
+                    };
+                    response.push(entity);
+                });
+                // if a nested folder is selected filter out everything else
+                if(insideZipPath.length){
+                    const p = insideZipPath + "/"
+                    response = response.reduce((result, res) => {
+                        if(p === res.name.substr(0, p.length) && (res.name !== p)){
+                            let newName = res.name.substr(p.length, res.name.length)
+                            result.push({...res, name: newName})
+                        }
+                        return result
+                    }, [])
+                }
+                // filtering nested files
+                response = response.filter(res => {
+                    let p = res.name.split('/')
+                    if(p.length > 1){
+                        return !p[1]
+                    }
+                    return true
+                })
+
+                response = response.map(res => {
+                    let newName = res.name;
+                    if (res.name.charAt(res.name.length - 1) == '/') {
+                        newName = res.name.substr(0, res.name.length - 1);
+                    }
+                    return {
+                        ...res,
+                        name: newName
+                    }
+                })
+                observer.next({type: 'file_list', data: response});
+                observer.complete();
+                return;
+            } else if (this.help.not.dir({path: realPath}) || this.help.not.readable({path: realPath})) {
                 observer.next({type: 'error', data: null, message: 'cannot read directory'});
                 observer.complete();
                 return;
-            }
+            }else {
+                try {
+                    const entries = fs.readdirSync(realPath, {withFileTypes: true});
+                    let response = [];
+                    if (entries && entries.length) {
+                        entries.forEach((el) => {
+                            let stats = fs.statSync(path.join(realPath, el.name));
+                            let entity = {
+                                id: (stats.dev + stats.ino),
+                                dir: el.isDirectory(),
+                                file: el.isFile(),
+                                symlink: el.isSymbolicLink(),
+                                name: el.name,
+                                stats: {
+                                    size: stats.size,
+                                    atime: stats.atime,
+                                    mtime: stats.mtime,
+                                    ctime: stats.ctime,
+                                    birthtime: stats.birthtime
+                                }
+                            };
+                            response.push(entity);
+                        })
+                    }
+                    observer.next({type: 'file_list', data: response});
+                    observer.complete();
 
-            try {
-                const entries = fs.readdirSync(realPath, {withFileTypes: true});
-                let response = [];
-                if (entries && entries.length) {
-                    entries.forEach((el) => {
-                        let stats = fs.statSync(path.join(realPath, el.name));
-                        let entity = {
-                            id: (stats.dev + stats.ino),
-                            dir: el.isDirectory(),
-                            file: el.isFile(),
-                            symlink: el.isSymbolicLink(),
-                            name: el.name,
-                            stats: {
-                                size: stats.size,
-                                atime: stats.atime,
-                                mtime: stats.mtime,
-                                ctime: stats.ctime,
-                                birthtime: stats.birthtime
-                            }
-                        };
-                        response.push(entity);
-                    })
+                } catch (err) {
+                    observer.next({type: 'error', data: null, message: 'cannot read directory'});
+                    observer.complete();
                 }
-                observer.next({type: 'file_list', data: response});
-                observer.complete();
-
-            } catch (err) {
-                observer.next({type: 'error', data: null, message: 'cannot read directory'});
-                observer.complete();
             }
+
+
         });
     }
 
