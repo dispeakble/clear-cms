@@ -34,7 +34,7 @@ fi
 DOCKERHUB_USERNAME="cmsbot"
 DOCKERHUB_PASS="yTazvEWhtEbk4mv"
 BITBUCKET_USERNAME="the_dispeakble_one"
-BITBUCKET_PASS="33qsygUp8irSv@E"
+BITBUCKET_PASS="He@cmkGN7q^cl2n"
 
 sudp apt update
 sudo apt upgrade -y
