@@ -310,14 +310,10 @@ class Categories extends Component {
     multipleDeleteCallback = async () => {
         let categIds = [];
         this.state.multipleDeleteData.map((categ) => categIds.push(categ.id));
-        this.props.control.remove({
+        await this.props.control.remove({
             id: categIds
-        })
-        // categories = categories.filter((categ) => {
-        //     return !categIds.includes(categ.id);
-        // });
-        //await this.setAsyncState({ categories });
-        //localStorage.setItem("categories", JSON.stringify(categories));
+        });
+        this.list();
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
         this.closeMultipleDeleteModal();
     };
