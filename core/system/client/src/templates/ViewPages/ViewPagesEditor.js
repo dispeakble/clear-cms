@@ -826,17 +826,16 @@ class ViewPagesEditor extends React.PureComponent {
     }
   };
 
-  handleCategory = async (event, newValue) => {
-    let newCatId = newValue && newValue.id ? newValue.id : 0;
+  handleCategory = async (event, category) => {
     await this.setAsyncState({
-      category: newCatId,
+      category,
     });
 
-    if (newValue && newValue.value) {
+    if (category && category.value) {
       this.setState({
         open: true,
         dialogValue: {
-          title: newValue.value,
+          title: category.value,
         },
       });
     }
@@ -971,7 +970,7 @@ class ViewPagesEditor extends React.PureComponent {
       backgroundStretch: this.state.pageBackgroundStretch,
       pageBackgroundGradient: this.state.pageBackgroundGradient,
       defaultPage: this.state.defaultPage,
-      category: this.state.category,
+      category: this.state.category.id,
       isTemplate: this.state.isTemplate,
       templateUsed: this.state.template?.label,
     };
