@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ViewAdminProfile from "../templates/ViewAdminProfile/ViewAdminProfile";
 
 class AdminProfileController extends Component {
-    services = {};
+    services = this.props.services;
     messageCallbacks = {};
     config = {
         prefix: 'admin-profile/'
@@ -16,7 +16,7 @@ class AdminProfileController extends Component {
 
     async componentDidMount() {
 
-        this.services = this.props.services;
+        // this.services = this.props.services;
 
         this.services.ws.subscribe({
             channel: 'admin-profile',

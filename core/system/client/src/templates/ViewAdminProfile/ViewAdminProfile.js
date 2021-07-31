@@ -48,8 +48,8 @@ class ViewAdminProfile extends Component {
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
-    componentDidMount() {
-        setTimeout(async () => {
+    async componentDidMount() {
+        
             const profileData = await this.props.control.get();
             if (profileData && profileData.email && profileData.fname && profileData.lname) {
                 let validation = this.state.validation;
@@ -72,7 +72,7 @@ class ViewAdminProfile extends Component {
                     email: profileData.email
                 })
             }
-        }, 300);
+     
 
     }
 
