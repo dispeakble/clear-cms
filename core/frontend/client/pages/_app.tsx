@@ -1,7 +1,6 @@
 import App, { AppContext, AppInitialProps } from 'next/app'
 import {Helmet} from "react-helmet";
 
-import '../styles/globals.css'
 import AppStore from "../infrastructure/store";
 
 class WebApp extends App {
