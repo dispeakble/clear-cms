@@ -1,9 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
 import ViewAdminProfile from "../templates/ViewAdminProfile/ViewAdminProfile";
+import Snackbar from "components/Snackbar/Snackbar.js";
 
 class AdminProfileController extends Component {
+    state = {
+        errorNotification : [],
+    };
     services = this.props.services;
     messageCallbacks = {};
     config = {
@@ -14,9 +18,9 @@ class AdminProfileController extends Component {
         set: (params) => this.setData(params),
     };
 
-    async componentDidMount() {
+    
 
-        // this.services = this.props.services;
+    async componentDidMount() {
 
         this.services.ws.subscribe({
             channel: 'admin-profile',
@@ -39,7 +43,7 @@ class AdminProfileController extends Component {
     }
 
     async setData(params) {
-        
+
         const response = await this.sendMessage({
             module: "system",
             api: "adminProfile",
@@ -49,8 +53,8 @@ class AdminProfileController extends Component {
                 payload: params
             }
         });
-        if(response?.success){
-            localStorage.setItem('admin', JSON.stringify({fullname: response.data.fullName}));
+        if (response?.success) {
+            localStorage.setItem('admin', JSON.stringify({ fullname: response.data.fullName }));
             document.location.reload();
         }
 
@@ -62,9 +66,9 @@ class AdminProfileController extends Component {
             if (params.data) {
                 this.messageCallbacks[params.id](params.data);
             } else {
-                alert(params.error);
+                this.updateErrorNotification(params.error);
             }
-            
+
         } catch (err) {
             console.log(err);
         }
@@ -86,8 +90,40 @@ class AdminProfileController extends Component {
         });
     }
 
+    updateErrorNotification (errMsg) {
+        this.setState({
+            errorNotification : [...this.state.errorNotification, errMsg]
+        })
+    }
+
+    removeErrorNotification (errMsg) {
+        const updatedErrorNotification = this.state.errorNotification.filter(msg => msg !== errMsg);
+        this.setState({
+            errorNotification: updatedErrorNotification,
+        })
+    }
+
     render() {
-        return <ViewAdminProfile control={this.control} {...this.props} />;
+        return (
+            <>
+            {
+                this.state.errorNotification.map((msg) => {
+                    return (
+                        <Snackbar 
+                            place='tc' 
+                            message={msg} 
+                            open 
+                            close 
+                            closeNotification={() => {this.removeErrorNotification(msg)}}
+                            color='warning'
+                        />
+
+                    )
+                })
+            }
+                <ViewAdminProfile control={this.control} {...this.props} />
+            </>
+        );
     }
 
 }
