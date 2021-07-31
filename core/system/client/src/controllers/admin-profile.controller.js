@@ -39,6 +39,7 @@ class AdminProfileController extends Component {
     }
 
     async setData(params) {
+        
         const response = await this.sendMessage({
             module: "system",
             api: "adminProfile",
@@ -48,7 +49,7 @@ class AdminProfileController extends Component {
                 payload: params
             }
         });
-        if(response.success){
+        if(response?.success){
             localStorage.setItem('admin', JSON.stringify({fullname: response.data.fullName}));
             document.location.reload();
         }
@@ -58,7 +59,12 @@ class AdminProfileController extends Component {
 
     onMessage(params) {
         try {
-            this.messageCallbacks[params.id](params.data);
+            if (params.data) {
+                this.messageCallbacks[params.id](params.data);
+            } else {
+                alert(params.error);
+            }
+            
         } catch (err) {
             console.log(err);
         }
