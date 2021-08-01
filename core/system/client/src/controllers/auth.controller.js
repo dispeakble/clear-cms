@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import ViewAuth from "templates/ViewAuth/ViewAuth";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
@@ -46,10 +46,13 @@ class AuthController extends Component {
                 payload: params
             }).then(response => {
                 if (response && response.email && response.email === params.email) {
-                    localStorage.setItem('admin', JSON.stringify({fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email}));
-                    this.props.services.ws.start();
-                    this.props.history.push('/');
+                    localStorage.setItem('admin', JSON.stringify({ fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email }));
+                    this.props.services.ws.start().then((done) => {
+                        this.props.history.push('/');
+                    });
                     return resolve(response);
+
+
                 }
 
                 resolve(false);
@@ -60,10 +63,10 @@ class AuthController extends Component {
     logout() {
         this.services.ws.client.emit('D', null);
         return this.sendPost({
-                module: 'system',
-                api: 'auth',
-                act: 'doLogout'
-            }
+            module: 'system',
+            api: 'auth',
+            act: 'doLogout'
+        }
         )
     }
 
@@ -100,7 +103,7 @@ class AuthController extends Component {
 
             fetch('/', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     id: uniqueId,
                     module: params.module,
@@ -136,8 +139,8 @@ class AuthController extends Component {
                 .then(stream => new Response(stream))
                 .then(response => response.json())
                 .then((json) => {
-                resolve_send(json);
-            });
+                    resolve_send(json);
+                });
         });
     }
 
