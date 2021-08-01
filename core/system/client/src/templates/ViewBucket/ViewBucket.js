@@ -388,7 +388,7 @@ class ViewBucket extends Component {
                                 message: (
                                     <img
                                         style={{ width: '100%', display: 'block', margin: 'auto' }}
-                                        src={`${window.location.origin}/files${this.state.currentPath}${ref.payload.targetFile.name}`}
+                                        src={`/files${this.state.currentPath}${ref.payload.targetFile.name}`}
                                     />
                                 ),
                                 confirm: {
