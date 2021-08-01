@@ -5,8 +5,7 @@ RUN mkdir -p /usr/src/client/
 WORKDIR /usr/src/client
 
 COPY ./client/package*.json /usr/src/client/
-COPY ./client/yarn.lock /usr/src/client/
-RUN yarn install
+RUN npm install
 COPY ./client/public /usr/src/client/public
 COPY ./client/src /usr/src/client/src
 COPY ./client/.babelrc /usr/src/client/.babelrc
@@ -37,5 +36,3 @@ CMD ["rm", "-fr", "src"]
 CMD ["rm", "-fr", "node_modules"]
 RUN npm install --only=prod
 CMD ["npm","run","start:prod"]
-
-#CMD ["docker", "tag", "clearcrm_crm-system", "localhost:5000/crm-system:latest", "&&", "docker", "push", "localhost:5000/crm-system:latest"]

@@ -3,23 +3,22 @@ import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import {Observable} from "rxjs";
 
 @Controller()
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
-        name: 'system',
+        name: 'frontend',
         version: '21.07.26',
-        description: 'System Module',
+        description: 'Front End Module',
         started: new Date(),
         config: {
-            channel: 'system',
+            channel: 'frontend',
             permissions: {
                 stop: false,
                 restart: true,
-                ports: [80]
+                ports: [80, 443]
             }
         },
         dependencies: [{
@@ -31,18 +30,20 @@ export class ProtocolController {
         }]
     };
 
-    private mainService;
+    constructor(
+        @Inject('SystemService') private systemService,
+        @Inject('ProtocolService') private protocolService,
+        @Inject('BucketService') private bucketService,
+    ) {
 
-    constructor(@Inject('SystemService') private systemService, @Inject('ProtocolService') private protocolService, @Inject('AdminProfileService') private adminProfileService, @Inject('AdminThemesService') private adminThemesService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService, @Inject('CategoriesService') private categoriesService, @Inject('PagesService') private pagesService) {
-        this.mainService = this;
     }
 
-    @MessagePattern({message: 'system'})
+    @MessagePattern({message: 'frontend'})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'system'})
+    @EventPattern({event: 'frontend'})
     public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(payload);
     }
@@ -51,9 +52,9 @@ export class ProtocolController {
         await this.protocolService.start();
 
         const payload: ModuleInterface = {
-            name: 'system',
+            name: 'frontend',
             version: '21.01.12',
-            description: 'the system api and client',
+            description: 'the frontend api and client',
             started: new Date(),
             config: {
                 restart: true,
@@ -67,25 +68,24 @@ export class ProtocolController {
                 version: 'latest'
             }]
         };
-        const startupChores = Promise.all([this.systemService.registerModule(payload).toPromise(),
-            this.protocolService.sendMessage({
-                channel: 'hub',
-                api: 'module',
-                act: 'mapPort',
-                payload: {
-                    channel: 'system',
-                    port: process.env.backend_port,
-                    defaults: {
-                        url: '/',
-                        login: '/view-auth'
-                    }
-                }
-            }).toPromise()
-        ]);
 
-        startupChores.then(() => {
-            this.logger.log('System application started');
-        });
+        await this.systemService.registerModule(payload).toPromise();
+
+        await this.protocolService.sendMessage({
+            channel: 'hub',
+            api: 'module',
+            act: 'mapPort',
+            payload: {
+                channel: 'frontend',
+                port: process.env.public_port,
+                defaults: {
+                    url: '/',
+                    login: '/view-auth'
+                }
+            }
+        }).toPromise();
+
+        this.logger.log('FrontEnd application started');
     }
 
     private perform(params: payloadInterface) {

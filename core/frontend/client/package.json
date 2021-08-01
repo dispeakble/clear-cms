@@ -5,9 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build_export": "next build && next export",
+    "build_prod": "next build && next export && rm -fr ../api/public/* && cp -Rf ./out/* ../api/public",
     "start": "next start",
     "lint": "next lint"
   },
+  "proxy": "http://localhost:9797",
   "dependencies": {
     "clsx": "^1.1.1",
     "lodash": "^4.17.21",

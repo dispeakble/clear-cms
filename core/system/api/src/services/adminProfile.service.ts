@@ -97,7 +97,7 @@ export class AdminProfileService {
                         fields: ["password"],
                         where: {
                             id: params.client.id,
-                            "MD5(password)": md5.default(params.payload.password),
+                            "password": md5.default(params.payload.password),
                             active: 1
                         },
                         limit: [0, 1]
@@ -107,8 +107,8 @@ export class AdminProfileService {
 
             const response = await this.protocolService.sendMessage(checkPasswordRequest).toPromise();
 
-            if (response && response.data && response.data.length && response.data[0].password === params.payload.password) {
-                request.payload.data.data.password = request.payload.data.data.confirmPassword + "";
+            if (response && response.data && response.data.length && response.data[0].password === md5.default(params.payload.password)) {
+                request.payload.data.data.password = md5.default(request.payload.data.data.confirmPassword);
 
             } else {
                 return {error: "Please type the correct current password and try again."};
