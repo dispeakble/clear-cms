@@ -1541,7 +1541,7 @@ class ViewPagesEditor extends React.PureComponent {
                                         openNewCategory: false,
                                       })
                                     }
-                                    color="secondary"
+                                    style={{color: this.props.defaultTheme.secondary.main}}
                                   >
                                     Cancel
                                   </Button>

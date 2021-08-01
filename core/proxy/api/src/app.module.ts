@@ -1,4 +1,4 @@
-import {Module, CacheModule} from '@nestjs/common';
+import {Module, CacheModule, Logger} from '@nestjs/common';
 import {AppController} from "./controllers/app.controller";
 import {AppService} from './services/app.service';
 import {ProtocolService} from "./services/protocol.service";
@@ -42,7 +42,7 @@ import { GotModule, GotModuleOptions } from '@t00nday/nestjs-got';
         ])
     ],
     controllers: [AppController],
-    providers: [AppService, ProtocolService, WsGateway, SystemService, SessionService, ConfigService, HttpService]
+    providers: [AppService, ProtocolService, WsGateway, SystemService, SessionService, ConfigService, HttpService, Logger]
 })
 
 export class AppModule {

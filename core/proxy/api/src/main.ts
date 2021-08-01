@@ -7,24 +7,9 @@ let httpsOptions;
 let app;
 
 const init = async () => {
-
-    if(process.env.ssl_key && process.env.ssl_cert){
-        httpsOptions = {
-            key: process.env.ssl_key,
-            cert: process.env.ssl_cert
-        };
-
-        app = await NestFactory.create(
-            AppModule,{
-                httpsOptions: httpsOptions
-            }
-        );
-    } else {
-        app = await NestFactory.create(
-            AppModule
-        );
-    }
-
+    app = await NestFactory.create(
+        AppModule
+    );
     app.use(compression.default());
 
     //left here for example: app.useWebSocketAdapter(new SessionAdapter(app));
@@ -42,9 +27,8 @@ const init = async () => {
     });
 
     await app.startAllMicroservicesAsync();
-    console.log('init done');
 
-    app.listen(process.env.backend_port, '0.0.0.0');
+    app.listen(+process.env.backend_port, '0.0.0.0');
 
     console.log('Proxy module started');
 

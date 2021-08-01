@@ -1,15 +1,13 @@
 import {
     Body,
-    Controller, Get, HttpStatus, Inject, Post, Req, Res, Session, UseGuards
+    Controller, Get, HttpStatus, Inject, Post, Req, Res, Session, UseGuards, Logger
 } from "@nestjs/common";
 import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {HttpAuthGuard} from "../guards/http.auth.guard";
 import multer from "multer";
-import {Observable} from "rxjs";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
-import {Readable} from "stream";
 
 @Controller()
 export class AppController {
@@ -18,7 +16,7 @@ export class AppController {
 
     private moduleConfig: ModuleInterface = {
         name: 'proxy',
-        version: '21.06.16',
+        version: '21.07.28',
         description: 'the main http proxy (gateway)',
         started: new Date(),
         config: {
@@ -32,11 +30,18 @@ export class AppController {
         }]
     };
 
-    constructor(@Inject('ProtocolService') public protocolService, @Inject('SystemService') private systemService, @Inject('AppService') private appService, @Inject('SessionService') private sessionService, @Inject('WsGateway') private wsGateway) {
+    constructor(
+        @Inject('ProtocolService') public protocolService,
+        @Inject('SystemService') private systemService,
+        @Inject('AppService') private appService,
+        @Inject('SessionService') private sessionService,
+        @Inject('WsGateway') private wsGateway,
+        private logger: Logger
+        ) {
         this.protocolService.start().then(async () => {
             this.portMap = await this.protocolService.getValue('portMap') || [];
             const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
-            console.log(response);
+            this.logger.log(response);
             this.wsGateway.registerCallbacks({
                 callbacks: {
                     "onMessage": async (params) => {
@@ -74,12 +79,12 @@ export class AppController {
 
                         //we subscribe to the consumer
                         handshake.theObserver.subscribe(data => {
-                            console.log(data);
+                            this.logger.log(data);
                         }, err => {
-                            console.log(err);
+                            this.logger.log(err);
                         }, () => {
                             req.next();
-                            console.log('upload complete');
+                            this.logger.log('upload complete');
                         })
 
                         //the consumer calls back with the caller ID and then subscribes to the pusher
@@ -131,7 +136,7 @@ export class AppController {
 
             multerObj(req, res, (err) => {
                 if (err) {
-                    console.log(err)
+                    this.logger.log(err)
                     return;
                 }
 
@@ -200,11 +205,11 @@ export class AppController {
                 }
 
             }, (error) => {
-                console.log(error);
+                this.logger.log(error);
                 res.send("error");
                 const end_date = new Date().getTime();
                 const diffDate = new Date(end_date - start_date);
-                console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
+                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
             }, () => {
                 if(!multerFinish){
@@ -220,11 +225,9 @@ export class AppController {
     @UseGuards(HttpAuthGuard) @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
-
             const channel = this.portChannel({
                 headers: req.headers
             });
-            //TODO big threat here. use encrypted keys from now on
 
             if (!channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -243,13 +246,14 @@ export class AppController {
                 }
             };
 
-
             if (!session.hasOwnProperty('user')) {
                 const hasAccess = await this.protocolService.checkAccess(payload);
                 if (!hasAccess.access) {
                     res.status(hasAccess.location.status);
                     res.set('Location', hasAccess.location);
                     res.status(hasAccess.status)
+                    res.end();
+                    return;
                 }
             }
 
@@ -260,16 +264,17 @@ export class AppController {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 res.end();
             }
-            const cachedrequest = await this.protocolService.getValue(fileStats.data.file_name);
+            //const cacheReq = await this.protocolService.getValue(`${channel}_${fileStats.data.file_name}`);
+            const cacheReq = null;
 
-            if (cachedrequest) {
-                if (cachedrequest.ETag === fileStats.data.etagId) {
+            if (cacheReq) {
+                if (cacheReq.ETag === fileStats.data.etagId) {
                     const modifiedDate = new Date(fileStats.data.modified);
-                    const exp_date = new Date(cachedrequest.expires);
+                    const exp_date = new Date(cacheReq.expires);
 
                     if (exp_date > new Date() && exp_date > modifiedDate) {
-                        res.set("Content-Type", cachedrequest.content_type);
-                        res.set("Content-Length", cachedrequest.content_length);
+                        res.set("Content-Type", cacheReq.content_type);
+                        res.set("Content-Length", cacheReq.content_length);
                         res.set('Content-Security-Policy', "img-src; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
                         res.set('X-Frame-Options', 'SAMEORIGIN');
                         res.set('X-Content-Type-Options', 'nosniff');
@@ -277,7 +282,7 @@ export class AppController {
                         res.set('Cache-Control', 'public, max-age=604800');
                         res.set('ETag', fileStats.data.etagId);
                         res.status(HttpStatus.OK);
-                        res.write(Buffer.from(cachedrequest.data));
+                        res.write(Buffer.from(cacheReq.data));
                         res.end();
                         return true;
                     }
@@ -316,16 +321,16 @@ export class AppController {
                 }
 
             }, (error) => {
-                console.log(error);
+                this.logger.log(error);
                 const end_date = new Date().getTime();
                 const diffDate = new Date(end_date - start_date);
-                console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
+                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 //res.end();
             }, () => {
                 const end_date = new Date().getTime();
                 const diffDate = new Date(end_date - start_date);
-                console.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis');
+                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis');
 
                 //getSubscriber.unsubscribe();
                 res.end();
@@ -336,7 +341,7 @@ export class AppController {
                     //TODO get from some env variable
                     const expire_seconds = 604800;
                     expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                    this.protocolService.setValue(fileStats.data.file_name, {
+                    this.protocolService.setValue(`${channel}_${fileStats.data.file_name}`, {
                         expires: expireDate,
                         ETag: fileStats.data.etagId,
                         content_length: file_meta.content_length,
@@ -349,15 +354,7 @@ export class AppController {
         } catch (err) {
             res.end(JSON.stringify(err));
         }
-
-
     }
-
-    /*async asyncForEach(array: Array<any>, callback: (item: any, index: number, array: Array<any>) => void): Promise<void> {
-        for (let index = 0; index < array.length; index++) {
-            await callback(array[index], index, array);
-        }
-    }*/
 
     async onApplicationBootstrap() {
         this.appService.perform({
@@ -389,8 +386,6 @@ export class AppController {
         return this.perform(data);
     }
 
-    /*-- End Redis subscriber bidirectional lock --*/
-
     private portChannel(params) {
         const headers = params.headers;
         let port = headers.host.split(':')[1];
@@ -404,8 +399,8 @@ export class AppController {
         }
 
         if (!this.portMap.hasOwnProperty(port) || !this.portMap[port]) {
-            console.log(headers)
-            console.log(JSON.stringify(headers));
+            this.logger.log(headers)
+            this.logger.log(JSON.stringify(headers));
             return null;
         }
         if(params.returnPort) {
@@ -420,7 +415,6 @@ export class AppController {
 
     private onMessage(params) {
         return new Promise(async (resolve) => {
-            //console.log('got message from gateway', params)
 
             const data = params.data;
 
@@ -440,31 +434,10 @@ export class AppController {
 
             }
 
-            const response = {
-                id: params.data.id,
-                data: null
-            }
             try {
-                this.protocolService.sendMessage(payload).subscribe(data => {
-                    resolve(data);
-                }, err => {
-                    resolve(err);
-                }, () => {
-
-                });
-
-                // if (response.data.callback) {
-                //     const callback = response.data.callback;
-                //     const cb_payload = {
-                //         channel: params.module,
-                //         api: callback.api,
-                //         act: callback.act,
-                //         payload: {data: callback.payload, client: params.client}
-                //     };
-                //     response.data = await this.perform(cb_payload);
-                // }
+                resolve(await this.protocolService.sendMessage(payload).toPromise());
             } catch (err) {
-                console.log(err);
+                this.logger.log(err);
             }
 
         })

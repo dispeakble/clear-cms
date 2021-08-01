@@ -6,7 +6,8 @@ export class HttpAuthGuard implements CanActivate {
 
     canActivate(context: ExecutionContext): boolean {
         try {
-            const redirectUrl = '/view-auth'; //TODO GET THIS REDIRECT FROM SOMEWHERE ELSE
+            return true;
+            /*const redirectUrl = '/view-auth'; //TODO GET THIS REDIRECT FROM SOMEWHERE ELSE
             const req = context.switchToHttp().getRequest();
             const response = context.switchToHttp().getResponse();
 
@@ -24,7 +25,7 @@ export class HttpAuthGuard implements CanActivate {
                 }
             } else {
                 return true;//for the rest of the resources
-            }
+            }*/
 
         } catch (err) {
             console.log(err);
