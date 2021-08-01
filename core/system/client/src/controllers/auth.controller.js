@@ -37,19 +37,20 @@ class AuthController extends Component {
 
     }
 
-    login(params) {
+     login(params) {
         return new Promise((resolve) => {
             this.sendPost({
                 module: 'system',
                 api: 'auth',
                 act: 'doLogin',
                 payload: params
-            }).then(response => {
+            }).then(async (response) => {
                 if (response && response.email && response.email === params.email) {
                     localStorage.setItem('admin', JSON.stringify({ fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email }));
-                    this.props.services.ws.start().then((done) => {
+                    const wsConnected = await this.props.services.ws.start();
+                    if (wsConnected) {
                         this.props.history.push('/');
-                    });
+                    }
                     return resolve(response);
 
 
