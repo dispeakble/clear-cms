@@ -5,7 +5,7 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import Header from "components/Header/Header.js";
 import SideMenuLinks from "components/Header/SideMenuLinks.js";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/global.js";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -175,7 +175,7 @@ class App extends Component {
   }
 
   createTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.state.defaultPalette,
       overrides: {
         MuiDialog: {

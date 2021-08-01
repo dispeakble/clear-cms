@@ -8,7 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 // for the material-table within the edit modal options modal
@@ -332,7 +332,7 @@ class TableModule extends Component {
 
   tableOptions = {
     getTheme: () => {
-      return createMuiTheme({
+      return createTheme({
         palette: this.props.defaultTheme,
         overrides: {
           MuiTableCell: {

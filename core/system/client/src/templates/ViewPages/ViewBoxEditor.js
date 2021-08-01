@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {
@@ -347,7 +347,7 @@ class ViewBoxEditor extends React.PureComponent {
     // for MuiThemeProvider
 
     createDefaultTheme = () => {
-        return createMuiTheme({
+        return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
                 MuiFormControl: {

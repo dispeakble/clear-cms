@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Suspense } from "react";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import { withRouter, Route, Switch } from "react-router-dom";
 import styles from "./assets/jss/pagePreview.js";
@@ -196,7 +196,7 @@ class App extends React.PureComponent {
   info?: PaletteColorOptions;
   success?: PaletteColorOptions;
     */
-    return createMuiTheme({
+    return createTheme({
       overrides: {
         MuiSpeedDial: {
           fab: {

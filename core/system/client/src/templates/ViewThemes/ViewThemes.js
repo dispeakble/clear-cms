@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {withStyles, createMuiTheme} from "@material-ui/core/styles";
+import {withStyles, createTheme} from "@material-ui/core/styles";
 
 import Editor from "./themeEditor/src/screen/editor";
 
@@ -149,7 +149,7 @@ class ViewThemes extends Component {
 
     // getThemes = () => {
     //
-    //   return createMuiTheme({
+    //   return createTheme({
     //     palette: this.state.fullEditorData,
     //     overrides: {
     //       MuiFab: {
@@ -218,7 +218,7 @@ class ViewThemes extends Component {
 
         const data = theme;
 
-        let fullEditorData = createMuiTheme({
+        let fullEditorData = createTheme({
             palette: this.state.side ? JSON.parse(data.data) : JSON.parse(data.mui),
         });
 

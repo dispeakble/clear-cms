@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactImageMagnify from "react-image-magnify";
 
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 import ImageGallery from "react-image-gallery";
 
@@ -27,7 +27,7 @@ class GalleryModule extends Component {
     },
   };
   createDefaultTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
     });
   };

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {createMuiTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
+import {createTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
 import { ThemeProvider } from 'react-jss'
 import { withRouter } from "react-router-dom";
 import styles from "assets/jss/clear-crm/views/bucket.js";
@@ -273,7 +273,7 @@ class ViewBucket extends Component {
     }
 
     getTheme() {
-        return createMuiTheme({
+        return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
                 MuiDialogTitle: {

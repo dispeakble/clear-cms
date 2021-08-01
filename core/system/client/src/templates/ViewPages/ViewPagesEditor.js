@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import _ from "lodash";
 import {
-  createMuiTheme,
+  createTheme,
   MuiThemeProvider,
   withStyles,
 } from "@material-ui/core/styles";
@@ -720,7 +720,7 @@ class ViewPagesEditor extends React.PureComponent {
   // for MuiThemeProvider
 
   createDefaultTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
 
       overrides: {
