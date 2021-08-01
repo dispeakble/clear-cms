@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import  { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { withRouter, Route, Switch } from "react-router-dom";
 
 class AuthGuardService extends Component{
 
@@ -46,9 +47,12 @@ class AuthGuardService extends Component{
     }
 
     render(){
+        if (!this.props.services.ws.isConnected && !['/view-auth', '/logout'].includes(window.location.pathname)) {
+            this.props.history.push("/view-auth")
+        }
         return this.state.renderState;
     }
 
 }
 
-export default AuthGuardService;
+export default withRouter(AuthGuardService);
