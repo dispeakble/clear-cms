@@ -263,6 +263,7 @@ export class AppController {
             if(fileStats && fileStats.type === 'error'){
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 res.end();
+                return;
             }
             //const cacheReq = await this.protocolService.getValue(`${channel}_${fileStats.data.file_name}`);
             const cacheReq = null;
