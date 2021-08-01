@@ -352,7 +352,7 @@ export class PagesService {
                                 what: 'pages_to_categories',
                                 data: {
                                     page_id: page.data[0].id,
-                                    category_id: config.data[0].categoryId,
+                                    category_id: pageConfig.categoryId,
                                 }
                             }
                         }
