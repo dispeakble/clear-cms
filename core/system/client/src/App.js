@@ -62,9 +62,9 @@ class App extends Component {
             active: false,
           },
           {
-            toLink: "/forum",
-            icon: "forum",
-            name: "Forum",
+            toLink: "/file-transfer",
+            icon: "attachment",
+            name: "File Transfer",
             active: false,
           },
           {
@@ -72,19 +72,7 @@ class App extends Component {
             icon: "video_call",
             name: "Video Conference",
             active: false,
-          },
-          {
-            toLink: "/file-transfer",
-            icon: "attachment",
-            name: "File Transfer",
-            active: false,
-          },
-          {
-            toLink: "/photo-gallery",
-            icon: "photo_library",
-            name: "Photo Gallery",
-            active: false,
-          },
+          }
         ],
       },
       {
