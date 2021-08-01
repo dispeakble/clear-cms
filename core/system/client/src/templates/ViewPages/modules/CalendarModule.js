@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -12,7 +12,7 @@ class CalendarModule extends Component {
     selectedDate: [null, null],
   };
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
       overrides: {
         MuiDialogTitle: {

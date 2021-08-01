@@ -4,7 +4,7 @@ import ArtTrack from "@material-ui/icons/ArtTrack";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -35,7 +35,7 @@ class AudioModule extends Component {
     enablePlayer: true,
   };
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
       overrides: {
         MuiDialogTitle: {

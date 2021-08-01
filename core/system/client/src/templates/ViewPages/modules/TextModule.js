@@ -11,7 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
@@ -29,7 +29,7 @@ class TextModule extends Component {
   };
 
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
       overrides: {
         MuiDialogTitle: {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MaterialTable from "material-table";
-//import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+//import { withStyles, createTheme } from "@material-ui/core/styles";
 //import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import Icon from "@material-ui/core/Icon";
 

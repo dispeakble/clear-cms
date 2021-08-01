@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import LinksMenu from "../components/LinksMenu/LinksMenu";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "../assets/jss/menuModule.js";
 import List from "@material-ui/core/List";
 import Icon from "@material-ui/core/Icon";

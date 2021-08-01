@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pages.js";
 
@@ -67,7 +67,7 @@ class Pages extends Component {
 
     tableOptions = {
         getTheme: () => {
-            return createMuiTheme({
+            return createTheme({
                 palette: this.props.defaultTheme,
                 overrides: {
                     MuiTableCell: {

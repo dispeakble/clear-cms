@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import { NavLink } from "react-router-dom";
 import Icon from "@material-ui/core/Icon";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -37,7 +37,7 @@ class NestedList extends React.Component {
   };
 
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
 
       overrides: {},

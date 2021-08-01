@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "../assets/jss/pagesAdd.js";
 

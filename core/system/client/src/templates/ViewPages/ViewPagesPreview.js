@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Suspense } from "react";
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
@@ -169,7 +169,7 @@ class ViewPagesPreview extends React.Component {
 
   // for MuiThemeProvider
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       overrides: {
         MuiSpeedDial: {
           fab: {

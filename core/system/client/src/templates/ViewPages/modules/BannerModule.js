@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
@@ -47,7 +47,7 @@ class BannerModule extends Component {
     bgImageFile: "",
   };
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
       overrides: {
         MuiDialogTitle: {
@@ -60,7 +60,7 @@ class BannerModule extends Component {
   };
 
   createDefaultTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
 
       overrides: {

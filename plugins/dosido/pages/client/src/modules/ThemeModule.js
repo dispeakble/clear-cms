@@ -13,7 +13,7 @@
 // import CustomInput from "components/CustomInput/CustomInput.js";
 // import { ArtTrack } from "@material-ui/icons";
 
-// import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+// import { withStyles, createTheme } from "@material-ui/core/styles";
 // import { MuiThemeProvider } from "@material-ui/core/styles";
 // import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
@@ -61,7 +61,7 @@
 //   info?: PaletteColorOptions;
 //   success?: PaletteColorOptions;
 //     */
-//     return createMuiTheme({
+//     return createTheme({
 //       palette: {
 //         primary: "008b8b",
 //       },
@@ -120,7 +120,7 @@
 //       info?: PaletteColorOptions;
 //       success?: PaletteColorOptions;
 //         */
-//       return createMuiTheme({
+//       return createTheme({
 //         palette: {
 //           text: {
 //             //primary: "#F00",

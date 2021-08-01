@@ -5,7 +5,7 @@ import { DropzoneArea } from "material-ui-dropzone";
 
 import { DeleteForever, Edit } from "@material-ui/icons";
 
-import { withStyles, createMuiTheme } from "@material-ui/core/styles";
+import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 // for the modal
@@ -60,7 +60,7 @@ class GalleryModule extends Component {
     slideDuration: 450,
   };
   getTheme = () => {
-    return createMuiTheme({
+    return createTheme({
       palette: this.props.defaultTheme,
       overrides: {
         MuiDialogTitle: {

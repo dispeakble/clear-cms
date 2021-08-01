@@ -1,5 +1,5 @@
 import React from "react";
-import { createMuiTheme, withStyles } from "@material-ui/core/styles";
+import { createTheme, withStyles } from "@material-ui/core/styles";
 import SectionEdition from "../component/section-edition";
 import SectionPreview from "../component/section-preview";
 
@@ -24,7 +24,7 @@ const styles = (theme) => ({
 class Editor extends React.Component {
   state = {
     showMenu: true,
-    theme: createMuiTheme(this.props.currentTheme),
+    theme: createTheme(this.props.currentTheme),
     view: "desktop",
   };
 
