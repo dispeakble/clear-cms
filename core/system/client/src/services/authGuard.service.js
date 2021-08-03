@@ -47,9 +47,7 @@ class AuthGuardService extends Component{
     }
 
     render(){
-        if (!this.props.services.ws.isConnected && !['/view-auth', '/logout'].includes(window.location.pathname)) {
-            this.props.history.push("/view-auth")
-        }
+
         return this.state.renderState;
     }
 
