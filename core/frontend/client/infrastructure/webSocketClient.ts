@@ -4,7 +4,7 @@ import config from '../package.json';
 export class SocketClient {
   private isConnected = false;
   private client?: Socket;
-  private url = config.proxy.replace('https', 'wss').replace('http', 'ws');
+  private url = `${config.proxy}/ws`;
   private options = {
     transports: ['websocket'],
   };
