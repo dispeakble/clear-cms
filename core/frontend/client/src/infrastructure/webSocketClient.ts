@@ -1,5 +1,5 @@
 import io, {Socket} from "socket.io-client";
-import config from '../package.json';
+import config from '../../package.json';
 
 export class SocketClient {
   private isConnected = false;
