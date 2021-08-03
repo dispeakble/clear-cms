@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Router from 'next/router'
 import {Helmet} from "react-helmet";
 
 export default class PageComponent extends React.Component<any, any>{
@@ -9,20 +8,19 @@ export default class PageComponent extends React.Component<any, any>{
     return (
       <>
         <Helmet
-          title={`Page ${Router.router?.query?.pageId}`}
+          title={`Page by id`}
           meta={[{ property: 'og:title', content: 'Next index page' }]}
         />
         <div>
           <p>
             <Link href={'/'}>
-              Back to home
+              <a href={'/'}>
+                Back to home
+              </a>
             </Link>
           </p>
           <p>
-            Path: {Router.route}
-          </p>
-          <p>
-            Page id: {Router.router?.query?.pageId}
+            Path: /page/pageId
           </p>
         </div>
       </>
@@ -30,4 +28,28 @@ export default class PageComponent extends React.Component<any, any>{
   }
 }
 
+export async function getStaticPaths() {
+  return {
+    paths: [
+      {
+        params: {
+          pageId: '0',
+        },
+      },
+      {
+        params: {
+          pageId: '1',
+        },
+      },
+    ],
+    fallback: false,
+  };
+}
 
+export async function getStaticProps(payload) {
+  return {
+    props: {
+
+    }
+  };
+}
