@@ -12,7 +12,6 @@
       <env name="session_secret" value="1qaz" />
       <env name="redis_port" value="31652" />
       <env name="redis_password" value="1gzHwbgfwR" />
-      <env name="bucket_server" value="http://127.0.0.1:8686" />
     </envs>
     <method v="2" />
   </configuration>

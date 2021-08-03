@@ -8,6 +8,8 @@ export class SystemService {
 
     private methods = ["registerModule"];
 
+
+
     constructor(private protocolService: ProtocolService) {
     }
 
@@ -21,7 +23,7 @@ export class SystemService {
     }
 
     public registerModule(data: ModuleInterface) {
-        const payload: payloadInterface = {
+        let payload: payloadInterface = {
             api: 'module',
             act: 'register',
             channel: 'hub',

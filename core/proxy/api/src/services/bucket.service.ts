@@ -11,8 +11,6 @@ import {Observable} from "rxjs";
 @Injectable()
 export class BucketService {
 
-    private bucketHost = process.env.bucket_server;//this is
-
     constructor(private readonly gotService: GotService, @Inject('REDIS_SERVICE') private readonly protocolService) {
         //this.tests();
     }
@@ -74,7 +72,7 @@ export class BucketService {
 
     private upload(params) {
         return new Observable(subscriber => {
-            const form = new FormData();
+            /*const form = new FormData();//not used I think
             form.append("act", "uploadFiles");
             form.append("path", "/");
             form.append("replace", +params.replace || "0");
@@ -100,7 +98,7 @@ export class BucketService {
                 });
             } catch (err) {
                 console.log(err.message);
-            }
+            }*/
 
 
         });

@@ -14,7 +14,6 @@ import {
 export class BucketService {
 
     private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
-    private bucketUrl = process.env.bucket_server;
     private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
 
@@ -64,7 +63,7 @@ export class BucketService {
 
     private read(params: any) {
         return new Observable((observer) => {
-            try {
+            /*try {//not used I think
                 (async () => {
                     const stats = await this.getMeta({path: params.path, defaultFileName: this.defaultPath});
                     observer.next({type: 'meta', content_length: stats['size'], content_type: mime.getType(stats['file_name']), file_name: stats['file_name']});
@@ -81,7 +80,7 @@ export class BucketService {
             } catch (err) {
                 observer.error(err);
                 observer.complete();
-            }
+            }*/
         });
     }
 
