@@ -32,6 +32,27 @@ class GalleryModule extends Component {
     });
   };
 
+  componentDidMount() {
+    if(this.props.element.moduleOptions.data){
+      const gall = this.props.element.moduleOptions.data
+      let gallery =  {
+        showBullets: gall.bullets,
+        showThumbnails: gall.thumbnails,
+        infinite: gall.infiniteSliding,
+        showFullscreenButton: gall.fullscreenButton,
+        showPlayButton: gall.playButton,
+        showNav: gall.navigation,
+        showIndex: gall.index,
+        slideOnThumbnailOver: gall.tbnSliding,
+        slideInterval: gall.playInterval,
+        slideDuration: gall.slideDuration,
+      }
+      this.setState({
+        gallery,
+      })
+    }
+  }
+
   renderZoom(args) {
     return (
       <MyReactImageMagnify
@@ -70,34 +91,18 @@ class GalleryModule extends Component {
 
   render() {
     //let galleryType = "Carousel";
-
-    let imgs = [
-      {
-        title: "img1",
-        description: (
-          <React.Fragment>
-            <h4>Img 1</h4> <p>some description</p>
-            <p>
-              <a href="www.someImage.com" target="_blank">
-                go to website
-              </a>
-            </p>
-          </React.Fragment>
-        ),
-        original: "https://picsum.photos/1920/1080",
-        thumbnail: "https://picsum.photos/1920/1080",
-        link: "www.someImage.com",
-      },
-    ];
-
-    for (var i = 0; i < 10; i++) {
-      let id = Math.floor(Math.random() * 50);
-      let url = `https://picsum.photos/id/${id}/1920/1080`;
-      let img = Object.assign({}, imgs[0]);
-      img.original = url;
-      img.thumbnail = url;
-      //img.sizes = this.getImgSizes(url);
-      imgs.push(img);
+    console.log("preview", this.props, this.state)
+    let imgs = []
+    if(this.props.element.moduleOptions.data?.imageSources){
+      imgs = this.props.element.moduleOptions.data.imageSources.map(el => {
+        return {
+          title:  el?.title || "",
+          description: el?.description || "",
+          original: `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.i}/module/${el?.path}`,
+          thumbnail: `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.i}/module/${el?.path}`,
+          link: el?.link,
+        }
+      })
     }
 
     return (

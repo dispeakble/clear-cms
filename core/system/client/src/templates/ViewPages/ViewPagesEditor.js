@@ -434,6 +434,7 @@ class ViewPagesEditor extends React.PureComponent {
                   onEndEditingModule={() => this.onEndEditingModule()}
                   boxId={el.i}
                   moduleOptions={el.moduleOptions}
+                  pageId={this.state.page_id}
                   handleSave={(id, data) => {
                     this.saveModuleOptions(id, data);
                   }}

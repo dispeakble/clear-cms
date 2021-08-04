@@ -156,6 +156,13 @@ class PagesController extends Component {
                             }
                         });
                     }
+                    if(item.moduleOptions.data?.imageSources){
+                        item.moduleOptions.data.imageSources = item.moduleOptions.data.imageSources.map(el => {
+                            return {
+                                ...el, file: el.path, fileItem: "", fileBase64: ""
+                            }
+                        })
+                    }
                     return item;
                 });
 
@@ -280,6 +287,13 @@ class PagesController extends Component {
                                 sel: itemFile.sel
                             }
                         });
+                    }
+                    if(item.moduleOptions.data?.imageSources){
+                        item.moduleOptions.data.imageSources = item.moduleOptions.data.imageSources.map(el => {
+                            return {
+                            ...el, file: el.path, fileItem: "", fileBase64: ""
+                            }
+                        })
                     }
                     return item;
                 });
