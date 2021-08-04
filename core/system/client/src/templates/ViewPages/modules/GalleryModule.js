@@ -556,6 +556,7 @@ class GalleryModule extends Component {
                           onChange={this.handleUploadedImage}
                       />
                       <Button
+                          color="primary"
                           onClick={() => {
                             this.setState({
                               showDropZone: false,
@@ -566,6 +567,7 @@ class GalleryModule extends Component {
                         OK
                       </Button>
                       <Button
+                          color="danger"
                           onClick={() => {
                             this.setState({
                               showDropZone: false,
@@ -581,6 +583,7 @@ class GalleryModule extends Component {
               </div>
               <Button
                   style={{display: this.state.showDropZone ? "none" : "block"}}
+                  color="primary"
                   onClick={() => {
                     this.setState({
                       showDropZone: true,
