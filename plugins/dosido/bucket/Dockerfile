@@ -10,7 +10,6 @@ COPY ./api/package*.json /usr/src/api/
 RUN npm install
 
 COPY ./api/src /usr/src/api/src
-COPY ./api/.env /usr/src/api/.env
 COPY ./api/nest-cli.json /usr/src/api/nest-cli.json
 COPY ./api/tsconfig.build.json /usr/src/api/tsconfig.build.json
 COPY ./api/tsconfig.json /usr/src/api/tsconfig.json

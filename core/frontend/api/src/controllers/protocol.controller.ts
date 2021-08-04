@@ -3,19 +3,18 @@ import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import {Observable} from "rxjs";
 
 @Controller()
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
-        name: 'system',
-        version: '21.07.26',
-        description: 'System Module',
+        name: 'frontend',
+        version: '21.08.04',
+        description: 'Frontend Module',
         started: new Date(),
         config: {
-            channel: 'system',
+            channel: 'frontend',
             permissions: {
                 stop: false,
                 restart: true,
@@ -26,23 +25,23 @@ export class ProtocolController {
             name: 'hub',
             version: 'latest'
         }, {
-            name: 'proxy',
+            name: 'frontendproxy',
             version: 'latest'
         }]
     };
 
     private mainService;
 
-    constructor(@Inject('SystemService') private systemService, @Inject('ProtocolService') private protocolService, @Inject('AdminProfileService') private adminProfileService, @Inject('AdminThemesService') private adminThemesService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService, @Inject('CategoriesService') private categoriesService, @Inject('PagesService') private pagesService) {
+    constructor(@Inject('FrontendService') private frontendService, @Inject('ProtocolService') private protocolService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService, @Inject('CategoriesService') private categoriesService, @Inject('PagesService') private pagesService) {
         this.mainService = this;
     }
 
-    @MessagePattern({message: 'system'})
+    @MessagePattern({message: 'frontend'})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'system'})
+    @EventPattern({event: 'frontend'})
     public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(payload);
     }
@@ -51,9 +50,9 @@ export class ProtocolController {
         await this.protocolService.start();
 
         const payload: ModuleInterface = {
-            name: 'system',
+            name: 'frontend',
             version: '21.01.12',
-            description: 'the system api and client',
+            description: 'the frontend api and client',
             started: new Date(),
             config: {
                 restart: true,
@@ -63,18 +62,18 @@ export class ProtocolController {
                 name: 'hub',
                 version: 'latest'
             },{
-                name: 'proxy',
+                name: 'frontendproxy',
                 version: 'latest'
             }]
         };
-        const startupChores = Promise.all([this.systemService.registerModule(payload).toPromise(),
+        const startupChores = Promise.all([this.frontendService.registerModule(payload).toPromise(),
             this.protocolService.sendMessage({
                 channel: 'hub',
                 api: 'module',
                 act: 'mapPort',
                 payload: {
-                    channel: 'system',
-                    target: 'proxy',
+                    channel: 'frontend',
+                    target: 'frontendproxy',
                     port: process.env.backend_port,
                     defaults: {
                         url: '/',
@@ -85,7 +84,7 @@ export class ProtocolController {
         ]);
 
         startupChores.then(() => {
-            this.logger.log('System application started');
+            this.logger.log('Frontend application started');
         });
     }
 

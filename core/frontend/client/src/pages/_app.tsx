@@ -3,9 +3,12 @@ import {Helmet} from "react-helmet";
 
 import AppStore from "../infrastructure/store";
 import {WebSocketClient} from "../infrastructure/webSocketClient";
+import * as shortId from "shortid";
 
 class WebApp extends App {
   private wsCallbacks = {}
+  private messageCallbacks = {}
+  private channel = "frontend"
 
   static async getInitialProps({Component, ctx}: AppContext): Promise<AppInitialProps> {
     const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
@@ -33,6 +36,21 @@ class WebApp extends App {
       console.log(err);
     }
     console.log('got message in _app.tsx', params);
+  }
+
+  sendMessage(params) {
+    // return new Promise((resolve_send) => {
+    //   const uniqueId = shortId.generate();
+    //   this.messageCallbacks[uniqueId] = resolve_send;
+    //   this.props.services.ws.emit({
+    //     id: uniqueId,
+    //     channel: this.channel,
+    //     module: params.module,
+    //     api: params.api,
+    //     act: params.act,
+    //     payload: params.payload
+    //   });
+    // });
   }
 
   render() {

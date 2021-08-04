@@ -5,13 +5,15 @@ RUN mkdir -p /usr/src/client/
 WORKDIR /usr/src/client
 
 COPY ./client/package*.json /usr/src/client/
+COPY ./client/next.config.js /usr/src/client/
+COPY ./client/next-env.d.ts /usr/src/client/
 RUN npm install
 COPY ./client/public /usr/src/client/public
 COPY ./client/src /usr/src/client/src
-COPY ./client/.babelrc /usr/src/client/.babelrc
-COPY ./client/jsconfig.json /usr/src/client/jsconfig.json
+COPY ./client/styles /usr/src/client/styles
+COPY ./client/tsconfig.json /usr/src/client/tsconfig.json
 
-RUN npm run build
+RUN npm run build_prod
 WORKDIR /usr/src
 RUN rm -fr ./client
 
@@ -25,7 +27,6 @@ RUN npm install
 
 COPY ./api/src /usr/src/api/src
 COPY ./api/config /usr/src/api/config
-COPY ./api/.env /usr/src/api/.env
 COPY ./api/nest-cli.json /usr/src/api/nest-cli.json
 COPY ./api/tsconfig.build.json /usr/src/api/tsconfig.build.json
 COPY ./api/tsconfig.json /usr/src/api/tsconfig.json

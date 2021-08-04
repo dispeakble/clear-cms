@@ -5,16 +5,16 @@ RUN ["npm", "i", "-g", "@nestjs/cli"]
 RUN mkdir -p /usr/src/api
 WORKDIR /usr/src/api
 
-COPY ./api/package*.json /usr/src/api/
-COPY ./api/yarn.lock /usr/src/api/yarn.lock
+COPY ./package*.json /usr/src/api/
+COPY ./yarn.lock /usr/src/api/yarn.lock
 
 RUN npm install
 
-COPY ./api/src /usr/src/api/src
-COPY ./api/config /usr/src/api/config
-COPY ./api/nest-cli.json /usr/src/api/nest-cli.json
-COPY ./api/tsconfig.build.json /usr/src/api/tsconfig.build.json
-COPY ./api/tsconfig.json /usr/src/api/tsconfig.json
+COPY ./src /usr/src/api/src
+COPY ./config /usr/src/api/config
+COPY ./nest-cli.json /usr/src/api/nest-cli.json
+COPY ./tsconfig.build.json /usr/src/api/tsconfig.build.json
+COPY ./tsconfig.json /usr/src/api/tsconfig.json
 
 RUN npm run build
 

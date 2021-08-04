@@ -1,45 +1,26 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {Transport} from "@nestjs/microservices";
-import * as compression from 'compression';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common';
+import { Transport } from '@nestjs/microservices';
 
-let httpsOptions;
-let app;
-
-const init = async () => {
-    app = await NestFactory.create(
-        AppModule
-    );
-    app.use(compression.default());
-
-    //left here for example: app.useWebSocketAdapter(new SessionAdapter(app));
-
-    await app.init();
-
-    await app.connectMicroservice({
-        transport: Transport.REDIS,
-        options: {
-            return_buffers: true,
-            url: 'redis://' + process.env.redis_server,
-            port: +process.env.redis_port,
-            password: process.env.redis_password
-        }
-    });
-
-    await app.startAllMicroservicesAsync();
-
-    app.listen(+process.env.backend_port, '0.0.0.0');
-
-    console.log('Frontend module started');
-
-}
+Logger.overrideLogger(['error']);
+// Create a logger instance
+const logger = new Logger('Main');
 
 async function bootstrap() {
     try {
-        init();
-    } catch (e) {
-        console.log('Warning! Could not start the frontend module');
+        const app = await NestFactory.createMicroservice(AppModule, {
+            transport: Transport.REDIS,
+            options: {
+                url: 'redis://' + process.env.redis_server,
+                port: +process.env.redis_port,
+                password: process.env.redis_password
+            },
+        });
+        await app.listen(() => console.log('Frontend is ready.'));
+    } catch(e){
+        logger.log('Frontend:bootstrap! Could not connect to redis');
     }
-}
 
+}
 bootstrap();
