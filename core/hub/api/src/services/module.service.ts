@@ -156,7 +156,7 @@ export class ModuleService {
         ports[data.port] = data.channel;
         await this.cacheService.set('ports', JSON.stringify(ports));
         return this.protocolService.sendMessage({
-            channel: 'proxy',
+            channel: data.target || 'proxy',
             payload: {
                 api: 'app',
                 act: 'updatePortMapping',

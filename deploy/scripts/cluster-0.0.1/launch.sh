@@ -242,8 +242,8 @@ function launchPostgreSQL() {
 
   rancher app install --no-prompt --namespace default \
    --set postgresql.initdbScriptsCM=dbconfig \
-   --set postgresql.username=$POSTGRES_USERNAME \
-   --set postgresql.password=$POSTGRES_PASSWORD \
+   --set global.postgresql.username=$POSTGRES_USERNAME \
+   --set global.postgresql.password=$POSTGRES_PASSWORD \
    --set global.postgresql.database=$POSTGRES_DB \
    --set postgresql.repmgrPassword=$POSTGRES_PASSWORD \
    --set pgpool.adminPassword=$POSTGRES_PASSWORD \
