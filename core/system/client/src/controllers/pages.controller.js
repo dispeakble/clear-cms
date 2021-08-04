@@ -131,6 +131,25 @@ class PagesController extends Component {
         });
     }
 
+    getOne(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'publicThemes',
+                    act: 'getOne',
+                    payload: params
+                });
+                const editPage = _.cloneDeep(response);
+                response.editPage = editPage
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+
     add(params){
         return new Promise(async resolve => {
             try {

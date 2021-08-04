@@ -235,13 +235,15 @@ class ViewPagesEditor extends React.PureComponent {
     } else {
       const publicThemes = JSON.parse(localStorage.getItem("publicThemes"));
 
-      let defaultPublicTheme;
+      const defaultPublicTheme = await this.props.control.getOne({isdefault: 1});
 
-      if (publicThemes) {
-        defaultPublicTheme = publicThemes.find(
-          (theme) => theme.isdefault === true
-        );
-      }
+      console.log("Theme", defaultPublicTheme);
+      //
+      // if (publicThemes) {
+      //   defaultPublicTheme = publicThemes.find(
+      //     (theme) => theme.isdefault === true
+      //   );
+      // }
 
       this.muiTheme = this.createDefaultTheme();
 
