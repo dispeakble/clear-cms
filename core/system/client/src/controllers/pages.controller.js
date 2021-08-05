@@ -19,6 +19,7 @@ class PagesController extends Component {
         remove: (params) => this.remove(params),
         listCategories: (params) => this.listCategories(params),
         listTemplates: (params) => this.listTemplates(params),
+        getPublicTheme: () => this.getPublicTheme(),
     };
 
     help = {
@@ -131,14 +132,16 @@ class PagesController extends Component {
         });
     }
 
-    getOne(params){
+    getPublicTheme(){
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'publicThemes',
                     act: 'getOne',
-                    payload: params
+                    payload: {
+                        isdefault: 1
+                    }
                 });
                 const editPage = _.cloneDeep(response);
                 response.editPage = editPage
