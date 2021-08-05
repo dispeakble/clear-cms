@@ -62,6 +62,12 @@ class App extends Component {
             active: false,
           },
           {
+            toLink: "/users",
+            name: "Users",
+            icon: "user",
+            active: false,
+          },
+          {
             toLink: "/file-transfer",
             icon: "attachment",
             name: "File Transfer",
