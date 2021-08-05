@@ -1,13 +1,12 @@
-const config = require('./package.json');
-
 module.exports = {
   reactStrictMode: true,
+
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: `${config.proxy}/:path*`
-      },
+        source: '/files/:path*',
+        destination: 'http://localhost:9797/files/:path*' // Proxy to Backend
+      }
     ]
-  },
+  }
 }

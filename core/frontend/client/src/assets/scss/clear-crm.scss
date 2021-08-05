@@ -1,0 +1,91 @@
+@import "core/variables";
+@import "core/mixins";
+@import "core/misc";
+// @import "plugins/plugin-datetime-picker";
+@import "plugins/plugin-nouislider";
+@import "plugins/plugin-react-datetime";
+@import "plugins/plugin-react-slick";
+@import "~react-image-gallery/styles/scss/image-gallery.scss";
+@import "~react-grid-layout/css/styles.css";
+@import "~react-resizable/css/styles.css";
+
+/* start image gallery */
+
+.image-gallery-description {
+  display: block;
+  right: 0;
+  text-align: left;
+}
+
+.image-gallery-content,
+.image-gallery,
+.image-gallery-slide-wrapper,
+.image-gallery-slide-wrapper,
+.image-gallery-swipe,
+.image-gallery-slides,
+.image-gallery-slide,
+.image-gallery-slide div {
+  height: 100%;
+}
+
+.image-gallery-slide .image-gallery-image {
+  object-fit: cover;
+}
+
+.image-gallery-thumbnails-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.image-gallery-image {
+  max-height: 100% !important;
+}
+
+.image-gallery-slide div {
+  position: relative;
+}
+
+/* end image gallery */
+
+/* start the conky file explorer*/
+.chonky-toolbarContainer {
+  flex-direction: row-reverse;
+}
+
+.chonky-toolbarLeft {
+  flex-grow: 0 !important;
+}
+
+.chonky-toolbarRight {
+  flex-grow: 10000 !important;
+}
+
+.chonky-searchFieldContainer {
+  width: 15vw !important;
+}
+
+div[class^="gridFileEntryNameContainer"] span[class^="gridFileEntryName"] {
+  display: inline-block;
+  max-height: 3em;
+  overflow: hidden;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .chonky-searchFieldInput {
+    width: 78vw;
+  }
+  .chonky-infoContainer {
+    width: 20vw;
+  }
+  .chonky-searchFieldContainer {
+    width: 100% !important;
+  }
+  .chonky-toolbarLeft {
+    flex: 100%;
+  }
+}
+
+/* end the conky file explorer*/

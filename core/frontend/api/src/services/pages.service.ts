@@ -101,10 +101,11 @@ export class PagesService {
                           channel: 'frontend',
                           data: {
                               what: 'pages',
-                              fields: ["*"],//it's optional. defaults to *
-                              how: "OR",
+                              // fields: ["*"],//it's optional. defaults to *
+                              // how: "OR",
                               where: {
-                                  id: params.id
+                                  pagelink: params.where.pagelink,
+                                  is_default: params.where.is_default
                               }
                           }
                       }
@@ -123,7 +124,7 @@ export class PagesService {
                               fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
-                                  page_id: params.id
+                                  page_id: page.id
                               }
                           }
                       }
@@ -159,7 +160,7 @@ export class PagesService {
                               fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
-                                  page_id: params.id
+                                  page_id: page.id
                               }
                           }
                       }
@@ -198,7 +199,7 @@ export class PagesService {
                               what: 'pages_to_categories',
                               fields: ["category_id"],
                               where: {
-                                  page_id: params.id
+                                  page_id: page.id
                               }
                           }
                       }
