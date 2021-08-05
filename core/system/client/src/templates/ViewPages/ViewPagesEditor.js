@@ -1657,53 +1657,53 @@ class ViewPagesEditor extends React.PureComponent {
                   </Accordion>
                 </div>
               </div>
-              <div
-                style={{
-                  flexGrow: 1,
-                  backgroundImage: `url(${
-                    this.state.pageBase64Image ||
-                    `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`
-                  }`,
-                  backgroundRepeat: this.state.pageBackgroundRepeat
-                    ? "repeat"
-                    : "no-repeat",
-                  backgroundSize: this.state.pageBackgroundStretch
-                    ? "cover"
-                    : "auto",
-                  backgroundColor: this.state.bgColor,
-                  fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                  fontFamily: this.state.fontFamily,
-                  color: this.state.textColor,
-                  paddingBottom: "55px",
-                }}
-              >
-                <ResponsiveReactGridLayout
+              {(this.state.page_id || this.state.pageBase64Image) && <div
                   style={{
+                    flexGrow: 1,
+                    backgroundImage: `url(${
+                        this.state.pageBase64Image ||
+                        `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`
+                    }`,
+                    backgroundRepeat: this.state.pageBackgroundRepeat
+                        ? "repeat"
+                        : "no-repeat",
+                    backgroundSize: this.state.pageBackgroundStretch
+                        ? "cover"
+                        : "auto",
+                    backgroundColor: this.state.bgColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
+                    paddingBottom: "55px",
                   }}
-                  layouts={this.state.layouts}
-                  isBounded={true}
-                  margin={this.state.config.layoutBoxSpacing}
-                  containerPadding={this.state.config.layoutBoxPadding}
-                  draggableHandle=".MyDragHandleClassName"
-                  onLayoutChange={(layout, layouts) => {
-                    return this.onLayoutChange(layout, layouts);
-                  }}
-                  compactType="vertical"
-                  onBreakpointChange={() => this.onBreakpointChange}
-                  {...this.props}
+              >
+                <ResponsiveReactGridLayout
+                    style={{
+                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                      fontFamily: this.state.fontFamily,
+                      color: this.state.textColor,
+                    }}
+                    layouts={this.state.layouts}
+                    isBounded={true}
+                    margin={this.state.config.layoutBoxSpacing}
+                    containerPadding={this.state.config.layoutBoxPadding}
+                    draggableHandle=".MyDragHandleClassName"
+                    onLayoutChange={(layout, layouts) => {
+                      return this.onLayoutChange(layout, layouts);
+                    }}
+                    compactType="vertical"
+                    onBreakpointChange={() => this.onBreakpointChange}
+                    {...this.props}
                 >
                   {_.map(this.state.items, (el) => this.createElement(el))}
                 </ResponsiveReactGridLayout>
                 <div className={this.props.classes.bottomPane}>
                   <Button
-                    disabled={this.state.pageTitle.length === 0}
-                    onClick={() => {
-                      this.savePage();
-                    }}
-                    color="primary"
+                      disabled={this.state.pageTitle.length === 0}
+                      onClick={() => {
+                        this.savePage();
+                      }}
+                      color="primary"
                   >
                     <div>Save</div>
                   </Button>
@@ -1711,8 +1711,8 @@ class ViewPagesEditor extends React.PureComponent {
                     Discard
                   </Button>
                 </div>
-              </div>
-            </div>
+              </div>}
+                </div>
           </MuiThemeProvider>
         </div>
       </React.Fragment>
