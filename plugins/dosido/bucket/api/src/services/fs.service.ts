@@ -259,6 +259,7 @@ export class FsService {
                         });
                         break;
                     case 'data':
+                        console.log(data.payload.index)
                         readable.push(Buffer.from(data.payload.buffer.data))
                         break;
                 }

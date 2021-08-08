@@ -1657,7 +1657,7 @@ class ViewPagesEditor extends React.PureComponent {
                   </Accordion>
                 </div>
               </div>
-              {(this.state.page_id || this.state.pageBase64Image) && <div
+              <div
                   style={{
                     flexGrow: 1,
                     backgroundImage: `url(${
@@ -1711,7 +1711,7 @@ class ViewPagesEditor extends React.PureComponent {
                     Discard
                   </Button>
                 </div>
-              </div>}
+              </div>
                 </div>
           </MuiThemeProvider>
         </div>
