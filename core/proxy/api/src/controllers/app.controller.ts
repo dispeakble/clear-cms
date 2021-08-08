@@ -103,28 +103,36 @@ export class AppController {
                                 }
                             });
 
-                            file.stream.on('data', (data) => {
-                                handshakeResponse['thePusher'].next({
-                                    payload: {
-                                        type: 'data',
-                                        buffer: data
+                            setTimeout(() => {
+                                let index = 0;
+                                const t = Math.random();
+                                file.stream.on('data', (data) => {
+                                    index++;
+                                    handshakeResponse['thePusher'].next({
+                                        payload: {
+                                            type: 'data',
+                                            index: `${t}-${index}`,
+                                            buffer: data
+                                        }
+                                    });
+                                });
+
+                                file.stream.on('end', () => {
+                                    handshakeResponse['thePusher'].complete();
+                                    fileCount++;
+                                    if(totalFiles === fileCount){
+                                        res.end(JSON.stringify({message: 'upload complete'}));
                                     }
                                 });
-                            });
 
-                            file.stream.on('end', () => {
-                                handshakeResponse['thePusher'].complete();
-                                fileCount++;
-                                if(totalFiles === fileCount){
-                                    res.end(JSON.stringify({message: 'upload complete'}));
-                                }
-                            });
+                                file.stream.on('error', (error) => {
+                                    handshakeResponse['thePusher'].error(error);
+                                    handshakeResponse['thePusher'].complete();
+                                    res.end(JSON.stringify({message: 'upload error'}));
+                                });
+                            }, 1000);
 
-                            file.stream.on('error', (error) => {
-                                handshakeResponse['thePusher'].error(error);
-                                handshakeResponse['thePusher'].complete();
-                                res.end(JSON.stringify({message: 'upload error'}));
-                            });
+
 
                         });
                     },
