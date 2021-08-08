@@ -296,7 +296,7 @@
 #createNamespace "metallb-system"
 #checkApp "cattle-global-data:bitnami-metallb"
 #sleep 5
-#sed -e "s|MY_IP_RANGE|127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
+#sed -e "s|127.0.0.230|127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
 #rancher app install --no-prompt --namespace metallb-system \
 #  --set existingConfigMap=metallbconfig \
 #  --helm-timeout 300 \
