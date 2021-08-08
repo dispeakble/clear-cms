@@ -83,7 +83,7 @@ let roseColor = "#e91e63";
 let grayColor = "#999999";
 
 try {
-  const theme = JSON.parse(localStorage.getItem("adminTheme"));
+  const theme = JSON.parse(localStorage.getItem("publicThemes"));
 
   primaryColor = theme.primary.main;
   warningColor = theme.warning.main;

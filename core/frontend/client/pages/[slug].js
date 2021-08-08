@@ -4,7 +4,6 @@ import ViewPagesPreview from "templates/ViewPages/ViewPagesPreview";
 import { withRouter } from 'next/router'
 
 const PageComponent = (props) => {
-    debugger
     const slug = props.router.query.slug;
     return (
         <>

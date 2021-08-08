@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4000",
+    "dev": "NODE_OPTIONS='--inspect' next dev -p 4000",
     "build": "next build",
     "build_export": "next build && next export",
     "build_prod": "next build && next export && rm -fr ../api/public && mkdir ../api/public && cp -Rf ./out/* ../api/public",

@@ -81,7 +81,7 @@ function MyApp({ Component, pageProps }) {
   const getTheme = async () => {
     const response = await sendMessage({
       module: 'system',
-      api: 'adminThemes',
+      api: 'publicThemes',
       act: 'getOne',
       payload: {
         where: {
@@ -91,7 +91,7 @@ function MyApp({ Component, pageProps }) {
     })
     if (response && response.data && response.data.length) {
       setDefaultPalette(JSON.parse(response.data))
-      localStorage.setItem('adminTheme', response.data)
+      localStorage.setItem('publicThemes', response.data)
     }
   }
 

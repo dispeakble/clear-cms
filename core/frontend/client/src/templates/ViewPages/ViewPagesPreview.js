@@ -64,7 +64,6 @@ class ViewPagesPreview extends React.Component {
   }
 
   componentDidMount() {
-    debugger
     this.props.ws.subscribe({
       channel: this.channel,
       callbacks: {
@@ -89,7 +88,6 @@ class ViewPagesPreview extends React.Component {
   }
 
   sendMessage(params) {
-    debugger
     return new Promise((resolve_send) => {
       const uniqueId = shortId.generate();
       this.messageCallbacks[uniqueId] = resolve_send;
@@ -125,8 +123,6 @@ class ViewPagesPreview extends React.Component {
         }
         const response = await this.sendMessage(data);
 
-        const editPage = _.cloneDeep(response);
-        response.editPage = editPage
         resolve(response)
       } catch (err) {
         resolve(null);
@@ -136,15 +132,15 @@ class ViewPagesPreview extends React.Component {
 
   async loadPage() {
     const pageLink = this.props.slug;
-    debugger
     const page = await this.get({
       pagelink: pageLink
     });
+    debugger
     this.setState({
       pageLink: pageLink,
       items: page?.items || [],
       pageConfig: page?.pageConfig,
-      pageId: page?.items[0].id
+      pageId: page?.id
     });
   }
 
