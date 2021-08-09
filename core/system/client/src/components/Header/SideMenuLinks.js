@@ -28,6 +28,9 @@ const styles = (theme) => ({
     "&:link": {
       color: "black",
     },
+    "&:link.active": {
+      backgroundColor: theme.palette.primary.main,
+    },
   },
 });
 class NestedList extends React.Component {
@@ -89,7 +92,6 @@ class NestedList extends React.Component {
                                         activeStyle={{
                                           fontWeight: 900,
                                           color: "white",
-                                          backgroundColor: "#006C6C",
                                           display: "block"
                                         }}
                                     >
