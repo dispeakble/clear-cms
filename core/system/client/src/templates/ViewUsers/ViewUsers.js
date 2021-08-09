@@ -222,16 +222,21 @@ class Users extends Component {
                     type: "numeric",
                     field: "type",
                     title: "Type",
+                    render: (rowData) => {
+                        const type = this.state.userTypes.find((type) => type.id === rowData.type);
+                        return <React.Fragment>{type.label}</React.Fragment>;
+                    },
                     editComponent: (columnData) => {
                         let filteredTypes = this.state.userTypes.filter(
                             (cat) => cat.id !== columnData.rowData.id
                         );
+                        const defaultIndex = filteredTypes.findIndex((type) => type.id === columnData.rowData.type);
                         return (
                             <Autocomplete
                                 options={filteredTypes}
                                 autoHighlight
                                 className={this.props.classes.option}
-
+                                defaultValue={filteredTypes[defaultIndex]}
                                 onChange={(ev, value) => {
                                     if (value && value.label) {
                                         columnData.onRowDataChange({
@@ -260,7 +265,10 @@ class Users extends Component {
                     editComponent: (columnData) => {
                         return (
                             <Checkbox checked={columnData.rowData.active === 1} onChange={(ev, checked) => {
-                                columnData.rowData.active = checked ? 1 : 0;
+                                    columnData.onRowDataChange({
+                                        ...columnData.rowData,
+                                        active: checked ? 1 : 0,
+                                    });
                                 }
                             } />
                         )

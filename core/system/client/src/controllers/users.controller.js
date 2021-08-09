@@ -115,8 +115,9 @@ class UsersController extends Component {
                     api: 'users',
                     act: 'edit',
                     payload: {
+                        id: params.id,
                         fname: params.fname,
-                        lanme: params.lanme,
+                        lname: params.lname,
                         email: params.email,
                         type: params.type,
                         active: params.active
