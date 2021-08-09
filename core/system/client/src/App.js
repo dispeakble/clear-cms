@@ -64,7 +64,7 @@ class App extends Component {
           {
             toLink: "/users",
             name: "Users",
-            icon: "user",
+            icon: "people",
             active: false,
           },
           {

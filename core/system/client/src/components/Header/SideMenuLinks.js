@@ -89,6 +89,8 @@ class NestedList extends React.Component {
                                         activeStyle={{
                                           fontWeight: 900,
                                           color: "white",
+                                          backgroundColor: "#006C6C",
+                                          display: "block"
                                         }}
                                     >
                                       <ListItem
