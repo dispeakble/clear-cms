@@ -173,6 +173,11 @@ export class AppController {
 
             postSubscriber.subscribe((response) => {
                 switch (response.type) {
+                    default:
+                        res.set('Cache-Control', 'public, max-age=0');
+                        res.status(HttpStatus.OK);
+                        res.end(JSON.stringify(response));
+                        break;
                     case "meta":
                         res.set('Cache-Control', 'public, max-age=0');
                         res.status(HttpStatus.OK);
