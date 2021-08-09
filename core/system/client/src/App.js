@@ -30,6 +30,7 @@ import * as shortId from "shortid";
 class App extends Component {
   state = {
     services: {},
+    currentModule: 1,
     moduleList: [
       {
         id: 1,
@@ -65,18 +66,6 @@ class App extends Component {
             toLink: "/users",
             name: "Users",
             icon: "people",
-            active: false,
-          },
-          {
-            toLink: "/file-transfer",
-            icon: "attachment",
-            name: "File Transfer",
-            active: false,
-          },
-          {
-            toLink: "/video-conference",
-            icon: "video_call",
-            name: "Video Conference",
             active: false,
           }
         ],
@@ -130,6 +119,20 @@ class App extends Component {
             this.props.history.push("/view-auth")
       }
     });
+
+    const navPayload = this.state.moduleList.find((module) => {
+      let foundItem = false;
+      module.subitems.forEach(item => {
+        if(window.location.href.indexOf(item.toLink) > -1) {
+          foundItem = true;
+        }
+      });
+      return foundItem
+    });
+
+    this.setState({
+      currentModule: navPayload
+    })
 
   }
 
@@ -219,6 +222,13 @@ class App extends Component {
   handleDrawerToggle = () => {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
+
+  onNavigate(params) {
+    this.setState({
+      currentModule: params
+    })
+  }
+
   render() {
     const { pathname } = this.props.location;
     const locationPath = pathname.substring(1);
@@ -241,8 +251,10 @@ class App extends Component {
                   handleDrawerToggle={() => this.handleDrawerToggle()}
                   leftLinks={
                     <SideMenuLinks
+                        currentModule={this.state.currentModule}
                         closeDrawer={() => this.handleDrawerToggle()}
                         moduleList={this.state.moduleList}
+                        onNavigate={(params) => this.onNavigate(params)}
                     />
                   }
                   fixed
