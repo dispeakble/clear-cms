@@ -135,7 +135,6 @@ class ViewPagesPreview extends React.Component {
     const page = await this.get({
       pagelink: pageLink
     });
-    debugger
     this.setState({
       pageLink: pageLink,
       items: page?.items || [],

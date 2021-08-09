@@ -7,6 +7,7 @@ import WsService from "../src/services/ws.service";
 import * as shortId from "shortid";
 import { Helmet } from "react-helmet";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import axios from 'axios';
 
 function MyApp({ Component, pageProps }) {
   const channel = 'app';
@@ -16,6 +17,9 @@ function MyApp({ Component, pageProps }) {
   const messageCallbacks = {};
 
   useEffect(() => {
+    sendApiCall({
+      pagelink: window.location.href
+    });
     const instance = new WsService();
     setWsInstance(instance)
   }, [])
@@ -77,6 +81,31 @@ function MyApp({ Component, pageProps }) {
     });
   }
 
+  const sendApiCall = async (params) => {
+    return new Promise((resolve) => {
+
+      var formData = new FormData();
+
+      const keys = Object.keys(params);
+
+      keys.forEach((key) => {
+        formData.append(key, params[key]);
+      })
+
+      //TODO TRY CATCH AWAIT
+
+      const payload = {
+        api: 'pages',
+        act: 'get',
+        payload: params
+      };
+
+      axios.post("/api", payload).then((data) => {
+        console.log(data);
+        resolve(data);
+      });
+    });
+  }
 
   const getTheme = async () => {
     const response = await sendMessage({
