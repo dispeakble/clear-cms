@@ -42,6 +42,7 @@ class Categories extends Component {
         flatCategories: [],
         defaultTheme: "",
         removeBg: {},
+        currentPage: 1,
     };
 
     async componentDidMount() {
@@ -120,13 +121,22 @@ class Categories extends Component {
             });
         },
         actions: {
-            getData: () => {
+            getData: (query) => {
+                debugger
                 return new Promise((resolve) => {
-                    setTimeout(() => {
+                    setTimeout(async () => {
+                        await this.setAsyncState({
+                            currentPage: query.page + 1,
+                        });
+                        //TODO SORT SERVER SIDE!!!!!!!!!!
+                        let truncatedData = this.state.categories.slice(
+                            query.page,
+                            query.pageSize
+                        );
                         let payload = {
                             totalCount: 100,
                             page: 1,
-                            data: this.state.categories,
+                            data: truncatedData,
                         };
                         resolve(payload);
                     }, 300);
@@ -320,7 +330,7 @@ class Categories extends Component {
 
     render() {
         const classes = this.props.classes;
-
+        const currentList = this.state.categories
         return (
             <React.Fragment>
                 <Helmet>
@@ -334,7 +344,7 @@ class Categories extends Component {
                                 tableRef={this.state.tableRef}
                                 columns={this.tableOptions.props.columns}
                                 parentChildData={this.tableOptions.props.parentChildData}
-                                data={() => this.tableOptions.actions.getData()}
+                                data={currentList}
                                 icons={this.tableOptions.props.icons}
                                 options={this.tableOptions.props.options}
                                 editable={this.tableOptions.actions.editable}

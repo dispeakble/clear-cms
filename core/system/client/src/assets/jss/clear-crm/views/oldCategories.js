@@ -43,6 +43,9 @@ const javascriptStyles = {
     width: "80%",
     height: "auto",
     minWidth: "10rem",
+    "@media (max-width: 500px)" : {
+      width: "100%",
+    }
   },
   categoryWrapper: {
     display: "inlineBlock",

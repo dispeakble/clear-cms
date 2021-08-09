@@ -35,22 +35,34 @@ const styles = (theme) => ({
 });
 class NestedList extends React.Component {
   state = {};
+
+  componentDidMount() {
+    const selectedState = {};
+
+    selectedState[this.props.currentModule.name] = true;
+    this.setState(selectedState);
+  }
+
   handleClick = (e) => {
     this.setState({ [e]: !this.state[e] });
   };
 
-  getTheme = () => {
-    return createTheme({
-      palette: this.props.defaultTheme,
-
-      overrides: {},
+  onNavigate(e) {
+    const navPayload = this.props.moduleList.find((module) => {
+      let foundItem = false;
+      module.subitems.forEach(item => {
+        if(window.location.href.indexOf(item.toLink) > -1) {
+          foundItem = true;
+        }
+      });
+      return foundItem
     });
-  };
+    this.props.onNavigate(navPayload);
+  }
 
   render() {
     const { classes } = this.props;
     return (
-      <MuiThemeProvider theme={this.getTheme()}>
         <div>
           {this.props.moduleList.map((cat) => {
             return (
@@ -86,6 +98,7 @@ class NestedList extends React.Component {
                               {cat.subitems.map((nav) => {
                                 return (
                                     <NavLink
+                                        onClick={this.onNavigate.bind(this)}
                                         key={`nav-${nav.name}`}
                                         to={nav.toLink}
                                         className={classes.links}
@@ -128,11 +141,11 @@ class NestedList extends React.Component {
             )
           })}
         </div>
-      </MuiThemeProvider>
     );
   }
 }
 NestedList.propTypes = {
   classes: PropTypes.object.isRequired,
+  onNavigate: PropTypes.func,
 };
 export default withStyles(styles)(NestedList);

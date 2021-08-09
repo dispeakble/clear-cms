@@ -286,10 +286,10 @@ class ViewBucket extends Component {
                 MuiDialog: {
                     paper: {
                         width: "100%",
-                    },
+                    }/*,
                     paperWidthSm: {
                         maxWidth: "100vw",
-                    }
+                    }*/
                 }
             },
         });
