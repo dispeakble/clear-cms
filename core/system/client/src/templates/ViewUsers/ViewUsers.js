@@ -201,27 +201,33 @@ class Users extends Component {
                 {
                     type: "string",
                     field: "fname",
-                    title: "First Name"
+                    title: "First Name",
+                    validate: rowData => rowData.fname !== ""
                 },
                 {
                     type: "string",
                     field: "lname",
-                    title: "Last Name"
+                    title: "Last Name",
+                    validate: rowData => rowData.lname !== ""
                 },
                 {
                     type: "string",
                     field: "email",
-                    title: "Email"
+                    title: "Email",
+                    validate: rowData => rowData.email !== ""
                 },
+                // TO-DO: Removing password validation for now, because when user tries to edit the row again it will ask for password everytime user edits
                 {
                     type: "string",
                     field: "password",
-                    title: "Password"
+                    title: "Password",
+                    // validate: rowData => rowData.password && rowData.password !== "" && rowData.password.length >= 8
                 },
                 {
                     type: "numeric",
                     field: "type",
                     title: "Type",
+                    validate: rowData => rowData.type >= 0,
                     render: (rowData) => {
                         const type = this.state.userTypes.find((type) => type.id === rowData.type);
                         return <React.Fragment>{type.label}</React.Fragment>;
