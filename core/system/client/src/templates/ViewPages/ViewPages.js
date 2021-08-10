@@ -318,7 +318,7 @@ class Pages extends Component {
                             simple
                             onClick={() => this.deleteCallback()}
                         >
-                            <div>Proceed</div>
+                            <div>Delete</div>
                         </Button>
                         <Button
                             color="danger"
