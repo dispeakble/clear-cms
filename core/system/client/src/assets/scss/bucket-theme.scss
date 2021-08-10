@@ -15,8 +15,8 @@ div[class*=folderBackSideTop]::after {
     border-color: transparent;
 }
 .MuiPaper-root:not(header) {
-    color: var(--paper-color) !important;
-    background-color: var(--paper-bg) !important;
+    /*color: var(--paper-color) !important;
+    background-color: var(--paper-bg) !important;*/
 }
 
 header.MuiPaper-root {
