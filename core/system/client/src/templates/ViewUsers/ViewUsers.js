@@ -353,7 +353,7 @@ class Users extends Component {
                         id="classic-modal-slide-description"
                         className={classes.modalBody}
                     >
-                        <div>Are you sure you want to proceed ?</div>
+                        <div>Are you sure you want to delete the selected users?</div>
                     </DialogContent>
 
                     <DialogActions className={classes.modalFooter}>
@@ -363,7 +363,7 @@ class Users extends Component {
                             simple
                             onClick={() => this.multipleDeleteCallback()}
                         >
-                            <div>Proceed</div>
+                            <div>Delete</div>
                         </Button>
                         <Button
                             color="danger"
