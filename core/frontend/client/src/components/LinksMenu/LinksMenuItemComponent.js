@@ -34,6 +34,7 @@ const LinksMenuItemComponent = (props) => {
         fontFamily: "inherit",
       }}
       className={className}
+      // eslint-disable-next-line react/display-name
       component={forwardRef((props, ref) => (
         <Link exact {...props} innerRef={ref} />
       ))}

@@ -1,111 +1,16 @@
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "../src/assets/jss/clear-crm/global.js";
-import { useRouter } from 'next/router'
 import { useEffect, useState } from "react";
-import WsService from "../src/services/ws.service";
-import * as shortId from "shortid";
 import { Helmet } from "react-helmet";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import axios from 'axios';
 
 function MyApp({ Component, pageProps }) {
-  const channel = 'app';
   const [defaultPalette, setDefaultPalette] = useState({});
-  const [wsInstance, setWsInstance] = useState(null);
-  const [wsConnected, setWsConnected] = useState(false);
-  const messageCallbacks = {};
 
-  useEffect(() => {
-    sendApiCall({
-      pagelink: window.location.href
-    });
-    const instance = new WsService();
-    setWsInstance(instance)
-  }, [])
 
-  useEffect(() => {
-    if (wsInstance) {
-      wsInstance.start().then((connected) => {
-        setWsConnected(connected);
-      });
-    }
 
-  }, [wsInstance])
 
-  useEffect(() => {
-    if (wsInstance) {
-      wsSubscribe();
-      getTheme();
-    }
-  
-
-  }, [wsConnected])
-
-  const wsSubscribe = () => {
-    if (wsConnected) {
-      wsInstance.subscribe({
-        channel: channel,
-        callbacks: {
-          message: (response) => onMessage(response)
-        }
-      });
-      
-    }
-  }
-
-  const onMessage = (params) => {
-    if (messageCallbacks) {
-      try {
-        messageCallbacks[params.id](params.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    
-    console.log('got message in _app.tsx', params);
-  }
-
-  const sendMessage = async (params) => {
-    return new Promise((resolve_send) => {
-      const uniqueId = shortId.generate();
-      messageCallbacks[uniqueId] = resolve_send
-      wsInstance.emit({
-        id: uniqueId,
-        channel: 'app',
-        module: params.module,
-        api: params.api,
-        act: params.act,
-        payload: params.payload
-      });
-    });
-  }
-
-  const sendApiCall = async (params) => {
-    return new Promise((resolve) => {
-
-      var formData = new FormData();
-
-      const keys = Object.keys(params);
-
-      keys.forEach((key) => {
-        formData.append(key, params[key]);
-      })
-
-      //TODO TRY CATCH AWAIT
-
-      const payload = {
-        api: 'pages',
-        act: 'get',
-        payload: params
-      };
-
-      axios.post("/api", payload).then((data) => {
-        console.log(data);
-        resolve(data);
-      });
-    });
-  }
 
   const getTheme = async () => {
     const response = await sendMessage({
@@ -165,11 +70,10 @@ function MyApp({ Component, pageProps }) {
     });
   };
   return (
-    wsConnected ? (
 <>
     <Helmet
       htmlAttributes={{ lang: 'en' }}
-      title="Next.js!"
+      title={pageProps?.pageData?.pageConfig?.pageTitle}
       meta={[
         {
           name: 'viewport',
@@ -177,17 +81,16 @@ function MyApp({ Component, pageProps }) {
         },
         {
           property: 'og:title',
-          content: 'Hello next.js!'
+          content: pageProps?.pageData?.pageConfig?.pageTitle
         },
       ]}
     />
     <MuiThemeProvider theme={createAppTheme()}>
       <CssBaseline />
-      <Component {...pageProps} ws={wsInstance} />
+      <Component {...pageProps}/>
 
     </MuiThemeProvider>
   </>
-    ) : null
   )
 }
 

@@ -13,7 +13,7 @@ class MenuModule extends Component {
       return (
         <li key={`menu-item-${elm.id}`} style={options.style}>
           <a
-            onClick={() => this.props.updateCurrentPath()}
+            // onClick={() => this.props.updateCurrentPath()}
             style={options.style}
             href={elm.href}
             title={elm.title}

@@ -1,15 +1,54 @@
-import {Helmet} from "react-helmet";
-import ViewPagesPreview from "templates/ViewPages/ViewPagesPreview";
+import getConfig from 'next/config'
+import axios from "axios";
+import Link from "next/link";
+import { Helmet } from "react-helmet";
 
-export default function Home(props) {
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
+export default function Home({ pageListData }) {
+  debugger
   return (
     <>
-     <Helmet
-          title="Home"
-          meta={[{ property: 'og:title', content: 'Next index page' }]}
-        />
+      <Helmet
+        title="Home"
+        meta={[{ property: 'og:title', content: 'Next index page' }]}
+      />
+      {
+        pageListData && pageListData.map((elm, i) => {
+          return <div key={elm.id}>
+            <Link href={elm.pageConfig.pageLink} >{elm.pageConfig.pageTitle}</Link>
+          </div>
+        })
+      }
 
-      <ViewPagesPreview {...props}  />
     </>
   )
+}
+
+
+// export async function getStaticPaths() {
+//   return {
+//     paths: [],
+//     fallback: "blocking",
+//   };
+// }
+
+
+export async function getStaticProps({ params }) {
+  debugger
+  const payload = {
+    api: 'pages',
+    act: 'list',
+
+  };
+
+  // fetch list of posts
+  const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
+
+  const pageListData = await response.data.data;
+  return {
+    props: {
+      pageListData,
+    },
+  }
 }

@@ -64,13 +64,12 @@ class ViewPagesPreview extends React.Component {
   }
 
   componentDidMount() {
-    this.props.ws.subscribe({
-      channel: this.channel,
-      callbacks: {
-        message: (response) => this.onMessage(response)
-      }
-    });
-    this.loadPage();
+    this.setState({
+      pageLink: this.props.pageData.pageConfig.pageLink,
+      items: this.props.pageData.items,
+      pageConfig: this.props.pageData.pageConfig,
+      pageId: this.props.pageData.id
+    })
 
 
   }
@@ -111,7 +110,7 @@ class ViewPagesPreview extends React.Component {
           act: 'get',
           payload: {
             where: {
-              
+
             }
           }
         }
@@ -294,6 +293,7 @@ class ViewPagesPreview extends React.Component {
       <React.Fragment>
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
+          <meta name="keyword" content="test desc" />
         </Helmet>
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>

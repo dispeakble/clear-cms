@@ -247,7 +247,7 @@ export class AppController {
                     ip: req.ip,
                     hostname: req.hostname,
                     query: req.query,
-                    params: req.params,
+                    params: req.params || {},
                     headers: req.headers
                 }
             };
