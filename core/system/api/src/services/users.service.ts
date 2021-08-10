@@ -133,6 +133,7 @@ export class UsersService {
                     channel: 'system',
                     data: {
                         what: 'users',
+                        how: 'OR',
                         where: {
                             id: params.id
                         }
