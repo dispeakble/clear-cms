@@ -28,7 +28,7 @@ class Modal extends Component {
   callConfirmCallback(data) {
     this.props.confirmButton.callback(data);
   }
-
+// eslint-disable-next-line react/display-name
   transition = React.forwardRef((props, ref) => {
     return <Slide direction="down" ref={ref} {...props} />;
   });

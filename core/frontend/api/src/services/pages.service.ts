@@ -22,7 +22,7 @@ export class PagesService {
                     channel: 'frontend',
                     data: {
                         what: 'pages',
-                        fields: ["id", "title", "is_default", "publish", "cat_id", "istemplate"],
+                        fields: ["id", "title",  "pagelink", "is_default", "publish", "cat_id", "istemplate"],
                         ...(params.isTemplate && {how: "OR"}),
                         ...(params.isTemplate && {where: {istemplate: 1}}),
                     }
@@ -42,6 +42,7 @@ export class PagesService {
                                 publish: !!page.publish,
                                 category: page.cat_id,
                                 isTemplate: !!page.istemplate,
+                                pageLink: page.pagelink,
                             }
 
                         }
@@ -72,7 +73,7 @@ export class PagesService {
                               what: 'pages',
                               // fields: ["*"],//it's optional. defaults to *
                               // how: "OR",
-                              where: params.where
+                              where: params.body ? params.body.where : params.where
                           }
                       }
                   };

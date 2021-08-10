@@ -34,6 +34,7 @@ export default function Footer(props) {
                 href="//crm-awesome.io"
                 className={classes.block}
                 target="_blank"
+                rel="noreferrer"
               >
                 Contact us
               </a>
