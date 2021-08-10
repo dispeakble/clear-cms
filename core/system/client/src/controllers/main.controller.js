@@ -68,7 +68,9 @@ class MainController extends Component {
         if (this.hasModule(currentPath, pathnames)) {
             const module = this.getModuleByLink(currentPath, pathnames);
             LazyComponent = React.lazy(() =>
-                import(`./${module.controller}.controller`)
+                import(`./${module.controller}.controller`).then((component) => component).catch(() => {
+                    return { default: NotFound }
+                })
             );
         } else {
             LazyComponent = NotFound;
