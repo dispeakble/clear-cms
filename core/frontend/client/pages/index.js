@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet";
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 export default function Home({ pageListData }) {
-  debugger
   return (
     <>
       <Helmet
@@ -35,7 +34,6 @@ export default function Home({ pageListData }) {
 
 
 export async function getStaticProps({ params }) {
-  debugger
   const payload = {
     api: 'pages',
     act: 'list',

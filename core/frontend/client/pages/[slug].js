@@ -7,9 +7,7 @@ import axios from "axios";
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const PageComponent = (props) => {
-  debugger
   return (
-
     <ViewPagesPreview {...props} pageData={props.pageData} />
   );
 }
@@ -25,7 +23,6 @@ export async function getStaticPaths() {
 
 
 export async function getStaticProps({ params }) {
-  debugger
   const payload = {
     api: 'pages',
     act: 'get',
