@@ -216,12 +216,10 @@ class Users extends Component {
                     title: "Email",
                     validate: rowData => rowData.email !== ""
                 },
-                // TO-DO: Removing password validation for now, because when user tries to edit the row again it will ask for password everytime user edits
                 {
                     type: "string",
                     field: "password",
                     title: "Password",
-                    // validate: rowData => rowData.password && rowData.password !== "" && rowData.password.length >= 8
                 },
                 {
                     type: "numeric",
