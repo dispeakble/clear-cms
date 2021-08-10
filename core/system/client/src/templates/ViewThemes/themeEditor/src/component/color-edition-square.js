@@ -36,7 +36,7 @@ class ColorEditionSquare extends React.Component {
   };
 
   render() {
-    const { classes, rootClassName } = this.props;
+    const { rootClassName } = this.props;
     return (
       <React.Fragment>
         <IconButton button="true" className={rootClassName} onClick={this.handleClick}>
@@ -53,7 +53,6 @@ class ColorEditionSquare extends React.Component {
         >
           <SketchPicker
             color={this.props.value}
-            onChange={this.handleChange}
             onChange={this.handleChange}
           />
         </Popover>

@@ -214,7 +214,6 @@ class ViewBucket extends Component {
             requiresSelection: false
         },
         ({ reduxDispatch, getReduxState }) => {
-            const reduxState = getReduxState();
 
             this.setState({ newFolderModal: true })
         },
@@ -387,6 +386,7 @@ class ViewBucket extends Component {
                                 title: `${this.state.currentPath}${ref.payload.targetFile.name}`,
                                 message: (
                                     <img
+                                        alt={ref.payload.targetFile.name}
                                         style={{ width: '100%', display: 'block', margin: 'auto' }}
                                         src={`/files${this.state.currentPath}${ref.payload.targetFile.name}`}
                                     />
@@ -547,6 +547,8 @@ class ViewBucket extends Component {
                 } else {
                     await moveFile()
                 }
+                break;
+            default:
                 break;
         }
         return false;

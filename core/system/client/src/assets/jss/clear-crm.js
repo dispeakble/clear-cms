@@ -47,32 +47,33 @@ const defaultFont = {
   lineHeight: "1.5em",
 };
 
-const hardcodedStyles = {
-  text: {
-    //primary: "#F00",
-    //secondary: "#0F0",
-    disabled: "#00F",
-    hint: "#333",
-  },
-  error: {
-    main: "#FF0000",
-  },
-  warning: {
-    main: "#FF0000",
-  },
-  info: {
-    main: "#FF0000",
-  },
-  success: {
-    main: "#FF0000",
-  },
-  primary: {
-    main: "#008B8B",
-  },
-  secondary: {
-    main: "#FFFFFF",
-  },
-};
+// Not Used Anywhere but keeping constants for future reference
+// const hardcodedStyles = {
+//   text: {
+//     //primary: "#F00",
+//     //secondary: "#0F0",
+//     disabled: "#00F",
+//     hint: "#333",
+//   },
+//   error: {
+//     main: "#FF0000",
+//   },
+//   warning: {
+//     main: "#FF0000",
+//   },
+//   info: {
+//     main: "#FF0000",
+//   },
+//   success: {
+//     main: "#FF0000",
+//   },
+//   primary: {
+//     main: "#008B8B",
+//   },
+//   secondary: {
+//     main: "#FFFFFF",
+//   },
+// };
 
 let primaryColor = "#006C6C";
 let warningColor = "#ff9800";

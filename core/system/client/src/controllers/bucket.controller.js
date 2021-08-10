@@ -3,7 +3,6 @@ import * as shortId from "shortid";
 import PropTypes from "prop-types";
 import ViewBucket from "../templates/ViewBucket/ViewBucket";
 import axios from 'axios';
-import path from "path";
 
 class BucketController extends Component {
 

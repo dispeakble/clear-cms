@@ -15,7 +15,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
-import {withTheme, withStyles as themeStyles} from "@material-ui/styles";
+import {withTheme} from "@material-ui/styles";
 
 class Header extends Component {
   state = {

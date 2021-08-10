@@ -8,8 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import { NavLink } from "react-router-dom";
 import Icon from "@material-ui/core/Icon";
-import { withStyles, createTheme } from "@material-ui/core/styles";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
