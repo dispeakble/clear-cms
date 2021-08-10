@@ -30,7 +30,7 @@ import * as shortId from "shortid";
 class App extends Component {
   state = {
     services: {},
-    currentModule: 1,
+    currentModule: {},
     moduleList: [
       {
         id: 1,

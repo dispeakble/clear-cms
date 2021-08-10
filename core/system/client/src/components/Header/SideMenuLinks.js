@@ -37,10 +37,11 @@ class NestedList extends React.Component {
   state = {};
 
   componentDidMount() {
-    const selectedState = {};
-
-    selectedState[this.props.currentModule.name] = true;
-    this.setState(selectedState);
+    if(this.props.currentModule) {
+      const selectedState = {};
+      selectedState[this.props.currentModule.name] = true;
+      this.setState(selectedState);
+    }
   }
 
   handleClick = (e) => {
@@ -51,12 +52,15 @@ class NestedList extends React.Component {
     const navPayload = this.props.moduleList.find((module) => {
       let foundItem = false;
       module.subitems.forEach(item => {
-        if(window.location.href.indexOf(item.toLink) > -1) {
+        if(e.currentTarget.href.indexOf(item.toLink) > -1) {
           foundItem = true;
         }
       });
       return foundItem
     });
+    const selectedState = {};
+    selectedState[navPayload.name] = true;
+    this.setState(selectedState);
     this.props.onNavigate(navPayload);
   }
 
