@@ -308,7 +308,7 @@ class Pages extends Component {
                         id="classic-modal-slide-description"
                         className={classes.modalBody}
                     >
-                        <div>Are you sure you want to proceed ?</div>
+                        <div>Are you sure you want to delete the selected pages?</div>
                     </DialogContent>
 
                     <DialogActions className={classes.modalFooter}>
@@ -318,7 +318,7 @@ class Pages extends Component {
                             simple
                             onClick={() => this.deleteCallback()}
                         >
-                            <div>Proceed</div>
+                            <div>Delete</div>
                         </Button>
                         <Button
                             color="danger"

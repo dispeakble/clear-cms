@@ -377,7 +377,7 @@ class Categories extends Component {
                         id="classic-modal-slide-description"
                         className={classes.modalBody}
                     >
-                        <div>Are you sure you want to proceed ?</div>
+                        <div>Are you sure you want to delete the selected categories?</div>
                     </DialogContent>
 
                     <DialogActions className={classes.modalFooter}>
@@ -387,7 +387,7 @@ class Categories extends Component {
                             simple
                             onClick={() => this.multipleDeleteCallback()}
                         >
-                            <div>Proceed</div>
+                            <div>Delete</div>
                         </Button>
                         <Button
                             color="danger"
