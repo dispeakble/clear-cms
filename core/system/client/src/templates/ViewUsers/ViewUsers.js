@@ -201,27 +201,31 @@ class Users extends Component {
                 {
                     type: "string",
                     field: "fname",
-                    title: "First Name"
+                    title: "First Name",
+                    validate: rowData => rowData.fname !== ""
                 },
                 {
                     type: "string",
                     field: "lname",
-                    title: "Last Name"
+                    title: "Last Name",
+                    validate: rowData => rowData.lname !== ""
                 },
                 {
                     type: "string",
                     field: "email",
-                    title: "Email"
+                    title: "Email",
+                    validate: rowData => rowData.email !== ""
                 },
                 {
                     type: "string",
                     field: "password",
-                    title: "Password"
+                    title: "Password",
                 },
                 {
                     type: "numeric",
                     field: "type",
                     title: "Type",
+                    validate: rowData => rowData.type >= 0,
                     render: (rowData) => {
                         const type = this.state.userTypes.find((type) => type.id === rowData.type);
                         return <React.Fragment>{type.label}</React.Fragment>;
