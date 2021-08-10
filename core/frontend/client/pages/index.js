@@ -10,7 +10,7 @@ export default function Home({ pageListData }) {
     <>
       <Helmet
         title="Home"
-        meta={[{ property: 'og:title', content: 'Next index page' }]}
+        meta={[{ property: 'og:title', content: 'Home Page' }]}
       />
       {
         pageListData && pageListData.map((elm, i) => {
