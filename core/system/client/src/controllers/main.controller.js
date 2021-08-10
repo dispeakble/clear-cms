@@ -6,24 +6,55 @@ import ClipLoader from "react-spinners/ClipLoader";
 class MainController extends Component {
     state = {};
 
+    getModuleByLink(currentPath, moduleList) {
+        if(currentPath === `/`) {
+            return moduleList[0];
+        } else {
+            const pathObject = currentPath.split("/");
+            let module = null;
+
+            moduleList.map((el) => {
+                if(el.subitems){
+                    el.subitems.map((item) => {
+                        if (item.toLink.replace("/", "") === pathObject[1]) {
+                            module = item;
+                        }
+                        return item;
+                    })
+                }
+
+                return el;
+            });
+
+            return module;
+        }
+    }
+
     hasModule(currentPath, moduleList) {
-        const pathObject = currentPath.split("/");
-        let componentExists = false;
 
-        moduleList.map((el) => {
-            if(el.subitems){
-                el.subitems.map((item) => {
-                    if (item.toLink.replace("/", "") === pathObject[1]) {
-                        componentExists = true;
-                    }
-                    return item;
-                })
-            }
+        if(currentPath === `/`) {
+            return true;
+        } else {
+            const pathObject = currentPath.split("/");
+            let componentExists = false;
 
-            return el;
-        });
+            moduleList.map((el) => {
+                if(el.subitems){
+                    el.subitems.map((item) => {
+                        if (item.toLink.replace("/", "") === pathObject[1]) {
+                            componentExists = true;
+                        }
+                        return item;
+                    })
+                }
 
-        return componentExists;
+                return el;
+            });
+
+            return componentExists;
+        }
+
+
     }
 
     render() {
@@ -35,8 +66,9 @@ class MainController extends Component {
         this.props.location.pathObject = pathObject;
         let LazyComponent;
         if (this.hasModule(currentPath, pathnames)) {
+            const module = this.getModuleByLink(currentPath, pathnames);
             LazyComponent = React.lazy(() =>
-                import(`./${pathObject[0]}.controller`)
+                import(`./${module.controller}.controller`)
             );
         } else {
             LazyComponent = NotFound;

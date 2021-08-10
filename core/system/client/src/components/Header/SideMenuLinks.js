@@ -38,36 +38,30 @@ class NestedList extends React.Component {
 
   componentDidMount() {
     if(this.props.currentModule) {
-      const selectedState = {};
-      selectedState[this.props.currentModule.name] = true;
-      this.setState(selectedState);
+      this.setState({
+        open: this.props.currentModule.id
+      });
     }
   }
 
-  handleClick = (e) => {
-    this.setState({ [e]: !this.state[e] });
+  handleCatClick = (cat) => {
+    this.setState({ open: cat.id });
   };
 
-  onNavigate(e) {
-    const navPayload = this.props.moduleList.find((module) => {
-      let foundItem = false;
-      module.subitems.forEach(item => {
-        if(e.currentTarget.href.indexOf(item.toLink) > -1) {
-          foundItem = true;
-        }
-      });
-      return foundItem
+  onNavigate(params) {
+    this.props.closeDrawer();
+    
+    this.setState({
+      open: params.cat.id
     });
-    const selectedState = {};
-    selectedState[navPayload.name] = true;
-    this.setState(selectedState);
-    this.props.onNavigate(navPayload);
+
+    this.props.onNavigate(params);
   }
 
   render() {
     const { classes } = this.props;
     return (
-        <div>
+        <div style={{minWidth: `250px`}}>
           {this.props.moduleList.map((cat) => {
             return (
                 <List
@@ -80,13 +74,13 @@ class NestedList extends React.Component {
                         <div>
                           <ListItem
                               button
-                              onClick={this.handleClick.bind(this, cat.name)}
+                              onClick={this.handleCatClick.bind(this, cat)}
                           >
                             <ListItemIcon>
                               <Icon>{cat.icon}</Icon>
                             </ListItemIcon>
                             <ListItemText primary={cat.name}/>
-                            {this.state[cat.name] ? (
+                            {this.state.open === cat.id ? (
                                 <ExpandLess/>
                             ) : (
                                 <ExpandMore/>
@@ -94,7 +88,7 @@ class NestedList extends React.Component {
                           </ListItem>
                           <Collapse
                               component="li"
-                              in={this.state[cat.name]}
+                              in={this.state.open === cat.id}
                               timeout="auto"
                               unmountOnExit
                           >
@@ -102,7 +96,7 @@ class NestedList extends React.Component {
                               {cat.subitems.map((nav) => {
                                 return (
                                     <NavLink
-                                        onClick={this.onNavigate.bind(this)}
+                                        onClick={this.onNavigate.bind(this, { cat })}
                                         key={`nav-${nav.name}`}
                                         to={nav.toLink}
                                         className={classes.links}
@@ -113,7 +107,6 @@ class NestedList extends React.Component {
                                         }}
                                     >
                                       <ListItem
-                                          onClick={this.props.closeDrawer}
                                           button
                                           className={classes.nested}
                                       >
@@ -131,13 +124,28 @@ class NestedList extends React.Component {
                           </Collapse>{" "}
                         </div>
                     ) : (
-                        <ListItem
-                            button
-                            onClick={this.handleClick.bind(this, cat.name)}
-                            key={`subitem-${cat.id}`}
+                        <NavLink
+                            onClick={this.onNavigate.bind(this, { cat })}
+                            key={`nav-${cat.controller}`}
+                            to={cat.toLink}
+                            className={classes.links}
+                            activeStyle={{
+                              fontWeight: 900,
+                              color: "white",
+                              display: "block"
+                            }}
+                            exact={cat.exact}
                         >
-                          <ListItemText primary={cat.name}/>
-                        </ListItem>
+                          <ListItem
+                              button
+                              key={`subitem-${cat.id}`}
+                          >
+                            <ListItemIcon>
+                              <Icon>{cat.icon}</Icon>
+                            </ListItemIcon>
+                            <ListItemText primary={cat.name}/>
+                          </ListItem>
+                        </NavLink>
                     )}
                   </div>
                   <Divider key={`divider-${cat.id}`} absolute/>

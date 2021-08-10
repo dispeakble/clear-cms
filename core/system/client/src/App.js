@@ -33,6 +33,16 @@ class App extends Component {
     currentModule: {},
     moduleList: [
       {
+        id: 0,
+        name: "Dashboard",
+        controller: "dashboard",
+        icon: "apps",
+        show: false,
+        toLink: "",
+        exact: true,
+        active: false
+      },
+      {
         id: 1,
         name: "All Modules",
         icon: "apps",
@@ -41,30 +51,35 @@ class App extends Component {
             //TODO get this from hub module list
             toLink: "/pages",
             name: "Pages",
+            controller: "pages",
             icon: "web",
-            active: true,
+            active: false
           },
           {
             toLink: "/categories",
             name: "Categories",
+            controller: "categories",
             icon: "category",
             active: false,
           },
           {
             toLink: "/themes",
             name: "Themes",
+            controller: "themes",
             icon: "brush",
             active: false,
           },
           {
             toLink: "/bucket",
             icon: "publish",
+            controller: "bucket",
             name: "Bucket",
             active: false,
           },
           {
             toLink: "/users",
             name: "Users",
+            controller: "users",
             icon: "people",
             active: false,
           }
@@ -79,6 +94,7 @@ class App extends Component {
             //TODO get this from hub module list
             toLink: "/general-settings",
             name: "General Settings",
+            controller: "settings",
             icon: "settings",
             active: false,
           },
@@ -99,34 +115,50 @@ class App extends Component {
     this.state.services.ws.start().then((connected) => {
       if(!connected){
         window.location.href = '/view-auth';
+        return;
       }
+
+      this.state.services.ws.subscribe({
+        channel: 'app',
+        callbacks: {
+          message: (response) => this.onMessage(response)
+        }
+      });
+
+      this.getTheme();
+
+      this.unlisten = this.props.history.listen((location, action) => {
+        console.log("on route change");
+        if (!this.state.services.ws.isConnected && !['/view-auth', '/logout'].includes(window.location.pathname)) {
+          this.props.history.push("/view-auth")
+        }
+      });
+
+
     });
+
   }
 
   componentDidMount() {
-    this.state.services.ws.subscribe({
-      channel: 'app',
-      callbacks: {
-        message: (response) => this.onMessage(response)
-      }
-    });
-
-    this.getTheme();
-
-    this.unlisten = this.props.history.listen((location, action) => {
-      console.log("on route change");
-      if (!this.state.services.ws.isConnected && !['/view-auth', '/logout'].includes(window.location.pathname)) {
-            this.props.history.push("/view-auth")
-      }
-    });
 
     const navPayload = this.state.moduleList.find((module) => {
       let foundItem = false;
-      module.subitems.forEach(item => {
-        if(window.location.href.indexOf(item.toLink) > -1) {
-          foundItem = true;
+      if(module.subitems && module.subitems.length) {
+        module.subitems.forEach(item => {
+          if(window.location.href.indexOf(item.toLink) > -1) {
+            foundItem = true;
+          }
+        });
+      } else {
+        if(module.toLink && module.toLink.length) {
+          return window.location.href.indexOf(module.toLink) > -1;
+        } else {
+          if (window.location.href === "/") {
+            return true;
+          }
         }
-      });
+      }
+
       return foundItem
     });
 
@@ -225,7 +257,7 @@ class App extends Component {
 
   onNavigate(params) {
     this.setState({
-      currentModule: params
+      currentModule: params.cat
     })
   }
 
