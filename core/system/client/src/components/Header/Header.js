@@ -22,6 +22,7 @@ class Header extends Component {
     mobileOpen: false,
     showAboutModal: false,
     showLicenseModal: false,
+    showLogoutModal: false,
     user:{
       fullname:"Admin"
     },
@@ -54,6 +55,24 @@ class Header extends Component {
         label: "Close",
       },
     },
+    logoutModal: {
+      name: "logout",
+      content: "Are you sure you want to logout?",
+      closeButton: {
+        callback: () => {
+          this.setState({ showLogoutModal: false});
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.setState({ showLogoutModal: false });
+          this.props.history.push("/logout");
+        },
+        label: "Logout",
+      },
+    }
   };
 
   componentDidMount() {
@@ -125,7 +144,7 @@ class Header extends Component {
       href: '#'
     },
     { divider: true },
-    { title: "Logout", href: "/logout", id: "logout" }
+    { title: "Logout", modal: "Logout", href: "#", id: "logout" }
   ];
 
   handleRightMenuClick = (event) => {
@@ -201,6 +220,10 @@ class Header extends Component {
           showModal={this.state.showAboutModal}
           {...this.state.aboutModal}
         />
+        <Modal
+          showModal={this.state.showLogoutModal}
+          {...this.state.logoutModal}
+        />
       </div>
     );
   }
@@ -218,6 +241,7 @@ Header.propTypes = {
   brand: PropTypes.string,
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,
+  history: PropTypes.object,
   // this will cause the sidebar to change the color from
   // props.color (see above) to changeColorOnScroll.color
   // when the window.pageYOffset is heigher or equal to
