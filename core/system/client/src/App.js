@@ -36,7 +36,7 @@ class App extends Component {
         id: 0,
         name: "Dashboard",
         controller: "dashboard",
-        icon: "apps",
+        icon: "dashboard",
         show: false,
         toLink: "",
         exact: true,

@@ -14,7 +14,7 @@ import {
 export class BucketService {
 
     private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
-    private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
+    private publicPaths = ["view-auth", "static", "manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
 
 
@@ -132,14 +132,15 @@ export class BucketService {
         let file_name = '';
 
         if (data.params[0] && data.params[0].length) {
-            file_name = params[0];
+            file_name = `${params[0].replace('/', '')}`;
         }
+        let hasAccess = false;
         this.publicPaths.forEach((e, i) => {
             if(file_name.indexOf(e) === 0){
-                return true;
+                hasAccess = true;
             }
         });
-        return false;
+        return hasAccess;
     }
 
     public checkAccess(data: any) {
