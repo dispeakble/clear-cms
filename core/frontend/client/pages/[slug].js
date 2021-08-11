@@ -14,11 +14,32 @@ const PageComponent = (props) => {
 
 
 
+// export async function getStaticPaths() {
+//   return {
+//     paths: [],
+//     fallback: "blocking",
+//   };
+// }
+
+// This function gets called at build time
 export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: false,
+  const payload = {
+    api: 'pages',
+    act: 'list',
+
   };
+  // Call an external API endpoint to get posts
+  const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
+  const pageListData = await response.data.data;
+  
+  // Get the paths we want to pre-render based on posts
+  const paths = pageListData.map((page) => ({
+    params: { slug: page.pageConfig.pageLink },
+  }))
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: false }
 }
 
 
@@ -34,12 +55,12 @@ export async function getStaticProps({ params }) {
 
   // fetch list of posts
   const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
-
   const pageData = await response.data.data;
   return {
     props: {
       pageData,
     },
+    revalidate: 60,
   }
 }
 

@@ -36,8 +36,8 @@ export async function getStaticProps({ params }) {
 
   // fetch list of posts
   const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
-
   const pageListData = await response.data.data;
+
   return {
     props: {
       pageListData,
