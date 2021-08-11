@@ -1,7 +1,6 @@
 import {
   container,
   defaultFont,
-  primaryColor,
   infoColor,
   successColor,
   warningColor,

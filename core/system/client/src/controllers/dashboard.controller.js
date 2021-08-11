@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
 import ViewDashboard from "../templates/ViewDashboard/ViewDashboard";
-import Snackbar from "components/Snackbar/Snackbar.js";
 
 class DashboardController extends Component {
     state = {

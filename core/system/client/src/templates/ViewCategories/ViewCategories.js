@@ -12,7 +12,6 @@ import {
     Check,
     Clear,
 } from "@material-ui/icons";
-import Icon from "@material-ui/core/Icon";
 
 // from material-table
 import MaterialTable from "material-table";

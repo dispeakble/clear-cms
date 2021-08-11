@@ -55,7 +55,6 @@ import { DropzoneArea } from "material-ui-dropzone";
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
-import Icon from "@material-ui/core/Icon";
 import ViewBoxEditor from "./ViewBoxEditor";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -233,7 +232,6 @@ class ViewPagesEditor extends React.PureComponent {
     if (editing) {
       await this.fetchAndSet(page_id);
     } else {
-      const publicThemes = JSON.parse(localStorage.getItem("publicThemes"));
 
       const defaultPublicTheme = await this.props.control.getPublicTheme();
 

@@ -328,13 +328,12 @@ class PagesController extends Component {
                 });
 
                 params.items = params.items.map((item) => {
-
                     response.items.map((dbItem) => {
                         if(Number(item.i) === Number(dbItem.ref)){
                             item.id = dbItem.id;
                         }
+                        return dbItem
                     });
-
                     return item;
                 });
 
@@ -422,16 +421,12 @@ class PagesController extends Component {
         switch (this.props.location.pathObject[1]) {
             default:
                 return <ViewPages control={this.control} {...this.props} />;
-                break;
             case 'edit':
                 return <ViewPagesEditor control={this.control} {...this.props} />;
-                break;
             case 'add':
                 return <ViewPagesEditor control={this.control} {...this.props} />;
-                break;
             case 'preview':
                 return <ViewPagesPreview control={this.control} {...this.props} />;
-                break;
         }
 
     }
