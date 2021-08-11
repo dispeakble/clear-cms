@@ -46,6 +46,7 @@ class ViewAuth extends Component {
         if (this.props.location.pathname === "/logout") {
             setTimeout(async () => {
                 await this.props.control.logout();
+                localStorage.removeItem("admin");
                 this.props.history.push("/view-auth");
                 this.changeTexts();
             }, 0);
@@ -63,6 +64,9 @@ class ViewAuth extends Component {
                     </div>
                 )
             });
+        }
+        else if (this.props.location.pathname === "/view-auth" && localStorage.getItem("admin")) {
+            this.props.history.push("/");
         }
 
         this.changeTexts();
