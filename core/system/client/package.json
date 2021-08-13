@@ -29,6 +29,7 @@
     "material-ui-editor": "^1.0.6",
     "materialui-daterange-picker": "^1.1.92",
     "moment": "2.26.0",
+    "moment-timezone": "^0.5.33",
     "node-sass": "4.14.1",
     "nouislider": "14.5.0",
     "password-generator": "^2.3.2",

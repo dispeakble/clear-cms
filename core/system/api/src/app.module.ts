@@ -9,6 +9,7 @@ import { AuthService } from './services/auth.service';
 import { AdminProfileService } from './services/adminProfile.service';
 import { AdminThemesService } from './services/adminThemes.service';
 import { PublicThemesService } from './services/publicThemes.service';
+import { GeneralSettingsService } from './services/generalSettings.service';
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -32,7 +33,7 @@ import { MainService } from './services/main.service';
     ])
   ],
   controllers: [ProtocolController],
-  providers: [BucketService, CategoriesService, UsersService, PagesService, ProtocolService, AuthService, SystemService, AdminProfileService, AdminThemesService, PublicThemesService, MainService]
+  providers: [BucketService, CategoriesService, UsersService, PagesService, ProtocolService, AuthService, SystemService, AdminProfileService, AdminThemesService, PublicThemesService, MainService, GeneralSettingsService]
 })
 
 export class AppModule {}
