@@ -2,8 +2,31 @@ import getConfig from 'next/config'
 import axios from "axios";
 import Link from "next/link";
 import { Helmet } from "react-helmet";
-
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
+export let getStaticProps;
+
+if(process.env.ONLY_STATIC) {
+
+  getStaticProps = async function getStaticProps({ params }) {
+    const payload = {
+      api: 'pages',
+      act: 'list',
+
+    };
+
+    // fetch list of posts
+    const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
+    const pageListData = await response.data.data;
+
+    return {
+      props: {
+        pageListData,
+      },
+    }
+  }
+
+}
 
 export default function Home({ pageListData }) {
   return (
@@ -19,28 +42,7 @@ export default function Home({ pageListData }) {
           </div>
         })
       }
-
+      { (!pageListData || !pageListData.length) && <div>no page found</div> }
     </>
   )
-}
-
-
-
-
-export async function getStaticProps({ params }) {
-  const payload = {
-    api: 'pages',
-    act: 'list',
-
-  };
-
-  // fetch list of posts
-  const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
-  const pageListData = await response.data.data;
-
-  return {
-    props: {
-      pageListData,
-    },
-  }
 }

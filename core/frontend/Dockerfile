@@ -4,18 +4,12 @@ RUN mkdir -p /usr/src/api/public
 RUN mkdir -p /usr/src/client/
 WORKDIR /usr/src/client
 
-COPY ./client/package*.json /usr/src/client/
-COPY ./client/next.config.js /usr/src/client/
-COPY ./client/next-env.d.ts /usr/src/client/
+COPY ./client /usr/src/client/
 RUN npm install
-COPY ./client/public /usr/src/client/public
-COPY ./client/src /usr/src/client/src
-COPY ./client/styles /usr/src/client/styles
-COPY ./client/tsconfig.json /usr/src/client/tsconfig.json
 
-RUN npm run build_prod
+#RUN npm run build_prod
 WORKDIR /usr/src
-RUN rm -fr ./client
+#RUN rm -fr ./client #we will reuse the client sources to rebuild static pages
 
 WORKDIR /usr/src/api
 

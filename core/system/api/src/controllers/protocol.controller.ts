@@ -43,7 +43,7 @@ export class ProtocolController {
         @Inject('BucketService') private bucketService,
         @Inject('CategoriesService') private categoriesService,
         @Inject('UsersService') private usersService,
-        @Inject('PagesService') private pagesServices,
+        @Inject('PagesService') private pagesService,
         @Inject('GeneralSettingsService') private generalSettingsService){
         this.mainService = this;
     }
