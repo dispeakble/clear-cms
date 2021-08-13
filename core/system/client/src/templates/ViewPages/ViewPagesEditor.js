@@ -204,12 +204,16 @@ class ViewPagesEditor extends React.PureComponent {
     let page_id = this.props.location.pathObject[2];
 
     let temps = await this.props.control.listTemplates();
-    let templates = temps.map((temp) => {
-      return {
-        id: temp.id,
-        label: temp.pageConfig.pageTitle,
-      };
-    });
+    let templates = [];
+    if(temps && temps.length) {
+      templates = temps.map((temp) => {
+        return {
+          id: temp.id,
+          label: temp.pageConfig.pageTitle,
+        };
+      });
+    }
+
 
     let categoriesFromStorage = await this.props.control.listCategories();
 
