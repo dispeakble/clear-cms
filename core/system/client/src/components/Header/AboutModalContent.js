@@ -31,14 +31,12 @@ class AboutModalContent extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     async componentDidMount() {
-        console.log(this.props.services);
         await this.services.ws.subscribe({
-            channel: 'general-settings',
+            channel: 'about-modal',
             callbacks: {
                 message: (response) => this.onMessage(response)
             }
         });
-    //    TODO Write code to fetch information from settings table
         const generalSettingsData = await this.getData();
         if(generalSettingsData.websiteName && generalSettingsData.applicationVersion) {
             this.setAsyncState({
@@ -55,7 +53,7 @@ class AboutModalContent extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in general settings controller', params);
+        console.log('got message in about modal', params);
     }
 
     sendMessage(params) {
@@ -64,7 +62,7 @@ class AboutModalContent extends Component {
             this.messageCallbacks[uniqueId] = resolve_send;
             this.services.ws.emit({
                 id: uniqueId,
-                channel: 'general-settings',
+                channel: 'about-modal',
                 module: params.module,
                 api: params.api,
                 act: params.act,
@@ -122,11 +120,7 @@ class AboutModalContent extends Component {
             });
 
         } catch (e) {
-            this.openNotification({
-                open: true,
-                color: "error",
-                message: "Error" + e
-            });
+            console.log("Error in updating website details", e);
         } finally {
             this.updateEditableState(fieldName, false);
         }
@@ -170,7 +164,6 @@ class AboutModalContent extends Component {
 
 
     render() {
-        console.log("Updated State", this.state)
         const classes = this.props.classes;
 
         return (
@@ -238,7 +231,7 @@ class AboutModalContent extends Component {
                 <div className={classes.fieldItem}>
                     Copyright website @2021
                 </div>
-                <div className={classes.fieldItem}>For Support: <Link href={"https://www.dosidoweb.com"}>https://www.dosidoweb.com</Link></div>
+                <div className={classes.fieldItem}>For Support: <Link href={"https://www.dosidoweb.com"}>dosidoweb.com</Link></div>
             </div>
         );
     }
