@@ -194,7 +194,6 @@ class AboutModalContent extends Component {
                             <div>
                                 Website Name: {this.state.websiteInfo.websiteName}
                             </div>
-                            <EditSharp onClick={() => this.updateEditableState("websiteName", true)}/>
                          </Fragment>}
                 </div>
                 <div className={classes.editableField}>
@@ -222,16 +221,15 @@ class AboutModalContent extends Component {
                             <div>
                                 Application Version: {this.state.websiteInfo.applicationVersion}
                             </div>
-                            <EditSharp onClick={() => this.updateEditableState("applicationVersion", true)}/>
                         </Fragment>}
                 </div>
                 <div className={classes.fieldItem}>
                     Release Date: {this.state.releaseDate}
                 </div>
                 <div className={classes.fieldItem}>
-                    Copyright website @2021
+                    Copyright website ©2021
                 </div>
-                <div className={classes.fieldItem}>For Support: <Link href={"https://www.dosidoweb.com"}>dosidoweb.com</Link></div>
+                <div className={classes.fieldItem}>For Support: <Link target="_blank" rel="noopener" href={"https://www.dosidoweb.com"}>dosidoweb.com</Link></div>
             </div>
         );
     }
