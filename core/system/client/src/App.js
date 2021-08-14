@@ -193,11 +193,20 @@ class App extends Component {
   }
 
   getTheme = async () => {
+
+    const currentTheme = JSON.parse(localStorage.getItem("adminTheme"));
+
+    if(currentTheme) {
+      this.setState({defaultPalette: currentTheme});
+      return;
+    }
+
     const response = await this.sendMessage({
       module: 'system',
       api: 'adminThemes',
       act: 'getOne',
       payload: {
+        fields: ["data"],
         where: {
           isdefault: 1
         }

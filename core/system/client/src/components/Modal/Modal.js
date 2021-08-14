@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-// nodejs library that concatenates classes
-//import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
-// nodejs library to set properties for components
-//import PropTypes from "prop-types";
-// @material-ui/core components
 import styles from "assets/jss/clear-crm/views/componentsSections/javascriptStyles.js";
 
 import Slide from "@material-ui/core/Slide";
@@ -15,10 +10,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
-//import CustomInput from "components/CustomInput/CustomInput.js";
-//import InputAdornment from "@material-ui/core/InputAdornment";
-//import Icon from "@material-ui/core/Icon";
 import { withRouter } from "react-router-dom";
+import {Divider} from "@material-ui/core";
 
 class Modal extends Component {
   callCloseCallback(data) {
@@ -54,6 +47,7 @@ class Modal extends Component {
           disableTypography
           className={classes.modalHeader}
         >
+          <h4 className={classes.modalTitle}>{this.props.title}</h4>
           <IconButton
             className={classes.modalCloseButton}
             key="close"
@@ -63,8 +57,9 @@ class Modal extends Component {
           >
             <Close className={classes.modalClose} />
           </IconButton>
-          <h4 className={classes.modalTitle}>{this.props.title}</h4>
+
         </DialogTitle>
+        <Divider />
         <DialogContent
           id="classic-modal-slide-description"
           className={classes.modalBody}
@@ -72,18 +67,6 @@ class Modal extends Component {
           {this.props.modalContent}
           {this.props.content}
         </DialogContent>
-        {/* {this.props.location.pathname === "/categories" ? (
-          <CustomInput
-            labelText="Title"
-            id="title"
-            required="required"
-            formControlProps={{
-              fullWidth: true,
-            }}
-          />
-        ) : (
-          ""
-        )} */}
         <DialogActions className={classes.modalFooter}>
           {this.props.confirmButton && (
             <Button
