@@ -277,6 +277,7 @@ class App extends Component {
               ""
           ) : (
               <Header
+                  services={this.state.services}
                   mobileOpen={this.state.mobileOpen}
                   color="transparent"
                   brand="Clear CRM"

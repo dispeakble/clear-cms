@@ -16,6 +16,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
 import {withTheme} from "@material-ui/styles";
+import AboutModalContent from "./AboutModalContent";
 
 class Header extends Component {
   state = {
@@ -47,7 +48,7 @@ class Header extends Component {
     aboutModal: {
       name: "about",
       title: "About",
-      content: "About",
+      content: <AboutModalContent services={this.props.services} />,
       closeButton: {
         callback: () => {
           this.setState({ showAboutModal: false });
@@ -242,6 +243,8 @@ Header.propTypes = {
   fixed: PropTypes.bool,
   absolute: PropTypes.bool,
   history: PropTypes.object,
+  services: PropTypes.object,
+  classes: PropTypes.object,
   // this will cause the sidebar to change the color from
   // props.color (see above) to changeColorOnScroll.color
   // when the window.pageYOffset is heigher or equal to
