@@ -155,7 +155,7 @@ class Users extends Component {
                             fname: newData.fname,
                             lname: newData.lname,
                             email: newData.email,
-                            password: newData.password,
+                            password: newData.password || "",
                             type: newData.type,
                             active: newData.active
                         });

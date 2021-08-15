@@ -5,7 +5,7 @@ import styles from "../../assets/jss/clear-crm/components/AboutModalContentStyle
 import { withStyles } from "@material-ui/core/styles";
 import {Link, InputAdornment} from "@material-ui/core";
 import * as shortId from "shortid";
-import {Check, CloseSharp, EditSharp} from "@material-ui/icons";
+import {Check, CloseSharp} from "@material-ui/icons";
 import Snackbar from "../Snackbar/Snackbar";
 import DoneOutline from "@material-ui/icons/DoneOutline";
 import PropTypes from "prop-types";
