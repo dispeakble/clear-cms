@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/categories.js";
@@ -136,7 +137,7 @@ class Users extends Component {
             },
             editable: {
                 onRowAdd: (newData) =>
-                    new Promise(async (resolve, reject) => {
+                    new Promise(async (resolve) => {
                         await this.props.control.add({
                             fname: newData.fname,
                             lname: newData.lname,
@@ -149,7 +150,7 @@ class Users extends Component {
                         resolve();
                     }),
                 onRowUpdate: (newData, oldData) =>
-                    new Promise(async (resolve, reject) => {
+                    new Promise(async (resolve) => {
                         await this.props.control.edit({
                             id: oldData.id,
                             fname: newData.fname,
@@ -163,7 +164,7 @@ class Users extends Component {
                         resolve();
                     }),
                 onRowDelete: (oldData) =>
-                    new Promise(async (resolve, reject) => {
+                    new Promise(async (resolve) => {
                         await this.props.control.remove({
                             id: [oldData.id]
                         });
@@ -183,7 +184,7 @@ class Users extends Component {
         },
         props: {
             icons: {
-                Add: () => <AddCircle className={this.props.classes.addIcon} />,
+                Add: () => <AddCircle style={{ color: this.props.defaultTheme.primary?.main || "green" }} />,
                 Check: () => (
                     <Check color="primary" />
                 ),
@@ -386,3 +387,9 @@ class Users extends Component {
 }
 
 export default withStyles(styles)(Users);
+
+Users.propTypes = {
+    control: PropTypes.object,
+    defaultTheme: PropTypes.object,
+    classes: PropTypes.object
+}
