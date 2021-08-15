@@ -4,13 +4,88 @@ import styles from "../src/assets/jss/clear-crm/global.js";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import WsService from "../src/services/ws.service";
+import getConfig from 'next/config';
+import * as shortId from "shortid";
+import { Provider } from "react-redux";
+import { useStore } from "../redux/store";
+import AppSocketInterface from "../socketInterface/app.js";
+
+
+const { publicRuntimeConfig } = getConfig();
 
 function MyApp({ Component, pageProps }) {
+  const channel = 'app';
+
+  const store = useStore(pageProps.initialReduxState);
+
+
   const [defaultPalette, setDefaultPalette] = useState({});
 
+  const [wsInstance, setWsInstance] = useState(null);
+  const [wsConnected, setWsConnected] = useState(false);
+  // const messageCallbacks = {};
+  // useEffect(() => {
+  //   const instance = new WsService();
+  //   setWsInstance(instance)
+  // }, [])
+
+  // useEffect(() => {
+  //   if (wsInstance) {
+  //     wsInstance.start().then((connected) => {
+  //       setWsConnected(connected);
+  //     });
+  //   }
+
+  // }, [wsInstance])
+
+  // useEffect(() => {
+  //   if (wsInstance) {
+  //     wsSubscribe();
+  //     getTheme();
+  //   }
 
 
+  // }, [wsConnected])
 
+  // const wsSubscribe = () => {
+  //   if (wsConnected) {
+  //     wsInstance.subscribe({
+  //       channel: channel,
+  //       callbacks: {
+  //         message: (response) => onMessage(response)
+  //       }
+  //     });
+
+  //   }
+  // }
+
+  // const onMessage = (params) => {
+  //   if (messageCallbacks) {
+  //     try {
+  //       messageCallbacks[params.id](params.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+
+  //   console.log('got message in _app.tsx', params);
+  // }
+
+  // const sendMessage = async (params) => {
+  //   return new Promise((resolve_send) => {
+  //     const uniqueId = shortId.generate();
+  //     messageCallbacks[uniqueId] = resolve_send
+  //     wsInstance.emit({
+  //       id: uniqueId,
+  //       channel: 'app',
+  //       module: params.module,
+  //       api: params.api,
+  //       act: params.act,
+  //       payload: params.payload
+  //     });
+  //   });
+  // }
 
   const getTheme = async () => {
     const response = await sendMessage({
@@ -70,27 +145,56 @@ function MyApp({ Component, pageProps }) {
     });
   };
   return (
-<>
-    <Helmet
-      htmlAttributes={{ lang: 'en' }}
-      title={pageProps?.pageData?.pageConfig?.pageTitle}
-      meta={[
-        {
-          name: 'viewport',
-          content: 'width=device-width, initial-scale=1',
-        },
-        {
-          property: 'og:title',
-          content: pageProps?.pageData?.pageConfig?.pageTitle
-        },
-      ]}
-    />
-    <MuiThemeProvider theme={createAppTheme()}>
-      <CssBaseline />
-      <Component {...pageProps}/>
+    <>
+      <Helmet
+        htmlAttributes={{ lang: 'en' }}
+        title={pageProps?.pageData?.pageConfig?.pageTitle}
+        meta={[
+          {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1',
+          },
+          {
+            property: 'og:title',
+            content: pageProps?.pageData?.pageConfig?.pageTitle
+          },
+        ]}
+      />
+      <MuiThemeProvider theme={createAppTheme()}>
+        <CssBaseline />
 
-    </MuiThemeProvider>
-  </>
+        {/* {
+          publicRuntimeConfig?.wsEnabled ? (
+            // wsConnected &&
+            <Provider store={store}>
+              <AppSocketInterface>
+                <Component {...pageProps} ws={wsInstance} />
+              </AppSocketInterface>
+              
+            </Provider>
+
+          ) : (
+            <Component {...pageProps} />
+          )
+        } */}
+
+
+<Provider store={store}>
+              <AppSocketInterface>
+              {() => {
+          return (
+<Component {...pageProps} ws={wsInstance} />
+          );
+              }}
+                
+              </AppSocketInterface>
+              
+            </Provider>
+
+      </MuiThemeProvider>
+
+
+    </>
   )
 }
 

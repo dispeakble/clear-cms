@@ -3,12 +3,25 @@ import getConfig from 'next/config'
 import ViewPagesPreview from "templates/ViewPages/ViewPagesPreview";
 import { withRouter } from 'next/router'
 import axios from "axios";
+import PageSocketInterface from "../socketInterface/page";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const PageComponent = (props) => {
   return (
-    <ViewPagesPreview {...props} pageData={props.pageData} />
+    publicRuntimeConfig.wsEnabled ?
+    (
+      <PageSocketInterface slug={props.router.query.slug}>
+        {() => {
+          return(
+            <ViewPagesPreview {...props} pageData={props.pageData} />
+          )
+        }}
+      </PageSocketInterface>
+    ) : (
+      <ViewPagesPreview {...props} pageData={props.pageData} />
+    )
+    
   );
 }
 
@@ -26,7 +39,7 @@ const PageComponent = (props) => {
 export let getStaticPaths;
 export let getStaticProps;
 
-if(process?.env?.ONLY_STATIC) {
+if(process?.env?.ONLY_STATIC || !publicRuntimeConfig.wsEnabled) {
 
   getStaticPaths = async function getStaticPaths() {
     const payload = {
