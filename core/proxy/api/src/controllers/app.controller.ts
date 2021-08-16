@@ -11,9 +11,6 @@ import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/
 
 @Controller()
 export class AppController {
-
-    private portMap = {};
-
     private moduleConfig: ModuleInterface = {
         name: 'proxy',
         version: '21.07.28',
@@ -28,6 +25,34 @@ export class AppController {
             name: 'hub',
             version: 'latest'
         }]
+    };
+
+    private portMap = {};
+
+    private help = {
+        timer: {
+            props: {
+                batches: {}
+            },
+            start: (params) => {
+                this.help.timer.props[params.id] = [];
+                this.help.timer.props[params.id].push(new Date().getTime());
+            },
+            add: (params) => {
+                this.help.timer.props[params.id].push(new Date().getTime());
+            },
+            end: (params) => {
+                this.help.timer.props[params.id].push(new Date().getTime());
+                const diffs = [];
+                this.help.timer.props[params.id].map((d, i) => {
+                    if(i > 0) {
+                        diffs.push(d - this.help.timer.props[params.id][i - 1]);
+                    }
+                    return d;
+                });
+                return diffs;
+            }
+        }
     };
 
     constructor(
@@ -68,9 +93,7 @@ export class AppController {
                         multerFinish = true;
                         //we will start a REDIS handshake with the consumer
                         let handshake = this.protocolService.startHandshake({
-                            channel: this.portChannel({
-                                headers: req.headers
-                            }),
+                            channel: this.portChannel(),
                             indication: {
                                 api: 'bucket',
                                 act: 'upload'
@@ -151,9 +174,7 @@ export class AppController {
             });
 
             const start_date = new Date().getTime();
-            const channel = this.portChannel({
-                headers: req.headers
-            });
+            const channel = this.portChannel();
 
             if(typeof channel !== "string" || !channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -230,32 +251,26 @@ export class AppController {
 
     }
 
-    @UseGuards(HttpAuthGuard) @Get('*')
+    //@UseGuards(HttpAuthGuard)
+    @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
-            const channel = this.portChannel({
-                headers: req.headers
-            });
 
-            if (!channel) {
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                res.end('Port not mapped');
-                return;
-            }
-
-            const payload = {
-                channel: channel,
-                payload: {
-                    ip: req.ip,
-                    hostname: req.hostname,
-                    query: req.query,
-                    params: req.params,
-                    headers: req.headers
+            const fileReq = {
+                "channel": "system",
+                "payload": {
+                    "ip": req.ip,
+                    "hostname": req.hostname,
+                    "params": req.params[0],
+                    "headers": req.headers,
+                    "query": req.query
                 }
             };
 
-            if (!session.hasOwnProperty('user')) {
-                const hasAccess = await this.protocolService.checkAccess(payload);
+            //this.help.timer.start({id: req.url});
+
+            if (!session.user && req.headers['sec-fetch-dest'] === 'document') {
+                const hasAccess = await this.protocolService.checkAccess(fileReq);
                 if (!hasAccess.access) {
                     res.status(hasAccess.location.status);
                     res.set('Location', hasAccess.location);
@@ -265,103 +280,115 @@ export class AppController {
                 }
             }
 
-            const start_date = new Date().getTime();
+            //this.help.timer.add({id: req.url});
 
-            const fileStats = await this.protocolService.getMeta(payload);
-            if(fileStats && fileStats.type === 'error'){
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                res.end();
-                return;
-            }
-            //const cacheReq = await this.protocolService.getValue(`${channel}_${fileStats.data.file_name}`);
-            const cacheReq = null;
+            const cacheReq = await this.protocolService.getValue(`system_${req.url}`);
+            //const cacheReq = null;
+
+            //const cacheReq = null;
+            //this.help.timer.add({id: req.url});
 
             if (cacheReq) {
-                if (cacheReq.ETag === fileStats.data.etagId) {
-                    const modifiedDate = new Date(fileStats.data.modified);
-                    const exp_date = new Date(cacheReq.expires);
+                const modifiedDate = new Date(cacheReq.data.modified);
+                const exp_date = new Date(cacheReq.expires);
 
-                    if (exp_date > new Date() && exp_date > modifiedDate) {
-                        res.set("Content-Type", cacheReq.content_type);
-                        res.set("Content-Length", cacheReq.content_length);
-                        res.set('Content-Security-Policy', "img-src; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
-                        res.set('X-Frame-Options', 'SAMEORIGIN');
-                        res.set('X-Content-Type-Options', 'nosniff');
-                        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
-                        res.set('Cache-Control', 'public, max-age=604800');
-                        res.set('ETag', fileStats.data.etagId);
-                        res.status(HttpStatus.OK);
-                        res.write(Buffer.from(cacheReq.data));
-                        res.end();
-                        return true;
-                    }
+                if (exp_date > new Date() && exp_date > modifiedDate) {
+                    this.respond({res, file: cacheReq, fileStats: {
+                        data: {
+                            etagId: cacheReq.ETag
+                        }
+                    }, finish: true});
+                    //const timerData = this.help.timer.end({id: req.url});
+                    //console.log(req.url, timerData);
+
                 }
             }
 
-            const getSubscriber = this.protocolService.sendGet(payload);
-
-            let bigBuffer = Buffer.alloc(0);
-            const file_meta = {
-                content_length: 0,
-                content_type: ''
-            };
-
-            getSubscriber.subscribe((data) => {
-                switch (data.type) {
-                    case "meta":
-                        //TODO add this to every request
-                        res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
-                        res.set('X-Frame-Options', 'SAMEORIGIN');
-                        res.set('X-Content-Type-Options', 'nosniff');
-                        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
-                        res.set('Cache-Control', 'public, max-age=604800');
-                        res.set('ETag', fileStats.data.etagId);
-                        res.status(HttpStatus.OK);
-                        file_meta.content_type = data.content_type;
-                        file_meta.content_length = data.content_length;
-
-                        res.set("Content-Type", data.content_type);
-                        res.set("Content-Length", data.content_length);
-                        break;
-                    case "Buffer":
-                        bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
-                        res.write(Buffer.from(data.data));
-                        break;
-                }
-
-            }, (error) => {
-                this.logger.log(error);
-                const end_date = new Date().getTime();
-                const diffDate = new Date(end_date - start_date);
-                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                //res.end();
-            }, () => {
-                const end_date = new Date().getTime();
-                const diffDate = new Date(end_date - start_date);
-                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis');
-
-                //getSubscriber.unsubscribe();
+            const fileStats = await this.protocolService.getMeta(fileReq);
+            //this.help.timer.add({id: req.url});
+            if(!fileStats) {
+                res.status(HttpStatus.NOT_FOUND);//TODO ADD A 404 PAGE
                 res.end();
+                //const timerData = this.help.timer.end({id: req.url});
+                //console.log(req.url, timerData);
+                return;
+            }
 
-                if(bigBuffer && bigBuffer.length){
-                    const expireDate = new Date();
+            if (!cacheReq || cacheReq.ETag !== fileStats.data.etagId) {
+                const getSubscriber = this.protocolService.sendGet(fileReq);
 
-                    //TODO get from some env variable
-                    const expire_seconds = 604800;
-                    expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                    this.protocolService.setValue(`${channel}_${fileStats.data.file_name}`, {
-                        expires: expireDate,
-                        ETag: fileStats.data.etagId,
-                        content_length: file_meta.content_length,
-                        content_type: file_meta.content_type,
-                        data: bigBuffer
-                    });
-                }
+                let bigBuffer = Buffer.alloc(0);
+                const file_meta = {
+                    content_length: 0,
+                    content_type: ''
+                };
 
-            });
+                getSubscriber.subscribe((data) => {
+                    switch (data.type) {
+                        case "meta":
+                            this.respond({res, file: data, fileStats});
+
+                            file_meta.content_type = data.content_type;
+                            file_meta.content_length = data.content_length;
+                            break;
+                        case "Buffer":
+                            bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
+                            res.write(Buffer.from(data.data));
+                            break;
+                    }
+
+                }, (error) => {
+                    this.logger.log(error);
+                    //const timerData = this.help.timer.end({id: req.url});
+                    //console.log(req.url, timerData);
+                    res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                    //res.end();
+                }, () => {
+                    //const timerData = this.help.timer.end({id: req.url});
+                    //console.log(req.url, timerData);
+
+                    res.end();
+
+                    if(bigBuffer && bigBuffer.length){
+                        const expireDate = new Date();
+
+                        //TODO get from some env variable
+                        const expire_seconds = 604800;
+                        expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
+                        this.protocolService.setValue(`system_${fileStats.data.file_name}`, {
+                            expires: expireDate,
+                            ETag: fileStats.data.etagId,
+                            content_length: file_meta.content_length,
+                            content_type: file_meta.content_type,
+                            data: bigBuffer
+                        });
+                    }
+
+                });
+            }
+
+            //this.help.timer.add({id: req.url});
+
+
         } catch (err) {
             res.end(JSON.stringify(err));
+        }
+    }
+
+    private respond(params) {
+        const { res, file, fileStats } = params;
+        res.set("Content-Type", file.content_type);
+        res.set("Content-Length", file.content_length);
+        res.set('Content-Security-Policy', "img-src 'self'; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+        res.set('X-Frame-Options', 'SAMEORIGIN');
+        res.set('X-Content-Type-Options', 'nosniff');
+        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
+        res.set('Cache-Control', 'public, max-age=604800');
+        res.set('ETag', fileStats.data.etagId);
+        res.status(HttpStatus.OK);
+        if(params.finish) {
+            res.write(Buffer.from(file.data));
+            res.end();
         }
     }
 
@@ -395,8 +422,11 @@ export class AppController {
         return this.perform(data);
     }
 
-    private portChannel(params) {
-        const headers = params.headers;
+    private portChannel() {
+
+        return this.portMap[process.env.backend_port];
+
+        /*const headers = params.headers;
         let port = headers.host.split(':')[1];
 
         if (!port) {
@@ -418,7 +448,7 @@ export class AppController {
             }
         } else {
             return this.portMap[port];
-        }
+        }*/
 
     }
 

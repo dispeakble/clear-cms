@@ -20,7 +20,6 @@ const generalSettingsPageStyle = {
     },
     ...imagesStyle,
     main: {
-        background: "#FFFFFF",
         position: "relative",
         zIndex: "3",
     },

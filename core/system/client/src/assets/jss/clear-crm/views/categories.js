@@ -113,12 +113,6 @@ const javascriptStyles = {
   deleteSweepIcon: {
     color: "#FF6461",
   },
-  addIcon: {
-    color: "darkcyan",
-    "&:hover": {
-      color: "#007272",
-    },
-  },
   testclass: {
     color: "primary",
   },

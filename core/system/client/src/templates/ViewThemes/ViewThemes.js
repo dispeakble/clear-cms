@@ -563,7 +563,7 @@ class ViewThemes extends Component {
                 onBackdropClick={() => "false"}
                 classes={{
                     root: this.props.classes.center,
-                    paper: this.props.classes.modal,
+                    paper: this.props.classes.themeModal,
                 }}
                 open={true}
                 TransitionComponent={this.transition}
@@ -1008,6 +1008,10 @@ class ViewThemes extends Component {
                 open={this.state.showRemoveThemeModal}
                 TransitionComponent={this.transition}
                 keepMounted
+                classes={{
+                    root: this.props.classes.center,
+                    paper: this.props.classes.modal,
+                }}
                 aria-labelledby="classic-modal-slide-title"
                 aria-describedby="classic-modal-slide-description"
             >
@@ -1097,5 +1101,6 @@ ViewThemes.propTypes = {
     hist: PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,
-    control: PropTypes.object
+    control: PropTypes.object,
+    theme: PropTypes.object,
 };

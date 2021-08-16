@@ -27,7 +27,6 @@ const profilePageStyle = {
     name: {},
     ...imagesStyle,
     main: {
-        background: "#FFFFFF",
         position: "relative",
         zIndex: "3",
     },
@@ -109,7 +108,6 @@ const profilePageStyle = {
         width: "calc(20% - 5px)",
         height: "5px",
         lineHeight: "13px",
-        backgroundColor: "#B4B4B4",
         border: "1px solid transparent",
         borderRadius: "9px",
         margin: "0 5px 0 0",
