@@ -27,6 +27,7 @@ import Button from "components/CustomButtons/Button.js";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Checkbox from "@material-ui/core/Checkbox";
+import Modal from "../../components/Modal/Modal";
 
 class Users extends Component {
     state = {
@@ -43,7 +44,19 @@ class Users extends Component {
             id: 3, label: "Moderator"
         },{
             id: 4, label: "Client"
-        }]
+        }],
+        showErrorModal: false,
+        errorModal: {
+            name: "error",
+            title: "Error",
+            content: "",
+            closeButton: {
+                callback: () => {
+                    this.setState({ showErrorModal: false});
+                },
+                label: "Cancel",
+            },
+        }
     };
 
     async componentDidMount() {
@@ -95,6 +108,19 @@ class Users extends Component {
         }
     };
 
+    openErrorModal = (message) => {
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                errorModal: {
+                    ...prevState.errorModal,
+                    content: message,
+                },
+                showErrorModal: true
+            }
+        })
+    }
+
     tableOptions = {
         getTheme: () => {
             return createTheme({
@@ -137,6 +163,10 @@ class Users extends Component {
             editable: {
                 onRowAdd: (newData) =>
                     new Promise(async (resolve, reject) => {
+                        if(!newData.password || newData.password.trim() === "") {
+                            this.openErrorModal("Password is Invalid or Empty!");
+                            reject();
+                        }
                         await this.props.control.add({
                             fname: newData.fname,
                             lname: newData.lname,
@@ -380,6 +410,10 @@ class Users extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+                <Modal
+                    showModal={this.state.showErrorModal}
+                    {...this.state.errorModal}
+                />
             </React.Fragment>
         );
     }
