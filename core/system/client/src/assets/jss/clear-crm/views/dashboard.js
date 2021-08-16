@@ -2,8 +2,12 @@ import { container, title } from "assets/jss/clear-crm.js";
 
 import imagesStyle from "assets/jss/clear-crm/imagesStyles.js";
 
-const profilePageStyle = {
+const dashboardPageStyle = {
   container,
+  bodyWrapper: {
+    height: "100%",
+    background: "white",
+  },
   profile: {
     textAlign: "center",
     "& img": {
@@ -59,4 +63,4 @@ const profilePageStyle = {
   },
 };
 
-export default profilePageStyle;
+export default dashboardPageStyle;
