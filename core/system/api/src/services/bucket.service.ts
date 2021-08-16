@@ -1,6 +1,7 @@
 import {HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
+import { promises as fsp } from "fs";
 import * as mime from "mime";
 import {Observable} from "rxjs";
 import * as etag from "etag";
@@ -101,11 +102,10 @@ export class BucketService {
             });
 
             handshake.theObserver.subscribe(data => {
-                //console.log(data);
             }, err => {
                 console.log(err);
             }, () => {
-                console.log('upload complete');
+
             })
 
             handshake.thePromise.then(handshakeResponse => {
@@ -116,7 +116,6 @@ export class BucketService {
                     handshakeResponse.thePusher.error(err);
                     subscriber.error(err);
                 }, () => {
-                    console.log('Bucket.service: upload complete');
                     handshakeResponse.thePusher.complete();
                     subscriber.complete();
                 });
@@ -131,8 +130,8 @@ export class BucketService {
         const params = data.params;
         let file_name = '';
 
-        if (data.params[0] && data.params[0].length) {
-            file_name = `${params[0].replace('/', '')}`;
+        if (data.params && data.params.length) {
+            file_name = `${params.replace('/', '')}`;
         }
         let hasAccess = false;
         this.publicPaths.forEach((e, i) => {
@@ -199,41 +198,40 @@ export class BucketService {
     }
 
     public getMeta(data: any) {
-        if(this._isBucket({path: data.params[0]})){
+        if(this._isBucket({path: data.params})){
             return this._getBucketMeta({
-                path: data.params[0]
+                path: data.params
             });
         }
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
 
             const params = data.params;
             let file_name = '';
 
-            if (data.params[0] && data.params[0].length) {
-                file_name = params[0];
+            if (data.params && data.params.length) {
+                file_name = params;
             }
 
+            const file_path = path.join(__dirname, '..', '..', 'public');
+
             try {
-                const file_path = __dirname + '/../../public/';
-                if (!fs.existsSync(file_path + file_name)) {
-                    file_name = this.defaultPath;
-                }
-                const stats = fs.statSync(file_path + file_name);
-                const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
-                resolve({
-                    type: 'object',
-                    content_type: 'object',
-                    data: {
-                        modified: stats.mtimeMs,
-                        size: stats.size,
-                        "etagId": etagId,
-                        file_name: file_name
-                    }
-                });
+                await fsp.stat(path.join(file_path, file_name));
             } catch (err) {
-                resolve(null)
-                console.log(err);
+                file_name = this.defaultPath;
             }
+
+            const stats = await fsp.stat(path.join(file_path, file_name));
+            const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
+            resolve({
+                type: 'object',
+                content_type: 'object',
+                data: {
+                    modified: stats.mtimeMs,
+                    size: stats.size,
+                    "etagId": etagId,
+                    file_name: file_name
+                }
+            });
 
         });
     }
@@ -264,11 +262,10 @@ export class BucketService {
 
     public get(data: any) {
         return new Observable((observer) => {
-            const params = data.params;
             let complete_path = this.defaultPath;
 
-            if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
-                complete_path = params[0];
+            if (data.params && data.params.length && data.params.indexOf('.') > -1) {
+                complete_path = data.params;
                 if(this._isBucket({path: complete_path})){
                     this._getFromBucket({
                         path: complete_path,
@@ -278,32 +275,35 @@ export class BucketService {
                 }
             }
 
-            try {
-                let file_path = __dirname + '/../../public/' + complete_path;
-                if (!fs.existsSync(file_path)) {
+            (async () => {
+
+                let file_path = path.join(__dirname, '..', '..', 'public', complete_path);
+                try {
+                    await fsp.stat(file_path)
+                } catch (err) {
                     complete_path = this.defaultPath;
-                    file_path = `${__dirname}/../../public/${complete_path}`;
+                    file_path = path.join(__dirname, '..', '..', 'public', complete_path);
                 }
 
-                const stats = fs.statSync(file_path);
-                observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(complete_path)});
+                try {
 
-                const readStream = fs.createReadStream(file_path, {highWaterMark: 52428800});
+                    const stats = await fsp.stat(file_path);
+                    observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(complete_path)});
 
-                readStream.on('data', function (chunk) {
-                    console.log('Buffering - ' + complete_path);
-                    observer.next(chunk);
-                }).on('end', function () {
-                    console.log('Done - ' + complete_path);
+                    const readStream = fs.createReadStream(file_path);
+
+                    readStream.on('data', function (chunk) {
+                        observer.next(chunk);
+                    }).on('end', function () {
+                        observer.complete();
+                    });
+
+                } catch (err) {
+                    observer.error();
                     observer.complete();
-                });
-            } catch (err) {
-                //TODO should return 404
-                fs.readFile(`__dirname /../../public/${this.defaultPath}`, (err, buffer) => {
-                    observer.next(buffer);
-                    observer.complete();
-                });
-            }
+                }
+
+            })()
         });
     }
 
@@ -389,7 +389,6 @@ export class BucketService {
         return new Observable(subscriber => {
             //check if the file already exists in the selected folder
             //if it already exists then ask the user to overwrite
-            console.log("bucket service",params)
             const payload: payloadInterface = {
                 channel: 'bucket',
                 api: 'fs',
