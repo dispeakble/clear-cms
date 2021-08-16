@@ -1,7 +1,9 @@
 //import { transition, boxShadow, drawerWidth } from "assets/jss/clear-crm.js";
+import modalStyle from "assets/jss/clear-crm/modalStyle.js";
 
 const javascriptStyles = {
   body:{},
+  ...modalStyle,
   gridLayout: {
     height: "100%",
     display: "flex",

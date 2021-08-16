@@ -1,3 +1,5 @@
+import modalStyle from "assets/jss/clear-crm/modalStyle.js";
+
 const javascriptStyles = {
   buttonsWrapper: {
     width: "100%",
@@ -8,6 +10,7 @@ const javascriptStyles = {
     height: "100%",
     display: "flex",
   },
+  ...modalStyle,
   themesWrapper: {
     display: "flex",
     flexWrap: "wrap",
@@ -87,10 +90,10 @@ const javascriptStyles = {
     height: "calc(100% - 125px)",
     overflow: "initial",
   },
-  modal: {
+  themeModal: {
     height: "100%",
-    overflow: "initial",
-  },
+    overflow: "initial"
+  }
 };
 
 export default javascriptStyles;
