@@ -37,19 +37,11 @@ class ViewDashboard extends Component {
         showEditMenu: false,
         itemEditId: "",
         bgColor: "",
-        pageBase64Image: false,
-        backgroundImage: "",
-        backgroundImageFile: "",
         fontSize: 11,
         textColor: "#000000",
         fontFamily: "Arial",
         fontUnit: "px",
-        pageBackgroundRepeat: false,
-        pageBackgroundStretch: false,
-        pageBackgroundGradient: false,
         pageTransitionPadding: "",
-        backgroundRepeat: false,
-        backgroundStretch: false,
         boxEditorProps: {
             item: {},
         },
@@ -89,10 +81,6 @@ class ViewDashboard extends Component {
                 borderStyle: "solid",
                 borderWidth: 0,
                 borderRadius: 0,
-                backgroundImage: "",
-                backgroundImageFile: "",
-                backgroundRepeat: false,
-                backgroundStretch: false,
                 i: newId + "",
                 x: 0,
                 y: Infinity, // puts it at the bottom
@@ -193,35 +181,6 @@ class ViewDashboard extends Component {
             itemStyle.color = el.textColor;
         } else {
             itemStyle.color = this.state.textColor;
-        }
-
-        if (el.backgroundImageString) {
-            itemStyle.backgroundImage = `url(${el.backgroundImageString})`;
-        } else {
-            itemStyle.backgroundImage = `url(/files/pages/page-${this.state.page_id}/box-${i}/${el.backgroundImage})`;
-        }
-
-        if (el.backgroundImage.indexOf("__delete__") === 0) {
-            el.backgroundImageString = "";
-            itemStyle.backgroundImage = "";
-        }
-
-        if (el.backgroundRepeat) {
-            itemStyle.backgroundRepeat = "repeat";
-        } else {
-            itemStyle.backgroundRepeat = "no-repeat";
-        }
-
-        if (el.backgroundStretch) {
-            itemStyle.backgroundSize = "cover";
-        } else {
-            itemStyle.backgroundSize = "auto";
-        }
-
-        if (el.backgroundColor) {
-            itemStyle.backgroundColor = el.backgroundColor;
-        } else {
-            itemStyle.backgroundColor = this.state.bgColor;
         }
 
         if (el.borderColor) {
@@ -364,46 +323,37 @@ class ViewDashboard extends Component {
                             </IconButton>
                         </Tooltip>
                     </div>
-                    <div
-                        style={{
-                            flexGrow: 1,
-                            backgroundImage: `url(${
-                                this.state.pageBase64Image ||
-                                `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`
-                            }`,
-                            backgroundRepeat: this.state.pageBackgroundRepeat
-                                ? "repeat"
-                                : "no-repeat",
-                            backgroundSize: this.state.pageBackgroundStretch
-                                ? "cover"
-                                : "auto",
-                            backgroundColor: this.state.bgColor,
-                            fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                            fontFamily: this.state.fontFamily,
-                            color: this.state.textColor,
-                            paddingBottom: "55px",
-                        }}
-                    >
-                        <ResponsiveReactGridLayout
+                    <div className={this.props.classes.gridLayout}>
+                        <div
                             style={{
+                                flexGrow: 1,
                                 fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                                 fontFamily: this.state.fontFamily,
                                 color: this.state.textColor,
+                                paddingBottom: "55px",
                             }}
-                            layouts={this.state.layouts}
-                            isBounded={true}
-                            margin={this.state.config.layoutBoxSpacing}
-                            containerPadding={this.state.config.layoutBoxPadding}
-                            draggableHandle=".MyDragHandleClassName"
-                            onLayoutChange={(layout, layouts) => {
-                                return this.onLayoutChange(layout, layouts);
-                            }}
-                            compactType="vertical"
-                            onBreakpointChange={() => this.onBreakpointChange}
-                            {...this.props}
                         >
-                            {_.map(this.state.items, (el) => this.createElement(el))}
-                        </ResponsiveReactGridLayout>
+                            <ResponsiveReactGridLayout
+                                style={{
+                                    fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                                    fontFamily: this.state.fontFamily,
+                                    color: this.state.textColor,
+                                }}
+                                layouts={this.state.layouts}
+                                isBounded={true}
+                                margin={this.state.config.layoutBoxSpacing}
+                                containerPadding={this.state.config.layoutBoxPadding}
+                                draggableHandle=".MyDragHandleClassName"
+                                onLayoutChange={(layout, layouts) => {
+                                    return this.onLayoutChange(layout, layouts);
+                                }}
+                                compactType="vertical"
+                                onBreakpointChange={() => this.onBreakpointChange}
+                                {...this.props}
+                            >
+                                {_.map(this.state.items, (el) => this.createElement(el))}
+                            </ResponsiveReactGridLayout>
+                        </div>
                     </div>
                 </div>
             </div>
