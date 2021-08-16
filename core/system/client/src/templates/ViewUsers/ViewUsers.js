@@ -179,7 +179,7 @@ class Users extends Component {
                     ),
                     onClick: async (evt, data) => this.showMultipleDeleteModal(evt, data),
                 },
-            ],
+            ]
         },
         props: {
             icons: {
@@ -279,6 +279,13 @@ class Users extends Component {
                     }
                 }
             ],
+            localization: {
+                body: {
+                    editRow: {
+                        deleteText: "Are you sure you want to delete this user?",
+                    },
+                }
+            },
             options: {
                 selection: true,
                 selectionStyle: styles.selection,
@@ -329,6 +336,7 @@ class Users extends Component {
                                 options={this.tableOptions.props.options}
                                 editable={this.tableOptions.actions.editable}
                                 actions={this.tableOptions.actions.customActions}
+                                localization={this.tableOptions.props.localization}
                             />
                         </MuiThemeProvider>
                     </div>
