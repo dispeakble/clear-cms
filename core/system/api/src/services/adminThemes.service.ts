@@ -58,7 +58,7 @@ export class AdminThemesService {
                     channel: 'system',
                     data: {
                         what: 'admin_themes',
-                        fields: ["title", "isdefault", "thumbnail", "data"],
+                        fields: params.fields || ["title", "isdefault", "thumbnail", "data"],
                         where: params.where,
                         limit: [0, 1]
                     }

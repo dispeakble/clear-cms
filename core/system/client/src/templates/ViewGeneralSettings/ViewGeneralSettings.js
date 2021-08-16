@@ -203,7 +203,7 @@ class ViewGeneralSettings extends Component {
                 <Helmet>
                     <title>General Settings</title>
                 </Helmet>
-                <GridContainer className={classes.grid} justify="center">
+                <GridContainer className={classes.grid} justifyContent="center">
                     <GridItem lg={6} md={8} sm={10} xs={12} className={classes.gridItem}>
                         <div className={classNames(classes.main, classes.mainRaised)}>
                             {this.state.notification}
@@ -265,7 +265,7 @@ class ViewGeneralSettings extends Component {
                                                         fullWidth: true,
                                                         onChange: this.handleInputChange
                                                     }} inputProps={{
-                                                    required:"required",
+                                                    required: true,
                                                     value: this.state.websiteAdminEmail,
                                                     type: "email",
                                                     // endAdornment: (

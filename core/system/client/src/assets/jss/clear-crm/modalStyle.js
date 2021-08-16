@@ -7,18 +7,17 @@ const modalStyle = {
     borderBottom: "none",
     paddingTop: "24px",
     paddingRight: "24px",
-    paddingBottom: "0",
     paddingLeft: "24px",
-    minHeight: "16.43px"
+    minHeight: "16.43px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
   modalTitle: {
     margin: "0",
     lineHeight: "1.42857143"
   },
   modalCloseButton: {
-    color: "#999999",
-    marginTop: "-12px",
-    WebkitAppearance: "none",
     padding: "0",
     cursor: "pointer",
     background: "0 0",
@@ -27,12 +26,7 @@ const modalStyle = {
     opacity: ".9",
     textShadow: "none",
     fontWeight: "700",
-    lineHeight: "1",
-    float: "right"
-  },
-  modalClose: {
-    width: "16px",
-    height: "16px"
+    lineHeight: "1"
   },
   modalBody: {
     paddingTop: "24px",

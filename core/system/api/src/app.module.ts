@@ -33,7 +33,20 @@ import { MainService } from './services/main.service';
     ])
   ],
   controllers: [ProtocolController],
-  providers: [BucketService, CategoriesService, UsersService, PagesService, ProtocolService, AuthService, SystemService, AdminProfileService, AdminThemesService, PublicThemesService, MainService, GeneralSettingsService]
+  providers: [
+    BucketService,
+    CategoriesService,
+    UsersService,
+    PagesService,
+    ProtocolService,
+    AuthService,
+    SystemService,
+    AdminProfileService,
+    AdminThemesService,
+    PublicThemesService,
+    MainService,
+    GeneralSettingsService
+  ]
 })
 
 export class AppModule {}

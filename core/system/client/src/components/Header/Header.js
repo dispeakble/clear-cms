@@ -58,6 +58,7 @@ class Header extends Component {
     },
     logoutModal: {
       name: "logout",
+      title: "Logout",
       content: "Are you sure you want to logout?",
       closeButton: {
         callback: () => {
