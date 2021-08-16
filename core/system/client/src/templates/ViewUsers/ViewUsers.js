@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/categories.js";
+import PropTypes from "prop-types";
 
 import { Helmet } from "react-helmet";
 
@@ -153,7 +154,7 @@ class Users extends Component {
                         resolve();
                     }),
                 onRowUpdate: (newData, oldData) =>
-                    new Promise(async (resolve, reject) => {
+                    new Promise(async (resolve) => {
                         await this.props.control.edit({
                             id: oldData.id,
                             fname: newData.fname,
@@ -167,7 +168,7 @@ class Users extends Component {
                         resolve();
                     }),
                 onRowDelete: (oldData) =>
-                    new Promise(async (resolve, reject) => {
+                    new Promise(async (resolve) => {
                         await this.props.control.remove({
                             id: [oldData.id]
                         });
@@ -187,7 +188,7 @@ class Users extends Component {
         },
         props: {
             icons: {
-                Add: () => <AddCircle className={this.props.classes.addIcon} />,
+                Add: () => <AddCircle style={{ color: this.props.defaultTheme.primary?.main || "green" }} />,
                 Check: () => (
                     <Check color="primary" />
                 ),
@@ -283,6 +284,13 @@ class Users extends Component {
                     }
                 }
             ],
+            localization: {
+                body: {
+                    editRow: {
+                        deleteText: "Are you sure you want to delete this user?",
+                    },
+                }
+            },
             options: {
                 selection: true,
                 selectionStyle: styles.selection,
@@ -333,6 +341,7 @@ class Users extends Component {
                                 options={this.tableOptions.props.options}
                                 editable={this.tableOptions.actions.editable}
                                 actions={this.tableOptions.actions.customActions}
+                                localization={this.tableOptions.props.localization}
                             />
                         </MuiThemeProvider>
                     </div>
@@ -390,3 +399,9 @@ class Users extends Component {
 }
 
 export default withStyles(styles)(Users);
+
+Users.propTypes = {
+    control: PropTypes.object,
+    defaultTheme: PropTypes.object,
+    classes: PropTypes.object
+}
