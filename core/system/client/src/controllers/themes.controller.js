@@ -45,6 +45,10 @@ class ThemesController extends Component {
     }
 
     async setData(params) {
+        if(params.data.isdefault) {
+            localStorage.setItem('adminTheme', params.data.data)
+        }
+
         await this.sendMessage({
             module: "system",
             api: params.type + "Themes",
@@ -57,6 +61,10 @@ class ThemesController extends Component {
     }
 
     addData(params) {
+        if(params.data.isdefault) {
+            localStorage.setItem('adminTheme', params.data.data)
+        }
+
         return this.sendMessage({
             module: "system",
             api: params.type + "Themes",
