@@ -43,7 +43,7 @@ export class DashboardBoxService {
                     channel: 'system',
                     data: {
                         what: 'dashboard_box',
-                        fields: ["id", "title", "module", "fontsize", "textcolor", "borderwidth", "bordercolor", "borderradius", "bgcolor", "x", "y", "width", "height", "moduleoptions", "showscrollbars"],
+                        fields: ["*"],
                         where: params?.where
                     }
                 }

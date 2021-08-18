@@ -109,16 +109,29 @@ class ViewDashboard extends Component {
         return this.state.items.find((item) => item.id === parseInt(passedId));
     };
 
-    onLayoutChange = (layout, layouts) => {
+    isSameBoxDimentions = (box1, box2) => {
+        return box1["x"] === box2["x"] && box1.y === box2.y && box1.w === box2.w && box1.h === box2.h;
+    }
+
+    onLayoutChange = async (layout, layouts) => {
         try {
+            let changedItems = []
             let newItems = layout.map((item) => {
                 let oldItem = this.getItemById(item.i);
+                const isDiff = !this.isSameBoxDimentions(item, oldItem);
                 oldItem["x"] = item["x"];
                 oldItem.y = item.y;
                 oldItem.w = item.w;
                 oldItem.h = item.h;
+                if(isDiff) {
+                    changedItems.push(oldItem);
+                }
                 return oldItem;
             });
+
+            await Promise.all(changedItems.map(async (item) => {
+                await this.props.control.editBox(item);
+            }))
 
             this.setState({ items: newItems, layouts });
         } catch (err) {
