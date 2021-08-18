@@ -10,6 +10,7 @@ import { AdminProfileService } from './services/adminProfile.service';
 import { AdminThemesService } from './services/adminThemes.service';
 import { PublicThemesService } from './services/publicThemes.service';
 import { GeneralSettingsService } from './services/generalSettings.service';
+import { DashboardBoxService } from "./services/dashboardBox.service";
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -45,7 +46,8 @@ import { MainService } from './services/main.service';
     AdminThemesService,
     PublicThemesService,
     MainService,
-    GeneralSettingsService
+    GeneralSettingsService,
+    DashboardBoxService
   ]
 })
 

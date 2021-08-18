@@ -30,17 +30,7 @@ class ViewBoxEditor extends React.PureComponent {
     state = {
         temporaryModuleOptions: {},
         modulesList: [//TODO GET THESE VALUES FROM A LIST IN DB
-            { label: "Header Module" },
-            { label: "Menu Module" },
             { label: "Text Module" },
-            { label: "Gallery Module" },
-            { label: "Calendar Module" },
-            { label: "Video Module" },
-            { label: "Audio Module" },
-            { label: "Banner Module" },
-            { label: "Chart Module" },
-            { label: "Table Module" },
-            { label: "Accordion Module" }
         ],
         editItemFontSizeShow: false,
         editItemFontFamilyShow: false,
@@ -48,10 +38,6 @@ class ViewBoxEditor extends React.PureComponent {
         editItemBackgroundColorShow: false,
         editItemTitle: "",
         editItemModule: "",
-        editItemBgString: "",
-        backgroundImageString: "",
-        editItemBgImage: "",
-        editItemBgImageFile: "",
         editItemBorderRadius: null,
         editItemBorderWidth: null,
         editItemBorderColor: "",
@@ -76,8 +62,6 @@ class ViewBoxEditor extends React.PureComponent {
         editItemModuleOptions: {},
         editModuleOptions: "",
         editItemScrollbars: false,
-        editItemBgRepeat: false,
-        editItemBgStretch: false,
         itemTextColorStyles: {},
         itemBgColorStyles: {},
         itemBorderColorStyles: {},
@@ -107,11 +91,6 @@ class ViewBoxEditor extends React.PureComponent {
             editItemBorderStyle: item.borderStyle,
             editItemFontSize: item.fontSize || 5,
             editItemBackgroundColor: item.backgroundColor || "",
-            editItemBgString: item.editItemBgString || "",
-            editItemBgImage: item.bgimage || "",
-            editItemBgImageFile: item.backgroundImageFile,
-            editItemBgRepeat: item.backgroundRepeat,
-            editItemBgStretch: item.backgroundStretch,
             editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
             editItemTextColor: item.textColor || "",
             editItemBackgroundColorShow: Object.prototype.hasOwnProperty.call(item, "backgroundColor"),
@@ -218,38 +197,6 @@ class ViewBoxEditor extends React.PureComponent {
         });
     };
 
-    toBase64(file) {//TODO MOVE TO HELPERS
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-    }
-
-    handleItemBgImage = async (event) => {
-        if (event.length) {
-            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-
-            this.setState({
-                backgroundImageString: strings[0],
-                editItemBgImageFile: event[0]
-            });
-        }
-    };
-
-    handleItemBgRepeat = async () => {
-        this.setState({
-            editItemBgRepeat: !this.state.editItemBgRepeat,
-        });
-    };
-
-    handleItemBgStretch = async () => {
-        this.setState({
-            editItemBgStretch: !this.state.editItemBgStretch,
-        });
-    };
-
     closeEditSideMenu = () => {
         this.props.onCancel();
     };
@@ -260,11 +207,6 @@ class ViewBoxEditor extends React.PureComponent {
         item.title = this.state.editItemTitle;
         item.module = this.state.modulesList[this.state.editItemModule];
         item.module = item.module ? item.module.label : "";
-        item.backgroundImageString = this.state.backgroundImageString;
-        item.bgimage = this.state.editItemBgImage;
-        item.backgroundImageFile = this.state.editItemBgImageFile;
-        item.backgroundRepeat = this.state.editItemBgRepeat;
-        item.backgroundStretch = this.state.editItemBgStretch;
 
         //foundItem.moduleOptions = this.state.moduleOptions;
 
@@ -324,20 +266,6 @@ class ViewBoxEditor extends React.PureComponent {
 
         this.closeEditSideMenu();
     };
-
-    handleBgImage(acceptedFiles) {
-        acceptedFiles.forEach((file) => {
-            const reader = new FileReader();
-
-            reader.onabort = () => console.log("file reading was aborted");
-            reader.onerror = () => console.log("file reading has failed");
-            reader.onload = () => {
-                // Do whatever you want with the file contents
-                //const binaryStr = reader.result;
-            };
-            reader.readAsArrayBuffer(file);
-        });
-    }
 
     // for MuiThemeProvider
 

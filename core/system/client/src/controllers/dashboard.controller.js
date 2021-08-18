@@ -12,11 +12,15 @@ class DashboardController extends Component {
     control = {
         get: () => this.getData(),
         set: (params) => this.setData(params),
+        getBoxList: () => this.getBoxList(),
+        addBox: (params) => this.addBox(params),
+        editBox: (params) => this.editBox(params),
+        removeBox: (params) => this.removeBox(params)
     };
 
     async componentDidMount() {
         this.services.ws.subscribe({
-            channel: 'admin-profile',
+            channel: 'dashboard',
             callbacks: {
                 message: (response) => this.onMessage(response)
             }
@@ -32,6 +36,48 @@ class DashboardController extends Component {
                 useSession: true
             }
         });
+    }
+
+    async getBoxList() {
+        return this.sendMessage({
+            module: "system",
+            api: "dashboardBox",
+            act: "list",
+            payload: {}
+        })
+    }
+
+    async addBox(params) {
+        const response = await this.sendMessage({
+            module: "system",
+            api: "dashboardBox",
+            act: "add",
+            payload: params
+        });
+
+        return response;
+    }
+
+    async editBox(params) {
+        const response = await this.sendMessage({
+            module: "system",
+            api: "dashboardBox",
+            act: "edit",
+            payload: params
+        });
+
+        return response;
+    }
+
+    async removeBox(params) {
+        const response = await this.sendMessage({
+            module: "system",
+            api: "dashboardBox",
+            act: "remove",
+            payload: params
+        });
+
+        return response;
     }
 
     async setData(params) {
@@ -50,12 +96,7 @@ class DashboardController extends Component {
 
     onMessage(params) {
         try {
-            if (params.data) {
-                this.messageCallbacks[params.id](params.data);
-            } else {
-                this.updateErrorNotification(params.error);
-            }
-
+            this.messageCallbacks[params.id](params.data);
         } catch (err) {
             console.log(err);
         }
@@ -68,7 +109,7 @@ class DashboardController extends Component {
             this.messageCallbacks[uniqueId] = resolve_send;
             this.services.ws.emit({
                 id: uniqueId,
-                channel: 'admin-profile',
+                channel: 'dashboard',
                 module: params.module,
                 api: params.api,
                 act: params.act,
