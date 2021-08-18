@@ -51,66 +51,87 @@ class ViewDashboard extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     async componentDidMount() {
-
+        const boxList = await this.props.control.getBoxList();
+        if(boxList && boxList.length > 0) {
+            this.setState((prevState) => {
+                return {
+                    ...prevState,
+                    items: boxList
+                }
+            })
+        }
     }
 
-    onAddItem(evt) {
+    async onAddItem(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        let newId = 0;
         this.setState({
             // Add a new item. It must have a unique key!
             onAddItem: !this.state.onAddItem,
         });
         try {
-            this.state.items.map((item) => {
-                newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
-                return item;
-            });
-
-            newId++;
-
-            let items = this.state.items;
-            items.push({
-                newItem: true,
+            const newBox = {
                 title: "New Box",
-                showScrollbars: false,
                 module: "",
                 moduleOptions: { data: "" },
                 borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
                 borderStyle: "solid",
                 borderWidth: 0,
                 borderRadius: 0,
-                i: newId + "",
                 x: 0,
-                y: Infinity, // puts it at the bottom
+                y: 0, // puts it at the bottom: TODO value was Infinity: need to check why
                 w: 2,
                 h: 20,
-            });
+            }
 
-            this.setState({
-                // Add a new item. It must have a unique key!
-                items: items,
-            });
+            const resp = await this.props.control.addBox(newBox);
+
+            console.log("new box", resp);
+
+            if(resp.data && resp.data[0]) {
+                let items = this.state.items;
+                items.push({
+                    ...newBox,
+                    id: resp.data[0].id,
+                    newItem: true
+                })
+                this.setState({
+                    // Add a new item. It must have a unique key!
+                    items: items,
+                });
+            }
         } catch (err) {
             console.log(err);
         }
     }
 
     getItemById = (passedId) => {
-        return this.state.items.find((item) => item.i === passedId);
+        return this.state.items.find((item) => item.id === parseInt(passedId));
     };
 
-    onLayoutChange = (layout, layouts) => {
+    isSameBoxDimentions = (box1, box2) => {
+        return box1["x"] === box2["x"] && box1.y === box2.y && box1.w === box2.w && box1.h === box2.h;
+    }
+
+    onLayoutChange = async (layout, layouts) => {
         try {
+            let changedItems = []
             let newItems = layout.map((item) => {
                 let oldItem = this.getItemById(item.i);
+                const isDiff = !this.isSameBoxDimentions(item, oldItem);
                 oldItem["x"] = item["x"];
                 oldItem.y = item.y;
                 oldItem.w = item.w;
                 oldItem.h = item.h;
+                if(isDiff) {
+                    changedItems.push(oldItem);
+                }
                 return oldItem;
             });
+
+            await Promise.all(changedItems.map(async (item) => {
+                await this.props.control.editBox(item);
+            }))
 
             this.setState({ items: newItems, layouts });
         } catch (err) {
@@ -118,20 +139,24 @@ class ViewDashboard extends Component {
         }
     };
 
-    onRemoveItem(i) {
+    async onRemoveItem(i) {
+        await this.props.control.removeBox({id: i});
+
         this.setState({
             itemEditId: "",
         });
         this.setState({
-            items: _.reject(this.state.items, { i: i }),
+            items: _.reject(this.state.items, { id: i }),
         });
     }
 
-    saveBox = (params) => {
+    saveBox = async (params) => {
         let box = params;
 
+        await this.props.control.editBox(params);
+
         let items = this.state.items;
-        let boxIndex = items.findIndex((item) => item.i === this.state.itemEditId);
+        let boxIndex = items.findIndex((item) => item.id === this.state.itemEditId);
 
         items[boxIndex] = box;
 
@@ -155,8 +180,26 @@ class ViewDashboard extends Component {
         });
     };
 
+    saveModuleOptions = async (passedId, data, isVertical) => {
+        let items = [...this.state.items];
+
+        let item = this.getItemById(passedId);
+
+        item.moduleOptions = { data: data, isVertical: isVertical };
+
+        let itemIndex = items.findIndex(
+            (item) => Number(item.id) === Number(passedId)
+        );
+
+        await this.props.control.editBox(item);
+
+        items[itemIndex] = item;
+
+        await this.setAsyncState({ items });
+    };
+
     createElement(el) {
-        const i = el.i;
+        const i = el.id;
 
         let itemStyle = {};
 
@@ -222,7 +265,7 @@ class ViewDashboard extends Component {
         let itemActions = [
             {
                 callback: () => {
-                    this.onRemoveItem(el.i);
+                    this.onRemoveItem(el.id);
                 },
                 icon: (
                     <DeleteForever
@@ -233,7 +276,7 @@ class ViewDashboard extends Component {
             },
             {
                 callback: () => {
-                    this.handleEditItem(el.i);
+                    this.handleEditItem(el.id);
                 },
                 icon: <Edit style={{ color: this.props.defaultTheme.primary.main }} />,
                 name: "Edit Item",
@@ -260,7 +303,7 @@ class ViewDashboard extends Component {
                                     defaultTheme={this.props.defaultTheme}
                                     onStartEditingModule={() => this.onStartEditingModule()}
                                     onEndEditingModule={() => this.onEndEditingModule()}
-                                    boxId={el.i}
+                                    boxId={el.id}
                                     moduleOptions={el.moduleOptions}
                                     pageId={this.state.page_id}
                                     handleSave={(id, data) => {
@@ -303,11 +346,7 @@ class ViewDashboard extends Component {
                                 });
                             }}
                             onSave={(item) => {
-                                this.setState({
-                                    editItem: item,
-                                    showEditMenu: false,
-                                    pageTransitionPadding: "",
-                                });
+                               this.saveBox(item)
                             }}
                             defaultTheme={this.props.defaultTheme}
                             data={this.state.boxEditorProps}

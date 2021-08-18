@@ -498,6 +498,41 @@ CREATE TABLE public.settings (
 ALTER TABLE public.settings OWNER TO cms;
 
 
+CREATE SEQUENCE public.dashboard_box_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.dashboard_box_seq OWNER TO cms;
+
+--
+-- TOC entry 199 (class 1259 OID 16462)
+-- Name: dashboard_box; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.dashboard_box (
+    id integer DEFAULT nextval('public.dashboard_box_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    module character varying,
+    fontsize smallint,
+    fontfamily character varying,
+    textcolor character varying,
+    borderwidth smallint,
+    bordercolor character varying,
+    borderradius smallint,
+	bgcolor character varying,
+    height smallint,
+    width smallint,
+    moduleoptions character varying,
+    x smallint,
+    y smallint,
+    showscrollbars smallint
+);
+
+
 --
 -- TOC entry 2872 (class 2604 OID 24775)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: cms
@@ -622,6 +657,13 @@ ALTER TABLE ONLY public.public_themes
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: dashboard_box box_style_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.dashboard_box
+    ADD CONSTRAINT dashboard_box_pkey PRIMARY KEY (id);
 
 --
 -- TOC entry 2875 (class 1259 OID 16575)
