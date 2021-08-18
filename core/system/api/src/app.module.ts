@@ -10,6 +10,7 @@ import { AdminProfileService } from './services/adminProfile.service';
 import { AdminThemesService } from './services/adminThemes.service';
 import { PublicThemesService } from './services/publicThemes.service';
 import { GeneralSettingsService } from './services/generalSettings.service';
+import { HelpService } from './services/help.service';
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -27,7 +28,9 @@ import { MainService } from './services/main.service';
         options: {
           url: 'redis://' + process.env.redis_server,
           port: +process.env.redis_port,
-          password: process.env.redis_password
+          password: process.env.redis_password,
+          retryAttempts: 20,
+          retryDelay: 3000,
         }
       },
     ])
@@ -45,7 +48,8 @@ import { MainService } from './services/main.service';
     AdminThemesService,
     PublicThemesService,
     MainService,
-    GeneralSettingsService
+    GeneralSettingsService,
+    HelpService
   ]
 })
 

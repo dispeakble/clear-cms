@@ -261,15 +261,21 @@ export class AppController {
                 "payload": {
                     "ip": req.ip,
                     "hostname": req.hostname,
-                    "params": req.params[0],
+                    "path": req.params[0],
                     "headers": req.headers,
                     "query": req.query
                 }
             };
 
-            //this.help.timer.start({id: req.url});
+            const fileStats = await this.protocolService.getMeta(fileReq);
+            if(!fileStats) {
+                res.status(HttpStatus.NOT_FOUND);//TODO ADD A 404 PAGE
+                res.end();
+                return;
+            }
 
             if (!session.user && req.headers['sec-fetch-dest'] === 'document') {
+
                 const hasAccess = await this.protocolService.checkAccess(fileReq);
                 if (!hasAccess.access) {
                     res.status(hasAccess.location.status);
@@ -280,96 +286,65 @@ export class AppController {
                 }
             }
 
-            //this.help.timer.add({id: req.url});
-
-            const cacheReq = await this.protocolService.getValue(`system_${req.url}`);
+            const cacheReq = await this.protocolService.getValue(`system_${fileStats.data.file_name}`);
             //const cacheReq = null;
-
-            //const cacheReq = null;
-            //this.help.timer.add({id: req.url});
 
             if (cacheReq) {
-                const modifiedDate = new Date(cacheReq.data.modified);
                 const exp_date = new Date(cacheReq.expires);
 
-                if (exp_date > new Date() && exp_date > modifiedDate) {
-                    this.respond({res, file: cacheReq, fileStats: {
+                if (cacheReq.ETag === fileStats.data.etagId && exp_date > new Date()) {
+                    return this.respond({res, file: cacheReq, fileStats: {
                         data: {
                             etagId: cacheReq.ETag
                         }
                     }, finish: true});
-                    //const timerData = this.help.timer.end({id: req.url});
-                    //console.log(req.url, timerData);
-
                 }
             }
 
-            const fileStats = await this.protocolService.getMeta(fileReq);
-            //this.help.timer.add({id: req.url});
-            if(!fileStats) {
-                res.status(HttpStatus.NOT_FOUND);//TODO ADD A 404 PAGE
+            const getSubscriber = this.protocolService.sendGet(fileReq);
+
+            let bigBuffer = Buffer.alloc(0);
+            const file_meta = {
+                content_length: 0,
+                content_type: ''
+            };
+
+            getSubscriber.subscribe((data) => {
+                switch (data.type) {
+                    case "meta":
+                        this.respond({res, file: data, fileStats});
+
+                        file_meta.content_type = data.content_type;
+                        file_meta.content_length = data.content_length;
+                        break;
+                    case "Buffer":
+                        bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
+                        res.write(Buffer.from(data.data));
+                        break;
+                }
+
+            }, (error) => {
+                this.logger.log(error);
+                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            }, () => {
                 res.end();
-                //const timerData = this.help.timer.end({id: req.url});
-                //console.log(req.url, timerData);
-                return;
-            }
 
-            if (!cacheReq || cacheReq.ETag !== fileStats.data.etagId) {
-                const getSubscriber = this.protocolService.sendGet(fileReq);
+                if(bigBuffer && bigBuffer.length){
+                    const expireDate = new Date();
 
-                let bigBuffer = Buffer.alloc(0);
-                const file_meta = {
-                    content_length: 0,
-                    content_type: ''
-                };
+                    //TODO get from some env variable
+                    const expire_seconds = 604800;
+                    expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
+                    this.protocolService.setValue(`system_${fileStats.data.file_name}`, {
+                        expires: expireDate,
+                        ETag: fileStats.data.etagId,
+                        content_length: file_meta.content_length,
+                        content_type: file_meta.content_type,
+                        data: bigBuffer
+                    });
+                }
 
-                getSubscriber.subscribe((data) => {
-                    switch (data.type) {
-                        case "meta":
-                            this.respond({res, file: data, fileStats});
-
-                            file_meta.content_type = data.content_type;
-                            file_meta.content_length = data.content_length;
-                            break;
-                        case "Buffer":
-                            bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
-                            res.write(Buffer.from(data.data));
-                            break;
-                    }
-
-                }, (error) => {
-                    this.logger.log(error);
-                    //const timerData = this.help.timer.end({id: req.url});
-                    //console.log(req.url, timerData);
-                    res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                    //res.end();
-                }, () => {
-                    //const timerData = this.help.timer.end({id: req.url});
-                    //console.log(req.url, timerData);
-
-                    res.end();
-
-                    if(bigBuffer && bigBuffer.length){
-                        const expireDate = new Date();
-
-                        //TODO get from some env variable
-                        const expire_seconds = 604800;
-                        expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                        this.protocolService.setValue(`system_${fileStats.data.file_name}`, {
-                            expires: expireDate,
-                            ETag: fileStats.data.etagId,
-                            content_length: file_meta.content_length,
-                            content_type: file_meta.content_type,
-                            data: bigBuffer
-                        });
-                    }
-
-                });
-            }
-
-            //this.help.timer.add({id: req.url});
-
-
+            });
         } catch (err) {
             res.end(JSON.stringify(err));
         }
@@ -387,7 +362,7 @@ export class AppController {
         res.set('ETag', fileStats.data.etagId);
         res.status(HttpStatus.OK);
         if(params.finish) {
-            res.write(Buffer.from(file.data));
+            res.write(Buffer.from(file.data.data));
             res.end();
         }
     }

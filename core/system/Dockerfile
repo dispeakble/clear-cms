@@ -1,15 +1,16 @@
-FROM node:14.5.0-alpine As crm-nestjs
+FROM node:14.17.5-alpine As crm-nestjs
 
 RUN mkdir -p /usr/src/api/public
 RUN mkdir -p /usr/src/client/
 WORKDIR /usr/src/client
 
 COPY ./client/package*.json /usr/src/client/
-RUN npm install
+
 COPY ./client/public /usr/src/client/public
 COPY ./client/src /usr/src/client/src
 COPY ./client/.babelrc /usr/src/client/.babelrc
 COPY ./client/jsconfig.json /usr/src/client/jsconfig.json
+RUN yarn install
 
 RUN npm run build
 WORKDIR /usr/src
