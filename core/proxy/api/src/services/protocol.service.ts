@@ -53,12 +53,19 @@ export class ProtocolService {
     }
 
     public checkAccess(data: any){
-        const payload = {
-            api: 'bucket',
-            act: 'checkAccess',
-            payload: data.payload
-        };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return new Promise((resolve) => {
+            this.redisService.send({message: data.channel}, {
+                api: 'bucket',
+                act: 'checkAccess',
+                payload: data.payload
+            }).subscribe(data => {
+                resolve(data);
+            }, error => {
+                resolve(error);
+            }, () => {
+            });
+        });
+
     }
 
     public sendPost(data: any) {
@@ -96,12 +103,10 @@ export class ProtocolService {
     }
 
     public setValue(key: string, value: any){
-        //TODO use master
-        return this.cacheManager.set(key, value, {ttl:0});
+        return this.cacheManager.set(key, value, {ttl: 3600});
     }
 
     public getValue(key: string){
-        //TODO use slave
         return this.cacheManager.get(key);
     }
 

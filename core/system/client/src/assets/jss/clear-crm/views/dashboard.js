@@ -177,8 +177,7 @@ const javascriptStyles = {
     display: "none"
   },
   bodyWrapper: {
-    height: "100%",
-    background: "white",
+    height: "100%"
   },
 };
 
