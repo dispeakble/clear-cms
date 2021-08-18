@@ -155,12 +155,9 @@ class Header extends Component {
       if (modalValue === "adminProfile") {
         this.props.history.push("/admin-profile");
       } else {
-        setTimeout(() => {
-          //TODO populate the modal content here
-          let modalState = {};
-          modalState["show" + modalValue + "Modal"] = true;
-          this.setState(modalState);
-        }, 1000);
+        let modalState = {};
+        modalState["show" + modalValue + "Modal"] = true;
+        this.setState(modalState);
       }
     }
   };

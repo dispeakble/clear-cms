@@ -1,15 +1,13 @@
 import {HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
-import { promises as fsp } from "fs";
+import {promises as fsp, Stats} from "fs";
 import * as mime from "mime";
 import {Observable} from "rxjs";
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
 import path from "path";
-import {
-    GotService
-} from "@t00nday/nestjs-got";
+import {HelpService} from "./help.service";
 
 @Injectable()
 export class BucketService {
@@ -17,9 +15,11 @@ export class BucketService {
     private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private publicPaths = ["view-auth", "static", "manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
+    private help: any;
 
 
-    constructor(@Inject('ProtocolService') private protocolService, private gotService: GotService) {
+    constructor(@Inject('ProtocolService') private protocolService, @Inject('HelpService') private helpService) {
+        this.help = helpService.help;
     }
 
     private info(params: any, options: any) {
@@ -59,29 +59,6 @@ export class BucketService {
                 resolve(err);
             }
 
-        });
-    }
-
-    private read(params: any) {
-        return new Observable((observer) => {
-            /*try {//not used I think
-                (async () => {
-                    const stats = await this.getMeta({path: params.path, defaultFileName: this.defaultPath});
-                    observer.next({type: 'meta', content_length: stats['size'], content_type: mime.getType(stats['file_name']), file_name: stats['file_name']});
-
-                    this.gotService.get(`${this.bucketUrl}/${params.path}`, {}).subscribe((data) => {
-                        observer.next({type: 'Buffer', data});
-                    }, (err) => {
-                        observer.error(err);
-                        observer.complete();
-                    }, () => {
-                        observer.complete();
-                    });
-                })();
-            } catch (err) {
-                observer.error(err);
-                observer.complete();
-            }*/
         });
     }
 
@@ -127,11 +104,13 @@ export class BucketService {
     }
 
     private checkPaths(data: any){
-        const params = data.params;
+        const params = data.path;
         let file_name = '';
 
-        if (data.params && data.params.length) {
+        if (data.path && data.path.length) {
             file_name = `${params.replace('/', '')}`;
+        } else {
+            return true;
         }
         let hasAccess = false;
         this.publicPaths.forEach((e, i) => {
@@ -143,18 +122,20 @@ export class BucketService {
     }
 
     public checkAccess(data: any) {
-        return new Promise((resolve) => {
+        return new Observable(subscriber => {
             if(!this.checkPaths(data)){
-                return resolve({
+                subscriber.error({
                     access: false,
                     status: HttpStatus.TEMPORARY_REDIRECT,
                     location: this.publicPaths[0]
                 });
             }
 
-            return resolve({
+            subscriber.next({
                 access: true
             });
+
+            subscriber.complete();
         });
     }
 
@@ -198,37 +179,44 @@ export class BucketService {
     }
 
     public getMeta(data: any) {
-        if(this._isBucket({path: data.params})){
+        if(this._isBucket({path: data.path})) {
             return this._getBucketMeta({
-                path: data.params
+                path: data.path
             });
         }
         return new Promise(async (resolve) => {
 
-            const params = data.params;
+            const params = data.path;
             let file_name = '';
 
-            if (data.params && data.params.length) {
+            if (data.path && data.path.length) {
                 file_name = params;
-            }
-
-            const file_path = path.join(__dirname, '..', '..', 'public');
-
-            try {
-                await fsp.stat(path.join(file_path, file_name));
-            } catch (err) {
+            } else {
                 file_name = this.defaultPath;
             }
 
-            const stats = await fsp.stat(path.join(file_path, file_name));
-            const etagId = etag.default(Buffer.from(JSON.stringify(stats)));
+            const file_path = path.join(__dirname, '..', '..', 'public');
+            let stats = null;
+
+            try {
+                stats = await fsp.stat(path.join(file_path, file_name));
+                if(stats.isDirectory()) {
+                    file_name = this.defaultPath;
+                    stats = await fsp.stat(path.join(file_path, file_name));
+                }
+            } catch (err) {
+                file_name = this.defaultPath;
+                stats = await fsp.stat(path.join(file_path, file_name));
+            }
+
+            const etagId = etag.default(stats);
             resolve({
-                type: 'object',
-                content_type: 'object',
+                type: "object",
+                content_type: "object",
                 data: {
                     modified: stats.mtimeMs,
                     size: stats.size,
-                    "etagId": etagId,
+                    etagId,
                     file_name: file_name
                 }
             });
@@ -264,8 +252,8 @@ export class BucketService {
         return new Observable((observer) => {
             let complete_path = this.defaultPath;
 
-            if (data.params && data.params.length && data.params.indexOf('.') > -1) {
-                complete_path = data.params;
+            if (data.path && data.path.length && data.path.indexOf('.') > -1) {
+                complete_path = data.path;
                 if(this._isBucket({path: complete_path})){
                     this._getFromBucket({
                         path: complete_path,
@@ -276,10 +264,10 @@ export class BucketService {
             }
 
             (async () => {
-
+                let stats = null;
                 let file_path = path.join(__dirname, '..', '..', 'public', complete_path);
                 try {
-                    await fsp.stat(file_path)
+                    stats = await fsp.stat(file_path)
                 } catch (err) {
                     complete_path = this.defaultPath;
                     file_path = path.join(__dirname, '..', '..', 'public', complete_path);
@@ -287,15 +275,20 @@ export class BucketService {
 
                 try {
 
-                    const stats = await fsp.stat(file_path);
+                    if(!stats) {
+                        stats = await fsp.stat(file_path);
+                    }
+
                     observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(complete_path)});
 
-                    const readStream = fs.createReadStream(file_path);
+                    const readStream = fs.createReadStream(file_path, { highWaterMark: 32 * 1024 });
 
-                    readStream.on('data', function (chunk) {
+                    readStream.on('data', (chunk) => {
                         observer.next(chunk);
-                    }).on('end', function () {
+                    }).on('end', () => {
                         observer.complete();
+                    }).on('error', (err) => {
+                        observer.error(err);
                     });
 
                 } catch (err) {
