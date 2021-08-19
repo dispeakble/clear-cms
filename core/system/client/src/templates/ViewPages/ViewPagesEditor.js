@@ -1742,7 +1742,7 @@ class ViewPagesEditor extends React.PureComponent {
                     backgroundSize: this.state.pageBackgroundStretch
                         ? "cover"
                         : "auto",
-                    [this.state.pageBackgroundGradient ? "background" : "backgroundColor"]: this.state.pageBackgroundGradient ? this.state.bgGradientColor : this.state.bgColor,
+                    [this.state.pageBackgroundGradient ? "backgroundImage" : "backgroundColor"]: this.state.pageBackgroundGradient ? this.state.bgGradientColor : this.state.bgColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
