@@ -8,6 +8,10 @@ import { withRouter } from 'next/router'
 import * as shortId from "shortid";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
+import getConfig from 'next/config'
+
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -50,12 +54,8 @@ class ViewPagesPreview extends React.Component {
     //
     // // const allPages = JSON.parse(localStorage.getItem("pages"));
     // // let currentPage;
-    // // currentPage = allPages.find((el) => el.id === pathnameId);
-    // //
-    // // const items = currentPage ? currentPage.items : "";
-    // // const pageConfig = currentPage ? currentPage.pageConfig : "";
-    //
-    // const
+    // // currentPage = allPages.find((econst { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
     //
     // this.setState({
     //   items: items,
@@ -65,12 +65,13 @@ class ViewPagesPreview extends React.Component {
   }
 
   componentDidMount() {
-    if (process?.env?.ONLY_STATIC) {
+    debugger
+    if ( !publicRuntimeConfig?.wsEnabled) {
       this.setState({
-        pageLink: this.props.pageData.pageConfig.pageLink,
-        items: this.props.pageData.items,
-        pageConfig: this.props.pageData.pageConfig,
-        pageId: this.props.pageData.id
+        pageLink: this.props.pageData?.pageConfig?.pageLink,
+        items: this.props.pageData?.items,
+        pageConfig: this.props.pageData?.pageConfig,
+        pageId: this.props.pageData?.id
       })
     } else {
       // this.props.ws?.subscribe({
@@ -88,9 +89,22 @@ class ViewPagesPreview extends React.Component {
         pageId: this.props.pageId
       })
     }
+  }
 
-
-
+  componentDidUpdate(prevProps) {
+    debugger
+    // Typical usage (don't forget to compare props):
+    if (this.props.pageId !== prevProps.pageId) {
+      if (publicRuntimeConfig?.wsEnabled){
+        this.setState({
+          pageLink: this.props.pageLink,
+          items: this.props.items || [],
+          pageConfig: this.props.pageConfig,
+          pageId: this.props.pageId
+        })
+      } 
+      
+    }
   }
 
   onMessage = (params) => {
@@ -305,7 +319,7 @@ class ViewPagesPreview extends React.Component {
   render() {
     const classes = this.props.classes;
 
-    if (this.state.items === null || this.state.items.length === 0) {
+    if (this.state.items === null || this.state.items?.length === 0) {
       return "";
     }
 
@@ -314,7 +328,7 @@ class ViewPagesPreview extends React.Component {
       this.props.pageDataLoaded ? (
         <React.Fragment>
           <Helmet>
-            <title>{this.state.pageConfig?.pageTitle} </title>
+            <title>{this.state.pageConfig?.pageTitle || ''} </title>
             <meta name="keyword" content="test desc" />
           </Helmet>
           <div className={classes.previewBodyWrapper}>
@@ -381,8 +395,14 @@ const mapStateToProps = state => {
     pageDataLoaded: state.page.pageDataLoaded
   };
 };
+let Component; 
 
-export default withRouter(withStyles(styles)(connect(
-  mapStateToProps,
-  null
-)(ViewPagesPreview)));
+if (publicRuntimeConfig?.wsEnabled) {
+  Component = withRouter(withStyles(styles)(connect(
+    mapStateToProps,
+    null
+  )(ViewPagesPreview)));
+} else {
+  Component = withRouter(withStyles(styles)(ViewPagesPreview));
+}
+export default Component;

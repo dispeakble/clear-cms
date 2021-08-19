@@ -14,7 +14,7 @@ if (process.env.ONLY_STATIC) {
     publicRuntimeConfig: {
       // Will be available on both server and client
       // staticFolder: '/static',
-      wsEnabled: true,
+      wsEnabled: false,
     },
 
     async rewrites() {

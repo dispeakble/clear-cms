@@ -144,6 +144,7 @@ function MyApp({ Component, pageProps }) {
       },
     });
   };
+
   return (
     <>
       <Helmet
@@ -179,17 +180,23 @@ function MyApp({ Component, pageProps }) {
         } */}
 
 
-<Provider store={store}>
-              <AppSocketInterface>
+
+
+        {publicRuntimeConfig?.wsEnabled ? (
+          <Provider store={store}>
+            <AppSocketInterface>
               {() => {
-          return (
-<Component {...pageProps} ws={wsInstance} />
-          );
+                return (
+                  <Component {...pageProps} ws={wsInstance} />
+                );
               }}
-                
-              </AppSocketInterface>
-              
-            </Provider>
+
+            </AppSocketInterface>
+
+          </Provider>
+        ) : (
+          <Component {...pageProps} ws={wsInstance} />
+        )}
 
       </MuiThemeProvider>
 
