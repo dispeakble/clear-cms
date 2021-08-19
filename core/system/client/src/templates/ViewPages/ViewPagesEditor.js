@@ -17,6 +17,7 @@ import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import MoreMenu from "components/MoreMenu/MoreMenu.js";
+import GradientPicker from "components/GradientColorPicker/GradientColorPicker";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { withRouter } from "react-router-dom";
@@ -56,6 +57,7 @@ import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
 import ViewBoxEditor from "./ViewBoxEditor";
+import Modal from "../../components/Modal/Modal";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -100,6 +102,7 @@ class ViewPagesEditor extends React.PureComponent {
       { label: "Verdana" },
     ],
     bgColor: "",
+    bgGradientColor:"",
     pageBase64Image: false,
     backgroundImage: "",
     backgroundImageFile: "",
@@ -109,6 +112,7 @@ class ViewPagesEditor extends React.PureComponent {
     pageTitle: "",
     pageLink: "",
     showBgColorPicker: false,
+    showBgGradientColorPickerModal: false,
     showTextColorPicker: false,
     showItemTextColorPicker: false,
     fontUnit: "px",
@@ -141,6 +145,32 @@ class ViewPagesEditor extends React.PureComponent {
     openNewCategory: false,
     isUniqueTitle: false,
     dialogErr: false,
+    bgGradientColorPickerModal: {
+      name: "bgGradientColorPickerModal",
+      title: "Gradient Color Picker",
+      content: <GradientPicker selectColor={(color) => this.setState({
+        gradientColor: color
+      })} />,
+      closeButton: {
+        callback: () => {
+          this.setState({ showBgGradientColorPickerModal: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.setState((prevState) =>{
+            return{
+              ...prevState,
+              showBgGradientColorPickerModal: false,
+              bgGradientColor: prevState.gradientColor
+            }
+          });
+        },
+        label: "Save",
+      },
+    },
   };
 
   muiTheme = {};
@@ -171,6 +201,7 @@ class ViewPagesEditor extends React.PureComponent {
       
       await this.setAsyncState({
         bgColor: pageConfig.backgroundColor,
+        bgGradientColor: pageConfig.backgroundGradientColor,
         backgroundImage: pageConfig.backgroundImage,
         oldBackgroundImage: pageConfig.backgroundImage,
         fontSize: pageConfig.fontSize,
@@ -186,7 +217,7 @@ class ViewPagesEditor extends React.PureComponent {
         publish: pageConfig.publish,
         pageBackgroundRepeat: pageConfig.backgroundRepeat,
         pageBackgroundStretch: pageConfig.backgroundStretch,
-        pageBackgroundGradient: pageConfig.pageBackgroundGradient,
+        pageBackgroundGradient: pageConfig.backgroundGradient,
         ...(!isForTemplate && { isTemplate: pageConfig.isTemplate }),
         ...(!isForTemplate && { template: { label: pageConfig.templateUsed } }),
       });
@@ -962,9 +993,31 @@ class ViewPagesEditor extends React.PureComponent {
     );
   };
 
+  createGradientColorPicker = (styles, displayColorPicker, targetedColor) => {
+    if (!this.state[styles]) {
+      return;
+    }
+
+    let pickerColor = Object.assign({}, this.state[styles].color);
+
+    pickerColor.background = this.state[targetedColor];
+
+    return (
+        <div>
+          <div
+              style={this.state[styles].swatch}
+              onClick={() => this.handleClick(displayColorPicker)}
+          >
+            <div style={pickerColor} />
+          </div>
+        </div>
+    );
+  };
+
   savePage = async () => {
     let pageConfig = {
       backgroundColor: this.state.bgColor,
+      backgroundGradientColor: this.state.bgGradientColor,
       backgroundImage: this.state.backgroundImage,
       oldBackgroundImage: this.state.oldBackgroundImage,
       backgroundImageFile: this.state.backgroundImageFile,
@@ -977,7 +1030,7 @@ class ViewPagesEditor extends React.PureComponent {
       publish: this.state.publish,
       backgroundRepeat: this.state.pageBackgroundRepeat,
       backgroundStretch: this.state.pageBackgroundStretch,
-      pageBackgroundGradient: this.state.pageBackgroundGradient,
+      backgroundGradient: this.state.pageBackgroundGradient,
       defaultPage: this.state.defaultPage,
       categoryId: this.state.categoryId,
       isTemplate: this.state.isTemplate,
@@ -1265,6 +1318,23 @@ class ViewPagesEditor extends React.PureComponent {
                                   "bgColorStyles",
                                   "showBgColorPicker",
                                   "bgColor"
+                                )}
+                              </Tooltip>
+                            </div>
+                            <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                }}
+                            >
+                              <h5 style={{ marginRight: "15px" }}>Gradient</h5>
+
+                              <Tooltip title="Compose a background gradient instead of a solid color">
+                                {this.createGradientColorPicker(
+                                    "bgColorStyles",
+                                    "showBgGradientColorPickerModal",
+                                    "bgGradientColor"
                                 )}
                               </Tooltip>
                             </div>
@@ -1672,7 +1742,7 @@ class ViewPagesEditor extends React.PureComponent {
                     backgroundSize: this.state.pageBackgroundStretch
                         ? "cover"
                         : "auto",
-                    backgroundColor: this.state.bgColor,
+                    [this.state.pageBackgroundGradient ? "background" : "backgroundColor"]: this.state.pageBackgroundGradient ? this.state.bgGradientColor : this.state.bgColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
@@ -1715,6 +1785,10 @@ class ViewPagesEditor extends React.PureComponent {
                 </div>
               </div>
                 </div>
+            <Modal
+                showModal={this.state.showBgGradientColorPickerModal}
+                {...this.state.bgGradientColorPickerModal}
+            />
           </MuiThemeProvider>
         </div>
       </React.Fragment>
