@@ -1732,7 +1732,7 @@ class ViewPagesEditor extends React.PureComponent {
               <div
                   style={{
                     flexGrow: 1,
-                    backgroundImage: `url(${
+                    backgroundImage: this.state.pageBackgroundGradient ? this.state.bgGradientColor : `url(${
                         this.state.pageBase64Image ||
                         `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`
                     }`,
@@ -1742,7 +1742,7 @@ class ViewPagesEditor extends React.PureComponent {
                     backgroundSize: this.state.pageBackgroundStretch
                         ? "cover"
                         : "auto",
-                    [this.state.pageBackgroundGradient ? "backgroundImage" : "backgroundColor"]: this.state.pageBackgroundGradient ? this.state.bgGradientColor : this.state.bgColor,
+                    backgroundColor: this.state.bgColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
