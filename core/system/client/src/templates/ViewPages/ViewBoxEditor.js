@@ -29,6 +29,8 @@ import { DropzoneArea } from "material-ui-dropzone";
 // for the new color picker
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
+import GradientPicker from "../../components/GradientColorPicker/GradientColorPicker";
+import Modal from "../../components/Modal/Modal";
 
 class ViewBoxEditor extends React.PureComponent {
 
@@ -51,6 +53,7 @@ class ViewBoxEditor extends React.PureComponent {
         editItemFontFamilyShow: false,
         editItemTextColorShow: false,
         editItemBackgroundColorShow: false,
+        editItemBackgroundGradientColorShow: false,
         editItemTitle: "",
         editItemModule: "",
         editItemBgString: "",
@@ -61,6 +64,7 @@ class ViewBoxEditor extends React.PureComponent {
         editItemBorderWidth: null,
         editItemBorderColor: "",
         editItemBackgroundColor: "",
+        editItemGradientBackgroundColor:"",
         editItemFontSize: null,
         editItemFontFamily: -1,
         editItemFontFamilyOption: null,
@@ -77,6 +81,7 @@ class ViewBoxEditor extends React.PureComponent {
         displayItemTextColorPicker: false,
         displayItemBgColorPicker: false,
         displayItemBorderColorPicker: false,
+        showBgGradientColorPickerModal: false,
         fontUnit: "px",
         editItemModuleOptions: {},
         editModuleOptions: "",
@@ -86,7 +91,33 @@ class ViewBoxEditor extends React.PureComponent {
         itemTextColorStyles: {},
         itemBgColorStyles: {},
         itemBorderColorStyles: {},
-        displayColorPicker: false
+        displayColorPicker: false,
+        bgGradientColorPickerModal: {
+            name: "bgGradientColorPickerModal",
+            title: "Gradient Color Picker",
+            content: <GradientPicker selectColor={(color) => this.setState({
+                gradientColor: color
+            })} />,
+            closeButton: {
+                callback: () => {
+                    this.setState({ showBgGradientColorPickerModal: false });
+                },
+                label: "Cancel",
+            },
+            confirmButton: {
+                show: true,
+                callback: () => {
+                    this.setState((prevState) =>{
+                        return{
+                            ...prevState,
+                            showBgGradientColorPickerModal: false,
+                            editItemBackgroundGradientColor: prevState.gradientColor
+                        }
+                    });
+                },
+                label: "Save",
+            },
+        },
     };
 
     defaultTheme = {};
@@ -112,6 +143,7 @@ class ViewBoxEditor extends React.PureComponent {
             editItemBorderStyle: item.borderStyle,
             editItemFontSize: item.fontSize || 5,
             editItemBackgroundColor: item.backgroundColor || "",
+            editItemBackgroundGradientColor: item.backgroundGradientColor || "",
             editItemBgString: item.editItemBgString || "",
             editItemBgImage: item.bgimage || "",
             editItemBgImageFile: item.backgroundImageFile,
@@ -120,6 +152,7 @@ class ViewBoxEditor extends React.PureComponent {
             editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
             editItemTextColor: item.textColor || "",
             editItemBackgroundColorShow: item.hasOwnProperty("backgroundColor"),
+            editItemBackgroundGradientColorShow: item.backgroundGradient,
             editItemFontSizeShow: item.hasOwnProperty("fontSize"),
             editItemFontFamilyShow: item.hasOwnProperty("fontFamily"),
             editItemTextColorShow: item.hasOwnProperty("textColor"),
@@ -270,6 +303,7 @@ class ViewBoxEditor extends React.PureComponent {
         item.backgroundImageFile = this.state.editItemBgImageFile;
         item.backgroundRepeat = this.state.editItemBgRepeat;
         item.backgroundStretch = this.state.editItemBgStretch;
+        item.backgroundGradient = this.state.editItemBackgroundGradientColorShow;
 
         //foundItem.moduleOptions = this.state.moduleOptions;
 
@@ -277,6 +311,12 @@ class ViewBoxEditor extends React.PureComponent {
             item.backgroundColor = this.state.editItemBackgroundColor;
         } else {
             delete item.backgroundColor;
+        }
+
+        if (this.state.editItemBackgroundGradientColorShow) {
+            item.backgroundGradientColor = this.state.editItemBackgroundGradientColor;
+        } else {
+            delete item.backgroundGradientColor;
         }
 
         if (this.state.editItemFontSizeShow) {
@@ -494,6 +534,27 @@ class ViewBoxEditor extends React.PureComponent {
         );
     };
 
+    createGradientColorPicker = (styles, displayColorPicker, targetedColor) => {
+        if (!this.state[styles]) {
+            return;
+        }
+
+        let pickerColor = Object.assign({}, this.state[styles].color);
+
+        pickerColor.background = this.state[targetedColor];
+
+        return (
+            <div>
+                <div
+                    style={this.state[styles].swatch}
+                    onClick={() => this.handleColorPickerClick(displayColorPicker)}
+                >
+                    <div style={pickerColor} />
+                </div>
+            </div>
+        );
+    };
+
     render() {
         return (
             <React.Fragment>
@@ -659,6 +720,30 @@ class ViewBoxEditor extends React.PureComponent {
                                 )}
                                 <div className={this.props.classes.sideMenuOption}>
                                     <Typography>
+                                        <span>Gradient Color</span>
+
+                                    </Typography>
+                                    <Tooltip title="Prepare Gradient Background">
+                                        <Switch
+                                            checked={this.state.editItemBackgroundGradientColorShow}
+                                            onChange={() => {
+                                                this.setState({
+                                                    editItemBackgroundGradientColorShow: !this.state
+                                                        .editItemBackgroundGradientColorShow,
+                                                });
+                                            }}
+
+                                        />
+                                    </Tooltip>
+
+                                </div>
+                                {this.state.editItemBackgroundGradientColorShow && this.createGradientColorPicker(
+                                    "itemBgColorStyles",
+                                    "showBgGradientColorPickerModal",
+                                    "editItemBackgroundGradientColor"
+                                )}
+                                <div className={this.props.classes.sideMenuOption}>
+                                    <Typography>
                                         <span>Border Color </span>
                                     </Typography>
                                     {this.createColorPicker(
@@ -763,6 +848,10 @@ class ViewBoxEditor extends React.PureComponent {
                         </Paper>
                     </Drawer>
                 </MuiThemeProvider>
+                <Modal
+                    showModal={this.state.showBgGradientColorPickerModal}
+                    {...this.state.bgGradientColorPickerModal}
+                />
             </React.Fragment>
         );
     }

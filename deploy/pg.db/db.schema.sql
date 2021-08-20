@@ -212,6 +212,7 @@ CREATE TABLE public.page_box (
     fontfamily character varying,
     textcolor character varying,
     bgcolor character varying,
+    bggradientcolor character varying,
     bgimage character varying,
     borderwidth smallint,
     bordercolor character varying,

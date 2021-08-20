@@ -94,6 +94,10 @@ class ViewPagesPreview extends React.Component {
       style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
     }
 
+    if (el.backgroundGradient) {
+      style.backgroundImage = el.backgroundGradientColor;
+    }
+
     if (el.backgroundColor) {
       style.backgroundColor = el.backgroundColor;
     }

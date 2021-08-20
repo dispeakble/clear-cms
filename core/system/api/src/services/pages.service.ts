@@ -25,6 +25,7 @@ export class PagesService {
                 fontfamily: values.fontFamily || null,
                 textcolor: values.textColor || null,
                 bgcolor: values.backgroundColor || null,
+                bggradientcolor: values.backgroundGradientColor || null,
                 bgimage: values.backgroundImage || "",
                 borderwidth: values.borderWidth || 0,
                 bordercolor: values.borderColor || "#ffffff",
@@ -234,6 +235,7 @@ export class PagesService {
                       items: boxes.data.map((box) => {
                           return {
                               ...(box.bgcolor !== null && {backgroundColor: box.bgcolor}),
+                              ...(box.bggradientcolor !== null && {backgroundGradientColor: box.bggradientcolor}),
                               backgroundImage: box.bgimage,
                               backgroundRepeat: !!box.bgrepeat,
                               backgroundStretch: !!box.bgstretch,
@@ -377,6 +379,7 @@ export class PagesService {
                                             fontfamily: item.fontFamily || null,
                                             textcolor: item.textColor || null,
                                             bgcolor: item.backgroundColor || null,
+                                            bggradientcolor: item.backgroundGradientColor || null,
                                             bgimage: item.backgroundImage || "",
                                             borderwidth: item.borderWidth || 0,
                                             bordercolor: item.borderColor || "#ffffff",

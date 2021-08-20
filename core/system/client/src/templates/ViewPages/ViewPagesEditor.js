@@ -376,6 +376,10 @@ class ViewPagesEditor extends React.PureComponent {
       itemStyle.backgroundSize = "auto";
     }
 
+    if (el.backgroundGradient) {
+      itemStyle.backgroundImage = el.backgroundGradientColor;
+    }
+
     if (el.backgroundColor) {
       itemStyle.backgroundColor = el.backgroundColor;
     } else {
