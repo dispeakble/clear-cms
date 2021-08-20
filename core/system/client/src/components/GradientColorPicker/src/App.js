@@ -7,7 +7,7 @@ import { observer } from 'mobx-react'
 import Store from './Models/Store'
 import defaultStore from './defaultStore'
 import createBrowserHistory from 'history/createBrowserHistory'
-import './App.css'
+import './App.sass'
 
 const routerModel = RouterModel.create()
 const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
@@ -36,7 +36,7 @@ class App extends Component {
       store.uiHidden || store.uiHiddenLocked ? 'hidden' : 'visible'
 
     return (
-        <div className="App">
+        <div className="gradient-color-picker">
           <div className="container-controls">
             <Controls store={store} />
           </div>
