@@ -198,7 +198,7 @@ class Categories extends Component {
         },
         props: {
             icons: {
-                Add: () => <AddCircle className={this.props.classes.addIcon} />,
+                Add: () => <AddCircle style={{ color: this.props.defaultTheme.primary?.main || "green" }} />,
                 Check: () => (
                     <Check color="primary" />
                 ),
