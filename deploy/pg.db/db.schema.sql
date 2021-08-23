@@ -222,8 +222,6 @@ CREATE TABLE public.page_box (
     height smallint,
     width smallint,
     moduleoptions character varying,
-    x smallint,
-    y smallint,
     borderstyle character varying,
     showscrollbars smallint
 );
@@ -324,7 +322,10 @@ ALTER TABLE public.pages_to_boxes_id_seq OWNER TO cms;
 CREATE TABLE public.pages_to_boxes (
     id integer DEFAULT nextval('public.pages_to_boxes_id_seq'::regclass) NOT NULL,
     page_id integer NOT NULL,
-    box_id integer NOT NULL
+    box_id integer NOT NULL,
+    x smallint,
+    y smallint,
+    template_used smallint NOT NULL DEFAULT 0
 );
 
 

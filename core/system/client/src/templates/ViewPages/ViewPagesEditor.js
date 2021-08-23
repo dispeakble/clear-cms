@@ -56,6 +56,7 @@ import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
 import ViewBoxEditor from "./ViewBoxEditor";
+import Modal from "../../components/Modal/Modal";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -141,6 +142,27 @@ class ViewPagesEditor extends React.PureComponent {
     openNewCategory: false,
     isUniqueTitle: false,
     dialogErr: false,
+    showConfirmEditModal: false,
+    confirmEditModal: {
+      name: "confirmEditModal",
+      title: "Confirm Edit",
+      content: "This box is from a template. Do you want to open it in a new tab so you can edit it?",
+      closeButton: {
+        callback: () => {
+          this.setState({ showConfirmEditModal: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.setState({ showConfirmEditModal: false });
+          const win = window.open(`/pages/edit/${this.state.templateEditId}`, "_blank");
+          win.focus();
+        },
+        label: "Open Template",
+      },
+    },
   };
 
   muiTheme = {};
@@ -150,7 +172,6 @@ class ViewPagesEditor extends React.PureComponent {
     if (items !== null) {
       
       this.setState({
-        items,
         categoryId: pageConfig.categoryId,
         currentCategory: this.getCategoryItem(pageConfig.categoryId)
       });
@@ -191,6 +212,17 @@ class ViewPagesEditor extends React.PureComponent {
         ...(!isForTemplate && { template: { label: pageConfig.templateUsed } }),
       });
     }
+
+    if(isForTemplate) {
+      currentPage.items = currentPage.items.map((item) => {
+        return {
+          ...item,
+          templateUsed: page_id,
+          resizeHandles: []
+        }
+      })
+    }
+
     await this.setAsyncState({
       items: currentPage.items,
       pageConfig: currentPage.pageConfig,
@@ -325,7 +357,7 @@ class ViewPagesEditor extends React.PureComponent {
     if (el.backgroundImageString) {
       itemStyle.backgroundImage = `url(${el.backgroundImageString})`;
     } else {
-      itemStyle.backgroundImage = `url(/files/pages/page-${this.state.page_id}/box-${i}/${el.backgroundImage})`;
+      itemStyle.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
     }
 
     if (el.backgroundImage.indexOf("__delete__") === 0) {
@@ -601,18 +633,26 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   handleEditItem = async (id) => {
+    const item = this.getItemById(id);
     await this.setAsyncState({
       itemEditId: id,
+      templateEditId: item.templateUsed
     });
-    const item = this.getItemById(id);
 
-    await this.setAsyncState({
-      boxEditorProps: {
-        item,
-      },
-      showEditMenu: !this.state.showEditMenu,
-      pageTransitionPadding: "300px",
-    });
+    if(item.templateUsed) {
+      this.setState({
+        showConfirmEditModal: true
+      })
+      return
+    } else {
+      await this.setAsyncState({
+        boxEditorProps: {
+          item,
+        },
+        showEditMenu: !this.state.showEditMenu,
+        pageTransitionPadding: "300px",
+      });
+    }
   };
 
   handleDiscard = () => {
@@ -825,6 +865,12 @@ class ViewPagesEditor extends React.PureComponent {
     });
     if (newValue) {
       this.fetchAndSet(newValue?.id, true);
+    } else {
+      await this.setAsyncState({
+        items: [],
+        pageConfig: null,
+        editPage: null
+      })
     }
   };
 
@@ -1716,6 +1762,10 @@ class ViewPagesEditor extends React.PureComponent {
               </div>
                 </div>
           </MuiThemeProvider>
+          <Modal
+              showModal={this.state.showConfirmEditModal}
+              {...this.state.confirmEditModal}
+          />
         </div>
       </React.Fragment>
     );

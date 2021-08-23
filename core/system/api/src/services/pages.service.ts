@@ -35,8 +35,6 @@ export class PagesService {
                 height: values.h,
                 width: values.w,
                 moduleoptions: values.moduleOptions,
-                x: values.x,
-                y: values.y,
                 borderstyle: values.borderStyle || "solid",
                 showscrollbars: values.showScrollbars? 1 : 0,
             }
@@ -186,6 +184,15 @@ export class PagesService {
                           }
                       };
                        boxes = await this.protocolService.sendMessage(boxReq).toPromise()
+                       boxes.data = boxes.data.map((box) => {
+                           const location = pageToBoxes.data.find((boxConfig) => boxConfig.box_id === box.id);
+                           return {
+                               ...box,
+                               x: location.x,
+                               y: location.y,
+                               template_used: location.template_used
+                           }
+                       })
                   }
 
                   const pagesToCategoriesReq: payloadInterface = {
@@ -254,6 +261,10 @@ export class PagesService {
                               ...(box.fontsize !== null && {fontSize: box.fontsize}),
                               ...(box.fontfamily !== null && {fontFamily: box.fontfamily}),
                               ...(box.textcolor !== null && {textColor: box.textcolor}),
+                              templateUsed: box.template_used,
+                              ...(box.template_used !== 0 && {
+                                 resizeHandles: []
+                              })
                           }
                       })
                   }
@@ -361,7 +372,8 @@ export class PagesService {
                     const pageToCategory = await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
 
                     let boxesIds = []
-                    if(items.length){
+                    let boxPositions = []
+                    if(!pageConfig.templateUsed && items.length){
                         const pageBoxReq: payloadInterface = {
                             channel: 'db',
                             api: 'db',
@@ -371,6 +383,7 @@ export class PagesService {
                                 data: {
                                     what: 'page_box',
                                     data: items.map((item) => {
+                                        boxPositions.push({x: item.x, y: item.y});
                                         return {
                                             title: item.title,
                                             module: item.module,
@@ -388,8 +401,6 @@ export class PagesService {
                                             height: item.h,
                                             width: item.w,
                                             moduleoptions: item.moduleOptions,
-                                            x: item.x,
-                                            y: item.y,
                                             borderstyle: item.borderStyle || "solid",
                                             showscrollbars: item.showScrollbars? 1 : 0,
                                         }
@@ -408,10 +419,12 @@ export class PagesService {
                                 channel: 'system',
                                 data: {
                                     what: 'pages_to_boxes',
-                                    data: boxes.data.map((box) => {
+                                    data: boxes.data.map((box, index) => {
                                         return {
                                             page_id: page.data[0].id,
                                             box_id: box.id,
+                                            x: boxPositions[index].x,
+                                            y: boxPositions[index].y
                                         }
                                     })
                                 }
@@ -420,6 +433,49 @@ export class PagesService {
 
                         const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
                         boxesIds = boxes.data.map((box) => box.id);
+                    } else if(pageConfig.templateUsed){
+                        const templateIdReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'get',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pages',
+                                    fields: ['id'],
+                                    where: {
+                                        title: pageConfig.templateUsed,
+                                        istemplate: 1
+                                    }
+                                }
+                            }
+                        }
+
+                        const templateId = await this.protocolService.sendMessage(templateIdReq).toPromise();
+
+                        const pageToBoxReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'add',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pages_to_boxes',
+                                    data: items.map((box) => {
+                                        return {
+                                            page_id: page.data[0].id,
+                                            box_id: box.id,
+                                            template_used: templateId.data[0].id,
+                                            x: box.x,
+                                            y: box.y
+                                        }
+                                    })
+                                }
+                            }
+                        };
+
+                        const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
+                        boxesIds = items.map((box) => box.id);
                     }
 
                     subscriber.next({
@@ -662,7 +718,9 @@ export class PagesService {
                                        what: 'pages_to_boxes',
                                        data:{
                                            page_id: params.id,
-                                           box_id: newBoxDetail.data[0].id
+                                           box_id: newBoxDetail.data[0].id,
+                                           x: newBox.x,
+                                           y: newBox.y
                                        }
                                    }
                                }
@@ -692,6 +750,28 @@ export class PagesService {
                                     data: this.help.giveBoxValues(box),
                                     where: {
                                         id: box.id
+                                    }
+                                }
+                            }
+                        }).toPromise();
+                    }));
+
+                    await Promise.all(existingBoxes.map(async box => {
+                        await this.protocolService.sendMessage({
+                            channel: 'db',
+                            api: 'db',
+                            act: 'set',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pages_to_boxes',
+                                    data: {
+                                        x: box.x,
+                                        y: box.y
+                                    },
+                                    where: {
+                                        page_id: params.id,
+                                        box_id: box.id
                                     }
                                 }
                             }
