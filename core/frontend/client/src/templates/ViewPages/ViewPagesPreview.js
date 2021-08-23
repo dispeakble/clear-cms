@@ -7,6 +7,11 @@ import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from 'next/router'
 import * as shortId from "shortid";
 import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
+import getConfig from 'next/config'
+
+const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -36,7 +41,7 @@ class ViewPagesPreview extends React.Component {
     layouts: {},
     fontUnit: "px",
     openedAccordionLink: {},
-    pageLink: ''
+    
   };
 
   navigateToUrl() {
@@ -49,12 +54,8 @@ class ViewPagesPreview extends React.Component {
     //
     // // const allPages = JSON.parse(localStorage.getItem("pages"));
     // // let currentPage;
-    // // currentPage = allPages.find((el) => el.id === pathnameId);
-    // //
-    // // const items = currentPage ? currentPage.items : "";
-    // // const pageConfig = currentPage ? currentPage.pageConfig : "";
-    //
-    // const
+    // // currentPage = allPages.find((econst { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
     //
     // this.setState({
     //   items: items,
@@ -64,14 +65,46 @@ class ViewPagesPreview extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      pageLink: this.props.pageData.pageConfig.pageLink,
-      items: this.props.pageData.items,
-      pageConfig: this.props.pageData.pageConfig,
-      pageId: this.props.pageData.id
-    })
+    debugger
+    if ( !publicRuntimeConfig?.wsEnabled) {
+      this.setState({
+        pageLink: this.props.pageData?.pageConfig?.pageLink,
+        items: this.props.pageData?.items,
+        pageConfig: this.props.pageData?.pageConfig,
+        pageId: this.props.pageData?.id
+      })
+    } else {
+      // this.props.ws?.subscribe({
+      //   channel: this.channel,
+      //   callbacks: {
+      //     message: (response) => this.onMessage(response)
+      //   }
+      // });
+      // this.loadPage();
 
+      this.setState({
+        pageLink: this.props.pageLink,
+        items: this.props.items || [],
+        pageConfig: this.props.pageConfig,
+        pageId: this.props.pageId
+      })
+    }
+  }
 
+  componentDidUpdate(prevProps) {
+    debugger
+    // Typical usage (don't forget to compare props):
+    if (this.props.pageId !== prevProps.pageId) {
+      if (publicRuntimeConfig?.wsEnabled){
+        this.setState({
+          pageLink: this.props.pageLink,
+          items: this.props.items || [],
+          pageConfig: this.props.pageConfig,
+          pageId: this.props.pageId
+        })
+      } 
+      
+    }
   }
 
   onMessage = (params) => {
@@ -180,21 +213,21 @@ class ViewPagesPreview extends React.Component {
     if (Number(el.fontSize)) {
       style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
       style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
-    } else if (this.state.pageConfig.fontSize) {
-      style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
-      style.fontSlineHeightize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+    } else if (this.state.pageConfig?.fontSize) {
+      style.fontSize = `${this.state.pageConfig?.fontSize}${this.state.fontUnit}`;
+      style.fontSlineHeightize = `${this.state.pageConfig?.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {
       style.fontFamily = el.fontFamily;
-    } else if (this.state.pageConfig.fontFamily) {
-      style.fontFamily = this.state.pageConfig.fontFamily;
+    } else if (this.state.pageConfig?.fontFamily) {
+      style.fontFamily = this.state.pageConfig?.fontFamily;
     }
 
     if (el.textColor) {
       style.color = el.textColor;
-    } else if (this.state.pageConfig.textColor) {
-      style.textColor = this.state.pageConfig.textColor;
+    } else if (this.state.pageConfig?.textColor) {
+      style.textColor = this.state.pageConfig?.textColor;
     }
 
     if (el.showScrollbars) {
@@ -282,66 +315,94 @@ class ViewPagesPreview extends React.Component {
     }
   };
 
+
   render() {
     const classes = this.props.classes;
 
-    if (this.state.items === null || this.state.items.length === 0) {
+    if (this.state.items === null || this.state.items?.length === 0) {
       return "";
     }
 
     return (
-      <React.Fragment>
-        <Helmet>
-          <title>{this.state.pageConfig.pageTitle} </title>
-          <meta name="keyword" content="test desc" />
-        </Helmet>
-        <div className={classes.previewBodyWrapper}>
-          <MuiThemeProvider theme={this.getTheme()}>
-            <div className={classes.gridHolder}>
-              <div
-                className={classes.gridLayout}
-                style={{
-                  backgroundImage: `url(/files/pages/page-${this.state.pageId}/${this.state.pageConfig.backgroundImage})`,
-                  backgroundRepeat: this.state.pageConfig.backgroundRepeat
-                    ? "repeat"
-                    : "no-repeat",
-                  backgroundSize: this.state.pageConfig.backgroundStretch
-                    ? "cover"
-                    : "auto",
-                  backgroundColor: this.state.pageConfig.backgroundColor,
-                  fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                  fontFamily: this.state.fontFamily,
-                  color: this.state.pageConfig.textColor,
-                }}
-              >
-                <ResponsiveReactGridLayout
+
+      this.props.pageDataLoaded ? (
+        <React.Fragment>
+          <Helmet>
+            <title>{this.state.pageConfig?.pageTitle || ''} </title>
+            <meta name="keyword" content="test desc" />
+          </Helmet>
+          <div className={classes.previewBodyWrapper}>
+            <MuiThemeProvider theme={this.getTheme()}>
+              <div className={classes.gridHolder}>
+                <div
+                  className={classes.gridLayout}
                   style={{
+                    backgroundImage: `url(/files/pages/page-${this.state.pageId}/${this.state.pageConfig?.backgroundImage})`,
+                    backgroundRepeat: this.state.pageConfig?.backgroundRepeat
+                      ? "repeat"
+                      : "no-repeat",
+                    backgroundSize: this.state.pageConfig?.backgroundStretch
+                      ? "cover"
+                      : "auto",
+                    backgroundColor: this.state.pageConfig?.backgroundColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
-                    color: this.state.pageConfig.textColor,
+                    color: this.state.pageConfig?.textColor,
                   }}
-                  margin={this.state.pageConfig.layoutBoxSpacing}
-                  {...this.props}
-                  measureBeforeMount={true}
-                  layouts={this.state.layouts}
-                  onLayoutChange={(layout, layouts) => {
-                    return this.onLayoutChange(layout, layouts);
-                  }}
-                  compactType="vertical"
-                  cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-                  useCSSTransforms={false}
                 >
-                  {this.state.items
-                    ? _.map(this.state.items, (el) => this.createElement(el))
-                    : ""}
-                </ResponsiveReactGridLayout>
+                  <ResponsiveReactGridLayout
+                    style={{
+                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                      fontFamily: this.state.fontFamily,
+                      color: this.state.pageConfig?.textColor,
+                    }}
+                    margin={this.state.pageConfig?.layoutBoxSpacing}
+                    {...this.props}
+                    measureBeforeMount={true}
+                    layouts={this.state.layouts}
+                    onLayoutChange={(layout, layouts) => {
+                      return this.onLayoutChange(layout, layouts);
+                    }}
+                    compactType="vertical"
+                    cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+                    useCSSTransforms={false}
+                  >
+                    {this.state.items
+                      ? _.map(this.state.items, (el) => this.createElement(el))
+                      : ""}
+                  </ResponsiveReactGridLayout>
+                </div>
               </div>
-            </div>
-          </MuiThemeProvider>
-        </div>
-      </React.Fragment>
+            </MuiThemeProvider>
+          </div>
+        </React.Fragment>
+      ) : null
+
+
     );
   }
 }
 
-export default withRouter(withStyles(styles)(ViewPagesPreview));
+
+
+
+const mapStateToProps = state => {
+  return {
+    pageLink: state.page.pageLink,
+    items: state.page.items,
+    pageConfig: state.page.pageConfig,
+    pageId: state.page.pageId,
+    pageDataLoaded: state.page.pageDataLoaded
+  };
+};
+let Component; 
+
+if (publicRuntimeConfig?.wsEnabled) {
+  Component = withRouter(withStyles(styles)(connect(
+    mapStateToProps,
+    null
+  )(ViewPagesPreview)));
+} else {
+  Component = withRouter(withStyles(styles)(ViewPagesPreview));
+}
+export default Component;

@@ -3,12 +3,26 @@ import getConfig from 'next/config'
 import ViewPagesPreview from "templates/ViewPages/ViewPagesPreview";
 import { withRouter } from 'next/router'
 import axios from "axios";
+import PageSocketInterface from "../socketInterface/page";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
 const PageComponent = (props) => {
+  debugger
   return (
-    <ViewPagesPreview {...props} pageData={props.pageData} />
+    publicRuntimeConfig?.wsEnabled ?
+    (
+      <PageSocketInterface slug={props.router.query.slug}>
+        {() => {
+          return(
+            <ViewPagesPreview {...props} pageData={props.pageData} />
+          )
+        }}
+      </PageSocketInterface>
+    ) : (
+      <ViewPagesPreview {...props} pageData={props.pageData} pageDataLoaded={true}/>
+    )
+    
   );
 }
 
@@ -23,12 +37,11 @@ const PageComponent = (props) => {
 
 // This function gets called at build time
 
-export let getStaticPaths;
-export let getStaticProps;
 
-if(process?.env?.ONLY_STATIC) {
 
-  getStaticPaths = async function getStaticPaths() {
+// if(!publicRuntimeConfig.wsEnabled) {
+
+  export async function getStaticPaths () {
     const payload = {
       api: 'pages',
       act: 'list',
@@ -49,7 +62,7 @@ if(process?.env?.ONLY_STATIC) {
   }
 
 
-  getStaticProps = async function getStaticProps({ params }) {
+  export async function getStaticProps ({ params }) {
     const payload = {
       api: 'pages',
       act: 'get',
@@ -69,6 +82,18 @@ if(process?.env?.ONLY_STATIC) {
       revalidate: 60,
     }
   }
-}
+// } else {
+//   getStaticPaths = async function getStaticPaths () {
+//     return { paths: [], fallback: false }
+//   }
+
+//   getStaticProps = async function getStaticProps () {
+//     return {
+//       props: {},
+//       revalidate: 60,
+//     }
+//   }
+// }
 
 export default withRouter(PageComponent)
+
