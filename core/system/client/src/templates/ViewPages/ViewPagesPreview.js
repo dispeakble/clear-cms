@@ -94,6 +94,10 @@ class ViewPagesPreview extends React.Component {
       style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
     }
 
+    if (el.backgroundGradient) {
+      style.backgroundImage = el.backgroundGradientColor;
+    }
+
     if (el.backgroundColor) {
       style.backgroundColor = el.backgroundColor;
     }
@@ -234,7 +238,7 @@ class ViewPagesPreview extends React.Component {
               <div
                 className={classes.gridLayout}
                 style={{
-                  backgroundImage: `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
+                  backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
                   backgroundRepeat: this.state.pageConfig.backgroundRepeat
                     ? "repeat"
                     : "no-repeat",

@@ -212,6 +212,7 @@ CREATE TABLE public.page_box (
     fontfamily character varying,
     textcolor character varying,
     bgcolor character varying,
+    bggradientcolor character varying,
     bgimage character varying,
     borderwidth smallint,
     bordercolor character varying,
@@ -254,6 +255,7 @@ ALTER TABLE public.page_config_id_seq OWNER TO cms;
 CREATE TABLE public.page_config (
     id integer DEFAULT nextval('public.page_config_id_seq'::regclass) NOT NULL,
     bgcolor character varying,
+    bggradientcolor character varying,
     bgimage character varying,
     fontsize smallint,
     fontfamily character varying,
