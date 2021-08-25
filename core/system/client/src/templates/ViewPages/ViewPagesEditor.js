@@ -192,6 +192,27 @@ class ViewPagesEditor extends React.PureComponent {
         label: "Open Template",
       },
     },
+    showConfirmDeleteModal: false,
+    confirmDeleteModal: {
+      name: "confirmDeleteModal",
+      title: "Confirm Delete",
+      itemId: "",
+      content: "This box is from a template. Are you sure you want to delete it?",
+      closeButton: {
+        callback: () => {
+          this.setState({ showConfirmDeleteModal: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.setState({ showConfirmDeleteModal: false });
+          this.onRemoveItem(this.state.confirmDeleteModal.itemId);
+        },
+        label: "Delete Anyway",
+      },
+    },
   };
 
   muiTheme = {};
@@ -456,6 +477,18 @@ class ViewPagesEditor extends React.PureComponent {
     let itemActions = [
       {
         callback: () => {
+          if(el.templateUsed) {
+            this.setState((prevState) => {
+              return {
+                showConfirmDeleteModal: true,
+                confirmDeleteModal: {
+                  ...prevState.confirmDeleteModal,
+                  itemId: el.i
+                }
+              }
+            })
+            return
+          }
           this.onRemoveItem(el.i);
         },
         icon: (
@@ -1841,6 +1874,10 @@ class ViewPagesEditor extends React.PureComponent {
             <Modal
                 showModal={this.state.showConfirmEditModal}
                 {...this.state.confirmEditModal}
+            />
+            <Modal
+                showModal={this.state.showConfirmDeleteModal}
+                {...this.state.confirmDeleteModal}
             />
           </MuiThemeProvider>
         </div>
