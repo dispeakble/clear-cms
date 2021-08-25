@@ -1,0 +1,140 @@
+.gradient-color-picker
+  text-align: center
+  font-family: 'Open Sans', sans-serif
+
+
+.gradient-color-picker
+
+  .colorBlocks
+    margin: 0em 1em 1em 1em
+    background-color: rgba(255,255,255,0.75)
+    border-radius: 0px
+    padding: .5em .5em .2em .5em
+    width: auto
+    display: inline-block
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px
+
+
+  .savedGradients
+    text-align: center
+    background-color: rgba(255, 255, 255, 0.75)
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px
+    border-radius: 0px
+    padding: .25em .5em 0em .5em
+    margin: 2em auto
+
+  .sketch-picker
+    display: inline-block
+    margin: 0 1em 1em
+    background-color: hsla(0,0%,100%,.75)!important
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1)!important
+    border-radius: 0!important
+
+  .saved-gradients-button
+    padding: .45em .75em
+    margin: .4em
+    float: right
+
+  .savedGradientCube:hover
+    transition: transform 0.1s ease
+    transform: scale(1.1)
+
+  .selected
+    position: relative
+    box-shadow: rgba(255, 255, 255, 1) 0px 0px 0px 2px !important
+
+  @keyframes float
+    0%
+      top: -28px
+    100%
+      top: -16px
+
+  @keyframes shrinkToNormal
+    0%
+      transform: scale(1.4)
+    100%
+      transform: scale(1)
+
+
+  .savedGradientCube:hover
+    &:after
+      position: absolute
+      top: -24px
+      right: 0px
+      content: ''
+      animation: 1s infinite alternate float
+      border-bottom: solid 12px transparent
+      border-right: solid 12px transparent
+      border-left: solid 12px transparent
+      border-top: solid 12px rgba(255, 255, 255, .3)
+
+  .selected, .selected:hover
+    &:after
+      position: absolute
+      bottom: 0px
+      right: 0px
+      content: ''
+      border-bottom: solid 16px rgba(255, 255, 255, .6)
+      border-right: solid 14px transparent
+      border-left: solid 14px transparent
+      border-top: solid 16px transparent
+      animation-name: shrinkToNormal
+      animation-duration: .2s
+      animation-iteration-count: 1
+
+  .codeBlock
+    background-color: rgba(255,255,255,0.75)
+    display: inline-block
+    padding: 1em
+    margin: auto
+    border-radius: 0px
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px
+    color: #333
+    max-width: 640px
+
+  .activeButton
+    background-color: #3065ff
+
+  .container-controls
+    position: relative
+
+  .controls
+    background-color: rgba(255, 255, 255, 0.4)
+    opacity: 1
+    position: absolute
+    top: 0px
+    left: auto
+    text-align: center
+    margin: auto
+    height: auto
+    width: 100%
+    padding: .6em 0em .6em 0em
+
+  #contentBlock
+    flex: 1
+    padding-top: 8em
+
+  .colorCube
+    width: .3em
+    height: .3em
+    padding: 1em
+    margin: auto
+    display: inline-block
+
+  button
+    font-weight: 500
+    font-family: 'Open Sans', sans-serif
+    padding: .6em 1.2em
+    background-color: rgba(0, 0, 0, 0.436)
+    border: none
+    border-radius: 0px
+    position: relative
+    transition: all .2s ease
+    color: #eee
+    margin: .25em .25em
+
+  button:hover
+    background-color: rgb(59, 110, 250)
+
+  button:focus
+    outline: none
