@@ -1,7 +1,6 @@
 const serverUrl = process.env.SERVER_URL || 'http://localhost:9797';
 
-
-if (process.env.ONLY_STATIC) {
+if (process.env.ONLY_STATIC === "true") {
   module.exports = {
     reactStrictMode: true,
 
@@ -33,7 +32,6 @@ if (process.env.ONLY_STATIC) {
 } else {
   module.exports = {
     reactStrictMode: true,
-    
 
     async rewrites() {
       return [

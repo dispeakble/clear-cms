@@ -1,26 +1,22 @@
 import {
     Body,
-    Controller, Get, HttpStatus, Inject, Post, Req, Res, Session, UseGuards, Logger
+    Controller, Get, HttpStatus, Inject, Post, Req, Res, Session, Logger
 } from "@nestjs/common";
 import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import {HttpAuthGuard} from "../guards/http.auth.guard";
 import multer from "multer";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 
 @Controller()
 export class AppController {
-
-    private portMap = {};
-
     private moduleConfig: ModuleInterface = {
-        name: 'frontendproxy',
-        version: '21.08.03',
-        description: 'the public http api',
+        name: 'frontend',
+        version: '21.08.26',
+        description: 'the main http frontend (gateway)',
         started: new Date(),
         config: {
-            channel: 'frontendproxy',
+            channel: 'frontend',
             restart: true,
             stop: false
         },
@@ -30,6 +26,34 @@ export class AppController {
         }]
     };
 
+    private portMap = {};
+
+    private help = {
+        timer: {
+            props: {
+                batches: {}
+            },
+            start: (params) => {
+                this.help.timer.props[params.id] = [];
+                this.help.timer.props[params.id].push(new Date().getTime());
+            },
+            add: (params) => {
+                this.help.timer.props[params.id].push(new Date().getTime());
+            },
+            end: (params) => {
+                this.help.timer.props[params.id].push(new Date().getTime());
+                const diffs = [];
+                this.help.timer.props[params.id].map((d, i) => {
+                    if(i > 0) {
+                        diffs.push(d - this.help.timer.props[params.id][i - 1]);
+                    }
+                    return d;
+                });
+                return diffs;
+            }
+        }
+    };
+
     constructor(
         @Inject('ProtocolService') public protocolService,
         @Inject('SystemService') private systemService,
@@ -37,7 +61,7 @@ export class AppController {
         @Inject('SessionService') private sessionService,
         @Inject('WsGateway') private wsGateway,
         private logger: Logger
-        ) {
+    ) {
         this.protocolService.start().then(async () => {
             this.portMap = await this.protocolService.getValue('portMap') || [];
             const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
@@ -55,7 +79,6 @@ export class AppController {
     }
 
     //TODO ADD POST HTTP GUARD SEPARATELY
-    @UseGuards(HttpAuthGuard)
     @Post('*')
     async onPost(@Res() res: Response, @Req() req: Request, @Session() session, @Body() body) {
         try {
@@ -69,9 +92,7 @@ export class AppController {
                         multerFinish = true;
                         //we will start a REDIS handshake with the consumer
                         let handshake = this.protocolService.startHandshake({
-                            channel: this.portChannel({
-                                headers: req.headers
-                            }),
+                            channel: this.portChannel(),
                             indication: {
                                 api: 'bucket',
                                 act: 'upload'
@@ -104,28 +125,36 @@ export class AppController {
                                 }
                             });
 
-                            file.stream.on('data', (data) => {
-                                handshakeResponse['thePusher'].next({
-                                    payload: {
-                                        type: 'data',
-                                        buffer: data
+                            setTimeout(() => {
+                                let index = 0;
+                                const t = Math.random();
+                                file.stream.on('data', (data) => {
+                                    index++;
+                                    handshakeResponse['thePusher'].next({
+                                        payload: {
+                                            type: 'data',
+                                            index: `${t}-${index}`,
+                                            buffer: data
+                                        }
+                                    });
+                                });
+
+                                file.stream.on('end', () => {
+                                    handshakeResponse['thePusher'].complete();
+                                    fileCount++;
+                                    if(totalFiles === fileCount){
+                                        res.end(JSON.stringify({message: 'upload complete'}));
                                     }
                                 });
-                            });
 
-                            file.stream.on('end', () => {
-                                handshakeResponse['thePusher'].complete();
-                                fileCount++;
-                                if(totalFiles === fileCount){
-                                    res.end(JSON.stringify({message: 'upload complete'}));
-                                }
-                            });
+                                file.stream.on('error', (error) => {
+                                    handshakeResponse['thePusher'].error(error);
+                                    handshakeResponse['thePusher'].complete();
+                                    res.end(JSON.stringify({message: 'upload error'}));
+                                });
+                            }, 1000);
 
-                            file.stream.on('error', (error) => {
-                                handshakeResponse['thePusher'].error(error);
-                                handshakeResponse['thePusher'].complete();
-                                res.end(JSON.stringify({message: 'upload error'}));
-                            });
+
 
                         });
                     },
@@ -144,9 +173,7 @@ export class AppController {
             });
 
             const start_date = new Date().getTime();
-            const channel = this.portChannel({
-                headers: req.headers
-            });
+            const channel = this.portChannel();
 
             if(typeof channel !== "string" || !channel) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -173,11 +200,6 @@ export class AppController {
 
             postSubscriber.subscribe((response) => {
                 switch (response.type) {
-                    default:
-                        res.set('Cache-Control', 'public, max-age=0');
-                        res.status(HttpStatus.OK);
-                        res.end(JSON.stringify(response));
-                        break;
                     case "meta":
                         res.set('Cache-Control', 'public, max-age=0');
                         res.status(HttpStatus.OK);
@@ -228,33 +250,32 @@ export class AppController {
 
     }
 
-    @UseGuards(HttpAuthGuard) @Get('*')
+    //@UseGuards(HttpAuthGuard)
+    @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
-            const channel = this.portChannel({
-                headers: req.headers
-            });
 
-            if (!channel) {
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                res.end('Port not mapped');
-                return;
-            }
-
-            const payload = {
-                channel: channel,
-                payload: {
-                    ip: req.ip,
-                    hostname: req.hostname,
-                    query: req.query,
-                    params: req.params || {},
-                    headers: req.headers
+            const fileReq = {
+                "channel": "system",
+                "payload": {
+                    "ip": req.ip,
+                    "hostname": req.hostname,
+                    "path": req.params[0],
+                    "headers": req.headers,
+                    "query": req.query
                 }
             };
 
-            /*if (!session.hasOwnProperty('user')) {
-                //TODO MOVE THIS TO GUARD
-                const hasAccess = await this.protocolService.checkAccess(payload);
+            const fileStats = await this.protocolService.getMeta(fileReq);
+            if(!fileStats) {
+                res.status(HttpStatus.NOT_FOUND);//TODO ADD A 404 PAGE
+                res.end();
+                return;
+            }
+
+            if (!session.user && req.headers['sec-fetch-dest'] === 'document') {
+
+                const hasAccess = await this.protocolService.checkAccess(fileReq);
                 if (!hasAccess.access) {
                     res.status(hasAccess.location.status);
                     res.set('Location', hasAccess.location);
@@ -262,41 +283,24 @@ export class AppController {
                     res.end();
                     return;
                 }
-            }*/
-
-            const start_date = new Date().getTime();
-
-            const fileStats = await this.protocolService.getMeta(payload);
-            if(fileStats && fileStats.type === 'error'){
-                res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                res.end();
-                return;
             }
-            const cacheReq = await this.protocolService.getValue(`frontend_${channel}_${fileStats.data.file_name}`);
+
+            const cacheReq = await this.protocolService.getValue(`system_${fileStats.data.file_name}`);
+            //const cacheReq = null;
 
             if (cacheReq) {
-                if (cacheReq.ETag === fileStats.data.etagId) {
-                    const modifiedDate = new Date(fileStats.data.modified);
-                    const exp_date = new Date(cacheReq.expires);
+                const exp_date = new Date(cacheReq.expires);
 
-                    if (exp_date > new Date() && exp_date > modifiedDate) {
-                        res.set("Content-Type", cacheReq.content_type);
-                        res.set("Content-Length", cacheReq.content_length);
-                        res.set('Content-Security-Policy', "img-src; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
-                        res.set('X-Frame-Options', 'SAMEORIGIN');
-                        res.set('X-Content-Type-Options', 'nosniff');
-                        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
-                        res.set('Cache-Control', 'public, max-age=604800');
-                        res.set('ETag', fileStats.data.etagId);
-                        res.status(HttpStatus.OK);
-                        res.write(Buffer.from(cacheReq.data));
-                        res.end();
-                        return true;
-                    }
+                if (cacheReq.ETag === fileStats.data.etagId && exp_date > new Date()) {
+                    return this.respond({res, file: cacheReq, fileStats: {
+                            data: {
+                                etagId: cacheReq.ETag
+                            }
+                        }, finish: true});
                 }
             }
 
-            const getSubscriber = this.protocolService.sendGet(payload);
+            const getSubscriber = this.protocolService.sendGet(fileReq);
 
             let bigBuffer = Buffer.alloc(0);
             const file_meta = {
@@ -307,19 +311,10 @@ export class AppController {
             getSubscriber.subscribe((data) => {
                 switch (data.type) {
                     case "meta":
-                        //TODO add this to every request
-                        res.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
-                        res.set('X-Frame-Options', 'SAMEORIGIN');
-                        res.set('X-Content-Type-Options', 'nosniff');
-                        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
-                        res.set('Cache-Control', 'public, max-age=604800');
-                        res.set('ETag', fileStats.data.etagId);
-                        res.status(HttpStatus.OK);
+                        this.respond({res, file: data, fileStats});
+
                         file_meta.content_type = data.content_type;
                         file_meta.content_length = data.content_length;
-
-                        res.set("Content-Type", data.content_type);
-                        res.set("Content-Length", data.content_length);
                         break;
                     case "Buffer":
                         bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
@@ -329,17 +324,8 @@ export class AppController {
 
             }, (error) => {
                 this.logger.log(error);
-                const end_date = new Date().getTime();
-                const diffDate = new Date(end_date - start_date);
-                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis')
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
-                //res.end();
             }, () => {
-                const end_date = new Date().getTime();
-                const diffDate = new Date(end_date - start_date);
-                this.logger.log('Request took ' + diffDate.getSeconds() + '.' + diffDate.getMilliseconds() + ' from redis');
-
-                //getSubscriber.unsubscribe();
                 res.end();
 
                 if(bigBuffer && bigBuffer.length){
@@ -348,7 +334,7 @@ export class AppController {
                     //TODO get from some env variable
                     const expire_seconds = 604800;
                     expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                    this.protocolService.setValue(`frontend_${channel}_${fileStats.data.file_name}`, {
+                    this.protocolService.setValue(`system_${fileStats.data.file_name}`, {
                         expires: expireDate,
                         ETag: fileStats.data.etagId,
                         content_length: file_meta.content_length,
@@ -360,6 +346,23 @@ export class AppController {
             });
         } catch (err) {
             res.end(JSON.stringify(err));
+        }
+    }
+
+    private respond(params) {
+        const { res, file, fileStats } = params;
+        res.set("Content-Type", file.content_type);
+        res.set("Content-Length", file.content_length);
+        res.set('Content-Security-Policy', "img-src 'self'; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+        res.set('X-Frame-Options', 'SAMEORIGIN');
+        res.set('X-Content-Type-Options', 'nosniff');
+        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
+        res.set('Cache-Control', 'public, max-age=604800');
+        res.set('ETag', fileStats.data.etagId);
+        res.status(HttpStatus.OK);
+        if(params.finish) {
+            res.write(Buffer.from(file.data.data));
+            res.end();
         }
     }
 
@@ -383,18 +386,21 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'frontendproxy'})
+    @MessagePattern({message: 'frontend'})
     public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontendproxy'})
+    @EventPattern({event: 'frontend'})
     public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    private portChannel(params) {
-        const headers = params.headers;
+    private portChannel() {
+
+        return this.portMap[process.env.backend_port];
+
+        /*const headers = params.headers;
         let port = headers.host.split(':')[1];
 
         if (!port) {
@@ -416,7 +422,7 @@ export class AppController {
             }
         } else {
             return this.portMap[port];
-        }
+        }*/
 
     }
 

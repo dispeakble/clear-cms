@@ -12,7 +12,6 @@ const initialState = {
 
 
 const updatePagedata = (state, action) => {
-    debugger
     return updateObject(state, {
         pageDataLoaded: true,
         ...action.data

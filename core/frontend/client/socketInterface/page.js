@@ -47,7 +47,6 @@ const PageSocketInterface = (props) => {
 
     const get = async (params) => {
         return new Promise(async resolve => {
-            debugger
             try {
                 const data = {
                     module: 'frontend',
@@ -79,7 +78,6 @@ const PageSocketInterface = (props) => {
 
 
     const onMessage = (params) => {
-        debugger
         if (messageCallbacks) {
             try {
                 // messageCallbacks[params.id](params.data);
@@ -116,7 +114,6 @@ const PageSocketInterface = (props) => {
 
     const loadPage = async () => {
         const pageLink = props.slug;
-        debugger
         const page = await get({
             pagelink: pageLink
         })

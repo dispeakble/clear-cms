@@ -2,44 +2,52 @@ import getConfig from 'next/config'
 import axios from "axios";
 import Link from "next/link";
 import { Helmet } from "react-helmet";
+import PageSocketInterface from "../socketInterface/page";
+import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
+import React from "react";
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
+export let getStaticProps;
 
+if(!publicRuntimeConfig?.wsEnabled) {
 
- export async function getStaticProps({ params }) {
-    const payload = {
-      api: 'pages',
-      act: 'list',
+    getStaticProps = async ({ params }) => {
+        const payload = {
+            api: 'pages',
+            act: 'get',
+            where: {
+                is_default: 1,
+                istemplate: 0,
+                publish: 1
+            }
+        };
 
-    };
-
-    // fetch list of posts
-    const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload)
-    const pageListData = await response.data.data;
-
-    return {
-      props: {
-        pageListData,
-      },
+        const response = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, JSON.stringify(payload))
+        const pageData = await response.data.data;
+        return {
+            props: {
+                pageData,
+            },
+            revalidate: 60,
+        }
     }
-  }
+}
 
 
-export default function Home({ pageListData }) {
-  return (
-    <>
-      <Helmet
-        title="Home"
-        meta={[{ property: 'og:title', content: 'Home Page' }]}
-      />
-      {
-        pageListData && pageListData.map((elm, i) => {
-          return <div key={elm.id}>
-            <Link href={elm.pageConfig.pageLink} >{elm.pageConfig.pageTitle}</Link>
-          </div>
-        })
-      }
-      { (!pageListData || !pageListData.length) && <div>no page found</div> }
-    </>
-  )
+export default function Home({ pageData }) {
+    return (
+        publicRuntimeConfig?.wsEnabled ?
+            (
+                <PageSocketInterface slug={"/"}>
+                    {() => {
+                        return(
+                            <ViewPagesPreview pageData={pageData} />
+                        )
+                    }}
+                </PageSocketInterface>
+            ) : (
+                <ViewPagesPreview pageData={pageData} pageDataLoaded={true}/>
+            )
+
+    );
 }
