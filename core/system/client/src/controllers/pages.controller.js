@@ -203,7 +203,7 @@ class PagesController extends Component {
                     })
                 }
 
-                await Promise.all(params.items.map((item, i) => {
+                await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
                     return new Promise(async (resolve_upload) => {
                         if(item.backgroundImageFile){
                             await this.uploadImages({
