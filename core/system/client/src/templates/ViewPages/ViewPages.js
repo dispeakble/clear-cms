@@ -65,144 +65,6 @@ class Pages extends Component {
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
-    tableOptions = {
-        getTheme: () => {
-            return createTheme({
-                palette: this.props.defaultTheme,
-                overrides: {
-                    MuiTableCell: {
-                        head: {
-                            "&:last-child": {
-                                width: "1px !important",
-                                whiteSpace: "nowrap",
-                            },
-                        },
-                    },
-                    MuiTypography: {
-                    },
-                    MuiIconButton: {
-                        root: {
-                            padding: "3px",
-                            "&:hover": {
-                                backgroundColor: "transparent",
-                            },
-                        },
-                    },
-                },
-            });
-        },
-        actions: {
-            getData: (query) => {
-                return new Promise((resolve) => {
-                    setTimeout(async () => {
-                        await this.setAsyncState({
-                            currentPage: query.page + 1,
-                        });
-
-                        //TODO SORT SERVER SIDE!!!!!!!!!!
-                        let truncatedData = this.state.pages.slice(
-                            query.page,
-                            query.pageSize
-                        );
-                        let payload = {
-                            totalCount: this.state.pages.length,
-                            page: query.page,
-                            data: truncatedData,
-                        };
-                        resolve(payload);
-                    }, 300);
-                });
-            },
-            customActions: [
-                {
-                    icon: "add_circle",
-                    tooltip: "Add Page",
-                    isFreeAction: true,
-                    iconProps: {
-                        style: { color: this.props.defaultTheme.primary?.main || "green" },
-                    },
-                    onClick: (event) => {
-                        this.props.history.push(`/pages/add`);
-                    },
-                },
-                {
-                    tooltip: "Remove All Selected Pages",
-
-                    icon: () => (
-                        <DeleteForever color="error" />
-                    ),
-                    onClick: async (evt, data) => this.showDeleteModal(evt, data),
-                },
-                {
-                    position: "row",
-                    icon: () => (
-                        <Visibility color="primary" />
-                    ),
-                    tooltip: "Page Preview",
-                    onClick: (event, rowData) => {
-                        window.open(`/pages/preview/${Number(rowData.id)}`);
-                    },
-                },
-                {
-                    position: "row",
-                    tooltip: "Edit",
-                    icon: () => (
-                        <Edit color="secondary" className={this.props.classes.editItemIcon} />
-                    ),
-                    onClick: (event, rowData) => {
-                        this.props.history.push(
-                            `/pages/edit/${Number(rowData.id)}`
-                        );
-                    },
-                },
-                {
-                    position: "row",
-                    icon: () => (
-                        <DeleteForever color="error" />
-                    ),
-                    tooltip: "Delete",
-                    onClick: async (evt, data) => {
-                        this.showDeleteModal(evt, data, 1)
-                    },
-                },
-            ],
-        },
-        props: {
-            columns: [
-                { title: "Title", field: "title" },
-                {
-                    title: "Category",
-                    field: "category",
-                },
-                {
-                    title: "Publish",
-                    headerStyle: {
-                        width: "300px",
-                    },
-                    field: "publish",
-                },
-                {
-                    title: "Default Page",
-                    headerStyle: {
-                        width: "300px",
-                    },
-                    field: "defaultPage",
-                },
-                { title: "Id", field: "id", hidden: true },
-            ],
-            options: {
-                selection: true,
-                selectionStyle: styles.selection,
-                actionsColumnIndex: -1,
-                actionsCellStyle: {
-                    width: "auto",
-                },
-                cellStyle: styles.tableCells,
-                headerStyle: styles.tableHeader,
-            },
-        },
-    };
-
     showDeleteModal = (evt, data, deleteQty) => {
         this.setState({
             deleteData: data,
@@ -247,6 +109,143 @@ class Pages extends Component {
     render() {
         const classes = this.props.classes;
         const currentList = this.state.pages.filter(el => el.isTemplate === this.state.isTemplate)
+        const tableOptions = {
+            getTheme: () => {
+                return createTheme({
+                    palette: this.props.defaultTheme,
+                    overrides: {
+                        MuiTableCell: {
+                            head: {
+                                "&:last-child": {
+                                    width: "1px !important",
+                                    whiteSpace: "nowrap",
+                                },
+                            },
+                        },
+                        MuiTypography: {
+                        },
+                        MuiIconButton: {
+                            root: {
+                                padding: "3px",
+                                "&:hover": {
+                                    backgroundColor: "transparent",
+                                },
+                            },
+                        },
+                    },
+                });
+            },
+            actions: {
+                getData: (query) => {
+                    return new Promise((resolve) => {
+                        setTimeout(async () => {
+                            await this.setAsyncState({
+                                currentPage: query.page + 1,
+                            });
+
+                            //TODO SORT SERVER SIDE!!!!!!!!!!
+                            let truncatedData = this.state.pages.slice(
+                                query.page,
+                                query.pageSize
+                            );
+                            let payload = {
+                                totalCount: this.state.pages.length,
+                                page: query.page,
+                                data: truncatedData,
+                            };
+                            resolve(payload);
+                        }, 300);
+                    });
+                },
+                customActions: [
+                    {
+                        icon: "add_circle",
+                        tooltip: "Add Page",
+                        isFreeAction: true,
+                        iconProps: {
+                            style: { color: this.props.defaultTheme.primary?.main || "green" },
+                        },
+                        onClick: (event) => {
+                            this.props.history.push(`/pages/add`);
+                        },
+                    },
+                    {
+                        tooltip: "Remove All Selected Pages",
+
+                        icon: () => (
+                            <DeleteForever color="error" />
+                        ),
+                        onClick: async (evt, data) => this.showDeleteModal(evt, data),
+                    },
+                    {
+                        position: "row",
+                        icon: () => (
+                            <Visibility color="primary" />
+                        ),
+                        tooltip: "Page Preview",
+                        onClick: (event, rowData) => {
+                            window.open(`/pages/preview/${Number(rowData.id)}`);
+                        },
+                    },
+                    {
+                        position: "row",
+                        tooltip: "Edit",
+                        icon: () => (
+                            <Edit color="secondary" className={this.props.classes.editItemIcon} />
+                        ),
+                        onClick: (event, rowData) => {
+                            this.props.history.push(
+                                `/pages/edit/${Number(rowData.id)}`
+                            );
+                        },
+                    },
+                    {
+                        position: "row",
+                        icon: () => (
+                            <DeleteForever color="error" />
+                        ),
+                        tooltip: "Delete",
+                        onClick: async (evt, data) => {
+                            this.showDeleteModal(evt, data, 1)
+                        },
+                    },
+                ],
+            },
+            props: {
+                columns: [
+                    { title: "Title", field: "title" },
+                    ...(this.state.isTemplate ? [] : [{
+                        title: "Category",
+                        field: "category",
+                        },
+                        {
+                            title: "Publish",
+                            headerStyle: {
+                                width: "300px",
+                            },
+                            field: "publish",
+                        },
+                        {
+                            title: "Default Page",
+                            headerStyle: {
+                                width: "300px",
+                            },
+                            field: "defaultPage",
+                        }]),
+                    { title: "Id", field: "id", hidden: true },
+                ],
+                options: {
+                    selection: true,
+                    selectionStyle: styles.selection,
+                    actionsColumnIndex: -1,
+                    actionsCellStyle: {
+                        width: "auto",
+                    },
+                    cellStyle: styles.tableCells,
+                    headerStyle: styles.tableHeader,
+                },
+            },
+        };
         return (
             <React.Fragment>
                 <Helmet>
@@ -274,13 +273,13 @@ class Pages extends Component {
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </div>
-                        <MuiThemeProvider theme={this.tableOptions.getTheme()}>
+                        <MuiThemeProvider theme={tableOptions.getTheme()}>
                             <MaterialTable
                                 title={this.state.isTemplate ? "Templates List" : "Pages List"}
-                                columns={this.tableOptions.props.columns}
+                                columns={tableOptions.props.columns}
                                 data={currentList} // if u use getData() it won't work
-                                options={this.tableOptions.props.options}
-                                actions={this.tableOptions.actions.customActions}
+                                options={tableOptions.props.options}
+                                actions={tableOptions.actions.customActions}
                             />
                         </MuiThemeProvider>
                     </div>
