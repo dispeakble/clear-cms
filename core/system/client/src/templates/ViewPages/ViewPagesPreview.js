@@ -83,7 +83,7 @@ class ViewPagesPreview extends React.Component {
     let style = {};
 
     if (el.backgroundImage) {
-      style.backgroundImage = `url(/files/pages/page-${this.state.page_id}/box-${i}/${el.backgroundImage})`;
+      style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
     }
 
     if (el.backgroundRepeat) {
@@ -162,7 +162,7 @@ class ViewPagesPreview extends React.Component {
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent i={i} element={el} style={style} pageOptions={{page_id: this.state.page_id}} />
+            <LazyComponent i={i} element={el} style={style} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
           </Suspense>
         </div>
       );
