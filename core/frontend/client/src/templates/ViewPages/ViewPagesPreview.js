@@ -65,7 +65,6 @@ class ViewPagesPreview extends React.Component {
   }
 
   componentDidMount() {
-    debugger
     if ( !publicRuntimeConfig?.wsEnabled) {
       this.setState({
         pageLink: this.props.pageData?.pageConfig?.pageLink,
@@ -92,7 +91,6 @@ class ViewPagesPreview extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    debugger
     // Typical usage (don't forget to compare props):
     if (this.props.pageId !== prevProps.pageId) {
       if (publicRuntimeConfig?.wsEnabled){

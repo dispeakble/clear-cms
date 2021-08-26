@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { withStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+import Image from "next/image";
 
 class HeaderModule extends Component {
 
@@ -59,7 +60,8 @@ class HeaderModule extends Component {
             target="_blank"
             rel="noopener noreferrer"
         >
-          <img
+          <Image
+              layout={"fill"}
               style={{ maxWidth: "150px" }}
               className={classes.logoImage}
               src={!logo_name ? "" : `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${logo_name.name}`}

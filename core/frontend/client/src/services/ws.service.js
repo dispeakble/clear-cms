@@ -14,7 +14,6 @@ class WsService {
 
     start() {
         return new Promise((resolve_start) => {
-            this.url = this.url;
             this.client = io(this.url, this.options);
             this.client.on('disconnect', (e) => this.ondisconnect(e))
             this.client.on('connect', () => {

@@ -5,7 +5,6 @@
     <scripts>
       <script value="start:dev" />
     </scripts>
-    <arguments value="--trace-warnings" />
     <node-interpreter value="project" />
     <envs>
       <env name="redis_server" value="localhost" />
