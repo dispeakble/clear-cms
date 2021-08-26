@@ -160,7 +160,7 @@ class Pages extends Component {
                 customActions: [
                     {
                         icon: "add_circle",
-                        tooltip: "Add Page",
+                        tooltip: this.state.isTemplate ? "Add Template" : "Add Page",
                         isFreeAction: true,
                         iconProps: {
                             style: { color: this.props.defaultTheme.primary?.main || "green" },
@@ -170,7 +170,7 @@ class Pages extends Component {
                         },
                     },
                     {
-                        tooltip: "Remove All Selected Pages",
+                        tooltip: this.state.isTemplate ? "Remove All Selected Templates" : "Remove All Selected Pages",
 
                         icon: () => (
                             <DeleteForever color="error" />
@@ -182,7 +182,7 @@ class Pages extends Component {
                         icon: () => (
                             <Visibility color="primary" />
                         ),
-                        tooltip: "Page Preview",
+                        tooltip: this.state.isTemplate ? "Template Preview" : "Page Preview",
                         onClick: (event, rowData) => {
                             window.open(`/pages/preview/${Number(rowData.id)}`);
                         },
