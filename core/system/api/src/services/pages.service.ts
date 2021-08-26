@@ -375,66 +375,70 @@ export class PagesService {
                     let boxesIds = []
                     let boxPositions = []
                     if(items.length){
-                        const pageBoxReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'db',
-                            act: 'add',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'page_box',
-                                    data: items.filter(item => !item.templateUsed).map((item) => {
-                                        boxPositions.push({x: item.x, y: item.y});
-                                        return {
-                                            title: item.title,
-                                            module: item.module,
-                                            fontsize: item.fontSize || null,
-                                            fontfamily: item.fontFamily || null,
-                                            textcolor: item.textColor || null,
-                                            bgcolor: item.backgroundColor || null,
-                                            bggradientcolor: item.backgroundGradientColor || null,
-                                            bgimage: item.backgroundImage || "",
-                                            borderwidth: item.borderWidth || 0,
-                                            bordercolor: item.borderColor || "#ffffff",
-                                            borderradius: item.borderRadius || 0,
-                                            bgrepeat: item.backgroundRepeat ? 1 : 0,
-                                            bgstretch: item.backgroundStretch ? 1 : 0,
-                                            bggradient: item.backgroundGradient ? 1 : 0,
-                                            height: item.h,
-                                            width: item.w,
-                                            moduleoptions: item.moduleOptions,
-                                            borderstyle: item.borderStyle || "solid",
-                                            showscrollbars: item.showScrollbars? 1 : 0,
-                                        }
-                                    })
+                        const newBoxes = items.filter(item => !item.templateUsed);
+                        if(newBoxes.length) {
+                            const pageBoxReq: payloadInterface = {
+                                channel: 'db',
+                                api: 'db',
+                                act: 'add',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'page_box',
+                                        data: newBoxes.map((item) => {
+                                            boxPositions.push({x: item.x, y: item.y});
+                                            return {
+                                                title: item.title,
+                                                module: item.module,
+                                                fontsize: item.fontSize || null,
+                                                fontfamily: item.fontFamily || null,
+                                                textcolor: item.textColor || null,
+                                                bgcolor: item.backgroundColor || null,
+                                                bggradientcolor: item.backgroundGradientColor || null,
+                                                bgimage: item.backgroundImage || "",
+                                                borderwidth: item.borderWidth || 0,
+                                                bordercolor: item.borderColor || "#ffffff",
+                                                borderradius: item.borderRadius || 0,
+                                                bgrepeat: item.backgroundRepeat ? 1 : 0,
+                                                bgstretch: item.backgroundStretch ? 1 : 0,
+                                                bggradient: item.backgroundGradient ? 1 : 0,
+                                                height: item.h,
+                                                width: item.w,
+                                                moduleoptions: item.moduleOptions,
+                                                borderstyle: item.borderStyle || "solid",
+                                                showscrollbars: item.showScrollbars? 1 : 0,
+                                            }
+                                        })
+                                    }
                                 }
-                            }
-                        };
+                            };
 
-                        const boxes =  await  this.protocolService.sendMessage(pageBoxReq).toPromise();
+                            const boxes =  await  this.protocolService.sendMessage(pageBoxReq).toPromise();
 
-                        const pageToBoxReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'db',
-                            act: 'add',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'pages_to_boxes',
-                                    data: boxes.data.map((box, index) => {
-                                        return {
-                                            page_id: page.data[0].id,
-                                            box_id: box.id,
-                                            x: boxPositions[index].x,
-                                            y: boxPositions[index].y
-                                        }
-                                    })
+                            const pageToBoxReq: payloadInterface = {
+                                channel: 'db',
+                                api: 'db',
+                                act: 'add',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'pages_to_boxes',
+                                        data: boxes.data.map((box, index) => {
+                                            return {
+                                                page_id: page.data[0].id,
+                                                box_id: box.id,
+                                                x: boxPositions[index].x,
+                                                y: boxPositions[index].y
+                                            }
+                                        })
+                                    }
                                 }
-                            }
-                        };
+                            };
 
-                        const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
-                        boxesIds = boxes.data.map((box) => box.id);
+                            const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
+                            boxesIds = boxes.data.map((box) => box.id);
+
+                        }
 
                         // add boxes to the pages which are inherited from template
                         if(pageConfig.templateUsed) {
@@ -898,7 +902,7 @@ export class PagesService {
                                     what: 'page_box',
                                     how: 'OR',
                                     where: {
-                                        id: pageToBox.data.map((box) => {
+                                        id: pageToBox.data.filter(box => box.template_used === 0).map((box) => {
                                             return box.box_id
                                         })
                                     }
