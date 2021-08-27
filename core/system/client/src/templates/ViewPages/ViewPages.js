@@ -166,7 +166,10 @@ class Pages extends Component {
                             style: { color: this.props.defaultTheme.primary?.main || "green" },
                         },
                         onClick: (event) => {
-                            this.props.history.push(`/pages/add`);
+                            this.props.history.push({pathname: `/pages/add`, state: {
+                                    templateMode: this.state.isTemplate
+                                }
+                            });
                         },
                     },
                     {
@@ -194,9 +197,12 @@ class Pages extends Component {
                             <Edit color="secondary" className={this.props.classes.editItemIcon} />
                         ),
                         onClick: (event, rowData) => {
-                            this.props.history.push(
-                                `/pages/edit/${Number(rowData.id)}`
-                            );
+                            this.props.history.push({
+                                pathname:  `/pages/edit/${Number(rowData.id)}`,
+                                state: {
+                                    templateMode: this.state.isTemplate
+                                }
+                            });
                         },
                     },
                     {
