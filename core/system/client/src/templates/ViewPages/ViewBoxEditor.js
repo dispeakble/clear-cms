@@ -1,7 +1,7 @@
 import React from "react";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+import styles from "assets/jss/clear-crm/views/pageBoxEdit.js";
 import {
     DeleteForever,
 } from "@material-ui/icons";
@@ -17,7 +17,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
-import {Paper, TextField} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, Paper, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for the styling side-menu
@@ -31,6 +31,7 @@ import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 import GradientPicker from "../../components/GradientColorPicker/GradientColorPicker";
 import Modal from "../../components/Modal/Modal";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 class ViewBoxEditor extends React.PureComponent {
 
@@ -78,6 +79,11 @@ class ViewBoxEditor extends React.PureComponent {
             { label: "Times New Roman" },
             { label: "Verdana" }
         ],
+        modalPositions: [
+            { label: "Top", value: "top" },
+            { label: "Center", value: "center" },
+            { label: "Bottom", value: "bottom"}
+        ],
         displayItemTextColorPicker: false,
         displayItemBgColorPicker: false,
         displayItemBorderColorPicker: false,
@@ -92,6 +98,22 @@ class ViewBoxEditor extends React.PureComponent {
         itemBgColorStyles: {},
         itemBorderColorStyles: {},
         displayColorPicker: false,
+        editItemDisplayOptions: {
+            displayAsModal: false,
+            showCloseButton: false,
+            showActionButton: false,
+            actionButtonText: "",
+            actionButtonLink: "",
+            actionButtonTitle: "",
+            showCancelButton: false,
+            cancelButtonLink: "",
+            cancelButtonText: "",
+            cancelButtonTitle: "",
+            modalPosition: "center",
+            displayBackdrop: false,
+            backDropColor: "",
+            neverShowAfterClosing: false
+        },
         bgGradientColorPickerModal: {
             name: "bgGradientColorPickerModal",
             title: "Gradient Color Picker",
@@ -157,7 +179,8 @@ class ViewBoxEditor extends React.PureComponent {
             editItemFontFamilyShow: item.hasOwnProperty("fontFamily"),
             editItemTextColorShow: item.hasOwnProperty("textColor"),
             editItemFontFamilyOption: item.fontFamily ? this.state.fontFamilies[this.getFontFamilyIndex(item.fontFamily)] : null,
-            editItemSelectedModule: item.module && item.module.length ? this.state.modulesList[this.getModuleIndex(item.module)] : null
+            editItemSelectedModule: item.module && item.module.length ? this.state.modulesList[this.getModuleIndex(item.module)] : null,
+            ...(item.displayOptions && {editItemDisplayOptions: item.displayOptions})
         });
     }
 
@@ -185,6 +208,15 @@ class ViewBoxEditor extends React.PureComponent {
                 break;
         }
     };
+
+    handleDisplayInputChange = async (event) => {
+        const editItemDisplayOptions = {...this.state.editItemDisplayOptions}
+        const stateName = event.target.id;
+        editItemDisplayOptions[stateName] = event.target.value
+        await this.setAsyncState({
+            editItemDisplayOptions: editItemDisplayOptions
+        });
+    }
 
     closeDiscardModal() {
         this.setState({ showDiscardModal: false });
@@ -304,6 +336,7 @@ class ViewBoxEditor extends React.PureComponent {
         item.backgroundRepeat = this.state.editItemBgRepeat;
         item.backgroundStretch = this.state.editItemBgStretch;
         item.backgroundGradient = this.state.editItemBackgroundGradientColorShow;
+        item.displayOptions = this.state.editItemDisplayOptions;
 
         //foundItem.moduleOptions = this.state.moduleOptions;
 
@@ -569,269 +602,564 @@ class ViewBoxEditor extends React.PureComponent {
                     >
                         <div className={this.props.classes.sideMenuEditor}>
                             <div className={this.props.classes.sideMenuEditorForm}>
-                                <div>
-                                    <CustomInput
-                                        labelText="Title"
-                                        id="itemTitle"
-                                        required="required"
-                                        formControlProps={{
-                                            fullWidth: true,
-                                            onChange: (event) => this.handleInputChange(event),
+                                <Accordion classes={{ root: this.props.classes.accordion }}>
+                                    <AccordionSummary
+                                        classes={{
+                                            root: this.props.classes.accordionSummaryRoot,
+                                            expanded: this.props.classes.accordionSummaryExpanded,
+                                            content: this.props.classes.accordionSummaryContent,
                                         }}
-                                        inputProps={{
-                                            value: this.state.editItemTitle,
-                                            type: "text",
-                                        }}
-                                    />
-                                </div>
-                                <div>
-                                    <Autocomplete
-                                        onChange={this.handleItemModule.bind(this)}
-                                        className={this.props.classes.option}
-                                        value={
-                                            this.state.editItemSelectedModule
-                                        }
-                                        options={this.state.modulesList}
-                                        autoHighlight
-                                        getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                className={this.props.classes.textfield}
-                                                {...params}
-                                                label="Select a module"
-                                                variant="outlined"
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1c-content"
+                                        id="panel1c-header"
+                                    >
+                                    <Typography className={this.props.classes.typography}>
+                                        General
+                                    </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails
+                                        className={this.props.classes.accordionDetails}
+                                    >
+                                        <div>
+                                            <CustomInput
+                                                labelText="Title"
+                                                id="itemTitle"
+                                                required="required"
+                                                formControlProps={{
+                                                    fullWidth: true,
+                                                    onChange: (event) => this.handleInputChange(event),
+                                                }}
+                                                inputProps={{
+                                                    value: this.state.editItemTitle,
+                                                    type: "text",
+                                                }}
                                             />
-                                        )}
-                                    />
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Font Size</span>
-                                    </Typography>
-                                    <Tooltip title="Enable Custom Font Size">
-                                        <Switch
-                                            checked={this.state.editItemFontSizeShow}
-                                            onChange={() => {
-                                                this.setState({
-                                                    editItemFontSizeShow: !this.state
-                                                        .editItemFontSizeShow,
-                                                });
-                                            }}
-                                        />
-                                    </Tooltip>
-                                </div>
-                                <div>
-                                    {this.state.editItemFontSizeShow && <Slider
-                                        value={this.state.editItemFontSize}
-                                        onChange={this.handleItemFontSize.bind(this)}
-                                        aria-labelledby="discrete-slider"
-                                        valueLabelDisplay="auto"
-                                        min={5}
-                                        max={50}
-                                    />}
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Font Family</span>
-                                    </Typography>
-                                    <Tooltip title="Enable Custom Font Family">
-                                        <Switch
-                                            checked={this.state.editItemFontFamilyShow}
-                                            onChange={() => {
-                                                this.setState({
-                                                    editItemFontFamily: -1,
-                                                    editItemFontFamilyShow: !this.state
-                                                        .editItemFontFamilyShow,
-                                                });
-                                            }}
-                                        />
-                                    </Tooltip>
-                                </div>
-                                <div>
-                                    {this.state.editItemFontFamilyShow &&
-                                    <div>
-                                        <Autocomplete
-                                            onChange={this.handleItemFontFamily.bind(this)}
-                                            className={this.props.classes.option}
-                                            value={
-                                                this.state.editItemFontFamilyOption
-                                            }
-                                            options={this.state.fontFamilies}
-                                            autoHighlight
-                                            getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    className={this.props.classes.textfield}
-                                                    {...params}
-                                                    label="Select a Font Family"
-                                                    variant="outlined"
+                                        </div>
+                                        <div>
+                                            <Autocomplete
+                                                onChange={this.handleItemModule.bind(this)}
+                                                className={this.props.classes.option}
+                                                value={
+                                                    this.state.editItemSelectedModule
+                                                }
+                                                options={this.state.modulesList}
+                                                autoHighlight
+                                                getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        className={this.props.classes.textfield}
+                                                        {...params}
+                                                        label="Select a module"
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                    </AccordionDetails>
+                                </Accordion>
+                                <Accordion classes={{ root: this.props.classes.accordion }}>
+                                    <AccordionSummary
+                                        classes={{
+                                            root: this.props.classes.accordionSummaryRoot,
+                                            expanded: this.props.classes.accordionSummaryExpanded,
+                                            content: this.props.classes.accordionSummaryContent,
+                                        }}
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1c-content"
+                                        id="panel1c-header"
+                                    >
+                                        <Typography className={this.props.classes.typography}>
+                                            Format
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails
+                                        className={this.props.classes.accordionDetails}
+                                    >
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Font Size</span>
+                                            </Typography>
+                                            <Tooltip title="Enable Custom Font Size">
+                                                <Switch
+                                                    checked={this.state.editItemFontSizeShow}
+                                                    onChange={() => {
+                                                        this.setState({
+                                                            editItemFontSizeShow: !this.state
+                                                                .editItemFontSizeShow,
+                                                        });
+                                                    }}
                                                 />
+                                            </Tooltip>
+                                        </div>
+                                        <div>
+                                            {this.state.editItemFontSizeShow && <Slider
+                                                value={this.state.editItemFontSize}
+                                                onChange={this.handleItemFontSize.bind(this)}
+                                                aria-labelledby="discrete-slider"
+                                                valueLabelDisplay="auto"
+                                                min={5}
+                                                max={50}
+                                            />}
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Font Family</span>
+                                            </Typography>
+                                            <Tooltip title="Enable Custom Font Family">
+                                                <Switch
+                                                    checked={this.state.editItemFontFamilyShow}
+                                                    onChange={() => {
+                                                        this.setState({
+                                                            editItemFontFamily: -1,
+                                                            editItemFontFamilyShow: !this.state
+                                                                .editItemFontFamilyShow,
+                                                        });
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div>
+                                            {this.state.editItemFontFamilyShow &&
+                                            <div>
+                                                <Autocomplete
+                                                    onChange={this.handleItemFontFamily.bind(this)}
+                                                    className={this.props.classes.option}
+                                                    value={
+                                                        this.state.editItemFontFamilyOption
+                                                    }
+                                                    options={this.state.fontFamilies}
+                                                    autoHighlight
+                                                    getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            className={this.props.classes.textfield}
+                                                            {...params}
+                                                            label="Select a Font Family"
+                                                            variant="outlined"
+                                                        />
+                                                    )}
+                                                />
+                                            </div>}
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Text Color</span>
+
+                                            </Typography>
+                                            <Tooltip title="Enable Custom Text Color">
+                                                <Switch
+                                                    checked={this.state.editItemTextColorShow}
+                                                    onChange={() => {
+                                                        this.setState({
+                                                            editItemTextColor: "#000000",
+                                                            editItemTextColorShow: !this.state
+                                                                .editItemTextColorShow,
+                                                        });
+                                                    }}
+                                                />
+                                            </Tooltip>
+
+                                        </div>
+                                        {this.state.editItemTextColorShow && this.createColorPicker(
+                                            "itemTextColorStyles",
+                                            "displayItemTextColorPicker",
+                                            "editItemTextColor"
+                                        )}
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Background Color</span>
+
+                                            </Typography>
+                                            <Tooltip title="Enable Custom Text Color">
+                                                <Switch
+                                                    checked={this.state.editItemBackgroundColorShow}
+                                                    onChange={() => {
+                                                        this.setState({
+                                                            editItemBackgroundColorShow: !this.state
+                                                                .editItemBackgroundColorShow,
+                                                        });
+                                                    }}
+
+                                                />
+                                            </Tooltip>
+
+                                        </div>
+                                        {this.state.editItemBackgroundColorShow && this.createColorPicker(
+                                            "itemBgColorStyles",
+                                            "displayItemBgColorPicker",
+                                            "editItemBackgroundColor"
+                                        )}
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Gradient Color</span>
+
+                                            </Typography>
+                                            <Tooltip title="Prepare Gradient Background">
+                                                <Switch
+                                                    checked={this.state.editItemBackgroundGradientColorShow}
+                                                    onChange={() => {
+                                                        this.setState({
+                                                            editItemBackgroundGradientColorShow: !this.state
+                                                                .editItemBackgroundGradientColorShow,
+                                                        });
+                                                    }}
+
+                                                />
+                                            </Tooltip>
+
+                                        </div>
+                                        {this.state.editItemBackgroundGradientColorShow && this.createGradientColorPicker(
+                                            "itemBgColorStyles",
+                                            "showBgGradientColorPickerModal",
+                                            "editItemBackgroundGradientColor"
+                                        )}
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Border Color </span>
+                                            </Typography>
+                                            {this.createColorPicker(
+                                                "itemBorderColorStyles",
+                                                "displayItemBorderColorPicker",
+                                                "editItemBorderColor"
                                             )}
-                                        />
-                                    </div>}
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Text Color</span>
 
-                                    </Typography>
-                                    <Tooltip title="Enable Custom Text Color">
-                                        <Switch
-                                            checked={this.state.editItemTextColorShow}
-                                            onChange={() => {
-                                                this.setState({
-                                                    editItemTextColor: "#000000",
-                                                    editItemTextColorShow: !this.state
-                                                        .editItemTextColorShow,
-                                                });
-                                            }}
-                                        />
-                                    </Tooltip>
+                                        </div>
+                                        <div>
+                                            <Typography><span>Border Width</span></Typography>
+                                            <Slider
+                                                value={this.state.editItemBorderWidth}
+                                                className={this.props.classes.sideMenuSlider}
+                                                onChange={this.handleBorderWidth.bind(this)}
+                                                aria-labelledby="discrete-slider"
+                                                valueLabelDisplay="auto"
+                                                min={0}
+                                                max={10}
+                                            />
+                                        </div>
+                                        <div>
+                                            <Typography>Border Radius</Typography>
+                                            <Slider
+                                                value={this.state.editItemBorderRadius}
+                                                className={this.props.classes.sideMenuSlider}
+                                                onChange={this.handleBorderRadius.bind(this)}
+                                                aria-labelledby="discrete-slider"
+                                                valueLabelDisplay="auto"
+                                                min={0}
+                                                max={30}
+                                            />
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                Scrollbars
+                                            </Typography>
+                                            <Tooltip title="Show scrollbars if the content exceeds the box">
+                                                <Switch
+                                                    checked={this.state.editItemScrollbars}
+                                                    onChange={() => {
+                                                        this.setState({
+                                                            editItemScrollbars: !this.state
+                                                                .editItemScrollbars,
+                                                        });
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
 
-                                </div>
-                                {this.state.editItemTextColorShow && this.createColorPicker(
-                                    "itemTextColorStyles",
-                                    "displayItemTextColorPicker",
-                                    "editItemTextColor"
-                                )}
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Background Color</span>
-
-                                    </Typography>
-                                    <Tooltip title="Enable Custom Text Color">
-                                        <Switch
-                                            checked={this.state.editItemBackgroundColorShow}
-                                            onChange={() => {
-                                                this.setState({
-                                                    editItemBackgroundColorShow: !this.state
-                                                        .editItemBackgroundColorShow,
-                                                });
-                                            }}
-
-                                        />
-                                    </Tooltip>
-
-                                </div>
-                                {this.state.editItemBackgroundColorShow && this.createColorPicker(
-                                    "itemBgColorStyles",
-                                    "displayItemBgColorPicker",
-                                    "editItemBackgroundColor"
-                                )}
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Gradient Color</span>
-
-                                    </Typography>
-                                    <Tooltip title="Prepare Gradient Background">
-                                        <Switch
-                                            checked={this.state.editItemBackgroundGradientColorShow}
-                                            onChange={() => {
-                                                this.setState({
-                                                    editItemBackgroundGradientColorShow: !this.state
-                                                        .editItemBackgroundGradientColorShow,
-                                                });
-                                            }}
-
-                                        />
-                                    </Tooltip>
-
-                                </div>
-                                {this.state.editItemBackgroundGradientColorShow && this.createGradientColorPicker(
-                                    "itemBgColorStyles",
-                                    "showBgGradientColorPickerModal",
-                                    "editItemBackgroundGradientColor"
-                                )}
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Border Color </span>
-                                    </Typography>
-                                    {this.createColorPicker(
-                                        "itemBorderColorStyles",
-                                        "displayItemBorderColorPicker",
-                                        "editItemBorderColor"
-                                    )}
-
-                                </div>
-                                <div>
-                                    <Typography><span>Border Width</span></Typography>
-                                    <Slider
-                                        value={this.state.editItemBorderWidth}
-                                        className={this.props.classes.sideMenuSlider}
-                                        onChange={this.handleBorderWidth.bind(this)}
-                                        aria-labelledby="discrete-slider"
-                                        valueLabelDisplay="auto"
-                                        min={0}
-                                        max={10}
-                                    />
-                                </div>
-                                <div>
-                                    <Typography>Border Radius</Typography>
-                                    <Slider
-                                        value={this.state.editItemBorderRadius}
-                                        className={this.props.classes.sideMenuSlider}
-                                        onChange={this.handleBorderRadius.bind(this)}
-                                        aria-labelledby="discrete-slider"
-                                        valueLabelDisplay="auto"
-                                        min={0}
-                                        max={30}
-                                    />
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        Scrollbars
-                                    </Typography>
-                                    <Tooltip title="Show scrollbars if the content exceeds the box">
-                                        <Switch
-                                            checked={this.state.editItemScrollbars}
-                                            onChange={() => {
-                                                this.setState({
-                                                    editItemScrollbars: !this.state
-                                                        .editItemScrollbars,
-                                                });
-                                            }}
-                                        />
-                                    </Tooltip>
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-
-                                    <Typography>Background Image</Typography>
-                                    {((this.state.editItemBgImage && this.state.editItemBgImage.length && this.state.editItemBgImage.indexOf('__delete__') === -1)
-                                        || (this.state.backgroundImageString && this.state.backgroundImageString.length))
-                                    && <DeleteForever onClick={() => {this.setState({
-                                        editItemBgImage: `__delete__${this.state.editItemBgImage}`,
-                                        editItemBgImageFile: ""
-                                    })}} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                                </div>
-                                <div className={this.props.classes.dropzoneAreaWrapper}>
-                                    <DropzoneArea
-                                        filesLimit={1}
-                                        className={this.props.classes.dropzone}
-                                        onChange={this.handleItemBgImage.bind(this)}
-                                    />
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        <span>Background Repeat</span>
-                                    </Typography>
-                                    <Tooltip title="Background Repeat">
-                                        <Switch
-                                            checked={this.state.editItemBgRepeat}
-                                            onChange={this.handleItemBgRepeat.bind(this)}
-                                        />
-                                    </Tooltip>
-                                </div>
-                                <div className={this.props.classes.sideMenuOption}>
-                                    <Typography>
-                                        Background Stretch
-                                    </Typography>
-                                    <Tooltip title="Background Stretch">
-                                        <Switch
-                                            checked={this.state.editItemBgStretch}
-                                            onChange={this.handleItemBgStretch.bind(this)}
-                                        />
-                                    </Tooltip>
-                                </div>
+                                            <Typography>Background Image</Typography>
+                                            {((this.state.editItemBgImage && this.state.editItemBgImage.length && this.state.editItemBgImage.indexOf('__delete__') === -1)
+                                                || (this.state.backgroundImageString && this.state.backgroundImageString.length))
+                                            && <DeleteForever onClick={() => {this.setState({
+                                                editItemBgImage: `__delete__${this.state.editItemBgImage}`,
+                                                editItemBgImageFile: ""
+                                            })}} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                                        </div>
+                                        <div className={this.props.classes.dropzoneAreaWrapper}>
+                                            <DropzoneArea
+                                                filesLimit={1}
+                                                className={this.props.classes.dropzone}
+                                                onChange={this.handleItemBgImage.bind(this)}
+                                            />
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Background Repeat</span>
+                                            </Typography>
+                                            <Tooltip title="Background Repeat">
+                                                <Switch
+                                                    checked={this.state.editItemBgRepeat}
+                                                    onChange={this.handleItemBgRepeat.bind(this)}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                Background Stretch
+                                            </Typography>
+                                            <Tooltip title="Background Stretch">
+                                                <Switch
+                                                    checked={this.state.editItemBgStretch}
+                                                    onChange={this.handleItemBgStretch.bind(this)}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                    </AccordionDetails>
+                                </Accordion>
+                                <Accordion classes={{ root: this.props.classes.accordion }}>
+                                    <AccordionSummary
+                                        classes={{
+                                            root: this.props.classes.accordionSummaryRoot,
+                                            expanded: this.props.classes.accordionSummaryExpanded,
+                                            content: this.props.classes.accordionSummaryContent,
+                                        }}
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1c-content"
+                                        id="panel1c-header"
+                                    >
+                                        <Typography className={this.props.classes.typography}>
+                                            Display
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails
+                                        className={this.props.classes.accordionDetails}
+                                    >
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Display as Modal</span>
+                                            </Typography>
+                                            <Tooltip title="Display Box as Modal">
+                                                <Switch
+                                                    checked={this.state.editItemDisplayOptions.displayAsModal}
+                                                    onChange={() => {
+                                                        this.setState(prevState =>
+                                                            ({
+                                                                ...prevState,
+                                                                editItemDisplayOptions: {
+                                                                    ...prevState.editItemDisplayOptions,
+                                                                    displayAsModal: !prevState.editItemDisplayOptions.displayAsModal,
+                                                                }
+                                                            }));
+                                                        }
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Show Close Button</span>
+                                            </Typography>
+                                            <Tooltip title="Show Close Button">
+                                                <Switch
+                                                    checked={this.state.editItemDisplayOptions.showCloseButton}
+                                                    onChange={() => {
+                                                        this.setState(prevState => ({
+                                                            ...prevState,
+                                                            editItemDisplayOptions: {
+                                                                ...prevState.editItemDisplayOptions,
+                                                                showCloseButton: !prevState.editItemDisplayOptions
+                                                                    .showCloseButton,
+                                                            }
+                                                        }));
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Show Action Button</span>
+                                            </Typography>
+                                            <Tooltip title="Show Action Button">
+                                                <Switch
+                                                    checked={this.state.editItemDisplayOptions.showActionButton}
+                                                    onChange={() => {
+                                                        this.setState(prevState => ({
+                                                            ...prevState,
+                                                            editItemDisplayOptions: {
+                                                                ...prevState.editItemDisplayOptions,
+                                                                showActionButton: !prevState.editItemDisplayOptions
+                                                                    .showActionButton,
+                                                            }
+                                                        }));
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        {this.state.editItemDisplayOptions.showActionButton &&
+                                            <div>
+                                                <CustomInput
+                                                    labelText="Button Text"
+                                                    id="actionButtonText"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        value: this.state.editItemDisplayOptions.actionButtonText,
+                                                        type: "text",
+                                                    }}
+                                                />
+                                                <CustomInput
+                                                    labelText="Button Link"
+                                                    id="actionButtonLink"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        value: this.state.editItemDisplayOptions.actionButtonLink,
+                                                        type: "text",
+                                                    }}
+                                                />
+                                                <CustomInput
+                                                    labelText="Button Title"
+                                                    id="actionButtonTitle"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        value: this.state.editItemDisplayOptions.actionButtonTitle,
+                                                        type: "text",
+                                                    }}
+                                                />
+                                            </div>
+                                        }
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Show Cancel Button</span>
+                                            </Typography>
+                                            <Tooltip title="Show Cancel Button">
+                                                <Switch
+                                                    checked={this.state.editItemDisplayOptions.showCancelButton}
+                                                    onChange={() => {
+                                                        this.setState(prevState => ({
+                                                            ...prevState,
+                                                            editItemDisplayOptions: {
+                                                                ...prevState.editItemDisplayOptions,
+                                                                showCancelButton: !prevState.editItemDisplayOptions
+                                                                    .showCancelButton,
+                                                            }
+                                                        }));
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        {this.state.editItemDisplayOptions.showCancelButton &&
+                                            <div>
+                                                <CustomInput
+                                                    labelText="Button Text"
+                                                    id="cancelButtonText"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        value: this.state.editItemDisplayOptions.cancelButtonText,
+                                                        type: "text",
+                                                    }}
+                                                />
+                                                <CustomInput
+                                                    labelText="Button Link"
+                                                    id="cancelButtonLink"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        value: this.state.editItemDisplayOptions.cancelButtonLink,
+                                                        type: "text",
+                                                    }}
+                                                />
+                                                <CustomInput
+                                                    labelText="Button Title"
+                                                    id="cancelButtonTitle"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        value: this.state.editItemDisplayOptions.cancelButtonTitle,
+                                                        type: "text",
+                                                    }}
+                                                />
+                                            </div>
+                                        }
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Autocomplete
+                                                onChange={(event, position) =>
+                                                    this.setState(prevState => ({
+                                                        ...prevState,
+                                                        editItemDisplayOptions: {
+                                                            ...prevState.editItemDisplayOptions,
+                                                            modalPosition: position.value,
+                                                        }
+                                                    }))
+                                                }
+                                                className={this.props.classes.option}
+                                                value={
+                                                    this.state.modalPositions.find(position => position.value === this.state.editItemDisplayOptions.modalPosition)
+                                                }
+                                                options={this.state.modalPositions}
+                                                autoHighlight
+                                                getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        className={this.props.classes.textfield}
+                                                        {...params}
+                                                        label="Select a Modal Position"
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Display Backdrop</span>
+                                            </Typography>
+                                            <Tooltip title="Display Backdrop">
+                                                <Switch
+                                                    checked={this.state.editItemDisplayOptions.displayBackdrop}
+                                                    onChange={() => {
+                                                        this.setState(prevState => ({
+                                                            ...prevState,
+                                                            editItemDisplayOptions: {
+                                                                ...prevState.editItemDisplayOptions,
+                                                                displayBackdrop: !prevState.editItemDisplayOptions
+                                                                    .displayBackdrop,
+                                                            }
+                                                        }));
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                        <div className={this.props.classes.sideMenuOption}>
+                                            <Typography>
+                                                <span>Never show after closing</span>
+                                            </Typography>
+                                            <Tooltip title="Never show after closing">
+                                                <Switch
+                                                    checked={this.state.editItemDisplayOptions.neverShowAfterClosing}
+                                                    onChange={() => {
+                                                        this.setState(prevState => ({
+                                                            ...prevState,
+                                                            editItemDisplayOptions: {
+                                                                ...prevState.editItemDisplayOptions,
+                                                                neverShowAfterClosing: !prevState.editItemDisplayOptions
+                                                                    .neverShowAfterClosing,
+                                                            }
+                                                        }));
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div>
+                                    </AccordionDetails>
+                                </Accordion>
                             </div>
                         </div>
                         <Paper className={this.props.classes.sideMenuActionHolder}>
