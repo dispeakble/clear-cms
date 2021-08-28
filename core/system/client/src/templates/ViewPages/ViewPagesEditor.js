@@ -354,6 +354,12 @@ class ViewPagesEditor extends React.PureComponent {
           this.setState({ fontFamily: defaultPublicTheme.fontfamily });
         }
       }
+
+      if(this.props.location.state.templateMode) {
+        this.setState({
+          isTemplate: this.props.location.state.templateMode
+        })
+      }
     }
 
     await this.setAsyncState({
@@ -1283,7 +1289,7 @@ class ViewPagesEditor extends React.PureComponent {
             <div className={this.props.classes.gridLayout}>
               <div className={this.props.classes.pageTitleInputWrapper}>
                 <CustomInput
-                  labelText="Page Title"
+                  labelText={this.state.isTemplate ? "Template Title" : "Page Title"}
                   id="pageTitle"
                   required="required"
                   formControlProps={{
@@ -1299,23 +1305,23 @@ class ViewPagesEditor extends React.PureComponent {
                     type: "text",
                   }}
                 />{" "}
-                <CustomInput
-                  labelText="Page Link"
-                  id="pageLink"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) => this.handleInputChange(event),
-                  }}
-                  inputProps={{
-                    inputProps: {
-                      minLength: "3",
-                      maxLength: "50",
-                    },
-                    value: this.state.pageLink,
-                    type: "text",
-                  }}
-                />
+                {!this.state.isTemplate && <CustomInput
+                    labelText="Page Link"
+                    id="pageLink"
+                    required="required"
+                    formControlProps={{
+                      fullWidth: true,
+                      onChange: (event) => this.handleInputChange(event),
+                    }}
+                    inputProps={{
+                      inputProps: {
+                        minLength: "3",
+                        maxLength: "50",
+                      },
+                      value: this.state.pageLink,
+                      type: "text",
+                    }}
+                />}
               </div>
               <div style={{ display: "flex" }}>
                 <div style={{ flex: 1 }}>
@@ -1364,7 +1370,7 @@ class ViewPagesEditor extends React.PureComponent {
                         )}
                       </div>
                       <Typography className={this.props.classes.typography}>
-                        Page Options
+                        {this.state.isTemplate ? "Template Options" : "Page Options"}
                       </Typography>
                     </AccordionSummary>
                     <Divider />
@@ -1590,6 +1596,7 @@ class ViewPagesEditor extends React.PureComponent {
                       >
                         <h4>Miscellaneous</h4>
                         <div style={{ marginTop: "15px" }}>
+                          {!this.state.isTemplate &&
                           <div>
                             <Autocomplete
                               id="categoryDropdown"
@@ -1708,36 +1715,38 @@ class ViewPagesEditor extends React.PureComponent {
                                 )}
                               </form>
                             </Dialog>
-                          </div>
-                          {!this.state.editing ? (
+                          </div>}
+                          { !this.state.isTemplate &&
+                          (!this.state.editing ? (
                             <div>
-                              <Autocomplete
-                                id="templateDropdown"
-                                onChange={this.handleTemplateChange}
-                                disabled={this.state.editing}
-                                className={this.props.classes.option}
-                                options={this.state.templates}
-                                autoHighlight
-                                getOptionLabel={(option) => option.label}
-                                // value={this.state.template}
-                                renderInput={(params) => (
-                                  <TextField
-                                    className={this.props.classes.textfield}
-                                    {...params}
-                                    label="Select a template"
-                                    variant="outlined"
-                                  />
-                                )}
-                              />
+                            <Autocomplete
+                            id="templateDropdown"
+                            onChange={this.handleTemplateChange}
+                            disabled={this.state.editing}
+                            className={this.props.classes.option}
+                            options={this.state.templates}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            // value={this.state.template}
+                            renderInput={(params) => (
+                            <TextField
+                            className={this.props.classes.textfield}
+                          {...params}
+                            label="Select a template"
+                            variant="outlined"
+                            />
+                            )}
+                            />
                             </div>
-                          ) : (
-                            <div style={{ marginBottom: "15px" }}>
-                              Template used:{" "}
-                              <strong>
-                                {this.state.template?.label || "none"}
-                              </strong>
+                            ) : (
+                            <div style={{marginBottom: "15px"}}>
+                            Template used:{" "}
+                            <strong>
+                          {this.state.template?.label || "none"}
+                            </strong>
                             </div>
-                          )}
+                            ))
+                          }
                           <Typography gutterBottom>Box Spacing</Typography>
                           <Slider
                             className={this.props.classes.pageOptionsSlider}
@@ -1751,52 +1760,56 @@ class ViewPagesEditor extends React.PureComponent {
                             min={0}
                             max={150}
                           />
-                          <div>
-                            <Typography
-                              gutterBottom
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                              }}
-                            >
-                              <span>Publish</span>
-                              <Tooltip title="Enable Publishing">
-                                <Switch
-                                  checked={this.state.publish}
-                                  value={this.state.publish}
-                                  onChange={() => {
-                                    this.setState({
-                                      publish: !this.state.publish,
-                                    });
+                          {!this.state.isTemplate &&
+                          <>
+                            <div>
+                              <Typography
+                                  gutterBottom
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
                                   }}
+                              >
+                                <span>Publish</span>
+                                <Tooltip title="Enable Publishing">
+                                  <Switch
+                                      checked={this.state.publish}
+                                      value={this.state.publish}
+                                      onChange={() => {
+                                        this.setState({
+                                          publish: !this.state.publish,
+                                        });
+                                      }}
+                                  />
+                                </Tooltip>
+                              </Typography>
+                            </div>
+                            <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                }}
+                            >
+                              <Typography gutterBottom>Default Page</Typography>
+                              <Tooltip title="Set as default page">
+                                <Switch
+                                    checked={this.state.defaultPage}
+                                    value={true}
+                                    onChange={() => {
+                                      this.setState({
+                                        defaultPage: !this.state.defaultPage,
+                                      });
+                                    }}
                                 />
                               </Tooltip>
-                            </Typography>
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Typography gutterBottom>Default Page</Typography>
-                            <Tooltip title="Set as default page">
-                              <Switch
-                                checked={this.state.defaultPage}
-                                value={true}
-                                onChange={() => {
-                                  this.setState({
-                                    defaultPage: !this.state.defaultPage,
-                                  });
-                                }}
-                              />
-                            </Tooltip>
-                          </div>
+                            </div>
+                          </>}
                           <div style={{ marginLeft: "-10px" }}>
                             <Checkbox
                               checked={this.state.isTemplate}
+                              disabled={this.props.location.state && this.props.location.state.templateMode}
                               onChange={(event, checked) => {
                                 this.setState({
                                   isTemplate: checked,
