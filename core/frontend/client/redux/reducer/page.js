@@ -2,11 +2,7 @@ import updateObject from "../../utils/utils";
 import * as actionTypes from "../actionType/page";
 
 const initialState = {
-    pageDataLoaded: false,
-    pageLink: '',
-    items: [],
-    pageConfig: {},
-    pageId: null
+    pageDataLoaded: false
 };
 
 

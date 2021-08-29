@@ -1,11 +1,9 @@
 const javascriptStyles = {
   previewBodyWrapper: {
-    minHeight: "100%",
-    height: "100%",
+
   },
   gridHolder: {
-    width: "100%",
-    height: "100%",
+
   },
   gridLayout: {
     position: "relative",
