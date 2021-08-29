@@ -51,7 +51,7 @@ export class ProtocolController {
 
         const payload: ModuleInterface = {
             name: 'frontend',
-            version: '21.01.12',
+            version: '21.08.28',
             description: 'the frontend api and client',
             started: new Date(),
             config: {
@@ -66,26 +66,26 @@ export class ProtocolController {
                 version: 'latest'
             }]
         };
-        const startupChores = Promise.all([this.frontendService.registerModule(payload).toPromise(),
-            this.protocolService.sendMessage({
-                channel: 'hub',
-                api: 'module',
-                act: 'mapPort',
-                payload: {
-                    channel: 'frontend',
-                    target: 'frontendproxy',
-                    port: process.env.backend_port,
-                    defaults: {
-                        url: '/',
-                        login: '/view-auth'
-                    }
-                }
-            }).toPromise()
-        ]);
 
-        startupChores.then(() => {
-            this.logger.log('Frontend application started');
-        });
+        const reg_msg = await this.frontendService.registerModule(payload).toPromise();
+        this.logger.log(reg_msg);
+        const port_map_msg = await this.protocolService.sendMessage({
+            channel: 'hub',
+            api: 'module',
+            act: 'mapPort',
+            payload: {
+                channel: 'frontend',
+                target: 'frontendproxy',
+                port: process.env.backend_port,
+                defaults: {
+                    url: '/'
+                }
+            }
+        }).toPromise();
+
+        this.logger.log(port_map_msg);
+
+        this.logger.log('Frontend application started');
     }
 
     private perform(params: payloadInterface) {

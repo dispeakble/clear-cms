@@ -11,12 +11,12 @@ import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: 'frontend',
+        name: 'frontendproxy',
         version: '21.08.26',
-        description: 'the main http frontend (gateway)',
+        description: 'the main http frontend proxy (gateway)',
         started: new Date(),
         config: {
-            channel: 'frontend',
+            channel: 'frontendproxy',
             restart: true,
             stop: false
         },
@@ -26,7 +26,7 @@ export class AppController {
         }]
     };
 
-    private portMap = {};
+    private publicPortMap = {};
 
     private help = {
         timer: {
@@ -63,7 +63,7 @@ export class AppController {
         private logger: Logger
     ) {
         this.protocolService.start().then(async () => {
-            this.portMap = await this.protocolService.getValue('portMap') || [];
+            this.publicPortMap = await this.protocolService.getValue('publicPortMap') || [];
             const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
             this.logger.log(response);
             this.wsGateway.registerCallbacks({
@@ -209,7 +209,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: 'frontend',
+                                channel: 'frontendproxy',
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {
@@ -369,36 +369,41 @@ export class AppController {
     async onApplicationBootstrap() {
         this.appService.perform({
             api: 'app',
-            act: 'portMappingListen',
+            act: 'publicPortMappingListen',
             payload: {
                 callback: async (data) => {
-                    let portMap = await this.protocolService.getValue('portMap');
-                    if (!portMap) {
-                        portMap = {};
+                    let publicPortMap = await this.protocolService.getValue('publicPortMap');
+                    if (!publicPortMap) {
+                        publicPortMap = {};
                     }
-                    portMap = Object.assign({}, portMap || {}, data);
-                    await this.protocolService.setValue('portMap', portMap);
 
-                    this.portMap = data;
+                    if(data['perform']) {
+                        delete data['perform'];
+                    }
+
+                    publicPortMap = Object.assign({}, publicPortMap || {}, data);
+                    await this.protocolService.setValue('publicPortMap', publicPortMap);
+
+                    this.publicPortMap = data;
                 }
             }
         });
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'frontend'})
+    @MessagePattern({message: 'frontendproxy'})
     public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontend'})
+    @EventPattern({event: 'frontendproxy'})
     public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
     private portChannel() {
 
-        return this.portMap[process.env.backend_port];
+        return this.publicPortMap[process.env.backend_port];
 
         /*const headers = params.headers;
         let port = headers.host.split(':')[1];
@@ -411,17 +416,17 @@ export class AppController {
             }
         }
 
-        if (!this.portMap.hasOwnProperty(port) || !this.portMap[port]) {
+        if (!this.publicPortMap.hasOwnProperty(port) || !this.publicPortMap[port]) {
             this.logger.log(headers)
             this.logger.log(JSON.stringify(headers));
             return null;
         }
         if(params.returnPort) {
-            if(this.portMap.hasOwnProperty(port)){
+            if(this.publicPortMap.hasOwnProperty(port)){
                 return +port;
             }
         } else {
-            return this.portMap[port];
+            return this.publicPortMap[port];
         }*/
 
     }

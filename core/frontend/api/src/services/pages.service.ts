@@ -33,7 +33,7 @@ export class PagesService {
                 let response = null;
 
                 if (data && data.hasOwnProperty('data')) {
-                    let pages = data.data.map((page) => {
+                    const pages = data.data.map((page) => {
                         return {
                             id: page.id,
                             pageConfig: {
@@ -79,7 +79,15 @@ export class PagesService {
                     };
 
                     let page = await this.protocolService.sendMessage(pageReq).toPromise()
-                    page = page.data[0]
+                    page = page.data[0];
+                    if(!page) {
+                        subscriber.error({
+                            message: "404 not found",
+                            statusCode: 404
+                        });
+                        subscriber.complete();
+                        return;
+                    }
                     const pagesToConfigReq: payloadInterface = {
                         channel: 'db',
                         api: 'db',
@@ -154,6 +162,15 @@ export class PagesService {
                             }
                         };
                         boxes = await this.protocolService.sendMessage(boxReq).toPromise()
+                        boxes.data = boxes.data.map((box) => {
+                            const location = pageToBoxes.data.find((boxConfig) => boxConfig.box_id === box.id);
+                            return {
+                                ...box,
+                                x: location.x,
+                                y: location.y,
+                                template_used: location.template_used
+                            }
+                        })
                     }
 
                     const pagesToCategoriesReq: payloadInterface = {
@@ -201,6 +218,7 @@ export class PagesService {
                         items: boxes.data.map((box) => {
                             return {
                                 ...(box.bgcolor !== null && {backgroundColor: box.bgcolor}),
+                                ...(box.bggradientcolor !== null && {backgroundGradientColor: box.bggradientcolor}),
                                 backgroundImage: box.bgimage,
                                 backgroundRepeat: !!box.bgrepeat,
                                 backgroundStretch: !!box.bgstretch,
@@ -222,12 +240,16 @@ export class PagesService {
                                 ...(box.fontsize !== null && {fontSize: box.fontsize}),
                                 ...(box.fontfamily !== null && {fontFamily: box.fontfamily}),
                                 ...(box.textcolor !== null && {textColor: box.textcolor}),
+                                templateUsed: box.template_used,
+                                ...(box.template_used !== 0 && {
+                                    resizeHandles: []
+                                })
                             }
                         })
                     }
 
 
-                    subscriber.next({type: 'page', data: formattedPage});
+                    subscriber.next({type: 'String', data: formattedPage});
                     subscriber.complete();
                 } catch (err) {
                     console.log('err', err)
