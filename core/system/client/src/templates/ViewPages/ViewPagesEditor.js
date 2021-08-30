@@ -1894,7 +1894,7 @@ class ViewPagesEditor extends React.PureComponent {
                   {_.map(this.state.items, (el) => this.createElement(el))}
                 </ResponsiveReactGridLayout>
                 <div className={this.props.classes.bottomPane} style={{
-                  backgroundColor: this.props.defaultTheme.secondary.main
+                  backgroundColor: this.props.defaultTheme.background.paper
                 }}>
                     <div>
                         <MoreMenu icon="arrowHorizontal" direction="right" itemActions={this.pageActions}/>

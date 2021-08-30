@@ -38,6 +38,7 @@ export class PagesService {
                 moduleoptions: values.moduleOptions,
                 borderstyle: values.borderStyle || "solid",
                 showscrollbars: values.showScrollbars? 1 : 0,
+                displayoptions: values.displayOptions
             }
         }
     }
@@ -267,7 +268,8 @@ export class PagesService {
                               templateUsed: box.template_used,
                               ...(box.template_used !== 0 && {
                                  resizeHandles: []
-                              })
+                              }),
+                              displayOptions: JSON.parse(box.displayoptions),
                           }
                       })
                   }
@@ -407,6 +409,7 @@ export class PagesService {
                                                 moduleoptions: item.moduleOptions,
                                                 borderstyle: item.borderStyle || "solid",
                                                 showscrollbars: item.showScrollbars? 1 : 0,
+                                                displayoptions: item.displayOptions
                                             }
                                         })
                                     }

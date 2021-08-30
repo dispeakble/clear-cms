@@ -223,6 +223,7 @@ CREATE TABLE public.page_box (
     height smallint,
     width smallint,
     moduleoptions character varying,
+    displayoptions character varying,
     borderstyle character varying,
     showscrollbars smallint
 );

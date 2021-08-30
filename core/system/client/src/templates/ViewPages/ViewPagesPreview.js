@@ -7,6 +7,7 @@ import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
+import BoxModal from "../../components/BoxModal/BoxModal";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -30,6 +31,7 @@ class ViewPagesPreview extends React.Component {
       pageTitleFontSize: "",
       pageTitleTextColor: "",
     },
+    modals: [],
     layouts: {},
     fontUnit: "px",
     openedAccordionLink: {},
@@ -74,6 +76,69 @@ class ViewPagesPreview extends React.Component {
       items: page.items,
       pageConfig: page.pageConfig
     });
+    let modalItems = {}
+    page.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el =>
+        modalItems[el.title + el.i] = {
+            name: el.title,
+            title: el.title,
+            show: this.fetchPopupState(el.title + el.i, el.displayOptions.neverShowAfterClosing),
+            content: this.createElement(el),
+            showCloseButton: el.displayOptions.showCloseButton,
+            position: el.displayOptions.modalPosition,
+            displayBackdrop: el.displayOptions.displayBackdrop,
+            neverShowAfterClosing: el.displayOptions.neverShowAfterClosing,
+            closeButton: {
+              show: el.displayOptions.showCancelButton,
+              callback: () => {
+                this.switchBoxModalState(el)
+                if(el.displayOptions.cancelButtonLink) {
+                  this.props.history.push(el.displayOptions.cancelButtonLink);
+                }
+              },
+              label: el.displayOptions.cancelButtonTitle,
+            },
+            confirmButton: {
+              show: el.displayOptions.showActionButton,
+              callback: () => {
+                this.switchBoxModalState(el)
+                if(el.displayOptions.actionButtonLink) {
+                  this.props.history.push(el.displayOptions.actionButtonLink);
+                }
+              },
+              label: el.displayOptions.actionButtonTitle,
+            },
+          })
+    this.setState({
+      modalItems: modalItems
+    })
+  }
+
+  switchBoxModalState = (el) => {
+    this.setState(prevState => ({
+      ...prevState,
+      modalItems: {
+        ...prevState.modalItems,
+        [el.title + el.i]: {
+          ...prevState.modalItems[el.title + el.i],
+          show: false
+        }
+      }
+    }));
+    if(el.displayOptions.neverShowAfterClosing) {
+      localStorage.setItem(el.title + el.i, el.title);
+    }
+  }
+
+  fetchPopupState = (key, neverShowAfterClosing) => {
+    if(neverShowAfterClosing) {
+      const isConfirm = localStorage.getItem(key);
+      if (isConfirm) {
+        return false
+      }
+    } else {
+      localStorage.removeItem(key);
+    }
+    return true;
   }
 
   createElement(el) {
@@ -269,12 +334,16 @@ class ViewPagesPreview extends React.Component {
                   useCSSTransforms={false}
                 >
                   {this.state.items
-                    ? _.map(this.state.items, (el) => this.createElement(el))
+                    ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
                     : ""}
                 </ResponsiveReactGridLayout>
               </div>
             </div>
           </MuiThemeProvider>
+          {this.state.modalItems && Object.keys(this.state.modalItems).map(itemKey => <BoxModal
+              showModal={this.state.modalItems[itemKey].show}
+              {...this.state.modalItems[itemKey]}
+          />)}
         </div>
       </React.Fragment>
     );
