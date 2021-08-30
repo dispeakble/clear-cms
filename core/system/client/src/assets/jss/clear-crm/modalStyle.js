@@ -44,6 +44,14 @@ const modalStyle = {
   modalFooterCenter: {
     marginLeft: "auto",
     marginRight: "auto"
+  },
+  modalPageOptions: {
+    borderRadius: "6px",
+    maxWidth: "100vw",
+    margin: "5px"
+  },
+  modalBodyPageOptions:{
+
   }
 };
 

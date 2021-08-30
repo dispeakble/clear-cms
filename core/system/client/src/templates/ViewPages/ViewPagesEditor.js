@@ -8,6 +8,7 @@ import {
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {
   AddCircle,
+  Settings,
   DeleteForever,
   Edit,
   OpenWith,
@@ -76,6 +77,7 @@ class ViewPagesEditor extends React.PureComponent {
       showBackgroundColor: false,
     },
     showDiscardModal: false,
+    showPageOptionsModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
     items: [],
@@ -220,7 +222,7 @@ class ViewPagesEditor extends React.PureComponent {
     let currentPage = await this.props.control.get({ id: parseInt(page_id) });
     const { pageConfig, items } = currentPage;
     if (items !== null) {
-      
+
       this.setState({
         categoryId: pageConfig.categoryId,
         currentCategory: this.getCategoryItem(pageConfig.categoryId)
@@ -239,7 +241,7 @@ class ViewPagesEditor extends React.PureComponent {
         },
       };
 
-      
+
       await this.setAsyncState({
         bgColor: pageConfig.backgroundColor,
         bgGradientColor: pageConfig.backgroundGradientColor,
@@ -502,14 +504,14 @@ class ViewPagesEditor extends React.PureComponent {
             style={{ color: this.props.defaultTheme.secondary.main }}
           />
         ),
-        name: "Delete Item",
+        name: "Delete box",
       },
       {
         callback: () => {
           this.handleEditItem(el.i);
         },
         icon: <Edit style={{ color: this.props.defaultTheme.primary.main }} />,
-        name: "Edit Item",
+        name: "Edit box",
       },
     ];
 
@@ -569,9 +571,7 @@ class ViewPagesEditor extends React.PureComponent {
     await this.setAsyncState({ items });
   };
 
-  onAddItem(evt) {
-    evt.preventDefault();
-    evt.stopPropagation();
+  async onAddItem(evt) {
     let newId = 0;
     this.setState({
       // Add a new item. It must have a unique key!
@@ -607,10 +607,14 @@ class ViewPagesEditor extends React.PureComponent {
         h: 20,
       });
 
-      this.setState({
+      await this.setAsyncState({
         // Add a new item. It must have a unique key!
         items: items,
       });
+      setTimeout(() => {
+        window.scrollTo(0,document.body.scrollHeight);
+
+      }, 500)
     } catch (err) {
       console.log(err);
     }
@@ -669,6 +673,14 @@ class ViewPagesEditor extends React.PureComponent {
 
   closeDiscardModal() {
     this.setState({ showDiscardModal: false });
+  }
+
+  closePageOptionsModal() {
+    this.setState({ showPageOptionsModal: false });
+  }
+
+  openPageOptionsModal() {
+    this.setState({ showPageOptionsModal: true });
   }
 
   closeModuleOptionsModal() {
@@ -948,7 +960,7 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   handleCategory = async (event, category) => {
-    
+
     await this.setAsyncState({
       categoryId: category.id
     });
@@ -1139,8 +1151,6 @@ class ViewPagesEditor extends React.PureComponent {
       };
       await this.props.control.add(newPage);
     }
-
-    this.props.history.push("/pages");
   };
 
   handleCategoryUniqueness = async (event) => {
@@ -1204,6 +1214,42 @@ class ViewPagesEditor extends React.PureComponent {
     })
   };
 
+  pageActions = [
+    {
+      callback: () => {
+        this.openPageOptionsModal()
+      },
+      icon: <Settings
+          className={this.props.classes.rightSideIcon}
+          color="primary"
+      />,
+      name: "Page options",
+    },
+    {
+      callback: () => {
+        window.open(
+            `/pages/preview/${this.state.page_id}`
+        );
+      },
+      icon: <Visibility
+          className={this.props.classes.rightSideIcon}
+          color="primary"
+      />,
+      name: "Preview page"
+    },
+    {
+      callback: (evt) => {
+        this.onAddItem(evt)
+      },
+      icon: <AddCircle
+          className={this.props.classes.rightSideIcon}
+          color="primary"
+      />,
+      name: "Add box",
+    }
+  ];
+
+
   render() {
     return (
       <React.Fragment>
@@ -1214,7 +1260,7 @@ class ViewPagesEditor extends React.PureComponent {
           className={this.props.classes.bodyWrapper}
           style={{
             marginTop: "60px",
-            paddingBottom: "60px",
+            paddingBottom: "130px",
             paddingLeft: this.state.pageTransitionPadding,
           }}
         >
@@ -1238,6 +1284,526 @@ class ViewPagesEditor extends React.PureComponent {
                 data={this.state.boxEditorProps}
               />
             )}
+            <Dialog
+                open={this.state.showPageOptionsModal}
+                TransitionComponent={this.transition}
+                keepMounted
+                aria-labelledby="page-options-modal-slide-title"
+                aria-describedby="page-options-modal-slide-description"
+                classes={{
+                  root: this.props.classes.center,
+                  paper: this.props.classes.modalPageOptions
+                }}
+            >
+              <DialogTitle
+                  id="page-options-modal-slide-title"
+                  disableTypography
+                  className={this.props.classes.modalHeader}
+              >
+                <h4 className={this.props.classes.modalTitle}>
+                  Page options
+                </h4>
+              </DialogTitle>
+              <DialogContent
+                  id="page-options-modal-slide-description"
+                  className={this.props.classes.modalBodyPageOptions}
+              >
+                <div className={this.props.classes.pageTitleInputWrapper}>
+                  <CustomInput
+                      labelText={this.state.isTemplate ? "Template Title" : "Page Title"}
+                      id="pageTitle"
+                      required="required"
+                      formControlProps={{
+                        fullWidth: true,
+                        onChange: (event) => this.handleInputChange(event),
+                      }}
+                      inputProps={{
+                        inputProps: {
+                          minLength: "3",
+                          maxLength: "50",
+                        },
+                        value: this.state.pageTitle,
+                        type: "text",
+                      }}
+                  />{" "}
+                  {!this.state.isTemplate && <CustomInput
+                      labelText="Page Link"
+                      id="pageLink"
+                      required="required"
+                      formControlProps={{
+                        fullWidth: true,
+                        onChange: (event) => this.handleInputChange(event),
+                      }}
+                      inputProps={{
+                        inputProps: {
+                          minLength: "3",
+                          maxLength: "50",
+                        },
+                        value: this.state.pageLink,
+                        type: "text",
+                      }}
+                  />}
+                </div>
+                <div className={this.props.classes.pageOptionsDetails}>
+                  <div
+                      className={
+                        this.props.classes.column +
+                        " " +
+                        this.props.classes.columnSeparator
+                      }
+                  >
+                    <h4>Background</h4>
+                    <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                    >
+                      <div style={{ display: "block" }}>
+                        <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                        >
+                          <h5 style={{ marginRight: "15px" }}>Color</h5>
+
+                          <Tooltip title="Compose a background gradient instead of a solid color">
+                            {this.createColorPicker(
+                                "bgColorStyles",
+                                "showBgColorPicker",
+                                "bgColor"
+                            )}
+                          </Tooltip>
+                        </div>
+                        <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                        >
+                          <h5 style={{ marginRight: "15px" }}>Gradient</h5>
+
+                          <Tooltip title="Compose a background gradient instead of a solid color">
+                            {this.createGradientColorPicker(
+                                "bgColorStyles",
+                                "showBgGradientColorPickerModal",
+                                "bgGradientColor"
+                            )}
+                          </Tooltip>
+                        </div>
+                        <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                        >
+                          <Typography gutterBottom>
+                            Gradient
+                            <Tooltip title="Compose a background gradient instead of a solid color">
+                              <Switch
+                                  value={this.state.pageBackgroundGradient}
+                                  checked={this.state.pageBackgroundGradient}
+                                  onChange={() => {
+                                    this.setState({
+                                      pageBackgroundGradient: !this.state
+                                          .pageBackgroundGradient,
+                                    });
+                                  }}
+                              />
+                            </Tooltip>
+                          </Typography>
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                        >
+                          <Typography gutterBottom>
+                            Repeat
+                            <Tooltip title="Repeat the background to fit the page">
+                              <Switch
+                                  value={this.state.pageBackgroundRepeat}
+                                  checked={this.state.pageBackgroundRepeat}
+                                  onChange={() => {
+                                    this.setState({
+                                      pageBackgroundRepeat: !this.state
+                                          .pageBackgroundRepeat,
+                                    });
+                                  }}
+                              />
+                            </Tooltip>
+                          </Typography>
+                        </div>
+                        <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                        >
+                          <Typography gutterBottom>
+                            Stretch
+                            <Tooltip title="Stretch the background to fit the page">
+                              <Switch
+                                  checked={this.state.pageBackgroundStretch}
+                                  value={this.state.pageBackgroundStretch}
+                                  onChange={() => {
+                                    this.setState({
+                                      pageBackgroundStretch: !this.state
+                                          .pageBackgroundStretch,
+                                    });
+                                  }}
+                              />
+                            </Tooltip>
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                    >
+                      <h5>Background Image</h5>
+                      {(this.state.backgroundImage ||
+                          this.state.pageBase64Image) && (
+                          <Tooltip title="Delete background image">
+                            <DeleteForever
+                                onClick={() =>
+                                    this.setState({
+                                      backgroundImage: "",
+                                      backgroundImageFile: "",
+                                    })
+                                }
+                                style={{
+                                  color: this.props.defaultTheme.secondary.main,
+                                }}
+                            />
+                          </Tooltip>
+                      )}
+                    </div>
+                    <div className={this.props.classes.dropzoneAreaWrapper}>
+                      <DropzoneArea
+                          filesLimit={1}
+                          className={this.props.classes.dropzone}
+                          onChange={this.handleBgImage.bind(this)}
+                          onDelete={this.handleBackgroundDelete.bind(this)}
+                      />
+                    </div>
+                  </div>
+                  <p />
+                  <div
+                      className={
+                        this.props.classes.column +
+                        " " +
+                        this.props.classes.columnSeparator
+                      }
+                  >
+                    <h4>Font </h4>
+                    <div style={{ marginTop: "15px" }}>
+                      <Autocomplete
+                          id="fontFamilyDropdown"
+                          onChange={this.handleFontFamily}
+                          className={this.props.classes.option}
+                          options={this.state.fontFamilies}
+                          autoHighlight
+                          getOptionLabel={(option) => option.label}
+                          value={this.getFontFamilyItem(
+                              this.state.fontFamily
+                          )}
+                          renderInput={(params) => (
+                              <TextField
+                                  className={this.props.classes.textfield}
+                                  {...params}
+                                  label="Select a Font Family"
+                                  variant="outlined"
+                              />
+                          )}
+                      />
+                      <Typography gutterBottom>Font Size</Typography>
+                      <Slider
+                          className={this.props.classes.pageOptionsSlider}
+                          onChange={(event, newValue) => {
+                            this.handleFontSize(event, newValue);
+                          }}
+                          value={this.state.fontSize}
+                          aria-labelledby="discrete-slider"
+                          valueLabelDisplay="auto"
+                          min={5}
+                          max={50}
+                      />
+                    </div>
+                    <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                    >
+                      <h5>Text Color</h5>
+                      {this.createColorPicker(
+                          "textColorStyles",
+                          "showTextColorPicker",
+                          "textColor"
+                      )}
+                    </div>
+                  </div>
+                  <p />
+                  <div
+                      className={clsx(
+                          this.props.classes.column,
+                          this.props.classes.helper
+                      )}
+                  >
+                    <h4>Miscellaneous</h4>
+                    <div style={{ marginTop: "15px" }}>
+                      {!this.state.isTemplate &&
+                      <div>
+                        <Autocomplete
+                            id="categoryDropdown"
+                            onChange={this.handleCategory}
+                            onInputChange={this.handleCategoryUniqueness}
+                            className={this.props.classes.option}
+                            value={this.state.currentCategory}
+                            filterOptions={(options, params) => {
+                              const filtered = filter(options, params);
+                              if (
+                                  params.inputValue !== "" &&
+                                  this.state.isUniqueTitle
+                              ) {
+                                filtered.push({
+                                  value: params.inputValue,
+                                  label: `Add "${params.inputValue}"`,
+                                });
+                              }
+                              return filtered;
+                            }}
+                            options={this.state.flatCategories}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            renderInput={(params) => (
+                                <TextField
+                                    className={this.props.classes.textfield}
+                                    label="Select a category"
+                                    {...params}
+                                    variant="outlined"
+                                />
+                            )}
+                        />
+
+                        <Dialog
+                            open={this.state.openNewCategory}
+                            onClose={() =>
+                                this.setState({
+                                  dialogValue: {
+                                    title: "",
+                                    description: "",
+                                  },
+                                  openNewCategory: false,
+                                })
+                            }
+                            aria-labelledby="form-dialog-title"
+                        >
+                          <form onSubmit={this.handleNewCategory}>
+                            <DialogTitle
+                                style={{ textAlign: "center" }}
+                                id="form-dialog-title"
+                            >
+                              Add a new category
+                            </DialogTitle>
+                            <DialogContent
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-evenly",
+                                }}
+                            >
+                              <TextField
+                                  autoFocus
+                                  disabled
+                                  margin="dense"
+                                  id="title"
+                                  value={this.state.dialogValue.title}
+                                  label="title"
+                                  type="text"
+                              />
+
+                              <TextField
+                                  autoFocus
+                                  margin="dense"
+                                  id="description"
+                                  value={this.state.dialogValue.description}
+                                  onChange={(event) =>
+                                      this.setState({
+                                        dialogValue: {
+                                          ...this.state.dialogValue,
+                                          description: event.target.value,
+                                        },
+                                      })
+                                  }
+                                  label="description"
+                                  type="text"
+                              />
+                            </DialogContent>
+                            <DialogActions>
+                              <Button type="submit" color="primary">
+                                Add
+                              </Button>
+                              <Button
+                                  onClick={() =>
+                                      this.setState({
+                                        dialogValue: {
+                                          title: "",
+                                          description: "",
+                                        },
+                                        openNewCategory: false,
+                                      })
+                                  }
+                                  style={{color: this.props.defaultTheme.secondary.main}}
+                              >
+                                Cancel
+                              </Button>
+
+                            </DialogActions>
+                            {this.state.dialogErr && (
+                                <p
+                                    style={{
+                                      textAlign: "center",
+                                      color: "red",
+                                    }}
+                                >
+                                  Category Already Exist Please Check again
+                                </p>
+                            )}
+                          </form>
+                        </Dialog>
+                      </div>}
+                      { !this.state.isTemplate &&
+                      (!this.state.editing ? (
+                          <div>
+                            <Autocomplete
+                                id="templateDropdown"
+                                onChange={this.handleTemplateChange}
+                                disabled={this.state.editing}
+                                className={this.props.classes.option}
+                                options={this.state.templates}
+                                autoHighlight
+                                getOptionLabel={(option) => option.label}
+                                // value={this.state.template}
+                                renderInput={(params) => (
+                                    <TextField
+                                        className={this.props.classes.textfield}
+                                        {...params}
+                                        label="Select a template"
+                                        variant="outlined"
+                                    />
+                                )}
+                            />
+                          </div>
+                      ) : (
+                          <div style={{marginBottom: "15px"}}>
+                            Template used:{" "}
+                            <strong>
+                              {this.state.template?.label || "none"}
+                            </strong>
+                          </div>
+                      ))
+                      }
+                      <Typography gutterBottom>Box Spacing</Typography>
+                      <Slider
+                          className={this.props.classes.pageOptionsSlider}
+                          onChange={this.handleBoxSpacing}
+                          value={this.state.config.layoutBoxSpacing[0]}
+                          getAriaValueText={() =>
+                              this.state.config.layoutBoxSpacing[0] + " pixels"
+                          }
+                          aria-labelledby="discrete-slider"
+                          valueLabelDisplay="auto"
+                          min={0}
+                          max={150}
+                      />
+                      {!this.state.isTemplate &&
+                      <>
+                        <div>
+                          <Typography
+                              gutterBottom
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                              }}
+                          >
+                            <span>Publish</span>
+                            <Tooltip title="Enable Publishing">
+                              <Switch
+                                  checked={this.state.publish}
+                                  value={this.state.publish}
+                                  onChange={() => {
+                                    this.setState({
+                                      publish: !this.state.publish,
+                                    });
+                                  }}
+                              />
+                            </Tooltip>
+                          </Typography>
+                        </div>
+                        <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                            }}
+                        >
+                          <Typography gutterBottom>Default Page</Typography>
+                          <Tooltip title="Set as default page">
+                            <Switch
+                                checked={this.state.defaultPage}
+                                value={true}
+                                onChange={() => {
+                                  this.setState({
+                                    defaultPage: !this.state.defaultPage,
+                                  });
+                                }}
+                            />
+                          </Tooltip>
+                        </div>
+                      </>}
+                      <div style={{ marginLeft: "-10px" }}>
+                        <Checkbox
+                            checked={this.state.isTemplate}
+                            disabled={this.props.location.state && this.props.location.state.templateMode}
+                            onChange={(event, checked) => {
+                              this.setState({
+                                isTemplate: checked,
+                              });
+                            }}
+                        />
+                        <span>Save as template</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </DialogContent>
+
+              <DialogActions className={this.props.classes.modalFooter}>
+                <Button
+                    color="primary"
+                    simple
+                    onClick={() => {
+                      this.closePageOptionsModal();
+                    }}
+                >
+                  Close
+                </Button>
+              </DialogActions>
+            </Dialog>
             <Dialog
               open={this.state.showDiscardModal}
               TransitionComponent={this.transition}
@@ -1287,543 +1853,6 @@ class ViewPagesEditor extends React.PureComponent {
               </DialogActions>
             </Dialog>
             <div className={this.props.classes.gridLayout}>
-              <div className={this.props.classes.pageTitleInputWrapper}>
-                <CustomInput
-                  labelText={this.state.isTemplate ? "Template Title" : "Page Title"}
-                  id="pageTitle"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) => this.handleInputChange(event),
-                  }}
-                  inputProps={{
-                    inputProps: {
-                      minLength: "3",
-                      maxLength: "50",
-                    },
-                    value: this.state.pageTitle,
-                    type: "text",
-                  }}
-                />{" "}
-                {!this.state.isTemplate && <CustomInput
-                    labelText="Page Link"
-                    id="pageLink"
-                    required="required"
-                    formControlProps={{
-                      fullWidth: true,
-                      onChange: (event) => this.handleInputChange(event),
-                    }}
-                    inputProps={{
-                      inputProps: {
-                        minLength: "3",
-                        maxLength: "50",
-                      },
-                      value: this.state.pageLink,
-                      type: "text",
-                    }}
-                />}
-              </div>
-              <div style={{ display: "flex" }}>
-                <div style={{ flex: 1 }}>
-                  <Accordion classes={{ root: this.props.classes.accordion }}>
-                    <AccordionSummary
-                      classes={{
-                        root: this.props.classes.accordionSummaryRoot,
-                        expanded: this.props.classes.accordionSummaryExpanded,
-                        content: this.props.classes.accordionSummaryContent,
-                      }}
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1c-content"
-                      id="panel1c-header"
-                    >
-                      <div className={this.props.classes.iconsWrapper}>
-                        <div>
-                          <Tooltip title="Add a new box">
-                            <IconButton onClick={(evt) => this.onAddItem(evt)}>
-                              <AddCircle
-                                className={this.props.classes.rightSideIcon}
-                                color="primary"
-                              />{" "}
-                            </IconButton>
-                          </Tooltip>
-                        </div>
-                        {this.props.history.location.pathname.includes(
-                          "pageEdit"
-                        ) ? (
-                          <Tooltip title="Go to preview page">
-                            <IconButton
-                              color="primary"
-                              onClick={() => {
-                                window.open(
-                                  `/pagePreview/${this.props.match.params.id}`
-                                );
-                              }}
-                            >
-                              <Visibility
-                                className={this.props.classes.rightSideIcon}
-                                color="primary"
-                              />{" "}
-                            </IconButton>
-                          </Tooltip>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <Typography className={this.props.classes.typography}>
-                        {this.state.isTemplate ? "Template Options" : "Page Options"}
-                      </Typography>
-                    </AccordionSummary>
-                    <Divider />
-                    <AccordionDetails
-                      className={this.props.classes.accordionDetails}
-                    >
-                      <div
-                        className={
-                          this.props.classes.column +
-                          " " +
-                          this.props.classes.columnSeparator
-                        }
-                      >
-                        <h4>Background</h4>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <div style={{ display: "block" }}>
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                              }}
-                            >
-                              <h5 style={{ marginRight: "15px" }}>Color</h5>
-
-                              <Tooltip title="Compose a background gradient instead of a solid color">
-                                {this.createColorPicker(
-                                  "bgColorStyles",
-                                  "showBgColorPicker",
-                                  "bgColor"
-                                )}
-                              </Tooltip>
-                            </div>
-                            <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                }}
-                            >
-                              <h5 style={{ marginRight: "15px" }}>Gradient</h5>
-
-                              <Tooltip title="Compose a background gradient instead of a solid color">
-                                {this.createGradientColorPicker(
-                                    "bgColorStyles",
-                                    "showBgGradientColorPickerModal",
-                                    "bgGradientColor"
-                                )}
-                              </Tooltip>
-                            </div>
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Typography gutterBottom>
-                                Gradient
-                                <Tooltip title="Compose a background gradient instead of a solid color">
-                                  <Switch
-                                    value={this.state.pageBackgroundGradient}
-                                    checked={this.state.pageBackgroundGradient}
-                                    onChange={() => {
-                                      this.setState({
-                                        pageBackgroundGradient: !this.state
-                                          .pageBackgroundGradient,
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                              </Typography>
-                            </div>
-                          </div>
-                          <div>
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Typography gutterBottom>
-                                Repeat
-                                <Tooltip title="Repeat the background to fit the page">
-                                  <Switch
-                                    value={this.state.pageBackgroundRepeat}
-                                    checked={this.state.pageBackgroundRepeat}
-                                    onChange={() => {
-                                      this.setState({
-                                        pageBackgroundRepeat: !this.state
-                                          .pageBackgroundRepeat,
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                              </Typography>
-                            </div>
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <Typography gutterBottom>
-                                Stretch
-                                <Tooltip title="Stretch the background to fit the page">
-                                  <Switch
-                                    checked={this.state.pageBackgroundStretch}
-                                    value={this.state.pageBackgroundStretch}
-                                    onChange={() => {
-                                      this.setState({
-                                        pageBackgroundStretch: !this.state
-                                          .pageBackgroundStretch,
-                                      });
-                                    }}
-                                  />
-                                </Tooltip>
-                              </Typography>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <h5>Background Image</h5>
-                          {(this.state.backgroundImage ||
-                            this.state.pageBase64Image) && (
-                            <Tooltip title="Delete background image">
-                              <DeleteForever
-                                onClick={() =>
-                                  this.setState({
-                                    backgroundImage: "",
-                                    backgroundImageFile: "",
-                                  })
-                                }
-                                style={{
-                                  color: this.props.defaultTheme.secondary.main,
-                                }}
-                              />
-                            </Tooltip>
-                          )}
-                        </div>
-                        <div className={this.props.classes.dropzoneAreaWrapper}>
-                          <DropzoneArea
-                            filesLimit={1}
-                            className={this.props.classes.dropzone}
-                            onChange={this.handleBgImage.bind(this)}
-                            onDelete={this.handleBackgroundDelete.bind(this)}
-                          />
-                        </div>
-                      </div>
-                      <p />
-                      <div
-                        className={
-                          this.props.classes.column +
-                          " " +
-                          this.props.classes.columnSeparator
-                        }
-                      >
-                        <h4>Font </h4>
-                        <div style={{ marginTop: "15px" }}>
-                          <Autocomplete
-                            id="fontFamilyDropdown"
-                            onChange={this.handleFontFamily}
-                            className={this.props.classes.option}
-                            options={this.state.fontFamilies}
-                            autoHighlight
-                            getOptionLabel={(option) => option.label}
-                            value={this.getFontFamilyItem(
-                              this.state.fontFamily
-                            )}
-                            renderInput={(params) => (
-                              <TextField
-                                className={this.props.classes.textfield}
-                                {...params}
-                                label="Select a Font Family"
-                                variant="outlined"
-                              />
-                            )}
-                          />
-                          <Typography gutterBottom>Font Size</Typography>
-                          <Slider
-                            className={this.props.classes.pageOptionsSlider}
-                            onChange={(event, newValue) => {
-                              this.handleFontSize(event, newValue);
-                            }}
-                            value={this.state.fontSize}
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="auto"
-                            min={5}
-                            max={50}
-                          />
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          <h5>Text Color</h5>
-                          {this.createColorPicker(
-                            "textColorStyles",
-                            "showTextColorPicker",
-                            "textColor"
-                          )}
-                        </div>
-                      </div>
-                      <p />
-                      <div
-                        className={clsx(
-                          this.props.classes.column,
-                          this.props.classes.helper
-                        )}
-                      >
-                        <h4>Miscellaneous</h4>
-                        <div style={{ marginTop: "15px" }}>
-                          {!this.state.isTemplate &&
-                          <div>
-                            <Autocomplete
-                              id="categoryDropdown"
-                              onChange={this.handleCategory}
-                              onInputChange={this.handleCategoryUniqueness}
-                              className={this.props.classes.option}
-                              value={this.state.currentCategory}
-                              filterOptions={(options, params) => {
-                                const filtered = filter(options, params);
-                                if (
-                                  params.inputValue !== "" &&
-                                  this.state.isUniqueTitle
-                                ) {
-                                  filtered.push({
-                                    value: params.inputValue,
-                                    label: `Add "${params.inputValue}"`,
-                                  });
-                                }
-                                return filtered;
-                              }}
-                              options={this.state.flatCategories}
-                              autoHighlight
-                              getOptionLabel={(option) => option.label}
-                              renderInput={(params) => (
-                                <TextField
-                                  className={this.props.classes.textfield}
-                                  label="Select a category"
-                                  {...params}
-                                  variant="outlined"
-                                />
-                              )}
-                            />
-
-                            <Dialog
-                              open={this.state.openNewCategory}
-                              onClose={() =>
-                                this.setState({
-                                  dialogValue: {
-                                    title: "",
-                                    description: "",
-                                  },
-                                  openNewCategory: false,
-                                })
-                              }
-                              aria-labelledby="form-dialog-title"
-                            >
-                              <form onSubmit={this.handleNewCategory}>
-                                <DialogTitle
-                                  style={{ textAlign: "center" }}
-                                  id="form-dialog-title"
-                                >
-                                  Add a new category
-                                </DialogTitle>
-                                <DialogContent
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-evenly",
-                                  }}
-                                >
-                                  <TextField
-                                    autoFocus
-                                    disabled
-                                    margin="dense"
-                                    id="title"
-                                    value={this.state.dialogValue.title}
-                                    label="title"
-                                    type="text"
-                                  />
-
-                                  <TextField
-                                    autoFocus
-                                    margin="dense"
-                                    id="description"
-                                    value={this.state.dialogValue.description}
-                                    onChange={(event) =>
-                                      this.setState({
-                                        dialogValue: {
-                                          ...this.state.dialogValue,
-                                          description: event.target.value,
-                                        },
-                                      })
-                                    }
-                                    label="description"
-                                    type="text"
-                                  />
-                                </DialogContent>
-                                <DialogActions>
-                                  <Button type="submit" color="primary">
-                                    Add
-                                  </Button>
-                                  <Button
-                                    onClick={() =>
-                                      this.setState({
-                                        dialogValue: {
-                                          title: "",
-                                          description: "",
-                                        },
-                                        openNewCategory: false,
-                                      })
-                                    }
-                                    style={{color: this.props.defaultTheme.secondary.main}}
-                                  >
-                                    Cancel
-                                  </Button>
-
-                                </DialogActions>
-                                {this.state.dialogErr && (
-                                  <p
-                                    style={{
-                                      textAlign: "center",
-                                      color: "red",
-                                    }}
-                                  >
-                                    Category Already Exist Please Check again
-                                  </p>
-                                )}
-                              </form>
-                            </Dialog>
-                          </div>}
-                          { !this.state.isTemplate &&
-                          (!this.state.editing ? (
-                            <div>
-                            <Autocomplete
-                            id="templateDropdown"
-                            onChange={this.handleTemplateChange}
-                            disabled={this.state.editing}
-                            className={this.props.classes.option}
-                            options={this.state.templates}
-                            autoHighlight
-                            getOptionLabel={(option) => option.label}
-                            // value={this.state.template}
-                            renderInput={(params) => (
-                            <TextField
-                            className={this.props.classes.textfield}
-                          {...params}
-                            label="Select a template"
-                            variant="outlined"
-                            />
-                            )}
-                            />
-                            </div>
-                            ) : (
-                            <div style={{marginBottom: "15px"}}>
-                            Template used:{" "}
-                            <strong>
-                          {this.state.template?.label || "none"}
-                            </strong>
-                            </div>
-                            ))
-                          }
-                          <Typography gutterBottom>Box Spacing</Typography>
-                          <Slider
-                            className={this.props.classes.pageOptionsSlider}
-                            onChange={this.handleBoxSpacing}
-                            value={this.state.config.layoutBoxSpacing[0]}
-                            getAriaValueText={() =>
-                              this.state.config.layoutBoxSpacing[0] + " pixels"
-                            }
-                            aria-labelledby="discrete-slider"
-                            valueLabelDisplay="auto"
-                            min={0}
-                            max={150}
-                          />
-                          {!this.state.isTemplate &&
-                          <>
-                            <div>
-                              <Typography
-                                  gutterBottom
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                  }}
-                              >
-                                <span>Publish</span>
-                                <Tooltip title="Enable Publishing">
-                                  <Switch
-                                      checked={this.state.publish}
-                                      value={this.state.publish}
-                                      onChange={() => {
-                                        this.setState({
-                                          publish: !this.state.publish,
-                                        });
-                                      }}
-                                  />
-                                </Tooltip>
-                              </Typography>
-                            </div>
-                            <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                }}
-                            >
-                              <Typography gutterBottom>Default Page</Typography>
-                              <Tooltip title="Set as default page">
-                                <Switch
-                                    checked={this.state.defaultPage}
-                                    value={true}
-                                    onChange={() => {
-                                      this.setState({
-                                        defaultPage: !this.state.defaultPage,
-                                      });
-                                    }}
-                                />
-                              </Tooltip>
-                            </div>
-                          </>}
-                          <div style={{ marginLeft: "-10px" }}>
-                            <Checkbox
-                              checked={this.state.isTemplate}
-                              disabled={this.props.location.state && this.props.location.state.templateMode}
-                              onChange={(event, checked) => {
-                                this.setState({
-                                  isTemplate: checked,
-                                });
-                              }}
-                            />
-                            <span>Save as template</span>
-                          </div>
-                        </div>
-                      </div>
-                    </AccordionDetails>
-                  </Accordion>
-                </div>
-              </div>
               <div
                   style={{
                     flexGrow: 1,
@@ -1864,19 +1893,26 @@ class ViewPagesEditor extends React.PureComponent {
                 >
                   {_.map(this.state.items, (el) => this.createElement(el))}
                 </ResponsiveReactGridLayout>
-                <div className={this.props.classes.bottomPane}>
-                  <Button
-                      disabled={this.state.pageTitle.length === 0}
-                      onClick={() => {
-                        this.savePage();
-                      }}
-                      color="primary"
-                  >
-                    <div>Save</div>
-                  </Button>
-                  <Button onClick={() => this.handleDiscard()} color="danger">
-                    Discard
-                  </Button>
+                <div className={this.props.classes.bottomPane} style={{
+                  backgroundColor: this.props.defaultTheme.secondary.main
+                }}>
+                    <div>
+                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={this.pageActions}/>
+                    </div>
+                    <div className={this.props.classes.bottomPaneButtons}>
+                        <Button
+                            disabled={this.state.pageTitle.length === 0}
+                            onClick={() => {
+                                this.savePage();
+                            }}
+                            color="primary"
+                        >
+                            <div>Save</div>
+                        </Button>
+                        <Button onClick={() => this.handleDiscard()} color="danger">
+                            Discard
+                        </Button>
+                    </div>
                 </div>
               </div>
                 </div>

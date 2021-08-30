@@ -52,7 +52,7 @@ class ViewPagesPreview extends React.Component {
 
   createElement(el) {//TODO get from a shared config or something
     const i = el.i;
-    // el.static = true;
+    el.static = true;
 
     let style = {};
 
