@@ -81,7 +81,7 @@ class ViewPagesPreview extends React.Component {
         modalItems[el.title + el.i] = {
             name: el.title,
             title: el.title,
-            show: true,
+            show: this.fetchPopupState(el.title + el.i, el.displayOptions.neverShowAfterClosing),
             content: this.createElement(el),
             showCloseButton: el.displayOptions.showCloseButton,
             position: el.displayOptions.modalPosition,
@@ -124,6 +124,21 @@ class ViewPagesPreview extends React.Component {
         }
       }
     }));
+    if(el.displayOptions.neverShowAfterClosing) {
+      localStorage.setItem(el.title + el.i, el.title);
+    }
+  }
+
+  fetchPopupState = (key, neverShowAfterClosing) => {
+    if(neverShowAfterClosing) {
+      const isConfirm = localStorage.getItem(key);
+      if (isConfirm) {
+        return false
+      }
+    } else {
+      localStorage.removeItem(key);
+    }
+    return true;
   }
 
   createElement(el) {
