@@ -63,6 +63,8 @@ class GalleryModule extends Component {
             src: `${args.thumbnail}`,
           },
           largeImage: {
+            width: this.width,
+            height: this.height,
             src: `${args.original}`,
           },
           enlargedImagePortalId: "myPortal",

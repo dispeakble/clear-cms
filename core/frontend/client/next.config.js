@@ -37,11 +37,11 @@ if (process.env.ONLY_STATIC === "true") {
       return [
         {
           source: '/files/:path*',
-          destination: `http://${serverUrl}/files/:path*` // Proxy to Backend
+          destination: `${serverUrl}/files/:path*` // Proxy to Backend
         },
         {
           source: '/api/:path*',
-          destination: `http://${serverUrl}/:path*` // Proxy to Backend
+          destination: `${serverUrl}/:path*` // Proxy to Backend
         }
       ]
     },

@@ -5,7 +5,6 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from 'next/router'
-import * as shortId from "shortid";
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import getConfig from 'next/config'
@@ -16,171 +15,49 @@ const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class ViewPagesPreview extends React.Component {
+
   static defaultProps = {
     className: "layout",
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
-    rowHeight: 1,
+    rowHeight: 1
   };
-
-  messageCallbacks = {};
-  channel = "frontend";
 
   state = {
+    pageId: 0,
     title: "",
+    pageLink: this.props.pageData?.pageConfig?.pageLink,
     items: [],
-    pageConfig: {
-      backgroundColor: "",
-      fontSize: "",
-      fontFamily: "",
-      textColor: "",
-      layoutBoxSpacing: "",
-      pageTitle: "",
-      pageTitleFontSize: "",
-      pageTitleTextColor: "",
-    },
-    layouts: {},
+    pageConfig: this.props.pageData?.pageConfig,
     fontUnit: "px",
-    openedAccordionLink: {},
-    
+    layouts: {},
+    //pageDataLoaded: false
   };
 
-  navigateToUrl() {
-    // const { pathname } = this.props.location;
-    // const pathnameId = Number(pathname.split("/")[2]);
-    //
-    // if (pathname === this.state.pathname) {
-    //   return true;
-    // }
-    //
-    // // const allPages = JSON.parse(localStorage.getItem("pages"));
-    // // let currentPage;
-    // // currentPage = allPages.find((econst { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-
-    //
-    // this.setState({
-    //   items: items,
-    //   pageConfig,
-    //   pathname,
-    // });
-  }
-
   componentDidMount() {
-    if ( !publicRuntimeConfig?.wsEnabled) {
-      this.setState({
-        pageLink: this.props.pageData?.pageConfig?.pageLink,
-        items: this.props.pageData?.items,
-        pageConfig: this.props.pageData?.pageConfig,
-        pageId: this.props.pageData?.id
-      })
-    } else {
-      // this.props.ws?.subscribe({
-      //   channel: this.channel,
-      //   callbacks: {
-      //     message: (response) => this.onMessage(response)
-      //   }
-      // });
-      // this.loadPage();
-
-      this.setState({
-        pageLink: this.props.pageLink,
-        items: this.props.items || [],
-        pageConfig: this.props.pageConfig,
-        pageId: this.props.pageId
-      })
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-    if (this.props.pageId !== prevProps.pageId) {
-      if (publicRuntimeConfig?.wsEnabled){
-        this.setState({
-          pageLink: this.props.pageLink,
-          items: this.props.items || [],
-          pageConfig: this.props.pageConfig,
-          pageId: this.props.pageId
-        })
-      } 
-      
-    }
-  }
-
-  onMessage = (params) => {
-    if (this.messageCallbacks) {
-      try {
-        this.messageCallbacks[params.id](params.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    console.log('got message in viewPages.tsx', params);
-  }
-
-  sendMessage(params) {
-    return new Promise((resolve_send) => {
-      const uniqueId = shortId.generate();
-      this.messageCallbacks[uniqueId] = resolve_send;
-      this.props.ws.emit({
-        id: uniqueId,
-        channel: this.channel,
-        module: params.module,
-        api: params.api,
-        act: params.act,
-        payload: params.payload
-      });
-    });
-  }
-
-  async get(params) {
-    return new Promise(async resolve => {
-      try {
-        const data = {
-          module: 'frontend',
-          api: 'pages',
-          act: 'get',
-          payload: {
-            where: {
-
-            }
-          }
-        }
-
-        if (params.pagelink) {
-          data.payload.where.pagelink = params.pagelink
-        } else {
-          data.payload.where.is_default = 1
-        }
-        const response = await this.sendMessage(data);
-
-        resolve(response)
-      } catch (err) {
-        resolve(null);
-      }
-    });
-  }
-
-  async loadPage() {
-    const pageLink = this.props.slug;
-    const page = await this.get({
-      pagelink: pageLink
-    });
     this.setState({
-      pageLink: pageLink,
-      items: page?.items || [],
-      pageConfig: page?.pageConfig,
-      pageId: page?.id
-    });
+      pageLink: this.props.pageData?.pageConfig?.pageLink,
+      items: this.props.pageData?.items,
+      pageConfig: this.props.pageData?.pageConfig,
+      page_id: this.props.pageData?.id
+    })
   }
 
-  createElement(el) {
+  onLayoutChange = (layout, layouts) => {
+    try {
+      this.setState({ layouts: layouts });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  createElement(el) {//TODO get from a shared config or something
     const i = el.i;
     el.static = true;
 
     let style = {};
 
     if (el.backgroundImage) {
-      style.backgroundImage = `url(/files/pages/page-${this.state.pageId}/box-${i}/${el.backgroundImage})`;
+      style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
     }
 
     if (el.backgroundRepeat) {
@@ -189,6 +66,10 @@ class ViewPagesPreview extends React.Component {
 
     if (el.backgroundStretch) {
       style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
+    }
+
+    if (el.backgroundGradient) {
+      style.backgroundImage = el.backgroundGradientColor;
     }
 
     if (el.backgroundColor) {
@@ -211,21 +92,21 @@ class ViewPagesPreview extends React.Component {
     if (Number(el.fontSize)) {
       style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
       style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
-    } else if (this.state.pageConfig?.fontSize) {
-      style.fontSize = `${this.state.pageConfig?.fontSize}${this.state.fontUnit}`;
-      style.fontSlineHeightize = `${this.state.pageConfig?.fontSize}${this.state.fontUnit}`;
+    } else if (this.state.pageConfig.fontSize) {
+      style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      style.fontSlineHeightize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {
       style.fontFamily = el.fontFamily;
-    } else if (this.state.pageConfig?.fontFamily) {
-      style.fontFamily = this.state.pageConfig?.fontFamily;
+    } else if (this.state.pageConfig.fontFamily) {
+      style.fontFamily = this.state.pageConfig.fontFamily;
     }
 
     if (el.textColor) {
       style.color = el.textColor;
-    } else if (this.state.pageConfig?.textColor) {
-      style.textColor = this.state.pageConfig?.textColor;
+    } else if (this.state.pageConfig.textColor) {
+      style.textColor = this.state.pageConfig.textColor;
     }
 
     if (el.showScrollbars) {
@@ -239,10 +120,8 @@ class ViewPagesPreview extends React.Component {
     if (el.module) {
       let LazyComponent = null;
       let LazyComponentName = el.module.replace(" ", "");
-      if (el.module === "Header Module") {
-        style.position = el.moduleOptions.data.isModuleSticky
-          ? "fixed !important"
-          : "";
+      if (el.module === "Header Module" && el.moduleOptions.data.isModuleSticky) {
+        style.position = "fixed !important";
         style.top = "0";
       }
 
@@ -255,7 +134,7 @@ class ViewPagesPreview extends React.Component {
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent i={i} element={el} style={style} pageOptions={{ page_id: this.state.pageId }} />
+            <LazyComponent i={i} element={el} style={style} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
           </Suspense>
         </div>
       );
@@ -305,15 +184,6 @@ class ViewPagesPreview extends React.Component {
     });
   };
 
-  onLayoutChange = (layout, layouts) => {
-    try {
-      this.setState({ layouts: layouts });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-
   render() {
     const classes = this.props.classes;
 
@@ -321,9 +191,9 @@ class ViewPagesPreview extends React.Component {
       return "";
     }
 
-    return (
+    console.log(this.state.pageConfig)
 
-      this.props.pageDataLoaded ? (
+    return (
         <React.Fragment>
           <Helmet>
             <title>{this.state.pageConfig?.pageTitle || ''} </title>
@@ -335,7 +205,7 @@ class ViewPagesPreview extends React.Component {
                 <div
                   className={classes.gridLayout}
                   style={{
-                    backgroundImage: `url(/files/pages/page-${this.state.pageId}/${this.state.pageConfig?.backgroundImage})`,
+                    backgroundImage: `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig?.backgroundImage})`,
                     backgroundRepeat: this.state.pageConfig?.backgroundRepeat
                       ? "repeat"
                       : "no-repeat",
@@ -354,13 +224,14 @@ class ViewPagesPreview extends React.Component {
                       fontFamily: this.state.fontFamily,
                       color: this.state.pageConfig?.textColor,
                     }}
+                    isBounded={true}
                     margin={this.state.pageConfig?.layoutBoxSpacing}
                     {...this.props}
-                    measureBeforeMount={true}
                     layouts={this.state.layouts}
                     onLayoutChange={(layout, layouts) => {
                       return this.onLayoutChange(layout, layouts);
                     }}
+                    measureBeforeMount={true}
                     compactType="vertical"
                     cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                     useCSSTransforms={false}
@@ -374,9 +245,6 @@ class ViewPagesPreview extends React.Component {
             </MuiThemeProvider>
           </div>
         </React.Fragment>
-      ) : null
-
-
     );
   }
 }

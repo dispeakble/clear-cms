@@ -104,9 +104,7 @@ const javascriptStyles = {
     },
   },
   pageTitleInputWrapper: {
-    marginTop: "5px",
     padding: "0",
-    background: "#FFF",
     display: "flex",
     justifyContent: "space-between",
     "& > :not(:last-child)" : {
@@ -219,9 +217,21 @@ const javascriptStyles = {
     justifyContent: "space-around",
   },
   bottomPane:{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "baseline",
     position: "fixed",
     right: 0,
-    bottom: 0
+    left: 0,
+    paddingRight: 15,
+    paddingLeft: 15,
+    bottom: 0,
+    backgroundColor: "#FFF"
+  },
+  bottomPaneButtons:{
+    "& button": {
+      marginLeft: 5
+    }
   },
   bodyWrapper: {
     height: "100%",
@@ -241,7 +251,9 @@ const javascriptStyles = {
   accordion: {
     overflow: "visible",
   },
-  accordionDetails: {
+  pageOptionsDetails: {
+    display: "flex",
+    flex: 1,
     justifyContent: "space-between",
     "@media screen and (max-width: 800px)": {
       flexDirection: "column"

@@ -170,7 +170,7 @@ class ViewPagesPreview extends React.Component {
       style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
     } else if (this.state.pageConfig.fontSize) {
       style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
-      style.fontSlineHeightize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      style.lineHeight = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {

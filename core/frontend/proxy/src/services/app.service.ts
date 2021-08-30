@@ -3,14 +3,14 @@ import {Injectable} from '@nestjs/common';
 @Injectable()
 export class AppService {
 
-    private methods = ["portMappingListen", "updatePortMapping"];
+    private methods = ["publicPortMappingListen", "updatePortMapping"];
     private portMappingCallback;
 
     constructor() {
         //this.createWebSocket();
     }
 
-    private portMappingListen(data){
+    private publicPortMappingListen(data){
         this.portMappingCallback = data.callback;
     }
 

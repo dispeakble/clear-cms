@@ -1,37 +1,31 @@
 import { withStyles, createTheme } from "@material-ui/core/styles";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider } from '@material-ui/core/styles';
 import styles from "../src/assets/jss/clear-crm/global.js";
+import "../src/assets/scss/clear-crm.scss";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import WsService from "../src/services/ws.service";
-import getConfig from 'next/config';
-import * as shortId from "shortid";
 import { Provider } from "react-redux";
 import { useStore } from "../redux/store";
-import AppSocketInterface from "../socketInterface/app.js";
-
-
-const { publicRuntimeConfig } = getConfig();
 
 function MyApp({ Component, pageProps }) {
-  const channel = 'app';
 
   const store = useStore(pageProps.initialReduxState);
 
-
   const [defaultPalette] = useState({});
 
-  const [wsInstance] = useState(null);
-
   const createAppTheme = () => {
-    return createTheme({
+    return createTheme({//TODO GET USING API
       palette: defaultPalette,
       overrides: {
 
       },
     });
   };
+
+  const testProp = {
+      ws: false
+  }
 
   return (
     <>
@@ -49,23 +43,12 @@ function MyApp({ Component, pageProps }) {
           },
         ]}
       />
-      <MuiThemeProvider theme={createAppTheme()}>
+      <ThemeProvider theme={createAppTheme()}>
         <CssBaseline />
-        {publicRuntimeConfig?.wsEnabled ? (
           <Provider store={store}>
-            <AppSocketInterface>
-              {() => {
-                return (
-                  <Component {...pageProps} ws={wsInstance} />
-                );
-              }}
-
-            </AppSocketInterface>
+              <Component {...pageProps} {...testProp}/>
           </Provider>
-        ) : (
-          <Component {...pageProps} ws={wsInstance} />
-        )}
-      </MuiThemeProvider>
+      </ThemeProvider>
     </>
   )
 }

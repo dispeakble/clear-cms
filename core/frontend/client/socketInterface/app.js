@@ -59,7 +59,7 @@ const AppSocketInterface = (props) => {
     const onMessage = (params) => {
         if (messageCallbacks) {
             try {
-                // messageCallbacks[params.id](params.data);
+                messageCallbacks[params.id](params.data);
             } catch (err) {
                 console.log(err);
             }
