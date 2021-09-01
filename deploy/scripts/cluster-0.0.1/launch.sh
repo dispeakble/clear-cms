@@ -327,9 +327,12 @@ function createConfig() {
   rancher kubectl apply -f "configMaps/$1"
 }
 
+sleep 10
+
 rancherForceLogin
 
-clusterExists $CMS_NAME || createCluster $CMS_NAME
+#clusterExists $CMS_NAME ||
+createCluster $CMS_NAME
 checkCluster $CMS_NAME
 
 sleep 2
