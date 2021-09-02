@@ -176,7 +176,7 @@ class SitemapModule extends Component {
     renderPageLink(page, key) {
         return <li key={key}>
             <div>
-                {page.title}: <a href={page.cat_id ? this.state.flatCategories.find(cat => cat.id === page.cat_id).label + page.pagelink : page.pagelink}>(Link)</a> {page.cat_id ? "Category Name:" + this.getCategoriesNested(page.cat_id) : ""}
+                <a href={page.cat_id ? this.state.flatCategories.find(cat => cat.id === page.cat_id).label + page.pagelink : page.pagelink}>{page.title}</a> {page.cat_id ? "Category Name:" + this.getCategoriesNested(page.cat_id) : ""}
             </div>
         </li>
     }
