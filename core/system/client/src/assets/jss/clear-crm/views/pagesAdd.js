@@ -354,6 +354,14 @@ const javascriptStyles = {
       minWidth: 100,
       margin: "5px 0"
     }
+  },
+  pageListModuleFields: {
+    "& > div": {
+      margin: "10px 0",
+      "& > p": {
+        display: "inline"
+      }
+    }
   }
 };
 

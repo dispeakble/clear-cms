@@ -7,16 +7,12 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
-import Switch from "@material-ui/core/Switch";
-import { Editor } from "@tinymce/tinymce-react";
 import {Checkbox, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
