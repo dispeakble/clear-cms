@@ -67,7 +67,7 @@ BITBUCKET_PASS='0$$2Dbmc!Hv7zpA'
 #echo "Dockerhub username: $DOCKERHUB_USERNAME"
 #echo "Bitbucket username: $BITBUCKET_USERNAME"
 
-sudo apt update
+sudp apt update
 sudo apt upgrade -y
 
 installService "cluster-0.0.1/run-rancher.sh"
