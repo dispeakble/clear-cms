@@ -48,7 +48,9 @@ class ViewBoxEditor extends React.PureComponent {
             { label: "Banner Module" },
             { label: "Chart Module" },
             { label: "Table Module" },
-            { label: "Accordion Module" }
+            { label: "Accordion Module" },
+            { label: "Sitemap Module" },
+            { label: "Pagelist Module" }
         ],
         editItemFontSizeShow: false,
         editItemFontFamilyShow: false,
@@ -537,7 +539,7 @@ class ViewBoxEditor extends React.PureComponent {
         pickerColor.background = this.state[targetedColor];
 
         return (
-            <React.Fragment>
+            <div>
                 <div
                     style={{
                         ...this.state[styles].swatch,
@@ -563,7 +565,7 @@ class ViewBoxEditor extends React.PureComponent {
                         />
                     </div>
                 ) : null}
-            </React.Fragment>
+            </div>
         );
     };
 
@@ -1092,7 +1094,7 @@ class ViewBoxEditor extends React.PureComponent {
                                         }
                                         <div className={this.props.classes.sideMenuOption}>
                                             <Autocomplete
-                                                onChange={(event, position) =>
+                                                onChange={(event, position) => position &&
                                                     this.setState(prevState => ({
                                                         ...prevState,
                                                         editItemDisplayOptions: {

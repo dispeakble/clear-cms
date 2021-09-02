@@ -349,6 +349,12 @@ const javascriptStyles = {
     padding: "1rem",
     verticalAlign: "text-top",
   },
+  numberPicker: {
+    "& div": {
+      minWidth: 100,
+      margin: "5px 0"
+    }
+  }
 };
 
 export default javascriptStyles;
