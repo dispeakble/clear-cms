@@ -526,7 +526,7 @@ export class PagesService {
                                     title: pageConfig.pageTitle,
                                     is_default: pageConfig.defaultPage ? 1 : 0,
                                     publish: pageConfig.publish ? 1 : 0,
-                                    cat_id: pageConfig.category,
+                                    cat_id: pageConfig.categoryId,
                                     pagelink: pageConfig.pageLink || "",
                                     istemplate: pageConfig.isTemplate ? 1 : 0,
                                 }
