@@ -38,7 +38,15 @@ export class CategoriesService {
                 if (data && data.hasOwnProperty('data')) {
                     response = data.data;
                 }
-                subscriber.next({type: 'categories_list', data: response});
+
+                if(params.page && params.categoriesPerPage) {
+                    const offset = (params.page - 1) * parseInt(params.categoriesPerPage);
+                    const end = offset + parseInt(params.categoriesPerPage);
+
+                    response = response.slice(offset, end);
+                }
+
+                subscriber.next({type: 'categories_list', data: response, totalCategories: data.data.length});
             }, err => {
                 subscriber.error(err);
             }, () => {
