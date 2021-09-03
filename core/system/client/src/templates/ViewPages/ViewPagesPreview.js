@@ -71,11 +71,19 @@ class ViewPagesPreview extends React.Component {
     const page = await this.props.control.get({
       id: page_id
     });
-    this.setState({
-      page_id: page_id,
-      items: page.items,
-      pageConfig: page.pageConfig
-    });
+    if(this.props.isLivePreview) {
+      this.setState({
+        page_id: page_id,
+        items: this.props.items,
+        pageConfig: this.props.pageConfig
+      });
+    } else {
+      this.setState({
+        page_id: page_id,
+        items: page.items,
+        pageConfig: page.pageConfig
+      });
+    }
     let modalItems = {}
     page.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el =>
         modalItems[el.title + el.i] = {

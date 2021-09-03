@@ -12,7 +12,7 @@ import {
   DeleteForever,
   Edit,
   OpenWith,
-  Visibility,
+  Visibility, ScreenShare, StopScreenShare,
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -59,6 +59,7 @@ import reactCSS from "reactcss";
 
 import ViewBoxEditor from "./ViewBoxEditor";
 import Modal from "../../components/Modal/Modal";
+import ViewPagesPreview from "./ViewPagesPreview";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -137,6 +138,7 @@ class ViewPagesEditor extends React.PureComponent {
     bgColorStyles: {},
     textColorStyles: {},
     editPage: null,
+    livePreview: false,
     boxEditorProps: {
       item: {},
     },
@@ -1214,43 +1216,56 @@ class ViewPagesEditor extends React.PureComponent {
     })
   };
 
-  pageActions = [
-    {
-      callback: () => {
-        this.openPageOptionsModal()
-      },
-      icon: <Settings
-          className={this.props.classes.rightSideIcon}
-          color="primary"
-      />,
-      name: "Page options",
-    },
-    {
-      callback: () => {
-        window.open(
-            `/pages/preview/${this.state.page_id}`
-        );
-      },
-      icon: <Visibility
-          className={this.props.classes.rightSideIcon}
-          color="primary"
-      />,
-      name: "Preview page"
-    },
-    {
-      callback: (evt) => {
-        this.onAddItem(evt)
-      },
-      icon: <AddCircle
-          className={this.props.classes.rightSideIcon}
-          color="primary"
-      />,
-      name: "Add box",
-    }
-  ];
-
-
   render() {
+    const pageActions = [
+      {
+        callback: () => {
+          this.openPageOptionsModal()
+        },
+        icon: <Settings
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Page options",
+      },
+      {
+        callback: () => {
+          window.open(
+              `/pages/preview/${this.state.page_id}`
+          );
+        },
+        icon: <Visibility
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Preview page"
+      },
+      {
+        callback: (evt) => {
+          this.onAddItem(evt)
+        },
+        icon: <AddCircle
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Add box",
+      },
+      {
+        callback: async (evt) => {
+          await this.setAsyncState(prevState => ({
+            livePreview: !prevState.livePreview
+          }))
+        },
+        icon: this.state.livePreview ? <StopScreenShare
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        /> : <ScreenShare
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode",
+      }
+    ];
     return (
       <React.Fragment>
         <Helmet>
@@ -1853,68 +1868,71 @@ class ViewPagesEditor extends React.PureComponent {
               </DialogActions>
             </Dialog>
             <div className={this.props.classes.gridLayout}>
-              <div
-                  style={{
-                    flexGrow: 1,
-                    backgroundImage: this.state.pageBackgroundGradient ? this.state.bgGradientColor : `url(${
-                        this.state.pageBase64Image ||
-                        `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`
-                    }`,
-                    backgroundRepeat: this.state.pageBackgroundRepeat
-                        ? "repeat"
-                        : "no-repeat",
-                    backgroundSize: this.state.pageBackgroundStretch
-                        ? "cover"
-                        : "auto",
-                    backgroundColor: this.state.bgColor,
-                    fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                    fontFamily: this.state.fontFamily,
-                    color: this.state.textColor,
-                    paddingBottom: "55px",
-                  }}
-              >
-                <ResponsiveReactGridLayout
-                    style={{
-                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                      fontFamily: this.state.fontFamily,
-                      color: this.state.textColor,
-                    }}
-                    layouts={this.state.layouts}
-                    isBounded={true}
-                    margin={this.state.config.layoutBoxSpacing}
-                    containerPadding={this.state.config.layoutBoxPadding}
-                    draggableHandle=".MyDragHandleClassName"
-                    onLayoutChange={(layout, layouts) => {
-                      return this.onLayoutChange(layout, layouts);
-                    }}
-                    compactType="vertical"
-                    onBreakpointChange={() => this.onBreakpointChange}
-                    {...this.props}
-                >
-                  {_.map(this.state.items, (el) => this.createElement(el))}
-                </ResponsiveReactGridLayout>
-                <div className={this.props.classes.bottomPane} style={{
-                  backgroundColor: this.props.defaultTheme.background.paper
-                }}>
-                    <div>
-                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={this.pageActions}/>
-                    </div>
-                    <div className={this.props.classes.bottomPaneButtons}>
+                  <div
+                      style={{
+                        flexGrow: 1,
+                        backgroundImage: this.state.pageBackgroundGradient ? this.state.bgGradientColor : `url(${
+                            this.state.pageBase64Image ||
+                            `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})`
+                        }`,
+                        backgroundRepeat: this.state.pageBackgroundRepeat
+                            ? "repeat"
+                            : "no-repeat",
+                        backgroundSize: this.state.pageBackgroundStretch
+                            ? "cover"
+                            : "auto",
+                        backgroundColor: this.state.bgColor,
+                        fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                        fontFamily: this.state.fontFamily,
+                        color: this.state.textColor,
+                        paddingBottom: "55px",
+                      }}
+                  >
+                    {this.state.livePreview
+                        ? <ViewPagesPreview isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.state.pageConfig}} />
+                        :
+                        <ResponsiveReactGridLayout
+                        style={{
+                          fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                          fontFamily: this.state.fontFamily,
+                          color: this.state.textColor,
+                        }}
+                        layouts={this.state.layouts}
+                        isBounded={true}
+                        margin={this.state.config.layoutBoxSpacing}
+                        containerPadding={this.state.config.layoutBoxPadding}
+                        draggableHandle=".MyDragHandleClassName"
+                        onLayoutChange={(layout, layouts) => {
+                          return this.onLayoutChange(layout, layouts);
+                        }}
+                        compactType="vertical"
+                        onBreakpointChange={() => this.onBreakpointChange}
+                        {...this.props}
+                    >
+                      {_.map(this.state.items, (el) => this.createElement(el))}
+                    </ResponsiveReactGridLayout>}
+                    <div className={this.props.classes.bottomPane} style={{
+                      backgroundColor: this.props.defaultTheme.background.paper
+                    }}>
+                      <div>
+                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={pageActions}/>
+                      </div>
+                      <div className={this.props.classes.bottomPaneButtons}>
                         <Button
                             disabled={this.state.pageTitle.length === 0}
                             onClick={() => {
-                                this.savePage();
+                              this.savePage();
                             }}
                             color="primary"
                         >
-                            <div>Save</div>
+                          <div>Save</div>
                         </Button>
                         <Button onClick={() => this.handleDiscard()} color="danger">
-                            Discard
+                          Discard
                         </Button>
+                      </div>
                     </div>
-                </div>
-              </div>
+                  </div>
                 </div>
             <Modal
                 showModal={this.state.showBgGradientColorPickerModal}
