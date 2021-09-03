@@ -15,15 +15,14 @@ import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
-import {MenuItem, Select, TextField} from "@material-ui/core";
+import {Checkbox, MenuItem, Select, TextField} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import {SketchPicker} from "react-color";
-import reactCSS from "reactcss";
 import MaterialTable from "material-table";
 import {ThemeProvider as MuiThemeProvider} from "@material-ui/styles";
-import {AddCircle, Check, Clear, DeleteForever, Edit, Visibility} from "@material-ui/icons";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import Checkbox from "@material-ui/core/Checkbox";
+import reactCSS from "reactcss";
+import {AddCircle, Check, Clear, DeleteForever, Edit} from "@material-ui/icons";
+import {Autocomplete} from "@material-ui/lab";
 
 class PagelistModule extends Component {
     state = {

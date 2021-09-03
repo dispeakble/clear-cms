@@ -1,11 +1,7 @@
-import {HttpStatus, Inject, Injectable} from "@nestjs/common";
+import { Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
-import * as fs from "fs";
-import * as mime from "mime";
 import {Observable} from "rxjs";
-import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
-import path from "path";
 
 @Injectable()
 export class SitemapService {
