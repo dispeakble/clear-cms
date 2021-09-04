@@ -104,6 +104,27 @@ class CategoriesModule extends Component {
                              </Card>
                         })}
                     </div>}
+                    {this.state.displayType === "thumbnail" && <div className={classes.thumbnailView}>
+                        {this.state.categories && this.state.categories.map((category, index) => {
+                            return <Card
+                                key={index}
+                            >
+                                <CardContent classes={{
+                                    root: classes.cardContent
+                                }}>
+                                    <img className={classes.thumbnailImg} src={"/files/categories/category-" + category.id + "/" + category.backgroundimage} />
+                                    <div>
+                                        <Typography component="h5" variant="h5">
+                                            Title
+                                        </Typography>
+                                        <Typography variant="subtitle1" color="textSecondary">
+                                            {category.title}
+                                        </Typography>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        })}
+                    </div>}
                     <Pagination
                         count={Math.ceil(this.state.totalCategories / parseInt(this.state.categoriesPerPage))}
                         page={this.state.currentPage}
