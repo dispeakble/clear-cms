@@ -8,6 +8,7 @@ import { withRouter } from 'next/router'
 import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import getConfig from 'next/config'
+import BoxModal from "../../components/BoxModal/BoxModal";
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
@@ -30,7 +31,8 @@ class ViewPagesPreview extends React.Component {
     pageConfig: this.props.pageData?.pageConfig,
     fontUnit: "px",
     layouts: {},
-    //pageDataLoaded: false
+    //pageDataLoaded: false,
+    modals: []
   };
 
   componentDidMount() {
@@ -40,6 +42,71 @@ class ViewPagesPreview extends React.Component {
       pageConfig: this.props.pageData?.pageConfig,
       page_id: this.props.pageData?.id
     })
+    let modalItems = {}
+    if(this.props.pageData && this.props.pageData.items) {
+      this.props.pageData.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el =>
+          modalItems[el.title + el.i] = {
+            name: el.title,
+            title: el.title,
+            show: this.fetchPopupState(el.title + el.i, el.displayOptions.neverShowAfterClosing),
+            content: this.createElement(el),
+            showCloseButton: el.displayOptions.showCloseButton,
+            position: el.displayOptions.modalPosition,
+            displayBackdrop: el.displayOptions.displayBackdrop,
+            neverShowAfterClosing: el.displayOptions.neverShowAfterClosing,
+            closeButton: {
+              show: el.displayOptions.showCancelButton,
+              callback: () => {
+                this.switchBoxModalState(el)
+                if(el.displayOptions.cancelButtonLink) {
+                  this.props.history.push(el.displayOptions.cancelButtonLink);
+                }
+              },
+              label: el.displayOptions.cancelButtonTitle,
+            },
+            confirmButton: {
+              show: el.displayOptions.showActionButton,
+              callback: () => {
+                this.switchBoxModalState(el)
+                if(el.displayOptions.actionButtonLink) {
+                  this.props.history.push(el.displayOptions.actionButtonLink);
+                }
+              },
+              label: el.displayOptions.actionButtonTitle,
+            },
+          })
+      this.setState({
+        modalItems: modalItems
+      })
+    }
+  }
+
+  switchBoxModalState = (el) => {
+    this.setState(prevState => ({
+      ...prevState,
+      modalItems: {
+        ...prevState.modalItems,
+        [el.title + el.i]: {
+          ...prevState.modalItems[el.title + el.i],
+          show: false
+        }
+      }
+    }));
+    if(el.displayOptions.neverShowAfterClosing) {
+      localStorage.setItem(el.title + el.i, el.title);
+    }
+  }
+
+  fetchPopupState = (key, neverShowAfterClosing) => {
+    if(neverShowAfterClosing) {
+      const isConfirm = localStorage.getItem(key);
+      if (isConfirm) {
+        return false
+      }
+    } else {
+      localStorage.removeItem(key);
+    }
+    return true;
   }
 
   onLayoutChange = (layout, layouts) => {
@@ -94,7 +161,7 @@ class ViewPagesPreview extends React.Component {
       style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
     } else if (this.state.pageConfig.fontSize) {
       style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
-      style.fontSlineHeightize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      style.lineHeight = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {
@@ -120,8 +187,10 @@ class ViewPagesPreview extends React.Component {
     if (el.module) {
       let LazyComponent = null;
       let LazyComponentName = el.module.replace(" ", "");
-      if (el.module === "Header Module" && el.moduleOptions.data.isModuleSticky) {
-        style.position = "fixed !important";
+      if (el.module === "Header Module") {
+        style.position = el.moduleOptions.data.isModuleSticky
+          ? "fixed !important"
+          : "";
         style.top = "0";
       }
 
@@ -194,57 +263,60 @@ class ViewPagesPreview extends React.Component {
     console.log(this.state.pageConfig)
 
     return (
-        <React.Fragment>
-          <Helmet>
-            <title>{this.state.pageConfig?.pageTitle || ''} </title>
-            <meta name="keyword" content="test desc" />
-          </Helmet>
-          <div className={classes.previewBodyWrapper}>
-            <MuiThemeProvider theme={this.getTheme()}>
-              <div className={classes.gridHolder}>
-                <div
-                  className={classes.gridLayout}
+      <React.Fragment>
+        <Helmet>
+          <title>{this.state.pageConfig.pageTitle} </title>
+        </Helmet>
+        <div className={classes.previewBodyWrapper}>
+          <MuiThemeProvider theme={this.getTheme()}>
+            <div className={classes.gridHolder}>
+              <div
+                className={classes.gridLayout}
+                style={{
+                  backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
+                  backgroundRepeat: this.state.pageConfig.backgroundRepeat
+                    ? "repeat"
+                    : "no-repeat",
+                  backgroundSize: this.state.pageConfig.backgroundStretch
+                    ? "cover"
+                    : "auto",
+                  backgroundColor: this.state.pageConfig.backgroundColor,
+                  fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+                  fontFamily: this.state.fontFamily,
+                  color: this.state.pageConfig.textColor,
+                }}
+              >
+                <ResponsiveReactGridLayout
                   style={{
-                    backgroundImage: `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig?.backgroundImage})`,
-                    backgroundRepeat: this.state.pageConfig?.backgroundRepeat
-                      ? "repeat"
-                      : "no-repeat",
-                    backgroundSize: this.state.pageConfig?.backgroundStretch
-                      ? "cover"
-                      : "auto",
-                    backgroundColor: this.state.pageConfig?.backgroundColor,
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
-                    color: this.state.pageConfig?.textColor,
+                    color: this.state.pageConfig.textColor,
                   }}
+                  margin={this.state.pageConfig.layoutBoxSpacing}
+                  {...this.props}
+                  measureBeforeMount={true}
+                  layouts={this.state.layouts}
+                  onLayoutChange={(layout, layouts) => {
+                    return this.onLayoutChange(layout, layouts);
+                  }}
+                  compactType="vertical"
+                  cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+                  useCSSTransforms={false}
                 >
-                  <ResponsiveReactGridLayout
-                    style={{
-                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                      fontFamily: this.state.fontFamily,
-                      color: this.state.pageConfig?.textColor,
-                    }}
-                    isBounded={true}
-                    margin={this.state.pageConfig?.layoutBoxSpacing}
-                    {...this.props}
-                    layouts={this.state.layouts}
-                    onLayoutChange={(layout, layouts) => {
-                      return this.onLayoutChange(layout, layouts);
-                    }}
-                    measureBeforeMount={true}
-                    compactType="vertical"
-                    cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-                    useCSSTransforms={false}
-                  >
-                    {this.state.items
-                      ? _.map(this.state.items, (el) => this.createElement(el))
-                      : ""}
-                  </ResponsiveReactGridLayout>
-                </div>
+                  {this.state.items
+                    ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
+                    : ""}
+                </ResponsiveReactGridLayout>
               </div>
-            </MuiThemeProvider>
-          </div>
-        </React.Fragment>
+            </div>
+          </MuiThemeProvider>
+          {this.state.modalItems && Object.keys(this.state.modalItems).map(itemKey => <BoxModal
+              key={itemKey}
+              showModal={this.state.modalItems[itemKey].show}
+              {...this.state.modalItems[itemKey]}
+          />)}
+        </div>
+      </React.Fragment>
     );
   }
 }
