@@ -31,10 +31,6 @@ class App extends Component {
   }
 
   render() {
-    const selected = store.selectedGradient
-    const visibility =
-      store.uiHidden || store.uiHiddenLocked ? 'hidden' : 'visible'
-
     return (
         <div className="gradient-color-picker">
           <div className="container-controls">

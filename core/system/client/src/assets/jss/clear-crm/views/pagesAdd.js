@@ -5,7 +5,6 @@ const javascriptStyles = {
   body:{},
   ...modalStyle,
   gridLayout: {
-    height: "100%",
     display: "flex",
     flexDirection: "column",
     margin: "0 15px 0",
@@ -32,7 +31,7 @@ const javascriptStyles = {
     "& .columns": {
       columns: "120px",
     },
-    "& .react-grid-item:not(.react-grid-placeholder)": {
+    "& .react-grid-item:not(.react-grid-placeholder):hover": {
       background: "#FFFFFF",
     },
     "& .react-grid-item.resizing": {
@@ -234,8 +233,12 @@ const javascriptStyles = {
     }
   },
   bodyWrapper: {
-    height: "100%",
+    minHeight: "100%",
     background: "white",
+    backgroundImage: `linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CCC),
+linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CCC)`,
+    backgroundSize: `10px 10px`,
+    backgroundPosition: `0 0, 5px 5px`
   },
   textfield: {
     fontSize: "10rem",
