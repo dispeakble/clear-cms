@@ -87,6 +87,55 @@ class App extends Component {
       },
       {
         id: 2,
+        name: "E-Commerce",
+        icon: "apps",
+        subitems: [
+          {
+            toLink: "/products",
+            name: "Products",
+            controller: "products",
+            icon: "web",
+            active: false
+          },
+          {
+            toLink: "/images",
+            name: "Images",
+            controller: "images",
+            icon: "image",
+            active: false,
+          },
+          {
+            toLink: "/labels",
+            name: "Labels",
+            controller: "labels",
+            icon: "subject",
+            active: false,
+          },
+          {
+            toLink: "/prices",
+            icon: "monetization_on",
+            controller: "prices",
+            name: "Prices",
+            active: false,
+          },
+          {
+            toLink: "/availability",
+            name: "Availability",
+            controller: "availability",
+            icon: "shopping_cart",
+            active: false,
+          },
+          {
+            toLink: "/locality",
+            name: "Locality",
+            controller: "locality",
+            icon: "location_on",
+            active: false,
+          }
+        ],
+      },
+      {
+        id: 3,
         name: "Settings",
         icon: "settings",
         subitems: [
