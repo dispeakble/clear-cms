@@ -13,7 +13,7 @@ import {
   Edit,
   OpenWith,
   Visibility,
-    InfoSharp
+  InfoSharp, ScreenShare, StopScreenShare,
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -56,6 +56,7 @@ import reactCSS from "reactcss";
 
 import ViewBoxEditor from "./ViewBoxEditor";
 import Modal from "../../components/Modal/Modal";
+import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -136,6 +137,7 @@ class ViewPagesEditor extends React.PureComponent {
     bgColorStyles: {},
     textColorStyles: {},
     editPage: null,
+    livePreview: false,
     boxEditorProps: {
       item: {},
     },
@@ -383,6 +385,30 @@ class ViewPagesEditor extends React.PureComponent {
     allTempModuleOptions[Number(id)] = { data: data, isVertical: isVertical };
     this.setState({ temporaryModuleOptions: allTempModuleOptions });
   };
+
+  preparePageConfiguration() {
+    return {
+      backgroundColor: this.state.bgColor,
+      backgroundGradientColor: this.state.bgGradientColor,
+      backgroundImage: this.state.backgroundImage,
+      oldBackgroundImage: this.state.oldBackgroundImage,
+      backgroundImageFile: this.state.backgroundImageFile,
+      fontSize: this.state.fontSize,
+      textColor: this.state.textColor,
+      fontFamily: this.state.fontFamily,
+      layoutBoxSpacing: this.state.config.layoutBoxSpacing,
+      pageTitle: this.state.pageTitle,
+      pageLink: this.state.pageLink,
+      publish: this.state.publish,
+      backgroundRepeat: this.state.pageBackgroundRepeat,
+      backgroundStretch: this.state.pageBackgroundStretch,
+      backgroundGradient: this.state.pageBackgroundGradient,
+      defaultPage: this.state.defaultPage,
+      categoryId: this.state.categoryId,
+      isTemplate: this.state.isTemplate,
+      templateUsed: this.state.template?.label,
+    }
+  }
 
   createElement(el) {
     const i = el.i;
@@ -1078,27 +1104,7 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   savePage = async () => {
-    let pageConfig = {
-      backgroundColor: this.state.bgColor,
-      backgroundGradientColor: this.state.bgGradientColor,
-      backgroundImage: this.state.backgroundImage,
-      oldBackgroundImage: this.state.oldBackgroundImage,
-      backgroundImageFile: this.state.backgroundImageFile,
-      fontSize: this.state.fontSize,
-      textColor: this.state.textColor,
-      fontFamily: this.state.fontFamily,
-      layoutBoxSpacing: this.state.config.layoutBoxSpacing,
-      pageTitle: this.state.pageTitle,
-      pageLink: this.state.pageLink,
-      publish: this.state.publish,
-      backgroundRepeat: this.state.pageBackgroundRepeat,
-      backgroundStretch: this.state.pageBackgroundStretch,
-      backgroundGradient: this.state.pageBackgroundGradient,
-      defaultPage: this.state.defaultPage,
-      categoryId: this.state.categoryId,
-      isTemplate: this.state.isTemplate,
-      templateUsed: this.state.template?.label,
-    };
+    let pageConfig = this.preparePageConfiguration();
 
     if (this.state.editing) {
       let page = {
@@ -1191,42 +1197,6 @@ class ViewPagesEditor extends React.PureComponent {
     })
   };
 
-  pageActions = [
-    {
-      callback: () => {
-        this.openPageOptionsModal()
-      },
-      icon: <Settings
-          className={this.props.classes.rightSideIcon}
-          color="primary"
-      />,
-      name: "Page options",
-    },
-    {
-      callback: () => {
-        window.open(
-            `/pages/preview/${this.state.page_id}`
-        );
-      },
-      icon: <Visibility
-          className={this.props.classes.rightSideIcon}
-          color="primary"
-      />,
-      name: "Preview page"
-    },
-    {
-      callback: async (evt) => {
-        await this.onAddItem(evt)
-      },
-      icon: <AddCircle
-          className={this.props.classes.rightSideIcon}
-          color="primary"
-      />,
-      name: "Add box",
-    }
-  ];
-
-
   render() {
 
     const bodyWrapperStyle = {};
@@ -1262,6 +1232,55 @@ class ViewPagesEditor extends React.PureComponent {
       }
     }
 
+    const pageActions = [
+      {
+        callback: () => {
+          this.openPageOptionsModal()
+        },
+        icon: <Settings
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Page options",
+      },
+      {
+        callback: () => {
+          window.open(
+              `/pages/preview/${this.state.page_id}`
+          );
+        },
+        icon: <Visibility
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Preview page"
+      },
+      {
+        callback: (evt) => {
+          this.onAddItem(evt)
+        },
+        icon: <AddCircle
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Add box",
+      },
+      {
+        callback: async () => {
+          await this.setAsyncState(prevState => ({
+            livePreview: !prevState.livePreview
+          }))
+        },
+        icon: this.state.livePreview ? <StopScreenShare
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        /> : <ScreenShare
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode",
+      }
+    ];
     return (
       <React.Fragment>
         <Helmet>
@@ -1873,6 +1892,9 @@ class ViewPagesEditor extends React.PureComponent {
                     paddingBottom: "55px",
                   }}
               >
+                {this.state.livePreview
+                    ? <ViewPagesPreview isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.preparePageConfiguration()}} />
+                    :
                 <ResponsiveReactGridLayout
                     style={{
                       fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
@@ -1892,12 +1914,12 @@ class ViewPagesEditor extends React.PureComponent {
                     {...this.props}
                 >
                   {_.map(this.state.items, (el) => this.createElement(el))}
-                </ResponsiveReactGridLayout>
+                </ResponsiveReactGridLayout>}
                 <div className={this.props.classes.bottomPane} style={{
                   backgroundColor: this.props.defaultTheme.background.paper
                 }}>
                     <div>
-                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={this.pageActions}/>
+                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={pageActions}/>
                     </div>
                     <div className={this.props.classes.bottomPaneButtons}>
                         <Button
@@ -1907,14 +1929,14 @@ class ViewPagesEditor extends React.PureComponent {
                             }}
                             color="primary"
                         >
-                            <div>Save</div>
+                          <div>Save</div>
                         </Button>
                         <Button onClick={() => this.handleDiscard()} color="danger">
-                            Discard
+                          Discard
                         </Button>
+                      </div>
                     </div>
-                </div>
-              </div>
+                  </div>
                 </div>
             <Modal
                 showModal={this.state.showBgGradientColorPickerModal}
