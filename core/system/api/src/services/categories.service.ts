@@ -10,10 +10,42 @@ import path from "path";
 @Injectable()
 export class CategoriesService {
 
-    private methods = ["list", "add", "remove", "edit"];
+    private methods = ["list", "total", "add", "remove", "edit"];
 
 
     constructor(@Inject('ProtocolService') private protocolService) {
+    }
+
+    public total (params: any) {
+        return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'db',
+                api: 'db',
+                act: 'get',
+                payload: {
+                    channel: 'system',
+                    data: {
+                        what: 'categories',
+                        fields: ["COUNT(id) as total"],
+                        where: params?.where
+                    }
+                }
+            };
+
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                let response = null;
+
+                if (data && data.hasOwnProperty('data')) {
+                    response = data.data[0];
+                }
+
+                subscriber.next({type: 'categories_total', data: response});
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        });
     }
 
     public list (params: any){
@@ -27,7 +59,8 @@ export class CategoriesService {
                     data: {
                         what: 'categories',
                         fields: ["id", "title", "description", "backgroundimage", "parentid"],
-                        where: params?.where
+                        where: params?.where,
+                        limit: params?.limit
                     }
                 }
             };
@@ -38,7 +71,8 @@ export class CategoriesService {
                 if (data && data.hasOwnProperty('data')) {
                     response = data.data;
                 }
-                subscriber.next({type: 'categories_list', data: response});
+
+                subscriber.next({type: 'categories_list', data: response, totalCategories: data.data.length});
             }, err => {
                 subscriber.error(err);
             }, () => {

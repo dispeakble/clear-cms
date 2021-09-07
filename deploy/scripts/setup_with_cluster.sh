@@ -36,7 +36,7 @@ DOCKERHUB_PASS="yTazvEWhtEbk4mv"
 BITBUCKET_USERNAME="the_dispeakble_one"
 BITBUCKET_PASS="He@cmkGN7q^cl2n"
 
-sudp apt update
+sudo apt update
 sudo apt upgrade -y
 
 installService "cluster-0.0.1/launch_with_cluster.sh"
