@@ -229,7 +229,7 @@ class App extends Component {
           },
           paperWidthSm: {
             maxWidth: "100vw",
-          },
+          }
         },
         MuiDropzoneArea: {
           root: {
@@ -238,7 +238,7 @@ class App extends Component {
           },
           text: {
             fontSize: "1rem",
-          },
+          }
         },
         MuiTab:{
           root:{
@@ -255,8 +255,8 @@ class App extends Component {
             color: "#000",
           },
         },
-        paperWidthSm: "100%",
-      },
+        paperWidthSm: "100%"
+      }
     });
   };
 
@@ -280,33 +280,28 @@ class App extends Component {
         </Helmet>
         <MuiThemeProvider theme={this.createTheme()}>
           <CssBaseline />
-          {this.state.excludeHeader.find((path) => {
+          {!this.state.excludeHeader.find((path) => {
             return !(locationPath.indexOf(path) === -1)
-          }) ? (
-              ""
-          ) : (
-              <Header
-                  services={this.state.services}
-                  mobileOpen={this.state.mobileOpen}
-                  color="transparent"
-                  brand="Clear CRM"
-                  handleDrawerToggle={() => this.handleDrawerToggle()}
-                  leftLinks={
-                    <SideMenuLinks
-                        currentModule={this.state.currentModule}
-                        closeDrawer={() => this.handleDrawerToggle()}
-                        moduleList={this.state.moduleList}
-                        onNavigate={(params) => this.onNavigate(params)}
-                    />
-                  }
-                  fixed
-                  changeColorOnScroll={{
-                    height: 10,
-                    color: "primary",
-                  }}
-              />
-
-          )}
+          }) && <Header
+              services={this.state.services}
+              mobileOpen={this.state.mobileOpen}
+              color="transparent"
+              brand="Clear CRM"
+              handleDrawerToggle={() => this.handleDrawerToggle()}
+              leftLinks={
+                <SideMenuLinks
+                    currentModule={this.state.currentModule}
+                    closeDrawer={() => this.handleDrawerToggle()}
+                    moduleList={this.state.moduleList}
+                    onNavigate={(params) => this.onNavigate(params)}
+                />
+              }
+              fixed
+              changeColorOnScroll={{
+                height: 10,
+                color: "primary",
+              }}
+          />}
           <Switch>
             <Route
               path="/view-auth"
