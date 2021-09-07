@@ -51,6 +51,7 @@ class ViewBoxEditor extends React.PureComponent {
             { label: "Accordion Module" },
             { label: "Sitemap Module" },
             { label: "Pagelist Module" },
+            { label: "Search Module" },
             { label: "Categories Module" }
         ],
         editItemFontSizeShow: false,
