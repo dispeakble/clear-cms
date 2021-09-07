@@ -357,6 +357,14 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
       minWidth: 100,
       margin: "5px 0"
     }
+  },
+  pageListModuleFields: {
+    "& > div": {
+      margin: "10px 0",
+      "& > p": {
+        display: "inline"
+      }
+    }
   }
 };
 
