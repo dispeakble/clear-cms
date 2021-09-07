@@ -13,6 +13,7 @@ import {
   Edit,
   OpenWith,
   Visibility,
+    InfoSharp
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -22,6 +23,7 @@ import GradientPicker from "components/GradientColorPicker/GradientColorPicker";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { withRouter } from "react-router-dom";
+import Snackbar from "components/Snackbar/Snackbar.js";
 
 import { Helmet } from "react-helmet";
 
@@ -59,6 +61,7 @@ import reactCSS from "reactcss";
 
 import ViewBoxEditor from "./ViewBoxEditor";
 import Modal from "../../components/Modal/Modal";
+import DoneOutline from "@material-ui/icons/DoneOutline";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -77,6 +80,7 @@ class ViewPagesEditor extends React.PureComponent {
       showBackgroundColor: false,
     },
     showDiscardModal: false,
+    showSavedMessage: false,
     showPageOptionsModal: false,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
@@ -1144,12 +1148,26 @@ class ViewPagesEditor extends React.PureComponent {
         items: this.state.items,
       };
       await this.props.control.edit({ ...page, editPage: this.state.editPage });
+
+      this.setState({
+        showSavedMessage: true
+      });
+
+      setTimeout(() => {
+        this.setState({
+          showSavedMessage: false
+        })
+      }, 3000);
+
     } else {
       let newPage = {
         pageConfig: pageConfig,
         items: this.state.items,
       };
-      await this.props.control.add(newPage);
+      const pagedata = await this.props.control.add(newPage);
+
+      this.props.history.push(`/pages/edit/${pagedata.pageId}`);
+
     }
   };
 
@@ -1927,6 +1945,13 @@ class ViewPagesEditor extends React.PureComponent {
             <Modal
                 showModal={this.state.showConfirmDeleteModal}
                 {...this.state.confirmDeleteModal}
+            />
+            <Snackbar
+                open={this.state.showSavedMessage}
+                place="tc"
+                color="success"
+                icon={InfoSharp}
+                message="The page was updated successfully"
             />
           </MuiThemeProvider>
         </div>

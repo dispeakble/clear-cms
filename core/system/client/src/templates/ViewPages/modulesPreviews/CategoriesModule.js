@@ -62,11 +62,16 @@ class CategoriesModule extends Component {
     }
 
     async updateCategoryPage(pageNumber) {
-        const categoriesInfo = await this.getCategories({page: pageNumber, categoriesPerPage: this.state.categoriesPerPage});
+        await this.getTotalCategories(pageNumber);
+        const categoriesInfo = await this.getCategories({
+            where: {
+                parentId: 0
+            },
+            limit: [pageNumber, this.state.categoriesPerPage]
+        });
 
         await this.setAsyncState({
-            categories: categoriesInfo.data,
-            totalCategories: categoriesInfo.totalCategories
+            categories: categoriesInfo.data
         });
     }
 
@@ -83,6 +88,24 @@ class CategoriesModule extends Component {
         return null;
     }
 
+    async getTotalCategories() {
+        const response = await this.sendMessage({
+            module: "system",
+            api: "categories",
+            act: "total",
+            payload: {
+                where: {
+                    parentId: 0
+                }
+            }
+        });
+        if (response) {
+            await this.setAsyncState({
+                totalCategories: response.data.total
+            })
+        }
+    }
+
     render() {
         const classes = this.props.classes;
         return (
@@ -96,10 +119,11 @@ class CategoriesModule extends Component {
                         {this.state.categories && this.state.categories.map((category, index) => {
                             return <Card
                                 key={index}
-                                style={{display: "block", background: `url(${"/files/categories/category-" + category.id + "/" + category.backgroundimage})`}}
+                                style={{color: 'inherit', width: '100%', display: "block", background: `url(${"/files/categories/category-" + category.id + "/" + category.backgroundimage})`}}
                             >
                                 <CardContent>
-                                    <Typography>Title: {category.title}</Typography>
+                                    <h3>{category.title}</h3>
+                                    <Typography className={classes.description}>{category.description}</Typography>
                                 </CardContent>
                              </Card>
                         })}
@@ -107,19 +131,17 @@ class CategoriesModule extends Component {
                     {this.state.displayType === "thumbnail" && <div className={classes.thumbnailView}>
                         {this.state.categories && this.state.categories.map((category, index) => {
                             return <Card
+                                style={{color: 'inherit', width: '100%', display: "block"}}
                                 key={index}
                             >
-                                <CardContent classes={{
-                                    root: classes.cardContent
-                                }}>
-                                    <img className={classes.thumbnailImg} src={"/files/categories/category-" + category.id + "/" + category.backgroundimage} />
-                                    <div>
-                                        <Typography component="h5" variant="h5">
-                                            Title
-                                        </Typography>
-                                        <Typography variant="subtitle1" color="textSecondary">
-                                            {category.title}
-                                        </Typography>
+                                <CardContent classes={{ root: classes.cardWrapper }}>
+                                    <div className={classes.cardContent}>
+                                        <img className={classes.thumbnailImg} src={"/files/categories/category-" + category.id + "/" + category.backgroundimage} />
+
+                                        <div style={{flexGrow: 1, paddingLeft: 10, width: 1}}>
+                                            <h3 style={{marginTop: 0}}>{category.title}</h3>
+                                            <Typography className={classes.description}>{category.description}</Typography>
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
