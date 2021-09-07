@@ -1,6 +1,10 @@
 import React from 'react'
 import { SketchPicker } from 'react-color'
 
+const convertRgbToString = (rgb) => {
+    return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${rgb.a})`;
+}
+
 const ColorPickers = ({ gradient, store }) =>
   gradient.colors.map((color, index) => (
     <div
@@ -10,8 +14,9 @@ const ColorPickers = ({ gradient, store }) =>
     >
       <SketchPicker
         color={color}
-        onChange={color => gradient.changeColor(color.hex, index)}
-        disableAlpha
+        onChange={color => {
+            gradient.changeColor(convertRgbToString(color.rgb), index)
+        }}
         presetColors={[]}
       />
     </div>

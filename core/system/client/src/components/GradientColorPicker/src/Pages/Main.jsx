@@ -5,7 +5,6 @@ import ColorCube from '../Components/ColorCube'
 import ColorPickers from '../Components/ColorPickers'
 import GradientSelection from '../Components/GradientSelection'
 import CodeOutput from '../Components/CodeOutput'
-import { MdContentCopy } from 'react-icons/md'
 import { observer } from 'mobx-react'
 import evaluate from '../Utility/evaluate';
 
