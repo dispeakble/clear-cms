@@ -68,9 +68,6 @@ class ViewPagesPreview extends React.Component {
 
   async loadPage(){
     const page_id = Number(this.props.location.pathObject[2]);
-    const page = await this.props.control.get({
-      id: page_id
-    });
     if(this.props.isLivePreview) {
       this.setState({
         page_id: page_id,
@@ -78,15 +75,17 @@ class ViewPagesPreview extends React.Component {
         pageConfig: this.props.pageConfig
       });
     } else {
+      const page = await this.props.control.get({
+        id: page_id
+      });
       this.setState({
         page_id: page_id,
         items: page.items,
         pageConfig: page.pageConfig
       });
-    }
-    let modalItems = {}
-    page.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el =>
-        modalItems[el.title + el.i] = {
+      let modalItems = {}
+      page.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el =>
+          modalItems[el.title + el.i] = {
             name: el.title,
             title: el.title,
             show: this.fetchPopupState(el.title + el.i, el.displayOptions.neverShowAfterClosing),
@@ -116,9 +115,10 @@ class ViewPagesPreview extends React.Component {
               label: el.displayOptions.actionButtonTitle,
             },
           })
-    this.setState({
-      modalItems: modalItems
-    })
+      this.setState({
+        modalItems: modalItems
+      })
+    }
   }
 
   switchBoxModalState = (el) => {

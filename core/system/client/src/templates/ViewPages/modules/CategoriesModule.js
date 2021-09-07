@@ -16,19 +16,17 @@ import Typography from "@material-ui/core/Typography";
 import {Checkbox, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-class SitemapModule extends Component {
+class CategoriesModule extends Component {
     state = {
-        displayOptions: [{
-            label: "Display as Complete List",
-            value: "displayAsCompleteList"
+        showImageAsOptions: [{
+            label: "Background",
+            value: "background"
         }, {
-            label: "Display as Categories and Pages",
-            value: "displayAsCategoriesAndPages"
+            label: "Thumbnail",
+            value: "thumbnail"
         }],
-        displayType: "displayAsCompleteList",
-        usePagination: false,
-        numberOfLinksPerPage: 5,
-        modalTitle: "Sitemap content",
+        displayType: "background",
+        categoriesPerPage: "4",
     };
 
     getTheme = () => {
@@ -55,12 +53,7 @@ class SitemapModule extends Component {
         if (this.props.moduleOptions.data) {
             await this.setAsyncState({
                 displayType: this.props.moduleOptions.data.displayType,
-            });
-            await this.setAsyncState({
-                usePagination: this.props.moduleOptions.data.usePagination,
-            });
-            await this.setAsyncState({
-                numberOfLinksPerPage: this.props.moduleOptions.data.numberOfLinksPerPage,
+                categoriesPerPage: this.props.moduleOptions.data.categoriesPerPage,
             });
         }
         await this.setAsyncState({
@@ -118,50 +111,47 @@ class SitemapModule extends Component {
                             }
                             className={this.props.classes.option}
                             value={
-                                this.state.displayOptions.find(option => option.value === this.state.displayType)
+                                this.state.showImageAsOptions.find(option => option.value === this.state.displayType)
                             }
-                            options={this.state.displayOptions}
+                            options={this.state.showImageAsOptions}
                             autoHighlight
                             getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
                             renderInput={(params) => (
                                 <TextField
                                     className={this.props.classes.textfield}
                                     {...params}
-                                    label="Select a Display Option"
+                                    label="Show Image as"
                                     variant="outlined"
                                 />
                             )}
                         />
-                        <Typography>
-                            <Checkbox
-                                checked={this.state.usePagination}
-                                onChange={(event, checked) => {
+                        <Autocomplete
+                            onChange={(event, categoriesPerPage) => categoriesPerPage &&
+                                this.setState({
+                                    categoriesPerPage: categoriesPerPage
+                                })
+                            }
+                            onInputChange={(event, value) =>{
                                     this.setState({
-                                        usePagination: checked,
-                                    });
-                                }}
-                            />
-                            Use Pagination
-                        </Typography>
-                        <Typography>
-                            <Typography>Number of Link Per Page</Typography>
-                            <TextField
-                                labelText="Number of link per Page"
-                                id="numberOfLinksPerPage"
-                                onChange={(e) => this.setState({
-                                    numberOfLinksPerPage: e.target.value
-                                })}
-                                disabled={!this.state.usePagination}
-                                InputProps={{
-                                    inputProps: {
-                                        value: this.state.numberOfLinksPerPage,
-                                        type: "number",
-                                        min: 5,
-                                        max: 20,
-                                    }
-                                }}
-                            />
-                        </Typography>
+                                        categoriesPerPage: value
+                                    })
+                                }
+                            }
+                            className={this.props.classes.option}
+                            value={this.state.categoriesPerPage}
+                            options={[...Array(10)].map((_, index) => (index + 1).toString())}
+                            freeSolo={true}
+                            autoHighlight
+                            renderInput={(params) => (
+                                <TextField
+                                    className={this.props.classes.textfield}
+                                    {...params}
+                                    type={"number"}
+                                    label="Categories Per Page"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
                     </DialogContent>
                     <DialogActions className={classes.modalFooter}>
                         <Button
@@ -170,8 +160,7 @@ class SitemapModule extends Component {
                             onClick={() => {
                                 this.props.handleSave(this.state.itemModuleEditId, {
                                     displayType: this.state.displayType,
-                                    usePagination: this.state.usePagination,
-                                    numberOfLinksPerPage: this.state.numberOfLinksPerPage
+                                    categoriesPerPage: this.state.categoriesPerPage
                                 });
                                 this.closeModuleOptionsModal();
                             }}
@@ -193,4 +182,4 @@ class SitemapModule extends Component {
     }
 }
 
-export default withStyles(styles)(SitemapModule);
+export default withStyles(styles)(CategoriesModule);
