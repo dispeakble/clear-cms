@@ -15,7 +15,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 
 import styles from "assets/jss/clear-crm/components/headerStyle.js";
 import CustomDropdown from "../CustomDropdown/CustomDropdown";
-import {withTheme} from "@material-ui/styles";
+import {withTheme} from "@material-ui/core/styles";
 import AboutModalContent from "./AboutModalContent";
 
 class Header extends Component {
@@ -162,9 +162,7 @@ class Header extends Component {
     }
   };
   render() {
-    const classes = this.props.classes;
-
-    const { color } = this.props;
+    const { color, classes } = this.props;
 
     const appBarClasses = classNames({
       [classes.appBar]: true,
@@ -231,7 +229,7 @@ class Header extends Component {
 export default withRouter(withTheme(withStyles(styles)(Header)));
 
 Header.defaultProp = {
-  color: "rgba(0,0,0,.87)",
+  color: "rgba(0,0,0,.87)"
 };
 
 Header.propTypes = {
@@ -243,9 +241,12 @@ Header.propTypes = {
   history: PropTypes.object,
   services: PropTypes.object,
   classes: PropTypes.object,
+  color: PropTypes.string,
+  handleDrawerToggle: PropTypes.func,
+  mobileOpen: PropTypes.bool,
   // this will cause the sidebar to change the color from
   // props.color (see above) to changeColorOnScroll.color
-  // when the window.pageYOffset is heigher or equal to
+  // when the window.pageYOffset is higher or equal to
   // changeColorOnScroll.height and then when it is smaller than
   // changeColorOnScroll.height change it back to
   // props.color (see above)
