@@ -3,6 +3,7 @@ import * as shortId from "shortid";
 import PropTypes from "prop-types";
 import Snackbar from "components/Snackbar/Snackbar.js";
 import ViewProducts from "../templates/ViewProducts/ViewProducts";
+import ViewProductEditor from "../templates/ViewProducts/ViewProductEditor";
 
 class ProductsController extends Component {
     state = {
@@ -14,7 +15,12 @@ class ProductsController extends Component {
         prefix: 'products/'
     };
     control = {
-        get: () => this.getData(),
+        get: (params) => this.getData(params),
+        edit: (params) => this.editData(params),
+        listCategories: (params) => this.listCategories(params),
+        add: (params) => this.add(params),
+        list: () => this.list(),
+        remove: (params) => this.remove(params)
     };
 
 
@@ -29,7 +35,102 @@ class ProductsController extends Component {
 
     }
 
-    async getData() {
+    list(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'products',
+                    act: 'list',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    getData(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'products',
+                    act: 'get',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    add(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'products',
+                    act: 'add',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    editData(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'products',
+                    act: 'edit',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    remove(params){
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'products',
+                    act: 'remove',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    listCategories(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'categories',
+                    act: 'list',
+                    payload: {
+                        where: params?.where
+                    }
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
     }
 
     onMessage(params) {
@@ -69,6 +170,17 @@ class ProductsController extends Component {
         })
     }
 
+    renderPages() {
+        switch (this.props.location.pathObject[1]) {
+            default:
+                return <ViewProducts control={this.control} {...this.props} />;
+            case 'edit':
+                return <ViewProductEditor control={this.control} {...this.props} />;
+            case 'add':
+                return <ViewProductEditor control={this.control} {...this.props} />;
+        }
+    }
+
     render() {
         return (
             <>
@@ -88,7 +200,7 @@ class ProductsController extends Component {
                         )
                     })
                 }
-                <ViewProducts control={this.control} {...this.props} />
+                {this.renderPages()}
             </>
         );
     }
