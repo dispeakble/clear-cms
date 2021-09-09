@@ -119,6 +119,23 @@ export class ProductsService {
                         await this.protocolService.sendMessage(payload).toPromise();
                     }
 
+                    const localityToProductPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'locality_to_products',
+                                data: {
+                                    product_id: product.data[0].id,
+                                    locality_id: params.localityId ? params.localityId : 0,
+                                }
+                            }
+                        }
+                    };
+                    await this.protocolService.sendMessage(localityToProductPayload).toPromise();
+
                     subscriber.next({
                         success: "The product was added",
                         data: {productId: product.data[0].id}
@@ -208,7 +225,7 @@ export class ProductsService {
                                 data: {
                                     what: 'products_to_categories',
                                     data: {
-                                        product_id: product.data[0].id,
+                                        product_id: params.id,
                                         category_id: params.categoryId,
                                     }
                                 }
@@ -216,6 +233,26 @@ export class ProductsService {
                         };
                         await this.protocolService.sendMessage(payload).toPromise();
                     }
+
+                    const localityToProductPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'set',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'locality_to_products',
+                                where: {
+                                    product_id: params.id
+                                },
+                                data: {
+                                    locality_id: params.localityId ? params.localityId : 0,
+                                }
+                            }
+                        }
+                    };
+
+                    await this.protocolService.sendMessage(localityToProductPayload).toPromise();
 
                     subscriber.next({
                         success: "The product was edited",
@@ -254,9 +291,16 @@ export class ProductsService {
 
                     const category = await this.getCategoryByProductId(params.id);
 
+                    //Fetch Locality based on product
+
+                    const locality = await this.getLocalityByProductId(params.id);
+
                     subscriber.next({
                         success: "The product fetched successfully",
-                        data: {...product.data[0], ...(category.data[0] && {categoryId: category.data[0].category_id})}
+                        data: {
+                            ...product.data[0],
+                            ...(category.data[0] && {categoryId: category.data[0].category_id}),
+                            ...(locality.data[0] && {localityId: locality.data[0].locality_id})}
                     });
                 } catch (err) {
                     subscriber.error(err);
@@ -341,6 +385,29 @@ export class ProductsService {
         const category = await this.protocolService.sendMessage(productsToCategoryPayload).toPromise();
 
         return category;
+    }
+
+    public async getLocalityByProductId(productId: number) {
+        //Fetch categories for product if it has
+        const localityToProductsPayload: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'get',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'locality_to_products',
+                    fields: ["locality_id"],
+                    where: {
+                        product_id: productId
+                    }
+                }
+            }
+        }
+
+        const locality = await this.protocolService.sendMessage(localityToProductsPayload).toPromise();
+
+        return locality;
     }
 
     public perform(data: any, config?: ModuleInterface) {
