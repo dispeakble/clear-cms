@@ -14,6 +14,7 @@ import { HelpService } from './services/help.service';
 import { DashboardBoxService } from "./services/dashboardBox.service";
 import { SitemapService } from "./services/sitemap.service";
 import { ProductsService } from "./services/products.service";
+import { ProductLabelsService } from "./services/productLabels.service";
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -55,7 +56,8 @@ import { MainService } from './services/main.service';
     HelpService,
     DashboardBoxService,
     SitemapService,
-    ProductsService
+    ProductsService,
+    ProductLabelsService
   ]
 })
 

@@ -47,7 +47,8 @@ export class ProtocolController {
         @Inject('GeneralSettingsService') private generalSettingsService,
         @Inject('DashboardBoxService') private dashboardBoxService,
         @Inject('SitemapService') private sitemapService,
-        @Inject('ProductsService') private productsService){
+        @Inject('ProductsService') private productsService,
+        @Inject('ProductLabelsService') private productLabelsService){
         this.mainService = this;
     }
 
