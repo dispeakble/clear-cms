@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Snackbar from "components/Snackbar/Snackbar.js";
 import ViewLabels from "../templates/ViewLabels/ViewLabels";
 
-class ProductsController extends Component {
+class LabelsController extends Component {
     state = {
         errorNotification : [],
     };
@@ -14,7 +14,10 @@ class ProductsController extends Component {
         prefix: 'labels/'
     };
     control = {
-        get: () => this.getData(),
+        list: () => this.list(),
+        edit: (params) => this.edit(params),
+        add: (params) => this.add(params),
+        remove: (params) => this.remove(params)
     };
 
 
@@ -29,7 +32,68 @@ class ProductsController extends Component {
 
     }
 
-    async getData() {
+    list(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLabels',
+                    act: 'list',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    add(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLabels',
+                    act: 'add',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    edit(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLabels',
+                    act: 'edit',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    remove(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLabels',
+                    act: 'remove',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
     }
 
     onMessage(params) {
@@ -47,19 +111,13 @@ class ProductsController extends Component {
             this.messageCallbacks[uniqueId] = resolve_send;
             this.services.ws.emit({
                 id: uniqueId,
-                channel: 'labels',
+                channel: 'product-labels',
                 module: params.module,
                 api: params.api,
                 act: params.act,
                 payload: params.payload
             });
         });
-    }
-
-    updateErrorNotification (errMsg) {
-        this.setState({
-            errorNotification : [...this.state.errorNotification, errMsg]
-        })
     }
 
     removeErrorNotification (errMsg) {
@@ -95,9 +153,9 @@ class ProductsController extends Component {
 
 }
 
-export default ProductsController;
+export default LabelsController;
 
-ProductsController.propTypes = {
+LabelsController.propTypes = {
     services: PropTypes.object,
     history: PropTypes.object,
 };
