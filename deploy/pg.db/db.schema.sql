@@ -558,7 +558,9 @@ CREATE TABLE public.products (
     description character varying,
     active smallint NOT NULL,
     added bigint NOT NULL,
-    last_edited bigint NOT NULL
+    last_edited bigint NOT NULL,
+    availability daterange,
+    unavailability daterange
 );
 
 

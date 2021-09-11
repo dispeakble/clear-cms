@@ -66,6 +66,9 @@ const styles = {
             marginLeft: 5
         }
     },
+    tabsMenu: {
+        marginBottom: 10
+    }
 }
 
 export default styles;

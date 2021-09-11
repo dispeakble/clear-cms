@@ -94,6 +94,8 @@ export class ProductsService {
                                     active: params.active ? 1 : 0,
                                     added: +new Date(),
                                     last_edited: +new Date(),
+                                    ...(params.availability[0] && params.availability[1]  && {availability: `[${params.availability[0]},${params.availability[1]})`}),
+                                    ...(params.unavailability[0] && params.unavailability[1] && {unavailability: `[${params.unavailability[0]},${params.unavailability[1]})`})
                                 }
                             }
                         }
@@ -169,6 +171,8 @@ export class ProductsService {
                                     description: params.description,
                                     active: params.active ? 1 : 0,
                                     last_edited: +new Date(),
+                                    ...(params.availability[0] && params.availability[1]  && {availability:`[${params.availability[0]}, ${params.availability[1]})`}),
+                                    ...(params.unavailability[0] && params.unavailability[1] && {unavailability:`[${params.unavailability[0]}, ${params.unavailability[1]})`})
                                 }
                             }
                         }
@@ -285,7 +289,23 @@ export class ProductsService {
                             }
                         }
                     };
-                    const product = await this.protocolService.sendMessage(payload).toPromise();
+                    let product = await this.protocolService.sendMessage(payload).toPromise();
+
+                    product = product.data[0];
+
+                    if(product.availability) {
+                        product = {
+                            ...product,
+                            availability: this.convertDateRange(product.availability)
+                        }
+                    }
+
+                    if(product.unavailability) {
+                        product = {
+                            ...product,
+                            unavailability: this.convertDateRange(product.unavailability)
+                        }
+                    }
 
                     //Fetch categories for product
 
@@ -298,7 +318,7 @@ export class ProductsService {
                     subscriber.next({
                         success: "The product fetched successfully",
                         data: {
-                            ...product.data[0],
+                            ...product,
                             ...(category.data[0] && {categoryId: category.data[0].category_id}),
                             ...(locality.data[0] && {localityId: locality.data[0].locality_id})}
                     });
@@ -408,6 +428,10 @@ export class ProductsService {
         const locality = await this.protocolService.sendMessage(localityToProductsPayload).toPromise();
 
         return locality;
+    }
+
+    private convertDateRange(dateRange) {
+        return dateRange.slice(1, dateRange.length - 1).split(",")
     }
 
     public perform(data: any, config?: ModuleInterface) {
