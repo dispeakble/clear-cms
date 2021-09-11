@@ -16,6 +16,7 @@ import { SitemapService } from "./services/sitemap.service";
 import { ProductsService } from "./services/products.service";
 import { ProductLabelsService } from "./services/productLabels.service";
 import { ProductLocalityService } from "./services/productLocality.service";
+import { ProductPricesService } from "./services/productPrices.service";
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -59,7 +60,8 @@ import { MainService } from './services/main.service';
     SitemapService,
     ProductsService,
     ProductLabelsService,
-    ProductLocalityService
+    ProductLocalityService,
+    ProductPricesService
   ]
 })
 

@@ -14,7 +14,11 @@ class PricesController extends Component {
         prefix: 'prices/'
     };
     control = {
-        get: () => this.getData(),
+        list: () => this.list(),
+        edit: (params) => this.edit(params),
+        add: (params) => this.add(params),
+        remove: (params) => this.remove(params),
+        listProducts: (params) => this.listProducts(params)
     };
 
 
@@ -29,7 +33,84 @@ class PricesController extends Component {
 
     }
 
-    async getData() {
+    async listProducts(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'products',
+                    act: 'list',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    list(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productPrices',
+                    act: 'list',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    add(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productPrices',
+                    act: 'add',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    edit(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productPrices',
+                    act: 'edit',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    remove(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productPrices',
+                    act: 'remove',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
     }
 
     onMessage(params) {
@@ -54,12 +135,6 @@ class PricesController extends Component {
                 payload: params.payload
             });
         });
-    }
-
-    updateErrorNotification (errMsg) {
-        this.setState({
-            errorNotification : [...this.state.errorNotification, errMsg]
-        })
     }
 
     removeErrorNotification (errMsg) {

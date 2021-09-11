@@ -669,6 +669,34 @@ CREATE TABLE public.locality_to_products (
 
 ALTER TABLE public.locality_to_products OWNER TO cms;
 
+-- Prices to Products
+CREATE SEQUENCE public.prices_to_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.prices_to_products_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.prices_to_products (
+    id integer DEFAULT nextval('public.prices_to_products_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    currency smallint NOT NULL,
+    value integer NOT NULL,
+    active smallint NOT NULL
+);
+
+
+ALTER TABLE public.prices_to_products OWNER TO cms;
+
+
+
 --
 -- TOC entry 2872 (class 2604 OID 24775)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: cms
@@ -840,6 +868,14 @@ ALTER TABLE ONLY public.localities
 
 ALTER TABLE ONLY public.locality_to_products
     ADD CONSTRAINT locality_to_products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: prices_to_products prices_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.prices_to_products
+    ADD CONSTRAINT prices_to_products_pkey PRIMARY KEY (id);
 
 --
 -- TOC entry 2875 (class 1259 OID 16575)
