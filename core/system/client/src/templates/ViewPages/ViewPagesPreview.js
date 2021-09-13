@@ -319,8 +319,8 @@ class ViewPagesPreview extends React.Component {
                   fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,
                   color: this.state.pageConfig.textColor,
-                  // new update
-                    minHeight: '100vh'
+                  // update
+                  minHeight: '100vh'
                 }}
               >
                 <ResponsiveReactGridLayout
@@ -342,8 +342,8 @@ class ViewPagesPreview extends React.Component {
                 >
                   {/* New addition: || this.state.items !== null || this.state.items.length !== 0*/}
                   {this.state.items || this.state.items !== null || this.state.items.length !== 0
-                    ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
-                    : ""}
+                      ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
+                      : ""}
                 </ResponsiveReactGridLayout>
               </div>
             </div>
