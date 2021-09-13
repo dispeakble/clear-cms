@@ -619,6 +619,56 @@ CREATE TABLE public.product_labels (
 
 ALTER TABLE public.product_labels OWNER TO cms;
 
+-- Products Localities
+CREATE SEQUENCE public.localities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.localities_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.localities (
+    id integer DEFAULT nextval('public.localities_id_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    country_id character varying NOT NULL,
+    gps character varying,
+    active smallint NOT NULL
+);
+
+
+ALTER TABLE public.localities OWNER TO cms;
+
+-- Locality to Products
+CREATE SEQUENCE public.locality_to_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.locality_to_products_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.locality_to_products (
+    id integer DEFAULT nextval('public.locality_to_products_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    locality_id integer NOT NULL
+);
+
+
+ALTER TABLE public.locality_to_products OWNER TO cms;
+
 --
 -- TOC entry 2872 (class 2604 OID 24775)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: cms
@@ -776,6 +826,23 @@ ALTER TABLE ONLY public.product_labels
     ADD CONSTRAINT products_labels_pkey PRIMARY KEY (id);
 
 --
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: localities localities_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.localities
+    ADD CONSTRAINT localities_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: locality_to_products locality_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.locality_to_products
+    ADD CONSTRAINT locality_to_products_pkey PRIMARY KEY (id);
+
+--
+
 -- TOC entry 2875 (class 1259 OID 16575)
 -- Name: email_idx; Type: INDEX; Schema: public; Owner: cms
 --

@@ -17,10 +17,11 @@ class ProductsController extends Component {
     control = {
         get: (params) => this.getData(params),
         edit: (params) => this.editData(params),
-        listCategories: (params) => this.listCategories(params),
         add: (params) => this.add(params),
         list: () => this.list(),
-        remove: (params) => this.remove(params)
+        remove: (params) => this.remove(params),
+        listCategories: (params) => this.listCategories(params),
+        listLocalities: (params) => this.listLocalities(params)
     };
 
 
@@ -125,6 +126,22 @@ class ProductsController extends Component {
                     payload: {
                         where: params?.where
                     }
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    listLocalities(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLocality',
+                    act: 'list',
+                    payload: params
                 });
                 resolve(response)
             } catch (err) {

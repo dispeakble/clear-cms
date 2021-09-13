@@ -164,19 +164,19 @@ class Labels extends Component {
                     type: "string",
                     field: "title",
                     title: "Title",
-                    validate: rowData => rowData.title !== ""
+                    validate: rowData => (rowData.title && rowData.title !== "")
                 },
                 {
                     type: "string",
                     field: "value",
                     title: "Value",
-                    validate: rowData => rowData.value !== ""
+                    validate: rowData => (rowData.value && rowData.value !== "")
                 },
                 {
                     type: "string",
                     field: "description",
                     title: "Description",
-                    validate: rowData => rowData.description !== ""
+                    validate: rowData => (rowData.description && rowData.description !== "")
                 },
                 {
                     type: "string",

@@ -65,10 +65,12 @@ class ViewProductEditor extends React.PureComponent {
             },
         },
         categories: [],
+        localities: [],
         title: "",
         description: "",
         flatCategories: [],
         currentCategory: "",
+        currentLocality: "",
         active: false,
         discardModal: {
             name: "discardModal",
@@ -112,6 +114,17 @@ class ViewProductEditor extends React.PureComponent {
             await this.getAllCategories();
         }
 
+        let localityFromStorage = await this.props.control.listLocalities();
+
+        if (localityFromStorage) {
+            localityFromStorage = localityFromStorage.map((locality) => ({
+                id: locality.id,
+                title: locality.title
+            }));
+
+            await this.setAsyncState({localities: localityFromStorage});
+        }
+
         let editing = this.state.editing;
         let product_id = this.props.location.pathObject[2];
         if(editing) {
@@ -125,7 +138,13 @@ class ViewProductEditor extends React.PureComponent {
 
             if(productDetails.categoryId) {
                 await this.setAsyncState({
-                    currentCategory: this.getCategoryItem(productDetails.categoryId)
+                    currentCategory: this.getCategoryItem(productDetails.categoryId),
+                })
+            }
+
+            if(productDetails.localityId) {
+                await this.setAsyncState({
+                    currentLocality: this.getLocalityItem(productDetails.localityId),
                 })
             }
         }
@@ -168,7 +187,8 @@ class ViewProductEditor extends React.PureComponent {
             title: this.state.title,
             description: this.state.description,
             active: this.state.active,
-            categoryId: this.state.categoryId
+            categoryId: this.state.currentCategory && this.state.currentCategory.id,
+            localityId: this.state.currentLocality && this.state.currentLocality.id
         }
     }
 
@@ -249,8 +269,16 @@ class ViewProductEditor extends React.PureComponent {
             ];
     }
 
+    getLocalityItem(id) {
+        return this.state.localities[
+            this.state.localities.findIndex((locality) => {
+                return locality.id === id;
+            })
+            ];
+    }
+
     render() {
-        console.log("category", this.state.currentCategory)
+        console.log("state", this.state)
         const productActions = [
             {
                 callback: () => {
@@ -384,6 +412,27 @@ class ViewProductEditor extends React.PureComponent {
                                                     <TextField
                                                         className={this.props.classes.textfield}
                                                         label="Select a category"
+                                                        {...params}
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
+                                        </div>
+                                        <div>
+                                            <Autocomplete
+                                                id="localityDropdown"
+                                                onChange={async (event, locality) => await this.setAsyncState({
+                                                    currentLocality: locality,
+                                                })}
+                                                className={this.props.classes.option}
+                                                value={this.state.currentLocality}
+                                                options={this.state.localities}
+                                                autoHighlight
+                                                getOptionLabel={(option) => option.title || ""}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        className={this.props.classes.textfield}
+                                                        label="Select a Locality"
                                                         {...params}
                                                         variant="outlined"
                                                     />

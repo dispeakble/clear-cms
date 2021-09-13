@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
 
 @Injectable()
-export class ProductLabelsService {
+export class ProductLocalityService {
 
     private methods = ["list", "add", "remove", "edit", "get"];
 
@@ -23,7 +23,7 @@ export class ProductLabelsService {
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'product_labels',
+                                what: 'localities',
                                 fields: ["*"]
                             }
                         }
@@ -31,7 +31,7 @@ export class ProductLabelsService {
 
                     const response = await this.protocolService.sendMessage(payload).toPromise();
 
-                    subscriber.next({type: "label_list", data: response.data});
+                    subscriber.next({type: "locality_list", data: response.data});
                 } catch (err) {
                     subscriber.error(err);
                 } finally {
@@ -52,23 +52,22 @@ export class ProductLabelsService {
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'product_labels',
+                                what: 'localities',
                                 data: {
                                     title: params.title,
-                                    value: params.value,
-                                    description: params.description,
-                                    type: params.type,
+                                    country_id: params.country_id,
+                                    gps: params.gps,
                                     active: params.active ? 1 : 0
                                 }
                             }
                         }
                     };
 
-                    const label = await this.protocolService.sendMessage(payload).toPromise();
+                    const locality = await this.protocolService.sendMessage(payload).toPromise();
 
                     subscriber.next({
-                        success: "The label was added",
-                        data: {labelId: label.data[0]}
+                        success: "The locality was added",
+                        data: {labelId: locality.data[0]}
                     });
                 } catch (err) {
                     subscriber.error(err);
@@ -90,25 +89,24 @@ export class ProductLabelsService {
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'product_labels',
+                                what: 'localities',
                                 where: {
                                     id: params.id
                                 },
                                 data: {
                                     title: params.title,
-                                    value: params.value,
-                                    description: params.description,
-                                    type: params.type,
+                                    country_id: params.country_id,
+                                    gps: params.gps,
                                     active: params.active ? 1 : 0
                                 }
                             }
                         }
                     };
 
-                    const label = await this.protocolService.sendMessage(payload).toPromise();
+                    const locality = await this.protocolService.sendMessage(payload).toPromise();
 
                     subscriber.next({
-                        success: "The label was edited",
+                        success: "The locality was edited",
                         data: { labelId: params.id }
                     });
                 } catch (err) {
@@ -131,18 +129,18 @@ export class ProductLabelsService {
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'product_labels',
+                                what: 'localities',
                                 where: {
                                     id: params.id
                                 }
                             }
                         }
                     };
-                    const label = await this.protocolService.sendMessage(payload).toPromise();
+                    const locality = await this.protocolService.sendMessage(payload).toPromise();
 
                     subscriber.next({
-                        success: "The label fetched successfully",
-                        data: label.data[0]
+                        success: "The locality fetched successfully",
+                        data: locality.data[0]
                     });
                 } catch (err) {
                     subscriber.error(err);
@@ -164,7 +162,7 @@ export class ProductLabelsService {
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'product_labels',
+                                what: 'localities',
                                 how: 'OR',
                                 where: {
                                     id: params.id
@@ -176,7 +174,7 @@ export class ProductLabelsService {
                     await this.protocolService.sendMessage(payload).toPromise();
 
                     subscriber.next({
-                        success: "The label/s deleted",
+                        success: "The locality/s deleted",
                         data: {}
                     });
                 } catch (err) {
@@ -192,7 +190,7 @@ export class ProductLabelsService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
-            console.log("System.productLabelsService." + data.act + " not found");
+            console.log("System.productLocalityService." + data.act + " not found");
         }
         return null;
     }

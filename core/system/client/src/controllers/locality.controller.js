@@ -14,7 +14,10 @@ class LocalityController extends Component {
         prefix: 'locality/'
     };
     control = {
-        get: () => this.getData(),
+        list: () => this.list(),
+        edit: (params) => this.edit(params),
+        add: (params) => this.add(params),
+        remove: (params) => this.remove(params)
     };
 
 
@@ -29,7 +32,68 @@ class LocalityController extends Component {
 
     }
 
-    async getData() {
+    list(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLocality',
+                    act: 'list',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    add(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLocality',
+                    act: 'add',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    edit(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLocality',
+                    act: 'edit',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    remove(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLocality',
+                    act: 'remove',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
     }
 
     onMessage(params) {
