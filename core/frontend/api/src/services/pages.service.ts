@@ -233,6 +233,7 @@ export class PagesService {
                                 id: box.id,
                                 module: box.module,
                                 moduleOptions: JSON.parse(box.moduleoptions),
+                                displayOptions: JSON.parse(box.displayoptions),
                                 showScrollbars: !!box.showscrollbars,
                                 title: box.title,
                                 x: box.x,

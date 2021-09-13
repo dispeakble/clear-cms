@@ -22,7 +22,7 @@ const styles = {
     },
     tableCells: {
         fontSize: "90%",
-    },
+    }
 };
 
 export default  styles

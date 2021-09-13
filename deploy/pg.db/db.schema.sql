@@ -842,6 +842,7 @@ ALTER TABLE ONLY public.locality_to_products
     ADD CONSTRAINT locality_to_products_pkey PRIMARY KEY (id);
 
 --
+
 -- TOC entry 2875 (class 1259 OID 16575)
 -- Name: email_idx; Type: INDEX; Schema: public; Owner: cms
 --
