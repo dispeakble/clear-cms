@@ -225,13 +225,11 @@ class ViewPagesPreview extends React.Component {
           : "";
         style.top = "0";
       }
-
       if (LazyComponentName) {
         LazyComponent = React.lazy(() =>
           import(`./modulesPreviews/${LazyComponentName}`)
         );
       }
-
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
@@ -295,11 +293,10 @@ class ViewPagesPreview extends React.Component {
 
   render() {
     const classes = this.props.classes;
-
-    if (this.state.items === null || this.state.items.length === 0) {
-      return "";
-    }
-
+    // removed part
+    // if (this.state.items === null || this.state.items.length === 0) {
+    //   return "";
+    // }
     return (
       <React.Fragment>
         <Helmet>
@@ -322,6 +319,8 @@ class ViewPagesPreview extends React.Component {
                   fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,
                   color: this.state.pageConfig.textColor,
+                  // new update
+                    minHeight: '100vh'
                 }}
               >
                 <ResponsiveReactGridLayout
@@ -341,7 +340,8 @@ class ViewPagesPreview extends React.Component {
                   cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                   useCSSTransforms={false}
                 >
-                  {this.state.items
+                  {/* New addition: || this.state.items !== null || this.state.items.length !== 0*/}
+                  {this.state.items || this.state.items !== null || this.state.items.length !== 0
                     ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
                     : ""}
                 </ResponsiveReactGridLayout>

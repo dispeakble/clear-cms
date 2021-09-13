@@ -104,9 +104,13 @@ class MenuModule extends Component {
       fontFamily: this.props.style.fontFamily || "inherit",
     };
 
-    let linksList = this.props.element.moduleOptions.data.links.filter(
-      (link) => !link.parentId
-    );
+    // let linksList = this.props.element.moduleOptions.data.links.filter(
+    //   (link) => !link.parentId
+    // );
+      let linksList = this.props.element.moduleOptions.data.links ?
+          this.props.element.moduleOptions.data.links.filter(
+              (link) => !link.parentId
+          ) : [];
     let isVertical = this.props.element.moduleOptions.data.isVertical;
     let showAsAccordion = this.props.element.moduleOptions.data.showAsAccordion;
     let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
