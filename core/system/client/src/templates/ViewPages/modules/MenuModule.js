@@ -129,13 +129,14 @@ class MenuModule extends Component {
     new Promise((resolve) => this.setState(newState, resolve));
 
   sendStyles = (targetedColor) => {
+    let {r, g, b, a} = targetedColor
     return reactCSS({
       default: {
         color: {
           width: "36px",
           height: "14px",
           borderRadius: "2px",
-          background: targetedColor,
+          background: `rgba(${r}, ${g}, ${b}, ${a})`,
         },
         swatch: {
           padding: "5px",
