@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {createTheme, withStyles} from "@material-ui/core/styles";
+
 import styles from "assets/jss/clear-crm/views/products.js";
 
 import { Helmet } from "react-helmet";
