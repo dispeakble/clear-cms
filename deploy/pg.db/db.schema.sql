@@ -536,6 +536,58 @@ CREATE TABLE public.dashboard_box (
     showscrollbars smallint
 );
 
+-- Products
+CREATE SEQUENCE public.product_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.product_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.products (
+    id integer DEFAULT nextval('public.product_id_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    description character varying,
+    active smallint NOT NULL,
+    added bigint NOT NULL,
+    last_edited bigint NOT NULL
+);
+
+
+ALTER TABLE public.products OWNER TO cms;
+
+-- Products_to_categories
+CREATE SEQUENCE public.product_to_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.product_to_categories_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.products_to_categories (
+    id integer DEFAULT nextval('public.product_to_categories_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    category_id integer NOT NULL
+);
+
+
+ALTER TABLE public.products_to_categories OWNER TO cms;
 
 --
 -- TOC entry 2872 (class 2604 OID 24775)
@@ -668,6 +720,22 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.dashboard_box
     ADD CONSTRAINT dashboard_box_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.products_to_categories
+    ADD CONSTRAINT products_to_categories_pkey PRIMARY KEY (id);
 
 --
 -- TOC entry 2875 (class 1259 OID 16575)
