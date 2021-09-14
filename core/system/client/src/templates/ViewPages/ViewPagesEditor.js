@@ -1350,8 +1350,7 @@ class ViewPagesEditor extends React.PureComponent {
                       }}
                       inputProps={{
                         inputProps: {
-                          minLength: "3",
-                          maxLength: "50",
+                          minLength: "1"
                         },
                         value: this.state.pageTitle,
                         type: "text",
