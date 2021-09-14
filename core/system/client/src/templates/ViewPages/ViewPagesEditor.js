@@ -58,6 +58,8 @@ import ViewBoxEditor from "./ViewBoxEditor";
 import Modal from "../../components/Modal/Modal";
 import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
+import defaultStore from "../../components/GradientColorPicker/src/defaultStore";
+import chroma from "chroma-js";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -163,11 +165,22 @@ class ViewPagesEditor extends React.PureComponent {
       confirmButton: {
         show: true,
         callback: () => {
-          this.setState((prevState) =>{
-            return{
+          this.setState((prevState) => {
+            let selected = defaultStore.gradients[0]
+            let linearGradient = chroma
+                .scale(selected.colors)
+                .mode(selected.mode)
+                .colors(selected.grades)
+            let bStyle = {
+              background: `linear-gradient(${
+                  selected.degrees.length === 0 ? '160' : selected.degrees
+              }deg,${linearGradient.toString()})`,
+              width: '100%'
+            }
+            return {
               ...prevState,
               showBgGradientColorPickerModal: false,
-              bgGradientColor: prevState.gradientColor
+              bgGradientColor: prevState.gradientColor ? prevState.gradientColor : bStyle.background
             }
           });
         },
