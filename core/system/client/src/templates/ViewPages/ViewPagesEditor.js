@@ -59,6 +59,8 @@ import Modal from "../../components/Modal/Modal";
 import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
 import ViewBoxesFromTemplate from "./ViewBoxesFromTemplate";
+import defaultStore from "../../components/GradientColorPicker/src/defaultStore";
+import chroma from "chroma-js";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -154,7 +156,8 @@ class ViewPagesEditor extends React.PureComponent {
     bgGradientColorPickerModal: {
       name: "bgGradientColorPickerModal",
       title: "Gradient Color Picker",
-      content: <GradientPicker selectColor={(color) => this.setState({
+      content: <GradientPicker selectColor={
+        (color) => this.setState({
         gradientColor: color
       })} />,
       closeButton: {
@@ -166,11 +169,22 @@ class ViewPagesEditor extends React.PureComponent {
       confirmButton: {
         show: true,
         callback: () => {
-          this.setState((prevState) =>{
-            return{
+          this.setState((prevState) => {
+            let selected = defaultStore.gradients[0]
+            let linearGradient = chroma
+                .scale(selected.colors)
+                .mode(selected.mode)
+                .colors(selected.grades)
+            let bStyle = {
+              background: `linear-gradient(${
+                  selected.degrees.length === 0 ? '160' : selected.degrees
+              }deg,${linearGradient.toString()})`,
+              width: '100%'
+            }
+            return {
               ...prevState,
               showBgGradientColorPickerModal: false,
-              bgGradientColor: prevState.gradientColor
+              bgGradientColor: prevState.gradientColor ? prevState.gradientColor : bStyle.background
             }
           });
         },
@@ -1099,7 +1113,6 @@ class ViewPagesEditor extends React.PureComponent {
     let pickerColor = Object.assign({}, this.state[styles].color);
 
     pickerColor.background = this.state[targetedColor];
-
     return (
       <div>
         <div
@@ -1136,7 +1149,7 @@ class ViewPagesEditor extends React.PureComponent {
     let pickerColor = Object.assign({}, this.state[styles].color);
 
     pickerColor.background = this.state[targetedColor];
-
+    //TODO figure out a way to set the state when this is displayed
     return (
         <div>
           <div
