@@ -1,13 +1,5 @@
 version: '3.3'
 services:
-  crm-bucket:
-    container_name: crm-bucket
-    working_dir: /usr/src/app
-    build:
-      context: ./plugins/dosido/bucket
-      dockerfile: Dockerfile
-    image:
-      dispeakble/crm-bucket:${CRM_IMG_TAG}
   crm-hub:
     container_name: crm-hub
     working_dir: /usr/src/app
@@ -16,14 +8,6 @@ services:
       dockerfile: Dockerfile
     image:
       dispeakble/crm-hub:${CRM_IMG_TAG}
-  crm-system:
-    container_name: crm-system
-    working_dir: /usr/src/app
-    build:
-      context: ./core/system
-      dockerfile: Dockerfile
-    image:
-      dispeakble/crm-system:${CRM_IMG_TAG}
   crm-db:
     container_name: crm-db
     working_dir: /usr/src/app
@@ -32,14 +16,14 @@ services:
       dockerfile: Dockerfile
     image:
       dispeakble/crm-db:${CRM_IMG_TAG}
-  crm-proxy:
-    container_name: crm-proxy
-    working_dir: /usr/src/api
+  crm-bucket:
+    container_name: crm-bucket
+    working_dir: /usr/src/app
     build:
-      context: ./core/proxy
+      context: ./plugins/dosido/bucket
       dockerfile: Dockerfile
     image:
-      dispeakble/crm-proxy:${CRM_IMG_TAG}
+      dispeakble/crm-bucket:${CRM_IMG_TAG}
   crm-frontend-api:
     container_name: crm-frontend-api
     working_dir: /usr/src/app
@@ -56,6 +40,22 @@ services:
       dockerfile: Dockerfile
     image:
       dispeakble/crm-frontend-proxy:${CRM_IMG_TAG}
+  crm-system:
+    container_name: crm-system
+    working_dir: /usr/src/app
+    build:
+      context: ./core/system
+      dockerfile: Dockerfile
+    image:
+      dispeakble/crm-system:${CRM_IMG_TAG}
+  crm-proxy:
+    container_name: crm-proxy
+    working_dir: /usr/src/api
+    build:
+      context: ./core/proxy
+      dockerfile: Dockerfile
+    image:
+      dispeakble/crm-proxy:${CRM_IMG_TAG}
 #  crm-dev:
 #    container_name: crm-dev
 #    working_dir: /usr/src/app
