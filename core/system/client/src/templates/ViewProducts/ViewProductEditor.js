@@ -1,0 +1,584 @@
+import React  from "react";
+import {
+    MuiThemeProvider,
+    withStyles,
+} from "@material-ui/core/styles";
+import styles from "assets/jss/clear-crm/views/productEdit.js";
+import {
+    Settings,
+    InfoSharp
+} from "@material-ui/icons";
+import Button from "components/CustomButtons/Button.js";
+import CustomInput from "components/CustomInput/CustomInput.js";
+import MoreMenu from "components/MoreMenu/MoreMenu.js";
+import Typography from "@material-ui/core/Typography";
+import { withRouter } from "react-router-dom";
+import Snackbar from "components/Snackbar/Snackbar.js";
+
+import { Helmet } from "react-helmet";
+
+// for the modal
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Tooltip from "@material-ui/core/Tooltip";
+
+// for speed dial
+import Switch from "@material-ui/core/Switch";
+
+// for the dropdown inside each field
+import {AppBar, Tab, Tabs, TextField} from "@material-ui/core";
+import Autocomplete, {
+    createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
+
+import Modal from "../../components/Modal/Modal";
+import PropTypes from "prop-types";
+import {Editor} from "@tinymce/tinymce-react";
+import CustomDateRangePicker from "../../components/CustomDateRangePicker/CustomDateRangePicker";
+
+const filter = createFilterOptions();
+
+class ViewProductEditor extends React.PureComponent {
+    static defaultProps = {
+        className: "layout",
+        cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
+        rowHeight: 1,
+        transformScale: 1,
+    };
+
+    state = {
+        showDiscardModal: false,
+        showSavedMessage: false,
+        showProductOptionsModal: this.props.location.pathname.indexOf("edit") === -1,
+        editing: this.props.location.pathname.indexOf("edit") > -1,
+        editProduct: "",
+        speedDialState: false,
+        activeTab: 0,
+        config: {
+            layoutBoxSpacing: [10, 10],
+            layoutBoxPadding: {
+                lg: [0, 0],
+                md: [0, 0],
+                sm: [0, 0],
+                xs: [0, 0],
+                xxs: [0, 0],
+            },
+        },
+        categories: [],
+        localities: [],
+        title: "",
+        description: "",
+        flatCategories: [],
+        currentCategory: "",
+        currentLocality: "",
+        active: false,
+        availability: ["", ""],
+        unavailability: ["", ""],
+        discardModal: {
+            name: "discardModal",
+            title: "Discard Modal",
+            content: "Are you sure you want to proceed ?",
+            closeButton: {
+                callback: () => {
+                    this.setState({ showDiscardModal: false });
+                },
+                label: "Cancel",
+            },
+            confirmButton: {
+                callback: () => {
+                    this.props.history.push("/products");
+                },
+                label: "Proceed",
+            },
+        },
+    };
+
+    muiTheme = {};
+    setAsyncState = (newState) =>
+        new Promise((resolve) => this.setState(newState, resolve));
+
+    async componentDidMount() {
+        let categoriesFromStorage = await this.props.control.listCategories();
+
+        let categories = this.state.categories;
+
+        if (categoriesFromStorage) {
+            categoriesFromStorage.map((category) => {
+                categories.push({
+                    label: category.title,
+                    id: category.id,
+                    parentid: category.parentid,
+                });
+                return category;
+            });
+            await this.setAsyncState({categories});
+
+            await this.getAllCategories();
+        }
+
+        let localityFromStorage = await this.props.control.listLocalities();
+
+        if (localityFromStorage) {
+            localityFromStorage = localityFromStorage.map((locality) => ({
+                id: locality.id,
+                title: locality.title
+            }));
+
+            await this.setAsyncState({localities: localityFromStorage});
+        }
+
+        let editing = this.state.editing;
+        let product_id = this.props.location.pathObject[2];
+        if(editing) {
+            const productDetails = await this.props.control.get({id: product_id})
+            await this.setAsyncState({
+                editProduct: productDetails.id,
+                title: productDetails.title,
+                description: productDetails.description,
+                active: productDetails.active,
+                availability: productDetails.availability ? productDetails.availability : ["", ""],
+                unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""],
+            })
+
+            if(productDetails.categoryId) {
+                await this.setAsyncState({
+                    currentCategory: this.getCategoryItem(productDetails.categoryId),
+                })
+            }
+
+            if(productDetails.localityId) {
+                await this.setAsyncState({
+                    currentLocality: this.getLocalityItem(productDetails.localityId),
+                })
+            }
+        }
+    }
+
+    getAllCategories = async () => {
+        let result = [];
+
+        if (this.state.categories.length) {
+            let links = this.state.categories;
+            links.map((el) => {
+                let linkName = el.label;
+                if (el.parentid) {
+                    linkName = this.getCategoriesNested(el.parentid) + "/" + el.label;
+                }
+                result.push({
+                    id: el.id,
+                    label: linkName,
+                });
+                return el;
+            });
+
+            await this.setAsyncState({
+                flatCategories: result,
+            });
+        }
+    };
+
+    getCategoriesNested(id) {
+        let link = this.state.categories.find((el) => el.id === id);
+        let result = link.label || "";
+        if (link && link.parentid) {
+            result = this.getCategoriesNested(link.parentid) + "/" + result;
+        }
+        return result;
+    }
+
+    prepareProductProperties() {
+        return {
+            title: this.state.title,
+            description: this.state.description,
+            active: this.state.active,
+            categoryId: this.state.currentCategory && this.state.currentCategory.id,
+            localityId: this.state.currentLocality && this.state.currentLocality.id,
+            availability: this.state.availability,
+            unavailability: this.state.unavailability
+        }
+    }
+
+    handleInputChange = async (event) => {
+        if(event.target.id) {
+            this.setAsyncState({
+                [event.target.id]: event.target.value
+            })
+        }
+    };
+
+    saveProduct = async () => {
+        let productProperties = this.prepareProductProperties();
+
+        if (this.state.editing) {
+            await this.props.control.edit({ ...productProperties, id: this.state.editProduct });
+
+            this.setState({
+                showSavedMessage: true
+            });
+
+            setTimeout(() => {
+                this.setState({
+                    showSavedMessage: false
+                })
+            }, 3000);
+
+        } else {
+            const productData = await this.props.control.add(productProperties);
+
+            if(productData) {
+                this.props.history.push(`/products/edit/${productData.productId}`);
+            }
+        }
+    };
+
+    handleCategory = async (event, category) => {
+
+        await this.setAsyncState({
+            categoryId: category.id
+        });
+
+        if(category.id) {
+            await this.setAsyncState({
+                currentCategory: this.getCategoryItem(category.id)
+            });
+        }
+
+        if (!category.id) {
+            this.setState({
+                openNewCategory: true,
+                dialogValue: {
+                    title: category.value,
+                },
+            });
+        }
+    };
+
+    handleCategoryUniqueness = async (event) => {
+        if(!event?.target?.value?.length) {
+            return null;
+        }
+        let categoriesFromStorage = await this.props.control.listCategories({
+            where: {
+                title: event.target.value
+            }
+        });
+        this.setState({
+            isUniqueTitle: !categoriesFromStorage?.length
+        });
+    };
+
+    getCategoryItem(id) {
+        return this.state.categories[
+            this.state.categories.findIndex((category) => {
+                return category.id === id;
+            })
+            ];
+    }
+
+    getLocalityItem(id) {
+        return this.state.localities[
+            this.state.localities.findIndex((locality) => {
+                return locality.id === id;
+            })
+            ];
+    }
+
+    render() {
+        console.log("state", this.state)
+        const productActions = [
+            {
+                callback: () => {
+                    this.setState({
+                        showProductOptionsModal: true
+                    })
+                },
+                icon: <Settings
+                    className={this.props.classes.rightSideIcon}
+                    color="primary"
+                />,
+                name: "Product options",
+            },
+        ];
+        return (
+            <React.Fragment>
+                <Helmet>
+                    <title>{this.state.editing ? "Edit Product" : "Add Product"}</title>
+                </Helmet>
+                <div
+                    style={{
+                        marginTop: "60px",
+                        paddingBottom: "130px",
+                        paddingLeft: this.state.pageTransitionPadding,
+                    }}
+                >
+                    <MuiThemeProvider theme={this.muiTheme}>
+                        <Dialog
+                            open={this.state.showProductOptionsModal}
+                            TransitionComponent={this.transition}
+                            keepMounted
+                            aria-labelledby="product-options-modal-slide-title"
+                            aria-describedby="product-options-modal-slide-description"
+                            classes={{
+                                root: this.props.classes.center,
+                                paper: this.props.classes.modalPageOptions
+                            }}
+                        >
+                            <DialogTitle
+                                id="product-options-modal-slide-title"
+                                disableTypography
+                                className={this.props.classes.modalHeader}
+                            >
+                                <h4 className={this.props.classes.modalTitle}>
+                                    Product options
+                                </h4>
+                            </DialogTitle>
+                            <DialogContent
+                                id="product-options-modal-slide-description"
+                                className={this.props.classes.modalBodyPageOptions}
+                            >
+                                <div className={this.props.classes.productTitleInputWrapper}>
+                                    <CustomInput
+                                        labelText={"Product Title"}
+                                        id="title"
+                                        required="required"
+                                        formControlProps={{
+                                            fullWidth: true,
+                                            onChange: (event) => this.handleInputChange(event),
+                                        }}
+                                        inputProps={{
+                                            inputProps: {
+                                                minLength: "3",
+                                                maxLength: "50",
+                                            },
+                                            value: this.state.title,
+                                            type: "text",
+                                        }}
+                                    />
+                                </div>
+                                <AppBar className={this.props.classes.tabsMenu} position="static" color="default">
+                                    <Tabs
+                                        value={this.state.activeTab}
+                                        onChange={(e, value) => this.setState({
+                                            activeTab: value
+                                        })}
+                                        indicatorColor="primary"
+                                        textColor="primary"
+                                        variant="scrollable"
+                                        scrollButtons="auto"
+                                        aria-label="scrollable auto tabs example"
+                                    >
+                                        <Tab label="General" />
+                                        <Tab label="Availability" />
+                                    </Tabs>
+                                </AppBar>
+                                <div className={this.props.classes.productOptionsDetails}>
+                                    {this.state.activeTab === 0 &&
+                                        <React.Fragment>
+                                            <div>
+                                                <Typography>Description</Typography>
+                                                <Editor
+                                                    id="editor"
+                                                    value={this.state.description}
+                                                    init={{
+                                                        height: 500,
+                                                        menubar: false,
+                                                        plugins: [
+                                                            "advlist autolink lists link image charmap print preview anchor",
+                                                            "searchreplace visualblocks code fullscreen",
+                                                            "insertdatetime media table paste code help wordcount",
+                                                        ],
+                                                        toolbar:
+                                                            "undo redo" +
+                                                            " | formatselect" +
+                                                            " | bold italic forecolor backcolor" +
+                                                            " | alignleft aligncenter alignright alignjustify" +
+                                                            " | bullist numlist outdent indent" +
+                                                            " | removeformat",
+                                                        init_instance_callback: function () {
+                                                            var annoyingMessage = document.querySelector(
+                                                                ".tox-notifications-container"
+                                                            );
+                                                            annoyingMessage.style.display = "none";
+                                                        },
+                                                    }}
+                                                    onEditorChange={async (value) =>
+                                                        await this.setAsyncState({
+                                                            description: value
+                                                        })
+                                                    }
+                                                />
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <Autocomplete
+                                                        id="categoryDropdown"
+                                                        onChange={this.handleCategory}
+                                                        onInputChange={this.handleCategoryUniqueness}
+                                                        className={this.props.classes.option}
+                                                        value={this.state.currentCategory}
+                                                        filterOptions={(options, params) => {
+                                                            const filtered = filter(options, params);
+                                                            if (
+                                                                params.inputValue !== "" &&
+                                                                this.state.isUniqueTitle
+                                                            ) {
+                                                                filtered.push({
+                                                                    value: params.inputValue,
+                                                                    label: `Add "${params.inputValue}"`,
+                                                                });
+                                                            }
+                                                            return filtered;
+                                                        }}
+                                                        options={this.state.flatCategories}
+                                                        autoHighlight
+                                                        getOptionLabel={(option) => option.label || ""}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                className={this.props.classes.textfield}
+                                                                label="Select a category"
+                                                                {...params}
+                                                                variant="outlined"
+                                                            />
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Autocomplete
+                                                        id="localityDropdown"
+                                                        onChange={async (event, locality) => await this.setAsyncState({
+                                                            currentLocality: locality,
+                                                        })}
+                                                        className={this.props.classes.option}
+                                                        value={this.state.currentLocality}
+                                                        options={this.state.localities}
+                                                        autoHighlight
+                                                        getOptionLabel={(option) => option.title || ""}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                className={this.props.classes.textfield}
+                                                                label="Select a Locality"
+                                                                {...params}
+                                                                variant="outlined"
+                                                            />
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Typography gutterBottom>
+                                                        Active
+                                                        <Tooltip title="Active Product">
+                                                            <Switch
+                                                                checked={this.state.active}
+                                                                value={this.state.active}
+                                                                onChange={() => {
+                                                                    this.setState({
+                                                                        active: !this.state
+                                                                            .active,
+                                                                    });
+                                                                }}
+                                                            />
+                                                        </Tooltip>
+                                                    </Typography>
+                                                </div>
+                                            </div>
+                                        </React.Fragment>
+                                    }
+                                    {this.state.activeTab === 1 &&
+                                        <React.Fragment>
+                                            <div>
+                                                <Tooltip title="Availability Date Range">
+                                                    <CustomDateRangePicker
+                                                        labelText={"Availability"}
+                                                        value={this.state.availability}
+                                                        onChange={ async (value) => await this.setAsyncState({
+                                                            availability: value
+                                                        })} />
+                                                </Tooltip>
+                                            </div>
+                                            <div>
+                                                <Tooltip title="Unavailability Date Range">
+                                                    <CustomDateRangePicker
+                                                        labelText={"Unavailability"}
+                                                        value={this.state.unavailability}
+                                                        onChange={ async (value) => await this.setAsyncState({
+                                                            unavailability: value
+                                                        })} />
+                                                </Tooltip>
+                                            </div>
+                                        </React.Fragment>
+                                    }
+                                </div>
+                            </DialogContent>
+                            <DialogActions className={this.props.classes.modalFooter}>
+                                <Button
+                                    color="primary"
+                                    simple
+                                    onClick={() => {
+                                        this.setState({
+                                            showProductOptionsModal: false
+                                        })
+                                    }}
+                                >
+                                    Close
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                        <div>
+                            <div
+                                style={{
+                                    flexGrow: 1,
+                                    paddingBottom: "55px",
+                                }}
+                            >
+                                <div className={this.props.classes.bottomPane} style={{
+                                    backgroundColor: this.props.defaultTheme.background.paper
+                                }}>
+                                    <div>
+                                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={productActions}/>
+                                    </div>
+                                    <div className={this.props.classes.bottomPaneButtons}>
+                                        <Button
+                                            disabled={this.state.title.length === 0}
+                                            onClick={async () => {
+                                                await this.saveProduct();
+                                            }}
+                                            color="primary"
+                                        >
+                                            <div>Save</div>
+                                        </Button>
+                                        <Button onClick={() => this.setState({showDiscardModal: true})} color="danger">
+                                            Discard
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <Modal
+                            showModal={this.state.showDiscardModal}
+                            {...this.state.discardModal}
+                        />
+                        <Snackbar
+                            open={this.state.showSavedMessage}
+                            place="tc"
+                            color="success"
+                            icon={InfoSharp}
+                            message="The product was updated successfully"
+                        />
+                    </MuiThemeProvider>
+                </div>
+            </React.Fragment>
+        );
+    }
+}
+
+export default withRouter(withStyles(styles)(ViewProductEditor));
+
+ViewProductEditor.propTypes = {
+    classes: PropTypes.object,
+    location: PropTypes.object,
+    history: PropTypes.object,
+    control: PropTypes.object,
+    defaultTheme: PropTypes.object
+};

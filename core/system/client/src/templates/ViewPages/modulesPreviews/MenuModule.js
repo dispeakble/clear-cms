@@ -75,6 +75,10 @@ class MenuModule extends Component {
       if (options.isVertical && options.stretchToFit && options.isTopLevel) {
         style.width = "100%";
       }
+      if(options.stretchToFit && options.isTopLevel) {
+          style.height = "100%";
+          style.alignItems = "center";
+      }
       return <ul style={style}>{params.map((elm) => createLink(elm))}</ul>;
     }
   }

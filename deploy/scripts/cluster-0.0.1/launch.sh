@@ -159,6 +159,7 @@ function launchLonghorn () {
 
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --no-prompt --namespace longhorn-system \
+    --version 1.1.2 \
     --set persistence.defaultClassReplicaCount="1" \
     --set service.ui.type="Rancher-Proxy" \
     --set service.ui.nodePort="" \

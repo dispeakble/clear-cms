@@ -13,7 +13,7 @@ import {
   Edit,
   OpenWith,
   Visibility,
-  InfoSharp, ScreenShare, StopScreenShare,
+  InfoSharp, ScreenShare, StopScreenShare, PostAdd,ErrorSharp
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -60,6 +60,8 @@ import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
 import defaultStore from "../../components/GradientColorPicker/src/defaultStore";
 import chroma from "chroma-js";
+import ViewBoxesFromTemplate from "./ViewBoxesFromTemplate";
+
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -79,6 +81,8 @@ class ViewPagesEditor extends React.PureComponent {
     },
     showDiscardModal: false,
     showSavedMessage: false,
+    showErrorMessage: false,
+    errorMessage: "",
     showPageOptionsModal: this.props.location.pathname.indexOf("edit") === -1,
     itemOnDeleteIndex: "",
     isAddBtnDisabled: true,
@@ -229,7 +233,50 @@ class ViewPagesEditor extends React.PureComponent {
         label: "Delete Anyway",
       },
     },
+    showBoxesFromTemplate: false,
+    boxesFromTemplate: {
+      name: "boxesFromTemplate",
+      title: "Select Box From a Template",
+      content: <ViewBoxesFromTemplate {...this.props} updateBoxList={(boxes) => this.updateBoxList(boxes)} />,
+      closeButton: {
+        callback: () => {
+          this.setState({ showBoxesFromTemplate: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: false,
+        callback: async () => {
+          if(this.state.newBoxList && this.state.newBoxList.length > 0) {
+            this.setState({ showBoxesFromTemplate: false });
+            const items = [...this.state.items];
+            await this.setAsyncState({
+              items: [...items, ...this.state.newBoxList]
+            })
+          } else {
+            this.setState({
+              showErrorMessage: true,
+              errorMessage: "Please Select Box First!"
+            });
+
+            setTimeout(() => {
+              this.setState({
+                showErrorMessage: false,
+                errorMessage: ""
+              })
+            }, 3000);
+          }
+        },
+        label: "Add",
+      },
+    },
   };
+
+  async updateBoxList(boxes) {
+    await this.setAsyncState({
+      newBoxList: boxes
+    })
+  }
 
   muiTheme = {};
   async fetchAndSet(page_id, isForTemplate) {
@@ -1279,6 +1326,18 @@ class ViewPagesEditor extends React.PureComponent {
         name: "Add box",
       },
       {
+        callback:async () => {
+          await this.setAsyncState({
+            showBoxesFromTemplate: true
+          });
+        },
+        icon: <PostAdd
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        />,
+        name: "Add box from Template",
+      },
+      {
         callback: async () => {
           await this.setAsyncState(prevState => ({
             livePreview: !prevState.livePreview
@@ -1363,8 +1422,7 @@ class ViewPagesEditor extends React.PureComponent {
                       }}
                       inputProps={{
                         inputProps: {
-                          minLength: "3",
-                          maxLength: "50",
+                          minLength: "1"
                         },
                         value: this.state.pageTitle,
                         type: "text",
@@ -1963,12 +2021,23 @@ class ViewPagesEditor extends React.PureComponent {
                 showModal={this.state.showConfirmDeleteModal}
                 {...this.state.confirmDeleteModal}
             />
+            <Modal
+                showModal={this.state.showBoxesFromTemplate}
+                {...this.state.boxesFromTemplate}
+            />
             <Snackbar
                 open={this.state.showSavedMessage}
                 place="tc"
                 color="success"
                 icon={InfoSharp}
                 message="The page was updated successfully"
+            />
+            <Snackbar
+                open={this.state.showErrorMessage}
+                place="tc"
+                color="error"
+                icon={ErrorSharp}
+                message={this.state.errorMessage}
             />
           </MuiThemeProvider>
         </div>

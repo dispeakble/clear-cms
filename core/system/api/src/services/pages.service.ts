@@ -440,7 +440,32 @@ export class PagesService {
 
                             const pageBoxes =  await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
                             boxesIds = boxes.data.map((box) => box.id);
+                        }
 
+                        // Select boxes from template other than inherited
+                        const newBoxesFromTemplate = items.filter(item => (item.templateUsed && pageConfig.templateUsed !== item.templateUsed))
+                        if(newBoxesFromTemplate && newBoxesFromTemplate.length) {
+                            const pageToBoxReq: payloadInterface = {
+                                channel: 'db',
+                                api: 'db',
+                                act: 'add',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'pages_to_boxes',
+                                        data: newBoxesFromTemplate.map((box, index) => {
+                                            return {
+                                                page_id: page.data[0].id,
+                                                box_id: box.id,
+                                                x: box.x,
+                                                y: box.y,
+                                                template_used: box.templateUsed
+                                            }
+                                        })
+                                    }
+                                }
+                            };
+                            await  this.protocolService.sendMessage(pageToBoxReq).toPromise();
                         }
 
                         // add boxes to the pages which are inherited from template
@@ -752,7 +777,7 @@ export class PagesService {
                     4. update existing boxes no matter what. could be a resize
                     */
 
-                    const existingBoxes = params.items.filter(item => item.hasOwnProperty('id'));
+                    const existingBoxes = params.items.filter(item => item.hasOwnProperty('id') && !item.templateUsed);
 
                     await Promise.all(existingBoxes.map(async box => {
                         await this.protocolService.sendMessage({
@@ -793,6 +818,79 @@ export class PagesService {
                             }
                         }).toPromise();
                     }));
+
+                    /*
+                    5. update existing boxes no matter what. (existing boxes from the template)
+                   */
+
+                    const boxesFromTemplate = params.items.filter(item => item.hasOwnProperty('id') && item.templateUsed);
+
+                    let existingBoxIdsFromTemplate = [];
+
+                    if(ptb.data && ptb.data.length) {
+                        existingBoxIdsFromTemplate = ptb.data.filter((box) => box.template_used).map((box) => box.box_id)
+                    }
+
+                    const existingBoxesFromTemplate = boxesFromTemplate.filter((box) => {
+                        if(existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1) {
+                            return true
+                        }
+                        return false
+                    })
+
+                    if(existingBoxesFromTemplate && existingBoxesFromTemplate.length) {
+                        await Promise.all(existingBoxesFromTemplate.map(async box => {
+                            await this.protocolService.sendMessage({
+                                channel: 'db',
+                                api: 'db',
+                                act: 'set',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'pages_to_boxes',
+                                        data: {
+                                            x: box.x,
+                                            y: box.y
+                                        },
+                                        where: {
+                                            page_id: params.id,
+                                            box_id: box.id
+                                        }
+                                    }
+                                }
+                            }).toPromise();
+                        }));
+                    }
+
+                    const newBoxesFromTemplate = boxesFromTemplate.filter((box) => {
+                        if(existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1) {
+                            return false
+                        }
+                        return true
+                    })
+
+                    if(newBoxesFromTemplate && newBoxesFromTemplate.length) {
+                        await Promise.all(newBoxesFromTemplate.map(async box => {
+                            await this.protocolService.sendMessage({
+                                channel: 'db',
+                                api: 'db',
+                                act: 'add',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'pages_to_boxes',
+                                        data: {
+                                            x: box.x,
+                                            y: box.y,
+                                            template_used: box.templateUsed,
+                                            page_id: params.id,
+                                            box_id: box.id
+                                        }
+                                    }
+                                }
+                            }).toPromise();
+                        }));
+                    }
 
                     const boxesIds = [];
 

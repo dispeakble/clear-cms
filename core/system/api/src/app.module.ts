@@ -13,6 +13,10 @@ import { GeneralSettingsService } from './services/generalSettings.service';
 import { HelpService } from './services/help.service';
 import { DashboardBoxService } from "./services/dashboardBox.service";
 import { SitemapService } from "./services/sitemap.service";
+import { ProductsService } from "./services/products.service";
+import { ProductLabelsService } from "./services/productLabels.service";
+import { ProductLocalityService } from "./services/productLocality.service";
+import { ProductPricesService } from "./services/productPrices.service";
 import {
   ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -53,7 +57,11 @@ import { MainService } from './services/main.service';
     GeneralSettingsService,
     HelpService,
     DashboardBoxService,
-    SitemapService
+    SitemapService,
+    ProductsService,
+    ProductLabelsService,
+    ProductLocalityService,
+    ProductPricesService
   ]
 })
 
