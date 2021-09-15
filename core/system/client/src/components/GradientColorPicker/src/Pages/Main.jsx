@@ -21,6 +21,7 @@ class Main extends React.Component {
   componentDidMount = () => {
     this.props.store.showUI()
     this.props.store.unlockUIHidden()
+    this.props.selectColor(evaluate(this.props.store, chroma));
   }
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.props.selectColor(evaluate(this.props.store, chroma));
