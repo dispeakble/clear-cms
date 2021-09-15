@@ -571,9 +571,9 @@ class ViewPagesEditor extends React.PureComponent {
           this.onRemoveItem(el.i);
         },
         icon: (
-          <DeleteForever
-            style={{ color: this.props.defaultTheme.secondary.main }}
-          />
+            <DeleteForever
+                style={{ color: this.props.defaultTheme.secondary.main }}
+            />
         ),
         name: "Delete box",
       },
