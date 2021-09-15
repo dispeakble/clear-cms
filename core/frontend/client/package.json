@@ -7,11 +7,10 @@
     "build": "next build",
     "build_export": "next build && next export",
     "build_prod_static": "export ONLY_STATIC=true && next build && next export && rm -fr ../api/public && mkdir ../api/public && cp -Rf ./out/* ../api/public",
-    "build_prod": "next build && next export && rm -fr ../api/public && mkdir ../api/public && cp -Rf ./out/* ../api/public",
-    "start": "next start",
+    "build_prod": "next build",
+    "start": "next start -p 4000",
     "lint": "next lint"
   },
-  "proxy": "http://localhost:9797",
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",

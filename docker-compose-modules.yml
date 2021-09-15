@@ -1,69 +1,86 @@
-version: '3.7'
+version: '3.3'
 services:
   crm-hub:
     container_name: crm-hub
     working_dir: /usr/src/app
     build:
-      context: ./hub
+      context: ./core/hub
       dockerfile: Dockerfile
-    env_file:
-      - ./hub/api/.env
-    networks:
-      - webnet
-  crm-dev:
-    container_name: crm-dev
+    image:
+      dispeakble/crm-hub:${CRM_IMG_TAG}
+  crm-db:
+    container_name: crm-db
     working_dir: /usr/src/app
     build:
-      context: ./dev
+      context: ./plugins/dosido/db
       dockerfile: Dockerfile
-    env_file:
-      - ./dev/api/.env
-    networks:
-      - webnet
-    depends_on:
-      - crm-hub
-      - crm-system
-      - crm-proxy
-  crm-pages:
-    container_name: crm-pages
+    image:
+      dispeakble/crm-db:${CRM_IMG_TAG}
+  crm-bucket:
+    container_name: crm-bucket
     working_dir: /usr/src/app
     build:
-      context: ./pages
+      context: ./plugins/dosido/bucket
       dockerfile: Dockerfile
-    env_file:
-      - ./pages/api/.env
-    networks:
-      - webnet
-    depends_on:
-      - redis
-      - crm-hub
-      - crm-system
+    image:
+      dispeakble/crm-bucket:${CRM_IMG_TAG}
+  crm-frontend-client:
+    container_name: crm-frontend-client
+    working_dir: /usr/src/app
+    build:
+      context: ./core/frontend/client
+      dockerfile: Dockerfile
+    image:
+      dispeakble/crm-frontend-client:${CRM_IMG_TAG}
+  crm-frontend-api:
+    container_name: crm-frontend-api
+    working_dir: /usr/src/app
+    build:
+      context: ./core/frontend/api
+      dockerfile: Dockerfile
+    image:
+      dispeakble/crm-frontend-api:${CRM_IMG_TAG}
+  crm-frontend-proxy:
+    container_name: crm-frontend-proxy
+    working_dir: /usr/src/app
+    build:
+      context: ./core/frontend/proxy
+      dockerfile: Dockerfile
+    image:
+      dispeakble/crm-frontend-proxy:${CRM_IMG_TAG}
   crm-system:
     container_name: crm-system
     working_dir: /usr/src/app
     build:
-      context: ./system
+      context: ./core/system
       dockerfile: Dockerfile
-    env_file:
-      - ./system/api/.env
-    networks:
-      - webnet
-    depends_on:
-      - crm-hub
+    image:
+      dispeakble/crm-system:${CRM_IMG_TAG}
   crm-proxy:
     container_name: crm-proxy
-    working_dir: /usr/src/app
+    working_dir: /usr/src/api
     build:
-      context: ./proxy
+      context: ./core/proxy
       dockerfile: Dockerfile
-    env_file:
-      - ./proxy/api/.env
-    networks:
-      - webnet
-    ports:
-      - 30443:30443
-    depends_on:
-      - crm-hub
-      - crm-system
-networks:
-  webnet:
+    image:
+      dispeakble/crm-proxy:${CRM_IMG_TAG}
+#  crm-dev:
+#    container_name: crm-dev
+#    working_dir: /usr/src/app
+#    build:
+#      context: ./plugins/dosido/dev
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-dev:${CRM_IMG_TAG}
+# crm-under-construction:
+#    container_name: crm-under-construction
+#    working_dir: /usr/src/api
+#    build:
+#      context: ./under-construction
+#      dockerfile: Dockerfile
+#    env_file:
+#      - .env
+#    image:
+#      dispeakble/crm-under-construction:${CRM_IMG_TAG}

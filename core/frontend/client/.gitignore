@@ -14,10 +14,13 @@
 
 # production
 /build
+.next
+out
 
 # misc
 .DS_Store
 *.pem
+.wsrun
 
 # debug
 npm-debug.log*

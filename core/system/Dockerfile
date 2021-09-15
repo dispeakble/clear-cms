@@ -1,16 +1,20 @@
 FROM node:14.17.5-alpine As crm-nestjs
 
+RUN apk add --no-cache git
+
 RUN mkdir -p /usr/src/api/public
 RUN mkdir -p /usr/src/client/
-WORKDIR /usr/src/client
 
-COPY ./client/package*.json /usr/src/client/
+
+COPY ./client/package.json /usr/src/client/
 
 COPY ./client/public /usr/src/client/public
 COPY ./client/src /usr/src/client/src
 COPY ./client/.babelrc /usr/src/client/.babelrc
 COPY ./client/jsconfig.json /usr/src/client/jsconfig.json
-RUN yarn install
+
+WORKDIR /usr/src/client
+RUN npm install
 
 RUN npm run build
 WORKDIR /usr/src
@@ -36,5 +40,3 @@ CMD ["rm", "-fr", "src"]
 CMD ["rm", "-fr", "node_modules"]
 RUN npm install --only=prod
 CMD ["npm","run","start:prod"]
-
-#CMD ["docker", "tag", "clearcrm_crm-system", "localhost:5000/crm-system:latest", "&&", "docker", "push", "localhost:5000/crm-system:latest"]
