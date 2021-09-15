@@ -138,9 +138,33 @@ export class ProductsService {
                     };
                     await this.protocolService.sendMessage(localityToProductPayload).toPromise();
 
+                    let images = null;
+
+                    if(params.imageSources && params.imageSources.length) {
+                        const imagesToProductReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'add',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'images_to_products',
+                                    data: params.imageSources.map((image, index) => ({
+                                        product_id: product.data[0].id,
+                                        ordernumber: index,
+                                        date_added: +new Date(),
+                                        active: image.active ? 1 : 0
+                                    }))
+                                }
+                            }
+                        };
+                        images = await this.protocolService.sendMessage(imagesToProductReq).toPromise();
+                        images = images.data;
+                    }
+
                     subscriber.next({
                         success: "The product was added",
-                        data: {productId: product.data[0].id}
+                        data: {...product.data[0], imageSources: images}
                     });
                 } catch (err) {
                     subscriber.error(err);
