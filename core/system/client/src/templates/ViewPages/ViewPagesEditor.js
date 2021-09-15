@@ -1136,7 +1136,6 @@ class ViewPagesEditor extends React.PureComponent {
     let pickerColor = Object.assign({}, this.state[styles].color);
 
     pickerColor.background = this.state[targetedColor];
-    //TODO figure out a way to set the state when this is displayed
     return (
         <div>
           <div
@@ -1401,7 +1400,6 @@ class ViewPagesEditor extends React.PureComponent {
                   <CustomInput
                       labelText={this.state.isTemplate ? "Template Title" : "Page Title"}
                       id="pageTitle"
-                      required="required"
                       formControlProps={{
                         fullWidth: true,
                         onChange: (event) => this.handleInputChange(event),
@@ -1423,6 +1421,7 @@ class ViewPagesEditor extends React.PureComponent {
                         onChange: (event) => this.handleInputChange(event),
                       }}
                       inputProps={{
+                        required: true,
                         inputProps: {
                           minLength: "3",
                           maxLength: "50",
@@ -1959,7 +1958,6 @@ class ViewPagesEditor extends React.PureComponent {
                       color: this.state.textColor,
                     }}
                     layouts={this.state.layouts}
-                    isBounded={true}
                     margin={this.state.config.layoutBoxSpacing}
                     containerPadding={this.state.config.layoutBoxPadding}
                     draggableHandle=".MyDragHandleClassName"
