@@ -293,10 +293,9 @@ class ViewPagesPreview extends React.Component {
 
   render() {
     const classes = this.props.classes;
-    // removed part
-    // if (this.state.items === null || this.state.items.length === 0) {
-    //   return "";
-    // }
+    if (this.state.items === null || this.state.items.length === 0) {
+      return "";
+    }
     return (
       <React.Fragment>
         <Helmet>
@@ -319,7 +318,6 @@ class ViewPagesPreview extends React.Component {
                   fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                   fontFamily: this.state.fontFamily,
                   color: this.state.pageConfig.textColor,
-                  // update
                   minHeight: '100vh'
                 }}
               >
@@ -340,8 +338,7 @@ class ViewPagesPreview extends React.Component {
                   cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                   useCSSTransforms={false}
                 >
-                  {/* New addition: || this.state.items !== null || this.state.items.length !== 0*/}
-                  {this.state.items || this.state.items !== null || this.state.items.length !== 0
+                  {this.state.items
                       ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
                       : ""}
                 </ResponsiveReactGridLayout>

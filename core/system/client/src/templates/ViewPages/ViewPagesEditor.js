@@ -58,8 +58,6 @@ import ViewBoxEditor from "./ViewBoxEditor";
 import Modal from "../../components/Modal/Modal";
 import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
-import defaultStore from "../../components/GradientColorPicker/src/defaultStore";
-import chroma from "chroma-js";
 import ViewBoxesFromTemplate from "./ViewBoxesFromTemplate";
 
 
