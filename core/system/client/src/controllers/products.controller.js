@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import Snackbar from "components/Snackbar/Snackbar.js";
 import ViewProducts from "../templates/ViewProducts/ViewProducts";
 import ViewProductEditor from "../templates/ViewProducts/ViewProductEditor";
+import axios from "axios";
+import _ from "lodash";
 
 class ProductsController extends Component {
     state = {
@@ -14,6 +16,7 @@ class ProductsController extends Component {
     config = {
         prefix: 'products/'
     };
+
     control = {
         get: (params) => this.getData(params),
         edit: (params) => this.editData(params),
@@ -23,6 +26,13 @@ class ProductsController extends Component {
         listCategories: (params) => this.listCategories(params),
         listLocalities: (params) => this.listLocalities(params)
     };
+
+    help = {
+        fileExtension: (string) => {
+            const p = string.split('.');
+            return p[p.length - 1].toLowerCase();
+        }
+    }
 
 
     async componentDidMount() {
@@ -71,12 +81,37 @@ class ProductsController extends Component {
     add(params) {
         return new Promise(async resolve => {
             try {
+                const paramsClone = _.cloneDeep(params);
+
+                if(paramsClone.imageSources && paramsClone.imageSources.length) {
+                    paramsClone.imageSources = paramsClone.imageSources.map((image) => ({
+                        ...image,
+                        file: "",
+                        fileBase64: "",
+                        fileItem: []
+                    }))
+                }
+
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'products',
                     act: 'add',
-                    payload: params
+                    payload: paramsClone
                 });
+
+                if(params.imageSources && params.imageSources.length) {
+                    const fileList = []
+                    params.imageSources.map((image, index) =>
+                        fileList.push({
+                            file: image.fileItem,
+                            name: response.imageSources[index].image_id + "." + this.help.fileExtension(image.path)}
+                        ));
+                    await this.uploadImages({
+                        path: `/products/${response.id}/`,
+                        files: fileList
+                    });
+                }
+
                 resolve(response)
             } catch (err) {
                 resolve(null);
@@ -185,6 +220,29 @@ class ProductsController extends Component {
         this.setState({
             errorNotification: updatedErrorNotification,
         })
+    }
+
+    uploadImages(params) {
+        return new Promise(resolve => {
+            let formData = new FormData();
+
+            formData.append('path', params.path || "products/");
+            formData.append('replace', params.replace || true);
+            formData.append('totalFiles', params.files.length);
+
+            //always place the files at the end
+            Array.from(params.files).forEach(fileData => {
+                formData.append(fileData.name || fileData.file.name, fileData.file, fileData.name || fileData.file.name);
+            });
+            axios.post("/bucket", formData, {
+                onUploadProgress: evt => {
+                    if(evt.loaded === evt.total){
+                        resolve();
+                    }
+                    // params.progress(evt)
+                }
+            });
+        });
     }
 
     renderPages() {

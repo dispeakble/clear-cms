@@ -37,6 +37,8 @@ import Modal from "../../components/Modal/Modal";
 import PropTypes from "prop-types";
 import {Editor} from "@tinymce/tinymce-react";
 import CustomDateRangePicker from "../../components/CustomDateRangePicker/CustomDateRangePicker";
+import {DropzoneArea} from "material-ui-dropzone";
+import PhotosGallery from "../../components/PhotosGallery/PhotosGallery";
 
 const filter = createFilterOptions();
 
@@ -71,6 +73,7 @@ class ViewProductEditor extends React.PureComponent {
         title: "",
         description: "",
         flatCategories: [],
+        imageSources: [],
         currentCategory: "",
         currentLocality: "",
         active: false,
@@ -196,7 +199,8 @@ class ViewProductEditor extends React.PureComponent {
             categoryId: this.state.currentCategory && this.state.currentCategory.id,
             localityId: this.state.currentLocality && this.state.currentLocality.id,
             availability: this.state.availability,
-            unavailability: this.state.unavailability
+            unavailability: this.state.unavailability,
+            imageSources: this.state.imageSources
         }
     }
 
@@ -225,10 +229,10 @@ class ViewProductEditor extends React.PureComponent {
             }, 3000);
 
         } else {
-            const productData = await this.props.control.add(productProperties);
+            const product = await this.props.control.add(productProperties);
 
-            if(productData) {
-                this.props.history.push(`/products/edit/${productData.productId}`);
+            if(product) {
+                this.props.history.push(`/products/edit/${product.id}`);
             }
         }
     };
@@ -285,8 +289,35 @@ class ViewProductEditor extends React.PureComponent {
             ];
     }
 
+    handleUploadedImage = async (event) => {
+        let temporaryImageSources = [...this.state.imageSources];
+
+        if (event.length) {
+            await Promise.all(
+                event.map(async (file) => {
+                    let baseFile = await this.toBase64(file)
+                    if (!temporaryImageSources.includes(file)) {
+                        temporaryImageSources.push({path: file.path, title: file.title, file: baseFile, fileItem: file, fileBase64: baseFile, width: 4, height: 3, active: true});
+                    }
+                    return file;
+                })
+            );
+        }
+
+        await this.setAsyncState({ temporaryImageSources });
+    };
+
+    toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
     render() {
-        console.log("state", this.state)
+        console.log("state", this.state.imageSources);
         const productActions = [
             {
                 callback: () => {
@@ -371,6 +402,7 @@ class ViewProductEditor extends React.PureComponent {
                                     >
                                         <Tab label="General" />
                                         <Tab label="Availability" />
+                                        <Tab label="Gallery" />
                                     </Tabs>
                                 </AppBar>
                                 <div className={this.props.classes.productOptionsDetails}>
@@ -508,6 +540,45 @@ class ViewProductEditor extends React.PureComponent {
                                                 </Tooltip>
                                             </div>
                                         </React.Fragment>
+                                    }
+                                    {this.state.activeTab === 2 &&
+                                        <div>
+                                        <DropzoneArea
+                                            clearOnUnmount={true}
+                                            filesLimit={100}
+                                            className={this.props.classes.dropzone}
+                                            onChange={this.handleUploadedImage}
+                                        />
+                                        <Button
+                                            color="primary"
+                                            onClick={async () => {
+                                                const images = [...this.state.imageSources, ...this.state.temporaryImageSources]
+                                                await this.setAsyncState({
+                                                    showDropZone: false,
+                                                    imageSources: images,
+                                                    temporaryImageSources: []
+                                                });
+                                            }}
+                                        >
+                                            OK
+                                        </Button>
+                                        <Button
+                                            color="danger"
+                                            onClick={() => {
+                                                this.setState({
+                                                    showDropZone: false,
+                                                });
+                                            }}
+                                        >
+                                            Cancel
+                                        </Button>
+                                            {this.state.imageSources &&
+                                            <PhotosGallery
+                                                items={this.state.imageSources}
+                                                onChange={async (imageSources) => await this.setAsyncState({
+                                                            imageSources: imageSources})}
+                                            />}
+                                        </div>
                                     }
                                 </div>
                             </DialogContent>
