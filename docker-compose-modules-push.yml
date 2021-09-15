@@ -24,11 +24,19 @@ services:
       dockerfile: Dockerfile
     image:
       dispeakble/crm-bucket:${CRM_IMG_TAG}
+  crm-frontend-client:
+    container_name: crm-frontend-client
+    working_dir: /usr/src/app
+    build:
+      context: ./core/frontend/client
+      dockerfile: Dockerfile
+    image:
+      dispeakble/crm-frontend-client:${CRM_IMG_TAG}
   crm-frontend-api:
     container_name: crm-frontend-api
     working_dir: /usr/src/app
     build:
-      context: ./core/frontend
+      context: ./core/frontend/api
       dockerfile: Dockerfile
     image:
       dispeakble/crm-frontend-api:${CRM_IMG_TAG}

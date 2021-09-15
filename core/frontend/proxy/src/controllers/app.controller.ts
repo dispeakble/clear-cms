@@ -256,7 +256,7 @@ export class AppController {
         try {
 
             const fileReq = {
-                "channel": "system",
+                "channel": "frontend",
                 "payload": {
                     "ip": req.ip,
                     "hostname": req.hostname,
@@ -285,7 +285,7 @@ export class AppController {
                 }
             }
 
-            const cacheReq = await this.protocolService.getValue(`system_${fileStats.data.file_name}`);
+            const cacheReq = await this.protocolService.getValue(`frontend_${fileStats.data.file_name}`);
             //const cacheReq = null;
 
             if (cacheReq) {
@@ -334,7 +334,7 @@ export class AppController {
                     //TODO get from some env variable
                     const expire_seconds = 604800;
                     expireDate.setSeconds(expireDate.getSeconds() + expire_seconds);
-                    this.protocolService.setValue(`system_${fileStats.data.file_name}`, {
+                    this.protocolService.setValue(`frontend_${fileStats.data.file_name}`, {
                         expires: expireDate,
                         ETag: fileStats.data.etagId,
                         content_length: file_meta.content_length,
@@ -373,7 +373,7 @@ export class AppController {
             payload: {
                 callback: async (data) => {
                     let publicPortMap = await this.protocolService.getValue('publicPortMap');
-                    if (!publicPortMap) {
+                    if (!publicPortMap || !publicPortMap.length) {
                         publicPortMap = {};
                     }
 
