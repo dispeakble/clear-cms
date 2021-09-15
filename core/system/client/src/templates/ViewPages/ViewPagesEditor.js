@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, {createRef, Suspense} from "react";
 import _ from "lodash";
 import {
   createTheme,
@@ -141,6 +141,7 @@ class ViewPagesEditor extends React.PureComponent {
     textColorStyles: {},
     editPage: null,
     livePreview: false,
+    dialogTitleError:false,
     boxEditorProps: {
       item: {},
     },
@@ -731,7 +732,7 @@ class ViewPagesEditor extends React.PureComponent {
   handleInputChange = async (event) => {
     switch (event.target.id) {
       case "pageTitle":
-        this.setState({ pageTitle: event.target.value });
+        this.setState({ pageTitle: event.target.value, dialogTitleError: false });
         break;
       case "pageLink":
         this.setState({ pageLink: event.target.value });
@@ -1147,38 +1148,43 @@ class ViewPagesEditor extends React.PureComponent {
         </div>
     );
   };
-
+  pageTitleRef=createRef()
   savePage = async () => {
     let pageConfig = this.preparePageConfiguration();
-
-    if (this.state.editing) {
-      let page = {
-        id: this.state.page_id,
-        pageConfig: pageConfig,
-        items: this.state.items,
-      };
-      await this.props.control.edit({ ...page, editPage: this.state.editPage });
-
-      this.setState({
-        showSavedMessage: true
-      });
-
-      setTimeout(() => {
-        this.setState({
-          showSavedMessage: false
-        })
-      }, 3000);
-
+    if (this.state.pageTitle.length === 0) {
+      this.openPageOptionsModal()
+      this.setState({dialogTitleError: true})
+      setTimeout(() => this.pageTitleRef.current.focus(), 1000)
     } else {
-      let newPage = {
-        pageConfig: pageConfig,
-        items: this.state.items,
-      };
-      const pagedata = await this.props.control.add(newPage);
+  if (this.state.editing) {
+    let page = {
+      id: this.state.page_id,
+      pageConfig: pageConfig,
+      items: this.state.items,
+    };
+    await this.props.control.edit({...page, editPage: this.state.editPage});
 
-      this.props.history.push(`/pages/edit/${pagedata.pageId}`);
+    this.setState({
+      showSavedMessage: true
+    });
 
-    }
+    setTimeout(() => {
+      this.setState({
+        showSavedMessage: false
+      })
+    }, 3000);
+
+  } else {
+    let newPage = {
+      pageConfig: pageConfig,
+      items: this.state.items,
+    };
+    const pagedata = await this.props.control.add(newPage);
+
+    this.props.history.push(`/pages/edit/${pagedata.pageId}`);
+
+  }
+}
   };
 
   handleCategoryUniqueness = async (event) => {
@@ -1406,11 +1412,13 @@ class ViewPagesEditor extends React.PureComponent {
                       }}
                       inputProps={{
                         inputProps: {
-                          minLength: "1"
+                          minLength: "1",
                         },
+                        inputRef:this.pageTitleRef,
                         value: this.state.pageTitle,
                         type: "text",
                       }}
+                      error={this.state.dialogTitleError}
                   />{" "}
                   {!this.state.isTemplate && <CustomInput
                       labelText="Page Link"
@@ -1978,7 +1986,6 @@ class ViewPagesEditor extends React.PureComponent {
                     </div>
                     <div className={this.props.classes.bottomPaneButtons}>
                         <Button
-                            disabled={this.state.pageTitle.length === 0}
                             onClick={async () => {
                                 await this.savePage();
                             }}
