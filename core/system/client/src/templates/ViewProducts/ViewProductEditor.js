@@ -57,6 +57,7 @@ class ViewProductEditor extends React.PureComponent {
         editing: this.props.location.pathname.indexOf("edit") > -1,
         editProduct: "",
         speedDialState: false,
+        showDropZone: false,
         activeTab: 0,
         config: {
             layoutBoxSpacing: [10, 10],
@@ -135,27 +136,43 @@ class ViewProductEditor extends React.PureComponent {
         let editing = this.state.editing;
         let product_id = this.props.location.pathObject[2];
         if(editing) {
-            const productDetails = await this.props.control.get({id: product_id})
+            await this.fetchAndSet(product_id);
+        }
+    }
+
+    async fetchAndSet(id) {
+        const productDetails = await this.props.control.get({id: id})
+        await this.setAsyncState({
+            editProduct: productDetails.id,
+            title: productDetails.title,
+            description: productDetails.description,
+            active: productDetails.active,
+            availability: productDetails.availability ? productDetails.availability : ["", ""],
+            unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""]
+        })
+
+        if(productDetails.categoryId) {
             await this.setAsyncState({
-                editProduct: productDetails.id,
-                title: productDetails.title,
-                description: productDetails.description,
-                active: productDetails.active,
-                availability: productDetails.availability ? productDetails.availability : ["", ""],
-                unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""],
+                currentCategory: this.getCategoryItem(productDetails.categoryId),
             })
+        }
 
-            if(productDetails.categoryId) {
-                await this.setAsyncState({
-                    currentCategory: this.getCategoryItem(productDetails.categoryId),
-                })
-            }
+        if(productDetails.localityId) {
+            await this.setAsyncState({
+                currentLocality: this.getLocalityItem(productDetails.localityId),
+            })
+        }
 
-            if(productDetails.localityId) {
-                await this.setAsyncState({
-                    currentLocality: this.getLocalityItem(productDetails.localityId),
-                })
-            }
+        if(productDetails.imageSources) {
+            const imageSources = productDetails.imageSources.map(image => ({
+                ...image,
+                file: `/files/products/${id}/${image.image_id}.${image.extension}`,
+                width: 4,
+                height: 3
+            }));
+            await this.setAsyncState({
+                imageSources: imageSources
+            })
         }
     }
 
@@ -222,10 +239,11 @@ class ViewProductEditor extends React.PureComponent {
                 showSavedMessage: true
             });
 
-            setTimeout(() => {
+            setTimeout(async () => {
                 this.setState({
                     showSavedMessage: false
                 })
+                await this.fetchAndSet(this.state.editProduct);
             }, 3000);
 
         } else {
@@ -317,7 +335,6 @@ class ViewProductEditor extends React.PureComponent {
     }
 
     render() {
-        console.log("state", this.state.imageSources);
         const productActions = [
             {
                 callback: () => {
@@ -543,35 +560,50 @@ class ViewProductEditor extends React.PureComponent {
                                     }
                                     {this.state.activeTab === 2 &&
                                         <div>
-                                        <DropzoneArea
-                                            clearOnUnmount={true}
-                                            filesLimit={100}
-                                            className={this.props.classes.dropzone}
-                                            onChange={this.handleUploadedImage}
-                                        />
-                                        <Button
-                                            color="primary"
-                                            onClick={async () => {
-                                                const images = [...this.state.imageSources, ...this.state.temporaryImageSources]
-                                                await this.setAsyncState({
-                                                    showDropZone: false,
-                                                    imageSources: images,
-                                                    temporaryImageSources: []
-                                                });
-                                            }}
-                                        >
-                                            OK
-                                        </Button>
-                                        <Button
-                                            color="danger"
-                                            onClick={() => {
-                                                this.setState({
-                                                    showDropZone: false,
-                                                });
-                                            }}
-                                        >
-                                            Cancel
-                                        </Button>
+                                            {this.state.showDropZone ?
+                                            <React.Fragment>
+                                                <DropzoneArea
+                                                    clearOnUnmount={true}
+                                                    filesLimit={100}
+                                                    className={this.props.classes.dropzone}
+                                                    onChange={this.handleUploadedImage}
+                                                />
+                                                <Button
+                                                    color="primary"
+                                                    onClick={async () => {
+                                                        const images = [...this.state.temporaryImageSources]
+                                                        await this.setAsyncState({
+                                                            showDropZone: false,
+                                                            imageSources: images,
+                                                            temporaryImageSources: []
+                                                        });
+                                                    }}
+                                                >
+                                                    OK
+                                                </Button>
+                                                <Button
+                                                    color="danger"
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            showDropZone: false,
+                                                        });
+                                                    }}
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </React.Fragment> :
+                                                <Button
+                                                    style={{display: this.state.showDropZone ? "none" : "block"}}
+                                                    color="primary"
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            showDropZone: true,
+                                                        });
+                                                    }}
+                                                >
+                                                    Upload images
+                                                </Button>
+                                            }
                                             {this.state.imageSources &&
                                             <PhotosGallery
                                                 items={this.state.imageSources}

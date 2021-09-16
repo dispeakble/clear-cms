@@ -84,11 +84,13 @@ class ProductsController extends Component {
                 const paramsClone = _.cloneDeep(params);
 
                 if(paramsClone.imageSources && paramsClone.imageSources.length) {
-                    paramsClone.imageSources = paramsClone.imageSources.map((image) => ({
+                    paramsClone.imageSources = paramsClone.imageSources.map((image, index) => ({
                         ...image,
+                        extension: this.help.fileExtension(image.path),
                         file: "",
                         fileBase64: "",
-                        fileItem: []
+                        fileItem: [],
+                        orderNumber: index
                     }))
                 }
 
@@ -122,12 +124,73 @@ class ProductsController extends Component {
     editData(params) {
         return new Promise(async resolve => {
             try {
+                const paramsClone = _.cloneDeep(params);
+
+                const newImageFiles = []
+
+                if(paramsClone.imageSources && paramsClone.imageSources.length) {
+                    paramsClone.imageSources = paramsClone.imageSources.map((image, index) => {
+                        if(image.fileItem) {
+                            newImageFiles.push({
+                                path: image.path,
+                                fileItem: image.fileItem,
+                                orderNumber: index
+                            })
+                            return {
+                                ...image,
+                                extension: this.help.fileExtension(image.path),
+                                file: "",
+                                fileBase64: "",
+                                fileItem: [],
+                                orderNumber: index
+                            }
+                        } else {
+                            return {
+                                ...image,
+                                orderNumber: index
+                            }
+                        }
+                    })
+                }
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'products',
                     act: 'edit',
-                    payload: params
+                    payload: paramsClone
                 });
+
+                if(response) {
+                    const { newImages, deletedImages } = response;
+
+                    if(deletedImages && deletedImages.length) {
+                        new Promise.all(deletedImages.map(async (image) => {
+                            await this.sendMessage({
+                                module: 'system',
+                                api: 'bucket',
+                                act: 'rm',
+                                payload: {
+                                    path: `/products/${params.id}/`,
+                                    selection: [image.image_id + "." + image.extension]
+                                }
+                            });
+                        }));
+                    }
+
+                    if(newImageFiles && newImageFiles.length) {
+                        const fileList = newImageFiles.map(image => {
+                            const findImage = newImages.find((i) => i.ordernumber === image.orderNumber);
+                            return {
+                                file: image.fileItem,
+                                name: findImage.image_id + "." + this.help.fileExtension(image.path)
+                            }
+                        });
+                        await this.uploadImages({
+                            path: `/products/${params.id}/`,
+                            files: fileList
+                        });
+                    }
+                }
+
                 resolve(response)
             } catch (err) {
                 resolve(null);
@@ -144,6 +207,19 @@ class ProductsController extends Component {
                     act: 'remove',
                     payload: params
                 });
+                if(params.id && params.id.length) {
+                    new Promise.all(params.id.map(async (id) => {
+                        await this.sendMessage({
+                            module: 'system',
+                            api: 'bucket',
+                            act: 'rm',
+                            payload: {
+                                path: `/products/`,
+                                selection: [`${id}`]
+                            }
+                        });
+                    }));
+                }
                 resolve(response)
             } catch (err) {
                 resolve(null);

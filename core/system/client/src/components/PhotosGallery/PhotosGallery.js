@@ -10,6 +10,8 @@ import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles";
 import styles from "../../assets/jss/clear-crm/components/photosGallery"
+import Button from "../CustomButtons/Button";
+
 
 const SortablePhoto = SortableElement(item => <Photo {...item} />);
 const SortableGallery = SortableContainer(({ items, renderImage }) => (
@@ -35,7 +37,7 @@ const PhotosGallery = ({ items, onChange, classes }) => {
         ({ index, left, top, key, photo }) => (
             selectMode ?
             <Photo
-                selected={selectAll ? true : false}
+                selected={selectAll ? true : photo.selected}
                 callback={updateSelection}
                 key={key}
                 margin={"2px"}
@@ -53,7 +55,7 @@ const PhotosGallery = ({ items, onChange, classes }) => {
                     top={top}
                 />
         ),
-        [selectAll, selectMode]
+        [selectAll, selectMode, onChange]
     );
 
     const handleStateChange = (event) => {
@@ -72,6 +74,11 @@ const PhotosGallery = ({ items, onChange, classes }) => {
         }
     }
 
+    const handleDeleteImages = (event) => {
+        const newItems = items?.filter(item => !item.selected);
+        onChange(newItems);
+    }
+
     console.log("items", items);
 
     return(
@@ -88,19 +95,25 @@ const PhotosGallery = ({ items, onChange, classes }) => {
                     </Tooltip>
                 </Typography>
                 {selectMode &&
-                <FormControl classes={{
-                    root: classes.changeStateOptions
-                }}>
-                    <InputLabel>Change State</InputLabel>
-                    <Select
-                        labelId="Select State"
-                        id="state"
-                        onChange={handleStateChange}
-                    >
-                        <MenuItem value={true}>Active</MenuItem>
-                        <MenuItem value={false}>InActive</MenuItem>
-                    </Select>
-                </FormControl>}
+                <div>
+                    <FormControl classes={{
+                        root: classes.changeStateOptions
+                    }}>
+                        <InputLabel>Change State</InputLabel>
+                        <Select
+                            labelId="Select State"
+                            id="state"
+                            onChange={handleStateChange}
+                        >
+                            <MenuItem value={true}>Active</MenuItem>
+                            <MenuItem value={false}>InActive</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <Button onClick={handleDeleteImages} color="danger">
+                        Delete
+                    </Button>
+                </div>
+                }
             </div>
             <SortableGallery items={items} renderImage={imageRenderer} onSortEnd={onSortEnd} axis={"xy"} />
         </div>
