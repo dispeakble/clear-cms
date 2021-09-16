@@ -1156,35 +1156,35 @@ class ViewPagesEditor extends React.PureComponent {
       this.setState({dialogTitleError: true})
       setTimeout(() => this.pageTitleRef.current.focus(), 1000)
     } else {
-  if (this.state.editing) {
-    let page = {
-      id: this.state.page_id,
-      pageConfig: pageConfig,
-      items: this.state.items,
-    };
-    await this.props.control.edit({...page, editPage: this.state.editPage});
+      if (this.state.editing) {
+        let page = {
+          id: this.state.page_id,
+          pageConfig: pageConfig,
+          items: this.state.items,
+        };
+        await this.props.control.edit({...page, editPage: this.state.editPage});
 
-    this.setState({
-      showSavedMessage: true
-    });
+        this.setState({
+          showSavedMessage: true
+        });
 
-    setTimeout(() => {
-      this.setState({
-        showSavedMessage: false
-      })
-    }, 3000);
+        setTimeout(() => {
+          this.setState({
+            showSavedMessage: false
+          })
+        }, 3000);
 
-  } else {
-    let newPage = {
-      pageConfig: pageConfig,
-      items: this.state.items,
-    };
+      } else {
+        let newPage = {
+          pageConfig: pageConfig,
+          items: this.state.items,
+        };
     const pagedata = await this.props.control.add(newPage);
 
     this.props.history.push(`/pages/edit/${pagedata.pageId}`);
 
-  }
-}
+      }
+    }
   };
 
   handleCategoryUniqueness = async (event) => {
