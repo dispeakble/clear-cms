@@ -5,7 +5,8 @@ const photosGallery = {
         justifyContent: "space-between"
     },
     changeStateOptions: {
-        minWidth: 120
+        minWidth: 120,
+        marginRight: 10
     }
 };
 

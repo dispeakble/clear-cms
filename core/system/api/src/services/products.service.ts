@@ -151,7 +151,8 @@ export class ProductsService {
                                     what: 'images_to_products',
                                     data: params.imageSources.map((image, index) => ({
                                         product_id: product.data[0].id,
-                                        ordernumber: index,
+                                        extension: image.extension,
+                                        ordernumber: image.orderNumber,
                                         date_added: +new Date(),
                                         active: image.active ? 1 : 0
                                     }))
@@ -282,10 +283,116 @@ export class ProductsService {
 
                     await this.protocolService.sendMessage(localityToProductPayload).toPromise();
 
+                    //update images
+                    const deletedImages = [];
+                    const updatedImages = [];
+                    let newImages = [];
+                    if(params.imageSources && params.imageSources) {
+                    //    fetch existing images
+                        const imagesToProducts: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'get',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'images_to_products',
+                                    where: {
+                                        product_id: params.id
+                                    }
+                                }
+                            }
+                        };
+
+                        let existingImages = await this.protocolService.sendMessage(imagesToProducts).toPromise();
+                        existingImages = existingImages.data;
+
+                        const updatedImagesFromClient = params.imageSources.filter(image => image.image_id).map(image => image.image_id);
+
+                        existingImages.map((image) => {
+                            if(updatedImagesFromClient.indexOf(image.image_id) === -1) {
+                                deletedImages.push(image);
+                            } else {
+                                const updatedImage = params.imageSources.find(item => item.image_id === image.image_id);
+                                updatedImages.push(updatedImage);
+                            }
+                        })
+
+                        //    delete Image record from the images_to_products
+                        if(deletedImages && deletedImages.length) {
+                            const imagesToProductsRemPayload: payloadInterface = {
+                                channel: 'db',
+                                api: 'db',
+                                act: 'rem',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'images_to_products',
+                                        how: 'OR',
+                                        where: {
+                                            image_id: deletedImages.map(image => image.image_id)
+                                        }
+                                    }
+                                }
+                            };
+                            await this.protocolService.sendMessage(imagesToProductsRemPayload).toPromise()
+                        }
+
+                        //    delete Image record from the images_to_products
+                        if(updatedImages && updatedImages.length) {
+                            await Promise.all(updatedImages.map(async image => {
+                                await this.protocolService.sendMessage({
+                                    channel: 'db',
+                                    api: 'db',
+                                    act: 'set',
+                                    payload: {
+                                        channel: 'system',
+                                        data: {
+                                            what: 'images_to_products',
+                                            data: {
+                                                ordernumber: image.orderNumber,
+                                                active: image.active ? 1 : 0
+                                            },
+                                            where: {
+                                                image_id: image.image_id,
+                                                product_id: params.id
+                                            }
+                                        }
+                                    }
+                                }).toPromise();
+                            }));
+                        }
+
+                    //    add new Images if any
+                        newImages = params.imageSources.filter(image => !image.image_id);
+                        if(newImages && newImages.length) {
+                            const imageList = await this.protocolService.sendMessage({
+                                channel: 'db',
+                                api: 'db',
+                                act: 'add',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'images_to_products',
+                                        data: newImages.map((image) => ({
+                                            product_id: params.id,
+                                            extension: image.extension,
+                                            ordernumber: image.orderNumber,
+                                            date_added: +new Date(),
+                                            active: image.active ? 1 : 0
+                                        }))
+                                    }
+                                }
+                            }).toPromise();
+                            newImages = imageList.data;
+                        }
+                    }
+
                     subscriber.next({
                         success: "The product was edited",
-                        data: {productId: params.id}
+                        data: {productId: params.id, deletedImages, updatedImages, newImages}
                     });
+
                 } catch (err) {
                     subscriber.error(err);
                 } finally {
@@ -339,10 +446,31 @@ export class ProductsService {
 
                     const locality = await this.getLocalityByProductId(params.id);
 
+                    const imagesToProductsPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'get',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'images_to_products',
+                                where: {
+                                    product_id: params.id
+                                }
+                            }
+                        }
+                    };
+                    let imageSources = await this.protocolService.sendMessage(imagesToProductsPayload).toPromise();
+
+                    if(imageSources.data) {
+                        imageSources = imageSources.data.sort((a,b) => a.ordernumber - b.ordernumber);
+                    }
+
                     subscriber.next({
                         success: "The product fetched successfully",
                         data: {
                             ...product,
+                            imageSources: imageSources,
                             ...(category.data[0] && {categoryId: category.data[0].category_id}),
                             ...(locality.data[0] && {localityId: locality.data[0].locality_id})}
                     });
@@ -395,9 +523,27 @@ export class ProductsService {
 
                     await this.protocolService.sendMessage(productsToCategoriesPayload).toPromise();
 
+                    const imagesToProductsPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'rem',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'images_to_products',
+                                how: 'OR',
+                                where: {
+                                    product_id: params.id,
+                                }
+                            }
+                        }
+                    }
+
+                    const deletedImages = await this.protocolService.sendMessage(imagesToProductsPayload).toPromise();
+
                     subscriber.next({
                         success: "The product/s deleted",
-                        data: {}
+                        data: { deletedImages }
                     });
                 } catch (err) {
                     subscriber.error(err);

@@ -725,6 +725,7 @@ CREATE TABLE public.images_to_products (
     id integer DEFAULT nextval('public.images_to_products_id_seq'::regclass) NOT NULL,
     image_id integer DEFAULT nextval('public.images_to_products_image_id_seq'::regclass)  NOT NULL,
     product_id integer NOT NULL,
+    extension character varying NOT NULL,
     ordernumber integer NOT NULL,
     date_added bigint NOT NULL,
     active smallint NOT NULL

@@ -65,7 +65,7 @@ class Products extends Component {
             const products = [...this.state.products];
             const index = this.state.productId;
 
-            await this.props.control.remove({id: index})
+            await this.props.control.remove({id: [index]})
 
             const newProductList = products.filter(product => product.id !== index)
 
