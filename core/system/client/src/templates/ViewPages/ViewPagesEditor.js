@@ -426,7 +426,7 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   setAsyncState = (newState) =>
-    new Promise((resolve) => this.setState(newState, resolve));
+      new Promise((resolve) => this.setState(newState, resolve));
 
   setTemporaryModuleOptions = (id, data, isVertical) => {
     let allTempModuleOptions = this.state.temporaryModuleOptions;
