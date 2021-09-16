@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
-
-const imgWithClick = { cursor: "pointer" };
+import React from "react";
+import PropTypes from "prop-types";
 
 const Checkmark = ({ selected }) => (
     <div
@@ -27,9 +26,6 @@ const Checkmark = ({ selected }) => (
     </div>
 );
 
-const imgStyle = {
-    transition: "transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s"
-};
 const selectedImgStyle = {
     transform: "translateZ(0px) scale3d(0.9, 0.9, 1)",
     transition: "transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s"
@@ -42,52 +38,41 @@ const cont = {
 };
 
 const Photo = ({ index, onClick, photo, margin, direction, top, left, selected, callback }) => {
-    const [isSelected, setIsSelected] = useState(selected);
     //calculate x,y scale
     const sx = (100 - (30 / photo.width) * 100) / 100;
     const sy = (100 - (30 / photo.height) * 100) / 100;
     selectedImgStyle.transform = `translateZ(0px) scale3d(${sx}, ${sy}, 1)`;
-    const imgStyle = { margin: margin, transition: "transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s" };
+    const imgStyle = { margin: margin, transition: "transform .135s cubic-bezier(0.0,0.0,0.2,1),opacity linear .15s", width: 250 };
 
     if (direction === "column") {
         imgStyle.position = "absolute";
         imgStyle.left = left;
         imgStyle.top = top;
-    }
-
-    const handleSecondEvent = event => {
-        console.log("second event");
+        imgStyle.maxWidth = 200;
     }
 
     const handleOnClick = e => {
         callback(index);
-        setIsSelected(!isSelected);
     };
 
-    useEffect(() => {
-        setIsSelected(selected);
-    }, [selected]);
 
     const handleClick = event => {
         onClick(event, { photo, index });
     };
-
-    // console.log("selected", selected);
 
     return (
         <div
             style={{
                 margin,
                 zIndex: 1400,
-                height: photo.height,
-                width: photo.width,
                 ...cont,
+                width: 250,
                 ...(!photo.active && {opacity: 0.5}) }}
-            className={!isSelected ? "not-selected" : ""}
+            className={!selected ? "not-selected" : ""}
         >
-            <Checkmark selected={isSelected ? true : false} />
+            <Checkmark selected={selected ? true : false} />
             <img
-                style={isSelected ? { ...imgStyle, ...selectedImgStyle } : { ...imgStyle }}
+                style={selected ? { ...imgStyle, ...selectedImgStyle } : { ...imgStyle }}
                 src={photo.file}
                 title={photo.title}
                 onClick={onClick ? handleClick : handleOnClick}
@@ -99,3 +84,15 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, selected, 
 };
 
 export default Photo;
+
+Photo.propTypes = {
+    index: PropTypes.number,
+    onClick: PropTypes.func,
+    photo: PropTypes.object,
+    margin: PropTypes.number || PropTypes.string,
+    direction: PropTypes.string,
+    top: PropTypes.number || PropTypes.string,
+    left: PropTypes.number || PropTypes.string,
+    selected: PropTypes.bool,
+    callback: PropTypes.func
+}
