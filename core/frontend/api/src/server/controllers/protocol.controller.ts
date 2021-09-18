@@ -1,10 +1,11 @@
-import {Controller, Inject, Logger} from '@nestjs/common';
-import {ProtocolService} from '../services/protocol.service';
+import {Controller, Get, Inject, Logger, Req, Res} from '@nestjs/common';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
+import { ViewService } from '../services/view.service';
+import {Request, Response} from "express";
 
-@Controller()
+@Controller('/')
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
@@ -32,7 +33,16 @@ export class ProtocolController {
 
     private mainService;
 
-    constructor(@Inject('FrontendService') private frontendService, @Inject('ProtocolService') private protocolService, @Inject('PublicThemesService') private publicThemesService, @Inject('AuthService') private authService, @Inject('BucketService') private bucketService, @Inject('CategoriesService') private categoriesService, @Inject('PagesService') private pagesService) {
+    constructor(
+        @Inject('FrontendService') private frontendService,
+        @Inject('ProtocolService') private protocolService,
+        @Inject('PublicThemesService') private publicThemesService,
+        @Inject('AuthService') private authService,
+        @Inject('BucketService') private bucketService,
+        @Inject('CategoriesService') private categoriesService,
+        @Inject('PagesService') private pagesService,
+        private viewService: ViewService
+    ) {
         this.mainService = this;
     }
 
@@ -86,6 +96,21 @@ export class ProtocolController {
         this.logger.log(port_map_msg);
 
         this.logger.log('Frontend application started');
+    }
+
+    @Get('*')
+    public async showHome(@Req() req: Request, @Res() res: Response) {
+        await this.viewService.handler(req, res);
+    }
+
+    @Get('_next*')
+    public async assets(@Req() req: Request, @Res() res: Response) {
+        await this.viewService.handler(req, res);
+    }
+
+    @Get('favicon.ico')
+    public async favicon(@Req() req: Request, @Res() res: Response) {
+        await this.viewService.handler(req, res);
     }
 
     private perform(params: payloadInterface) {
