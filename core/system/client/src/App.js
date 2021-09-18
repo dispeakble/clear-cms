@@ -150,7 +150,7 @@ class App extends Component {
         ],
       },
     ],
-    excludeHeader: ["pages/preview", "view-auth", "recover-password", "logout"],
+    excludeHeader: ["pages/preview", "view-auth", "recover-password", "logout", "products/preview"],
     socket: {},
     mobileOpen: false,
     defaultPalette: {}
