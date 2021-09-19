@@ -4,9 +4,11 @@ import {payloadInterface} from "../interfaces/payload.interface";
 import {ProtocolService} from "./protocol.service";
 
 @Injectable()
-export class FrontendService {
+export class SystemService {
 
     private methods = ["registerModule"];
+
+
 
     constructor(private protocolService: ProtocolService) {
     }
@@ -15,7 +17,7 @@ export class FrontendService {
         if (this.methods.includes(data.act)) {
             return this[data.act].call(Object.assign({}, data.payload));
         } else {
-            console.log("Frontend.appService." + data.act + " not found");
+            console.log("FrontendApi.appService." + data.act + " not found");
         }
         return null;
     }

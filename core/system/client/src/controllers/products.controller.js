@@ -330,8 +330,6 @@ class ProductsController extends Component {
                 return <ViewProductEditor control={this.control} {...this.props} />;
             case 'add':
                 return <ViewProductEditor control={this.control} {...this.props} />;
-            case 'preview':
-                return <ViewProductPreview control={this.control} {...this.props} />;
         }
     }
 
