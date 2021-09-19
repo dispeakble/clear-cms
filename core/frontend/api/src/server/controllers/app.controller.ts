@@ -6,7 +6,7 @@ import { ViewService } from '../services/view.service';
 import {Request, Response} from "express";
 
 @Controller('/')
-export class ProtocolController {
+export class AppController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
@@ -34,13 +34,13 @@ export class ProtocolController {
     private mainService;
 
     constructor(
-        @Inject('FrontendService') private frontendService,
         @Inject('ProtocolService') private protocolService,
+        @Inject('SystemService') private systemService,
         @Inject('PublicThemesService') private publicThemesService,
-        @Inject('AuthService') private authService,
-        @Inject('BucketService') private bucketService,
         @Inject('CategoriesService') private categoriesService,
         @Inject('PagesService') private pagesService,
+        @Inject('BucketService') private bucketService,
+
         private viewService: ViewService
     ) {
         this.mainService = this;
@@ -77,14 +77,14 @@ export class ProtocolController {
             }]
         };
 
-        const reg_msg = await this.frontendService.registerModule(payload).toPromise();
+        const reg_msg = await this.systemService.registerModule(payload).toPromise();
         this.logger.log(reg_msg);
         const port_map_msg = await this.protocolService.sendMessage({
             channel: 'hub',
             api: 'module',
             act: 'mapPort',
             payload: {
-                channel: 'frontend',
+                channel: 'frontendapi',
                 target: 'frontendproxy',
                 port: process.env.backend_port,
                 defaults: {
@@ -95,7 +95,7 @@ export class ProtocolController {
 
         this.logger.log(port_map_msg);
 
-        this.logger.log('Frontend application started');
+        this.logger.log('Frontend api application started');
     }
 
     @Get('*')
