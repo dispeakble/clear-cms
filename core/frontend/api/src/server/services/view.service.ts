@@ -25,10 +25,8 @@ export class ViewService implements OnModuleInit {
     }
   }
 
-  handler(req: Request, res: Response) {
-
-
-
+  handler(req: any, res: Response) {
+    req.test = 'test';
     return this.server.getRequestHandler()(req, res);
   }
 }
