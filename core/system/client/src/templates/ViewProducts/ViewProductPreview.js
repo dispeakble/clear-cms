@@ -10,11 +10,19 @@ import PhotosGalleryPreview from "../../components/PhotosGallery/PhotosGalleryPr
 import parse from "html-react-parser";
 import moment from "moment/moment";
 import PropTypes from "prop-types";
+import Button from "../../components/CustomButtons/Button";
 
 class ProductPreview extends Component {
     state = {
         categories:[],
-        localities:[]
+        localities:[],
+        currencyList: [{
+            id: 1,
+            name: "USD"
+        },{
+            id: 2,
+            name: "CAD"
+        }],
     };
 
     async componentDidMount() {
@@ -109,6 +117,10 @@ class ProductPreview extends Component {
             ];
     }
 
+    getPriceFormat(price) {
+        return this.state.currencyList.find(c => c.id === price.currency).name;
+    }
+
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
@@ -144,18 +156,21 @@ class ProductPreview extends Component {
                                 </div>
                             </div>
                             <div className={classes.productPrice}>
-                                <span>148$</span>
-                                <a href="#" className="cart-btn">Add to cart</a>
+                                {this.state.priceList && this.state.priceList.length && this.state.priceList.filter(price => price.value).map((price, index) => {
+                                    return <span key={index}>{price.value + " " + this.getPriceFormat(price)}</span>
+                                })}
                             </div>
+                            <Button
+                                color="primary"
+                            >
+                                Add to Cart
+                            </Button>
                         </div>
                     </div>
                 </div>
                 <div>
                     <div className={classes.productConfiguration}>
                         <span>Labels</span>
-                        <div>
-                            Available: 27th Sept 2021 to 30th November 2021
-                        </div>
                     </div>
                 </div>
             </React.Fragment>

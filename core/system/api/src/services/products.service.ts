@@ -388,6 +388,29 @@ export class ProductsService {
                         }
                     }
 
+                    if(params.priceList && params.priceList.length) {
+                        await Promise.all(params.priceList.map(async price => {
+                            await this.protocolService.sendMessage({
+                                channel: 'db',
+                                api: 'db',
+                                act: 'set',
+                                payload: {
+                                    channel: 'system',
+                                    data: {
+                                        what: 'prices_to_products',
+                                        data: {
+                                            active: price.active ? 1 : 0
+                                        },
+                                        where: {
+                                            id: price.id,
+                                            product_id: params.id
+                                        }
+                                    }
+                                }
+                            }).toPromise();
+                        }));
+                    }
+
                     subscriber.next({
                         success: "The product was edited",
                         data: {productId: params.id, deletedImages, updatedImages, newImages}
@@ -466,11 +489,30 @@ export class ProductsService {
                         imageSources = imageSources.data.sort((a,b) => a.ordernumber - b.ordernumber);
                     }
 
+                    const pricesToProductsPayload = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'get',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'prices_to_products',
+                                where: {
+                                    product_id: params.id
+                                }
+                            }
+                        }
+                    }
+
+                    let priceList = await this.protocolService.sendMessage(pricesToProductsPayload).toPromise();
+                    priceList = priceList.data;
+
                     subscriber.next({
                         success: "The product fetched successfully",
                         data: {
                             ...product,
                             imageSources: imageSources,
+                            ...(priceList.length && {priceList}),
                             ...(category.data[0] && {categoryId: category.data[0].category_id}),
                             ...(locality.data[0] && {localityId: locality.data[0].locality_id})}
                     });
