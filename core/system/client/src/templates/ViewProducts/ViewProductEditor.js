@@ -6,7 +6,7 @@ import {
 import styles from "assets/jss/clear-crm/views/productEdit.js";
 import {
     Settings,
-    InfoSharp
+    InfoSharp, StopScreenShare, ScreenShare, Visibility
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -39,6 +39,7 @@ import {Editor} from "@tinymce/tinymce-react";
 import CustomDateRangePicker from "../../components/CustomDateRangePicker/CustomDateRangePicker";
 import {DropzoneArea} from "material-ui-dropzone";
 import PhotosGallery from "../../components/PhotosGallery/PhotosGallery";
+import ProductPreview from "./ViewProductPreview";
 
 const filter = createFilterOptions();
 
@@ -58,6 +59,7 @@ class ViewProductEditor extends React.PureComponent {
         editProduct: "",
         speedDialState: false,
         showDropZone: false,
+        livePreview: false,
         activeTab: 0,
         config: {
             layoutBoxSpacing: [10, 10],
@@ -348,6 +350,33 @@ class ViewProductEditor extends React.PureComponent {
                 />,
                 name: "Product options",
             },
+            {
+                callback: async () => {
+                    await this.setAsyncState(prevState => ({
+                        livePreview: !prevState.livePreview
+                    }))
+                },
+                icon: this.state.livePreview ? <StopScreenShare
+                    className={this.props.classes.rightSideIcon}
+                    color="primary"
+                /> : <ScreenShare
+                    className={this.props.classes.rightSideIcon}
+                    color="primary"
+                />,
+                name: this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode",
+            },
+            {
+                callback: () => {
+                    window.open(
+                        `/products/preview/${this.state.editProduct}`
+                    );
+                },
+                icon: <Visibility
+                    className={this.props.classes.rightSideIcon}
+                    color="primary"
+                />,
+                name: "Preview product"
+            },
         ];
         return (
             <React.Fragment>
@@ -635,6 +664,7 @@ class ViewProductEditor extends React.PureComponent {
                                     paddingBottom: "55px",
                                 }}
                             >
+                                {this.state.livePreview && <ProductPreview isLivePreview={true} {...this.state} control={this.props.control}/>}
                                 <div className={this.props.classes.bottomPane} style={{
                                     backgroundColor: this.props.defaultTheme.background.paper
                                 }}>

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Snackbar from "components/Snackbar/Snackbar.js";
 import ViewProducts from "../templates/ViewProducts/ViewProducts";
 import ViewProductEditor from "../templates/ViewProducts/ViewProductEditor";
+import ViewProductPreview from "../templates/ViewProducts/ViewProductPreview";
 import axios from "axios";
 import _ from "lodash";
 
