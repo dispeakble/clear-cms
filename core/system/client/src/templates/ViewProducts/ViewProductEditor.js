@@ -28,7 +28,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
-import {AppBar, Tab, Tabs, TextField} from "@material-ui/core";
+import {AppBar, Checkbox, Tab, Tabs, TextField} from "@material-ui/core";
 import Autocomplete, {
     createFilterOptions,
 } from "@material-ui/lab/Autocomplete";
@@ -71,6 +71,13 @@ class ViewProductEditor extends React.PureComponent {
                 xxs: [0, 0],
             },
         },
+        currencyList: [{
+            id: 1,
+            name: "USD"
+        },{
+            id: 2,
+            name: "CAD"
+        }],
         categories: [],
         localities: [],
         title: "",
@@ -150,7 +157,8 @@ class ViewProductEditor extends React.PureComponent {
             description: productDetails.description,
             active: productDetails.active,
             availability: productDetails.availability ? productDetails.availability : ["", ""],
-            unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""]
+            unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""],
+            priceList: productDetails.priceList
         })
 
         if(productDetails.categoryId) {
@@ -219,7 +227,8 @@ class ViewProductEditor extends React.PureComponent {
             localityId: this.state.currentLocality && this.state.currentLocality.id,
             availability: this.state.availability,
             unavailability: this.state.unavailability,
-            imageSources: this.state.imageSources
+            imageSources: this.state.imageSources,
+            priceList: this.state.priceList
         }
     }
 
@@ -334,6 +343,10 @@ class ViewProductEditor extends React.PureComponent {
             reader.onload = () => resolve(reader.result);
             reader.onerror = (error) => reject(error);
         });
+    }
+
+    getPriceFormat(price) {
+        return this.state.currencyList.find(c => c.id === price.currency).name;
     }
 
     render() {
@@ -559,6 +572,27 @@ class ViewProductEditor extends React.PureComponent {
                                                             />
                                                         </Tooltip>
                                                     </Typography>
+                                                </div>
+                                                <div>
+                                                    <h3>Prices</h3>
+                                                    {this.state.priceList && this.state.priceList.length && this.state.priceList.map((price, index) => {
+                                                        return (
+                                                            <div key={index} style={{ marginLeft: "-10px" }}>
+                                                                <Checkbox
+                                                                    checked={price.active}
+                                                                    onChange={async (event, checked) => {
+                                                                        const priceList = [...this.state.priceList];
+                                                                        const findIndex = priceList.findIndex(p => p.id === price.id);
+                                                                        priceList[findIndex].active = checked;
+                                                                        await this.setAsyncState({
+                                                                            priceList: priceList,
+                                                                        });
+                                                                    }}
+                                                                />
+                                                                <span>{price.value + " " + this.getPriceFormat(price)}</span>
+                                                            </div>
+                                                        )
+                                                    })}
                                                 </div>
                                             </div>
                                         </React.Fragment>
