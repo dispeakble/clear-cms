@@ -1,4 +1,4 @@
-import {Injectable, OnModuleInit} from '@nestjs/common';
+import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
@@ -9,7 +9,7 @@ import { Request, Response } from 'express';
 export class ViewService implements OnModuleInit {
   private server: NextServer;
 
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService, @Inject('ProtocolService') private protocolService) {}
 
   async onModuleInit(): Promise<void> {
     try {
@@ -25,7 +25,8 @@ export class ViewService implements OnModuleInit {
     }
   }
 
-  handler(req: Request, res: Response) {
+  handler(req: any, res: Response) {
+    req.test = 'test';
     return this.server.getRequestHandler()(req, res);
   }
 }

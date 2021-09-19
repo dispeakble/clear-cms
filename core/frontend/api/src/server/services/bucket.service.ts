@@ -14,7 +14,7 @@ import {
 export class BucketService {
 
     private methods = ["checkAccess", "getMeta", "info", "get", "list", "completePath", "upload", "download"];
-    private publicPaths = ["/view-auth", "/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
+    private publicPaths = ["/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
 
 
