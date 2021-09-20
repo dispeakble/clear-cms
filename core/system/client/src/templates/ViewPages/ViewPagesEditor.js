@@ -747,7 +747,7 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   closePageOptionsModal() {
-    this.setState({ showPageOptionsModal: false });
+    this.setState({ showPageOptionsModal: false , bgColor:"#fff"});
   }
 
   openPageOptionsModal() {
