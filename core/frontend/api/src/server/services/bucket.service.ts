@@ -240,14 +240,12 @@ export class BucketService {
 
     public get(data: any) {
         return new Observable((observer) => {
-            const params = data.params;
             let complete_path = this.defaultPath;
 
             if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
-                complete_path = params[0];
-                if(this._isBucket({path: complete_path})){
+                if(this._isBucket({path: data.params[0]})){
                     this._getFromBucket({
-                        path: complete_path,
+                        path: data.params[0],
                         observer
                     });
                     return;

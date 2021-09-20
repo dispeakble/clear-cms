@@ -1,5 +1,4 @@
 import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
 import { Request, Response } from 'express';
@@ -9,11 +8,12 @@ import { Request, Response } from 'express';
 export class ViewService implements OnModuleInit {
   private server: NextServer;
 
-  constructor(private configService: ConfigService, @Inject('ProtocolService') private protocolService) {}
+  constructor(@Inject('AppService') private appService) {
+
+  }
 
   async onModuleInit(): Promise<void> {
     try {
-      const port = Number(process.env.backend_port);
       this.server = createServer({
         dev: true,
         //dev: this.configService.get('NODE_ENV') !== 'production',
@@ -25,8 +25,18 @@ export class ViewService implements OnModuleInit {
     }
   }
 
+  apiHub(params) {
+    return this.appService.perform({
+      act: 'protocolCall',
+      payload: params
+    });
+  }
+
   handler(req: any, res: Response) {
-    req.test = 'test';
+    req.apiHub = (params) => {
+      return this.apiHub(params);
+    };
+
     return this.server.getRequestHandler()(req, res);
   }
 }

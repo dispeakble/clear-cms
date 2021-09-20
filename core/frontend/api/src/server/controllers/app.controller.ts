@@ -1,4 +1,4 @@
-import {Controller, Get, Inject, Logger, Req, Res} from '@nestjs/common';
+import {Controller, Get, HttpStatus, Inject, Logger, Param, Req, Res} from '@nestjs/common';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -46,12 +46,12 @@ export class AppController {
         this.mainService = this;
     }
 
-    @MessagePattern({message: 'frontend'})
+    @MessagePattern({message: 'frontendapi'})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontend'})
+    @EventPattern({event: 'frontendapi'})
     public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(payload);
     }
@@ -98,10 +98,7 @@ export class AppController {
         this.logger.log('Frontend api application started');
     }
 
-    @Get('*')
-    public async showHome(@Req() req: Request, @Res() res: Response) {
-        await this.viewService.handler(req, res);
-    }
+
 
     @Get('_next*')
     public async assets(@Req() req: Request, @Res() res: Response) {
@@ -111,6 +108,96 @@ export class AppController {
     @Get('favicon.ico')
     public async favicon(@Req() req: Request, @Res() res: Response) {
         await this.viewService.handler(req, res);
+    }
+
+    @Get('files/*')
+    public async getFiles(@Req() req: Request, @Res() res: Response, @Param('path') path: string) {
+        req.params[0] = `files/${req.params[0]}`;
+        const fileReq = {
+            "channel": "frontendapi",
+            "payload": {
+                "ip": req.ip,
+                "hostname": req.hostname,
+                "params": req.params,
+                "headers": req.headers,
+                "query": req.query
+            }
+        };
+
+        const fileStats = await this.bucketService.getMeta(fileReq.payload);
+        if(!fileStats) {
+            res.status(HttpStatus.NOT_FOUND);//TODO ADD A 404 PAGE
+            res.end();
+            return;
+        }
+
+        /*const cacheReq = await this.protocolService.getValue(`frontend_${fileStats.data.file_name}`);
+        //const cacheReq = null;
+
+        if (cacheReq) {
+            const exp_date = new Date(cacheReq.expires);
+
+            if (cacheReq.ETag === fileStats.data.etagId && exp_date > new Date()) {
+                return this.respond({res, file: cacheReq, fileStats: {
+                        data: {
+                            etagId: cacheReq.ETag
+                        }
+                    }, finish: true});
+            }
+        }*/
+
+        const getSubscriber = this.bucketService.get(fileReq.payload);
+
+
+        let bigBuffer = Buffer.alloc(0);
+        const file_meta = {
+            content_length: 0,
+            content_type: ''
+        };
+
+        getSubscriber.subscribe((data) => {
+            switch (data.type) {
+                case "meta":
+                    this.respond({res, file: data, fileStats});
+
+                    file_meta.content_type = data.content_type;
+                    file_meta.content_length = data.content_length;
+                    break;
+                case "Buffer":
+                    bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
+                    res.write(Buffer.from(data.data));
+                    break;
+            }
+
+        }, (error) => {
+            this.logger.log(error);
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }, () => {
+            res.end();
+
+        });
+    }
+
+    @Get('*')
+    public async showHome(@Req() req: Request, @Res() res: Response) {
+        await this.viewService.handler(req, res);
+    }
+
+    private respond(params) {
+        const { res, file, fileStats } = params;
+        res.set("Content-Type", file.content_type);
+        res.set("Content-Length", file.content_length);
+        res.set('Content-Security-Policy', "img-src 'self'; default-src 'self'; script-src 'self'; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com");
+        res.set('X-Frame-Options', 'SAMEORIGIN');
+        res.set('X-Content-Type-Options', 'nosniff');
+        res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
+        res.set('Cache-Control', 'public, max-age=604800');
+        res.set('ETag', fileStats.data.etagId);
+        res.status(HttpStatus.OK);
+        if(params.finish) {
+            res.write(Buffer.from(file.data.data));
+            res.end();
+        }
     }
 
     private perform(params: payloadInterface) {

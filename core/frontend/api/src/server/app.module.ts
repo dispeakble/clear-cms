@@ -11,6 +11,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { GotModule, GotModuleOptions } from '@t00nday/nestjs-got';
 import {ViewService} from "./services/view.service";
 import { ConfigService } from '@nestjs/config';
+import {AppService} from "./services/app.service";
 
 
 @Module({
@@ -48,6 +49,7 @@ import { ConfigService } from '@nestjs/config';
     CategoriesService,
     PagesService,
     BucketService,
+    AppService,
     ViewService,
     ConfigService
   ]
