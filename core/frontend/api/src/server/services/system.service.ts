@@ -17,7 +17,7 @@ export class SystemService {
         if (this.methods.includes(data.act)) {
             return this[data.act].call(Object.assign({}, data.payload));
         } else {
-            console.log("FrontendApi.appService." + data.act + " not found");
+            console.log("FrontendApi.SystemService." + data.act + " not found");
         }
         return null;
     }

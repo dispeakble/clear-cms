@@ -1,6 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
-import ViewPagesPreview from "templates/ViewPages/ViewPagesPreview";
+import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 
 import { withRouter } from 'next/router';
 
@@ -11,18 +11,53 @@ const PageComponent: NextPage = (props) => {
   )
 };
 
-export async function getStaticPaths() {
+/*export async function getStaticPaths() {
   const paths = [];
 
   return { paths, fallback: 'blocking' }
+}*/
+
+export async function getServerSideProps(context) {
+
+    let result = {};
+
+    try {
+        const obs = await context.req.apiHub({
+            protocolMethod: 'sendMessage',
+            channel: 'frontendapi',
+            api: 'pages',
+            act: 'get',
+            payload: {
+                body: {
+                    where: {
+                        pageLink: context.req.params[0] || 'home'
+                    }
+                }
+            }
+        });
+        const res = obs.toPromise();
+        result = await res;
+        console.log(result['data']);
+    } catch (err) {
+        console.log(err);
+        return {
+            notFound: true,
+        };
+    }
+
+    return {
+        props: {
+            pageData: result['data']
+        }, // will be passed to the page component as props
+    }
 }
 
-export async function getStaticProps({ params }) {
+/*export async function getStaticProps({ params }) {
 
     debugger;
 
 
-    /*let pageLink = params.slug;
+    /!*let pageLink = params.slug;
     if(params.slug && params.slug !== '/') {
         const parts = params.slug.split('/');
         pageLink = parts[parts.length - 1];
@@ -53,7 +88,7 @@ export async function getStaticProps({ params }) {
         },
         revalidate: 10,
         fallback: "blocking"
-    }*/
+    }*!/
 
   return {
     props: {
@@ -68,6 +103,6 @@ export async function getStaticProps({ params }) {
     revalidate: 10
   }
 
-}
+}*/
 
 export default withRouter(PageComponent);
