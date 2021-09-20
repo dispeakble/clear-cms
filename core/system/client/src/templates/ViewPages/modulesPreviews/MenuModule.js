@@ -24,6 +24,7 @@ class MenuModule extends Component {
                 color: options.style.color,
                 fontSize: options.style.fontSize,
                 verticalAlign: "middle",
+                marginRight: `${options.menuIconSpace}em`
               }}
             >
               {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
@@ -73,11 +74,14 @@ class MenuModule extends Component {
       );
     } else {
       if (options.isVertical && options.stretchToFit && options.isTopLevel) {
-        style.width = "100%";
+          style.width = "100%";
+          style.display = "flex";
+          style.flexDirection = "column";
+          style.justifyContent = "space-around";
+          style.alignItems = "stretch"
       }
-      if(options.stretchToFit && options.isTopLevel) {
+      if (options.stretchToFit && options.isTopLevel) {
           style.height = "100%";
-          style.alignItems = "center";
       }
       return <ul style={style}>{params.map((elm) => createLink(elm))}</ul>;
     }
@@ -113,8 +117,20 @@ class MenuModule extends Component {
     );
     let isVertical = this.props.element.moduleOptions.data.isVertical;
     let showAsAccordion = this.props.element.moduleOptions.data.showAsAccordion;
-    let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
-
+      let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
+      let horizontallyCentered = this.props.element.moduleOptions.data.horizontallyCentered;
+      let verticallyCentered = this.props.element.moduleOptions.data.verticallyCentered;
+      let menuIconSpace = this.props.element.moduleOptions.data.menuIconSpace;
+      if (verticallyCentered && isVertical) {
+          style.display = "flex";
+          style.alignContent = "stretch"
+          style.alignItems = "center";
+          style.width = "100%";
+          style.justifyItems = "stretch"
+          if(horizontallyCentered){
+              style.justifyContent="center"
+          }
+      }
     let menuData = linksList.map((link) => ({
       moduleOptions: this.props.element.moduleOptions,
       id: link.id,
@@ -134,7 +150,9 @@ class MenuModule extends Component {
         key={this.props.i}
         data-grid={this.props.element}
         style={{
-          width: isVertical || stretchToFit ? "100%" : "",
+            width: !isVertical && stretchToFit ? "100%" : "",
+            height: isVertical && stretchToFit ? "100%" : "",
+            textAlign: horizontallyCentered? "center": ''
         }}
       >
         {(() => {
@@ -144,6 +162,7 @@ class MenuModule extends Component {
             style,
             isTopLevel: true,
             isVertical,
+            menuIconSpace,
           });
         })()}
       </div>

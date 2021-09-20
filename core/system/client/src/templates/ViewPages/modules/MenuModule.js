@@ -29,7 +29,7 @@ import {
 import * as Icons from "@material-ui/icons";
 
 // for the dropdown
-import { TextField } from "@material-ui/core";
+import {Slider, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for the new color picker
@@ -57,6 +57,9 @@ class MenuModule extends Component {
     icons: [],
     icon: "",
     noLinksFound: false,
+    horizontallyCentered: false,
+    verticallyCentered: false,
+    menuIconSpace:0
   };
 
   async componentDidMount() {
@@ -471,6 +474,11 @@ class MenuModule extends Component {
       showModuleOptionsModal: true,
     });
   };
+  handleSlider=(e,newValue)=>{
+    this.setState({
+      menuIconSpace:newValue
+    })
+  }
 
   confirmNoLinksFound = () => {
     return (
@@ -512,6 +520,9 @@ class MenuModule extends Component {
                 showAsAccordion: this.state.showAsAccordion,
                 stretchToFit: this.state.stretchToFit,
                 backgroundColor: this.state.bgColor,
+                horizontallyCentered: this.state.horizontallyCentered,
+                verticallyCentered: this.state.verticallyCentered,
+                menuIconSpace: this.state.menuIconSpace
               });
               this.closeModuleOptionsModal();
             }}
@@ -648,6 +659,50 @@ class MenuModule extends Component {
               </Tooltip>
               Stretch to Fit
             </Typography>
+            <Typography id="discrete-slider" gutterBottom>
+              <Tooltip title="Stretch the menu links so as to cover all the width of the box">
+                <Switch
+                    checked={this.state.horizontallyCentered}
+                    onChange={() => {
+                      this.setState({
+                        horizontallyCentered: !this.state.horizontallyCentered,
+                      });
+                    }}
+                    value={this.state.horizontallyCentered}
+                />
+              </Tooltip>
+              Text to Center Horizontally
+            </Typography>
+            <Typography id="discrete-slider" gutterBottom>
+              <Tooltip title="Stretch the menu links so as to cover all the width of the box">
+                <Switch
+                    checked={this.state.verticallyCentered}
+                    onChange={() => {
+                      this.setState({
+                        verticallyCentered: !this.state.verticallyCentered,
+                      });
+                    }}
+                    value={this.state.verticallyCentered}
+                />
+              </Tooltip>
+              Text to Center Vertically
+            </Typography>
+            <Typography id="discrete-slider" gutterBottom>
+              Spacing Between Icon and Menu
+              <Tooltip title="Stretch the menu links so as to cover all the width of the box">
+                <Slider
+                    aria-label="Temperature"
+                    defaultValue={this.state.menuIconSpace}
+                    valueLabelDisplay="auto"
+                    step={0.5}
+                    marks
+                    min={0}
+                    max={5}
+                    color="white"
+                    onChange={this.handleSlider}
+                />
+              </Tooltip>
+            </Typography>
             <MaterialTable
               title="Menu Links"
               tableRef={this.state.tableRef}
@@ -678,6 +733,9 @@ class MenuModule extends Component {
                     showAsAccordion: this.state.showAsAccordion,
                     stretchToFit: this.state.stretchToFit,
                     backgroundColor: this.state.bgColor,
+                    verticallyCentered: this.state.verticallyCentered,
+                    horizontallyCentered: this.state.horizontallyCentered,
+                    menuIconSpace: this.state.menuIconSpace
                   });
                   this.closeModuleOptionsModal();
                 }
