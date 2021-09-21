@@ -12,7 +12,7 @@ import moment from "moment/moment";
 import PropTypes from "prop-types";
 import Button from "../../components/CustomButtons/Button";
 import {TextField, Typography} from "@material-ui/core";
-import ArrayBuilder from "../ViewLabels/ArrayBuilder";
+import countries from 'iso-3166-1-codes'
 import Checkbox from "@material-ui/core/Checkbox";
 import {Autocomplete} from "@material-ui/lab";
 
@@ -21,6 +21,7 @@ class ProductPreview extends Component {
         categories:[],
         localities:[],
         labels: [],
+        countryList: [...countries],
         labelData: [],
         currencyList: [{
             id: 1,
@@ -53,11 +54,6 @@ class ProductPreview extends Component {
         let localityFromStorage = await this.props.control.listLocalities();
 
         if (localityFromStorage) {
-            localityFromStorage = localityFromStorage.map((locality) => ({
-                id: locality.id,
-                title: locality.title
-            }));
-
             await this.setAsyncState({localities: localityFromStorage});
         }
 
@@ -85,7 +81,8 @@ class ProductPreview extends Component {
             description: productDetails.description,
             active: productDetails.active,
             availability: productDetails.availability ? productDetails.availability : ["", ""],
-            unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""]
+            unavailability: productDetails.unavailability ? productDetails.unavailability : ["", ""],
+            priceList: productDetails.priceList
         })
 
         if(productDetails.categoryId) {
@@ -151,6 +148,11 @@ class ProductPreview extends Component {
                 [id]: value
             }
         }))
+    }
+
+    getCountryNameById = (id) => {
+        const country = this.state.countryList.find(country => country.numeric === id);
+        return country.name;
     }
 
     generateEditableComponent(label) {
@@ -302,6 +304,16 @@ class ProductPreview extends Component {
                         </div>
                         <div>
                             <h3>Locality</h3>
+                            {this.state.currentLocality && <div>
+                                <div>
+                                    <h5>City</h5>
+                                    <div>{this.state.currentLocality.title}</div>
+                                </div>
+                                <div>
+                                    <h5>Country</h5>
+                                    <div>{this.getCountryNameById(this.state.currentLocality.country_id)}</div>
+                                </div>
+                            </div>}
                         </div>
                     </div>
                 </div>
