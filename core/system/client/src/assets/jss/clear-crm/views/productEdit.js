@@ -68,6 +68,9 @@ const styles = {
     },
     tabsMenu: {
         marginBottom: 10
+    },
+    autocompleteDropdown: {
+        maxWidth: 200
     }
 }
 

@@ -25,7 +25,8 @@ class ProductsController extends Component {
         list: () => this.list(),
         remove: (params) => this.remove(params),
         listCategories: (params) => this.listCategories(params),
-        listLocalities: (params) => this.listLocalities(params)
+        listLocalities: (params) => this.listLocalities(params),
+        listLabels: (params) => this.listLabels(params)
     };
 
     help = {
@@ -252,6 +253,22 @@ class ProductsController extends Component {
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'productLocality',
+                    act: 'list',
+                    payload: params
+                });
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    listLabels(params) {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'productLabels',
                     act: 'list',
                     payload: params
                 });
