@@ -12,7 +12,7 @@ const javascriptStyles = {
     top: 0,
     left: 0,
     "& .react-grid-item": {
-      border: "1px solid rgba(0,0,0,0.14)",
+
       boxSizing: "border-box",
     },
     "& .react-grid-placeholder": {},

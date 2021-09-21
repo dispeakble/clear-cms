@@ -9,7 +9,7 @@ const javascriptStyles = {
     flexDirection: "column",
     margin: "0 15px 0",
     "& .react-grid-item": {
-      border: "1px solid rgba(0,0,0,0.14)",
+
       boxSizing: "border-box",
       "&:hover > $boxContent" : {
         opacity: 1,
