@@ -106,7 +106,7 @@ class ViewPagesEditor extends React.PureComponent {
       { label: "Times New Roman" },
       { label: "Verdana" },
     ],
-    bgColor: "",
+    bgColor: "#FFF",
     bgGradientColor:"",
     pageBase64Image: false,
     backgroundImage: "",
