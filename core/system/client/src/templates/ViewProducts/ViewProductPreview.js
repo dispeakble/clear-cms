@@ -11,11 +11,17 @@ import parse from "html-react-parser";
 import moment from "moment/moment";
 import PropTypes from "prop-types";
 import Button from "../../components/CustomButtons/Button";
+import {TextField, Typography} from "@material-ui/core";
+import ArrayBuilder from "../ViewLabels/ArrayBuilder";
+import Checkbox from "@material-ui/core/Checkbox";
+import {Autocomplete} from "@material-ui/lab";
 
 class ProductPreview extends Component {
     state = {
         categories:[],
         localities:[],
+        labels: [],
+        labelData: [],
         currencyList: [{
             id: 1,
             name: "USD"
@@ -55,6 +61,12 @@ class ProductPreview extends Component {
             await this.setAsyncState({localities: localityFromStorage});
         }
 
+        let labelsFromStorage = await this.props.control.listLabels({active: 1});
+
+        if(labelsFromStorage) {
+            await this.setAsyncState({labels: labelsFromStorage});
+        }
+
         if(this.props.isLivePreview) {
             await this.setAsyncState({
                 ...this.props
@@ -85,6 +97,13 @@ class ProductPreview extends Component {
         if(productDetails.localityId) {
             await this.setAsyncState({
                 currentLocality: this.getLocalityItem(productDetails.localityId),
+            })
+        }
+
+        if(productDetails.selectedLabels) {
+            const labelList = this.state.labels.filter(label => productDetails.selectedLabels.indexOf(label.id) > -1);
+            await this.setAsyncState({
+                selectedLabels: labelList
             })
         }
 
@@ -124,53 +143,166 @@ class ProductPreview extends Component {
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
+    saveLabelValue = async (id, value) => {
+        await this.setAsyncState(prevState => ({
+            ...prevState,
+            labelData: {
+                ...prevState.labelData,
+                [id]: value
+            }
+        }))
+    }
+
+    generateEditableComponent(label) {
+        const type = label.type;
+        switch(true) {
+            case ["string", "date", "time"].indexOf(type) > -1:
+                return (<TextField
+                    className={this.props.classes.textfield}
+                    defaultValue={label.value}
+                    value={this.state.labelData[label.id] && this.state.labelData[label.id].value}
+                    type={label.type}
+                    onChange={async (e) => {
+                        if(e.target) {
+                            await this.saveLabelValue(label.id, e.target.value)
+                        }
+                    }
+                    }
+                    variant={"outlined"}
+                    label={label.title}
+                />)
+            case type === "numeric":
+                return (<TextField
+                    className={this.props.classes.textfield}
+                    defaultValue={label.value}
+                    value={this.state.labelData[label.id] && this.state.labelData[label.id].value}
+                    type="number"
+                    onChange={async (e) => {
+                            if(e.target) {
+                                await this.saveLabelValue(label.id, e.target.value)
+                            }
+                        }
+                    }
+                    variant={"outlined"}
+                    label={label.title}
+                />)
+            case type === "datetime":
+                return (<TextField
+                    className={this.props.classes.textfield}
+                    defaultValue={label.value}
+                    value={this.state.labelData[label.id] && this.state.labelData[label.id].value}
+                    type="datetime-local"
+                    onChange={async (e) => {
+                            if(e.target) {
+                                await this.saveLabelValue(label.id, e.target.value)
+                            }
+                        }
+                    }
+                    variant={"outlined"}
+                    label={label.title}
+                />)
+            case type === "array":
+                let itemList = [];
+                try {
+                    itemList = JSON.parse(label.value);
+                } catch (e) {
+                    itemList = []
+                }
+                return (<Autocomplete
+                    disablePortal
+                    options={itemList}
+                    renderInput={(params) => <TextField {...params} label={label.title} />}
+                    variant={"outlined"}
+                />)
+            case type === "object":
+                return (<TextField
+                    className={this.props.classes.textfield}
+                    defaultValue={label.value}
+                    value={this.state.labelData[label.id] && this.state.labelData[label.id].value}
+                    type="string"
+                    onChange={async (e) => {
+                            if(e.target) {
+                                await this.saveLabelValue(label.id, e.target.value)
+                            }
+                        }
+                    }
+                    variant={"outlined"}
+                    label={label.title}
+                />)
+            case type === "boolean":
+                return (
+                    <React.Fragment>
+                        <Typography>
+                            {label.title}
+                            <Checkbox defaultValue={parseInt(label.value) === 1} checked={parseInt(this.state.labelData[label.id]) === 1} onChange={async (ev, checked) => {
+                                    await this.saveLabelValue(label.id,checked ? 1 : 0)
+                                }
+                            } />
+                        </Typography>
+                    </React.Fragment>
+                )
+            default:
+                return (<p>Invalid Data type</p>)
+        }
+    }
+
     render() {
         const classes = this.props.classes;
+        console.log("state", this.state);
         return (
             <React.Fragment>
                 <Helmet>
                     <title>Products</title>
                 </Helmet>
                 <div className={classes.container}>
-                    <div className={classes.leftColumn}>
-                        {(this.state.imageSources && this.state.imageSources.length) ? <PhotosGalleryPreview imageSources={this.state.imageSources} /> : <h2>No Photos Are available</h2>}
-                    </div>
-                    <div className={classes.rightColumn}>
-                        <div className={classes.productDescription}>
-                            <span>{this.state.currentCategory && this.state.currentCategory.label ? this.state.currentCategory.label : ""}</span>
-                            <h1>{this.state.title}</h1>
-                            <div>{this.state.description ? parse(this.state.description) : "No Description"}</div>
+                    <div className={classes.firstSection}>
+                        <div className={classes.leftColumn}>
+                            {(this.state.imageSources && this.state.imageSources.length) ? <PhotosGalleryPreview imageSources={this.state.imageSources} /> : <h2>No Photos Are available</h2>}
                         </div>
-                        {/* Product Availability */}
+                        <div className={classes.rightColumn}>
+                            <div className={classes.productDescription}>
+                                <span>{this.state.currentCategory && this.state.currentCategory.label ? this.state.currentCategory.label : ""}</span>
+                                <h1>{this.state.title}</h1>
+                                <div>{this.state.description ? parse(this.state.description) : "No Description"}</div>
+                            </div>
+                            {/* Product Availability */}
+                            <div className={classes.productConfiguration}>
+                                <div>
+                                    <h3>Availability</h3>
+                                    <div>
+                                        {this.state.availability && `From: ${moment(this.state.availability[0]).calendar()} To: ${moment(this.state.availability[1]).calendar()}`}
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3>Unavailability</h3>
+                                    <div>
+                                        {this.state.unavailability && `From: ${moment(this.state.unavailability[0]).calendar()} To: ${moment(this.state.unavailability[1]).calendar()}`}
+                                    </div>
+                                </div>
+                                <div className={classes.productPrice}>
+                                    {this.state.priceList && this.state.priceList.length && this.state.priceList.filter(price => price.value).map((price, index) => {
+                                        return <span key={index}>{price.value + " " + this.getPriceFormat(price)}</span>
+                                    })}
+                                </div>
+                                <Button
+                                    color="primary"
+                                >
+                                    Add to Cart
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={classes.secondSection}>
                         <div className={classes.productConfiguration}>
-                            <div>
-                                <h3>Availability</h3>
-                                <div>
-                                    {this.state.availability && `From: ${moment(this.state.availability[0]).calendar()} To: ${moment(this.state.availability[1]).calendar()}`}
-                                </div>
-                            </div>
-                            <div>
-                                <h3>Unavailability</h3>
-                                <div>
-                                    {this.state.unavailability && `From: ${moment(this.state.unavailability[0]).calendar()} To: ${moment(this.state.unavailability[1]).calendar()}`}
-                                </div>
-                            </div>
-                            <div className={classes.productPrice}>
-                                {this.state.priceList && this.state.priceList.length && this.state.priceList.filter(price => price.value).map((price, index) => {
-                                    return <span key={index}>{price.value + " " + this.getPriceFormat(price)}</span>
-                                })}
-                            </div>
-                            <Button
-                                color="primary"
-                            >
-                                Add to Cart
-                            </Button>
+                            <h3>Labels</h3>
+                            {
+                                this.state.labels && this.state.labels.length &&
+                                this.state.labels.map((label, index) => <div key={index}>{this.generateEditableComponent(label)}</div>)
+                            }
                         </div>
-                    </div>
-                </div>
-                <div>
-                    <div className={classes.productConfiguration}>
-                        <span>Labels</span>
+                        <div>
+                            <h3>Locality</h3>
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
