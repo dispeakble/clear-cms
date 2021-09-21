@@ -92,7 +92,7 @@ class ViewBoxEditor extends React.PureComponent {
         displayItemBgColorPicker: false,
         displayItemBorderColorPicker: false,
         showBgGradientColorPickerModal: false,
-        fontUnit: "px",
+        fontUnit: "rem",
         editItemModuleOptions: {},
         editModuleOptions: "",
         editItemScrollbars: false,
