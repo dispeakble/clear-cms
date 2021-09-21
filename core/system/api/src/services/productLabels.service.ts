@@ -24,7 +24,8 @@ export class ProductLabelsService {
                             channel: 'system',
                             data: {
                                 what: 'product_labels',
-                                fields: ["*"]
+                                fields: ["*"],
+                                where: params
                             }
                         }
                     };

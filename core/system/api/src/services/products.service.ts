@@ -138,6 +138,27 @@ export class ProductsService {
                     };
                     await this.protocolService.sendMessage(localityToProductPayload).toPromise();
 
+                    let labels = null;
+                    if(params.labelList && params.labelList.length) {
+                        const labelsToProductsReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'add',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'labels_to_products',
+                                    data: params.labelList.map((label, index) => ({
+                                        product_id: product.data[0].id,
+                                        label_id: label.id
+                                    }))
+                                }
+                            }
+                        };
+                        labels = await this.protocolService.sendMessage(labelsToProductsReq).toPromise();
+                        labels = labels.data;
+                    }
+
                     let images = null;
 
                     if(params.imageSources && params.imageSources.length) {
@@ -165,7 +186,7 @@ export class ProductsService {
 
                     subscriber.next({
                         success: "The product was added",
-                        data: {...product.data[0], imageSources: images}
+                        data: {...product.data[0], imageSources: images, selectedLabels: labels}
                     });
                 } catch (err) {
                     subscriber.error(err);
@@ -287,7 +308,7 @@ export class ProductsService {
                     const deletedImages = [];
                     const updatedImages = [];
                     let newImages = [];
-                    if(params.imageSources && params.imageSources) {
+                    if(params.imageSources) {
                     //    fetch existing images
                         const imagesToProducts: payloadInterface = {
                             channel: 'db',
@@ -388,6 +409,73 @@ export class ProductsService {
                         }
                     }
 
+                    // update Labels
+                    // 1. Fetch Existing labels for Products
+                    const labelsToProducts: payloadInterface = {
+                        channel: 'db',
+                        api: 'db',
+                        act: 'get',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'labels_to_products',
+                                where: {
+                                    product_id: params.id
+                                }
+                            }
+                        }
+                    };
+
+                    let existingLabels = await this.protocolService.sendMessage(labelsToProducts).toPromise();
+                    existingLabels = existingLabels.data;
+
+                    const existingLabelsIds = existingLabels.map(label => label.label_id);
+                    const newLabels = params.labelList.filter(label => existingLabelsIds.indexOf(label.id) === -1);
+                    const labelIdsFromParams = params.labelList.map(label => label.id);
+                    const deletedLabels = existingLabels.filter(label => labelIdsFromParams.indexOf(label.label_id) === -1);
+
+                //    2. Add new Labels if any
+                    if(newLabels && newLabels.length){
+                        const labelsToProductsAddReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'add',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'labels_to_products',
+                                    data: newLabels.map(label => ({
+                                        product_id: params.id,
+                                        label_id: label.id
+                                    }))
+                                }
+                            }
+                        };
+
+                        await this.protocolService.sendMessage(labelsToProductsAddReq).toPromise();
+                    }
+
+                //  3. delete labels if any
+                    if(deletedLabels && deletedLabels.length) {
+                        const labelsToProductsRemReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'db',
+                            act: 'rem',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'labels_to_products',
+                                    how: 'OR',
+                                    where: {
+                                        id: deletedLabels.map(label => label.id)
+                                    }
+                                }
+                            }
+                        };
+
+                        await this.protocolService.sendMessage(labelsToProductsRemReq).toPromise();
+                    }
+
                     if(params.priceList && params.priceList.length) {
                         await Promise.all(params.priceList.map(async price => {
                             await this.protocolService.sendMessage({
@@ -469,6 +557,10 @@ export class ProductsService {
 
                     const locality = await this.getLocalityByProductId(params.id);
 
+                    //Fetch Labels based on Product
+
+                    const selectedLabels = await this.getLabelListByProductId(params.id);
+
                     const imagesToProductsPayload: payloadInterface = {
                         channel: 'db',
                         api: 'db',
@@ -514,7 +606,8 @@ export class ProductsService {
                             imageSources: imageSources,
                             ...(priceList.length && {priceList}),
                             ...(category.data[0] && {categoryId: category.data[0].category_id}),
-                            ...(locality.data[0] && {localityId: locality.data[0].locality_id})}
+                            ...(locality.data[0] && {localityId: locality.data[0].locality_id}),
+                            ...(selectedLabels.data && {selectedLabels: selectedLabels.data.map(label => label.label_id)})}
                     });
                 } catch (err) {
                     subscriber.error(err);
@@ -640,6 +733,29 @@ export class ProductsService {
         const locality = await this.protocolService.sendMessage(localityToProductsPayload).toPromise();
 
         return locality;
+    }
+
+    public async getLabelListByProductId(productId: number) {
+        //Fetch categories for product if it has
+        const labelsToProductsPayload: payloadInterface = {
+            channel: 'db',
+            api: 'db',
+            act: 'get',
+            payload: {
+                channel: 'system',
+                data: {
+                    what: 'labels_to_products',
+                    fields: ["label_id"],
+                    where: {
+                        product_id: productId
+                    }
+                }
+            }
+        }
+
+        const labels = await this.protocolService.sendMessage(labelsToProductsPayload).toPromise();
+
+        return labels;
     }
 
     private convertDateRange(dateRange) {

@@ -6,7 +6,7 @@ import {
 import styles from "assets/jss/clear-crm/views/productEdit.js";
 import {
     Settings,
-    InfoSharp, StopScreenShare, ScreenShare, Visibility
+    InfoSharp, StopScreenShare, ScreenShare, Visibility, CheckBoxOutlineBlank, CheckBox
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -80,12 +80,14 @@ class ViewProductEditor extends React.PureComponent {
         }],
         categories: [],
         localities: [],
+        labels: [],
         title: "",
         description: "",
         flatCategories: [],
         imageSources: [],
         currentCategory: "",
         currentLocality: "",
+        selectedLabels: [],
         active: false,
         availability: ["", ""],
         unavailability: ["", ""],
@@ -142,6 +144,12 @@ class ViewProductEditor extends React.PureComponent {
             await this.setAsyncState({localities: localityFromStorage});
         }
 
+        let labelsFromStorage = await this.props.control.listLabels({active: 1});
+
+        if(labelsFromStorage) {
+            await this.setAsyncState({labels: labelsFromStorage});
+        }
+
         let editing = this.state.editing;
         let product_id = this.props.location.pathObject[2];
         if(editing) {
@@ -170,6 +178,13 @@ class ViewProductEditor extends React.PureComponent {
         if(productDetails.localityId) {
             await this.setAsyncState({
                 currentLocality: this.getLocalityItem(productDetails.localityId),
+            })
+        }
+
+        if(productDetails.selectedLabels) {
+            const labelList = this.state.labels.filter(label => productDetails.selectedLabels.indexOf(label.id) > -1);
+            await this.setAsyncState({
+                selectedLabels: labelList
             })
         }
 
@@ -228,7 +243,8 @@ class ViewProductEditor extends React.PureComponent {
             availability: this.state.availability,
             unavailability: this.state.unavailability,
             imageSources: this.state.imageSources,
-            priceList: this.state.priceList
+            priceList: this.state.priceList,
+            labelList: this.state.selectedLabels
         }
     }
 
@@ -502,7 +518,7 @@ class ViewProductEditor extends React.PureComponent {
                                                 />
                                             </div>
                                             <div>
-                                                <div>
+                                                <div className={this.props.classes.autocompleteDropdown}>
                                                     <Autocomplete
                                                         id="categoryDropdown"
                                                         onChange={this.handleCategory}
@@ -535,7 +551,7 @@ class ViewProductEditor extends React.PureComponent {
                                                         )}
                                                     />
                                                 </div>
-                                                <div>
+                                                <div className={this.props.classes.autocompleteDropdown}>
                                                     <Autocomplete
                                                         id="localityDropdown"
                                                         onChange={async (event, locality) => await this.setAsyncState({
@@ -550,6 +566,40 @@ class ViewProductEditor extends React.PureComponent {
                                                             <TextField
                                                                 className={this.props.classes.textfield}
                                                                 label="Select a Locality"
+                                                                {...params}
+                                                                variant="outlined"
+                                                            />
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className={this.props.classes.autocompleteDropdown}>
+                                                    <Autocomplete
+                                                        multiple
+                                                        id="labelsDropdown"
+                                                        onChange={async (event, label) => await this.setAsyncState({
+                                                            selectedLabels: label,
+                                                        })}
+                                                        disableCloseOnSelect
+                                                        className={this.props.classes.option}
+                                                        value={this.state.selectedLabels}
+                                                        options={this.state.labels}
+                                                        autoHighlight
+                                                        getOptionLabel={(option) => option.title || ""}
+                                                        renderOption={(props, option) => (
+                                                            <span {...props}>
+                                                                <Checkbox
+                                                                    icon={<CheckBoxOutlineBlank fontSize={"small"} />}
+                                                                    checkedIcon={<CheckBox fontSize={"small"} />}
+                                                                    style={{ marginRight: 8 }}
+                                                                    checked={option.selected}
+                                                                />
+                                                                {props.title}
+                                                            </span>
+                                                        )}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                className={this.props.classes.textfield}
+                                                                label="Select Labels"
                                                                 {...params}
                                                                 variant="outlined"
                                                             />
