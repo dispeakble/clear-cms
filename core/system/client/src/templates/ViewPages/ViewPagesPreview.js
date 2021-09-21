@@ -33,7 +33,7 @@ class ViewPagesPreview extends React.Component {
     },
     modals: [],
     layouts: {},
-    fontUnit: "px",
+    fontUnit: "rem",
     openedAccordionLink: {},
     page_id:0
   };

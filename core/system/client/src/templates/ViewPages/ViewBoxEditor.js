@@ -701,8 +701,9 @@ class ViewBoxEditor extends React.PureComponent {
                                                 onChange={this.handleItemFontSize.bind(this)}
                                                 aria-labelledby="discrete-slider"
                                                 valueLabelDisplay="auto"
-                                                min={5}
-                                                max={50}
+                                                min={0.1}
+                                                max={10}
+                                                step={0.1}
                                             />}
                                         </div>
                                         <div className={this.props.classes.sideMenuOption}>
