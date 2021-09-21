@@ -69,6 +69,9 @@ class MenuModule extends Component {
         isMenuVertical: this.props.moduleOptions.data.isVertical,
         stretchToFit: this.props.moduleOptions.data.stretchToFit,
         bgColor: this.props.moduleOptions.data.backgroundColor,
+        horizontallyCentered: this.props.moduleOptions.data.horizontallyCentered,
+        verticallyCentered: this.props.moduleOptions.data.verticallyCentered,
+        menuIconSpace: this.props.moduleOptions.data.menuIconSpace,
       });
       if (this.props.moduleOptions.data.showAsAccordion) {
         await this.setAsyncState({
