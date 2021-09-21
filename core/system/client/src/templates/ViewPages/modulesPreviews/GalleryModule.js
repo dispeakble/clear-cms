@@ -92,8 +92,6 @@ class GalleryModule extends Component {
   }
 
   render() {
-    //let galleryType = "Carousel";
-    console.log("preview", this.props, this.state)
     let imgs = []
     if(this.props.element.moduleOptions.data?.imageSources){
       imgs = this.props.element.moduleOptions.data.imageSources.map(el => {

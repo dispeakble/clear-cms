@@ -5,8 +5,18 @@ const styles = {
         margin: "0 auto",
         padding: 15,
         display: "flex",
+        flexDirection: "column",
         "& .image-gallery": {
             maxHeight: "400px"
+        }
+    },
+    firstSection: {
+      display: "flex",
+    },
+    secondSection: {
+        display: "flex",
+        "& > div": {
+            margin: "0 10px"
         }
     },
     leftColumn: {
@@ -40,7 +50,9 @@ const styles = {
         }
     },
     productConfiguration: {
-
+        "& > div": {
+            margin: "10px 0"
+        }
     },
     productPrice: {
         display: "flex",

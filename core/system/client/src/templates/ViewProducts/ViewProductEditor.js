@@ -244,7 +244,7 @@ class ViewProductEditor extends React.PureComponent {
             unavailability: this.state.unavailability,
             imageSources: this.state.imageSources,
             priceList: this.state.priceList,
-            labelList: this.state.selectedLabels
+            labelList: this.state.selectedLabels,
         }
     }
 
