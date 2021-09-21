@@ -368,18 +368,6 @@ class ViewProductEditor extends React.PureComponent {
     render() {
         const productActions = [
             {
-                callback: () => {
-                    this.setState({
-                        showProductOptionsModal: true
-                    })
-                },
-                icon: <Settings
-                    className={this.props.classes.rightSideIcon}
-                    color="primary"
-                />,
-                name: "Product options",
-            },
-            {
                 callback: async () => {
                     await this.setAsyncState(prevState => ({
                         livePreview: !prevState.livePreview
@@ -412,343 +400,308 @@ class ViewProductEditor extends React.PureComponent {
                 <Helmet>
                     <title>{this.state.editing ? "Edit Product" : "Add Product"}</title>
                 </Helmet>
-                <div
-                    style={{
-                        marginTop: "60px",
-                        paddingBottom: "130px",
-                        paddingLeft: this.state.pageTransitionPadding,
-                    }}
-                >
                     <MuiThemeProvider theme={this.muiTheme}>
-                        <Dialog
-                            open={this.state.showProductOptionsModal}
-                            TransitionComponent={this.transition}
-                            keepMounted
-                            aria-labelledby="product-options-modal-slide-title"
-                            aria-describedby="product-options-modal-slide-description"
-                            classes={{
-                                root: this.props.classes.center,
-                                paper: this.props.classes.modalPageOptions
-                            }}
-                        >
-                            <DialogTitle
-                                id="product-options-modal-slide-title"
-                                disableTypography
-                                className={this.props.classes.modalHeader}
+                        <div>
+                            <div
+                                style={{
+                                    flexGrow: 1,
+                                    paddingBottom: "55px",
+                                    marginTop: "60px",
+                                }}
                             >
-                                <h4 className={this.props.classes.modalTitle}>
-                                    Product options
-                                </h4>
-                            </DialogTitle>
-                            <DialogContent
-                                id="product-options-modal-slide-description"
-                                className={this.props.classes.modalBodyPageOptions}
-                            >
-                                <div className={this.props.classes.productTitleInputWrapper}>
-                                    <CustomInput
-                                        labelText={"Product Title"}
-                                        id="title"
-                                        required="required"
-                                        formControlProps={{
-                                            fullWidth: true,
-                                            onChange: (event) => this.handleInputChange(event),
-                                        }}
-                                        inputProps={{
-                                            inputProps: {
-                                                minLength: "3",
-                                                maxLength: "50",
-                                            },
-                                            value: this.state.title,
-                                            type: "text",
-                                        }}
-                                    />
-                                </div>
-                                <AppBar className={this.props.classes.tabsMenu} position="static" color="default">
-                                    <Tabs
-                                        value={this.state.activeTab}
-                                        onChange={(e, value) => this.setState({
-                                            activeTab: value
-                                        })}
-                                        indicatorColor="primary"
-                                        textColor="primary"
-                                        variant="scrollable"
-                                        scrollButtons="auto"
-                                        aria-label="scrollable auto tabs example"
-                                    >
-                                        <Tab label="General" />
-                                        <Tab label="Availability" />
-                                        <Tab label="Gallery" />
-                                    </Tabs>
-                                </AppBar>
-                                <div className={this.props.classes.productOptionsDetails}>
-                                    {this.state.activeTab === 0 &&
-                                        <React.Fragment>
-                                            <div>
-                                                <Typography>Description</Typography>
-                                                <Editor
-                                                    id="editor"
-                                                    value={this.state.description}
-                                                    init={{
-                                                        height: 500,
-                                                        menubar: false,
-                                                        plugins: [
-                                                            "advlist autolink lists link image charmap print preview anchor",
-                                                            "searchreplace visualblocks code fullscreen",
-                                                            "insertdatetime media table paste code help wordcount",
-                                                        ],
-                                                        toolbar:
-                                                            "undo redo" +
-                                                            " | formatselect" +
-                                                            " | bold italic forecolor backcolor" +
-                                                            " | alignleft aligncenter alignright alignjustify" +
-                                                            " | bullist numlist outdent indent" +
-                                                            " | removeformat",
-                                                        init_instance_callback: function () {
-                                                            var annoyingMessage = document.querySelector(
-                                                                ".tox-notifications-container"
-                                                            );
-                                                            annoyingMessage.style.display = "none";
-                                                        },
+                                {this.state.livePreview ? <ProductPreview isLivePreview={true} {...this.state} control={this.props.control}/> :
+                                    <React.Fragment>
+                                        <div
+                                            style={{
+                                                paddingBottom: "130px",
+                                                paddingLeft: "10px",
+                                                paddingRight: "10px",
+                                            }}
+                                        >
+                                            <div className={this.props.classes.productTitleInputWrapper}>
+                                                <CustomInput
+                                                    labelText={"Product Title"}
+                                                    id="title"
+                                                    required="required"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleInputChange(event),
                                                     }}
-                                                    onEditorChange={async (value) =>
-                                                        await this.setAsyncState({
-                                                            description: value
-                                                        })
-                                                    }
+                                                    inputProps={{
+                                                        inputProps: {
+                                                            minLength: "3",
+                                                            maxLength: "50",
+                                                        },
+                                                        value: this.state.title,
+                                                        type: "text",
+                                                    }}
                                                 />
                                             </div>
-                                            <div>
-                                                <div className={this.props.classes.autocompleteDropdown}>
-                                                    <Autocomplete
-                                                        id="categoryDropdown"
-                                                        onChange={this.handleCategory}
-                                                        onInputChange={this.handleCategoryUniqueness}
-                                                        className={this.props.classes.option}
-                                                        value={this.state.currentCategory}
-                                                        filterOptions={(options, params) => {
-                                                            const filtered = filter(options, params);
-                                                            if (
-                                                                params.inputValue !== "" &&
-                                                                this.state.isUniqueTitle
-                                                            ) {
-                                                                filtered.push({
-                                                                    value: params.inputValue,
-                                                                    label: `Add "${params.inputValue}"`,
-                                                                });
+                                            <AppBar className={this.props.classes.tabsMenu} position="static" color="default">
+                                                <Tabs
+                                                    value={this.state.activeTab}
+                                                    onChange={(e, value) => this.setState({
+                                                        activeTab: value
+                                                    })}
+                                                    indicatorColor="primary"
+                                                    textColor="primary"
+                                                    variant="scrollable"
+                                                    scrollButtons="auto"
+                                                    aria-label="scrollable auto tabs example"
+                                                >
+                                                    <Tab label="General" />
+                                                    <Tab label="Availability" />
+                                                    <Tab label="Gallery" />
+                                                </Tabs>
+                                            </AppBar>
+                                            <div className={this.props.classes.productOptionsDetails}>
+                                                {this.state.activeTab === 0 &&
+                                                <React.Fragment>
+                                                    <div>
+                                                        <Typography>Description</Typography>
+                                                        <Editor
+                                                            id="editor"
+                                                            value={this.state.description}
+                                                            init={{
+                                                                height: 500,
+                                                                menubar: false,
+                                                                plugins: [
+                                                                    "advlist autolink lists link image charmap print preview anchor",
+                                                                    "searchreplace visualblocks code fullscreen",
+                                                                    "insertdatetime media table paste code help wordcount",
+                                                                ],
+                                                                toolbar:
+                                                                    "undo redo" +
+                                                                    " | formatselect" +
+                                                                    " | bold italic forecolor backcolor" +
+                                                                    " | alignleft aligncenter alignright alignjustify" +
+                                                                    " | bullist numlist outdent indent" +
+                                                                    " | removeformat",
+                                                                init_instance_callback: function () {
+                                                                    var annoyingMessage = document.querySelector(
+                                                                        ".tox-notifications-container"
+                                                                    );
+                                                                    annoyingMessage.style.display = "none";
+                                                                },
+                                                            }}
+                                                            onEditorChange={async (value) =>
+                                                                await this.setAsyncState({
+                                                                    description: value
+                                                                })
                                                             }
-                                                            return filtered;
-                                                        }}
-                                                        options={this.state.flatCategories}
-                                                        autoHighlight
-                                                        getOptionLabel={(option) => option.label || ""}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                className={this.props.classes.textfield}
-                                                                label="Select a category"
-                                                                {...params}
-                                                                variant="outlined"
+                                                        />
+                                                    </div>
+                                                    <div className={this.props.classes.secondColumn}>
+                                                        <div className={this.props.classes.autocompleteDropdown}>
+                                                            <Autocomplete
+                                                                id="categoryDropdown"
+                                                                onChange={this.handleCategory}
+                                                                onInputChange={this.handleCategoryUniqueness}
+                                                                className={this.props.classes.option}
+                                                                value={this.state.currentCategory}
+                                                                filterOptions={(options, params) => {
+                                                                    const filtered = filter(options, params);
+                                                                    if (
+                                                                        params.inputValue !== "" &&
+                                                                        this.state.isUniqueTitle
+                                                                    ) {
+                                                                        filtered.push({
+                                                                            value: params.inputValue,
+                                                                            label: `Add "${params.inputValue}"`,
+                                                                        });
+                                                                    }
+                                                                    return filtered;
+                                                                }}
+                                                                options={this.state.flatCategories}
+                                                                autoHighlight
+                                                                getOptionLabel={(option) => option.label || ""}
+                                                                renderInput={(params) => (
+                                                                    <TextField
+                                                                        className={this.props.classes.textfield}
+                                                                        label="Select a category"
+                                                                        {...params}
+                                                                        variant="outlined"
+                                                                    />
+                                                                )}
                                                             />
-                                                        )}
-                                                    />
-                                                </div>
-                                                <div className={this.props.classes.autocompleteDropdown}>
-                                                    <Autocomplete
-                                                        id="localityDropdown"
-                                                        onChange={async (event, locality) => await this.setAsyncState({
-                                                            currentLocality: locality,
-                                                        })}
-                                                        className={this.props.classes.option}
-                                                        value={this.state.currentLocality}
-                                                        options={this.state.localities}
-                                                        autoHighlight
-                                                        getOptionLabel={(option) => option.title || ""}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                className={this.props.classes.textfield}
-                                                                label="Select a Locality"
-                                                                {...params}
-                                                                variant="outlined"
+                                                        </div>
+                                                        <div className={this.props.classes.autocompleteDropdown}>
+                                                            <Autocomplete
+                                                                id="localityDropdown"
+                                                                onChange={async (event, locality) => await this.setAsyncState({
+                                                                    currentLocality: locality,
+                                                                })}
+                                                                className={this.props.classes.option}
+                                                                value={this.state.currentLocality}
+                                                                options={this.state.localities}
+                                                                autoHighlight
+                                                                getOptionLabel={(option) => option.title || ""}
+                                                                renderInput={(params) => (
+                                                                    <TextField
+                                                                        className={this.props.classes.textfield}
+                                                                        label="Select a Locality"
+                                                                        {...params}
+                                                                        variant="outlined"
+                                                                    />
+                                                                )}
                                                             />
-                                                        )}
-                                                    />
-                                                </div>
-                                                <div className={this.props.classes.autocompleteDropdown}>
-                                                    <Autocomplete
-                                                        multiple
-                                                        id="labelsDropdown"
-                                                        onChange={async (event, label) => await this.setAsyncState({
-                                                            selectedLabels: label,
-                                                        })}
-                                                        disableCloseOnSelect
-                                                        className={this.props.classes.option}
-                                                        value={this.state.selectedLabels}
-                                                        options={this.state.labels}
-                                                        autoHighlight
-                                                        getOptionLabel={(option) => option.title || ""}
-                                                        renderOption={(props, option) => (
-                                                            <span {...props}>
+                                                        </div>
+                                                        <div className={this.props.classes.autocompleteDropdown}>
+                                                            <Autocomplete
+                                                                multiple
+                                                                id="labelsDropdown"
+                                                                onChange={async (event, label) => await this.setAsyncState({
+                                                                    selectedLabels: label,
+                                                                })}
+                                                                disableCloseOnSelect
+                                                                className={this.props.classes.option}
+                                                                value={this.state.selectedLabels}
+                                                                options={this.state.labels}
+                                                                autoHighlight
+                                                                getOptionLabel={(option) => option.title || ""}
+                                                                renderOption={(props, option) => (
+                                                                    <span {...props}>
                                                                 <Checkbox
                                                                     icon={<CheckBoxOutlineBlank fontSize={"small"} />}
                                                                     checkedIcon={<CheckBox fontSize={"small"} />}
                                                                     style={{ marginRight: 8 }}
                                                                     checked={option.selected}
                                                                 />
-                                                                {props.title}
+                                                                        {props.title}
                                                             </span>
-                                                        )}
-                                                        renderInput={(params) => (
-                                                            <TextField
-                                                                className={this.props.classes.textfield}
-                                                                label="Select Labels"
-                                                                {...params}
-                                                                variant="outlined"
+                                                                )}
+                                                                renderInput={(params) => (
+                                                                    <TextField
+                                                                        className={this.props.classes.textfield}
+                                                                        label="Select Labels"
+                                                                        {...params}
+                                                                        variant="outlined"
+                                                                    />
+                                                                )}
                                                             />
-                                                        )}
-                                                    />
-                                                </div>
+                                                        </div>
+                                                        <div>
+                                                            <Typography gutterBottom>
+                                                                Active
+                                                                <Tooltip title="Active Product">
+                                                                    <Switch
+                                                                        checked={this.state.active}
+                                                                        value={this.state.active}
+                                                                        onChange={() => {
+                                                                            this.setState({
+                                                                                active: !this.state
+                                                                                    .active,
+                                                                            });
+                                                                        }}
+                                                                    />
+                                                                </Tooltip>
+                                                            </Typography>
+                                                        </div>
+                                                        <div>
+                                                            <h3>Prices</h3>
+                                                            {this.state.priceList && this.state.priceList.length && this.state.priceList.map((price, index) => {
+                                                                return (
+                                                                    <div key={index} style={{ marginLeft: "-10px" }}>
+                                                                        <Checkbox
+                                                                            checked={price.active}
+                                                                            onChange={async (event, checked) => {
+                                                                                const priceList = [...this.state.priceList];
+                                                                                const findIndex = priceList.findIndex(p => p.id === price.id);
+                                                                                priceList[findIndex].active = checked;
+                                                                                await this.setAsyncState({
+                                                                                    priceList: priceList,
+                                                                                });
+                                                                            }}
+                                                                        />
+                                                                        <span>{price.value + " " + this.getPriceFormat(price)}</span>
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                                }
+                                                {this.state.activeTab === 1 &&
+                                                <React.Fragment>
+                                                    <div>
+                                                        <Tooltip title="Availability Date Range">
+                                                            <CustomDateRangePicker
+                                                                labelText={"Availability"}
+                                                                value={this.state.availability}
+                                                                onChange={ async (value) => await this.setAsyncState({
+                                                                    availability: value
+                                                                })} />
+                                                        </Tooltip>
+                                                    </div>
+                                                    <div>
+                                                        <Tooltip title="Unavailability Date Range">
+                                                            <CustomDateRangePicker
+                                                                labelText={"Unavailability"}
+                                                                value={this.state.unavailability}
+                                                                onChange={ async (value) => await this.setAsyncState({
+                                                                    unavailability: value
+                                                                })} />
+                                                        </Tooltip>
+                                                    </div>
+                                                </React.Fragment>
+                                                }
+                                                {this.state.activeTab === 2 &&
                                                 <div>
-                                                    <Typography gutterBottom>
-                                                        Active
-                                                        <Tooltip title="Active Product">
-                                                            <Switch
-                                                                checked={this.state.active}
-                                                                value={this.state.active}
-                                                                onChange={() => {
-                                                                    this.setState({
-                                                                        active: !this.state
-                                                                            .active,
+                                                    {this.state.showDropZone ?
+                                                        <React.Fragment>
+                                                            <DropzoneArea
+                                                                clearOnUnmount={true}
+                                                                filesLimit={100}
+                                                                className={this.props.classes.dropzone}
+                                                                onChange={this.handleUploadedImage}
+                                                            />
+                                                            <Button
+                                                                color="primary"
+                                                                onClick={async () => {
+                                                                    const images = [...this.state.temporaryImageSources]
+                                                                    await this.setAsyncState({
+                                                                        showDropZone: false,
+                                                                        imageSources: images,
+                                                                        temporaryImageSources: []
                                                                     });
                                                                 }}
-                                                            />
-                                                        </Tooltip>
-                                                    </Typography>
-                                                </div>
-                                                <div>
-                                                    <h3>Prices</h3>
-                                                    {this.state.priceList && this.state.priceList.length && this.state.priceList.map((price, index) => {
-                                                        return (
-                                                            <div key={index} style={{ marginLeft: "-10px" }}>
-                                                                <Checkbox
-                                                                    checked={price.active}
-                                                                    onChange={async (event, checked) => {
-                                                                        const priceList = [...this.state.priceList];
-                                                                        const findIndex = priceList.findIndex(p => p.id === price.id);
-                                                                        priceList[findIndex].active = checked;
-                                                                        await this.setAsyncState({
-                                                                            priceList: priceList,
-                                                                        });
-                                                                    }}
-                                                                />
-                                                                <span>{price.value + " " + this.getPriceFormat(price)}</span>
-                                                            </div>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                        </React.Fragment>
-                                    }
-                                    {this.state.activeTab === 1 &&
-                                        <React.Fragment>
-                                            <div>
-                                                <Tooltip title="Availability Date Range">
-                                                    <CustomDateRangePicker
-                                                        labelText={"Availability"}
-                                                        value={this.state.availability}
-                                                        onChange={ async (value) => await this.setAsyncState({
-                                                            availability: value
-                                                        })} />
-                                                </Tooltip>
-                                            </div>
-                                            <div>
-                                                <Tooltip title="Unavailability Date Range">
-                                                    <CustomDateRangePicker
-                                                        labelText={"Unavailability"}
-                                                        value={this.state.unavailability}
-                                                        onChange={ async (value) => await this.setAsyncState({
-                                                            unavailability: value
-                                                        })} />
-                                                </Tooltip>
-                                            </div>
-                                        </React.Fragment>
-                                    }
-                                    {this.state.activeTab === 2 &&
-                                        <div>
-                                            {this.state.showDropZone ?
-                                            <React.Fragment>
-                                                <DropzoneArea
-                                                    clearOnUnmount={true}
-                                                    filesLimit={100}
-                                                    className={this.props.classes.dropzone}
-                                                    onChange={this.handleUploadedImage}
-                                                />
-                                                <Button
-                                                    color="primary"
-                                                    onClick={async () => {
-                                                        const images = [...this.state.temporaryImageSources]
-                                                        await this.setAsyncState({
-                                                            showDropZone: false,
-                                                            imageSources: images,
-                                                            temporaryImageSources: []
-                                                        });
-                                                    }}
-                                                >
-                                                    OK
-                                                </Button>
-                                                <Button
-                                                    color="danger"
-                                                    onClick={() => {
-                                                        this.setState({
-                                                            showDropZone: false,
-                                                        });
-                                                    }}
-                                                >
-                                                    Cancel
-                                                </Button>
-                                            </React.Fragment> :
-                                                <Button
-                                                    style={{display: this.state.showDropZone ? "none" : "block"}}
-                                                    color="primary"
-                                                    onClick={() => {
-                                                        this.setState({
-                                                            showDropZone: true,
-                                                        });
-                                                    }}
-                                                >
-                                                    Upload images
-                                                </Button>
-                                            }
-                                            {this.state.imageSources &&
-                                            <PhotosGallery
-                                                items={this.state.imageSources}
-                                                onChange={async (imageSources) => await this.setAsyncState({
+                                                            >
+                                                                OK
+                                                            </Button>
+                                                            <Button
+                                                                color="danger"
+                                                                onClick={() => {
+                                                                    this.setState({
+                                                                        showDropZone: false,
+                                                                    });
+                                                                }}
+                                                            >
+                                                                Cancel
+                                                            </Button>
+                                                        </React.Fragment> :
+                                                        <Button
+                                                            style={{display: this.state.showDropZone ? "none" : "block"}}
+                                                            color="primary"
+                                                            onClick={() => {
+                                                                this.setState({
+                                                                    showDropZone: true,
+                                                                });
+                                                            }}
+                                                        >
+                                                            Upload images
+                                                        </Button>
+                                                    }
+                                                    {this.state.imageSources &&
+                                                    <PhotosGallery
+                                                        items={this.state.imageSources}
+                                                        onChange={async (imageSources) => await this.setAsyncState({
                                                             imageSources: imageSources})}
-                                            />}
+                                                    />}
+                                                </div>
+                                                }
+                                            </div>
                                         </div>
-                                    }
-                                </div>
-                            </DialogContent>
-                            <DialogActions className={this.props.classes.modalFooter}>
-                                <Button
-                                    color="primary"
-                                    simple
-                                    onClick={() => {
-                                        this.setState({
-                                            showProductOptionsModal: false
-                                        })
-                                    }}
-                                >
-                                    Close
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                        <div>
-                            <div
-                                style={{
-                                    flexGrow: 1,
-                                    paddingBottom: "55px",
-                                }}
-                            >
-                                {this.state.livePreview && <ProductPreview isLivePreview={true} {...this.state} control={this.props.control}/>}
+                                    </React.Fragment>}
                                 <div className={this.props.classes.bottomPane} style={{
                                     backgroundColor: this.props.defaultTheme.background.paper
                                 }}>
@@ -784,7 +737,6 @@ class ViewProductEditor extends React.PureComponent {
                             message="The product was updated successfully"
                         />
                     </MuiThemeProvider>
-                </div>
             </React.Fragment>
         );
     }
