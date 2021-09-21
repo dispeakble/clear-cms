@@ -197,7 +197,7 @@ class Locality extends Component {
                                 renderInput={(params) => (
                                     <TextField
                                         className={this.props.classes.textfield}{...params}
-                                        label="Type"
+                                        label="Country"
                                         variant="outlined"
                                     />
                                 )}
