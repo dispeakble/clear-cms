@@ -747,7 +747,11 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   closePageOptionsModal() {
-    this.setState({ showPageOptionsModal: false });
+    if (this.state.bgColor === "" && this.state.bgGradientColor === "" && this.state.backgroundImage === "") {
+      this.setState({showPageOptionsModal: false, bgColor: "#fff"});
+    } else {
+      this.setState({showPageOptionsModal: false});
+    }
   }
 
   openPageOptionsModal() {
