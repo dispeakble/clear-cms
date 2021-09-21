@@ -120,7 +120,6 @@ class ViewPagesEditor extends React.PureComponent {
     showBgGradientColorPickerModal: false,
     showTextColorPicker: false,
     showItemTextColorPicker: false,
-    fontUnit: "px",
     publish: false,
     pageBackgroundRepeat: false,
     pageBackgroundStretch: false,
@@ -465,13 +464,6 @@ class ViewPagesEditor extends React.PureComponent {
 
     if (el.showScrollbars) {
       itemStyle.showScrollbars = el.showScrollbars;
-    }
-
-    if (el.fontSize) {
-      itemStyle.fontSize = `${el.fontSize}${this.state.fontUnit}`;
-      itemStyle.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
-    } else {
-      itemStyle.fontSize = `${this.state.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {
@@ -1949,8 +1941,6 @@ class ViewPagesEditor extends React.PureComponent {
               <div
                   style={{
                     flexGrow: 1,
-
-                    fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.textColor,
                     paddingBottom: "55px",
@@ -1961,7 +1951,6 @@ class ViewPagesEditor extends React.PureComponent {
                     :
                 <ResponsiveReactGridLayout
                     style={{
-                      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                       fontFamily: this.state.fontFamily,
                       color: this.state.textColor,
                     }}
