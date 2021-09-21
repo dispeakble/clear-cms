@@ -70,8 +70,18 @@ const styles = {
         marginBottom: 10
     },
     autocompleteDropdown: {
-        maxWidth: 200
-    }
+        maxWidth: 250
+    },
+    secondColumn: {
+        paddingTop: 25
+    },
+    "@media screen and (max-width: 800px)": {
+        autocompleteDropdown: {
+            maxWidth: "none",
+            width: "100%",
+            margin: "10px 0"
+        }
+    },
 }
 
 export default styles;
