@@ -111,7 +111,7 @@ class ViewPagesEditor extends React.PureComponent {
     pageBase64Image: false,
     backgroundImage: "",
     backgroundImageFile: "",
-    fontSize: 11,
+    fontSize: 1,
     textColor: "#000000",
     fontFamily: "Arial",
     pageTitle: "",
@@ -1622,8 +1622,9 @@ class ViewPagesEditor extends React.PureComponent {
                           value={this.state.fontSize}
                           aria-labelledby="discrete-slider"
                           valueLabelDisplay="auto"
-                          min={5}
-                          max={50}
+                          min={0.1}
+                          max={10}
+                          step={0.1}
                       />
                     </div>
                     <div
