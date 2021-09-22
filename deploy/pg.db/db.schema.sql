@@ -759,6 +759,33 @@ CREATE TABLE public.labels_to_products (
 
 ALTER TABLE public.labels_to_products OWNER TO cms;
 
+
+-- ecommerce_templates:
+CREATE SEQUENCE public.ecommerce_templates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.ecommerce_templates_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.ecommerce_templates (
+    id integer DEFAULT nextval('public.ecommerce_templates_id_seq'::regclass) NOT NULL,
+    type character varying NOT NULL,
+    template_id integer NOT NULL,
+    title character varying NOT NULL
+);
+
+
+ALTER TABLE public.ecommerce_templates OWNER TO cms;
+
 --
 -- TOC entry 2872 (class 2604 OID 24775)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: cms
@@ -1034,3 +1061,7 @@ INSERT INTO public.public_themes VALUES (1, 'Public default theme', '', '', 13, 
 INSERT INTO public.settings(
 	data, is_default)
 	VALUES ('{"websiteName": "Test Website","websiteDomain": "www.testwebsite.com","websiteOwner": "Test Website Owner","websiteAdminEmail": "test@test.com","applicationVersion": "1.0.1"}', 1);
+
+INSERT INTO public.ecommerce_templates(
+	type, template_id, title)
+	VALUES ('product-details', 0, 'Product Template'),('product-list', 0, 'Product List Template'),('category', 0, 'Category Template'),('category-list', 0, 'Category List Template');
