@@ -50,7 +50,8 @@ export class ProtocolController {
         @Inject('ProductsService') private productsService,
         @Inject('ProductLabelsService') private productLabelsService,
         @Inject('ProductLocalityService') private productLocalityService,
-        @Inject('ProductPricesService') private productPricesService){
+        @Inject('ProductPricesService') private productPricesService,
+        @Inject('EcommerceTemplatesService') private ecommerceTemplatesService){
         this.mainService = this;
     }
 

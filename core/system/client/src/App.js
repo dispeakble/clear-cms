@@ -98,6 +98,13 @@ class App extends Component {
             active: false
           },
           {
+            toLink: "/ecommerce-templates",
+            name: "Templates",
+            controller: "ecommerce-templates",
+            icon: "document_scanner",
+            active: false
+          },
+          {
             toLink: "/images",
             name: "Images",
             controller: "images",
