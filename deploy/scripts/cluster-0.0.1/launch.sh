@@ -113,7 +113,7 @@ function waitForCatalog() {
 }
 
 function waitForApp() {
-  if [[ "$(rancher app ls -o yaml | grep $1)" == *"deploying" ]]; then
+  if [[ "$(rancher app ls -o yaml)" == *"deploying" ]]; then
     printf '.' > /dev/tty
     sleep 3
     waitForApp $1
@@ -157,12 +157,11 @@ function launchLonghorn () {
     rancher namespace create longhorn-system
   fi
 
+  waitForCatalog "cattle-global-data:library-longhorn"
+
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --no-prompt --namespace longhorn-system \
     --version 1.1.2 \
-    --set persistence.defaultClassReplicaCount="1" \
-    --set service.ui.type="Rancher-Proxy" \
-    --set service.ui.nodePort="" \
     --helm-timeout 300 \
     --helm-wait \
     cattle-global-data:library-longhorn longhorn
