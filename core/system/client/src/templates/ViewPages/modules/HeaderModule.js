@@ -272,6 +272,7 @@ class HeaderModule extends Component {
                   })} style={{color: this.props.defaultTheme.secondary.main}}/>}
                 </div>
                 <DropzoneArea
+                    maxFileSize={Math.pow(1024, 3)}
                   filesLimit={1}
                   className={classes.dropzone}
                   onChange={this.handleBackground.bind(this)}
@@ -289,6 +290,7 @@ class HeaderModule extends Component {
                   })} style={{color: this.props.defaultTheme.secondary.main}}/>}
                 </div>
                 <DropzoneArea
+                    maxFileSize={Math.pow(1024, 3)}
                   filesLimit={1}
                   className={classes.dropzone}
                   onChange={this.handleLogo.bind(this)}

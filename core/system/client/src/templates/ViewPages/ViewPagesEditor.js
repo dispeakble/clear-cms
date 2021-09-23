@@ -1578,6 +1578,7 @@ class ViewPagesEditor extends React.PureComponent {
                     </div>
                     <div className={this.props.classes.dropzoneAreaWrapper}>
                       <DropzoneArea
+                          maxFileSize={Math.pow(1024, 3)}
                           filesLimit={1}
                           onChange={this.handleBgImage.bind(this)}
                           onDelete={this.handleBackgroundDelete.bind(this)}

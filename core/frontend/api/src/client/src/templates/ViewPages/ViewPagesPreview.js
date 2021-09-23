@@ -333,14 +333,12 @@ const mapStateToProps = state => {
     pageDataLoaded: state.page.pageDataLoaded
   };
 };
-let Component; 
+let Component = withStyles(styles)(ViewPagesPreview);
 
 if (publicRuntimeConfig?.wsEnabled) {
   Component = withRouter(withStyles(styles)(connect(
     mapStateToProps,
     null
   )(ViewPagesPreview)));
-} else {
-  Component = withRouter(withStyles(styles)(ViewPagesPreview));
 }
 export default Component;

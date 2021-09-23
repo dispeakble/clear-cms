@@ -192,6 +192,7 @@ class ChartModule extends Component {
             <Typography id="discrete-slider" gutterBottom>
               Data File Upload(only JSON format accepted)
               <DropzoneArea
+                  maxFileSize={Math.pow(1024, 3)}
                 clearOnUnmount={true}
                 acceptedFiles={["application/json"]}
                 filesLimit={1}

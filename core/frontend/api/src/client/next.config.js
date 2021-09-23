@@ -5,4 +5,7 @@
 module.exports = {
   reactStrictMode: true,
   distDir: '../../.next',
+  devIndicators: {
+    buildActivity: false
+  }
 };

@@ -881,6 +881,7 @@ class ViewBoxEditor extends React.PureComponent {
                                         </div>
                                         <div className={this.props.classes.dropzoneAreaWrapper}>
                                             <DropzoneArea
+                                                maxFileSize={Math.pow(1024, 3)}
                                                 filesLimit={1}
                                                 className={this.props.classes.dropzone}
                                                 onChange={this.handleItemBgImage.bind(this)}

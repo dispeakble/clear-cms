@@ -4,6 +4,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import { ViewService } from '../services/view.service';
 import {Request, Response} from "express";
+import { parse } from "url";
 
 @Controller('/')
 export class AppController {
@@ -105,10 +106,6 @@ export class AppController {
         await this.viewService.handler(req, res);
     }
 
-    @Get('favicon.ico')
-    public async favicon(@Req() req: Request, @Res() res: Response) {
-        await this.viewService.handler(req, res);
-    }
 
     @Get('files/*')
     public async getFiles(@Req() req: Request, @Res() res: Response, @Param('path') path: string) {
@@ -131,21 +128,6 @@ export class AppController {
             return;
         }
 
-        /*const cacheReq = await this.protocolService.getValue(`frontend_${fileStats.data.file_name}`);
-        //const cacheReq = null;
-
-        if (cacheReq) {
-            const exp_date = new Date(cacheReq.expires);
-
-            if (cacheReq.ETag === fileStats.data.etagId && exp_date > new Date()) {
-                return this.respond({res, file: cacheReq, fileStats: {
-                        data: {
-                            etagId: cacheReq.ETag
-                        }
-                    }, finish: true});
-            }
-        }*/
-
         const getSubscriber = this.bucketService.get(fileReq.payload);
 
 
@@ -156,17 +138,21 @@ export class AppController {
         };
 
         getSubscriber.subscribe((data) => {
-            switch (data.type) {
-                case "meta":
-                    this.respond({res, file: data, fileStats});
+            try {
+                switch (data.type) {
+                    case "meta":
+                        this.respond({res, file: data, fileStats});
 
-                    file_meta.content_type = data.content_type;
-                    file_meta.content_length = data.content_length;
-                    break;
-                case "Buffer":
-                    bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
-                    res.write(Buffer.from(data.data));
-                    break;
+                        file_meta.content_type = data.content_type;
+                        file_meta.content_length = data.content_length;
+                        break;
+                    case "Buffer":
+                        bigBuffer = Buffer.concat([bigBuffer, Buffer.from(data.data)]);
+                        res.write(Buffer.from(data.data));
+                        break;
+                }
+            } catch (err) {
+                console.log(err);
             }
 
         }, (error) => {
@@ -180,7 +166,15 @@ export class AppController {
 
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
-        await this.viewService.handler(req, res);
+        const url = parse(req.url, true);
+        const mockRequest = {
+            headers: {
+
+            },
+            url: req.url,
+            params: req.params
+        }
+        await this.viewService.handler(mockRequest, res, url);
     }
 
     private respond(params) {

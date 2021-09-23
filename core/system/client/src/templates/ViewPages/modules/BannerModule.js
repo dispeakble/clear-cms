@@ -292,6 +292,7 @@ class BannerModule extends Component {
                   })} style={{color: this.props.defaultTheme.secondary.main}}/>}
                 </div>
                 <DropzoneArea
+                    maxFileSize={Math.pow(1024, 3)}
                   clearOnUnmount={true}
                   filesLimit={1}
                   className={this.props.classes.dropzone}
