@@ -17,9 +17,9 @@ const PageComponent: NextPage = (props) => {
   return { paths, fallback: 'blocking' }
 }*/
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
 
-    let result = {};
+    let result: any = null;
 
     try {
         const obs = await context.req.apiHub({

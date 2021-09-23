@@ -550,6 +550,7 @@ class GalleryModule extends Component {
                 {this.state.showDropZone ? (
                     <React.Fragment>
                       <DropzoneArea
+                          maxFileSize={Math.pow(1024, 3)}
                           clearOnUnmount={true}
                           filesLimit={100}
                           className={this.props.classes.dropzone}

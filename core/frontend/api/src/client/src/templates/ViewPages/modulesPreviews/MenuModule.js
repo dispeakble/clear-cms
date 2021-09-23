@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import LinksMenu from "components/LinksMenu/LinksMenu";
-import styles from "assets/jss/clear-crm/views/menuModule.js";
+import LinksMenu from "../../../components/LinksMenu/LinksMenu";
+import styles from "../../../assets/jss/clear-crm/views/menuModule.js";
 import { withStyles } from "@material-ui/core/styles";
 
 // for accordion menu

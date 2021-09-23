@@ -29,7 +29,7 @@ export class BucketService {
                     api: 'fs',
                     act: 'info',
                     payload: {
-                        path: path.join('/frontend/public/', params.path)
+                        path: path.join('/frontend/api/.out/', params.path)
                     }
                 };
 
@@ -40,7 +40,7 @@ export class BucketService {
 
                 this.protocolService.sendMessage(metaPayload).subscribe((data) => {
                     if(data.content_type === '404' && options.defaultFileName){
-                        metaPayload.payload.path = `/frontend/public/${options.defaultFileName}`;
+                        metaPayload.payload.path = path.join('/frontend/api/.out/', options.defaultFileName);
                         this.protocolService.sendMessage(metaPayload).subscribe((data) => {
                             resolve_info(data, options.defaultFileName);
                         });
@@ -190,7 +190,7 @@ export class BucketService {
             }
 
             try {
-                const file_path = __dirname + '/../../public/';
+                const file_path = __dirname + '/../../../.out/';
                 if (!fs.existsSync(file_path + file_name)) {
                     file_name = this.defaultPath;
                 }
@@ -253,10 +253,10 @@ export class BucketService {
             }
 
             try {
-                let file_path = __dirname + '/../../public/' + complete_path;
+                let file_path = __dirname + '/../../../.out/' + complete_path;
                 if (!fs.existsSync(file_path)) {
                     complete_path = this.defaultPath;
-                    file_path = `${__dirname}/../../public/${complete_path}`;
+                    file_path = `${__dirname}/../../../.out/${complete_path}`;
                 }
 
                 const stats = fs.statSync(file_path);
@@ -266,15 +266,15 @@ export class BucketService {
 
                 readStream.on('data', function (chunk) {
                     console.log('Buffering - ' + complete_path);
-                    observer.next(chunk);
+                    observer.next({type: "Buffer", data: chunk});
                 }).on('end', function () {
                     console.log('Done - ' + complete_path);
                     observer.complete();
                 });
             } catch (err) {
                 //TODO should return 404
-                fs.readFile(`__dirname /../../public/${this.defaultPath}`, (err, buffer) => {
-                    observer.next(buffer);
+                fs.readFile(`__dirname /../../../.out/${this.defaultPath}`, (err, buffer) => {
+                    observer.next({type: "Buffer", data: buffer});
                     observer.complete();
                 });
             }
