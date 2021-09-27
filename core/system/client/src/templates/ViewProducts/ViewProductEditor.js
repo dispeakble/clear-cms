@@ -115,6 +115,14 @@ class ViewProductEditor extends React.PureComponent {
         new Promise((resolve) => this.setState(newState, resolve));
 
     async componentDidMount() {
+        const tabUrl = this.props.location.pathname.split('/')
+        if (tabUrl.length === 4) {
+            this.setState({activeTab: 0})
+        } else if (tabUrl[4] === "availability") {
+            this.setState({activeTab: 1})
+        } else {
+            this.setState({activeTab: 2})
+        }
         let categoriesFromStorage = await this.props.control.listCategories();
 
         let categories = this.state.categories;
@@ -364,6 +372,9 @@ class ViewProductEditor extends React.PureComponent {
     getPriceFormat(price) {
         return this.state.currencyList.find(c => c.id === price.currency).name;
     }
+    handleTab(data){
+        this.props.history.push(`/${this.props.location.pathObject.slice(0,3).join('/')}${data}`)
+    }
 
     render() {
         const productActions = [
@@ -440,18 +451,15 @@ class ViewProductEditor extends React.PureComponent {
                                             <AppBar className={this.props.classes.tabsMenu} position="static" color="default">
                                                 <Tabs
                                                     value={this.state.activeTab}
-                                                    onChange={(e, value) => this.setState({
-                                                        activeTab: value
-                                                    })}
                                                     indicatorColor="primary"
                                                     textColor="primary"
                                                     variant="scrollable"
                                                     scrollButtons="auto"
                                                     aria-label="scrollable auto tabs example"
                                                 >
-                                                    <Tab label="General" />
-                                                    <Tab label="Availability" />
-                                                    <Tab label="Gallery" />
+                                                    <Tab label="General" onClick={()=>this.handleTab('')} />
+                                                    <Tab label="Availability"  onClick={()=>this.handleTab('/availability')} />
+                                                    <Tab label="Gallery" onClick={()=>this.handleTab('/gallery')} />
                                                 </Tabs>
                                             </AppBar>
                                             <div className={this.props.classes.productOptionsDetails}>
