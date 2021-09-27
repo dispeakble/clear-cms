@@ -8,8 +8,8 @@ APP_VERSION="v2.4.15"
 #APP_VERSION="latest"
 RANCHER_STORE="$HOME/rancher/rancher-store"
 
-#ABSOLUTE_PATH=$HOME
-ABSOLUTE_PATH="/home/dosidoweb"
+ABSOLUTE_PATH="$HOME"
+#ABSOLUTE_PATH="/home/dosidoweb"
 
 #RANCHER_CERTIFICATE="$ABSOLUTE_PATH/rancher/ssl/cert.pem"
 #RANCHER_CERTIFICATE_KEY="$ABSOLUTE_PATH/rancher/ssl/key.pem"

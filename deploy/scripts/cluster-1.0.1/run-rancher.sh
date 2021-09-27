@@ -8,8 +8,8 @@ APP_VERSION="v2.4.15"
 #APP_VERSION="latest"
 RANCHER_STORE="$HOME/rancher/rancher-store"
 
-#ABSOLUTE_PATH=$HOME
-ABSOLUTE_PATH="/home/dosidoweb"
+ABSOLUTE_PATH=$HOME
+#ABSOLUTE_PATH="/home/dosidoweb"
 
 #RANCHER_CERTIFICATE="$ABSOLUTE_PATH/rancher/ssl/cert.pem"
 #RANCHER_CERTIFICATE_KEY="$ABSOLUTE_PATH/rancher/ssl/key.pem"
@@ -59,7 +59,7 @@ if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
 
     #while ! curl -k https://localhost:9443/ping; do sleep 10; done
     wait_count=0
-    while ! curl -a -k -s https://localhost:9443/ping && ((wait_count < 20)); do
+    while ! curl --proxy-insecure -a -k -s https://localhost:9443/ping && ((wait_count < 20)); do
       if [ "$wait_count" -gt 20 ]; then
 
         echo -en "\r If this message does not go away please contact the administrator"
@@ -95,7 +95,7 @@ function get_my_ip() {
 
 MY_IP="$(get_my_ip)"
 RANCHER_URL="https://$MY_IP:9443"
-EXTERNAL_IP="$(curl -s http://whatismyip.akamai.com/ && echo)"
+EXTERNAL_IP="$(curl --proxy-insecure -s http://whatismyip.akamai.com/ && echo)"
 
 echo " Rancher UI is available on port 9443"
 echo $RANCHER_URL

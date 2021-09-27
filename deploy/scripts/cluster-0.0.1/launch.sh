@@ -21,6 +21,11 @@ if [ -z "$(dpkg --list | grep open-iscsi)" ]; then
   apt-get install -y open-iscsi
 fi
 
+if [ -z "$(dpkg --list | grep 'GNU bc arbitrary precision calculator language')" ]; then
+  apt-get update
+  apt-get install -y bc
+fi
+
 
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 

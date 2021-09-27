@@ -1,7 +1,9 @@
 #!/bin/bash
 
 CMS_NAME="cms-cluster"
-CMS_PATH="$HOME/cms_app"
+
+SSL_KEY_FILENAME="../../ssl/key.pem"
+SSL_CERT_FILENAME="../../ssl/cert.pem"
 
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
@@ -19,6 +21,11 @@ POSTGRES_DB="cms"
 if [ -z "$(dpkg --list | grep open-iscsi)" ]; then
   apt-get update
   apt-get install -y open-iscsi
+fi
+
+if [ -z "$(dpkg --list | grep bc)" ]; then
+  apt-get update
+  apt-get install -y bc
 fi
 
 
@@ -90,12 +97,20 @@ function checkCluster() {
     return 0
 }
 
+function createSecret() {
+  rancher kubectl create secret $1 $2 --key $3 --cert $4
+}
+
 function getNamespace() {
   echo $(rancher namespace ls | grep $1)
 }
 
-function getApp() {
-  echo $(rancher app ls | grep $1)
+function addCatalog() {
+  if [ -z "$(rancher app lt | grep $1)" ]; then
+    echo "adding catalog $1"
+    rancher catalog add --helm-version $2 $1 $3
+    waitForCatalog $1
+  fi
 }
 
 function waitForCatalog() {
@@ -112,8 +127,30 @@ function waitForCatalog() {
   printf '\n' > /dev/tty
 }
 
+function getApp() {
+  echo $(rancher app ls | grep $1)
+}
+
+function checkApp() {
+  if [ -z "$(rancher app lt | grep $1)" ]; then
+    printf "$1 is not ready yet...\n" > /dev/tty
+    sleep 3
+    checkApp $1
+    return 0;
+  fi
+  if [ -z "$(rancher app st $1)" ]; then
+    printf "$1 found but not loaded yet...\n" > /dev/tty
+    sleep 3
+    checkApp $1
+    return 0;
+  fi
+  printf "$1 was found\n" > /dev/tty
+return 0
+}
+
+
 function waitForApp() {
-  if [[ "$(rancher app ls -o yaml | grep $1)" == *"deploying" ]]; then
+  if [[ "$(rancher app ls -o yaml)" == *"deploying" ]]; then
     printf '.' > /dev/tty
     sleep 3
     waitForApp $1
@@ -157,44 +194,17 @@ function launchLonghorn () {
     rancher namespace create longhorn-system
   fi
 
+  waitForCatalog "cattle-global-data:library-longhorn"
+
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --no-prompt --namespace longhorn-system \
-    --set persistence.defaultClassReplicaCount="1" \
-    --set service.ui.type="Rancher-Proxy" \
-    --set service.ui.nodePort="" \
-    --helm-timeout 300 \
-    --helm-wait \
+    --version 1.1.2 \
     cattle-global-data:library-longhorn longhorn
   fi
   waitForApp "longhorn"
   rancher wait --timeout 300 longhorn
   waitForLonghornStorageClass
   printf '\n' > /dev/tty
-}
-
-function checkApp() {
-  if [ -z "$(rancher app lt | grep $1)" ]; then
-    printf "$1 is not ready yet...\n" > /dev/tty
-    sleep 3
-    checkApp $1
-    return 0;
-  fi
-  if [ -z "$(rancher app st $1)" ]; then
-    printf "$1 found but not loaded yet...\n" > /dev/tty
-    sleep 3
-    checkApp $1
-    return 0;
-  fi
-  printf "$1 was found\n" > /dev/tty
-return 0
-}
-
-function addCatalog() {
-  if [ -z "$(rancher app lt | grep $1)" ]; then
-    echo "adding catalog $1"
-    rancher catalog add --helm-version $2 $1 $3
-    waitForCatalog $1
-  fi
 }
 
 function launchRedis() {
@@ -205,6 +215,7 @@ function launchRedis() {
   sleep 5
 
   rancher app install --no-prompt --namespace default \
+   --set architecture=standalone \
    --set global.storageClass=longhorn \
    --set master.service.type=NodePort \
    --set master.service.nodePort=$REDIS_NODE_PORT \
@@ -297,7 +308,7 @@ checkApp "cattle-global-data:bitnami-metallb"
 sleep 5
 sed -e "s|MY_IP_RANGE|127.0.0.230-127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
 rancher app install --no-prompt --namespace metallb-system \
-  --set existingConfigMap=config \
+  --set existingConfigMap=metallbconfig \
   --helm-timeout 300 \
   --helm-wait \
   cattle-global-data:bitnami-metallb metallb
@@ -326,9 +337,12 @@ function createConfig() {
   rancher kubectl apply -f "configMaps/$1"
 }
 
+sleep 10
+
 rancherForceLogin
 
-clusterExists $CMS_NAME || createCluster $CMS_NAME
+#clusterExists $CMS_NAME ||
+createCluster $CMS_NAME
 checkCluster $CMS_NAME
 
 sleep 2
@@ -346,4 +360,7 @@ launchRedis
 
 launchPostgreSQL
 launchPGAdmin
+
+createSecret tls dosidowebcom $SSL_KEY_FILENAME $SSL_CERT_FILENAME
+
 launchCmsApp
