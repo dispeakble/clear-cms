@@ -36,6 +36,9 @@ class Pages extends Component {
 
     componentDidMount() {
         this.fetchPages();
+        if (this.props.location.pathname === "/pages/template") {
+            this.setState({isTemplate: true})
+        }
     }
 
     async fetchPages() {
@@ -263,18 +266,11 @@ class Pages extends Component {
                             <ToggleButtonGroup
                                 value={this.state.isTemplate}
                                 exclusive
-                                onChange={(e, newValue) => {
-                                    if(newValue !== null){
-                                        this.setState({
-                                            isTemplate: newValue
-                                        })
-                                    }
-                                }}
                                >
-                                <ToggleButton value={false}>
+                                <ToggleButton value={false} onClick={()=>this.props.history.push('./')}>
                                     Pages
                                 </ToggleButton>
-                                <ToggleButton value={true}>
+                                <ToggleButton value={true}  onClick={()=>this.props.history.push('/pages/template')}>
                                     Templates
                                 </ToggleButton>
                             </ToggleButtonGroup>
