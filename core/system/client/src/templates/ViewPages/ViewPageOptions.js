@@ -14,6 +14,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "../../components/CustomButtons/Button";
 import React from "react";
+import {Helmet} from "react-helmet";
 
 const filter = createFilterOptions()
 
@@ -31,6 +32,9 @@ class ViewPageOptions extends React.PureComponent{
                     paper: this.props.classes.modalPageOptions
                 }}
             >
+                <Helmet>
+                    <title>{this.props.data.editing ? "Edit " : "Add" } {this.props.data.pageTitle || " page"}</title>
+                </Helmet>
                 <DialogTitle
                     id="page-options-modal-slide-title"
                     disableTypography

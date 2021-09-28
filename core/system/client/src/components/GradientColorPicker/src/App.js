@@ -6,7 +6,7 @@ import { RouterModel, syncHistoryWithStore } from 'mst-react-router'
 import { observer } from 'mobx-react'
 import Store from './Models/Store'
 import defaultStore from './defaultStore'
-import createBrowserHistory from 'history/createBrowserHistory'
+import { createBrowserHistory } from 'history'
 import './App.sass'
 
 const routerModel = RouterModel.create()

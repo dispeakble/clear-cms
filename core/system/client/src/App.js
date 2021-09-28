@@ -28,6 +28,7 @@ import AuthGuardService from "./services/authGuard.service";
 import * as shortId from "shortid";
 
 class App extends Component {
+  header = null
   state = {
     services: {},
     currentModule: {},
@@ -159,7 +160,6 @@ class App extends Component {
     ],
     excludeHeader: ["pages/preview", "view-auth", "recover-password", "logout", "products/preview"],
     socket: {},
-    mobileOpen: false,
     defaultPalette: {}
   };
 
@@ -316,9 +316,9 @@ class App extends Component {
     });
   };
 
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
+  handleDrawerToggleToMenu = () => {
+    this.header.handleParentStateChange()
+  }
 
   onNavigate(params) {
     this.setState({
@@ -339,15 +339,14 @@ class App extends Component {
           {!this.state.excludeHeader.find((path) => {
             return !(locationPath.indexOf(path) === -1)
           }) && <Header
+              onRef={ref => (this.header = ref)}
               services={this.state.services}
-              mobileOpen={this.state.mobileOpen}
               color="transparent"
               brand="Clear CRM"
-              handleDrawerToggle={() => this.handleDrawerToggle()}
               leftLinks={
                 <SideMenuLinks
                     currentModule={this.state.currentModule}
-                    closeDrawer={() => this.handleDrawerToggle()}
+                    closeDrawer={() => this.handleDrawerToggleToMenu()}
                     moduleList={this.state.moduleList}
                     onNavigate={(params) => this.onNavigate(params)}
                 />

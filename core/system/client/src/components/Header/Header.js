@@ -78,6 +78,7 @@ class Header extends Component {
   };
 
   componentDidMount() {
+    this.props.onRef(this);
     let headerScroll = () => {
       try {
         this.headerColorChange(this);
@@ -161,6 +162,15 @@ class Header extends Component {
       }
     }
   };
+
+  handleParentStateChange = () => {
+    return this.handleMenuClick();
+  }
+
+  handleMenuClick = () => {
+    this.setState({mobileOpen: !this.state.mobileOpen})
+  }
+
   render() {
     const { color, classes } = this.props;
 
@@ -178,7 +188,7 @@ class Header extends Component {
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={this.props.handleDrawerToggle}
+              onClick={() => this.handleMenuClick()}
             >
               <Menu />
             </IconButton>
@@ -203,8 +213,8 @@ class Header extends Component {
           <Drawer
             variant="temporary"
             anchor={"left"}
-            open={this.props.mobileOpen}
-            onClose={this.props.handleDrawerToggle}
+            open={this.state.mobileOpen}
+            onClose={() => this.handleMenuClick()}
           >
             <div className={classes.appResponsive}>{this.props.leftLinks}</div>
           </Drawer>
@@ -243,7 +253,7 @@ Header.propTypes = {
   classes: PropTypes.object,
   color: PropTypes.string,
   handleDrawerToggle: PropTypes.func,
-  mobileOpen: PropTypes.bool,
+  onRef: PropTypes.element,
   // this will cause the sidebar to change the color from
   // props.color (see above) to changeColorOnScroll.color
   // when the window.pageYOffset is higher or equal to

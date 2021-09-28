@@ -17,11 +17,8 @@ import {
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import MoreMenu from "components/MoreMenu/MoreMenu.js";
 import GradientPicker from "components/GradientColorPicker/GradientColorPicker";
-import Typography from "@material-ui/core/Typography";
-import Slider from "@material-ui/core/Slider";
 import { withRouter } from "react-router-dom";
 import Snackbar from "components/Snackbar/Snackbar.js";
 
@@ -35,20 +32,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
-// for speed dial
-import Switch from "@material-ui/core/Switch";
-
-// for the dropdown inside each field
-import { TextField, Checkbox } from "@material-ui/core";
-import Autocomplete, {
-  createFilterOptions,
-} from "@material-ui/lab/Autocomplete";
-
 // for the styling side-menu
 
 // for accordion
-import clsx from "clsx";
-import { DropzoneArea } from "material-ui-dropzone";
 
 // for the new color picker
 import { SketchPicker } from "react-color";
@@ -63,9 +49,8 @@ import ViewPageOptions from "./ViewPageOptions";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
-const filter = createFilterOptions();
-
 class ViewPagesEditor extends React.PureComponent {
+
   static defaultProps = {
     className: "layout",
     cols: { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 },
@@ -881,19 +866,7 @@ class ViewPagesEditor extends React.PureComponent {
           actionsClosed: {
             height: "0",
             oveflow: "hidden",
-          },
-          fab: {
-            backgroundColor: "white",
-            color: "black",
-            "&:hover": {
-              backgroundColor: "white",
-            },
-          },
-        },
-        MuiFormControl: {
-          root: {
-            backgroundColor: "white",
-          },
+          }
         },
         MuiInputBase: {
           root: {
@@ -925,7 +898,6 @@ class ViewPagesEditor extends React.PureComponent {
           root: {
             borderRadius: "",
             width: "100%",
-            backgroundColor: "white",
             margin: "0 auto",
             height: "50px",
           },
@@ -1518,7 +1490,7 @@ class ViewPagesEditor extends React.PureComponent {
             <Snackbar
                 open={this.state.showErrorMessage}
                 place="tc"
-                color="error"
+                color="danger"
                 icon={ErrorSharp}
                 message={this.state.errorMessage}
             />
