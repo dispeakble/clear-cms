@@ -701,7 +701,6 @@ class MenuModule extends Component {
                     marks
                     min={0}
                     max={5}
-                    color="white"
                     onChange={this.handleSlider}
                 />
               </Tooltip>
