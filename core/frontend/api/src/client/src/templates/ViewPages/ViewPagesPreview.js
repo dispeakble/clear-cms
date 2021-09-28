@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, { Suspense } from "react";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/pagePreview.js";
+import styles from "../../assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from 'next/router'
 import { Helmet } from "react-helmet";
@@ -29,7 +29,7 @@ class ViewPagesPreview extends React.Component {
     pageLink: this.props.pageData?.pageConfig?.pageLink,
     items: [],
     pageConfig: this.props.pageData?.pageConfig || "Company name",
-    fontUnit: "px",
+    fontUnit: "rem",
     layouts: {},
     //pageDataLoaded: false,
     modals: []

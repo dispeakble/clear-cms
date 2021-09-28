@@ -38,6 +38,14 @@ export class ViewService implements OnModuleInit {
       return this.apiHub(params);
     };
 
+    /*res.end = (html) => {
+      //todo write the page in the cache
+    }
+
+    res.send = (html) => {
+      //todo write the page in the cache
+    }*/
+
     return this.server.getRequestHandler()(req, res, url);
   }
 }
