@@ -1,11 +1,8 @@
 import React from 'react';
 import { NextPage } from 'next';
-import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
-
 import { withRouter } from 'next/router';
-import getConfig from "next/config";
-import axios from "axios";
 
+import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 
 const PageComponent: NextPage = (props) => {
   return(
@@ -13,7 +10,7 @@ const PageComponent: NextPage = (props) => {
   )
 };
 
-
+//----------------------------SG----------------------------
 
 export async function getServerSideProps(context: any) {
 
@@ -33,13 +30,13 @@ export async function getServerSideProps(context: any) {
             protocolMethod: 'sendMessage',
             channel: 'frontendapi',
             api: 'pages',
-            act: 'getDynamicPage',
+            act: 'get',
             payload: {
                 body: {
+                    how: 'AND',
                     where: {
-                        type: 'product',
-                        id: 1,
-                        pageLink: context.req.params[0]
+                        is_default: 1,
+                        publish: 1
                     }
                 }
             }
@@ -61,53 +58,23 @@ export async function getServerSideProps(context: any) {
     }
 }
 
-/*export async function getStaticPaths() {
-  const paths: any = [];
+//-----------------------------SSG---------------------------
 
-  return { paths, fallback: true }
-}
-
-export async function getStaticProps({ params }: {params: any}) {
+/*export async function getStaticProps({ params }: {params: any}) {
 
     const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-
-
-    if (MYURL.includes('/product')) {
-        //get the template and inject the data
-    } else {
-        //display it
-    }
-
-    let pageLink = params.slug;
-    if(params.slug && params.slug !== '/') {
-        const parts = params.slug.split('/');
-        pageLink = parts[parts.length - 1];
-    }
-
-    let condition: any = {
-        pageLink: pageLink,
-        istemplate: 0,
-        publish: 1
-    }
 
     const payload = {
         api: 'pages',
         act: 'get',
-        where: condition
-    };
-
-    if(!pageLink.length) {
-        condition = {
+        where: {
             is_default: 1,
             istemplate: 0,
             publish: 1
         }
-    }
+    };
 
-
-    payload.where = condition;
-
-        let revalidate = 10;
+    let revalidate = 10;
 
     const result = await axios.post(`${serverRuntimeConfig.serverUrl}/api`, payload);
 

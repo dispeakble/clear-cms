@@ -12,6 +12,7 @@
       <env name="redis_port" value="31652" />
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="NODE_ENV" value="development" />
+      <env name="SERVER_URL" value="http://localhost:9898" />
     </envs>
     <method v="2" />
   </configuration>

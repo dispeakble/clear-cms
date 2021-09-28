@@ -13,5 +13,6 @@
     "skipLibCheck": true,
     "jsx": "preserve"
   },
-  "include": ["src/server"]
+  "include": ["src/server"],
+  "exclude": ["src/client"]
 }
