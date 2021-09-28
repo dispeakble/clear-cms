@@ -79,6 +79,10 @@ class MenuModule extends Component {
           style.justifyContent = "space-around";
           style.alignItems = "stretch"
       }
+        if(!options.isVertical && options.verticallyCentered){
+            style.alignItems = "center";
+            style.height = '100%';
+        }
       if (options.stretchToFit && options.isTopLevel) {
           style.height = "100%";
       }
@@ -140,6 +144,19 @@ class MenuModule extends Component {
       icon: link.icon,
       children: this.populateChildrenLinks(link.tableData.childRows),
     }));
+      var gridStyle={}
+          if(!isVertical && stretchToFit){
+              gridStyle.width = "100%";
+              if(verticallyCentered){
+                  gridStyle.height = "100%";
+              }
+          }
+          if(isVertical && stretchToFit) {
+              gridStyle.height = "100%"
+          }
+          if(horizontallyCentered){
+              gridStyle.textAlign= "center"
+          }
 
     return (
       <div
@@ -148,11 +165,7 @@ class MenuModule extends Component {
         }
         key={this.props.i}
         data-grid={this.props.element}
-        style={{
-            width: !isVertical && stretchToFit ? "100%" : "",
-            height: isVertical && stretchToFit ? "100%" : "",
-            textAlign: horizontallyCentered? "center": ''
-        }}
+        style={gridStyle}
       >
         {(() => {
           return this.createMenu(menuData, {
@@ -162,6 +175,7 @@ class MenuModule extends Component {
             isTopLevel: true,
             isVertical,
             menuIconSpace,
+            verticallyCentered
           });
         })()}
       </div>
