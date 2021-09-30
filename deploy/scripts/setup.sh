@@ -32,7 +32,7 @@ if [ -z "$(command -v kubectl)" ]; then
 fi
 
 DOCKERHUB_USERNAME="cmsbot"
-DOCKERHUB_PASS="@u*82fmVP^GVx2$"
+DOCKERHUB_PASS="uB8V7B6IR5ll"
 BITBUCKET_USERNAME="the_dispeakble_one"
 BITBUCKET_PASS='0$$2Dbmc!Hv7zpA'
 
