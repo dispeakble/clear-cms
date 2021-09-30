@@ -46,8 +46,7 @@ class MenuModule extends Component {
       backgroundColor: "",
       color: options.style.color,
       fontSize: options.style.fontSize,
-      fontFamily: options.style.fontFamily,
-      boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.3)",
+      fontFamily: options.style.fontFamily
     };
 
     let accordionStyle = {

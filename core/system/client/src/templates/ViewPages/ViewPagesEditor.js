@@ -380,9 +380,6 @@ class ViewPagesEditor extends React.PureComponent {
             pageBackgroundGradient: defaultPublicTheme.bggradient,
           });
         }
-        if (defaultPublicTheme.fontsize) {
-          this.setState({ fontSize: defaultPublicTheme.fontsize });
-        }
         if (defaultPublicTheme.textcolor) {
           this.setState({ textColor: defaultPublicTheme.textcolor });
         }
