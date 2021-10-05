@@ -2,11 +2,12 @@ import {Controller, Inject} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Observable} from "rxjs";
 
 @Controller()
 export class AppController {
 
-    private config: ModuleInterface = {
+    private moduleConfig: ModuleInterface = {
         name: 'db',
         version: '20.11.17',
         description: 'db module',
@@ -23,20 +24,28 @@ export class AppController {
         ],
     };
 
+    private state: any = {
+        ready: false
+    };
+
     constructor(
       @Inject('ProtocolService') private protocolService,
       @Inject('SystemService') private systemService,
       @Inject('DbService') private dbService
     ) {
-        this.protocolService.start().then(() => {
-            this.systemService.registerModule(this.config).subscribe(data => {
-                console.log(data);
-            }, err => {
-                console.log(err);
-            }, () => {
+        this.protocolService.start().then(async () => {
 
-            });
+            await this.dbService.waitForDb();
 
+            if(!this.dbService.getState()) {
+                throw 'Db not ready yet';
+            }
+
+            const data = await this.systemService.registerModule(this.moduleConfig);
+            if(!data) {
+                throw 'Db not ready yet';
+            }
+            this.state.ready = true;
         })
     }
 
@@ -53,7 +62,14 @@ export class AppController {
 
     private perform(data: payloadInterface) {
         try {
-            return this[data.api + 'Service'].perform({act: data.act, payload: data.payload}, this.config);
+            if(!this.state.ready) {
+                return new Observable((subscriber) => {
+                    subscriber.next({
+                        data: 'not ready'
+                    });
+                });
+            }
+            return this[data.api + 'Service'].perform({act: data.act, payload: data.payload}, this.moduleConfig);
         } catch (ex) {
             console.log(ex);
             return {

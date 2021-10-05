@@ -54,11 +54,17 @@ function createCluster() {
 
     rancherLogin
 
+    sleep 5
+
+    echo "-------------------------------------------------------------------"
+
+    echo $(rancher cluster kf $1)
+
+    echo "-------------------------------------------------------------------"
+
     rancher cluster kf $1 >~/.kube/config
 
     kubectl create secret docker-registry dockerhub --docker-username=$DOCKERHUB_USERNAME --docker-password="$DOCKERHUB_PASS"
-
-    rancher cluster kf $CLUSTER_NAME >~/.kube/config
 
     # Replacing localhost IP to real IP
     MY_IP=$(get_my_ip)
@@ -72,19 +78,19 @@ clusterExists() {
 }
 
 function checkCluster() {
-    echo "The cluster is being built. Please wait..."
     CLUSTER_STATE=0
     wait_count=0
-    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 600)); do
-      if [ "$wait_count" -gt 130 ]; then
+    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 900)); do
+      if [ "$wait_count" -gt 180 ]; then
 
-        echo -en "\r If this message does not go away please contact the administrator"
+        echo -en "\rCluster is still building... If this message does not go away please contact the administrator"
         else
-        echo -en "\r$(echo "scale=2; 100 / 130 * $wait_count" | bc)% - ( $wait_count seconds ) complete"
+        echo -en "\rCluster is building. $(echo "scale=2; 100 / 180 * $wait_count" | bc)% complete. Time elapsed: ( $wait_count seconds ) "
       fi
 
         sleep 1
         wait_count=$((wait_count + 1))
+
         CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
     done
     if [ "$CLUSTER_STATE" -lt 1 ]; then

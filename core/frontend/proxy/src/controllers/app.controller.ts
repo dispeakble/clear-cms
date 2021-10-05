@@ -7,6 +7,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import multer from "multer";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Observable} from "rxjs";
 
 @Controller()
 export class AppController {
@@ -24,6 +25,10 @@ export class AppController {
             name: 'hub',
             version: 'latest'
         }]
+    };
+
+    private state: any = {
+        ready: false
     };
 
     private publicPortMap = {};
@@ -463,6 +468,15 @@ export class AppController {
 
     private perform(params: payloadInterface) {
         try {
+
+            if(!this.state.ready) {
+                return new Observable((subscriber) => {
+                    subscriber.next({
+                        data: 'not ready'
+                    });
+                });
+            }
+
             const callback = (response) => {
                 return this.perform(response)
             }

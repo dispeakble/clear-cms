@@ -57,6 +57,7 @@ export class ProtocolService {
 
     public ping(data: any, config: ModuleInterface){
         return {
+            data: 'pong',
             name: config.name,
             version: config.version
         };
