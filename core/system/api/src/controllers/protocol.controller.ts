@@ -1,5 +1,4 @@
 import {Controller, Inject, Logger} from '@nestjs/common';
-import {ProtocolService} from '../services/protocol.service';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -31,6 +30,10 @@ export class ProtocolController {
         }]
     };
 
+    private state: any = {
+        ready: false
+    };
+
     private mainService;
 
     constructor(
@@ -52,7 +55,8 @@ export class ProtocolController {
         @Inject('ProductLocalityService') private productLocalityService,
         @Inject('ProductPricesService') private productPricesService,
         @Inject('EcommerceTemplatesService') private ecommerceTemplatesService){
-        this.mainService = this;
+
+
     }
 
     @MessagePattern({message: 'system'})
@@ -66,27 +70,38 @@ export class ProtocolController {
     }
 
     async onApplicationBootstrap() {
-        await this.protocolService.start();
 
-        const payload: ModuleInterface = {
-            name: 'system',
-            version: '21.01.12',
-            description: 'the system api and client',
-            started: new Date(),
-            config: {
-                restart: true,
-                stop: false
-            },
-            dependencies: [{
-                name: 'hub',
-                version: 'latest'
-            },{
-                name: 'proxy',
-                version: 'latest'
-            }]
-        };
-        const startupChores = Promise.all([this.systemService.registerModule(payload).toPromise(),
-            this.protocolService.sendMessage({
+        try {
+            await this.protocolService.start();
+
+            const data = await this.systemService.registerModule(this.moduleConfig);
+            if(!data) {
+                console.log('Cannot regiter system microservice');
+                process.exit(1);
+            }
+
+            this.state.ready = true;
+            this.mainService = this;
+
+            const payload: ModuleInterface = {
+                name: 'system',
+                version: '21.01.12',
+                description: 'the system api and client',
+                started: new Date(),
+                config: {
+                    restart: true,
+                    stop: false
+                },
+                dependencies: [{
+                    name: 'hub',
+                    version: 'latest'
+                },{
+                    name: 'proxy',
+                    version: 'latest'
+                }]
+            };
+
+            await this.protocolService.sendMessage({
                 channel: 'hub',
                 api: 'module',
                 act: 'mapPort',
@@ -99,16 +114,27 @@ export class ProtocolController {
                         login: '/view-auth'
                     }
                 }
-            }).toPromise()
-        ]);
+            }).toPromise();
 
-        startupChores.then(() => {
-            this.logger.log('System application started');
-        });
+            this.logger.log('System application started')
+            console.log('System application started');
+        } catch (err) {
+            console.log(err);
+            console.log('cannot start system api');
+        }
+
+
     }
 
     private perform(params: payloadInterface) {
         try {
+            if(!this.state.ready) {
+                return new Observable((subscriber) => {
+                    subscriber.next({
+                        data: 'not ready'
+                    });
+                });
+            }
             const callback = (response) => {
                 return this.perform(response)
             }

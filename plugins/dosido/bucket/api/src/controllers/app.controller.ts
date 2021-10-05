@@ -27,19 +27,21 @@ export class AppController {
         ],
     };
 
+    private state: any = {
+        ready: false
+    };
+
     constructor(
         @Inject('ProtocolService') private protocolService,
         @Inject('SystemService') private systemService,
         @Inject('FsService') private fsService
     ) {
-        this.protocolService.start().then(() => {
-            this.systemService.registerModule(this.moduleConfig).subscribe((response) => {
-                console.log(response);
-            }, (err) => {
-                console.error(err);
-            }, () => {
-                console.log('complete');
-            });
+        this.protocolService.start().then(async () => {
+            const data = await this.systemService.registerModule(this.moduleConfig);
+            if(!data) {
+                throw 'Db not ready yet';
+            }
+            this.state.ready = true;
 
         })
     }
@@ -57,6 +59,13 @@ export class AppController {
 
     private perform(params: payloadInterface): Observable<any> {
         try {
+            if(!this.state.ready) {
+                return new Observable((subscriber) => {
+                    subscriber.next({
+                        data: 'not ready'
+                    });
+                });
+            }
             const callback = (response) => {
                 return this.perform(response)
             }

@@ -16,6 +16,10 @@ export class DbService {
         connectionTimeoutMillis: 2000
     }
 
+    private state = {
+        ready: false
+    };
+
     private pool;
     private methods = ["get", "add", "set", "rem"];
     private help = {
@@ -330,10 +334,41 @@ export class DbService {
 
     constructor(@Inject('PgPool') private pgPool: Pool) {
         this.pool = new this.pgPool(this.config);
-        this.add({
-            what: 'categories',
+        this.query({
+            action: 'get',
+            data: {
+                what: 'auth_admin'
+            }
+        }).subscribe(data => {
+            console.log(data);
+            this.state.ready = true;
+        }, err => {
+            console.log(err);
+        }, () => {
 
-        })
+        });
+
+    }
+
+    public waitForDb() {
+        return new Promise(resolve => {
+            const checkIntervalId = setInterval(() => {
+                if(this.state.ready) {
+                    clearTimeout(checkTimeoutId);
+                    resolve(true);
+                }
+            }, 300);
+
+            const checkTimeoutId = setTimeout(() => {
+                clearInterval(checkIntervalId);
+                resolve(false);
+            }, 30 * 1000);
+
+        });
+    }
+
+    public getState() {
+        return this.state.ready;
     }
 
     async get(params) {

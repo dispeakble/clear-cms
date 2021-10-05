@@ -27,6 +27,10 @@ export class AppController {
         }]
     };
 
+    private state: any = {
+        ready: false
+    };
+
     private portMap = {};
 
     private help = {
@@ -65,8 +69,13 @@ export class AppController {
         ) {
         this.protocolService.start().then(async () => {
             this.portMap = await this.protocolService.getValue('portMap') || [];
-            const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
-            this.logger.log(response);
+
+            const data = await this.systemService.registerModule(this.moduleConfig);
+            if(!data) {
+                throw 'System api not ready yet';
+            }
+            this.state.ready = true;
+
             this.wsGateway.registerCallbacks({
                 callbacks: {
                     "onMessage": async (params) => {

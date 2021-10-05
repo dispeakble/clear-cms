@@ -5,6 +5,7 @@ import {payloadInterface} from "../interfaces/payload.interface";
 import { ViewService } from '../services/view.service';
 import {Request, Response} from "express";
 import { parse } from "url";
+import {Observable} from "rxjs";
 
 @Controller('/')
 export class AppController {
@@ -30,6 +31,10 @@ export class AppController {
             name: 'frontendproxy',
             version: 'latest'
         }]
+    };
+
+    private state: any = {
+        ready: false
     };
 
     private mainService;
@@ -78,7 +83,7 @@ export class AppController {
             }]
         };
 
-        const reg_msg = await this.systemService.registerModule(payload).toPromise();
+        const reg_msg = await this.systemService.registerModule(payload);
         this.logger.log(reg_msg);
         const port_map_msg = await this.protocolService.sendMessage({
             channel: 'hub',
@@ -196,6 +201,15 @@ export class AppController {
 
     private perform(params: payloadInterface) {
         try {
+
+            if(!this.state.ready) {
+                return new Observable((subscriber) => {
+                    subscriber.next({
+                        data: 'not ready'
+                    });
+                });
+            }
+
             const callback = (response) => {
                 return this.perform(response)
             }

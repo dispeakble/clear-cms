@@ -30,6 +30,12 @@ fi
 if [ -z "$(command -v kubectl)" ]; then
   installService "infrastructure/install-kubectl.sh"
 fi
+if [ -z "$(command -v node)" ]; then
+  installService "infrastructure/install-nodejs.sh"
+fi
+
+base_path=$(readlink -e ".")
+cd $base_path
 
 DOCKERHUB_USERNAME="cmsbot"
 DOCKERHUB_PASS="uB8V7B6IR5ll"
@@ -76,5 +82,3 @@ if [ $? != 0 ]; then
    echo "failed to install"
    exit 1
 fi
-
-exit

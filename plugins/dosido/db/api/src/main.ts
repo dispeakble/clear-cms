@@ -19,7 +19,7 @@ async function bootstrap() {
                 retryDelay: 3000,
             }
         });
-        await app.listen(() => console.log('db is ready.', ...arguments));
+        await app.listen(() => console.log('db started.', ...arguments));
     } catch(e){
         logger.log('Warning! Could not start event listener');
     }

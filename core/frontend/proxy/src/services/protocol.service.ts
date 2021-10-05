@@ -41,7 +41,7 @@ export class ProtocolService {
 
     public emitMessage(data: any) {
 
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             api: data.module,
             act: data.act,
             channel: data.channel,
@@ -90,6 +90,7 @@ export class ProtocolService {
 
     public ping(data: any, config: ModuleInterface){
         return {
+            data: 'pong',
             name: config.name,
             version: config.version
         };
