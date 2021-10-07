@@ -1,7 +1,8 @@
 const modalStyle = {
   modal: {
     borderRadius: "6px",
-    maxWidth: "60vw"
+    maxWidth: "100vw",
+    margin: "16px"
   },
   modalHeader: {
     borderBottom: "none",

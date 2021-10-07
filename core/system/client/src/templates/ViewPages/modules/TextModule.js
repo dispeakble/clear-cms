@@ -7,15 +7,11 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CustomInput from "components/CustomInput/CustomInput.js";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
-import Typography from "@material-ui/core/Typography";
-import Switch from "@material-ui/core/Switch";
 import { Editor } from "@tinymce/tinymce-react";
 
 class TextModule extends Component {
@@ -37,9 +33,29 @@ class TextModule extends Component {
             padding: "16px 24px 0",
           },
         },
+        MuiFormControlLabel: {
+          root: {
+            margin: "0px !important"
+          }
+        }
       },
     });
   };
+
+  handleClose (event, reason) {
+    if (reason === "backdropClick") {
+      return false;
+    }
+
+    if (reason === "escapeKeyDown") {
+      return false;
+    }
+
+    this.closeModuleOptionsModal();
+
+    return true;
+
+  }
 
   setAsyncState = (newState) =>
     new Promise((resolve) => this.setState(newState, resolve));
@@ -51,19 +67,8 @@ class TextModule extends Component {
   handleEdit = async (id) => {
     if (this.props.moduleOptions.data) {
       await this.setAsyncState({
-        richFormattedText: this.props.moduleOptions.data.isRichFormattedText,
+        richTextContent: this.props.moduleOptions.data.textData,
       });
-      if (this.props.moduleOptions.data.isRichFormattedText) {
-        await this.setAsyncState({
-          textContent: "",
-          richTextContent: this.props.moduleOptions.data.textData,
-        });
-      } else {
-        await this.setAsyncState({
-          richTextContent: "",
-          textContent: this.props.moduleOptions.data.textData,
-        });
-      }
     }
     await this.setAsyncState({
       itemModuleEditId: id,
@@ -72,15 +77,9 @@ class TextModule extends Component {
   };
 
   handleInputChange(event) {
-    if (event.target) {
-      this.setState({
-        textContent: event.target.value,
-      });
-    } else {
-      this.setState({
-        richTextContent: event,
-      });
-    }
+    this.setState({
+      richTextContent: event,
+    });
   }
 
   render() {
@@ -101,7 +100,11 @@ class TextModule extends Component {
         </IconButton>
 
         <Dialog
-          onBackdropClick={() => "false"}
+            disableAutoFocus={true}
+            disableBackdropClick={true}
+            disableRestoreFocus={true}
+            disableEnforceFocus={true}
+            hideBackdrop={true}
           classes={{
             root: classes.center,
             paper: classes.modal,
@@ -109,7 +112,7 @@ class TextModule extends Component {
           open={this.state.showModuleOptionsModal}
           TransitionComponent={this.transition}
           keepMounted
-          onClose={() => this.closeModuleOptionsModal()}
+          onClose={(event, reason) => this.handleClose(event, reason)}
           aria-labelledby="classic-modal-slide-title"
           aria-describedby="classic-modal-slide-description"
         >
@@ -124,7 +127,6 @@ class TextModule extends Component {
             id="classic-modal-slide-description"
             className={classes.modalBody}
           >
-            {this.state.richFormattedText === true ? (
               <Editor
                 id="editor"
                 value={this.state.richTextContent}
@@ -158,37 +160,8 @@ class TextModule extends Component {
                 }}
                 onEditorChange={(event) => this.handleInputChange(event)}
               />
-            ) : (
-              <CustomInput
-                labelText="Enter text"
-                id="moduleOptionsInput"
-                required="required"
-                formControlProps={{
-                  fullWidth: true,
-                  onChange: (event) => this.handleInputChange(event),
-                }}
-                inputProps={{
-                  value: this.state.textContent,
-                  type: "text",
-                }}
-              />
-            )}
+
           </DialogContent>
-
-          <Typography gutterBottom>
-            <Tooltip title="Enable Rich Formatted Text">
-              <Switch
-                checked={this.state.richFormattedText}
-                onChange={() => {
-                  this.setState({
-                    richFormattedText: !this.state.richFormattedText,
-                  });
-                }}
-              />
-            </Tooltip>
-            Rich Formatted Text
-          </Typography>
-
           <DialogActions className={classes.modalFooter}>
             <Button
               disabled={this.state.isBtnDisabled}
