@@ -363,12 +363,20 @@ export class AppController {
         const { res, file, fileStats } = params;
         res.set("Content-Type", file.content_type);
         res.set("Content-Length", file.content_length);
-        res.set('Content-Security-Policy', "img-src 'self' 'unsafe-inline' https://cdn.tiny.cloud; default-src 'self'; script-src 'self' https://cdn.tiny.cloud; style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com https://cdn.tiny.cloud; font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com https://cdn.tiny.cloud");
         res.set('X-Frame-Options', 'SAMEORIGIN');
         res.set('X-Content-Type-Options', 'nosniff');
         res.set('Strict-Transport-Security', 'max-age=604800; includeSubDomains; preload');
         res.set('Cache-Control', 'public, max-age=604800');
         res.set('ETag', fileStats.data.etagId);
+
+        let csp = "img-src 'self' 'unsafe-inline' data: https://cdn.tiny.cloud https://sp.tinymce.com;";
+        csp += "default-src 'self';";
+        csp += "script-src 'self' https://cdn.tiny.cloud https://sp.tinymce.com;";
+        csp += "style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com;";
+        csp += "font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com`);";
+
+        res.set('Content-Security-Policy', csp);
+
         res.status(HttpStatus.OK);
         if(params.finish) {
             res.write(Buffer.from(file.data.data));

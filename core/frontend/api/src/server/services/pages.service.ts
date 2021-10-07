@@ -70,13 +70,18 @@ export class PagesService {
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'pages',
-                                // fields: ["*"],//it's optional. defaults to *
-                                // how: "OR",
-                                where: params.body ? params.body.where : params.where
+                                what: 'pages'
                             }
                         }
                     };
+
+                    if(params.body.how) {
+                        pageReq.payload.data.how = params.body.how;
+                    }
+
+                    if(params.body.where) {
+                        pageReq.payload.data.where = params.body.where;
+                    }
 
                     let page = await this.protocolService.sendMessage(pageReq).toPromise()
                     page = page.data[0];

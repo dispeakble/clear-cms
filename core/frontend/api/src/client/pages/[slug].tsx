@@ -33,12 +33,11 @@ export async function getServerSideProps(context: any) {
             protocolMethod: 'sendMessage',
             channel: 'frontendapi',
             api: 'pages',
-            act: 'getDynamicPage',
+            act: 'get',
             payload: {
                 body: {
                     where: {
-                        type: 'product',
-                        id: 1,
+                        publish: 1,
                         pageLink: context.req.params[0]
                     }
                 }
