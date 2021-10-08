@@ -69,7 +69,8 @@ export class AppController {
     ) {
         this.protocolService.start().then(async () => {
             this.publicPortMap = await this.protocolService.getValue('publicPortMap') || [];
-            const response = await this.systemService.registerModule(this.moduleConfig).toPromise();
+            const response = await this.systemService.registerModule(this.moduleConfig);
+            this.state.ready = true;
             this.logger.log(response);
             this.wsGateway.registerCallbacks({
                 callbacks: {
@@ -390,6 +391,7 @@ export class AppController {
                     await this.protocolService.setValue('publicPortMap', publicPortMap);
 
                     this.publicPortMap = data;
+                    this.state.ready = true;
                 }
             }
         });

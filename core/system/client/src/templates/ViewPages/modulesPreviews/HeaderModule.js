@@ -14,7 +14,7 @@ class HeaderModule extends Component {
     let style = { height: "100%" },
         logo_name = null;
 
-    if(this.props.element.moduleOptions.data && this.props.element.moduleOptions){
+    if(this.props.element.moduleOptions.data.files){
       const bg_name = this.pickByKey({
         data: this.props.element.moduleOptions.data.files,
         what: 'sel',

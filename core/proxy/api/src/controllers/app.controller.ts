@@ -369,11 +369,11 @@ export class AppController {
         res.set('Cache-Control', 'public, max-age=604800');
         res.set('ETag', fileStats.data.etagId);
 
-        let csp = "img-src 'self' 'unsafe-inline' data: https://cdn.tiny.cloud https://sp.tinymce.com;";
+        let csp = "img-src 'self' 'unsafe-inline' data: blob: https://cdn.tiny.cloud https://sp.tinymce.com;";
         csp += "default-src 'self';";
         csp += "script-src 'self' https://cdn.tiny.cloud https://sp.tinymce.com;";
         csp += "style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com;";
-        csp += "font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com`);";
+        csp += "font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com;";
 
         res.set('Content-Security-Policy', csp);
 

@@ -49,6 +49,7 @@ export class AppController {
 
         private viewService: ViewService
     ) {
+        this.state.ready = true;
         this.mainService = this;
     }
 
