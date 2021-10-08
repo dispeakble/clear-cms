@@ -36,6 +36,7 @@ export async function getServerSideProps(context: any) {
             act: 'get',
             payload: {
                 body: {
+                    how: 'AND',
                     where: {
                         publish: 1,
                         pageLink: context.req.params[0]

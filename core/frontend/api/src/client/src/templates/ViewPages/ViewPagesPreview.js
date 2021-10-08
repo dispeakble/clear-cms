@@ -178,6 +178,8 @@ class ViewPagesPreview extends React.Component {
 
     if (el.showScrollbars) {
       style.overflow = "auto";
+    } else {
+      style.overflow = "hidden";
     }
 
     const loadingFallback = (() => {

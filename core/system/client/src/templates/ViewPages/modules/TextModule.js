@@ -16,12 +16,10 @@ import { Editor } from "@tinymce/tinymce-react";
 
 class TextModule extends Component {
   state = {
-    textContent: "",
     itemModuleEditId: "",
     richTextContent: "",
     showModuleOptionsModal: false,
-    modalTitle: "Text content",
-    richFormattedText: false,
+    modalTitle: "Text content"
   };
 
   getTheme = () => {
@@ -168,10 +166,8 @@ class TextModule extends Component {
               color="primary"
               onClick={() => {
                 this.props.handleSave(this.state.itemModuleEditId, {
-                  textData: this.state.richFormattedText
-                    ? this.state.richTextContent
-                    : this.state.textContent,
-                  isRichFormattedText: this.state.richFormattedText,
+                  textData: this.state.richTextContent,
+                  isRichFormattedText: true
                 });
                 this.closeModuleOptionsModal();
               }}
