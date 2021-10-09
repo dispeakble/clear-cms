@@ -333,19 +333,42 @@ export class DbService {
     }
 
     constructor(@Inject('PgPool') private pgPool: Pool) {
-        this.pool = new this.pgPool(this.config);
-        this.query({
-            action: 'get',
-            data: {
-                what: 'auth_admin'
-            }
-        }).subscribe(data => {
-            console.log(data);
-            this.state.ready = true;
-        }, err => {
-            console.log(err);
-        }, () => {
 
+
+    }
+
+    async onApplicationBootstrap() {
+        this.pool = new this.pgPool(this.config);
+        const checkIntervalId = setInterval(async () => {
+
+            const dbTest = await this.testDb();
+
+            if(dbTest) {
+                clearTimeout(checkTimeoutId);
+                this.state.ready = true;
+            }
+        }, 300);
+
+        const checkTimeoutId = setTimeout(() => {
+            clearInterval(checkIntervalId);
+            process.exit(1);
+        }, 30 * 1000);
+    }
+
+    private async testDb() {
+        return new Promise(resolve => {
+            this.query({
+                action: 'get',
+                data: {
+                    what: 'auth_admin'
+                }
+            }).subscribe(data => {
+                resolve(data);
+            }, err => {
+                resolve(false);
+            }, () => {
+                resolve(false)
+            });
         });
 
     }
