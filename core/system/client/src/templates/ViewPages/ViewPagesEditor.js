@@ -13,7 +13,7 @@ import {
   Edit,
   OpenWith,
   Visibility,
-  InfoSharp, ScreenShare, StopScreenShare, PostAdd,ErrorSharp
+  InfoSharp, ScreenShare, StopScreenShare, PostAdd,ErrorSharp, FileCopy
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
@@ -554,11 +554,18 @@ class ViewPagesEditor extends React.PureComponent {
       },
       {
         callback: () => {
+          return this.onDuplicate(el.i);
+        },
+        icon: <FileCopy style={{ color: this.props.defaultTheme.primary.main }} />,
+        name: "Duplicate box",
+      },
+      {
+        callback: () => {
           return this.handleEditItem(el.i);
         },
         icon: <Edit style={{ color: this.props.defaultTheme.primary.main }} />,
         name: "Edit box",
-      },
+      }
     ];
 
     return (
@@ -616,6 +623,55 @@ class ViewPagesEditor extends React.PureComponent {
 
     await this.setAsyncState({ items });
   };
+
+  //toto async function duplicate
+
+  async onDuplicate(id) {
+    const item = this.getItemById(id);
+    let newId = 0;
+    try {
+      const selectedBox = this.state.items.find((itemValue) => {
+        if(item.i === itemValue.i) {
+          newId = itemValue.i;
+        }
+        return itemValue;
+      });
+
+      newId++;
+      let items = this.state.items;
+      items.push({
+        newItem: true,
+        title: selectedBox.title,
+        showScrollbars: selectedBox.showScrollbars,
+        module: selectedBox.module,
+        moduleOptions: selectedBox.moduleOptions,
+        borderColor: selectedBox.borderColor,
+        borderStyle: selectedBox.borderStyle,
+        borderWidth: selectedBox.borderColor,
+        borderRadius: selectedBox.borderRadius,
+        backgroundImage: selectedBox.backgroundImage,
+        backgroundImageFile: selectedBox.backgroundImageFile,
+        backgroundRepeat: selectedBox.backgroundRepeat,
+        backgroundStretch: selectedBox.backgroundStretch,
+        i: newId + "",
+        x: 0,
+        y: Infinity, // puts it at the bottom
+        w: selectedBox.w,
+        h: selectedBox.h,
+      });
+
+      await this.setAsyncState({
+        // Add a new item. It must have a unique key!
+        items: items,
+      });
+      setTimeout(() => {
+        window.scrollTo(0,document.body.scrollHeight);
+
+      }, 500)
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   async onAddItem() {
     let newId = 0;
