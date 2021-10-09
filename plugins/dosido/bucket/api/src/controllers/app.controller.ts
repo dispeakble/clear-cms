@@ -36,14 +36,17 @@ export class AppController {
         @Inject('SystemService') private systemService,
         @Inject('FsService') private fsService
     ) {
-        this.protocolService.start().then(async () => {
-            const data = await this.systemService.registerModule(this.moduleConfig);
-            if(!data) {
-                throw 'Db not ready yet';
-            }
-            this.state.ready = true;
 
-        })
+    }
+
+    async onApplicationBootstrap() {
+        await this.protocolService.start();
+        const data = await this.systemService.registerModule(this.moduleConfig);
+        console.log(data);
+        if(!data) {
+            throw 'Db not ready yet';
+        }
+        this.state.ready = true;
     }
 
     //Microservice protocol

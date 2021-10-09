@@ -33,20 +33,21 @@ export class AppController {
       @Inject('SystemService') private systemService,
       @Inject('DbService') private dbService
     ) {
-        this.protocolService.start().then(async () => {
 
-            await this.dbService.waitForDb();
+    }
+    async onApplicationBootstrap() {
+        await this.protocolService.start();
+        await this.dbService.waitForDb();
+        if(!this.dbService.getState()) {
+            throw 'Db not ready yet';
+        }
 
-            if(!this.dbService.getState()) {
-                throw 'Db not ready yet';
-            }
-
-            const data = await this.systemService.registerModule(this.moduleConfig);
-            if(!data) {
-                throw 'Db not ready yet';
-            }
-            this.state.ready = true;
-        })
+        const data = await this.systemService.registerModule(this.moduleConfig);
+        console.log(data);
+        if(!data) {
+            throw 'Db not ready yet';
+        }
+        this.state.ready = true;
     }
 
     //Microservice protocol
