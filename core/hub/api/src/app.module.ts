@@ -19,8 +19,13 @@ import {ModuleService} from "./services/module.service";
           url: 'redis://' + process.env.redis_server,
           port: +process.env.redis_port,
           password: process.env.redis_password,
-          retryAttempts: 20,
-          retryDelay: 3000,
+          retryAttempts: 10,
+          retryDelay: 5000,
+          disable_resubscribing: false,
+          max_attempts: 30,
+          no_ready_check: true,
+          retry_max_delay: 1000,
+          retry_strategy: 1000
         }
       },
     ]),

@@ -40,7 +40,7 @@ export class SystemService {
                 console.log(err);
                 reject(false);
             }, () => {
-                resolve(true);
+                //resolve(true);
             });
             const rejectTimeout = setTimeout(() => {
                 reject(false);

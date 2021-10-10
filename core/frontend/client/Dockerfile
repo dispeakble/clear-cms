@@ -1,4 +1,4 @@
-FROM node:14.5.0-alpine As crm-nestjs
+FROM node:14.17.5-alpine As crm-nestjs
 
 RUN mkdir -p /usr/src/
 WORKDIR /usr/src

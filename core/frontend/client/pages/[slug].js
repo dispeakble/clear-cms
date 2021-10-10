@@ -12,7 +12,12 @@ const redis = new Redis({
   port: +process.env.redis_port,
   password: process.env.redis_password,
   retryAttempts: 20,
-  retryDelay: 3000
+  retryDelay: 3000,
+  disable_resubscribing: false,
+  max_attempts: 30,
+  no_ready_check: true,
+  retry_max_delay: 1000,
+  retry_strategy: 1000
 });
 
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
