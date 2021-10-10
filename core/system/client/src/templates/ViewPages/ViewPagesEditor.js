@@ -627,11 +627,11 @@ class ViewPagesEditor extends React.PureComponent {
   //toto async function duplicate
 
   async onDuplicate(id) {
-    const item = this.getItemById(id);
+    const existingItem = this.getItemById(id);
     let newId = 0;
     try {
-      const selectedBox = this.state.items.find((itemValue) => {
-        if(item.i === itemValue.i) {
+      this.state.items.find((itemValue) => {
+        if(existingItem.i === itemValue.i) {
           newId = itemValue.i;
         }
         return itemValue;
@@ -641,23 +641,23 @@ class ViewPagesEditor extends React.PureComponent {
       let items = this.state.items;
       items.push({
         newItem: true,
-        title: selectedBox.title,
-        showScrollbars: selectedBox.showScrollbars,
-        module: selectedBox.module,
-        moduleOptions: selectedBox.moduleOptions,
-        borderColor: selectedBox.borderColor,
-        borderStyle: selectedBox.borderStyle,
-        borderWidth: selectedBox.borderColor,
-        borderRadius: selectedBox.borderRadius,
-        backgroundImage: selectedBox.backgroundImage,
-        backgroundImageFile: selectedBox.backgroundImageFile,
-        backgroundRepeat: selectedBox.backgroundRepeat,
-        backgroundStretch: selectedBox.backgroundStretch,
+        title: existingItem.title,
+        showScrollbars: existingItem.showScrollbars,
+        module: existingItem.module,
+        moduleOptions: existingItem.moduleOptions,
+        borderColor: existingItem.borderColor,
+        borderStyle: existingItem.borderStyle,
+        borderWidth: existingItem.borderColor,
+        borderRadius: existingItem.borderRadius,
+        backgroundImage: existingItem.backgroundImage,
+        backgroundImageFile: existingItem.backgroundImageFile,
+        backgroundRepeat: existingItem.backgroundRepeat,
+        backgroundStretch: existingItem.backgroundStretch,
         i: newId + "",
         x: 0,
         y: Infinity, // puts it at the bottom
-        w: selectedBox.w,
-        h: selectedBox.h,
+        w: existingItem.w,
+        h: existingItem.h,
       });
 
       await this.setAsyncState({
