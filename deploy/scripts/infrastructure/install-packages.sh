@@ -19,7 +19,6 @@ installYarnPackages() {
 
 base_path=$(readlink -e "../../")
 
-installNpmPackages "$base_path/core/frontend/api"
 installNpmPackages "$base_path/core/frontend/proxy"
 installNpmPackages "$base_path/core/hub/api"
 installNpmPackages "$base_path/core/proxy/api"
@@ -28,3 +27,4 @@ installNpmPackages "$base_path/plugins/dosido/bucket/api"
 installNpmPackages "$base_path/plugins/dosido/db/api"
 
 installYarnPackages "$base_path/core/system/client"
+installYarnPackages "$base_path/core/frontend/api"

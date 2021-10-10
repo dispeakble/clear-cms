@@ -360,6 +360,7 @@ export class DbService {
             this.query({
                 action: 'get',
                 data: {
+                    silent: true,
                     what: 'auth_admin'
                 }
             }).subscribe(data => {
@@ -450,7 +451,10 @@ export class DbService {
                 this.pool.query(query.string, query.params, (err, result) => {
 
                     if (err) {
-                        console.error("error running query", err, query, params);
+                        if(!params.data.silent) {
+                            console.error("error running query", err, query, params);
+                        }
+
                         subscriber.error({
                             data: null,
                             what: params.data.what

@@ -25,8 +25,7 @@
   },
   "dependencies": {
     "@ininderprint/nestjs-filestream-interceptor": "0.0.8",
-    "@nestjs/common": "^7.6.17",
-    "@nestjs/config": "^0.5.0",
+    "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/event-emitter": "0.0.3",
     "@nestjs/microservices": "^7.3.2",

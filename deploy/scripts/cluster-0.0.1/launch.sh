@@ -82,15 +82,12 @@ function checkCluster() {
     wait_count=0
     while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 900)); do
       if [ "$wait_count" -gt 180 ]; then
-
-        echo -en "\rCluster is still building... If this message does not go away please contact the administrator"
+        echo -en "\rThe cluster is still building... If this message does not go away please contact the administrator"
         else
-        echo -en "\rCluster is building. $(echo "scale=2; 100 / 180 * $wait_count" | bc)% complete. Time elapsed: ( $wait_count seconds ) "
+        echo -en "\rBuilding cluster. $(echo "scale=2; 100 / 180 * $wait_count" | bc)% complete. Time elapsed: $wait_count seconds "
       fi
-
         sleep 1
         wait_count=$((wait_count + 1))
-
         CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
     done
     if [ "$CLUSTER_STATE" -lt 1 ]; then

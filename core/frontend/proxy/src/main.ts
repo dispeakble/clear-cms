@@ -22,7 +22,12 @@ const init = async () => {
             return_buffers: true,
             url: 'redis://' + process.env.redis_server,
             port: +process.env.redis_port,
-            password: process.env.redis_password
+            password: process.env.redis_password,
+            disable_resubscribing: false,
+            max_attempts: 30,
+            no_ready_check: true,
+            retry_max_delay: 1000,
+            retry_strategy: 1000
         }
     });
 

@@ -14,7 +14,13 @@ async function bootstrap() {
             options: {
                 url: 'redis://' + process.env.redis_server,
                 port: +process.env.redis_port,
-                password: process.env.redis_password
+                password: process.env.redis_password,
+                retryAttempts: 10,
+                retryDelay: 5000,
+                disable_resubscribing: false,
+                max_attempts: 30,
+                no_ready_check: true,
+                retry_strategy: 1000
             },
         });
         await app.listen(() => console.log('System is ready.'));
