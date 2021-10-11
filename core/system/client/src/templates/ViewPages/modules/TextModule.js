@@ -115,18 +115,15 @@ class TextModule extends Component {
           aria-describedby="classic-modal-slide-description"
         >
           <DialogTitle
-            id="classic-modal-slide-title"
             disableTypography
             className={classes.modalHeader}
           >
             <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
           </DialogTitle>
           <DialogContent
-            id="classic-modal-slide-description"
             className={classes.modalBody}
           >
-              <Editor
-                id="editor"
+            {this.state.showModuleOptionsModal && <Editor
                 value={this.state.richTextContent}
                 init={{
                   height: 500,
@@ -157,7 +154,7 @@ class TextModule extends Component {
                   },
                 }}
                 onEditorChange={(event) => this.handleInputChange(event)}
-              />
+              /> }
 
           </DialogContent>
           <DialogActions className={classes.modalFooter}>
@@ -166,8 +163,7 @@ class TextModule extends Component {
               color="primary"
               onClick={() => {
                 this.props.handleSave(this.state.itemModuleEditId, {
-                  textData: this.state.richTextContent,
-                  isRichFormattedText: true
+                  textData: this.state.richTextContent
                 });
                 this.closeModuleOptionsModal();
               }}

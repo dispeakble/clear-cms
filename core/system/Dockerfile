@@ -7,6 +7,7 @@ RUN mkdir -p /usr/src/client/
 
 
 COPY ./client/package.json /usr/src/client/
+COPY ./client/yarn.lock /usr/src/client/
 
 COPY ./client/public /usr/src/client/public
 COPY ./client/src /usr/src/client/src
@@ -14,9 +15,10 @@ COPY ./client/.babelrc /usr/src/client/.babelrc
 COPY ./client/jsconfig.json /usr/src/client/jsconfig.json
 
 WORKDIR /usr/src/client
-RUN npm install
+RUN yarn install
 
 RUN npm run build
+RUN rm -fr node_modules
 WORKDIR /usr/src
 RUN rm -fr ./client
 
@@ -37,6 +39,6 @@ COPY ./api/tsconfig.json /usr/src/api/tsconfig.json
 RUN npm run build
 
 CMD ["rm", "-fr", "src"]
-CMD ["rm", "-fr", "node_modules"]
+RUN rm -fr node_modules
 RUN npm install --only=prod
 CMD ["npm","run","start:prod"]

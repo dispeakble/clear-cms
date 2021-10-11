@@ -2,7 +2,6 @@ import React, {Component} from "react";
 
 import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/modules/headerModule";
-import Image from "next/image";
 import Link from "next/link";
 
 class HeaderModule extends Component {
@@ -18,7 +17,7 @@ class HeaderModule extends Component {
             },
             logo_name = null;
 
-        if (this.props.element.moduleOptions.data && this.props.element.moduleOptions) {
+        if (this.props.element.moduleOptions.data.files) {
             const bg_name = this.pickByKey({
                 data: this.props.element.moduleOptions.data.files,
                 what: 'sel',
