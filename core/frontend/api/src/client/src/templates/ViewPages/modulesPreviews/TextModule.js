@@ -11,7 +11,7 @@ class TextModule extends Component {
         data-grid={this.props.element}
         style={this.props.style}
       >
-        {parse(text)}
+        {(text && text.length) ? parse(text) : ""}
       </div>
     );
   }

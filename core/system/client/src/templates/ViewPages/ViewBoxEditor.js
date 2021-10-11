@@ -284,11 +284,16 @@ class ViewBoxEditor extends React.PureComponent {
         });
     };
 
-    handleItemModule = async (event, newValue) => {
+    handleItemModule = (event, newValue) => {
         if (!newValue || !newValue.label) {
+            this.setState({
+                editItemSelectedModule: null,
+                editItemModule: -1
+            });
             return;
         }
-        await this.setAsyncState({
+        this.setState({
+            editItemSelectedModule: this.state.modulesList[this.getModuleIndex(newValue.label)],
             editItemModule: this.getModuleIndex(newValue.label)
         });
     };
@@ -642,13 +647,10 @@ class ViewBoxEditor extends React.PureComponent {
                                         </div>
                                         <div>
                                             <Autocomplete
-                                                onChange={this.handleItemModule.bind(this)}
+                                                onChange={(event, newValue) => this.handleItemModule(event, newValue)}
                                                 className={this.props.classes.option}
-                                                value={
-                                                    this.state.editItemSelectedModule
-                                                }
+                                                value={this.state.editItemSelectedModule}
                                                 options={this.state.modulesList}
-                                                autoHighlight
                                                 getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
                                                 renderInput={(params) => (
                                                     <TextField

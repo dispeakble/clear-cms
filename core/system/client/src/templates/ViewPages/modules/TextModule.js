@@ -124,7 +124,7 @@ class TextModule extends Component {
             className={classes.modalBody}
           >
             {this.state.showModuleOptionsModal && <Editor
-                value={this.state.richTextContent}
+                value={this.state.richTextContent || ""}
                 init={{
                   height: 500,
                   //menubar: false,
