@@ -25,10 +25,6 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 import { Helmet } from "react-helmet";
 
 // for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -46,6 +42,7 @@ import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
 import ViewBoxesFromTemplate from "./ViewBoxesFromTemplate";
 import ViewPageOptions from "./ViewPageOptions";
+import Typography from "@material-ui/core/Typography";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -876,24 +873,6 @@ class ViewPagesEditor extends React.PureComponent {
     }
   };
 
-  handleItemModule = async (event, newValue) => {
-    if (!newValue || !newValue.label) {
-      return;
-    }
-    await this.setAsyncState({
-      editItemModule: this.getModuleIndex(newValue.label),
-    });
-  };
-
-  toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  }
-
   handleBgImage = async (event) => {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toBase64(file)));
@@ -1307,14 +1286,19 @@ class ViewPagesEditor extends React.PureComponent {
 
     const pageActions = [
       {
-        callback: () => {
-          this.openPageOptionsModal()
+        callback: async () => {
+          await this.setAsyncState(prevState => ({
+            livePreview: !prevState.livePreview
+          }))
         },
-        icon: <Settings
+        icon: this.state.livePreview ? <StopScreenShare
+            className={this.props.classes.rightSideIcon}
+            color="primary"
+        /> : <ScreenShare
             className={this.props.classes.rightSideIcon}
             color="primary"
         />,
-        name: "Page options",
+        name: this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode",
       },
       {
         callback: () => {
@@ -1351,19 +1335,14 @@ class ViewPagesEditor extends React.PureComponent {
         name: "Add box from Template",
       },
       {
-        callback: async () => {
-          await this.setAsyncState(prevState => ({
-            livePreview: !prevState.livePreview
-          }))
+        callback: () => {
+          this.openPageOptionsModal()
         },
-        icon: this.state.livePreview ? <StopScreenShare
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        /> : <ScreenShare
+        icon: <Settings
             className={this.props.classes.rightSideIcon}
             color="primary"
         />,
-        name: this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode",
+        name: "Page options",
       }
     ];
     return (
@@ -1422,53 +1401,26 @@ class ViewPagesEditor extends React.PureComponent {
                 handleCategoryUniqueness={this.handleCategoryUniqueness}
             />
 
-            <Dialog
-              open={this.state.showDiscardModal}
-              TransitionComponent={this.transition}
-              keepMounted
-              onClose={() => this.closeDiscardModal()}
-              aria-labelledby="classic-modal-slide-title"
-              aria-describedby="classic-modal-slide-description"
-              classes={{
-                root: this.props.classes.center,
-                paper: this.props.classes.modal,
-              }}
-            >
-              <DialogTitle
-                id="classic-modal-slide-title"
-                disableTypography
-                className={this.props.classes.modalHeader}
-              >
-                <h4 className={this.props.classes.modalTitle}>
-                  {this.state.modalTitle}
-                </h4>
-              </DialogTitle>
-              <DialogContent
-                id="classic-modal-slide-description"
-                className={this.props.classes.modalBody}
-              >
-                <div>Are you sure you want to proceed ?</div>
-              </DialogContent>
-
-              <DialogActions className={this.props.classes.modalFooter}>
-                <Button
-                  color="transparent"
-                  simple
-                  onClick={() => this.props.history.push("/pages")}
-                >
-                  <div>Proceed</div>
-                </Button>
-                <Button
-                  color="danger"
-                  simple
-                  onClick={() => {
-                    this.closeDiscardModal();
-                  }}
-                >
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <Modal
+                showModal={this.state.showDiscardModal}
+                {
+                  ...{
+                    name: "discardModal",
+                    title: this.state.modalTitle,
+                    content: <Typography>Are you sure you want to proceed ?</Typography>,
+                    confirmButton: {
+                      callback: () => this.props.history.push("/pages"),
+                      label: "Confirm",
+                    },
+                    closeButton: {
+                      callback: () => {
+                        this.closeDiscardModal()
+                      },
+                      label: "Close",
+                    }
+                  }
+                }
+            />
             <div className={this.props.classes.gridLayout}>
               <div
                   style={{
@@ -1486,6 +1438,7 @@ class ViewPagesEditor extends React.PureComponent {
                       fontFamily: this.state.fontFamily,
                       color: this.state.textColor,
                     }}
+                    cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                     layouts={this.state.layouts}
                     margin={this.state.config.layoutBoxSpacing}
                     containerPadding={this.state.config.layoutBoxPadding}

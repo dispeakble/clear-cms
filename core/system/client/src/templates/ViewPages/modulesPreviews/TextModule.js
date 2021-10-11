@@ -4,14 +4,14 @@ import parse from "html-react-parser";
 
 class TextModule extends Component {
   render() {
-    let richText = this.props.element.moduleOptions.data.isRichFormattedText;
+    const text = this.props.element.moduleOptions.data.textData;
     return (
       <div
         key={this.props.i}
         data-grid={this.props.element}
         style={this.props.style}
       >
-        {parse(richText)}
+        {(text && text.length) ? parse(text) : ""}
       </div>
     );
   }
