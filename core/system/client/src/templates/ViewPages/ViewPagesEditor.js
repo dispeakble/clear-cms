@@ -624,49 +624,53 @@ class ViewPagesEditor extends React.PureComponent {
     await this.setAsyncState({ items });
   };
 
-  //toto async function duplicate
+
+  toBase64(file) {//TODO MOVE TO HELPERS
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
 
   async onDuplicate(id) {
-    const existingItem = this.getItemById(id);
-    let newId = 0;
     try {
-      this.state.items.find((itemValue) => {
-        if(existingItem.i === itemValue.i) {
-          newId = itemValue.i;
-        }
-        return itemValue;
+      const existingItem = this.getItemById(id);
+      let newId = 0;
+      this.state.items.map((item) => {
+        newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
+        return item;
       });
 
       newId++;
       let items = this.state.items;
-      items.push({
-        newItem: true,
-        title: existingItem.title,
-        showScrollbars: existingItem.showScrollbars,
-        module: existingItem.module,
-        moduleOptions: existingItem.moduleOptions,
-        borderColor: existingItem.borderColor,
-        borderStyle: existingItem.borderStyle,
-        borderWidth: existingItem.borderColor,
-        borderRadius: existingItem.borderRadius,
-        backgroundImage: existingItem.backgroundImage,
-        backgroundImageFile: existingItem.backgroundImageFile,
-        backgroundRepeat: existingItem.backgroundRepeat,
-        backgroundStretch: existingItem.backgroundStretch,
-        i: newId + "",
-        x: 0,
-        y: Infinity, // puts it at the bottom
-        w: existingItem.w,
-        h: existingItem.h,
-      });
+
+      const targetItem = Object.assign({}, existingItem);
+      targetItem.newItem = true;
+      targetItem.i = newId + "";
+      targetItem.x = 0;
+      targetItem.y = Infinity;
+
+      if(!targetItem.backgroundImageFile && existingItem.backgroundImage) {
+        const bgResponse = await fetch(`/files/pages/page-${existingItem.templateUsed ? existingItem.templateUsed : this.state.page_id}/box-${id}/${existingItem.backgroundImage}`);
+        const bgBlob = await bgResponse.blob();
+        targetItem.backgroundImageFile = new File([bgBlob], existingItem.backgroundImage);
+        targetItem.backgroundImageString = await Promise.all([this.toBase64(targetItem.backgroundImageFile)]);
+      }
+
+      items.push(targetItem);
 
       await this.setAsyncState({
         // Add a new item. It must have a unique key!
         items: items,
       });
+      this.setState({
+        // Add a new item. It must have a unique key!
+        onAddItem: !this.state.onAddItem,
+      });
       setTimeout(() => {
         window.scrollTo(0,document.body.scrollHeight);
-
       }, 500)
     } catch (err) {
       console.log(err);
@@ -705,7 +709,7 @@ class ViewPagesEditor extends React.PureComponent {
         i: newId + "",
         x: 0,
         y: Infinity, // puts it at the bottom
-        w: 2,
+        w: 12,
         h: 20,
       });
 
