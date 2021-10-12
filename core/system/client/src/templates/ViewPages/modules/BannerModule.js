@@ -81,6 +81,10 @@ class BannerModule extends Component {
     new Promise((resolve) => this.setState(newState, resolve));
 
   handleEdit = async (id) => {
+    if(this.props.isTemplate) {
+      this.props.templateConfirmCallback()
+      return;
+    }
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,

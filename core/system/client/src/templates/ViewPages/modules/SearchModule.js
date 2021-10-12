@@ -46,6 +46,10 @@ class SitemapModule extends Component {
     }
 
     handleEdit = async (id) => {
+        if(this.props.isTemplate) {
+            this.props.templateConfirmCallback()
+            return;
+        }
         if (this.props.moduleOptions.data) {
             await this.setAsyncState({
                 title: this.props.moduleOptions.data.title,

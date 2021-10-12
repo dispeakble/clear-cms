@@ -72,6 +72,10 @@ class ProductModule extends Component {
     }
 
     handleEdit = async (id) => {
+        if(this.props.isTemplate) {
+            this.props.templateConfirmCallback()
+            return;
+        }
         if (this.props.moduleOptions.data) {
             await this.setAsyncState({
                 displayOptions: this.props.moduleOptions.data.displayOptions,

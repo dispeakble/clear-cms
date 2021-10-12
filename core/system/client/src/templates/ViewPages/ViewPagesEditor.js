@@ -585,6 +585,19 @@ class ViewPagesEditor extends React.PureComponent {
             {el.module && LazyModule ? (
               <Suspense fallback={loadingFallback}>
                 <LazyModule
+                    isTemplate={el.templateUsed}
+                    templateConfirmCallback={async () => {
+                      await this.setAsyncState({
+                        itemEditId: el.i,
+                        templateEditId: el.templateUsed
+                      });
+
+                      if(el.templateUsed) {
+                        this.setState({
+                          showConfirmEditModal: true
+                        })
+                      }
+                    }}
                   defaultTheme={this.props.defaultTheme}
                   onStartEditingModule={() => this.onStartEditingModule()}
                   onEndEditingModule={() => this.onEndEditingModule()}

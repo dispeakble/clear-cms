@@ -65,6 +65,10 @@ class HeaderModule extends Component {
   }
 
   handleEdit = async (id) => {
+    if(this.props.isTemplate) {
+      this.props.templateConfirmCallback()
+      return;
+    }
     await this.setAsyncState({
       moduleId: id,
       openEditor: true,

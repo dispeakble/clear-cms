@@ -112,6 +112,10 @@ class GalleryModule extends Component {
   }
 
   handleEdit = async (id) => {
+    if(this.props.isTemplate) {
+      this.props.templateConfirmCallback()
+      return;
+    }
     await this.setAsyncState({
       itemModuleEditId: id,
       showModuleOptionsModal: true,
