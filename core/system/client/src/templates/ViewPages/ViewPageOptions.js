@@ -36,16 +36,12 @@ class ViewPageOptions extends React.PureComponent {
     };
 
     componentDidMount() {
-        const pageOptionsModal = {...this.state.pageOptionsModal};
-        pageOptionsModal.content = this.renderPageOptions();
-        this.setState({
-            pageOptionsModal
-        })
+
     }
 
     renderPageOptions() {
         return (
-            <>
+            <div>
                 <Helmet>
                     <title>{this.props.data.editing ? "Edit " : "Add"} {this.props.data.pageTitle || " page"}</title>
                 </Helmet>
@@ -531,14 +527,16 @@ class ViewPageOptions extends React.PureComponent {
                         </div>
                     </div>
                 </div>
-            </>
+            </div>
         )
     }
 
     render() {
+        const pageOptionsModal = {...this.state.pageOptionsModal};
+        pageOptionsModal.content = this.renderPageOptions();
         return (<Modal
             showModal={this.props.data.showPageOptionsModal}
-            {...this.state.pageOptionsModal}
+            {...pageOptionsModal}
         />)
     }
 
