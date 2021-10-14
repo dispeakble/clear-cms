@@ -1,12 +1,23 @@
 import React from 'react';
 import { NextPage } from 'next';
 import { withRouter } from 'next/router';
+import Head from 'next/head'
 
 import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 
 const PageComponent: NextPage = (props) => {
   return(
-      <ViewPagesPreview {...props} />
+      <>
+          <Head>
+              <link
+                  rel="stylesheet"
+                  type="text/css"
+                  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
+              />
+          </Head>
+          <ViewPagesPreview {...props} />
+
+      </>
   )
 };
 
