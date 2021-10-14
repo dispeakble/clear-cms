@@ -20,7 +20,7 @@ const SortableGallery = SortableContainer(({ items, renderImage }) => (
 
 const PhotosGallery = ({ items, onChange, classes }) => {
 
-    const [selectAll, setSelectAll] = useState(false);
+    const [selectAll] = useState(false);
     const [selectMode, setSelectMode] = useState(false);
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
@@ -78,8 +78,6 @@ const PhotosGallery = ({ items, onChange, classes }) => {
         const newItems = items?.filter(item => !item.selected);
         onChange(newItems);
     }
-
-    console.log("items", items);
 
     return(
         <div>

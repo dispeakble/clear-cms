@@ -17,7 +17,6 @@ import {
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
 import { Responsive, WidthProvider } from "react-grid-layout";
-import MoreMenu from "components/MoreMenu/MoreMenu.js";
 import GradientPicker from "components/GradientColorPicker/GradientColorPicker";
 import { withRouter } from "react-router-dom";
 import Snackbar from "components/Snackbar/Snackbar.js";
@@ -43,6 +42,8 @@ import PropTypes from "prop-types";
 import ViewBoxesFromTemplate from "./ViewBoxesFromTemplate";
 import ViewPageOptions from "./ViewPageOptions";
 import Typography from "@material-ui/core/Typography";
+import ViewBoxOptions from "./ViewBoxOptions";
+import Avatar from "@material-ui/core/Avatar";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -80,6 +81,7 @@ class ViewPagesEditor extends React.PureComponent {
       },
     },
     showEditMenu: false,
+    showBoxOptions: false,
     itemEditId: "",
     itemModuleEditId: "",
     fontFamilies: [
@@ -165,7 +167,7 @@ class ViewPagesEditor extends React.PureComponent {
     confirmEditModal: {
       name: "confirmEditModal",
       title: "Confirm Edit",
-      content: "This box is from a template. Do you want to open it in a new tab so you can edit it?",
+      content: <div>This box is from a template. Do you want to open it in a new tab so you can edit it?</div>,
       closeButton: {
         callback: () => {
           this.setState({ showConfirmEditModal: false });
@@ -182,12 +184,34 @@ class ViewPagesEditor extends React.PureComponent {
         label: "Open Template",
       },
     },
+    showConfirmDeleteBoxModal: false,
+    confirmDeleteBoxModal: {
+      name: "confirmDeleteBoxModal",
+      title: "Confirm Delete Box",
+      itemId: "",
+      content: <div>Are you sure you want to delete this box?</div>,
+      modalSize: "small",
+      closeButton: {
+        callback: () => {
+          this.setState({ showConfirmDeleteBoxModal: false });
+        },
+        label: "Cancel",
+      },
+      confirmButton: {
+        show: true,
+        callback: () => {
+          this.setState({ showConfirmDeleteBoxModal: false });
+          this.onRemoveItem(this.state.confirmDeleteBoxModal.itemId);
+        },
+        label: "Delete",
+      },
+    },
     showConfirmDeleteModal: false,
     confirmDeleteModal: {
       name: "confirmDeleteModal",
       title: "Confirm Delete",
       itemId: "",
-      content: "This box is from a template. Are you sure you want to delete it?",
+      content: <div>This box is from a template. Are you sure you want to delete it?</div>,
       closeButton: {
         callback: () => {
           this.setState({ showConfirmDeleteModal: false });
@@ -385,7 +409,7 @@ class ViewPagesEditor extends React.PureComponent {
         }
       }
 
-      if(this.props.location.state.templateMode) {
+      if(this.props.location?.state?.templateMode) {
         this.setState({
           isTemplate: this.props.location.state.templateMode
         })
@@ -464,7 +488,7 @@ class ViewPagesEditor extends React.PureComponent {
       itemStyle.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
     }
 
-    if (el.backgroundImage.indexOf("__delete__") === 0) {
+    if (el.backgroundImage && el.backgroundImage.indexOf("__delete__") === 0) {
       el.backgroundImageString = "";
       itemStyle.backgroundImage = "";
     }
@@ -512,6 +536,67 @@ class ViewPagesEditor extends React.PureComponent {
     //adding default box styles
     itemStyle.padding = "5px";
 
+    let style = {};
+
+    if (el.backgroundImage) {
+      style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
+    }
+
+    if (el.backgroundRepeat) {
+      style.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
+    }
+
+    if (el.backgroundStretch) {
+      style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
+    }
+
+    if (el.backgroundGradient) {
+      style.backgroundImage = el.backgroundGradientColor;
+    }
+
+    if (el.backgroundColor) {
+      style.backgroundColor = el.backgroundColor;
+    }
+
+    if (el.borderColor) {
+      style.borderColor = el.borderColor;
+    }
+
+    if (el.borderWidth) {
+      style.borderStyle = "solid";
+      style.borderWidth = el.borderWidth + "px";
+    }
+
+    if (el.borderRadius) {
+      style.borderRadius = el.borderRadius;
+    }
+
+    if (Number(el.fontSize)) {
+      style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+      style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+    } else if (this.state.pageConfig?.fontSize) {
+      style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      style.lineHeight = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+    }
+
+    if (el.fontFamily) {
+      style.fontFamily = el.fontFamily;
+    } else if (this.state.pageConfig?.fontFamily) {
+      style.fontFamily = this.state.pageConfig.fontFamily;
+    }
+
+    if (el.textColor) {
+      style.color = el.textColor;
+    } else if (this.state.pageConfig?.textColor) {
+      style.textColor = this.state.pageConfig.textColor;
+    }
+
+    if (el.showScrollbars) {
+      style.overflow = "auto";
+    } else {
+      style.overflow = "hidden";
+    }
+
     let LazyModule;
     const loadingFallback = (() => {
       return <span>Loading...</span>;
@@ -519,87 +604,93 @@ class ViewPagesEditor extends React.PureComponent {
 
     LazyModule = false;
 
-    let moduleType = el.module.replaceAll(" ", "");
+
 
     if (el.module) {
-      LazyModule = React.lazy(() => import(`./modules/${moduleType}`));
+      const moduleType = el.module.replaceAll(" ", "");
+      LazyModule = React.lazy(() => import(`./box/previews/${moduleType}`));
     }
 
-    let itemActions = [
-      {
-        callback: () => {
-          if(el.templateUsed) {
-            this.setState((prevState) => {
-              return {
-                showConfirmDeleteModal: true,
-                confirmDeleteModal: {
-                  ...prevState.confirmDeleteModal,
-                  itemId: el.i
-                }
-              }
-            })
-            return
-          }
-          this.onRemoveItem(el.i);
-        },
-        icon: (
-            <DeleteForever
-                style={{ color: this.props.defaultTheme.secondary.main }}
-            />
-        ),
-        name: "Delete box",
-      },
-      {
-        callback: () => {
-          return this.onDuplicate(el.i);
-        },
-        icon: <FileCopy style={{ color: this.props.defaultTheme.primary.main }} />,
-        name: "Duplicate box",
-      },
-      {
-        callback: () => {
-          return this.handleEditItem(el.i);
-        },
-        icon: <Edit style={{ color: this.props.defaultTheme.primary.main }} />,
-        name: "Edit box",
-      }
-    ];
-
+    const classes = this.props.classes;
     return (
       <div key={i} data-grid={el} style={itemStyle}>
-        <div className={this.props.classes.boxContent}>
-          <div className={this.props.classes.renderBoxTitle}>
-            <h1>{el.title}</h1>
-          </div>
+        <div className={classes.boxControls}>
           <div style={{ color: "black", verticalAlign: "middle" }}>
             <Tooltip title="Drag Box">
               <IconButton className="MyDragHandleClassName" color="primary">
                 <OpenWith color="primary" />
               </IconButton>
             </Tooltip>
+            <div className={classes.renderBoxTitle}>
+              <h1>{el.title}</h1>
+            </div>
           </div>
-          <div>
-            {el.module && LazyModule ? (
+          <div className={classes.editorButtonWrapper}>
+            <Tooltip title="Show box properties">
+              <IconButton onClick={() => { this.handleBoxOptions(i) }}>
+                <Avatar style={{backgroundColor: this.props.defaultTheme.secondary.main, color: this.props.defaultTheme.secondary.contrastText}}>
+                  <Edit />
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Make a copy of this box">
+              <IconButton onClick={() => { this.onDuplicate(el.i) }}>
+                <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                  <FileCopy/>
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete this box">
+              <IconButton onClick={async () => {
+                if(el.templateUsed) {
+                  this.setState((prevState) => {
+                    return {
+                      showConfirmDeleteModal: true,
+                      confirmDeleteModal: {
+                        ...prevState.confirmDeleteModal,
+                        itemId: el.i
+                      }
+                    }
+                  })
+                  return
+                }
+                this.setState((prevState) => {
+                  return {
+                    showConfirmDeleteBoxModal: true,
+                    confirmDeleteBoxModal: {
+                      ...prevState.confirmDeleteBoxModal,
+                      itemId: el.i
+                    }
+                  }
+                });
+              }}>
+                <Avatar style={{backgroundColor: this.props.defaultTheme.error.main, color: this.props.defaultTheme.error.contrastText}}>
+                  <DeleteForever />
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+        <div className={classes.boxLazyModuleWrapper}>
+          {el.module && LazyModule ? (
               <Suspense fallback={loadingFallback}>
                 <LazyModule
-                  defaultTheme={this.props.defaultTheme}
-                  onStartEditingModule={() => this.onStartEditingModule()}
-                  onEndEditingModule={() => this.onEndEditingModule()}
-                  boxId={el.i}
-                  moduleOptions={el.moduleOptions}
-                  pageId={this.state.page_id}
-                  handleSave={async (id, data) => {
-                    await this.saveModuleOptions(id, data);
-                  }}
+                    style={{style}}
+                    element={{moduleOptions: {data: el.moduleOptions}}}
+                    defaultTheme={this.props.defaultTheme}
+                    onStartEditingModule={() => this.onStartEditingModule()}
+                    onEndEditingModule={() => this.onEndEditingModule()}
+                    boxId={el.i}
+                    moduleOptions={el.moduleOptions}
+                    pageId={this.state.page_id}
+                    handleSave={async (id, data) => {
+                      await this.saveModuleOptions(id, data);
+                    }}
                 />
               </Suspense>
-            ) : (
+          ) : (
               ""
-            )}
-          </div>
-          <div className={this.props.classes.itemSpeedDialWrapper}>
-            <MoreMenu itemActions={itemActions} />
-          </div>
+          )}
         </div>
       </div>
     );
@@ -677,7 +768,8 @@ class ViewPagesEditor extends React.PureComponent {
   async onAddItem() {
     let newId = 0;
     this.setState({
-      // Add a new item. It must have a unique key!
+      boxEditorProps: {},
+      showBoxOptions: true,
       onAddItem: !this.state.onAddItem,
     });
     try {
@@ -695,7 +787,7 @@ class ViewPagesEditor extends React.PureComponent {
         showScrollbars: false,
         module: "",
         moduleOptions: { data: "" },
-        borderColor: "#959595", // the lightest grey shade that doesn't bother the eyes
+        borderColor: "#959595",
         borderStyle: "solid",
         borderWidth: 0,
         borderRadius: 0,
@@ -703,7 +795,7 @@ class ViewPagesEditor extends React.PureComponent {
         backgroundImageFile: "",
         backgroundRepeat: false,
         backgroundStretch: false,
-        i: newId + "",
+        i: String(newId),
         x: 0,
         y: Infinity, // puts it at the bottom
         w: 12,
@@ -711,13 +803,11 @@ class ViewPagesEditor extends React.PureComponent {
       });
 
       await this.setAsyncState({
-        // Add a new item. It must have a unique key!
         items: items,
       });
       setTimeout(() => {
-        window.scrollTo(0,document.body.scrollHeight);
-
-      }, 500)
+        window.scrollTo(0,document.body.scrollHeight)
+      }, 300)
     } catch (err) {
       console.log(err);
     }
@@ -790,14 +880,6 @@ class ViewPagesEditor extends React.PureComponent {
     this.setState({ showModuleOptionsModal: false });
   }
 
-  getModuleIndex(name) {
-    return Number(
-      this.state.modulesList.findIndex((mod) => {
-        return mod.label === name;
-      })
-    );
-  }
-
   getFontFamilyItem(name) {
     return this.state.fontFamilies[
       this.state.fontFamilies.findIndex((font) => {
@@ -812,6 +894,29 @@ class ViewPagesEditor extends React.PureComponent {
         return category.id === id;
       })
     ];
+  }
+
+  handleBoxOptions = async (id) => {
+    const item = this.getItemById(id);
+    await this.setAsyncState({
+      itemEditId: id,
+      templateEditId: item.templateUsed
+    });
+
+    if(item.templateUsed) {
+      this.setState({
+        showConfirmEditModal: true
+      })
+    } else {
+      await this.setAsyncState({
+        boxEditorProps: {
+          item,
+        }
+      });
+      this.setState({
+        showBoxOptions: true
+      })
+    }
   }
 
   handleEditItem = async (id) => {
@@ -898,6 +1003,12 @@ class ViewPagesEditor extends React.PureComponent {
       palette: this.props.defaultTheme,
 
       overrides: {
+        MuiIconButton:{
+          root: {
+            color: "blue"
+            //filter: "drop-shadow( 0px 0px 1px rgba(0, 0, 0, 1))"
+          }
+        },
         MuiSpeedDial: {
           actionsClosed: {
             height: "0",
@@ -908,19 +1019,19 @@ class ViewPagesEditor extends React.PureComponent {
           root: {
             width: "100%",
             margin: "0 auto",
-          },
+          }
         },
         MuiInputLabel: {
           formControl: {
             // width: "90%",
             marginLeft: "1%",
-          },
+          }
         },
 
         MuiFormLabel: {
           root: {
             marginLeft: "5%",
-          },
+          }
         },
 
         MuiAutocomplete: {
@@ -928,7 +1039,7 @@ class ViewPagesEditor extends React.PureComponent {
             position: "absolute",
             top: "calc(50% - 14px)",
             right: "0px !important",
-          },
+          }
         },
         MuiOutlinedInput: {
           root: {
@@ -936,7 +1047,7 @@ class ViewPagesEditor extends React.PureComponent {
             width: "100%",
             margin: "0 auto",
             height: "50px",
-          },
+          }
         },
         MuiDropzoneArea: {
           root: {
@@ -946,7 +1057,7 @@ class ViewPagesEditor extends React.PureComponent {
           text: {
             fontSize: "1rem",
             margin: "0 !important",
-          },
+          }
         },
         MuiDropzonePreviewList: {
           root: {
@@ -958,7 +1069,7 @@ class ViewPagesEditor extends React.PureComponent {
           imageContainer: {
             padding: "0 !important",
             width: "100% !important",
-          },
+          }
         },
         MuiDialog: {
           paper: {
@@ -966,9 +1077,9 @@ class ViewPagesEditor extends React.PureComponent {
           },
           paperWidthSm: {
             maxWidth: "100vw",
-          },
-        },
-      },
+          }
+        }
+      }
     });
   };
 
@@ -1149,7 +1260,25 @@ class ViewPagesEditor extends React.PureComponent {
         </div>
     );
   };
-  pageTitleRef=createRef()
+
+  saveBox(data) {
+    const items = this.state.items;
+
+    if(data.i) {
+      const itemIndex = items.findIndex(
+          (item) => Number(data.i) === Number(item.i)
+      );
+      items[itemIndex] = data;
+    } else {
+      items.push(data);
+    }
+
+    this.setState({
+      items
+    })
+  }
+
+  pageTitleRef = createRef()
   savePage = async () => {
     let pageConfig = this.preparePageConfiguration();
     if (this.state.pageTitle.length === 0) {
@@ -1251,6 +1380,8 @@ class ViewPagesEditor extends React.PureComponent {
 
   render() {
 
+    const classes = this.props.classes;
+
     const bodyWrapperStyle = {};
     let hasBgImage = false;
 
@@ -1284,74 +1415,13 @@ class ViewPagesEditor extends React.PureComponent {
       }
     }
 
-    const pageActions = [
-      {
-        callback: async () => {
-          await this.setAsyncState(prevState => ({
-            livePreview: !prevState.livePreview
-          }))
-        },
-        icon: this.state.livePreview ? <StopScreenShare
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        /> : <ScreenShare
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        />,
-        name: this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode",
-      },
-      {
-        callback: () => {
-          window.open(
-              `/pages/preview/${this.state.page_id}`
-          );
-        },
-        icon: <Visibility
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        />,
-        name: "Preview page"
-      },
-      {
-        callback: (evt) => {
-          this.onAddItem(evt)
-        },
-        icon: <AddCircle
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        />,
-        name: "Add box",
-      },
-      {
-        callback:async () => {
-          await this.setAsyncState({
-            showBoxesFromTemplate: true
-          });
-        },
-        icon: <PostAdd
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        />,
-        name: "Add box from Template",
-      },
-      {
-        callback: () => {
-          this.openPageOptionsModal()
-        },
-        icon: <Settings
-            className={this.props.classes.rightSideIcon}
-            color="primary"
-        />,
-        name: "Page options",
-      }
-    ];
     return (
       <React.Fragment>
         <Helmet>
           <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
         </Helmet>
         <div
-          className={this.props.classes.bodyWrapper}
+          className={classes.bodyWrapper}
           style={{
             marginTop: "60px",
             paddingBottom: "130px",
@@ -1360,6 +1430,24 @@ class ViewPagesEditor extends React.PureComponent {
           }}
         >
           <MuiThemeProvider theme={this.muiTheme}>
+            {this.state.showBoxOptions && <ViewBoxOptions
+                defaultTheme={this.props.defaultTheme}
+                onOpen={() => {
+
+                }}
+                onClose={() => {
+                  this.setState({
+                    showBoxOptions: false
+                  })
+                }}
+                onSave={(item) => {
+                  this.saveBox(item);
+                  this.setState({
+                    showBoxOptions: false
+                  })
+                }}
+                item={this.state.boxEditorProps.item}
+                showModal={this.state.showBoxOptions} />}
             {this.state.showEditMenu && (
               <ViewBoxEditor
                 onCancel={() => {
@@ -1370,7 +1458,7 @@ class ViewPagesEditor extends React.PureComponent {
                 }}
                 onSave={(item) => {
                   this.setState({
-                    editItem: item,
+                    //editItem: item,
                     showEditMenu: false,
                     pageTransitionPadding: "",
                   });
@@ -1383,6 +1471,7 @@ class ViewPagesEditor extends React.PureComponent {
             <ViewPageOptions
                 {...this.props}
                 data={this.state}
+                defaultTheme={this.props.defaultTheme}
                 control={this.props.control}
                 createColorPicker={this.createColorPicker}
                 createGradientColorPicker={this.createGradientColorPicker}
@@ -1407,21 +1496,22 @@ class ViewPagesEditor extends React.PureComponent {
                   ...{
                     name: "discardModal",
                     title: this.state.modalTitle,
-                    content: <Typography>Are you sure you want to proceed ?</Typography>,
+                    modalSize: "small",
+                    content: <Typography>All changes will be lost. Are you sure you want to continue?</Typography>,
                     confirmButton: {
                       callback: () => this.props.history.push("/pages"),
-                      label: "Confirm",
+                      label: "Ok",
                     },
                     closeButton: {
                       callback: () => {
                         this.closeDiscardModal()
                       },
-                      label: "Close",
+                      label: "Cancel",
                     }
                   }
                 }
             />
-            <div className={this.props.classes.gridLayout}>
+            <div className={classes.gridLayout}>
               <div
                   style={{
                     flexGrow: 1,
@@ -1452,13 +1542,64 @@ class ViewPagesEditor extends React.PureComponent {
                 >
                   {_.map(this.state.items, (el) => this.createElement(el))}
                 </ResponsiveReactGridLayout>}
-                <div className={this.props.classes.bottomPane} style={{
+                <div className={classes.bottomPane} style={{
                   backgroundColor: this.props.defaultTheme?.background?.paper
                 }}>
                     <div>
-                        <MoreMenu icon="arrowHorizontal" direction="right" itemActions={pageActions}/>
+                      <Tooltip title="Add a new box">
+                        <IconButton onClick={(evt) => {
+                          this.onAddItem(evt)
+                        }}>
+                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                            <AddCircle/>
+                          </Avatar>
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Add a box from a template">
+                        <IconButton onClick={() => {
+                          this.setState({
+                            showBoxesFromTemplate: true
+                          })
+                        }}>
+                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                            <PostAdd/>
+                          </Avatar>
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title={this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode"}>
+                        <IconButton onClick={async () => {
+                          await this.setAsyncState(prevState => {
+                            return {livePreview: !prevState.livePreview}
+                          })
+                        }}>
+                          <Avatar style={{
+                            backgroundColor: this.props.defaultTheme.primary.main,
+                            color: this.props.defaultTheme.primary.contrastText
+                          }}>
+                            {this.state.livePreview ? <StopScreenShare /> : <ScreenShare/>}
+                          </Avatar>
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title={"Open the preview page"}>
+                        <IconButton onClick={() => {
+                          window.open( `/pages/preview/${this.state.page_id}` )
+                        }}>
+                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                            <Visibility/>
+                          </Avatar>
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Page options">
+                        <IconButton onClick={(evt) => {
+                          this.openPageOptionsModal()
+                        }}>
+                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                            <Settings/>
+                          </Avatar>
+                        </IconButton>
+                      </Tooltip>
                     </div>
-                    <div className={this.props.classes.bottomPaneButtons}>
+                    <div className={classes.bottomPaneButtons}>
                         <Button
                             onClick={async () => {
                                 await this.savePage();
@@ -1489,6 +1630,10 @@ class ViewPagesEditor extends React.PureComponent {
             <Modal
                 showModal={this.state.showBoxesFromTemplate}
                 {...this.state.boxesFromTemplate}
+            />
+            <Modal
+                showModal={this.state.showConfirmDeleteBoxModal}
+                {...this.state.confirmDeleteBoxModal}
             />
             <Snackbar
                 open={this.state.showSavedMessage}

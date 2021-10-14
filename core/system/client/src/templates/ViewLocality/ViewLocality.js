@@ -22,7 +22,7 @@ class Locality extends Component {
         deleteModal: {
             name: "deleteModal",
             title: "Delete Locality",
-            content: "Are you sure you want to proceed ?",
+            content: <div>Are you sure you want to proceed ?</div>,
             closeButton: {
                 callback: () => {
                     this.setState({ showMultipleDeleteModal: false });

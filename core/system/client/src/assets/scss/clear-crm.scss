@@ -8,6 +8,7 @@
 @import "~react-image-gallery/styles/scss/image-gallery.scss";
 @import "~react-grid-layout/css/styles.css";
 @import "~react-resizable/css/styles.css";
+@import "components/buttons";
 
 /* start image gallery */
 
@@ -73,6 +74,35 @@ div[class^="gridFileEntryNameContainer"] span[class^="gridFileEntryName"] {
   width: 100%;
 }
 
+div[class*="Modal-modalResize"]::after {
+  content: "";
+  position: absolute;
+  z-index: 9999;
+  width: 10px;
+  height: 10px;
+  right: 0;
+  bottom: 0;
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+
+  /* ff 3.6+ */
+  background:-moz-linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.3) 67%, rgba(0, 0, 0, 0) 67%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0.3) 76%, rgba(0, 0, 0, 0.3) 85%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.3) 94%, rgba(0, 0, 0, 0.3) 100%);
+
+  /* safari 5.1+,chrome 10+ */
+  background:-webkit-linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.3) 67%, rgba(0, 0, 0, 0) 67%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0.3) 76%, rgba(0, 0, 0, 0.3) 85%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.3) 94%, rgba(0, 0, 0, 0.3) 100%);
+
+  /* opera 11.10+ */
+  background:-o-linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.3) 67%, rgba(0, 0, 0, 0) 67%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0.3) 76%, rgba(0, 0, 0, 0.3) 85%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.3) 94%, rgba(0, 0, 0, 0.3) 100%);
+
+  /* ie 6-9 */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=1 );
+
+  /* ie 10+ */
+  background:-ms-linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.3) 67%, rgba(0, 0, 0, 0) 67%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0.3) 76%, rgba(0, 0, 0, 0.3) 85%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.3) 94%, rgba(0, 0, 0, 0.3) 100%);
+
+  /* global 94%+ browsers support */
+  background:linear-gradient(135deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.3) 58%, rgba(0, 0, 0, 0.3) 67%, rgba(0, 0, 0, 0) 67%, rgba(0, 0, 0, 0) 76%, rgba(0, 0, 0, 0.3) 76%, rgba(0, 0, 0, 0.3) 85%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0) 94%, rgba(0, 0, 0, 0.3) 94%, rgba(0, 0, 0, 0.3) 100%);
+}
+
 @media (max-width: 480px) {
   .chonky-searchFieldInput {
     width: 78vw;
@@ -89,3 +119,10 @@ div[class^="gridFileEntryNameContainer"] span[class^="gridFileEntryName"] {
 }
 
 /* end the conky file explorer*/
+
+.react-resizable-handle{
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  z-index: 9999;
+}

@@ -16,23 +16,16 @@ import Button from "../../components/CustomButtons/Button";
 import React from "react";
 import {Helmet} from "react-helmet";
 import Modal from "../../components/Modal/Modal";
+import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+import {withStyles} from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 
 const filter = createFilterOptions()
 
 class ViewPageOptions extends React.PureComponent {
 
     state = {
-        pageOptionsModal: {
-            name: "pageOptions",
-            title: "Page options",
-            content: null,
-            closeButton: {
-                callback: () => {
-                    this.props.closePageOptionsModal()
-                },
-                label: "Close",
-            }
-        }
+
     };
 
     componentDidMount() {
@@ -532,12 +525,31 @@ class ViewPageOptions extends React.PureComponent {
     }
 
     render() {
-        const pageOptionsModal = {...this.state.pageOptionsModal};
-        pageOptionsModal.content = this.renderPageOptions();
-        return (<Modal
-            showModal={this.props.data.showPageOptionsModal}
-            {...pageOptionsModal}
-        />)
+
+        const modalProps = {
+            id: "pageOptions",
+            name: "pageOptions",
+            resize: true,
+            title: "Page options",
+            content: this.renderPageOptions(),
+            showModal: this.props.data.showPageOptionsModal,
+            modalSize: "large",
+            defaultTheme: this.props.defaultTheme,
+            closeButton: {
+                callback: (reason) => {
+                    if(reason !== 'backdropClick') {
+                        this.props.closePageOptionsModal()
+                    }
+                },
+                label: "Close",
+            }
+        }
+
+        return (
+            <div>
+                <Modal { ...modalProps } />
+            </div>
+        )
     }
 
     getFontFamilyItem(name) {
@@ -549,4 +561,26 @@ class ViewPageOptions extends React.PureComponent {
     }
 }
 
-export default ViewPageOptions
+export default withStyles(styles)(ViewPageOptions);
+
+ViewPageOptions.propTypes = {
+    data: PropTypes.object,
+    classes: PropTypes.object,
+    pageTitleRef: PropTypes.object,
+    location: PropTypes.object,
+    closePageOptionsModal: PropTypes.func,
+    handleInputChange: PropTypes.func,
+    handlePageOptions: PropTypes.func,
+    handleBoxSpacing: PropTypes.func,
+    handleTemplateChange: PropTypes.func,
+    handleNewCategory: PropTypes.func,
+    handleCategoryUniqueness: PropTypes.func,
+    createColorPicker: PropTypes.func,
+    handleCategory: PropTypes.func,
+    handleFontSize: PropTypes.func,
+    handleFontFamily: PropTypes.func,
+    handleBackgroundDelete: PropTypes.func,
+    handleBgImage: PropTypes.func,
+    createGradientColorPicker: PropTypes.func,
+    defaultTheme: PropTypes.object
+};

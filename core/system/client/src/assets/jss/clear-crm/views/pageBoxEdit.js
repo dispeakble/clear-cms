@@ -129,6 +129,9 @@ const javascriptStyles = {
     transform: "translateZ(0px)",
     flexGrow: 1,
   },
+  editorButtonWrapper: {
+
+  },
   itemSpeedDialWrapper: {
     display: "none"
   },
@@ -275,7 +278,20 @@ const javascriptStyles = {
   },
   pageOptionsSlider: {
   },
-
+  optionGroup: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "start",
+    width: "100%",
+    minWidth: "250px",
+    verticalAlign: "top"
+  },
+  optionHolder: {
+    display: "inline-block",
+    minWidth: "32%",
+    paddingRight: "10px",
+    verticalAlign: "top"
+  },
   sideMenu: {
     "& h3": {
       textAlign: "center",
