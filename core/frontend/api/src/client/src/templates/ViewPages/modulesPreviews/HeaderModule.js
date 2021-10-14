@@ -41,8 +41,21 @@ class HeaderModule extends Component {
                     ? "cover"
                     : "auto";
                 style.backgroundPosition = "center center";
-                style.position = 'relative'
+                style.position =  'relative'
+
             }
+
+            if (this?.props?.element?.moduleOptions?.data?.isModuleSticky) {
+                style.position = "fixed !important";
+                style.top = "inherit";
+                style.left = "inherit";
+                style.right = "inherit";
+                style.width = "inherit";
+                style.height = "inherit";
+                style.overflow = "inherit";
+                
+            }
+            
         }
 
         return (
