@@ -1,14 +1,29 @@
 const modalStyle = {
-  modal: {
-    borderRadius: "6px",
-    maxWidth: "100vw",
+  smallModal: {
+    width: "40vw"
+  },
+  normalModal: {
+    width: "70vw",
+    height: "70vh",
     margin: "16px"
+  },
+  largeModal: {
+    height: "calc(100vh - 20px)",
+    margin: "10px"
+  },
+  modal: {
+    maxWidth: "100vw",
+    maxHeight: "100vh",
+    "&$modalResize": {
+      borderRadius: "6px 6px 0 6px",
+    }
+  },
+  modalResize: {
+    resize: "both"
   },
   modalHeader: {
     borderBottom: "none",
-    paddingTop: "24px",
-    paddingRight: "24px",
-    paddingLeft: "24px",
+    padding: "10px",
     minHeight: "16.43px",
     display: "flex",
     alignItems: "center",
@@ -37,10 +52,11 @@ const modalStyle = {
     position: "relative"
   },
   modalFooter: {
-    padding: "15px",
+    padding: "0 23px 0 5px",
     textAlign: "right",
     paddingTop: "0",
-    margin: "0"
+    margin: "0",
+
   },
   modalFooterCenter: {
     marginLeft: "auto",
@@ -49,6 +65,7 @@ const modalStyle = {
   modalPageOptions: {
     borderRadius: "6px",
     maxWidth: "100vw",
+    height: "100vh",
     margin: "5px"
   },
   modalBodyPageOptions:{

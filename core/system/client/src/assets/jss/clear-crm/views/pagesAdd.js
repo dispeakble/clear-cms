@@ -10,7 +10,7 @@ const javascriptStyles = {
     margin: "0 15px 0",
     "& .react-grid-item": {
       boxSizing: "border-box",
-      "&:hover > $boxContent" : {
+      "&:hover > $boxControls" : {
         opacity: 1,
         "& $itemSpeedDialWrapper": {
           display: "flex"
@@ -156,19 +156,29 @@ const javascriptStyles = {
     zIndex: "-1",
     position: "absolute",
     top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    overflow: "hidden",
+    left: "43px",
     "& > h1": {
-      color: "rgba(0,0,0,0.2)"
+      fontSize: "1rem",
+      margin: 0,
+      lineHeight: "32px",
+      color: "rgba(0,0,0,0.6)",
+      textShadow: "0 0 2px rgb(255,255,255)"
     }
   },
-  boxContent: {
+  boxLazyModuleWrapper: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 90,
+  },
+  boxControls: {
+    position: "absolute",
+    zIndex: 100,
+    left: 0,
+    top: 0,
+    right: 0,
     transition: "opacity 0.3s",
     opacity: "0",
     display: "flex",
@@ -308,10 +318,13 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
     height: "calc(100% - 60px)",
     overflowY: "auto",
   },
-  sideMenuOption: {
+  optionGroup: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center"
+  },
+  optionHolder: {
+    display: "inline-block"
   },
   typography: {
     fontSize: "120%",
@@ -363,6 +376,13 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
       "& > p": {
         display: "inline"
       }
+    }
+  },
+  boxOptionsHeader: {
+    display: "flex",
+    alignItems: "center",
+    "& > div": {
+      marginRight: "5px"
     }
   }
 };

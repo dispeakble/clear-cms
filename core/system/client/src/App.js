@@ -279,6 +279,17 @@ class App extends Component {
     return createTheme({
       palette: this.state.defaultPalette,
       overrides: {
+        MuiDialogActions: {
+          /*"& spacing:not(:first-child)": {
+            marginLeft: "5px"
+          }*/
+        },
+        MuiToggleButton: {
+          root: {
+            textTransform: "none !important",
+            lineHeight: "1rem"
+          }
+        },
         MuiDialog: {
           paper: {
             width: "100%",
@@ -298,7 +309,7 @@ class App extends Component {
         },
         MuiTab:{
           root:{
-            textTransform:"none"
+            textTransform:"none !important"
           }
         },
         MuiButton:{

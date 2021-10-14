@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import parse from "html-react-parser";
-
 class TextModule extends Component {
     render() {
         let richText = this.props.element.moduleOptions.data;

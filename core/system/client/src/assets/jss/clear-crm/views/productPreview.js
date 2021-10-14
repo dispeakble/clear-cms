@@ -34,7 +34,6 @@ const styles = {
         "& span": {
             fontSize: 12,
             letterSpacing: 1,
-            textTransform: "uppercase",
             textDecoration: "none"
         },
         "& h1": {

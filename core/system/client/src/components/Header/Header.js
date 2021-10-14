@@ -30,7 +30,7 @@ class Header extends Component {
     licenseModal: {
       name: "licenseModal",
       title: "License Agreement",
-      content: "License",
+      content: <div>License</div>,
       closeButton: {
         callback: () => {
           this.setState({ showLicenseModal: false });
@@ -49,6 +49,7 @@ class Header extends Component {
       name: "about",
       title: "About",
       content: <AboutModalContent services={this.props.services} />,
+      modalSize: "small",
       closeButton: {
         callback: () => {
           this.setState({ showAboutModal: false });
@@ -59,7 +60,8 @@ class Header extends Component {
     logoutModal: {
       name: "logout",
       title: "Logout",
-      content: "Are you sure you want to logout?",
+      content: <div>Are you sure you want to logout?</div>,
+      modalSize: "small",
       closeButton: {
         callback: () => {
           this.setState({ showLogoutModal: false});
@@ -253,7 +255,7 @@ Header.propTypes = {
   classes: PropTypes.object,
   color: PropTypes.string,
   handleDrawerToggle: PropTypes.func,
-  onRef: PropTypes.element,
+  onRef: PropTypes.func,
   // this will cause the sidebar to change the color from
   // props.color (see above) to changeColorOnScroll.color
   // when the window.pageYOffset is higher or equal to

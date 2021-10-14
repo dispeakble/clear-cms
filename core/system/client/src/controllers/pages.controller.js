@@ -32,7 +32,6 @@ class PagesController extends Component {
     channel = 'pages';
 
     async componentDidMount() {
-        console.log(this.props);
         this.props.services.ws.subscribe({
             channel: this.channel,
             callbacks: {

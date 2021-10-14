@@ -12,7 +12,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import {TextField} from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import Modal from "../../components/Modal/Modal";
-import * as PropTypes from "prop-types";
 import ArrayBuilder from "./ArrayBuilder";
 
 class Labels extends Component {
@@ -28,7 +27,7 @@ class Labels extends Component {
         deleteModal: {
             name: "deleteModal",
             title: "Delete Labels",
-            content: "Are you sure you want to proceed ?",
+            content: <div>Are you sure you want to proceed?</div>,
             closeButton: {
                 callback: () => {
                     this.setState({ showMultipleDeleteModal: false });

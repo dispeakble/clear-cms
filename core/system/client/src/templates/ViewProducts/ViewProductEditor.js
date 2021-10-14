@@ -5,7 +5,6 @@ import {
 } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/productEdit.js";
 import {
-    Settings,
     InfoSharp, StopScreenShare, ScreenShare, Visibility, CheckBoxOutlineBlank, CheckBox
 } from "@material-ui/icons";
 import Button from "components/CustomButtons/Button.js";
@@ -17,11 +16,6 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 
 import { Helmet } from "react-helmet";
 
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // for speed dial

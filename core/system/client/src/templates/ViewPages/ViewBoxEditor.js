@@ -39,21 +39,21 @@ class ViewBoxEditor extends React.PureComponent {
         temporaryModuleOptions: {},
         modulesList: [//TODO GET THESE VALUES FROM A LIST IN DB
             { label: "Header Module" },
-            { label: "Menu Module" },
+            { label: "Table Module" },
             { label: "Text Module" },
+            { label: "Menu Module" },
+            { label: "Categories Module" },
+            { label: "Product Module" },
+            { label: "Pagelist Module" },
             { label: "Gallery Module" },
             { label: "Calendar Module" },
             { label: "Video Module" },
             { label: "Audio Module" },
             { label: "Banner Module" },
             { label: "Chart Module" },
-            { label: "Table Module" },
             { label: "Accordion Module" },
             { label: "Sitemap Module" },
-            { label: "Pagelist Module" },
-            { label: "Search Module" },
-            { label: "Categories Module" },
-            { label: "Product Module" }
+            { label: "Search Module" }
         ],
         editItemFontSizeShow: false,
         editItemFontFamilyShow: false,
@@ -334,7 +334,7 @@ class ViewBoxEditor extends React.PureComponent {
         this.props.onCancel();
     };
 
-    saveChangedStyle = () => {
+    updateBox = () => {
         let item = this.props.data.item;
 
         item.title = this.state.editItemTitle;
@@ -682,7 +682,7 @@ class ViewBoxEditor extends React.PureComponent {
                                     <AccordionDetails
                                         className={this.props.classes.accordionDetails}
                                     >
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Font Size</span>
                                             </Typography>
@@ -709,7 +709,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 step={0.1}
                                             />}
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Font Family</span>
                                             </Typography>
@@ -749,7 +749,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </div>}
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Text Color</span>
 
@@ -773,7 +773,7 @@ class ViewBoxEditor extends React.PureComponent {
                                             "displayItemTextColorPicker",
                                             "editItemTextColor"
                                         )}
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Background Color</span>
 
@@ -797,7 +797,7 @@ class ViewBoxEditor extends React.PureComponent {
                                             "displayItemBgColorPicker",
                                             "editItemBackgroundColor"
                                         )}
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Gradient Color</span>
 
@@ -821,7 +821,7 @@ class ViewBoxEditor extends React.PureComponent {
                                             "showBgGradientColorPickerModal",
                                             "editItemBackgroundGradientColor"
                                         )}
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Border Color </span>
                                             </Typography>
@@ -856,7 +856,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 max={30}
                                             />
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 Scrollbars
                                             </Typography>
@@ -872,7 +872,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </Tooltip>
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
 
                                             <Typography>Background Image</Typography>
                                             {((this.state.editItemBgImage && this.state.editItemBgImage.length && this.state.editItemBgImage.indexOf('__delete__') === -1)
@@ -890,7 +890,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 onChange={this.handleItemBgImage.bind(this)}
                                             />
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Background Repeat</span>
                                             </Typography>
@@ -901,7 +901,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </Tooltip>
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 Background Stretch
                                             </Typography>
@@ -932,7 +932,7 @@ class ViewBoxEditor extends React.PureComponent {
                                     <AccordionDetails
                                         className={this.props.classes.accordionDetails}
                                     >
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Display as Modal</span>
                                             </Typography>
@@ -953,7 +953,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </Tooltip>
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Show Close Button</span>
                                             </Typography>
@@ -973,7 +973,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </Tooltip>
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Show Action Button</span>
                                             </Typography>
@@ -1036,7 +1036,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </div>
                                         }
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Show Cancel Button</span>
                                             </Typography>
@@ -1099,7 +1099,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </div>
                                         }
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Autocomplete
                                                 onChange={(event, position) => position &&
                                                     this.setState(prevState => ({
@@ -1127,7 +1127,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 )}
                                             />
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Display Backdrop</span>
                                             </Typography>
@@ -1147,7 +1147,7 @@ class ViewBoxEditor extends React.PureComponent {
                                                 />
                                             </Tooltip>
                                         </div>
-                                        <div className={this.props.classes.sideMenuOption}>
+                                        <div className={this.props.classes.optionGroup}>
                                             <Typography>
                                                 <span>Never show after closing</span>
                                             </Typography>
@@ -1174,7 +1174,7 @@ class ViewBoxEditor extends React.PureComponent {
                         <Paper className={this.props.classes.sideMenuActionHolder}>
                             <Button className={this.props.classes.sideMenuSaveBtn} color="primary"
                                 onClick={() => {
-                                    this.saveChangedStyle();
+                                    this.updateBox();
                                 }}
                             >Save</Button>
                             <Button className={this.props.classes.sideMenuCancelBtn} color="danger"

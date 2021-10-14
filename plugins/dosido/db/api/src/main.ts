@@ -17,6 +17,7 @@ async function bootstrap() {
                 password: process.env.redis_password,
                 retryAttempts: 20,
                 retryDelay: 3000,
+                return_buffers: true,
                 disable_resubscribing: false,
                 max_attempts: 30,
                 no_ready_check: true,
@@ -28,7 +29,5 @@ async function bootstrap() {
     } catch(e){
         logger.log('Warning! Could not start event listener');
     }
-
-
 }
 bootstrap();
