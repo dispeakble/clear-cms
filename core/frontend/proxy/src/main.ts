@@ -3,7 +3,6 @@ import {AppModule} from './app.module';
 import {Transport} from "@nestjs/microservices";
 import * as compression from 'compression';
 
-let httpsOptions;
 let app;
 
 const init = async () => {
@@ -19,7 +18,7 @@ const init = async () => {
     await app.connectMicroservice({
         transport: Transport.REDIS,
         options: {
-            return_buffers: true,
+            detect_buffers: true,
             url: 'redis://' + process.env.redis_server,
             port: +process.env.redis_port,
             password: process.env.redis_password,
@@ -43,7 +42,8 @@ async function bootstrap() {
     try {
         init();
     } catch (e) {
-        console.log('Warning! Could not start the frontend module');
+        console.log(e);
+        process.exit(1);
     }
 }
 
