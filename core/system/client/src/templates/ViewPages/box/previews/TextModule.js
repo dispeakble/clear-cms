@@ -4,7 +4,7 @@ import parse from "html-react-parser";
 
 class TextModule extends Component {
   render() {
-    const text = this.props.element.moduleOptions.data.textData;
+    const text = this.props.element.moduleOptions.textData;
     return (
       <div
         key={this.props.i}

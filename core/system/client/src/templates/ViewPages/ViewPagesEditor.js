@@ -106,6 +106,8 @@ class ViewPagesEditor extends React.PureComponent {
     showTextColorPicker: false,
     showItemTextColorPicker: false,
     publish: false,
+    pageBackgroundColor: false,
+    pageBackgroundImage: false,
     pageBackgroundRepeat: false,
     pageBackgroundStretch: false,
     pageBackgroundGradient: false,
@@ -263,7 +265,7 @@ class ViewPagesEditor extends React.PureComponent {
         },
         label: "Add",
       },
-    },
+    }
   };
 
   async updateBoxList(boxes) {
@@ -313,9 +315,11 @@ class ViewPagesEditor extends React.PureComponent {
         currentCategory: this.getCategoryItem(pageConfig.categoryId),
         defaultPage: pageConfig.defaultPage,
         publish: pageConfig.publish,
+        pageBackgroundImage: !!pageConfig.backgroundImage?.length,
         pageBackgroundRepeat: pageConfig.backgroundRepeat,
         pageBackgroundStretch: pageConfig.backgroundStretch,
         pageBackgroundGradient: pageConfig.backgroundGradient,
+        pageBackgroundColor: pageConfig.backgroundColor,
         ...(!isForTemplate && { isTemplate: pageConfig.isTemplate }),
         ...(!isForTemplate && { template: { label: pageConfig.templateUsed } }),
       });
@@ -383,10 +387,10 @@ class ViewPagesEditor extends React.PureComponent {
 
       if (defaultPublicTheme) {
         if (defaultPublicTheme.bgcolor) {
-          this.setState({ bgColor: defaultPublicTheme.bgcolor });
+          this.setState({ bgColor: defaultPublicTheme.bgcolor, pageBackgroundColor: true });
         }
-        if (defaultPublicTheme.bgimage) {
-          this.setState({ backgroundImage: defaultPublicTheme.bgimage });
+        if (defaultPublicTheme.bgimage?.length) {
+          this.setState({ backgroundImage: defaultPublicTheme.bgimage, pageBackgroundImage: true });
         }
         if (defaultPublicTheme.bgrepeat) {
           this.setState({ pageBackgroundRepeat: defaultPublicTheme.bgrepeat });
@@ -441,7 +445,7 @@ class ViewPagesEditor extends React.PureComponent {
     return {
       backgroundColor: this.state.bgColor,
       backgroundGradientColor: this.state.bgGradientColor,
-      backgroundImage: this.state.backgroundImage,
+      backgroundImage: this.state.pageBackgroundImage ? this.state.backgroundImage : "",
       oldBackgroundImage: this.state.oldBackgroundImage,
       backgroundImageFile: this.state.backgroundImageFile,
       fontSize: this.state.fontSize,
@@ -676,7 +680,7 @@ class ViewPagesEditor extends React.PureComponent {
               <Suspense fallback={loadingFallback}>
                 <LazyModule
                     style={{style}}
-                    element={{moduleOptions: {data: el.moduleOptions}}}
+                    element={{moduleOptions: el.moduleOptions}}
                     defaultTheme={this.props.defaultTheme}
                     onStartEditingModule={() => this.onStartEditingModule()}
                     onEndEditingModule={() => this.onEndEditingModule()}
@@ -725,7 +729,9 @@ class ViewPagesEditor extends React.PureComponent {
   async onDuplicate(id) {
     try {
       const existingItem = this.getItemById(id);
+
       let newId = 0;
+
       this.state.items.map((item) => {
         newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
         return item;
@@ -751,15 +757,13 @@ class ViewPagesEditor extends React.PureComponent {
 
       await this.setAsyncState({
         // Add a new item. It must have a unique key!
-        items: items,
+        items: items
       });
-      this.setState({
+      await this.setAsyncState({
         // Add a new item. It must have a unique key!
-        onAddItem: !this.state.onAddItem,
+        addAnItem: !this.state.addAnItem
       });
-      setTimeout(() => {
-        window.scrollTo(0,document.body.scrollHeight);
-      }, 500)
+      window.scrollTo(0,document.body.scrollHeight);
     } catch (err) {
       console.log(err);
     }
@@ -769,8 +773,7 @@ class ViewPagesEditor extends React.PureComponent {
     let newId = 0;
     this.setState({
       boxEditorProps: {},
-      showBoxOptions: true,
-      onAddItem: !this.state.onAddItem,
+      addAnItem: !this.state.addAnItem
     });
     try {
       this.state.items.map((item) => {
@@ -781,7 +784,7 @@ class ViewPagesEditor extends React.PureComponent {
       newId++;
 
       let items = this.state.items;
-      items.push({
+      const item = {
         newItem: true,
         title: "New Box",
         showScrollbars: false,
@@ -800,14 +803,28 @@ class ViewPagesEditor extends React.PureComponent {
         y: Infinity, // puts it at the bottom
         w: 12,
         h: 20,
-      });
+      };
+      items.push(item);
 
       await this.setAsyncState({
         items: items,
       });
-      setTimeout(() => {
-        window.scrollTo(0,document.body.scrollHeight)
-      }, 300)
+      await this.setAsyncState({
+        // Add a new item. It must have a unique key!
+        addAnItem: !this.state.addAnItem
+      });
+
+      await this.setAsyncState({
+        boxEditorProps: {
+          item
+        }
+      });
+
+      await this.setAsyncState({
+        showBoxOptions: true
+      });
+
+      window.scrollTo(0,document.body.scrollHeight);
     } catch (err) {
       console.log(err);
     }
@@ -1049,28 +1066,7 @@ class ViewPagesEditor extends React.PureComponent {
             height: "50px",
           }
         },
-        MuiDropzoneArea: {
-          root: {
-            height: "145px",
-            minHeight: "145px",
-          },
-          text: {
-            fontSize: "1rem",
-            margin: "0 !important",
-          }
-        },
-        MuiDropzonePreviewList: {
-          root: {
-            margin: "0 !important",
-          },
-          image: {
-            height: "auto !important",
-          },
-          imageContainer: {
-            padding: "0 !important",
-            width: "100% !important",
-          }
-        },
+
         MuiDialog: {
           paper: {
             width: "100%",
@@ -1261,7 +1257,7 @@ class ViewPagesEditor extends React.PureComponent {
     );
   };
 
-  saveBox(data) {
+  async saveBox(data) {
     const items = this.state.items;
 
     if(data.i) {
@@ -1270,12 +1266,17 @@ class ViewPagesEditor extends React.PureComponent {
       );
       items[itemIndex] = data;
     } else {
+      data.i = "1";
       items.push(data);
     }
 
-    this.setState({
+    await this.setAsyncState({
       items
-    })
+    });
+
+    await this.setAsyncState({
+      addAnItem: !this.state.addAnItem
+    });
   }
 
   pageTitleRef = createRef()
@@ -1385,7 +1386,7 @@ class ViewPagesEditor extends React.PureComponent {
     const bodyWrapperStyle = {};
     let hasBgImage = false;
 
-    if(this.state.bgColor) {
+    if(this.state.bgColor && this.state.pageBackgroundColor) {
       bodyWrapperStyle.backgroundColor = this.state.bgColor;
       bodyWrapperStyle.backgroundImage = 'none';
     }
@@ -1394,7 +1395,7 @@ class ViewPagesEditor extends React.PureComponent {
       bodyWrapperStyle.backgroundImage = this.state.bgGradientColor;
       hasBgImage = true;
     } else {
-      if(this.state.pageBase64Image || this.state.backgroundImage) {
+      if((this.state.pageBase64Image || this.state.backgroundImage) && this.state.pageBackgroundImage) {
         bodyWrapperStyle.backgroundImage = `url(${ this.state.pageBase64Image || `/files/pages/page-${this.state.page_id}/${this.state.backgroundImage})` }`;
         hasBgImage = true;
       }
@@ -1423,6 +1424,7 @@ class ViewPagesEditor extends React.PureComponent {
         <div
           className={classes.bodyWrapper}
           style={{
+            minHeight: "100%",
             marginTop: "60px",
             paddingBottom: "130px",
             paddingLeft: this.state.pageTransitionPadding,
@@ -1511,7 +1513,8 @@ class ViewPagesEditor extends React.PureComponent {
                   }
                 }
             />
-            <div className={classes.gridLayout}>
+            { this.state.livePreview && <ViewPagesPreview hideBackground={true} isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.preparePageConfiguration()}} />}
+            { !this.state.livePreview && <div className={classes.gridLayout}>
               <div
                   style={{
                     flexGrow: 1,
@@ -1520,10 +1523,8 @@ class ViewPagesEditor extends React.PureComponent {
                     paddingBottom: "55px",
                   }}
               >
-                {this.state.livePreview
-                    ? <ViewPagesPreview isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.preparePageConfiguration()}} />
-                    :
-                <ResponsiveReactGridLayout
+                {
+                    this.state.items.length > 0 && <ResponsiveReactGridLayout
                     style={{
                       fontFamily: this.state.fontFamily,
                       color: this.state.textColor,
@@ -1542,79 +1543,80 @@ class ViewPagesEditor extends React.PureComponent {
                 >
                   {_.map(this.state.items, (el) => this.createElement(el))}
                 </ResponsiveReactGridLayout>}
-                <div className={classes.bottomPane} style={{
-                  backgroundColor: this.props.defaultTheme?.background?.paper
-                }}>
-                    <div>
-                      <Tooltip title="Add a new box">
-                        <IconButton onClick={(evt) => {
-                          this.onAddItem(evt)
-                        }}>
-                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
-                            <AddCircle/>
-                          </Avatar>
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Add a box from a template">
-                        <IconButton onClick={() => {
-                          this.setState({
-                            showBoxesFromTemplate: true
-                          })
-                        }}>
-                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
-                            <PostAdd/>
-                          </Avatar>
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode"}>
-                        <IconButton onClick={async () => {
-                          await this.setAsyncState(prevState => {
-                            return {livePreview: !prevState.livePreview}
-                          })
-                        }}>
-                          <Avatar style={{
-                            backgroundColor: this.props.defaultTheme.primary.main,
-                            color: this.props.defaultTheme.primary.contrastText
-                          }}>
-                            {this.state.livePreview ? <StopScreenShare /> : <ScreenShare/>}
-                          </Avatar>
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title={"Open the preview page"}>
-                        <IconButton onClick={() => {
-                          window.open( `/pages/preview/${this.state.page_id}` )
-                        }}>
-                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
-                            <Visibility/>
-                          </Avatar>
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Page options">
-                        <IconButton onClick={(evt) => {
-                          this.openPageOptionsModal()
-                        }}>
-                          <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
-                            <Settings/>
-                          </Avatar>
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                    <div className={classes.bottomPaneButtons}>
-                        <Button
-                            onClick={async () => {
-                                await this.savePage();
-                            }}
-                            color="primary"
-                        >
-                          <div>Save</div>
-                        </Button>
-                        <Button onClick={() => this.handleDiscard()} color="danger">
-                          Discard
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+              </div>
+            </div>}
+            <div className={classes.bottomPane} style={{
+              backgroundColor: this.props.defaultTheme?.background?.paper
+            }}>
+              <div>
+                <Tooltip title="Add a new box">
+                  <IconButton onClick={(evt) => {
+                    this.onAddItem(evt)
+                  }}>
+                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                      <AddCircle/>
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Add a box from a template">
+                  <IconButton onClick={() => {
+                    this.setState({
+                      showBoxesFromTemplate: true
+                    })
+                  }}>
+                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                      <PostAdd/>
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode"}>
+                  <IconButton onClick={async () => {
+                    await this.setAsyncState(prevState => {
+                      return {livePreview: !prevState.livePreview}
+                    })
+                  }}>
+                    <Avatar style={{
+                      backgroundColor: this.props.defaultTheme.primary.main,
+                      color: this.props.defaultTheme.primary.contrastText
+                    }}>
+                      {this.state.livePreview ? <StopScreenShare /> : <ScreenShare/>}
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={"Open the preview page"}>
+                  <IconButton onClick={() => {
+                    window.open( `/pages/preview/${this.state.page_id}` )
+                  }}>
+                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                      <Visibility/>
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={this.state.isTemplate ? "Template Options" : "Page Options"}>
+                  <IconButton onClick={(evt) => {
+                    this.openPageOptionsModal()
+                  }}>
+                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                      <Settings/>
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+              </div>
+              <div className={classes.bottomPaneButtons}>
+                <Button
+                    onClick={async () => {
+                      await this.savePage();
+                    }}
+                    color="primary"
+                >
+                  <div>Save</div>
+                </Button>
+                <Button onClick={() => this.handleDiscard()} color="danger">
+                  Discard
+                </Button>
+              </div>
+            </div>
             <Modal
                 showModal={this.state.showBgGradientColorPickerModal}
                 {...this.state.bgGradientColorPickerModal}

@@ -125,10 +125,8 @@ class ViewBoxAdvanced extends React.PureComponent {
             <React.Fragment>
                 <MuiThemeProvider theme={this.muiTheme}>
                     <div className={this.props.classes.optionGroup}>
-                        <Typography>
-                            <span>Display as Modal</span>
-                        </Typography>
-                        <Tooltip title="This box will be placed on top of all elements to be displayed as an important message">
+                        <Typography gutterBottom>
+                            <Tooltip title="This box will be placed on top of all elements to be displayed as an important message">
                             <Switch
                                 checked={this.state.DisplayOptions.displayAsModal}
                                 onChange={async () => {
@@ -145,6 +143,8 @@ class ViewBoxAdvanced extends React.PureComponent {
                                 }
                             />
                         </Tooltip>
+                            <span>Display as Modal</span>
+                        </Typography>
                     </div>
                     {this.state.DisplayOptions.displayAsModal && <div>
                         <div className={this.props.classes.optionGroup}>
@@ -178,73 +178,72 @@ class ViewBoxAdvanced extends React.PureComponent {
                                 )}
                             />
                         </div>
-                        <div className={this.props.classes.optionGroup}>
-                            <Typography>
-                                <span>Display Backdrop</span>
-                            </Typography>
-                            <Tooltip title="This box will have the rest of the screen dimmed with a transparent overlay color">
-                                <Switch
-                                    checked={this.state.DisplayOptions.displayBackdrop}
-                                    onChange={async () => {
-                                        await this.setAsyncState(prevState => ({
-                                            ...prevState,
-                                            DisplayOptions: {
-                                                ...prevState.DisplayOptions,
-                                                displayBackdrop: !prevState.DisplayOptions
-                                                    .displayBackdrop,
-                                            }
-                                        }));
-                                        this.saveChangedStyle();
-                                    }}
-                                />
-                            </Tooltip>
+                        <div className={this.props.classes.optionGroup} style={{maxWidth: "100%"}}>
+                            <div style={{flex: 1}}>
+                                <Typography>
+                                    <Tooltip title="This box will have the rest of the screen dimmed with a transparent overlay color">
+                                        <Switch
+                                            checked={this.state.DisplayOptions.displayBackdrop}
+                                            onChange={async () => {
+                                                await this.setAsyncState(prevState => ({
+                                                    ...prevState,
+                                                    DisplayOptions: {
+                                                        ...prevState.DisplayOptions,
+                                                        displayBackdrop: !prevState.DisplayOptions
+                                                            .displayBackdrop,
+                                                    }
+                                                }));
+                                                this.saveChangedStyle();
+                                            }}
+                                        />
+                                    </Tooltip>
+                                    <span>Display Backdrop</span>
+                                </Typography>
+                            </div>
+                            <div style={{flex: 1}}>
+                                <Typography>
+                                    <Tooltip title="This box will have a checkbox with the text: Never show again. If the checkbox is selected then this box will not be displayed again">
+                                        <Switch
+                                            checked={this.state.DisplayOptions.neverShowAfterClosing}
+                                            onChange={async () => {
+                                                await this.setAsyncState(prevState => ({
+                                                    ...prevState,
+                                                    DisplayOptions: {
+                                                        ...prevState.DisplayOptions,
+                                                        neverShowAfterClosing: !prevState.DisplayOptions
+                                                            .neverShowAfterClosing,
+                                                    }
+                                                }));
+                                                this.saveChangedStyle();
+                                            }}
+                                        />
+                                    </Tooltip>
+                                    <span>Never show after closing</span>
+                                </Typography>
+                            </div>
+                            <div style={{flex: 1}}>
+                                <Typography>
+                                    <Tooltip title="This box will have a close button so the user can hide it">
+                                        <Switch
+                                            checked={this.state.DisplayOptions.showCloseButton}
+                                            onChange={async () => {
+                                                await this.setAsyncState(prevState => ({
+                                                    ...prevState,
+                                                    DisplayOptions: {
+                                                        ...prevState.DisplayOptions,
+                                                        showCloseButton: !prevState.DisplayOptions
+                                                            .showCloseButton,
+                                                    }
+                                                }));
+                                                this.saveChangedStyle();
+                                            }}
+                                        />
+                                    </Tooltip>
+                                    <span>Show Close Button</span>
+                                </Typography>
+                            </div>
                         </div>
                         <div className={this.props.classes.optionGroup}>
-                            <Typography>
-                                <span>Never show after closing</span>
-                            </Typography>
-                            <Tooltip title="This box will have a checkbox with the text: Never show again. If the checkbox is selected then this box will not be displayed again">
-                                <Switch
-                                    checked={this.state.DisplayOptions.neverShowAfterClosing}
-                                    onChange={async () => {
-                                        await this.setAsyncState(prevState => ({
-                                            ...prevState,
-                                            DisplayOptions: {
-                                                ...prevState.DisplayOptions,
-                                                neverShowAfterClosing: !prevState.DisplayOptions
-                                                    .neverShowAfterClosing,
-                                            }
-                                        }));
-                                        this.saveChangedStyle();
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div className={this.props.classes.optionGroup}>
-                            <Typography>
-                                <span>Show Close Button</span>
-                            </Typography>
-                            <Tooltip title="This box will have a close button so the user can hide it">
-                                <Switch
-                                    checked={this.state.DisplayOptions.showCloseButton}
-                                    onChange={async () => {
-                                        await this.setAsyncState(prevState => ({
-                                            ...prevState,
-                                            DisplayOptions: {
-                                                ...prevState.DisplayOptions,
-                                                showCloseButton: !prevState.DisplayOptions
-                                                    .showCloseButton,
-                                            }
-                                        }));
-                                        this.saveChangedStyle();
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div className={this.props.classes.optionGroup}>
-                            <Typography>
-                                <span>Show Action Button</span>
-                            </Typography>
                             <Tooltip title="This box will have an action button.">
                                 <Switch
                                     checked={this.state.DisplayOptions.showActionButton}
@@ -261,54 +260,60 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     }}
                                 />
                             </Tooltip>
+                            <Typography>
+                                <span>Show Action Button</span>
+                            </Typography>
                         </div>
                         {this.state.DisplayOptions.showActionButton &&
-                        <div>
-                            <CustomInput
-                                labelText="Action button text"
-                                id="actionButtonText"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleDisplayInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.DisplayOptions.actionButtonText,
-                                    type: "text",
-                                }}
-                            />
-                            <CustomInput
-                                labelText="Action button link"
-                                id="actionButtonLink"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleDisplayInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.DisplayOptions.actionButtonLink,
-                                    type: "text",
-                                }}
-                            />
-                            <CustomInput
-                                labelText="Action button Title"
-                                id="actionButtonTitle"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleDisplayInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.DisplayOptions.actionButtonTitle,
-                                    type: "text",
-                                }}
-                            />
+                        <div style={{display: "flex"}}>
+                            <div style={{marginRight: "5px", flex: 1}}>
+                                <CustomInput
+                                    labelText="Action button text"
+                                    id="actionButtonText"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.DisplayOptions.actionButtonText,
+                                        type: "text",
+                                    }}
+                                />
+                            </div>
+                            <div style={{marginRight: "5px", flex: 1}}>
+                                <CustomInput
+                                    labelText="Action button link"
+                                    id="actionButtonLink"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.DisplayOptions.actionButtonLink,
+                                        type: "text",
+                                    }}
+                                />
+                            </div>
+                            <div style={{flex: 1}}>
+                                <CustomInput
+                                    labelText="Action button Title"
+                                    id="actionButtonTitle"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.DisplayOptions.actionButtonTitle,
+                                        type: "text",
+                                    }}
+                                />
+                            </div>
                         </div>
                         }
                         <div className={this.props.classes.optionGroup}>
-                            <Typography>
-                                <span>Show Cancel Button</span>
-                            </Typography>
                             <Tooltip title="This box will have a cancel button similar to the close button">
                                 <Switch
                                     checked={this.state.DisplayOptions.showCancelButton}
@@ -325,48 +330,57 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     }}
                                 />
                             </Tooltip>
+                            <Typography>
+                                <span>Show Cancel Button</span>
+                            </Typography>
                         </div>
                         {this.state.DisplayOptions.showCancelButton &&
-                        <div>
-                            <CustomInput
-                                labelText="Cancel button text"
-                                id="cancelButtonText"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleDisplayInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.DisplayOptions.cancelButtonText,
-                                    type: "text",
-                                }}
-                            />
-                            <CustomInput
-                                labelText="Cancel button Link"
-                                id="cancelButtonLink"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleDisplayInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.DisplayOptions.cancelButtonLink,
-                                    type: "text",
-                                }}
-                            />
-                            <CustomInput
-                                labelText="Cancel button Title"
-                                id="cancelButtonTitle"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleDisplayInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.DisplayOptions.cancelButtonTitle,
-                                    type: "text",
-                                }}
-                            />
+                        <div style={{display: "flex"}}>
+                            <div style={{marginRight: "5px", flex: 1}}>
+                                <CustomInput
+                                    labelText="Cancel button text"
+                                    id="cancelButtonText"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.DisplayOptions.cancelButtonText,
+                                        type: "text",
+                                    }}
+                                />
+                            </div>
+                            <div style={{marginRight: "5px", flex: 1}}>
+                                <CustomInput
+                                    labelText="Cancel button Link"
+                                    id="cancelButtonLink"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.DisplayOptions.cancelButtonLink,
+                                        type: "text",
+                                    }}
+                                />
+                            </div>
+                            <div style={{flex: 1}}>
+                                <CustomInput
+                                    labelText="Cancel button Title"
+                                    id="cancelButtonTitle"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.DisplayOptions.cancelButtonTitle,
+                                        type: "text",
+                                    }}
+                                />
+                            </div>
                         </div>
                         }
                     </div>}

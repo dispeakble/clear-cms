@@ -230,14 +230,14 @@ class ViewPagesPreview extends React.Component {
 
       if (LazyComponentName) {
         LazyComponent = React.lazy(() =>
-          import(`./modulesPreviews/${LazyComponentName}`)
+          import(`./box/previews/${LazyComponentName}`)
         );
       }
 
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent services={this.props.services} i={i} element={el} style={style} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
+            <LazyComponent services={this.props.services} i={i} element={el} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
           </Suspense>
         </div>
       );
@@ -302,6 +302,25 @@ class ViewPagesPreview extends React.Component {
       return "";
     }
 
+    const style = {
+      backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
+      backgroundRepeat: this.state.pageConfig.backgroundRepeat
+          ? "repeat"
+          : "no-repeat",
+      backgroundSize: this.state.pageConfig.backgroundStretch
+          ? "cover"
+          : "auto",
+      backgroundColor: this.state.pageConfig.backgroundColor,
+      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+      fontFamily: this.state.fontFamily,
+      color: this.state.pageConfig.textColor,
+    };
+
+    if(this.props.hideBackground) {
+      delete style.backgroundImage;
+      delete style.backgroundColor;
+    }
+
     return (
       <React.Fragment>
         <Helmet>
@@ -312,19 +331,7 @@ class ViewPagesPreview extends React.Component {
             <div className={classes.gridHolder}>
               <div
                 className={classes.gridLayout}
-                style={{
-                  backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
-                  backgroundRepeat: this.state.pageConfig.backgroundRepeat
-                    ? "repeat"
-                    : "no-repeat",
-                  backgroundSize: this.state.pageConfig.backgroundStretch
-                    ? "cover"
-                    : "auto",
-                  backgroundColor: this.state.pageConfig.backgroundColor,
-                  fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                  fontFamily: this.state.fontFamily,
-                  color: this.state.pageConfig.textColor,
-                }}
+                style={style}
               >
                 <ResponsiveReactGridLayout
                   style={{

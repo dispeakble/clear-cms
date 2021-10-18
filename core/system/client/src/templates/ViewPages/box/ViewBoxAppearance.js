@@ -1,5 +1,5 @@
 import React from "react";
-import {withStyles, createTheme} from "@material-ui/core/styles";
+import {withStyles, createTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pageBoxEdit.js";
 import {
     DeleteForever,
@@ -37,6 +37,7 @@ class ViewBoxAppearance extends React.PureComponent {
         BorderColorShow: false,
         BackgroundColorShow: false,
         BackgroundGradientColorShow: false,
+        bgImageEnabled: false,
         BgString: "",
         BgImage: "",
         BgImageFile: "",
@@ -114,8 +115,8 @@ class ViewBoxAppearance extends React.PureComponent {
         });
 
         const item = this.props.item;
+        this.muiTheme = this.createDefaultTheme();
         await this.setAsyncState({
-            muiTheme: this.createDefaultTheme(),
             Scrollbars: item.showScrollbars,
             Title: item.title,
             BorderRadius: item.borderRadius || 0,
@@ -123,9 +124,10 @@ class ViewBoxAppearance extends React.PureComponent {
             BorderColor: item.borderColor,
             BorderColorShow: !!item.borderColor,
             BorderStyle: item.borderStyle,
-            FontSize: item.fontSize || 5,
+            FontSize: item.fontSize || 1,
             BackgroundColor: item.backgroundColor || "",
             BackgroundGradientColor: item.backgroundGradientColor || "",
+            bgImageEnabled: !!item.BgString || !!item.bgimage || !!item.backgroundImageFile,
             BgString: item.BgString || "",
             BgImage: item.bgimage || "",
             BgImageFile: item.backgroundImageFile,
@@ -177,6 +179,7 @@ class ViewBoxAppearance extends React.PureComponent {
         const fontFamily = newValue ? this.getFontFamilyIndex(newValue.label) : "";
 
         await this.setAsyncState({
+            FontFamilyOption: newValue,
             FontFamily: +fontFamily
         });
         this.saveChangedStyle();
@@ -224,9 +227,18 @@ class ViewBoxAppearance extends React.PureComponent {
         let item = this.props.item;
 
         item.title = this.state.Title;
-        item.backgroundImageString = this.state.backgroundImageString;
-        item.bgimage = this.state.BgImage;
-        item.backgroundImageFile = this.state.BgImageFile;
+
+        if(this.state.bgImageEnabled) {
+            item.backgroundImageString = this.state.backgroundImageString;
+            item.bgimage = this.state.BgImage;
+            item.backgroundImageFile = this.state.BgImageFile;
+        } else {
+            item.backgroundImageString = "";
+            item.bgimage = "";
+            item.backgroundImageFile = "";
+        }
+
+
         item.backgroundRepeat = this.state.BgRepeat;
         item.backgroundStretch = this.state.BgStretch;
         item.backgroundGradient = this.state.BackgroundGradientColorShow;
@@ -366,12 +378,36 @@ class ViewBoxAppearance extends React.PureComponent {
                 },
                 MuiDropzoneArea: {
                     root: {
-                        height: "145px",
+                        height: "auto",
                         minHeight: "145px",
                     },
                     text: {
                         fontSize: "1rem",
+                        margin: "0 !important",
                     },
+                    textContainer: {
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                    }
+                },
+                MuiDropzonePreviewList: {
+                    removeButton:{
+                        display: "none"
+                    },
+                    root: {
+                        width: "100%",
+                        margin: "0 !important",
+                    },
+                    image: {
+                        height: "auto !important",
+                    },
+                    imageContainer: {
+                        maxWidth: "100%",
+                        flexBasis: "100%",
+                        padding: "0 !important",
+                        width: "100% !important",
+                    }
                 },
                 MuiDialog: {
                     paper: {
@@ -481,7 +517,7 @@ class ViewBoxAppearance extends React.PureComponent {
 
     render() {
         return (
-            <React.Fragment>
+            <MuiThemeProvider theme={this.muiTheme}>
                     <Accordion classes={{root: this.props.classes.accordion}}>
                         <AccordionSummary
                             classes={{
@@ -498,10 +534,11 @@ class ViewBoxAppearance extends React.PureComponent {
                         </AccordionSummary>
                         <AccordionDetails className={this.props.classes.accordionDetails}>
                             <div className={this.props.classes.optionGroup}>
-                                <Typography>
-                                    <span>Text Color</span>
-
-                                </Typography>
+                                {this.state.TextColorShow && this.createColorPicker(
+                                    "itemTextColorStyles",
+                                    "displayItemTextColorPicker",
+                                    "TextColor"
+                                )}
                                 <Tooltip title="Enable Custom Text Color">
                                     <Switch
                                         checked={this.state.TextColorShow}
@@ -515,17 +552,12 @@ class ViewBoxAppearance extends React.PureComponent {
                                         }}
                                     />
                                 </Tooltip>
-
-                            </div>
-                            {this.state.TextColorShow && this.createColorPicker(
-                                "itemTextColorStyles",
-                                "displayItemTextColorPicker",
-                                "TextColor"
-                            )}
-                            <div className={this.props.classes.optionGroup}>
                                 <Typography>
-                                    <span>Font Size</span>
+                                    <span>Text Color</span>
                                 </Typography>
+                            </div>
+
+                            <div className={this.props.classes.optionGroup}>
                                 <Tooltip title="Enable Custom Font Size">
                                     <Switch
                                         checked={this.state.FontSizeShow}
@@ -537,6 +569,9 @@ class ViewBoxAppearance extends React.PureComponent {
                                         }}
                                     />
                                 </Tooltip>
+                                <Typography>
+                                    <span>Font Size</span>
+                                </Typography>
                             </div>
                             {this.state.FontSizeShow && <Slider
                                 value={this.state.FontSize}
@@ -548,9 +583,6 @@ class ViewBoxAppearance extends React.PureComponent {
                                 step={0.1}
                             />}
                             <div className={this.props.classes.optionGroup}>
-                                <Typography>
-                                    <span>Font Family</span>
-                                </Typography>
                                 <Tooltip title="Enable Custom Font Family">
                                     <Switch
                                         checked={this.state.FontFamilyShow}
@@ -564,6 +596,9 @@ class ViewBoxAppearance extends React.PureComponent {
                                         }}
                                     />
                                 </Tooltip>
+                                <Typography>
+                                    <span>Font Family</span>
+                                </Typography>
                             </div>
                             {this.state.FontFamilyShow &&
                             <div>
@@ -605,111 +640,98 @@ class ViewBoxAppearance extends React.PureComponent {
                         </AccordionSummary>
                         <AccordionDetails className={this.props.classes.accordionDetails}>
                             <div className={this.props.classes.optionGroup}>
-                                <Typography>
-                                    Use Scrollbars
-                                </Typography>
-                                <Tooltip title="This box will have scrollbars if the content is larger">
-                                    <Switch
-                                        checked={this.state.Scrollbars}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                Scrollbars: !this.state.Scrollbars,
-                                            });
-                                            this.saveChangedStyle();
-                                        }}
-                                    />
-                                </Tooltip>
-                            </div>
-                            <div className={this.props.classes.optionGroup}>
-                                <Typography>
-                                    <span>Background Color</span>
-
-                                </Typography>
+                                {this.state.BackgroundColorShow && this.createColorPicker(
+                                    "itemBgColorStyles",
+                                    "displayItemBgColorPicker",
+                                    "BackgroundColor"
+                                )}
                                 <Tooltip title="Enable Custom Text Color">
                                     <Switch
                                         checked={this.state.BackgroundColorShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
+                                                BackgroundGradientColorShow: false,
                                                 BackgroundColorShow: !this.state
                                                     .BackgroundColorShow,
                                             });
 
                                             this.saveChangedStyle();
                                         }}
-
                                     />
                                 </Tooltip>
-                            </div>
-                            {this.state.BackgroundColorShow && this.createColorPicker(
-                                "itemBgColorStyles",
-                                "displayItemBgColorPicker",
-                                "BackgroundColor"
-                            )}
-                            <div className={this.props.classes.optionGroup}>
                                 <Typography>
-                                    <span>Gradient Color</span>
-
+                                    <span>Background Color</span>
                                 </Typography>
+                            </div>
+
+                            <div className={this.props.classes.optionGroup}>
+                                {this.state.BackgroundGradientColorShow && <div> {this.createGradientColorPicker(
+                                    "itemBgColorStyles",
+                                    "showBgGradientColorPickerModal",
+                                    "BackgroundGradientColor"
+                                )}</div> }
                                 <Tooltip title="Enable Gradient Background">
                                     <Switch
                                         checked={this.state.BackgroundGradientColorShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
+                                                bgImageEnabled: false,
+                                                BackgroundColorShow: false,
                                                 BackgroundGradientColorShow: !this.state
                                                     .BackgroundGradientColorShow,
                                             });
                                             this.saveChangedStyle();
                                         }}
-
                                     />
                                 </Tooltip>
-                            </div>
-                            {this.state.BackgroundGradientColorShow && this.createGradientColorPicker(
-                                "itemBgColorStyles",
-                                "showBgGradientColorPickerModal",
-                                "BackgroundGradientColor"
-                            )}
-                            <div className={this.props.classes.optionGroup}>
-                                <Typography>
-                                    <span>Background Repeat</span>
+                                <Typography gutterBottom>
+                                    Gradient Color
                                 </Typography>
+                            </div>
+                            <div className={this.props.classes.optionGroup}>
+                                <Tooltip title="Enable background image">
+                                    <Switch
+                                        checked={this.state.bgImageEnabled}
+                                        onChange={() => {
+                                            this.setState({
+                                                bgImageEnabled: !this.state.bgImageEnabled,
+                                                BackgroundGradientColorShow: false
+                                            })
+                                        }}
+                                    />
+                                </Tooltip>
+                                <Typography>Background Image</Typography>
+                            </div>
+                            { this.state.bgImageEnabled &&<div className={this.props.classes.optionGroup}>
                                 <Tooltip title="Background Repeat">
                                     <Switch
                                         checked={this.state.BgRepeat}
                                         onChange={this.handleItemBgRepeat.bind(this)}
                                     />
                                 </Tooltip>
-                            </div>
-                            <div className={this.props.classes.optionGroup}>
                                 <Typography>
-                                    Background Stretch
+                                    <span>Background Repeat</span>
                                 </Typography>
+                            </div> }
+                            { this.state.bgImageEnabled && <div className={this.props.classes.optionGroup}>
                                 <Tooltip title="Background Stretch">
                                     <Switch
                                         checked={this.state.BgStretch}
                                         onChange={this.handleItemBgStretch.bind(this)}
                                     />
                                 </Tooltip>
-                            </div>
+                                <Typography>
+                                    Background Stretch
+                                </Typography>
+                            </div> }
                             <div>
-                                <Typography>Background Image</Typography>
-                                {((this.state.BgImage && this.state.BgImage.length && this.state.BgImage.indexOf('__delete__') === -1)
-                                    || (this.state.backgroundImageString && this.state.backgroundImageString.length))
-                                && <DeleteForever onClick={async () => {
-                                    await this.setAsyncState({
-                                        BgImage: `__delete__${this.state.BgImage}`,
-                                        BgImageFile: ""
-                                    })
-                                    this.saveChangedStyle();
-                                }} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                            </div>
-                            <div>
+                                { this.state.bgImageEnabled &&
                                 <DropzoneArea
                                     maxFileSize={Math.pow(1024, 3)}
                                     filesLimit={1}
                                     className={this.props.classes.dropzone}
                                     onChange={this.handleItemBgImage.bind(this)}
-                                />
+                                /> }
                             </div>
                         </AccordionDetails>
                     </Accordion>
@@ -728,11 +750,29 @@ class ViewBoxAppearance extends React.PureComponent {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails className={this.props.classes.accordionDetails}>
+                            <div className={this.props.classes.optionGroup}>
+                                <Tooltip title="This box will have scrollbars if the content is larger">
+                                    <Switch
+                                        checked={this.state.Scrollbars}
+                                        onChange={async () => {
+                                            await this.setAsyncState({
+                                                Scrollbars: !this.state.Scrollbars,
+                                            });
+                                            this.saveChangedStyle();
+                                        }}
+                                    />
+                                </Tooltip>
+                                <Typography>
+                                    Use Scrollbars
+                                </Typography>
+                            </div>
                             <div>
                                 <div className={this.props.classes.optionGroup}>
-                                    <Typography>
-                                        <span>Border Color </span>
-                                    </Typography>
+                                    {this.state.BorderColorShow && this.createColorPicker(
+                                        "itemBorderColorStyles",
+                                        "displayItemBorderColorPicker",
+                                        "BorderColor"
+                                    )}
                                     <Tooltip title="Enable border color">
                                         <Switch
                                             checked={this.state.BorderColorShow}
@@ -746,15 +786,13 @@ class ViewBoxAppearance extends React.PureComponent {
                                             }}
                                         />
                                     </Tooltip>
+                                    <Typography>
+                                        <span>Border Color</span>
+                                    </Typography>
                                 </div>
-                                {this.state.BorderColorShow && this.createColorPicker(
-                                    "itemBorderColorStyles",
-                                    "displayItemBorderColorPicker",
-                                    "BorderColor"
-                                )}
                             </div>
                             <div>
-                                <Typography><span>Border Width</span></Typography>
+                                <Typography><span>Border Thickness</span></Typography>
                                 <Slider
                                     value={this.state.BorderWidth}
                                     className={this.props.classes.sideMenuSlider}
@@ -766,7 +804,7 @@ class ViewBoxAppearance extends React.PureComponent {
                                 />
                             </div>
                             <div>
-                                <Typography>Border Radius</Typography>
+                                <Typography>Rounded corners</Typography>
                                 <Slider
                                     value={this.state.BorderRadius}
                                     className={this.props.classes.sideMenuSlider}
@@ -783,7 +821,7 @@ class ViewBoxAppearance extends React.PureComponent {
                     showModal={this.state.showBgGradientColorPickerModal}
                     {...this.state.bgGradientColorPickerModal}
                 />
-            </React.Fragment>
+            </MuiThemeProvider>
         );
     }
 }
