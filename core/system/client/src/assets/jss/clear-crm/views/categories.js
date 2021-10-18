@@ -40,7 +40,7 @@ const javascriptStyles = {
   ...popoverStyles,
   categoriesPanel: {
     textAlign: "center",
-    marginTop: "60px",
+    paddingTop: "60px",
   },
   categoriesWrapper: {
     margin: "0 auto",

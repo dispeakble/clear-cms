@@ -136,6 +136,9 @@ class Modal extends Component {
             onClose={(event, reason) => this.callCloseCallback(reason)}
             aria-labelledby="classic-modal-slide-title"
             aria-describedby="classic-modal-slide-description"
+            disableAutoFocus={true}
+            disableRestoreFocus={true}
+            disableEnforceFocus={true}
         >
             <DialogTitle
                 id="classic-modal-slide-title"
