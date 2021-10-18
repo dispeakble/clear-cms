@@ -283,7 +283,7 @@ class ViewPagesPreview extends React.Component {
             },
           },
         },
-      },
+      }
     });
   };
 
@@ -321,6 +321,8 @@ class ViewPagesPreview extends React.Component {
       delete style.backgroundColor;
     }
 
+    style.minHeight = "100%";
+
     return (
       <React.Fragment>
         <Helmet>
@@ -338,6 +340,7 @@ class ViewPagesPreview extends React.Component {
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.pageConfig.textColor,
+                    minHeight: "100%"
                   }}
                   margin={this.state.pageConfig.layoutBoxSpacing}
                   {...this.props}

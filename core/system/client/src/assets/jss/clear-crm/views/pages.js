@@ -9,7 +9,7 @@ import modalStyle from "assets/jss/clear-crm/modalStyle.js";
 const javascriptStyles = {
   pagesPanel: {
     textAlign: "center",
-    marginTop: "60px",
+    paddingTop: "60px",
   },
   pagesWrapper: {
     margin: "0 auto",

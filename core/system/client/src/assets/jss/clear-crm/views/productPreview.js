@@ -66,7 +66,7 @@ const styles = {
     "@media (max-width: 940px)": {
         container: {
             flexDirection: "column",
-            marginTop: 60,
+            paddingTop: 60,
             "& .image-gallery": {
                 maxHeight: "none"
             }
