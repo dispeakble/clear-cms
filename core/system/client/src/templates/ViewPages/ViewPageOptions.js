@@ -4,10 +4,10 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
-import {DeleteForever} from "@material-ui/icons";
+import {DeleteForever, DeleteForeverRounded} from "@material-ui/icons";
 import {DropzoneArea} from "material-ui-dropzone";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
-import {Checkbox, TextField} from "@material-ui/core";
+import {Checkbox, MuiThemeProvider, TextField} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import clsx from "clsx";
 import Dialog from "@material-ui/core/Dialog";
@@ -17,8 +17,10 @@ import React from "react";
 import {Helmet} from "react-helmet";
 import Modal from "../../components/Modal/Modal";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-import {withStyles} from "@material-ui/core/styles";
+import {createTheme, withStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import IconButton from "@material-ui/core/Icon";
+import Avatar from "@material-ui/core/Avatar";
 
 const filter = createFilterOptions()
 
@@ -28,13 +30,18 @@ class ViewPageOptions extends React.PureComponent {
 
     };
 
-    componentDidMount() {
+    muiTheme = {
 
+    };
+
+    componentDidMount() {
+        this.muiTheme = this.createDefaultTheme();
     }
 
     renderPageOptions() {
+
         return (
-            <div>
+            <MuiThemeProvider theme={this.muiTheme}>
                 <Helmet>
                     <title>{this.props.data.editing ? "Edit " : "Add"} {this.props.data.pageTitle || " page"}</title>
                 </Helmet>
@@ -83,7 +90,7 @@ class ViewPageOptions extends React.PureComponent {
                             this.props.classes.columnSeparator
                         }
                     >
-                        <h4>Background</h4>
+                        <h4>Background Color</h4>
                         <div
                             style={{
                                 display: "flex",
@@ -98,87 +105,146 @@ class ViewPageOptions extends React.PureComponent {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <h5 style={{marginRight: "15px"}}>Color</h5>
-
-                                    <Tooltip title="Compose a background gradient instead of a solid color">
-                                        {this.props.createColorPicker(
-                                            "bgColorStyles",
-                                            "showBgColorPicker",
-                                            "bgColor"
-                                        )}
-                                    </Tooltip>
+                                    { this.props.data.pageBackgroundColor && <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Tooltip title="Pick a background color">
+                                            {this.props.createColorPicker(
+                                                "bgColorStyles",
+                                                "showBgColorPicker",
+                                                "bgColor"
+                                            )}
+                                        </Tooltip>
+                                    </div> }
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Pick a background color">
+                                            <span>
+                                                <Switch
+                                                    value={this.props.data.pageBackgroundColor}
+                                                    checked={this.props.data.pageBackgroundColor}
+                                                    onChange={() => this.props.handlePageOptions({
+                                                        pageBackgroundGradient: false,
+                                                        pageBackgroundColor: !this.props.data
+                                                            .pageBackgroundColor,
+                                                    })
+                                                    }
+                                                />
+                                            Color</span>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
                                 </div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <h5 style={{marginRight: "15px"}}>Gradient</h5>
 
-                                    <Tooltip title="Compose a background gradient instead of a solid color">
-                                        {this.props.createGradientColorPicker(
-                                            "bgColorStyles",
-                                            "showBgGradientColorPickerModal",
-                                            "bgGradientColor"
-                                        )}
-                                    </Tooltip>
-                                </div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <Typography gutterBottom>
-                                        Gradient
-                                        <Tooltip title="Compose a background gradient instead of a solid color">
-                                            <Switch
+                            </div>
+                            <div>
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                    { this.props.data.pageBackgroundGradient && <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Tooltip title="Pick gradient colors">
+                                            {this.props.createGradientColorPicker(
+                                                "bgColorStyles",
+                                                "showBgGradientColorPickerModal",
+                                                "bgGradientColor"
+                                            )}
+                                        </Tooltip>
+                                    </div> }
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Compose a background gradient instead of a solid color">
+                                            <span>
+                                                <Switch
                                                 value={this.props.data.pageBackgroundGradient}
                                                 checked={this.props.data.pageBackgroundGradient}
                                                 onChange={() => this.props.handlePageOptions({
+                                                    pageBackgroundColor: false,
+                                                    pageBackgroundImage: false,
                                                     pageBackgroundGradient: !this.props.data
                                                         .pageBackgroundGradient,
                                                 })
                                                 }
                                             />
-                                        </Tooltip>
-                                    </Typography>
+                                            Gradient</span>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <Typography gutterBottom>
-                                        Repeat
-                                        <Tooltip title="Repeat the background to fit the page">
-                                            <Switch
-                                                value={this.props.data.pageBackgroundRepeat}
-                                                checked={this.props.data.pageBackgroundRepeat}
-                                                onChange={() =>
-                                                    this.props.handlePageOptions({
-                                                        pageBackgroundRepeat: !this.props.data
-                                                            .pageBackgroundRepeat,
-                                                    })
-                                                }
-                                            />
-                                        </Tooltip>
-                                    </Typography>
-                                </div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <Typography gutterBottom>
-                                        Stretch
-                                        <Tooltip title="Stretch the background to fit the page">
+                        </div>
+                        <h4>Background Image</h4>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <Typography gutterBottom>
+
+                                    <Tooltip title="This page will have a background image">
+                                        <span>
+                                           <Switch
+                                               value={this.props.data.pageBackgroundImage}
+                                               checked={this.props.data.pageBackgroundImage}
+                                               onChange={() =>
+                                                   this.props.handlePageOptions({
+                                                       pageBackgroundGradient: false,
+                                                       pageBackgroundImage: !this.props.data.pageBackgroundImage
+                                                   })
+                                               }
+                                           /> Enabled
+                                        </span>
+                                    </Tooltip>
+                                </Typography>
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                { this.props.data.pageBackgroundImage && <Typography gutterBottom>
+
+                                    <Tooltip title="Repeat the background to fit the page">
+                                        <span>
+                                           <Switch
+                                               value={this.props.data.pageBackgroundRepeat}
+                                               checked={this.props.data.pageBackgroundRepeat}
+                                               onChange={() =>
+                                                   this.props.handlePageOptions({
+                                                       pageBackgroundRepeat: !this.props.data
+                                                           .pageBackgroundRepeat,
+                                                   })
+                                               }
+                                           /> Repeat
+                                        </span>
+                                    </Tooltip>
+                                </Typography> }
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                { this.props.data.pageBackgroundImage && <Typography gutterBottom>
+
+                                    <Tooltip title="Stretch the background to fit the page">
+                                        <span>
                                             <Switch
                                                 checked={this.props.data.pageBackgroundStretch}
                                                 value={this.props.data.pageBackgroundStretch}
@@ -188,45 +254,20 @@ class ViewPageOptions extends React.PureComponent {
                                                             .pageBackgroundStretch,
                                                     })
                                                 }
-                                            />
-                                        </Tooltip>
-                                    </Typography>
-                                </div>
+                                            /> Stretch
+                                        </span>
+                                    </Tooltip>
+                                </Typography> }
                             </div>
                         </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <h5>Background Image</h5>
-                            {(this.props.data.backgroundImage ||
-                                this.props.data.pageBase64Image) && (
-                                <Tooltip title="Delete background image">
-                                    <DeleteForever
-                                        onClick={() =>
-                                            this.props.handlePageOptions({
-                                                backgroundImage: "",
-                                                backgroundImageFile: "",
-                                            })
-                                        }
-                                        style={{
-                                            color: this.props.defaultTheme.secondary.main,
-                                        }}
-                                    />
-                                </Tooltip>
-                            )}
-                        </div>
-                        <div className={this.props.classes.dropzoneAreaWrapper}>
+                        { this.props.data.pageBackgroundImage && <div className={this.props.classes.dropzoneAreaWrapper}>
                             <DropzoneArea
                                 maxFileSize={Math.pow(1024, 3)}
                                 filesLimit={1}
                                 onChange={this.props.handleBgImage.bind(this)}
                                 onDelete={this.props.handleBackgroundDelete.bind(this)}
                             />
-                        </div>
+                        </div> }
                     </div>
                     <p/>
                     <div
@@ -238,6 +279,20 @@ class ViewPageOptions extends React.PureComponent {
                     >
                         <h4>Font </h4>
                         <div style={{marginTop: "15px"}}>
+
+                            <Typography gutterBottom>Font Size</Typography>
+                            <Slider
+                                className={this.props.classes.pageOptionsSlider}
+                                onChange={(event, newValue) => {
+                                    this.props.handleFontSize(event, newValue);
+                                }}
+                                value={this.props.data.fontSize}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                min={0.1}
+                                max={10}
+                                step={0.1}
+                            />
                             <Autocomplete
                                 id="fontFamilyDropdown"
                                 onChange={this.props.handleFontFamily}
@@ -256,19 +311,6 @@ class ViewPageOptions extends React.PureComponent {
                                         variant="outlined"
                                     />
                                 )}
-                            />
-                            <Typography gutterBottom>Font Size</Typography>
-                            <Slider
-                                className={this.props.classes.pageOptionsSlider}
-                                onChange={(event, newValue) => {
-                                    this.props.handleFontSize(event, newValue);
-                                }}
-                                value={this.props.data.fontSize}
-                                aria-labelledby="discrete-slider"
-                                valueLabelDisplay="auto"
-                                min={0.1}
-                                max={10}
-                                step={0.1}
                             />
                         </div>
                         <div
@@ -520,8 +562,49 @@ class ViewPageOptions extends React.PureComponent {
                         </div>
                     </div>
                 </div>
-            </div>
+            </MuiThemeProvider>
         )
+    }
+
+    createDefaultTheme() {
+        return createTheme({
+            palette: this.props.defaultTheme,
+            overrides: {
+                MuiDropzoneArea: {
+                    root: {
+                        height: "auto",
+                        minHeight: "145px",
+                    },
+                    text: {
+                        fontSize: "1rem",
+                        margin: "0 !important",
+                    },
+                    textContainer: {
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                    }
+                },
+                MuiDropzonePreviewList: {
+                    removeButton:{
+                        display: "none"
+                    },
+                    root: {
+                        width: "100%",
+                        margin: "0 !important",
+                    },
+                    image: {
+                        height: "auto !important",
+                    },
+                    imageContainer: {
+                        maxWidth: "100%",
+                        flexBasis: "100%",
+                        padding: "0 !important",
+                        width: "100% !important",
+                    }
+                }
+            }
+        });
     }
 
     render() {
@@ -530,7 +613,7 @@ class ViewPageOptions extends React.PureComponent {
             id: "pageOptions",
             name: "pageOptions",
             resize: true,
-            title: "Page options",
+            title: this.props.data.isTemplate ? "Template Options" : "Page Options",
             content: this.renderPageOptions(),
             showModal: this.props.data.showPageOptionsModal,
             modalSize: "large",
@@ -546,9 +629,7 @@ class ViewPageOptions extends React.PureComponent {
         }
 
         return (
-            <div>
-                <Modal { ...modalProps } />
-            </div>
+            <Modal { ...modalProps } />
         )
     }
 

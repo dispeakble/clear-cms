@@ -280,11 +280,10 @@ const javascriptStyles = {
   },
   optionGroup: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "start",
+    alignItems: "center",
     width: "100%",
-    minWidth: "250px",
-    verticalAlign: "top"
+    maxWidth: "250px",
+    minWidth: "150px"
   },
   optionHolder: {
     display: "inline-block",
