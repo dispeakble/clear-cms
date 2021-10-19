@@ -4,7 +4,6 @@ import CustomInput from "../../components/CustomInput/CustomInput";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
-import {DeleteForever, DeleteForeverRounded} from "@material-ui/icons";
 import {DropzoneArea} from "material-ui-dropzone";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
 import {Checkbox, MuiThemeProvider, TextField} from "@material-ui/core";
@@ -19,8 +18,7 @@ import Modal from "../../components/Modal/Modal";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {createTheme, withStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
-import IconButton from "@material-ui/core/Icon";
-import Avatar from "@material-ui/core/Avatar";
+
 
 const filter = createFilterOptions()
 
@@ -299,7 +297,7 @@ class ViewPageOptions extends React.PureComponent {
                                 className={this.props.classes.option}
                                 options={this.props.data.fontFamilies}
                                 autoHighlight
-                                getOptionLabel={(option) => option.label}
+                                getOptionLabel={(option) => option.family}
                                 value={this.getFontFamilyItem(
                                     this.props.data.fontFamily
                                 )}
@@ -570,6 +568,11 @@ class ViewPageOptions extends React.PureComponent {
         return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
+                MuiSwitch: {
+                    switchBase: {
+                        color: this.props.defaultTheme.primary.main
+                    }
+                },
                 MuiDropzoneArea: {
                     root: {
                         height: "auto",
@@ -636,7 +639,7 @@ class ViewPageOptions extends React.PureComponent {
     getFontFamilyItem(name) {
         return this.props.data.fontFamilies[
             this.props.data.fontFamilies.findIndex((font) => {
-                return font.label === name;
+                return font.family === name;
             })
             ];
     }

@@ -117,27 +117,14 @@ class HeaderModule extends Component {
             });
         }
 
-        this.props.onUpdate
-        {
-            {
-                files: files,
-                    logoTitle
-            :
-                this.state.logoTitle,
-                    logoLink
-            :
-                this.state.logoLink,
-                    isModuleSticky
-            :
-                this.state.isModuleSticky,
-                    backgroundRepeat
-            :
-                this.state.backgroundRepeat,
-                    backgroundStretch
-            :
-                this.state.backgroundStretch,
-            }
-        }
+        this.props.onUpdate({
+            files: files,
+            logoTitle: this.state.logoTitle,
+            logoLink: this.state.logoLink,
+            isModuleSticky: this.state.isModuleSticky,
+            backgroundRepeat: this.state.backgroundRepeat,
+            backgroundStretch: this.state.backgroundStretch
+        })
 
     }
 

@@ -51,13 +51,6 @@ class ViewBoxAppearance extends React.PureComponent {
         FontFamilyOption: null,
         TextColor: "",
         backgroundImageString: "",
-        fontFamilies: [
-            {label: "Arial"},
-            {label: "Calibri"},
-            {label: "Cambria"},
-            {label: "Times New Roman"},
-            {label: "Verdana"}
-        ],
         modalPositions: [
             {label: "Top", value: "top"},
             {label: "Center", value: "center"},
@@ -140,21 +133,21 @@ class ViewBoxAppearance extends React.PureComponent {
             FontSizeShow: !!item.fontSize,
             FontFamilyShow: !!item.fontFamily,
             TextColorShow: !!item.textColor,
-            FontFamilyOption: item.fontFamily ? this.state.fontFamilies[this.getFontFamilyIndex(item.fontFamily)] : null
+            FontFamilyOption: item.fontFamily ? this.props.fontFamilies[this.getFontFamilyIndex(item.fontFamily)] : null
         });
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
     getFontFamilyIndex(name) {
-        return this.state.fontFamilies.findIndex((font) => {
-            return font.label === name;
+        return this.props.fontFamilies.findIndex((font) => {
+            return font.family === name;
         });
     }
 
     getFontFamilyItem(name) {
-        return this.state.fontFamilies[this.state.fontFamilies.findIndex((font) => {
-            return font.label === name;
+        return this.props.fontFamilies[this.props.fontFamilies.findIndex((font) => {
+            return font.family === name;
         })];
     }
 
@@ -176,7 +169,7 @@ class ViewBoxAppearance extends React.PureComponent {
     };
 
     handleItemFontFamily = async (event, newValue) => {
-        const fontFamily = newValue ? this.getFontFamilyIndex(newValue.label) : "";
+        const fontFamily = newValue ? this.getFontFamilyIndex(newValue.family) : "";
 
         await this.setAsyncState({
             FontFamilyOption: newValue,
@@ -262,12 +255,12 @@ class ViewBoxAppearance extends React.PureComponent {
         }
 
         if (this.state.FontFamilyShow) {
-            item.fontFamily = this.state.fontFamilies[
+            item.fontFamily = this.props.fontFamilies[
                 this.state.FontFamily
                 ];
 
             item.fontFamily = item.fontFamily
-                ? item.fontFamily.label
+                ? item.fontFamily.family
                 : "";
 
             if (!item.fontFamily) {
@@ -336,6 +329,13 @@ class ViewBoxAppearance extends React.PureComponent {
         return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
+                MuiSwitch:{
+                    colorPrimary: {
+                        root: {
+                            color: this.props.defaultTheme.secondary.main
+                        }
+                    }
+                },
                 MuiFormControl: {
                     root: {
                         backgroundColor: "white",
@@ -608,9 +608,9 @@ class ViewBoxAppearance extends React.PureComponent {
                                     value={
                                         this.state.FontFamilyOption
                                     }
-                                    options={this.state.fontFamilies}
+                                    options={this.props.fontFamilies}
                                     autoHighlight
-                                    getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
+                                    getOptionLabel={(option) => option.family}
                                     renderInput={(params) => (
                                         <TextField
                                             className={this.props.classes.textfield}
@@ -830,6 +830,7 @@ export default withRouter(withStyles(styles)(ViewBoxAppearance));
 
 ViewBoxAppearance.propTypes = {
     item: PropTypes.object,
+    fontFamilies: PropTypes.array,
     classes: PropTypes.object,
     onUpdate: PropTypes.func,
     defaultTheme: PropTypes.object

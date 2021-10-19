@@ -9,9 +9,9 @@ import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import getConfig from 'next/config'
 import BoxModal from "../../components/BoxModal/BoxModal";
+import GoogleFontLoader from 'react-google-font-loader';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-
+const { publicRuntimeConfig } = getConfig();
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -28,20 +28,30 @@ class ViewPagesPreview extends React.Component {
     title: this.props.pageData?.pageConfig?.pageTitle,
     pageLink: this.props.pageData?.pageConfig?.pageLink,
     items: [],
-    pageConfig: this.props.pageData?.pageConfig || "Company name",
+    pageConfig: this.props.pageData?.pageConfig,
     fontUnit: "rem",
     layouts: {},
     //pageDataLoaded: false,
-    modals: []
+    modals: [],
+    googleFonts: [
+      {
+        font: 'Roboto'
+      }
+    ]
   };
 
-  componentDidMount() {
-    this.setState({
+  setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
+
+  async componentDidMount() {
+    await this.setAsyncState({
       pageLink: this.props.pageData?.pageConfig?.pageLink,
       items: this.props.pageData?.items,
       pageConfig: this.props.pageData?.pageConfig,
       page_id: this.props.pageData?.id
-    })
+    });
+
+    this.setUsedGoogleFonts();
+
     let modalItems = {}
     if(this.props.pageData && this.props.pageData.items) {
       this.props.pageData.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el =>
@@ -255,6 +265,25 @@ class ViewPagesPreview extends React.Component {
     });
   };
 
+  setUsedGoogleFonts() {
+    const fonts = [];
+
+    if(this.state.pageConfig.fontFamily && this.state.pageConfig.fontFamily.length) {
+      fonts.push({font: this.state.pageConfig.fontFamily});
+    }
+
+    if(this.state.items && this.state.items.length) {
+      this.state.items.map((item) => {
+        if(!fonts.find(f => f.font === item.fontFamily)) {
+          fonts.push({font: item.fontFamily});
+        }
+      });
+    }
+    this.setState({
+      googleFonts: fonts
+    })
+  }
+
   render() {
     const classes = this.props.classes;
 
@@ -262,37 +291,46 @@ class ViewPagesPreview extends React.Component {
       return "";
     }
 
-    console.log(this.state.pageConfig)
+    const style = {
+      backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
+      backgroundRepeat: this.state.pageConfig.backgroundRepeat
+          ? "repeat"
+          : "no-repeat",
+      backgroundSize: this.state.pageConfig.backgroundStretch
+          ? "cover"
+          : "auto",
+      backgroundColor: this.state.pageConfig.backgroundColor,
+      fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
+      fontFamily: this.state.fontFamily,
+      color: this.state.pageConfig.textColor,
+    };
+
+    delete style.backgroundImage;
+    delete style.backgroundColor;
+
+    style.minHeight = "100%";
 
     return (
       <React.Fragment>
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
+        <GoogleFontLoader
+            fonts={this.state.googleFonts}
+        />
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>
               <div
                 className={classes.gridLayout}
-                style={{
-                  backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
-                  backgroundRepeat: this.state.pageConfig.backgroundRepeat
-                    ? "repeat"
-                    : "no-repeat",
-                  backgroundSize: this.state.pageConfig.backgroundStretch
-                    ? "cover"
-                    : "auto",
-                  backgroundColor: this.state.pageConfig.backgroundColor,
-                  fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
-                  fontFamily: this.state.fontFamily,
-                  color: this.state.pageConfig.textColor,
-                }}
+                style={style}
               >
                 <ResponsiveReactGridLayout
                   style={{
                     fontSize: `${this.state.fontSize}${this.state.fontUnit}`,
                     fontFamily: this.state.fontFamily,
                     color: this.state.pageConfig.textColor,
+                    minHeight: "100%"
                   }}
                   margin={this.state.pageConfig.layoutBoxSpacing}
                   {...this.props}

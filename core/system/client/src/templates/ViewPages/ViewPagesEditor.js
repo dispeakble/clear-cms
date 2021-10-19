@@ -26,6 +26,8 @@ import { Helmet } from "react-helmet";
 // for the modal
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import fontsList from "../../config/google_fonts.js";
+import GoogleFontLoader from 'react-google-font-loader';
 
 // for the styling side-menu
 
@@ -84,13 +86,7 @@ class ViewPagesEditor extends React.PureComponent {
     showBoxOptions: false,
     itemEditId: "",
     itemModuleEditId: "",
-    fontFamilies: [
-      { label: "Arial" },
-      { label: "Calibri" },
-      { label: "Cambria" },
-      { label: "Times New Roman" },
-      { label: "Verdana" },
-    ],
+    fontFamilies: fontsList,
     bgColor: "#FFF",
     bgGradientColor:"",
     pageBase64Image: false,
@@ -265,8 +261,32 @@ class ViewPagesEditor extends React.PureComponent {
         },
         label: "Add",
       },
-    }
+    },
+    googleFonts: [
+      {
+        font: 'Roboto'
+      }
+    ]
   };
+
+  setUsedGoogleFonts() {
+    const fonts = [];
+
+    if(this.state.fontFamily && this.state.fontFamily.length) {
+      fonts.push({font: this.state.fontFamily});
+    }
+
+    if(this.state.items && this.state.items.length) {
+      this.state.items.map((item) => {
+        if(!fonts.find(f => f.font === item.fontFamily)) {
+          fonts.push({font: item.fontFamily});
+        }
+      });
+    }
+    this.setState({
+      googleFonts: fonts
+    })
+  }
 
   async updateBoxList(boxes) {
     await this.setAsyncState({
@@ -340,6 +360,9 @@ class ViewPagesEditor extends React.PureComponent {
       pageConfig: currentPage.pageConfig,
       editPage: currentPage.editPage,
     });
+
+    this.setUsedGoogleFonts();
+
   }
   async componentDidMount() {
     let editing = this.state.editing;
@@ -897,14 +920,6 @@ class ViewPagesEditor extends React.PureComponent {
     this.setState({ showModuleOptionsModal: false });
   }
 
-  getFontFamilyItem(name) {
-    return this.state.fontFamilies[
-      this.state.fontFamilies.findIndex((font) => {
-        return font.label === name;
-      })
-    ];
-  }
-
   getCategoryItem(id) {
     return this.state.categories[
       this.state.categories.findIndex((category) => {
@@ -1020,6 +1035,11 @@ class ViewPagesEditor extends React.PureComponent {
       palette: this.props.defaultTheme,
 
       overrides: {
+        MuiSwitch: {
+          switchBase: {
+            color: this.props.defaultTheme.primary.main
+          }
+        },
         MuiIconButton:{
           root: {
             color: "blue"
@@ -1087,8 +1107,9 @@ class ViewPagesEditor extends React.PureComponent {
 
   handleFontFamily = async (event, newValue) => {
     await this.setAsyncState({
-      fontFamily: newValue.label,
+      fontFamily: newValue.family,
     });
+    this.setUsedGoogleFonts();
   };
   handleTemplateChange = async (event, newValue) => {
     await this.setAsyncState({
@@ -1277,6 +1298,9 @@ class ViewPagesEditor extends React.PureComponent {
     await this.setAsyncState({
       addAnItem: !this.state.addAnItem
     });
+
+    this.setUsedGoogleFonts();
+
   }
 
   pageTitleRef = createRef()
@@ -1418,6 +1442,9 @@ class ViewPagesEditor extends React.PureComponent {
 
     return (
       <React.Fragment>
+        <GoogleFontLoader
+            fonts={this.state.googleFonts}
+        />
         <Helmet>
           <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
         </Helmet>
@@ -1448,6 +1475,7 @@ class ViewPagesEditor extends React.PureComponent {
                     showBoxOptions: false
                   })
                 }}
+                fontFamilies={this.state.fontFamilies}
                 item={this.state.boxEditorProps.item}
                 showModal={this.state.showBoxOptions} />}
             {this.state.showEditMenu && (
@@ -1480,7 +1508,6 @@ class ViewPagesEditor extends React.PureComponent {
                 handleBgImage={this.handleBgImage}
                 handleBackgroundDelete={this.handleBackgroundDelete}
                 handleTemplateChange={this.handleTemplateChange}
-                getFontFamilyItem={this.getFontFamilyItem}
                 closePageOptionsModal={()=>this.closePageOptionsModal()}
                 handleInputChange={this.handleInputChange}
                 handleBoxSpacing={this.handleBoxSpacing}

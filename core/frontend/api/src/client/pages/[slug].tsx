@@ -4,8 +4,6 @@ import Head from 'next/head'
 import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 
 import { withRouter } from 'next/router';
-import getConfig from "next/config";
-import axios from "axios";
 
 
 const PageComponent: NextPage = (props) => {
@@ -19,7 +17,6 @@ const PageComponent: NextPage = (props) => {
               />
           </Head>
           <ViewPagesPreview {...props} />
-
       </>
   )
 };
@@ -57,7 +54,6 @@ export async function getServerSideProps(context: any) {
         });
         const res = obs.toPromise();
         result = await res;
-        console.log(result['data']);
     } catch (err) {
         console.log(err);
         return {
