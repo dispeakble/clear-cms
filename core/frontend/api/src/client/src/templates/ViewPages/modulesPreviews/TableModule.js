@@ -7,58 +7,18 @@ import Icon from "@material-ui/core/Icon";
 class TableModule extends Component {
   state = {
     columns: [],
-    data: [
-      {
-        id: 1,
-        email: "george.bluth@reqres.in",
-        first_name: "George",
-        last_name: "Bluth",
-        avatar: "https://reqres.in/img/faces/1-image.jpg",
-      },
-      {
-        id: 2,
-        email: "janet.weaver@reqres.in",
-        first_name: "Janet",
-        last_name: "Weaver",
-        avatar: "https://reqres.in/img/faces/2-image.jpg",
-      },
-      {
-        id: 3,
-        email: "emma.wong@reqres.in",
-        first_name: "Emma",
-        last_name: "Wong",
-        avatar: "https://reqres.in/img/faces/3-image.jpg",
-      },
-      {
-        id: 4,
-        email: "eve.holt@reqres.in",
-        first_name: "Eve",
-        last_name: "Holt",
-        avatar: "https://reqres.in/img/faces/4-image.jpg",
-      },
-      {
-        id: 5,
-        email: "charles.morris@reqres.in",
-        first_name: "Charles",
-        last_name: "Morris",
-        avatar: "https://reqres.in/img/faces/5-image.jpg",
-      },
-      {
-        id: 6,
-        email: "tracey.ramos@reqres.in",
-        first_name: "Tracey",
-        last_name: "Ramos",
-        avatar: "https://reqres.in/img/faces/6-image.jpg",
-      },
+    previewData: [
+
     ],
     tableConfig: {},
   };
 
   componentDidMount() {
-    if (this.props.element.moduleOptions.data) {
+    if (this.props.element.moduleOptions.previewData) {
       this.setState({
-        columns: this.props.element.moduleOptions.data.columns,
-        tableConfig: this.props.element.moduleOptions.data.tableConfig,
+        previewData: this.props.element.moduleOptions.previewData,
+        columns: this.props.element.moduleOptions.columns,
+        tableConfig: this.props.element.moduleOptions.tableConfig,
       });
     }
   }
@@ -113,14 +73,13 @@ class TableModule extends Component {
       },
       getPreviewData: () => {
         console.log(this.state.previewData);
-        console.log(this.state.data);
         return new Promise((resolve) => {
           //TODO ADD NEW STATE FOR TABLE DATA/VALUES
           setTimeout(() => {
             let payload = {
               totalCount: 100,
               page: 1,
-              data: this.state.data ? this.state.data : this.state.previewData,
+              data: this.state.previewData,
             };
             resolve(payload);
           }, 300);
