@@ -170,13 +170,21 @@ class TableModule extends Component {
 
         this.closeMultipleDeleteModal();
     };
+    
+    async refreshPreview(){
+        await this.setAsyncState({
+            showPreview: false,
+        });
+        await this.setAsyncState({
+            showPreview: true,
+        });
+    }
 
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "rowsOnPage":
                 await this.setAsyncState({rowsOnPage: event.target.value});
-                dataTableOptions.props.options.pageSize = this.state.rowsOnPage;
-                tableOptions.actions.refreshPreview();
+                this.refreshPreview();
                 break;
             case "dataUrl":
                 //TODO use this for dynamic tables
@@ -196,27 +204,19 @@ class TableModule extends Component {
                 });
 
                 await this.setAsyncState({ dataUrl });
-                tableOptions.actions.refreshPreview();*/
+                this.refreshPreview();*/
 
                 break;
             case "leftNumber":
                 await this.setAsyncState({leftNumber: event.target.value});
-                dataTableOptions.props.options.fixedColumns = {
-                    left: this.state.leftNumber,
-                    right: this.state.rightNumber,
-                };
-                tableOptions.actions.refreshPreview();
+                this.refreshPreview();
                 console.log(this.state.leftNumber);
                 console.log(this.state.rightNumber);
                 break;
 
             case "rightNumber":
                 await this.setAsyncState({rightNumber: event.target.value});
-                dataTableOptions.props.options.fixedColumns = {
-                    left: this.state.leftNumber,
-                    right: this.state.rightNumber,
-                };
-                tableOptions.actions.refreshPreview();
+                this.refreshPreview();
                 console.log(this.state.leftNumber);
                 console.log(this.state.rightNumber);
                 break;
@@ -590,7 +590,7 @@ class TableModule extends Component {
                                         });
                                         dataTableOptions.props.options.search = this.state.search;
                                         this.saveChangedStyles();
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>
@@ -665,7 +665,7 @@ class TableModule extends Component {
                                                     }),
                                             }
                                             : {};
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>
@@ -682,7 +682,7 @@ class TableModule extends Component {
                                         });
                                         dataTableOptions.props.options.paging = this.state.pagination;
                                         this.saveChangedStyles();
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>
@@ -727,7 +727,7 @@ class TableModule extends Component {
                                         });
                                         dataTableOptions.props.options.draggable = this.state.columnDrag;
                                         this.saveChangedStyles();
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>
@@ -743,7 +743,7 @@ class TableModule extends Component {
                                             filter: !this.state.filter,
                                         });
                                         dataTableOptions.props.options.filtering = this.state.filter;
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>
@@ -831,7 +831,7 @@ class TableModule extends Component {
                                         });
                                         dataTableOptions.props.options.exportButton = this.state.export;
                                         this.saveChangedStyles();
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>
@@ -847,7 +847,7 @@ class TableModule extends Component {
                                         });
                                         dataTableOptions.props.options.sorting = this.state.sortable;
                                         this.saveChangedStyles();
-                                        tableOptions.actions.refreshPreview();
+                                        this.refreshPreview();
                                     }}
                                 />
                             </Tooltip>

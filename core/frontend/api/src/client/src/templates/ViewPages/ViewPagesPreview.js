@@ -33,11 +33,7 @@ class ViewPagesPreview extends React.Component {
     layouts: {},
     //pageDataLoaded: false,
     modals: [],
-    googleFonts: [
-      {
-        font: 'Roboto'
-      }
-    ]
+    googleFonts: []
   };
 
   setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -268,13 +264,13 @@ class ViewPagesPreview extends React.Component {
   setUsedGoogleFonts() {
     const fonts = [];
 
-    if(this.state.pageConfig.fontFamily && this.state.pageConfig.fontFamily.length) {
-      fonts.push({font: this.state.pageConfig.fontFamily});
+    if(this.state.fontFamily && this.state.fontFamily.length) {
+      fonts.push({font: this.state.fontFamily});
     }
 
     if(this.state.items && this.state.items.length) {
       this.state.items.map((item) => {
-        if(!fonts.find(f => f.font === item.fontFamily)) {
+        if(item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
           fonts.push({font: item.fontFamily});
         }
       });
@@ -315,9 +311,9 @@ class ViewPagesPreview extends React.Component {
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
-        <GoogleFontLoader
+        { this.state.googleFonts.length && <GoogleFontLoader
             fonts={this.state.googleFonts}
-        />
+        /> }
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>
