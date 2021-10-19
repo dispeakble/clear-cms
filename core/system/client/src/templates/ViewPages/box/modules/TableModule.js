@@ -81,7 +81,7 @@ class TableModule extends Component {
         const tableConfig = this.props.moduleOptions?.tableConfig;
         if(tableConfig) {
             this.setState({
-                previewData: tableConfig.previewData || [],
+                previewData: this.props.moduleOptions?.previewData || [],
                 definedColumns: tableConfig.definedColumns || [],
                 search: tableConfig.search,
                 editable: tableConfig.editable,
