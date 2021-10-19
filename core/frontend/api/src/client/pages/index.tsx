@@ -54,7 +54,6 @@ export async function getServerSideProps(context: any) {
         });
         const res = obs.toPromise();
         result = await res;
-        console.log(result['data']);
     } catch (err) {
         console.log(err);
         return {

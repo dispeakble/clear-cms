@@ -77,6 +77,11 @@ class ViewBoxAdvanced extends React.PureComponent {
         return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
+                MuiSwitch: {
+                    switchBase: {
+                        color: this.props.defaultTheme.primary.main
+                    }
+                },
                 MuiFormControl: {
                     root: {
                         backgroundColor: "white",

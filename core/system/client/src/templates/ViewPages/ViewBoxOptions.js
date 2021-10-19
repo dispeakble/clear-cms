@@ -88,10 +88,17 @@ class ViewBoxOptions extends React.Component {
 
         const content = {};
 
+        const payload = {
+            defaultTheme: this.props.defaultTheme,
+            onUpdate: (data) => this.onUpdate(data),
+            item: this.item,
+            fontFamilies: this.props.fontFamilies
+        };
+
         //this time it won't be lazy loaded
-        content['general'] = <ViewBoxGeneral defaultTheme={this.props.defaultTheme} onUpdate={(data) => this.onUpdate(data)} item={this.item} />;
-        content['appearance'] = <ViewBoxAppearance defaultTheme={this.props.defaultTheme} onUpdate={(data) => this.onUpdate(data)} item={this.item} />;
-        content['advanced'] = <ViewBoxAdvanced defaultTheme={this.props.defaultTheme} onUpdate={(data) => this.onUpdate(data)} item={this.item} />;
+        content['general'] = <ViewBoxGeneral {...payload} />;
+        content['appearance'] = <ViewBoxAppearance {...payload} />;
+        content['advanced'] = <ViewBoxAdvanced {...payload} />;
         const modalProps = {
             id: "boxEditor",
             name: "boxModal",
@@ -131,6 +138,7 @@ export default withStyles(styles)(ViewBoxOptions);
 
 ViewBoxOptions.propTypes = {
     item: PropTypes.object,
+    fontFamilies: PropTypes.array,
     classes: PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,

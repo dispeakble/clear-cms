@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 
 import { Helmet } from "react-helmet";
 import BoxModal from "../../components/BoxModal/BoxModal";
+import GoogleFontLoader from 'react-google-font-loader';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -34,8 +35,12 @@ class ViewPagesPreview extends React.Component {
     modals: [],
     layouts: {},
     fontUnit: "rem",
-    openedAccordionLink: {},
-    page_id:0
+    page_id:0,
+    googleFonts: [
+      {
+        font: 'Roboto'
+      }
+    ]
   };
 
   navigateToUrl() {
@@ -115,6 +120,9 @@ class ViewPagesPreview extends React.Component {
               label: el.displayOptions.actionButtonTitle,
             },
           })
+
+      this.setUsedGoogleFonts();
+
       this.setState({
         modalItems: modalItems
       })
@@ -289,11 +297,30 @@ class ViewPagesPreview extends React.Component {
 
   onLayoutChange = (layout, layouts) => {
     try {
-      this.setState({ layouts: layouts });
+      this.setState({layouts: layouts});
     } catch (err) {
       console.log(err);
     }
   };
+
+  setUsedGoogleFonts() {
+    const fonts = [];
+
+    if(this.state.fontFamily && this.state.fontFamily.length) {
+      fonts.push({font: this.state.fontFamily});
+    }
+
+    if(this.state.items && this.state.items.length) {
+      this.state.items.map((item) => {
+        if(!fonts.find(f => f.font === item.fontFamily)) {
+          fonts.push({font: item.fontFamily});
+        }
+      });
+    }
+    this.setState({
+      googleFonts: fonts
+    })
+  }
 
   render() {
     const classes = this.props.classes;
@@ -328,6 +355,9 @@ class ViewPagesPreview extends React.Component {
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
+        <GoogleFontLoader
+            fonts={this.state.googleFonts}
+        />
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>
