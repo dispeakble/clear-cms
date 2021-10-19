@@ -262,11 +262,7 @@ class ViewPagesEditor extends React.PureComponent {
         label: "Add",
       },
     },
-    googleFonts: [
-      {
-        font: 'Roboto'
-      }
-    ]
+    googleFonts: []
   };
 
   setUsedGoogleFonts() {
@@ -278,7 +274,7 @@ class ViewPagesEditor extends React.PureComponent {
 
     if(this.state.items && this.state.items.length) {
       this.state.items.map((item) => {
-        if(!fonts.find(f => f.font === item.fontFamily)) {
+        if(item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
           fonts.push({font: item.fontFamily});
         }
       });
@@ -1442,9 +1438,9 @@ class ViewPagesEditor extends React.PureComponent {
 
     return (
       <React.Fragment>
-        <GoogleFontLoader
+        { this.state.googleFonts.length && <GoogleFontLoader
             fonts={this.state.googleFonts}
-        />
+        /> }
         <Helmet>
           <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
         </Helmet>

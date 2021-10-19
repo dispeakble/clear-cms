@@ -36,11 +36,7 @@ class ViewPagesPreview extends React.Component {
     layouts: {},
     fontUnit: "rem",
     page_id:0,
-    googleFonts: [
-      {
-        font: 'Roboto'
-      }
-    ]
+    googleFonts: []
   };
 
   navigateToUrl() {
@@ -312,7 +308,7 @@ class ViewPagesPreview extends React.Component {
 
     if(this.state.items && this.state.items.length) {
       this.state.items.map((item) => {
-        if(!fonts.find(f => f.font === item.fontFamily)) {
+        if(item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
           fonts.push({font: item.fontFamily});
         }
       });
@@ -355,9 +351,9 @@ class ViewPagesPreview extends React.Component {
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
-        <GoogleFontLoader
+        { this.state.googleFonts.length && <GoogleFontLoader
             fonts={this.state.googleFonts}
-        />
+        /> }
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>
