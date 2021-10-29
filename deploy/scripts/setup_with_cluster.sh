@@ -32,9 +32,9 @@ if [ -z "$(command -v kubectl)" ]; then
 fi
 
 DOCKERHUB_USERNAME="cmsbot"
-DOCKERHUB_PASS="yTazvEWhtEbk4mv"
+DOCKERHUB_PASS="uB8V7B6IR5ll"
 BITBUCKET_USERNAME="the_dispeakble_one"
-BITBUCKET_PASS="He@cmkGN7q^cl2n"
+BITBUCKET_PASS="3!mV11JPhaxh"
 
 sudo apt update
 sudo apt upgrade -y
