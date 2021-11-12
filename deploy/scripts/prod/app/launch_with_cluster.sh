@@ -21,11 +21,6 @@ if [ -z "$(dpkg --list | grep open-iscsi)" ]; then
   apt-get install -y open-iscsi
 fi
 
-if [ -z "$(dpkg --list | grep 'GNU bc arbitrary precision calculator language')" ]; then
-  apt-get update
-  apt-get install -y bc
-fi
-
 
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 
@@ -54,17 +49,11 @@ function createCluster() {
 
     rancherLogin
 
-    sleep 5
-
-    echo "-------------------------------------------------------------------"
-
-    echo $(rancher cluster kf $1)
-
-    echo "-------------------------------------------------------------------"
-
     rancher cluster kf $1 >~/.kube/config
 
     kubectl create secret docker-registry dockerhub --docker-username=$DOCKERHUB_USERNAME --docker-password="$DOCKERHUB_PASS"
+
+    rancher cluster kf $CLUSTER_NAME >~/.kube/config
 
     # Replacing localhost IP to real IP
     MY_IP=$(get_my_ip)
@@ -78,14 +67,17 @@ clusterExists() {
 }
 
 function checkCluster() {
+    echo "The cluster is being built. Please wait..."
     CLUSTER_STATE=0
     wait_count=0
-    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 900)); do
-      if [ "$wait_count" -gt 180 ]; then
-        echo -en "\rThe cluster is still building... If this message does not go away please contact the administrator"
+    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 190)); do
+      if [ "$wait_count" -gt 95 ]; then
+
+        echo -en "\r If this message does not go away please contact the administrator"
         else
-        echo -en "\rBuilding cluster. $(echo "scale=2; 100 / 180 * $wait_count" | bc)% complete. Time elapsed: $wait_count seconds "
+        echo -en "\r$(echo "scale=2; 100 / 95 * $wait_count" | bc)% - ( $wait_count seconds ) complete"
       fi
+
         sleep 1
         wait_count=$((wait_count + 1))
         CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
@@ -121,7 +113,7 @@ function waitForCatalog() {
 }
 
 function waitForApp() {
-  if [[ "$(rancher app ls -o yaml)" == *"deploying" ]]; then
+  if [[ "$(rancher app ls -o yaml | grep $1)" == *"deploying" ]]; then
     printf '.' > /dev/tty
     sleep 3
     waitForApp $1
@@ -165,11 +157,11 @@ function launchLonghorn () {
     rancher namespace create longhorn-system
   fi
 
-  waitForCatalog "cattle-global-data:library-longhorn"
-
   if [ -z "$(getApp longhorn)" ]; then
-    rancher app install --no-prompt --namespace longhorn-system \
-    --version 1.1.2 \
+    rancher app install --version 1.1.1 --no-prompt --namespace longhorn-system \
+    --set persistence.defaultClassReplicaCount="1" \
+    --set service.ui.type="Rancher-Proxy" \
+    --set service.ui.nodePort="" \
     --helm-timeout 300 \
     --helm-wait \
     cattle-global-data:library-longhorn longhorn
@@ -215,8 +207,6 @@ function launchRedis() {
   rancher app install --no-prompt --namespace default \
    --set architecture=standalone \
    --set global.storageClass=longhorn \
-   --set master.persistence.size=1Gi \
-   --set replica.persistence.size=1Gi \
    --set master.service.type=NodePort \
    --set master.service.nodePort=$REDIS_NODE_PORT \
    --set global.redis.password=$REDIS_PASSWORD \
@@ -252,13 +242,12 @@ function launchPostgreSQL() {
 
   rancher app install --no-prompt --namespace default \
    --set postgresql.initdbScriptsCM=dbconfig \
-   --set global.postgresql.username=$POSTGRES_USERNAME \
-   --set global.postgresql.password=$POSTGRES_PASSWORD \
+   --set postgresql.username=$POSTGRES_USERNAME \
+   --set postgresql.password=$POSTGRES_PASSWORD \
    --set global.postgresql.database=$POSTGRES_DB \
    --set postgresql.repmgrPassword=$POSTGRES_PASSWORD \
    --set pgpool.adminPassword=$POSTGRES_PASSWORD \
    --set global.storageClass=longhorn \
-   --set persistence.size=2Gi \
    --helm-timeout 300 \
    --helm-wait \
    cattle-global-data:bitnami-postgresql-ha postgresql-ha
@@ -292,7 +281,6 @@ function launchPGAdmin() {
    --set env.email=$PGADMIN_EMAIL \
    --set env.password=$PGADMIN_PASSWORD \
    --set global.storageClass=longhorn \
-   --set persistentVolume.size=1Gi \
    --set service.type=NodePort \
    --set service.nodePort=$PGADMIN_NODEPORT \
    --helm-timeout 300 \
@@ -339,24 +327,23 @@ function createConfig() {
   rancher kubectl apply -f "configMaps/$1"
 }
 
-sleep 10
-
 rancherForceLogin
-
-#clusterExists $CMS_NAME ||
-createCluster $CMS_NAME
-checkCluster $CMS_NAME
 
 sleep 2
 rancherLogin
+#clusterExists $CMS_NAME || createCluster $CMS_NAME
+rancherLogin
+sleep 2
+checkCluster $CMS_NAME
+
 sleep 2
 launchLonghorn
 rancher context switch Default
 addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
 sleep 10
 
-#launchMetalLB # TODO LEAVE THIS COMMENTED FOR DEVELOPERS
-#launchTraefik # TODO LEAVE THIS COMMENTED FOR DEVELOPERS
+launchMetalLB
+#launchTraefik
 
 launchRedis
 

@@ -33,7 +33,8 @@ class ViewPagesPreview extends React.Component {
     layouts: {},
     //pageDataLoaded: false,
     modals: [],
-    googleFonts: []
+    googleFonts: [],
+    modalItems: {}
   };
 
   setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -311,9 +312,9 @@ class ViewPagesPreview extends React.Component {
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
-        { this.state.googleFonts.length && <GoogleFontLoader
+        { this.state.googleFonts.length ? <GoogleFontLoader
             fonts={this.state.googleFonts}
-        /> }
+        /> : ""}
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>
@@ -346,7 +347,7 @@ class ViewPagesPreview extends React.Component {
               </div>
             </div>
           </MuiThemeProvider>
-          {this.state.modalItems && Object.keys(this.state.modalItems).map(itemKey => <BoxModal
+          {Object.keys(this.state.modalItems).map(itemKey => <BoxModal
               key={itemKey}
               showModal={this.state.modalItems[itemKey].show}
               {...this.state.modalItems[itemKey]}

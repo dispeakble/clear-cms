@@ -36,7 +36,8 @@ class ViewPagesPreview extends React.Component {
     layouts: {},
     fontUnit: "rem",
     page_id:0,
-    googleFonts: []
+    googleFonts: [],
+    modalItems: {}
   };
 
   navigateToUrl() {
@@ -351,9 +352,9 @@ class ViewPagesPreview extends React.Component {
         <Helmet>
           <title>{this.state.pageConfig.pageTitle} </title>
         </Helmet>
-        { this.state.googleFonts.length && <GoogleFontLoader
+        { this.state.googleFonts.length ? <GoogleFontLoader
             fonts={this.state.googleFonts}
-        /> }
+        /> : "" }
         <div className={classes.previewBodyWrapper}>
           <MuiThemeProvider theme={this.getTheme()}>
             <div className={classes.gridHolder}>
@@ -379,14 +380,14 @@ class ViewPagesPreview extends React.Component {
                   cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                   useCSSTransforms={false}
                 >
-                  {this.state.items
+                  {this.state.items.length
                     ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
                     : ""}
                 </ResponsiveReactGridLayout>
               </div>
             </div>
           </MuiThemeProvider>
-          {this.state.modalItems && Object.keys(this.state.modalItems).map(itemKey => <BoxModal
+          {Object.keys(this.state.modalItems).map(itemKey => <BoxModal
               showModal={this.state.modalItems[itemKey].show}
               {...this.state.modalItems[itemKey]}
           />)}

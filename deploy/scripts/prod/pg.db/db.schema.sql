@@ -2,40 +2,11 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.13
--- Dumped by pg_dump version 11.13
+-- Dumped from database version 11.12
+-- Dumped by pg_dump version 11.12
 
--- Started on 2021-11-12 22:01:57 UTC
+-- Started on 2021-08-05 10:56:28 UTC
 
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- TOC entry 719 (class 1247 OID 16596)
--- Name: label_enum_types; Type: TYPE; Schema: public; Owner: cms
---
-
-CREATE TYPE public.label_enum_types AS ENUM (
-    'numeric',
-    'string',
-    'boolean',
-    'date',
-    'datetime',
-    'time',
-    'array',
-    'object'
-);
-
-
-ALTER TYPE public.label_enum_types OWNER TO cms;
 
 --
 -- TOC entry 196 (class 1259 OID 16451)
@@ -53,8 +24,6 @@ CREATE SEQUENCE public.admin_themes_id_seq
 ALTER TABLE public.admin_themes_id_seq OWNER TO cms;
 
 SET default_tablespace = '';
-
-SET default_with_oids = false;
 
 --
 -- TOC entry 197 (class 1259 OID 16453)
@@ -152,78 +121,6 @@ CREATE TABLE public.categories (
 ALTER TABLE public.categories OWNER TO cms;
 
 --
--- TOC entry 224 (class 1259 OID 16569)
--- Name: dashboard_box_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.dashboard_box_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.dashboard_box_seq OWNER TO cms;
-
---
--- TOC entry 225 (class 1259 OID 16571)
--- Name: dashboard_box; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.dashboard_box (
-    id integer DEFAULT nextval('public.dashboard_box_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
-    module character varying,
-    fontsize smallint,
-    fontfamily character varying,
-    textcolor character varying,
-    borderwidth smallint,
-    bordercolor character varying,
-    borderradius smallint,
-    bgcolor character varying,
-    height smallint,
-    width smallint,
-    moduleoptions character varying,
-    x smallint,
-    y smallint,
-    showscrollbars smallint
-);
-
-
-ALTER TABLE public.dashboard_box OWNER TO cms;
-
---
--- TOC entry 243 (class 1259 OID 16659)
--- Name: ecommerce_templates_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.ecommerce_templates_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.ecommerce_templates_id_seq OWNER TO cms;
-
---
--- TOC entry 244 (class 1259 OID 16661)
--- Name: ecommerce_templates; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.ecommerce_templates (
-    id integer DEFAULT nextval('public.ecommerce_templates_id_seq'::regclass) NOT NULL,
-    type character varying NOT NULL,
-    template_id integer NOT NULL,
-    title character varying NOT NULL
-);
-
-
-ALTER TABLE public.ecommerce_templates OWNER TO cms;
-
---
 -- TOC entry 203 (class 1259 OID 16481)
 -- Name: gallery_images_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
@@ -255,7 +152,7 @@ CREATE TABLE public.gallery_images (
 ALTER TABLE public.gallery_images OWNER TO cms;
 
 --
--- TOC entry 3141 (class 0 OID 0)
+-- TOC entry 3032 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: COLUMN gallery_images.link; Type: COMMENT; Schema: public; Owner: cms
 --
@@ -264,7 +161,7 @@ COMMENT ON COLUMN public.gallery_images.link IS '- the link to which the user sh
 
 
 --
--- TOC entry 3142 (class 0 OID 0)
+-- TOC entry 3033 (class 0 OID 0)
 -- Dependencies: 204
 -- Name: COLUMN gallery_images.path; Type: COMMENT; Schema: public; Owner: cms
 --
@@ -301,143 +198,6 @@ CREATE TABLE public.gallery_module (
 
 
 ALTER TABLE public.gallery_module OWNER TO cms;
-
---
--- TOC entry 238 (class 1259 OID 16641)
--- Name: images_to_products_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.images_to_products_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.images_to_products_id_seq OWNER TO cms;
-
---
--- TOC entry 239 (class 1259 OID 16643)
--- Name: images_to_products_image_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.images_to_products_image_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.images_to_products_image_id_seq OWNER TO cms;
-
---
--- TOC entry 240 (class 1259 OID 16645)
--- Name: images_to_products; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.images_to_products (
-    id integer DEFAULT nextval('public.images_to_products_id_seq'::regclass) NOT NULL,
-    image_id integer DEFAULT nextval('public.images_to_products_image_id_seq'::regclass) NOT NULL,
-    product_id integer NOT NULL,
-    extension character varying NOT NULL,
-    ordernumber integer NOT NULL,
-    date_added bigint NOT NULL,
-    active smallint NOT NULL
-);
-
-
-ALTER TABLE public.images_to_products OWNER TO cms;
-
---
--- TOC entry 241 (class 1259 OID 16653)
--- Name: labels_to_products_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.labels_to_products_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.labels_to_products_id_seq OWNER TO cms;
-
---
--- TOC entry 242 (class 1259 OID 16655)
--- Name: labels_to_products; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.labels_to_products (
-    id integer DEFAULT nextval('public.labels_to_products_id_seq'::regclass) NOT NULL,
-    product_id integer NOT NULL,
-    label_id integer NOT NULL
-);
-
-
-ALTER TABLE public.labels_to_products OWNER TO cms;
-
---
--- TOC entry 232 (class 1259 OID 16620)
--- Name: localities_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.localities_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.localities_id_seq OWNER TO cms;
-
---
--- TOC entry 233 (class 1259 OID 16622)
--- Name: localities; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.localities (
-    id integer DEFAULT nextval('public.localities_id_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
-    country_id character varying NOT NULL,
-    gps character varying,
-    active smallint NOT NULL
-);
-
-
-ALTER TABLE public.localities OWNER TO cms;
-
---
--- TOC entry 234 (class 1259 OID 16629)
--- Name: locality_to_products_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.locality_to_products_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.locality_to_products_id_seq OWNER TO cms;
-
---
--- TOC entry 235 (class 1259 OID 16631)
--- Name: locality_to_products; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.locality_to_products (
-    id integer DEFAULT nextval('public.locality_to_products_id_seq'::regclass) NOT NULL,
-    product_id integer NOT NULL,
-    locality_id integer NOT NULL
-);
-
-
-ALTER TABLE public.locality_to_products OWNER TO cms;
 
 --
 -- TOC entry 207 (class 1259 OID 16499)
@@ -510,7 +270,7 @@ CREATE TABLE public.page_config (
 ALTER TABLE public.page_config OWNER TO cms;
 
 --
--- TOC entry 210 (class 1259 OID 16515)
+-- TOC entry 210 (class 1259 OID 16517)
 -- Name: pages_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
 
@@ -525,7 +285,7 @@ CREATE SEQUENCE public.pages_id_seq
 ALTER TABLE public.pages_id_seq OWNER TO cms;
 
 --
--- TOC entry 211 (class 1259 OID 16517)
+-- TOC entry 211 (class 1259 OID 16519)
 -- Name: pages; Type: TABLE; Schema: public; Owner: cms
 --
 
@@ -543,7 +303,7 @@ CREATE TABLE public.pages (
 ALTER TABLE public.pages OWNER TO cms;
 
 --
--- TOC entry 212 (class 1259 OID 16524)
+-- TOC entry 212 (class 1259 OID 16528)
 -- Name: pages_to_boxes_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
 
@@ -558,7 +318,7 @@ CREATE SEQUENCE public.pages_to_boxes_id_seq
 ALTER TABLE public.pages_to_boxes_id_seq OWNER TO cms;
 
 --
--- TOC entry 213 (class 1259 OID 16526)
+-- TOC entry 213 (class 1259 OID 16530)
 -- Name: pages_to_boxes; Type: TABLE; Schema: public; Owner: cms
 --
 
@@ -568,14 +328,14 @@ CREATE TABLE public.pages_to_boxes (
     box_id integer NOT NULL,
     x smallint,
     y smallint,
-    template_used smallint DEFAULT 0 NOT NULL
+    template_used smallint NOT NULL DEFAULT 0
 );
 
 
 ALTER TABLE public.pages_to_boxes OWNER TO cms;
 
 --
--- TOC entry 214 (class 1259 OID 16531)
+-- TOC entry 214 (class 1259 OID 16534)
 -- Name: pages_to_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
 
@@ -590,7 +350,7 @@ CREATE SEQUENCE public.pages_to_categories_id_seq
 ALTER TABLE public.pages_to_categories_id_seq OWNER TO cms;
 
 --
--- TOC entry 215 (class 1259 OID 16533)
+-- TOC entry 215 (class 1259 OID 16536)
 -- Name: pages_to_categories; Type: TABLE; Schema: public; Owner: cms
 --
 
@@ -604,7 +364,7 @@ CREATE TABLE public.pages_to_categories (
 ALTER TABLE public.pages_to_categories OWNER TO cms;
 
 --
--- TOC entry 216 (class 1259 OID 16537)
+-- TOC entry 216 (class 1259 OID 16540)
 -- Name: pages_to_config_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
 
@@ -619,7 +379,7 @@ CREATE SEQUENCE public.pages_to_config_id_seq
 ALTER TABLE public.pages_to_config_id_seq OWNER TO cms;
 
 --
--- TOC entry 217 (class 1259 OID 16539)
+-- TOC entry 217 (class 1259 OID 16542)
 -- Name: pages_to_config; Type: TABLE; Schema: public; Owner: cms
 --
 
@@ -633,133 +393,7 @@ CREATE TABLE public.pages_to_config (
 ALTER TABLE public.pages_to_config OWNER TO cms;
 
 --
--- TOC entry 236 (class 1259 OID 16635)
--- Name: prices_to_products_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.prices_to_products_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.prices_to_products_id_seq OWNER TO cms;
-
---
--- TOC entry 237 (class 1259 OID 16637)
--- Name: prices_to_products; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.prices_to_products (
-    id integer DEFAULT nextval('public.prices_to_products_id_seq'::regclass) NOT NULL,
-    product_id integer NOT NULL,
-    currency smallint NOT NULL,
-    value integer NOT NULL,
-    active smallint NOT NULL
-);
-
-
-ALTER TABLE public.prices_to_products OWNER TO cms;
-
---
--- TOC entry 226 (class 1259 OID 16578)
--- Name: product_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.product_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.product_id_seq OWNER TO cms;
-
---
--- TOC entry 230 (class 1259 OID 16593)
--- Name: product_labels_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.product_labels_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.product_labels_id_seq OWNER TO cms;
-
---
--- TOC entry 231 (class 1259 OID 16613)
--- Name: product_labels; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.product_labels (
-    id integer DEFAULT nextval('public.product_labels_id_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
-    value character varying,
-    description character varying,
-    type public.label_enum_types NOT NULL,
-    active smallint NOT NULL
-);
-
-
-ALTER TABLE public.product_labels OWNER TO cms;
-
---
--- TOC entry 228 (class 1259 OID 16587)
--- Name: product_to_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.product_to_categories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.product_to_categories_id_seq OWNER TO cms;
-
---
--- TOC entry 227 (class 1259 OID 16580)
--- Name: products; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.products (
-    id integer DEFAULT nextval('public.product_id_seq'::regclass) NOT NULL,
-    title character varying NOT NULL,
-    description character varying,
-    active smallint NOT NULL,
-    added bigint NOT NULL,
-    last_edited bigint NOT NULL,
-    availability daterange,
-    unavailability daterange
-);
-
-
-ALTER TABLE public.products OWNER TO cms;
-
---
--- TOC entry 229 (class 1259 OID 16589)
--- Name: products_to_categories; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.products_to_categories (
-    id integer DEFAULT nextval('public.product_to_categories_id_seq'::regclass) NOT NULL,
-    product_id integer NOT NULL,
-    category_id integer NOT NULL
-);
-
-
-ALTER TABLE public.products_to_categories OWNER TO cms;
-
---
--- TOC entry 218 (class 1259 OID 16543)
+-- TOC entry 218 (class 1259 OID 16546)
 -- Name: public_themes_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
 
@@ -774,7 +408,7 @@ CREATE SEQUENCE public.public_themes_id_seq
 ALTER TABLE public.public_themes_id_seq OWNER TO cms;
 
 --
--- TOC entry 219 (class 1259 OID 16545)
+-- TOC entry 219 (class 1259 OID 16548)
 -- Name: public_themes; Type: TABLE; Schema: public; Owner: cms
 --
 
@@ -799,36 +433,7 @@ CREATE TABLE public.public_themes (
 ALTER TABLE public.public_themes OWNER TO cms;
 
 --
--- TOC entry 222 (class 1259 OID 16560)
--- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
---
-
-CREATE SEQUENCE public.settings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    MAXVALUE 2147483647
-    CACHE 1;
-
-
-ALTER TABLE public.settings_id_seq OWNER TO cms;
-
---
--- TOC entry 223 (class 1259 OID 16562)
--- Name: settings; Type: TABLE; Schema: public; Owner: cms
---
-
-CREATE TABLE public.settings (
-    id integer DEFAULT nextval('public.settings_id_seq'::regclass) NOT NULL,
-    data character varying NOT NULL,
-    is_default smallint NOT NULL
-);
-
-
-ALTER TABLE public.settings OWNER TO cms;
-
---
--- TOC entry 220 (class 1259 OID 16552)
+-- TOC entry 221 (class 1259 OID 24772)
 -- Name: users; Type: TABLE; Schema: public; Owner: cms
 --
 
@@ -848,7 +453,7 @@ CREATE TABLE public.users (
 ALTER TABLE public.users OWNER TO cms;
 
 --
--- TOC entry 221 (class 1259 OID 16558)
+-- TOC entry 220 (class 1259 OID 24770)
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: cms
 --
 
@@ -864,16 +469,325 @@ CREATE SEQUENCE public.users_id_seq
 ALTER TABLE public.users_id_seq OWNER TO cms;
 
 --
--- TOC entry 3143 (class 0 OID 0)
--- Dependencies: 221
+-- TOC entry 3034 (class 0 OID 0)
+-- Dependencies: 220
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: cms
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
+CREATE SEQUENCE public.settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.settings_id_seq OWNER TO cms;
+
 --
--- TOC entry 2951 (class 2604 OID 16668)
+-- TOC entry 211 (class 1259 OID 16519)
+-- Name: settings; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.settings (
+    id integer DEFAULT nextval('public.settings_id_seq'::regclass) NOT NULL,
+    data character varying NOT NULL,
+    is_default smallint NOT NULL
+);
+
+
+ALTER TABLE public.settings OWNER TO cms;
+
+
+CREATE SEQUENCE public.dashboard_box_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.dashboard_box_seq OWNER TO cms;
+
+--
+-- TOC entry 199 (class 1259 OID 16462)
+-- Name: dashboard_box; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.dashboard_box (
+    id integer DEFAULT nextval('public.dashboard_box_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    module character varying,
+    fontsize smallint,
+    fontfamily character varying,
+    textcolor character varying,
+    borderwidth smallint,
+    bordercolor character varying,
+    borderradius smallint,
+	bgcolor character varying,
+    height smallint,
+    width smallint,
+    moduleoptions character varying,
+    x smallint,
+    y smallint,
+    showscrollbars smallint
+);
+
+-- Products
+CREATE SEQUENCE public.product_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.product_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.products (
+    id integer DEFAULT nextval('public.product_id_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    description character varying,
+    active smallint NOT NULL,
+    added bigint NOT NULL,
+    last_edited bigint NOT NULL,
+    availability daterange,
+    unavailability daterange
+);
+
+
+ALTER TABLE public.products OWNER TO cms;
+
+-- Products_to_categories
+CREATE SEQUENCE public.product_to_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.product_to_categories_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.products_to_categories (
+    id integer DEFAULT nextval('public.product_to_categories_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    category_id integer NOT NULL
+);
+
+
+ALTER TABLE public.products_to_categories OWNER TO cms;
+
+-- Products Labels
+CREATE SEQUENCE public.product_labels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+CREATE TYPE label_enum_types AS ENUM ('numeric', 'string', 'boolean', 'date', 'datetime', 'time', 'array', 'object');
+
+ALTER TABLE public.product_labels_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.product_labels (
+    id integer DEFAULT nextval('public.product_labels_id_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    value character varying,
+    description character varying,
+    type label_enum_types NOT NULL,
+    active smallint NOT NULL
+);
+
+
+ALTER TABLE public.product_labels OWNER TO cms;
+
+-- Products Localities
+CREATE SEQUENCE public.localities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.localities_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.localities (
+    id integer DEFAULT nextval('public.localities_id_seq'::regclass) NOT NULL,
+    title character varying NOT NULL,
+    country_id character varying NOT NULL,
+    gps character varying,
+    active smallint NOT NULL
+);
+
+
+ALTER TABLE public.localities OWNER TO cms;
+
+-- Locality to Products
+CREATE SEQUENCE public.locality_to_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.locality_to_products_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.locality_to_products (
+    id integer DEFAULT nextval('public.locality_to_products_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    locality_id integer NOT NULL
+);
+
+
+ALTER TABLE public.locality_to_products OWNER TO cms;
+
+-- Prices to Products
+CREATE SEQUENCE public.prices_to_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.prices_to_products_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.prices_to_products (
+    id integer DEFAULT nextval('public.prices_to_products_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    currency smallint NOT NULL,
+    value integer NOT NULL,
+    active smallint NOT NULL
+);
+
+
+ALTER TABLE public.prices_to_products OWNER TO cms;
+
+-- Images to Products
+CREATE SEQUENCE public.images_to_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.images_to_products_id_seq OWNER TO cms;
+
+CREATE SEQUENCE public.images_to_products_image_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.images_to_products_image_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.images_to_products (
+    id integer DEFAULT nextval('public.images_to_products_id_seq'::regclass) NOT NULL,
+    image_id integer DEFAULT nextval('public.images_to_products_image_id_seq'::regclass)  NOT NULL,
+    product_id integer NOT NULL,
+    extension character varying NOT NULL,
+    ordernumber integer NOT NULL,
+    date_added bigint NOT NULL,
+    active smallint NOT NULL
+);
+
+
+ALTER TABLE public.images_to_products OWNER TO cms;
+
+
+-- Labels to Products
+CREATE SEQUENCE public.labels_to_products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+ALTER TABLE public.labels_to_products_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.labels_to_products (
+    id integer DEFAULT nextval('public.labels_to_products_id_seq'::regclass) NOT NULL,
+    product_id integer NOT NULL,
+    label_id integer NOT NULL
+);
+
+
+ALTER TABLE public.labels_to_products OWNER TO cms;
+
+
+-- ecommerce_templates:
+CREATE SEQUENCE public.ecommerce_templates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 2147483647
+    CACHE 1;
+
+
+ALTER TABLE public.ecommerce_templates_id_seq OWNER TO cms;
+
+--
+-- TOC entry 202 (class 1259 OID 16473)
+-- Name: categories; Type: TABLE; Schema: public; Owner: cms
+--
+
+CREATE TABLE public.ecommerce_templates (
+    id integer DEFAULT nextval('public.ecommerce_templates_id_seq'::regclass) NOT NULL,
+    type character varying NOT NULL,
+    template_id integer NOT NULL,
+    title character varying NOT NULL
+);
+
+
+ALTER TABLE public.ecommerce_templates OWNER TO cms;
+
+--
+-- TOC entry 2872 (class 2604 OID 24775)
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: cms
 --
 
@@ -881,7 +795,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
--- TOC entry 2965 (class 2606 OID 16670)
+-- TOC entry 2874 (class 2606 OID 16556)
 -- Name: admin_themes admin_themes_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -890,7 +804,7 @@ ALTER TABLE ONLY public.admin_themes
 
 
 --
--- TOC entry 2976 (class 2606 OID 16672)
+-- TOC entry 2885 (class 2606 OID 16558)
 -- Name: page_box box_style_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -899,7 +813,7 @@ ALTER TABLE ONLY public.page_box
 
 
 --
--- TOC entry 2970 (class 2606 OID 16674)
+-- TOC entry 2879 (class 2606 OID 16560)
 -- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -908,16 +822,7 @@ ALTER TABLE ONLY public.categories
 
 
 --
--- TOC entry 2997 (class 2606 OID 16696)
--- Name: dashboard_box dashboard_box_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.dashboard_box
-    ADD CONSTRAINT dashboard_box_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2972 (class 2606 OID 16676)
+-- TOC entry 2881 (class 2606 OID 16562)
 -- Name: gallery_images gallery_images_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -926,7 +831,7 @@ ALTER TABLE ONLY public.gallery_images
 
 
 --
--- TOC entry 2974 (class 2606 OID 16678)
+-- TOC entry 2883 (class 2606 OID 16564)
 -- Name: gallery_module gallery_module_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -935,7 +840,7 @@ ALTER TABLE ONLY public.gallery_module
 
 
 --
--- TOC entry 2968 (class 2606 OID 16680)
+-- TOC entry 2877 (class 2606 OID 16566)
 -- Name: auth_admin id_pk; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -944,43 +849,7 @@ ALTER TABLE ONLY public.auth_admin
 
 
 --
--- TOC entry 3011 (class 2606 OID 16710)
--- Name: images_to_products images_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.images_to_products
-    ADD CONSTRAINT images_to_products_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3013 (class 2606 OID 16712)
--- Name: labels_to_products labels_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.labels_to_products
-    ADD CONSTRAINT labels_to_products_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3005 (class 2606 OID 16704)
--- Name: localities localities_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.localities
-    ADD CONSTRAINT localities_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3007 (class 2606 OID 16706)
--- Name: locality_to_products locality_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.locality_to_products
-    ADD CONSTRAINT locality_to_products_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2978 (class 2606 OID 16682)
+-- TOC entry 2887 (class 2606 OID 16516)
 -- Name: page_config page_config_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -989,7 +858,7 @@ ALTER TABLE ONLY public.page_config
 
 
 --
--- TOC entry 2980 (class 2606 OID 16684)
+-- TOC entry 2889 (class 2606 OID 16527)
 -- Name: pages pages_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -998,7 +867,7 @@ ALTER TABLE ONLY public.pages
 
 
 --
--- TOC entry 2982 (class 2606 OID 16686)
+-- TOC entry 2891 (class 2606 OID 16568)
 -- Name: pages_to_boxes pages_to_boxes_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -1007,7 +876,7 @@ ALTER TABLE ONLY public.pages_to_boxes
 
 
 --
--- TOC entry 2984 (class 2606 OID 16688)
+-- TOC entry 2893 (class 2606 OID 16570)
 -- Name: pages_to_categories pages_to_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -1016,7 +885,7 @@ ALTER TABLE ONLY public.pages_to_categories
 
 
 --
--- TOC entry 2986 (class 2606 OID 16690)
+-- TOC entry 2895 (class 2606 OID 16572)
 -- Name: pages_to_config pages_to_config_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -1025,43 +894,7 @@ ALTER TABLE ONLY public.pages_to_config
 
 
 --
--- TOC entry 3009 (class 2606 OID 16708)
--- Name: prices_to_products prices_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.prices_to_products
-    ADD CONSTRAINT prices_to_products_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3003 (class 2606 OID 16702)
--- Name: product_labels products_labels_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.product_labels
-    ADD CONSTRAINT products_labels_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2999 (class 2606 OID 16698)
--- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3001 (class 2606 OID 16700)
--- Name: products_to_categories products_to_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
---
-
-ALTER TABLE ONLY public.products_to_categories
-    ADD CONSTRAINT products_to_categories_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2988 (class 2606 OID 16692)
+-- TOC entry 2897 (class 2606 OID 16574)
 -- Name: public_themes public_themes_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
@@ -1070,16 +903,87 @@ ALTER TABLE ONLY public.public_themes
 
 
 --
--- TOC entry 2995 (class 2606 OID 16694)
+-- TOC entry 2904 (class 2606 OID 24780)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: dashboard_box box_style_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.dashboard_box
+    ADD CONSTRAINT dashboard_box_pkey PRIMARY KEY (id);
 
 --
--- TOC entry 2966 (class 1259 OID 16713)
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.products_to_categories
+    ADD CONSTRAINT products_to_categories_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: product_labels products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.product_labels
+    ADD CONSTRAINT products_labels_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: localities localities_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.localities
+    ADD CONSTRAINT localities_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: locality_to_products locality_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.locality_to_products
+    ADD CONSTRAINT locality_to_products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: prices_to_products prices_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.prices_to_products
+    ADD CONSTRAINT prices_to_products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: images_to_products images_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.images_to_products
+    ADD CONSTRAINT images_to_products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2885 (class 2606 OID 16558)
+-- Name: labels_to_products labels_to_products_pkey; Type: CONSTRAINT; Schema: public; Owner: cms
+--
+
+ALTER TABLE ONLY public.labels_to_products
+    ADD CONSTRAINT labels_to_products_pkey PRIMARY KEY (id);
+
+--
+-- TOC entry 2875 (class 1259 OID 16575)
 -- Name: email_idx; Type: INDEX; Schema: public; Owner: cms
 --
 
@@ -1087,7 +991,7 @@ CREATE UNIQUE INDEX email_idx ON public.auth_admin USING btree (email COLLATE "C
 
 
 --
--- TOC entry 2989 (class 1259 OID 16714)
+-- TOC entry 2898 (class 1259 OID 24786)
 -- Name: u_accessed; Type: INDEX; Schema: public; Owner: cms
 --
 
@@ -1095,7 +999,7 @@ CREATE INDEX u_accessed ON public.users USING btree (accessed);
 
 
 --
--- TOC entry 2990 (class 1259 OID 16715)
+-- TOC entry 2899 (class 1259 OID 24782)
 -- Name: u_active; Type: INDEX; Schema: public; Owner: cms
 --
 
@@ -1103,7 +1007,7 @@ CREATE INDEX u_active ON public.users USING btree (active);
 
 
 --
--- TOC entry 2991 (class 1259 OID 16716)
+-- TOC entry 2900 (class 1259 OID 24785)
 -- Name: u_added; Type: INDEX; Schema: public; Owner: cms
 --
 
@@ -1111,7 +1015,7 @@ CREATE INDEX u_added ON public.users USING btree (added);
 
 
 --
--- TOC entry 2992 (class 1259 OID 16717)
+-- TOC entry 2901 (class 1259 OID 24783)
 -- Name: u_email; Type: INDEX; Schema: public; Owner: cms
 --
 
@@ -1119,7 +1023,7 @@ CREATE INDEX u_email ON public.users USING btree (email COLLATE "C.UTF-8");
 
 
 --
--- TOC entry 2993 (class 1259 OID 16718)
+-- TOC entry 2902 (class 1259 OID 24784)
 -- Name: u_type; Type: INDEX; Schema: public; Owner: cms
 --
 
@@ -1127,7 +1031,7 @@ CREATE INDEX u_type ON public.users USING btree (type);
 
 
 --
--- TOC entry 3140 (class 0 OID 0)
+-- TOC entry 3031 (class 0 OID 0)
 -- Dependencies: 3
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: cms
 --
@@ -1138,7 +1042,7 @@ GRANT ALL ON SCHEMA public TO cms;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2021-11-12 22:01:58 UTC
+-- Completed on 2021-08-05 10:56:28 UTC
 
 --
 -- PostgreSQL database dump complete
