@@ -23,7 +23,7 @@ function install_rancher_cli() {
 
 
 
-cp ../binaries/rancher /usr/bin
+cp binaries/rancher /usr/bin
 
 
 

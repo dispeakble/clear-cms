@@ -10,11 +10,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { withRouter } from "react-router-dom";
 
 // for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "components/CustomButtons/Button.js";
+import Modal from "../../components/Modal/Modal";
 
 import { Edit, DeleteForever, Visibility } from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -32,6 +28,24 @@ class Pages extends Component {
         pageToDeleteId: "",
         deleteQty: 0,
         isTemplate: false,
+        deleteModalProps: {
+            name: "deleteSelectedImages",
+            title: "Delete selected pages",
+            content: "Are you sure you want to delete these pages?",
+            closeButton: {
+                callback: () => {
+                    this.closeDeleteModal()
+                },
+                label: "Cancel",
+            },
+            confirmButton: {
+                show: true,
+                callback: () => {
+                    this.deleteCallback()
+                },
+                label: "Delete",
+            },
+        }
     };
 
     componentDidMount() {
@@ -286,52 +300,11 @@ class Pages extends Component {
                         </MuiThemeProvider>
                     </div>
                 </div>
-                <Dialog
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showDeleteModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeDeleteModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <div>Are you sure you want to delete the selected pages?</div>
-                    </DialogContent>
-
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            disabled={this.state.isBtnDisabled}
-                            color="transparent"
-                            simple
-                            onClick={() => this.deleteCallback()}
-                        >
-                            <div>Delete</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            simple
-                            onClick={() => {
-                                this.closeDeleteModal();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Modal
+                    modalSize="small"
+                showModal={this.state.showDeleteModal}
+                {...this.state.deleteModalProps}
+                />
             </React.Fragment>
         );
     }

@@ -1,51 +1,43 @@
-import React, { Component } from "react";
-import Button from "components/CustomButtons/Button.js";
-
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
-import ArtTrack from "@material-ui/icons/ArtTrack";
-
-import { withStyles, createTheme } from "@material-ui/core/styles";
+import React, {Component} from "react";
+import {withStyles, createTheme} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {Checkbox, TextField} from "@material-ui/core";
 import {CheckBox, CheckBoxOutlineBlank} from "@material-ui/icons";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
 
 class ProductModule extends Component {
     state = {
         itemModuleEditId: "",
         showModuleOptionsModal: false,
         modalTitle: "Product Details content",
-        displayOptions: [],
-        displayOptionsList: [{
+        productProperty: [],
+        productPropertyList: [{
             label: "Title",
             value: "title"
-        },{
+        }, {
             label: "Description",
             value: "description"
-        },{
+        }, {
             label: "Category",
             value: "category"
-        },{
+        }, {
             label: "Locality",
             value: "locality"
-        },{
+        }, {
             label: "Labels",
             value: "labels"
-        },{
+        }, {
             label: "Availability",
             value: "availability"
-        },{
+        }, {
             label: "Unavailability",
             value: "unavailability"
-        },{
+        }, {
             label: "Prices",
             value: "prices"
-        },{
+        }, {
             label: "Gallery",
             value: "gallery"
         }]
@@ -68,13 +60,13 @@ class ProductModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     closeModuleOptionsModal() {
-        this.setState({ showModuleOptionsModal: false });
+        this.setState({showModuleOptionsModal: false});
     }
 
     handleEdit = async (id) => {
         if (this.props.moduleOptions.data) {
             await this.setAsyncState({
-                displayOptions: this.props.moduleOptions.data.displayOptions,
+                productProperty: this.props.moduleOptions.data.productProperty,
             });
         }
         await this.setAsyncState({
@@ -84,104 +76,60 @@ class ProductModule extends Component {
     };
 
     render() {
-        const classes = this.props.classes;
         return (
-            <div
-                style={{
-                    textAlign: "center",
-                }}
-            >
-                <IconButton
-                    onClick={() => this.handleEdit(this.props.boxId)}
-                    color="primary"
-                    size="medium"
-                >
-                    <ArtTrack />
-                </IconButton>
-
-                <Dialog
-                    onBackdropClick={() => "false"}
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showModuleOptionsModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeModuleOptionsModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <Autocomplete
-                            multiple
-                            id="productOptionsDropdown"
-                            onChange={async (event, label) => await this.setAsyncState({
-                                displayOptions: label,
-                            })}
-                            disableCloseOnSelect
-                            className={this.props.classes.option}
-                            value={this.state.displayOptions.length ? this.state.displayOptions : []}
-                            options={this.state.displayOptionsList}
-                            autoHighlight
-                            getOptionLabel={(option) => option.label || ""}
-                            renderOption={(props, option) => (
-                                <span {...props}>
+            <div>
+                <div>
+                    <Typography gutterBottom>
+                        Which part of the product to display:
+                    </Typography>
+                </div>
+                <div>
+                    <Autocomplete
+                        onChange={async (event, label) => {
+                            this.setState({
+                                productProperty: label
+                            });
+                            this.props.onUpdate({
+                                productProperty: this.state.productProperty
+                            });
+                        }}
+                        disableCloseOnSelect
+                        className={this.props.classes.option}
+                        value={this.state.productProperty.length ? this.state.productProperty : []}
+                        options={this.state.productPropertyList}
+                        autoHighlight
+                        getOptionLabel={(option) => option.label || ""}
+                        renderOption={(props, option) => (
+                            <span {...props}>
                                     <Checkbox
-                                        icon={<CheckBoxOutlineBlank fontSize={"small"} />}
-                                        checkedIcon={<CheckBox fontSize={"small"} />}
-                                        style={{ marginRight: 8 }}
+                                        icon={<CheckBoxOutlineBlank fontSize={"small"}/>}
+                                        checkedIcon={<CheckBox fontSize={"small"}/>}
+                                        style={{marginRight: 8}}
                                         checked={option.selected}
                                     />
-                                    {props.label}
+                                {props.label}
                                 </span>
-                            )}
-                            renderInput={(params) => (
-                                <TextField
-                                    className={this.props.classes.textfield}
-                                    label="Select Display Option"
-                                    {...params}
-                                    variant="outlined"
-                                />
-                            )}
-                        />
-                    </DialogContent>
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            disabled={this.state.isBtnDisabled}
-                            color="primary"
-                            onClick={() => {
-                                this.props.handleSave(this.state.itemModuleEditId, {
-                                    displayOptions: this.state.displayOptions
-                                });
-                                this.closeModuleOptionsModal();
-                            }}
-                        >
-                            <div>Save</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            onClick={async () => {
-                                this.closeModuleOptionsModal();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                        )}
+                        renderInput={(params) => (
+                            <TextField
+                                className={this.props.classes.textfield}
+                                label="Product property"
+                                {...params}
+                                variant="outlined"
+                            />
+                        )}
+                    />
+                </div>
             </div>
         );
     }
 }
 
 export default withStyles(styles)(ProductModule);
+
+ProductModule.propTypes = {
+    classes: PropTypes.object,
+    defaultTheme: PropTypes.object,
+    moduleOptions: PropTypes.object,
+    onUpdate: PropTypes.func
+};

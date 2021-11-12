@@ -21,6 +21,14 @@ if [ -z "$(command -v curl)" ]; then
   sudo apt-get -y install curl
 fi
 
+if [ -z "$(command -v jq)" ]; then
+  sudo apt-get -y install jq
+fi
+
+if [ -z "$(command -v bc)" ]; then
+  sudo apt-get -y install bc
+fi
+
 if [ -z "$(command -v docker)" ]; then
   installService "infrastructure/install-docker.sh"
 fi
