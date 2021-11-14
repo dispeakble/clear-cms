@@ -37,7 +37,6 @@ import GoogleFontLoader from 'react-google-font-loader';
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 
-import ViewBoxEditor from "./ViewBoxEditor";
 import Modal from "../../components/Modal/Modal";
 import ViewPagesPreview from "./ViewPagesPreview";
 import PropTypes from "prop-types";
@@ -123,7 +122,6 @@ class ViewPagesEditor extends React.PureComponent {
     textColorStyles: {},
     editPage: null,
     livePreview: false,
-    dialogTitleError:false,
     boxEditorProps: {
       item: {},
     },
@@ -705,6 +703,9 @@ class ViewPagesEditor extends React.PureComponent {
                     onEndEditingModule={() => this.onEndEditingModule()}
                     boxId={el.i}
                     moduleOptions={el.moduleOptions}
+                    pageOptions={{
+                      page_id: this.state.page_id
+                    }}
                     pageId={this.state.page_id}
                     handleSave={async (id, data) => {
                       await this.saveModuleOptions(id, data);
@@ -879,7 +880,7 @@ class ViewPagesEditor extends React.PureComponent {
   handleInputChange = async (event) => {
     switch (event.target.id) {
       case "pageTitle":
-        this.setState({ pageTitle: event.target.value, dialogTitleError: false });
+        this.setState({ pageTitle: event.target.value });
         break;
       case "pageLink":
         this.setState({ pageLink: event.target.value });
@@ -1216,7 +1217,7 @@ class ViewPagesEditor extends React.PureComponent {
 
     pickerColor.background = this.state[targetedColor];
     return (
-      <div>
+      <div style={{margin: "0 12px"}}>
         <div
           style={this.state[styles].swatch}
           onClick={() => this.handleClick(displayColorPicker)}
@@ -1289,42 +1290,35 @@ class ViewPagesEditor extends React.PureComponent {
 
   }
 
-  pageTitleRef = createRef()
   savePage = async () => {
-    let pageConfig = this.preparePageConfiguration();
-    if (this.state.pageTitle.length === 0) {
-      this.openPageOptionsModal()
-      this.setState({dialogTitleError: true})
-      setTimeout(() => this.pageTitleRef.current.focus(), 1000)
-    } else {
-      if (this.state.editing) {
-        let page = {
-          id: this.state.page_id,
-          pageConfig: pageConfig,
-          items: this.state.items,
-        };
-        await this.props.control.edit({...page, editPage: this.state.editPage});
+    const pageConfig = this.preparePageConfiguration();
+    if (this.state.editing) {
+      const page = {
+        id: this.state.page_id,
+        pageConfig: pageConfig,
+        items: this.state.items,
+      };
+      await this.props.control.edit({...page, editPage: this.state.editPage});
 
+      this.setState({
+        showSavedMessage: true
+      });
+
+      setTimeout(() => {
         this.setState({
-          showSavedMessage: true
-        });
+          showSavedMessage: false
+        })
+      }, 3000);
 
-        setTimeout(() => {
-          this.setState({
-            showSavedMessage: false
-          })
-        }, 3000);
+    } else {
+      let newPage = {
+        pageConfig: pageConfig,
+        items: this.state.items,
+      };
+      const pagedata = await this.props.control.add(newPage);
 
-      } else {
-        let newPage = {
-          pageConfig: pageConfig,
-          items: this.state.items,
-        };
-    const pagedata = await this.props.control.add(newPage);
+      this.props.history.push(`/pages/edit/${pagedata.pageId}`);
 
-    this.props.history.push(`/pages/edit/${pagedata.pageId}`);
-
-      }
     }
   };
 
@@ -1466,10 +1460,8 @@ class ViewPagesEditor extends React.PureComponent {
                 showModal={this.state.showBoxOptions} />}
 
             <ViewPageOptions
-                {...this.props}
                 data={this.state}
                 defaultTheme={this.props.defaultTheme}
-                control={this.props.control}
                 createColorPicker={this.createColorPicker}
                 createGradientColorPicker={this.createGradientColorPicker}
                 handleBgImage={this.handleBgImage}
@@ -1481,33 +1473,33 @@ class ViewPagesEditor extends React.PureComponent {
                 handlePageOptions={(data) => this.setState(data)}
                 handleFontSize={this.handleFontSize}
                 handleFontFamily={this.handleFontFamily}
-                pageTitleRef={this.pageTitleRef}
                 handleCategory={this.handleCategory}
                 handleCategoryUniqueness={this.handleCategoryUniqueness}
             />
 
             <Modal
                 showModal={this.state.showDiscardModal}
-                {
-                  ...{
-                    name: "discardModal",
-                    title: this.state.modalTitle,
-                    modalSize: "small",
-                    content: <Typography>All changes will be lost. Are you sure you want to continue?</Typography>,
-                    confirmButton: {
-                      callback: () => this.props.history.push("/pages"),
-                      label: "Ok",
-                    },
-                    closeButton: {
-                      callback: () => {
-                        this.closeDiscardModal()
-                      },
-                      label: "Cancel",
-                    }
-                  }
-                }
+                name="discardModal"
+                title={this.state.modalTitle}
+                modalSize="small"
+                content={<Typography>All changes will be lost. Are you sure you want to continue?</Typography>}
+                confirmButton={{
+                  callback: () => this.props.history.push("/pages"),
+                  label: "Ok",
+                }}
+                closeButton={{
+                  callback: () => {
+                    this.closeDiscardModal()
+                  },
+                  label: "Cancel",
+                }}
             />
-            { this.state.livePreview ? <ViewPagesPreview hideBackground={true} isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.preparePageConfiguration()}} /> : <></>}
+            { this.state.livePreview ? <ViewPagesPreview
+                hideBackground={true}
+                isLivePreview={true}
+                control={this.props.control}
+                items={this.state.items}
+                pageConfig={this.preparePageConfiguration()} /> : <></>}
             { !this.state.livePreview ? <div className={classes.gridLayout}>
               <div
                   style={{
