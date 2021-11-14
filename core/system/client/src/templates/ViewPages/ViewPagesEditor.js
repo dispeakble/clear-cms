@@ -94,7 +94,7 @@ class ViewPagesEditor extends React.PureComponent {
     backgroundImageFile: "",
     fontSize: 1,
     textColor: "#000000",
-    fontFamily: "Arial",
+    fontFamily: "Roboto",
     pageTitle: "",
     pageLink: "",
     showBgColorPicker: false,
@@ -760,7 +760,6 @@ class ViewPagesEditor extends React.PureComponent {
       let items = this.state.items;
 
       const targetItem = Object.assign({}, existingItem);
-      targetItem.newItem = true;
       targetItem.i = newId + "";
       targetItem.x = 0;
       targetItem.y = Infinity;
@@ -775,11 +774,9 @@ class ViewPagesEditor extends React.PureComponent {
       items.push(targetItem);
 
       await this.setAsyncState({
-        // Add a new item. It must have a unique key!
         items: items
       });
       await this.setAsyncState({
-        // Add a new item. It must have a unique key!
         addAnItem: !this.state.addAnItem
       });
       window.scrollTo(0,document.body.scrollHeight);
@@ -802,7 +799,7 @@ class ViewPagesEditor extends React.PureComponent {
 
       newId++;
 
-      let items = this.state.items;
+      //let items = this.state.items;
       const item = {
         newItem: true,
         title: "New Box",
@@ -823,15 +820,7 @@ class ViewPagesEditor extends React.PureComponent {
         w: 12,
         h: 20,
       };
-      items.push(item);
 
-      await this.setAsyncState({
-        items: items,
-      });
-      await this.setAsyncState({
-        // Add a new item. It must have a unique key!
-        addAnItem: !this.state.addAnItem
-      });
 
       await this.setAsyncState({
         boxEditorProps: {
@@ -865,7 +854,7 @@ class ViewPagesEditor extends React.PureComponent {
     try {
       let newItems = layout.map((item) => {
         let oldItem = this.getItemById(item.i);
-        oldItem["x"] = item["x"];
+        oldItem.x = item.x;
         oldItem.y = item.y;
         oldItem.w = item.w;
         oldItem.h = item.h;
@@ -1275,16 +1264,17 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   async saveBox(data) {
+
     const items = this.state.items;
 
-    if(data.i) {
+    if(data.newItem) {
+      delete data.newItem;
+      items.push(data);
+    } else {
       const itemIndex = items.findIndex(
           (item) => Number(data.i) === Number(item.i)
       );
       items[itemIndex] = data;
-    } else {
-      data.i = "1";
-      items.push(data);
     }
 
     await this.setAsyncState({
@@ -1438,9 +1428,9 @@ class ViewPagesEditor extends React.PureComponent {
 
     return (
       <React.Fragment>
-        { this.state.googleFonts.length && <GoogleFontLoader
+        { this.state.googleFonts.length ? <GoogleFontLoader
             fonts={this.state.googleFonts}
-        /> }
+        /> : <></>}
         <Helmet>
           <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
         </Helmet>
@@ -1474,25 +1464,6 @@ class ViewPagesEditor extends React.PureComponent {
                 fontFamilies={this.state.fontFamilies}
                 item={this.state.boxEditorProps.item}
                 showModal={this.state.showBoxOptions} />}
-            {this.state.showEditMenu && (
-              <ViewBoxEditor
-                onCancel={() => {
-                  this.setState({
-                    showEditMenu: false,
-                    pageTransitionPadding: "",
-                  });
-                }}
-                onSave={(item) => {
-                  this.setState({
-                    //editItem: item,
-                    showEditMenu: false,
-                    pageTransitionPadding: "",
-                  });
-                }}
-                defaultTheme={this.props.defaultTheme}
-                data={this.state.boxEditorProps}
-              />
-            )}
 
             <ViewPageOptions
                 {...this.props}
@@ -1536,8 +1507,8 @@ class ViewPagesEditor extends React.PureComponent {
                   }
                 }
             />
-            { this.state.livePreview && <ViewPagesPreview hideBackground={true} isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.preparePageConfiguration()}} />}
-            { !this.state.livePreview && <div className={classes.gridLayout}>
+            { this.state.livePreview ? <ViewPagesPreview hideBackground={true} isLivePreview={true} control={this.props.control} {...{items: this.state.items, pageConfig: this.preparePageConfiguration()}} /> : <></>}
+            { !this.state.livePreview ? <div className={classes.gridLayout}>
               <div
                   style={{
                     flexGrow: 1,
@@ -1568,7 +1539,7 @@ class ViewPagesEditor extends React.PureComponent {
                 </ResponsiveReactGridLayout>}
 
               </div>
-            </div>}
+            </div> : <></>}
             <div className={classes.bottomPane} style={{
               backgroundColor: this.props.defaultTheme?.background?.paper
             }}>
