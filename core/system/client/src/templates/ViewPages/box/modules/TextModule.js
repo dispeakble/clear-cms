@@ -23,8 +23,8 @@ class TextModule extends React.PureComponent {
         })
     }
 
-    handleInputChange(event) {
-        this.moduleOptions.textData = event;
+    handleInputChange(textData) {
+        this.moduleOptions.textData = textData;
         this.props.onUpdate(this.moduleOptions);
     }
 
