@@ -1,17 +1,9 @@
 import React, {Component} from "react";
-import Button from "components/CustomButtons/Button.js";
-import {WidgetsSharp} from "@material-ui/icons";
 import {DropzoneArea} from "material-ui-dropzone";
 
-import {withStyles, createTheme} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Typography from "@material-ui/core/Typography";
@@ -19,6 +11,7 @@ import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import {DeleteForever} from "@material-ui/icons";
 import PropTypes from "prop-types";
+import {FormControlLabel, FormGroup} from "@material-ui/core";
 
 class HeaderModule extends Component {
     state = {
@@ -36,8 +29,8 @@ class HeaderModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
-        if (this.props.moduleOptions.data) {
-            let moduleOptions = this.props.moduleOptions.data;
+        if (this.props.moduleOptions) {
+            let { moduleOptions } = this.props;
             this.setState({
                 isModuleSticky: moduleOptions.isModuleSticky,
                 backgroundRepeat: moduleOptions.backgroundRepeat,
@@ -138,122 +131,128 @@ class HeaderModule extends Component {
 
         return (
             <div style={{ textAlign: "center" }}>
-                <Typography style={{ flex: '0 1 ~ "calc(33% - 15px)"' }} gutterBottom>
-                    <Tooltip title="Make the header permanently visible">
-                        <Switch
-                            checked={this.state.isModuleSticky}
-                            onChange={async () => {
+                <FormGroup row>
+                    <div style={{ display: "flex" }}>
+                        <div style={{
+                                margin: "0 20px",
+                                width: "calc(50% - 10px)",
+                            }} >
+                            <CustomInput
+                                labelText="Logo Title"
+                                id="logoTitle"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => this.handleInputChange(event),
+                                }}
+                                inputProps={{
+                                    value: this.state.logoTitle,
+                                    type: "text",
+                                }}
+                            />
+                        </div>
+                        <div style={{ margin: "0 20px", width: "calc(50% - 10px)" }} >
+                            <CustomInput
+                                labelText="Logo Link"
+                                id="logoLink"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => this.handleInputChange(event),
+                                }}
+                                inputProps={{
+                                    value: this.state.logoLink,
+                                    type: "text",
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div><Typography gutterBottom>Upload Logo Image</Typography></div>
+                            {this.state.logoImageFile && <DeleteForever onClick={async () => {
                                 await this.setAsyncState({
-                                    isModuleSticky: !this.state.isModuleSticky,
-                                });
-                                this.props.onUpdate(this.state.item)
-                            }}
-                            value={this.state.isModuleSticky}
+                                    backgroundImage: "",
+                                    logoImageFile: ""
+                                })
+                                this.props.onUpdate(this.state);
+                            }} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                        </div>
+                        <DropzoneArea
+                            maxFileSize={Math.pow(1024, 3)}
+                            filesLimit={1}
+                            className={classes.dropzone}
+                            onChange={this.handleLogo.bind(this)}
                         />
-                    </Tooltip>
-                    Sticky Header
-                </Typography>
-                <Typography gutterBottom>
-                    <Tooltip title="Background Repeat">
-                        <Switch
-                            checked={this.state.backgroundRepeat}
-                            onChange={async () => {
+                    </div>
+                    <div>
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div><Typography gutterBottom>Upload Background Image</Typography></div>
+                            {this.state.backgroundImageFile && <DeleteForever onClick={async () => {
                                 await this.setAsyncState({
-                                    backgroundRepeat: !this.state.backgroundRepeat,
-                                });
-                                this.props.onUpdate(this.state.item)
-                            }}
-                            value={this.state.backgroundRepeat}
-                        />
-                    </Tooltip>
-                    Background Repeat
-                </Typography>
-                <Typography gutterBottom>
-                    <Tooltip title="Background Stretch">
-                        <Switch
-                            checked={this.state.backgroundStretch}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    backgroundStretch: !this.state.backgroundStretch,
-                                });
-                                this.props.onUpdate(this.state.item)
-                            }}
-                            value={this.state.backgroundStretch}
-                        />
-                    </Tooltip>
-                    Background Stretch
-                </Typography>
-                <div style={{ display: "flex" }}>
-                    <div style={{
-                            margin: "0 20px",
-                            width: "calc(50% - 10px)",
-                        }} >
-                        <CustomInput
-                            labelText="Logo Title"
-                            id="logoTitle"
-                            required="required"
-                            formControlProps={{
-                                fullWidth: true,
-                                onChange: (event) => this.handleInputChange(event),
-                            }}
-                            inputProps={{
-                                value: this.state.logoTitle,
-                                type: "text",
-                            }}
+                                    backgroundImage: "",
+                                    backgroundImageFile: ""
+                                })
+                                this.props.onUpdate(this.state);
+                            }} style={{color: this.props.defaultTheme.secondary.main}}/>}
+                        </div>
+                        <DropzoneArea
+                            maxFileSize={Math.pow(1024, 3)}
+                            filesLimit={1}
+                            className={classes.dropzone}
+                            onChange={this.handleBackground.bind(this)}
                         />
                     </div>
-                    <div style={{ margin: "0 20px", width: "calc(50% - 10px)" }} >
-                        <CustomInput
-                            labelText="Logo Link"
-                            id="logoLink"
-                            required="required"
-                            formControlProps={{
-                                fullWidth: true,
-                                onChange: (event) => this.handleInputChange(event),
-                            }}
-                            inputProps={{
-                                value: this.state.logoLink,
-                                type: "text",
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className={classes.dropzoneColumn}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <div><Typography gutterBottom>Upload Background Image</Typography></div>
-                        {this.state.backgroundImageFile && <DeleteForever onClick={async () => {
-                            await this.setAsyncState({
-                                backgroundImage: "",
-                                backgroundImageFile: ""
-                            })
-                            this.props.onUpdate(this.state.item);
-                        }} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                    </div>
-                    <DropzoneArea
-                        maxFileSize={Math.pow(1024, 3)}
-                        filesLimit={1}
-                        className={classes.dropzone}
-                        onChange={this.handleBackground.bind(this)}
-                    />
-                </div>
-                <div className={classes.dropzoneColumn}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <div><Typography gutterBottom>Upload Logo Image</Typography></div>
-                        {this.state.logoImageFile && <DeleteForever onClick={async () => {
-                            await this.setAsyncState({
-                                backgroundImage: "",
-                                logoImageFile: ""
-                            })
-                            this.props.onUpdate(this.state.item);
-                        }} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                    </div>
-                    <DropzoneArea
-                        maxFileSize={Math.pow(1024, 3)}
-                        filesLimit={1}
-                        className={classes.dropzone}
-                        onChange={this.handleLogo.bind(this)}
-                    />
-                </div>
+                    <Typography style={{ flex: '0 1 ~ "calc(33% - 15px)"' }} gutterBottom>
+                        <Tooltip title="Make the header permanently visible">
+                            <FormControlLabel
+                                control={<Switch
+                                    checked={this.state.isModuleSticky}
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            isModuleSticky: !this.state.isModuleSticky,
+                                        });
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />}
+                                label="Sticky Header" />
+                        </Tooltip>
+                    </Typography>
+                    <Typography gutterBottom>
+                        <Tooltip title="Background Repeat">
+                            <FormControlLabel
+                                control={<Switch
+                                    checked={this.state.backgroundRepeat}
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            backgroundRepeat: !this.state.backgroundRepeat,
+                                        });
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />}
+                                label="Background Repeat" />
+                        </Tooltip>
+                    </Typography>
+                    <Typography gutterBottom>
+                        <Tooltip title="Background Stretch">
+                            <FormControlLabel
+                                control={
+                                <Switch
+                                    checked={this.state.backgroundStretch}
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            backgroundStretch: !this.state.backgroundStretch,
+                                        });
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />}
+                                label="Background Stretch" />
+                        </Tooltip>
+                    </Typography>
+                </FormGroup>
             </div>
         );
     }

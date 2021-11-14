@@ -6,18 +6,20 @@ import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import {DropzoneArea} from "material-ui-dropzone";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
-import {Checkbox, MuiThemeProvider, TextField} from "@material-ui/core";
+import {FormControlLabel, FormGroup, MuiThemeProvider, TextField} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import clsx from "clsx";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "../../components/CustomButtons/Button";
-import React from "react";
+import React, {createRef} from "react";
 import {Helmet} from "react-helmet";
 import Modal from "../../components/Modal/Modal";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {createTheme, withStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import {ToggleButtonGroup} from "@material-ui/lab";
 
 
 const filter = createFilterOptions()
@@ -25,15 +27,35 @@ const filter = createFilterOptions()
 class ViewPageOptions extends React.PureComponent {
 
     state = {
-
+        contentType: "general",
+        dialogTitleError: false
     };
 
     muiTheme = {
 
     };
 
+    pageTitleRef = createRef()
+
     componentDidMount() {
         this.muiTheme = this.createDefaultTheme();
+    }
+
+    setAsyncState = (newState) =>
+        new Promise((resolve) => this.setState(newState, resolve));
+
+    toggleContentType(type) {
+        this.setState({
+            contentType: type
+        })
+    }
+
+    handleTabChange(event, nextView) {
+        if(nextView) {
+            this.setState({
+                contentType: nextView
+            })
+        }
     }
 
     renderPageOptions() {
@@ -43,298 +65,68 @@ class ViewPageOptions extends React.PureComponent {
                 <Helmet>
                     <title>{this.props.data.editing ? "Edit " : "Add"} {this.props.data.pageTitle || " page"}</title>
                 </Helmet>
-                <div className={this.props.classes.pageTitleInputWrapper}>
-                    <CustomInput
-                        labelText={this.props.data.isTemplate ? "Template Title" : "Page Title"}
-                        id="pageTitle"
-                        formControlProps={{
-                            fullWidth: true,
-                            onChange: (event) => this.props.handleInputChange(event),
-                        }}
-                        inputProps={{
-                            inputProps: {
-                                minLength: "1",
-                            },
-                            inputRef: this.props.pageTitleRef,
-                            value: this.props.data.pageTitle,
-                            type: "text",
-                        }}
-                        error={this.props.data.dialogTitleError}
-                    />{" "}
-                    {!this.props.data.isTemplate && <CustomInput
-                        labelText="Page Link"
-                        id="pageLink"
-                        required="required"
-                        formControlProps={{
-                            fullWidth: true,
-                            onChange: (event) => this.props.handleInputChange(event),
-                        }}
-                        inputProps={{
-                            required: true,
-                            inputProps: {
-                                minLength: "3",
-                                maxLength: "50",
-                            },
-                            value: this.props.data.pageLink,
-                            type: "text",
-                        }}
-                    />}
-                </div>
-                <div className={this.props.classes.pageOptionsDetails}>
-                    <div
-                        className={
-                            this.props.classes.column +
-                            " " +
-                            this.props.classes.columnSeparator
-                        }
+                <FormGroup column>
+                    <ToggleButtonGroup
+                        onChange={this.handleTabChange.bind(this)}
+                        value={this.state.contentType}
+                        exclusive
                     >
-                        <h4>Background Color</h4>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <div style={{display: "block"}}>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    { this.props.data.pageBackgroundColor && <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Tooltip title="Pick a background color">
-                                            {this.props.createColorPicker(
-                                                "bgColorStyles",
-                                                "showBgColorPicker",
-                                                "bgColor"
-                                            )}
-                                        </Tooltip>
-                                    </div> }
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Pick a background color">
-                                            <span>
-                                                <Switch
-                                                    value={this.props.data.pageBackgroundColor}
-                                                    checked={this.props.data.pageBackgroundColor}
-                                                    onChange={() => this.props.handlePageOptions({
-                                                        pageBackgroundGradient: false,
-                                                        pageBackgroundColor: !this.props.data
-                                                            .pageBackgroundColor,
-                                                    })
-                                                    }
-                                                />
-                                            Color</span>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                </div>
+                        <ToggleButton value="general" onClick={() => this.toggleContentType("general")}>
+                            General
+                        </ToggleButton>
+                        <ToggleButton value="appearance" onClick={() => this.toggleContentType("appearance")}>
+                            Appearance
+                        </ToggleButton>
+                        <ToggleButton value="advanced" onClick={() => this.toggleContentType("advanced")}>
+                            Advanced
+                        </ToggleButton>
+                    </ToggleButtonGroup>
 
-                            </div>
-                            <div>
-                                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                    { this.props.data.pageBackgroundGradient && <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Tooltip title="Pick gradient colors">
-                                            {this.props.createGradientColorPicker(
-                                                "bgColorStyles",
-                                                "showBgGradientColorPickerModal",
-                                                "bgGradientColor"
-                                            )}
-                                        </Tooltip>
-                                    </div> }
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Compose a background gradient instead of a solid color">
-                                            <span>
-                                                <Switch
-                                                value={this.props.data.pageBackgroundGradient}
-                                                checked={this.props.data.pageBackgroundGradient}
-                                                onChange={() => this.props.handlePageOptions({
-                                                    pageBackgroundColor: false,
-                                                    pageBackgroundImage: false,
-                                                    pageBackgroundGradient: !this.props.data
-                                                        .pageBackgroundGradient,
-                                                })
-                                                }
-                                            />
-                                            Gradient</span>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4>Background Image</h4>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
+                    {"general" === this.state.contentType && <div>
+                        <div className={this.props.classes.pageTitleInputWrapper}>
+                            <CustomInput
+                                labelText={this.props.data.isTemplate ? "Template Title" : "Page Title"}
+                                id="pageTitle"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => {
+                                        this.setState({
+                                            dialogTitleError: false
+                                        })
+                                        this.props.handleInputChange(event)
+                                    }
                                 }}
-                            >
-                                <Typography gutterBottom>
-
-                                    <Tooltip title="This page will have a background image">
-                                        <span>
-                                           <Switch
-                                               value={this.props.data.pageBackgroundImage}
-                                               checked={this.props.data.pageBackgroundImage}
-                                               onChange={() =>
-                                                   this.props.handlePageOptions({
-                                                       pageBackgroundGradient: false,
-                                                       pageBackgroundImage: !this.props.data.pageBackgroundImage
-                                                   })
-                                               }
-                                           /> Enabled
-                                        </span>
-                                    </Tooltip>
-                                </Typography>
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
+                                inputProps={{
+                                    inputProps: {
+                                        minLength: "1",
+                                    },
+                                    inputRef: this.pageTitleRef,
+                                    value: this.props.data.pageTitle,
+                                    type: "text",
                                 }}
-                            >
-                                { this.props.data.pageBackgroundImage && <Typography gutterBottom>
-
-                                    <Tooltip title="Repeat the background to fit the page">
-                                        <span>
-                                           <Switch
-                                               value={this.props.data.pageBackgroundRepeat}
-                                               checked={this.props.data.pageBackgroundRepeat}
-                                               onChange={() =>
-                                                   this.props.handlePageOptions({
-                                                       pageBackgroundRepeat: !this.props.data
-                                                           .pageBackgroundRepeat,
-                                                   })
-                                               }
-                                           /> Repeat
-                                        </span>
-                                    </Tooltip>
-                                </Typography> }
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
+                                error={this.state.dialogTitleError}
+                            />{" "}
+                            {!this.props.data.isTemplate && <CustomInput
+                                labelText="Page Link"
+                                id="pageLink"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => this.props.handleInputChange(event),
                                 }}
-                            >
-                                { this.props.data.pageBackgroundImage && <Typography gutterBottom>
-
-                                    <Tooltip title="Stretch the background to fit the page">
-                                        <span>
-                                            <Switch
-                                                checked={this.props.data.pageBackgroundStretch}
-                                                value={this.props.data.pageBackgroundStretch}
-                                                onChange={() =>
-                                                    this.props.handlePageOptions({
-                                                        pageBackgroundStretch: !this.props.data
-                                                            .pageBackgroundStretch,
-                                                    })
-                                                }
-                                            /> Stretch
-                                        </span>
-                                    </Tooltip>
-                                </Typography> }
-                            </div>
-                        </div>
-                        { this.props.data.pageBackgroundImage && <div className={this.props.classes.dropzoneAreaWrapper}>
-                            <DropzoneArea
-                                maxFileSize={Math.pow(1024, 3)}
-                                filesLimit={1}
-                                onChange={this.props.handleBgImage.bind(this)}
-                                onDelete={this.props.handleBackgroundDelete.bind(this)}
-                            />
-                        </div> }
-                    </div>
-                    <p/>
-                    <div
-                        className={
-                            this.props.classes.column +
-                            " " +
-                            this.props.classes.columnSeparator
-                        }
-                    >
-                        <h4>Font </h4>
-                        <div style={{marginTop: "15px"}}>
-
-                            <Typography gutterBottom>Font Size</Typography>
-                            <Slider
-                                className={this.props.classes.pageOptionsSlider}
-                                onChange={(event, newValue) => {
-                                    this.props.handleFontSize(event, newValue);
+                                inputProps={{
+                                    required: true,
+                                    inputProps: {
+                                        minLength: "3",
+                                        maxLength: "50",
+                                    },
+                                    value: this.props.data.pageLink,
+                                    type: "text",
                                 }}
-                                value={this.props.data.fontSize}
-                                aria-labelledby="discrete-slider"
-                                valueLabelDisplay="auto"
-                                min={0.1}
-                                max={10}
-                                step={0.1}
-                            />
-                            <Autocomplete
-                                id="fontFamilyDropdown"
-                                onChange={this.props.handleFontFamily}
-                                className={this.props.classes.option}
-                                options={this.props.data.fontFamilies}
-                                autoHighlight
-                                getOptionLabel={(option) => option.family}
-                                value={this.getFontFamilyItem(
-                                    this.props.data.fontFamily
-                                )}
-                                renderInput={(params) => (
-                                    <TextField
-                                        className={this.props.classes.textfield}
-                                        {...params}
-                                        label="Select a Font Family"
-                                        variant="outlined"
-                                    />
-                                )}
-                            />
+                            />}
+
                         </div>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                            }}
-                        >
-                            <h5>Text Color</h5>
-                            {this.props.createColorPicker(
-                                "textColorStyles",
-                                "showTextColorPicker",
-                                "textColor"
-                            )}
-                        </div>
-                    </div>
-                    <p/>
-                    <div
-                        className={clsx(
-                            this.props.classes.column,
-                            this.props.classes.helper
-                        )}
-                    >
-                        <h4>Miscellaneous</h4>
-                        <div style={{marginTop: "15px"}}>
+                        <div>
                             {!this.props.data.isTemplate &&
                             <div>
                                 <Autocomplete
@@ -455,50 +247,8 @@ class ViewPageOptions extends React.PureComponent {
                                     </form>
                                 </Dialog>
                             </div>}
-                            {!this.props.data.isTemplate &&
-                            (!this.props.data.editing ? (
-                                <div>
-                                    <Autocomplete
-                                        id="templateDropdown"
-                                        onChange={this.props.handleTemplateChange}
-                                        disabled={this.props.data.editing}
-                                        className={this.props.classes.option}
-                                        options={this.props.data.templates}
-                                        autoHighlight
-                                        getOptionLabel={(option) => option.label}
-                                        // value={this.props.data.template}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                className={this.props.classes.textfield}
-                                                {...params}
-                                                label="Select a template"
-                                                variant="outlined"
-                                            />
-                                        )}
-                                    />
-                                </div>
-                            ) : (
-                                <div style={{marginBottom: "15px"}}>
-                                    Template used:{" "}
-                                    <strong>
-                                        {this.props.data.template?.label || "none"}
-                                    </strong>
-                                </div>
-                            ))
-                            }
-                            <Typography gutterBottom>Box Spacing</Typography>
-                            <Slider
-                                className={this.props.classes.pageOptionsSlider}
-                                onChange={this.props.handleBoxSpacing}
-                                value={this.props.data.config.layoutBoxSpacing[0]}
-                                getAriaValueText={() =>
-                                    this.props.data.config.layoutBoxSpacing[0] + " pixels"
-                                }
-                                aria-labelledby="discrete-slider"
-                                valueLabelDisplay="auto"
-                                min={0}
-                                max={150}
-                            />
+                        </div>
+                        <div>
                             {!this.props.data.isTemplate &&
                             <>
                                 <div>
@@ -510,17 +260,17 @@ class ViewPageOptions extends React.PureComponent {
                                             alignItems: "center",
                                         }}
                                     >
-                                        <span>Publish</span>
                                         <Tooltip title="Enable Publishing">
-                                            <Switch
-                                                checked={this.props.data.publish}
-                                                value={this.props.data.publish}
-                                                onChange={() =>
-                                                    this.props.handlePageOptions({
-                                                        publish: !this.props.data.publish,
-                                                    })
-                                                }
-                                            />
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.props.data.publish}
+                                                    onChange={() =>
+                                                        this.props.handlePageOptions({
+                                                            publish: !this.props.data.publish,
+                                                        })
+                                                    }
+                                                />}
+                                                label="Publish" />
                                         </Tooltip>
                                     </Typography>
                                 </div>
@@ -531,35 +281,361 @@ class ViewPageOptions extends React.PureComponent {
                                         alignItems: "center",
                                     }}
                                 >
-                                    <Typography gutterBottom>Default Page</Typography>
                                     <Tooltip title="Set as default page">
-                                        <Switch
-                                            checked={this.props.data.defaultPage}
-                                            value={true}
-                                            onChange={() =>
-                                                this.props.handlePageOptions({
-                                                    defaultPage: !this.props.data.defaultPage,
-                                                })
-                                            }
-                                        />
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.props.data.defaultPage}
+                                                onChange={() =>
+                                                    this.props.handlePageOptions({
+                                                        defaultPage: !this.props.data.defaultPage,
+                                                    })
+                                                }
+                                            />}
+                                            label="Default Page" />
                                     </Tooltip>
                                 </div>
                             </>}
-                            <div style={{marginLeft: "-10px"}}>
-                                <Checkbox
-                                    checked={this.props.data.isTemplate || this.props.location?.state?.templateMode}
-                                    disabled={this.props.location?.state?.templateMode}
-                                    onChange={(event, checked) =>
-                                        this.props.handlePageOptions({
-                                            isTemplate: checked,
-                                        })
-                                    }
-                                />
-                                <span>Save as template</span>
+                        </div>
+                    </div> }
+                    {"appearance" === this.state.contentType && <div className={this.props.classes.pageTitleInputWrapper}>
+                        <div style={{flex: 1}}>
+                            <div
+                                className={
+                                    this.props.classes.column +
+                                    " " +
+                                    this.props.classes.columnSeparator
+                                }
+                            >
+                                <h4>Background Color</h4>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <div style={{display: "block"}}>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            { this.props.data.pageBackgroundColor && <div
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <Tooltip title="Pick a background color">
+                                                    <FormControlLabel
+                                                        control={this.props.createColorPicker(
+                                                            "bgColorStyles",
+                                                            "showBgColorPicker",
+                                                            "bgColor"
+                                                        )} label="" />
+                                                </Tooltip>
+                                            </div> }
+                                            <div>
+                                                <Typography gutterBottom>
+                                                    <Tooltip title="Pick a background color">
+                                            <span>
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.props.data.pageBackgroundColor}
+                                                        onChange={() => this.props.handlePageOptions({
+                                                            pageBackgroundGradient: false,
+                                                            pageBackgroundColor: !this.props.data.pageBackgroundColor
+                                                        })
+                                                        }
+                                                    />}
+                                                    label="Color" />
+                                            </span>
+                                                    </Tooltip>
+                                                </Typography>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                            { this.props.data.pageBackgroundGradient && <div
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                }}
+                                            >
+                                                <Tooltip title="Pick gradient colors">
+                                                    {this.props.createGradientColorPicker(
+                                                        "bgColorStyles",
+                                                        "showBgGradientColorPickerModal",
+                                                        "bgGradientColor"
+                                                    )}
+                                                </Tooltip>
+                                            </div> }
+                                            <div>
+                                                <Typography gutterBottom>
+                                                    <Tooltip title="Compose a background gradient instead of a solid color">
+                                            <span>
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.props.data.pageBackgroundGradient}
+                                                        onChange={() => this.props.handlePageOptions({
+                                                            pageBackgroundColor: false,
+                                                            pageBackgroundImage: false,
+                                                            pageBackgroundGradient: !this.props.data
+                                                                .pageBackgroundGradient,
+                                                        })
+                                                        }
+                                                    />}
+                                                    label="Gradient" />
+                                            </span>
+                                                    </Tooltip>
+                                                </Typography>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4>Background Image</h4>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        <Typography gutterBottom>
+
+                                            <Tooltip title="This page will have a background image">
+                                        <span>
+                                           <FormControlLabel
+                                               control={<Switch
+                                                   checked={this.props.data.pageBackgroundImage}
+                                                   onChange={() =>
+                                                       this.props.handlePageOptions({
+                                                           pageBackgroundGradient: false,
+                                                           pageBackgroundImage: !this.props.data.pageBackgroundImage
+                                                       })
+                                                   }
+                                               />}
+                                               label="Enabled" />
+                                        </span>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        { this.props.data.pageBackgroundImage && <Typography gutterBottom>
+
+                                            <Tooltip title="Repeat the background to fit the page">
+                                        <span>
+                                           <FormControlLabel
+                                               control={<Switch
+                                                   checked={this.props.data.pageBackgroundRepeat}
+                                                   onChange={() =>
+                                                       this.props.handlePageOptions({
+                                                           pageBackgroundRepeat: !this.props.data
+                                                               .pageBackgroundRepeat,
+                                                       })
+                                                   }
+                                               />}
+                                               label="Repeat" />
+                                        </span>
+                                            </Tooltip>
+                                        </Typography> }
+                                    </div>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                        }}
+                                    >
+                                        { this.props.data.pageBackgroundImage && <Typography gutterBottom>
+
+                                            <Tooltip title="Stretch the background to fit the page">
+                                        <span>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.props.data.pageBackgroundStretch}
+                                                    onChange={() =>
+                                                        this.props.handlePageOptions({
+                                                            pageBackgroundStretch: !this.props.data
+                                                                .pageBackgroundStretch,
+                                                        })
+                                                    }
+                                                />}
+                                                label="Stretch" />
+                                        </span>
+                                            </Tooltip>
+                                        </Typography> }
+                                    </div>
+                                </div>
+                                { this.props.data.pageBackgroundImage && <div className={this.props.classes.dropzoneAreaWrapper}>
+                                    <DropzoneArea
+                                        maxFileSize={Math.pow(1024, 3)}
+                                        filesLimit={1}
+                                        onChange={this.props.handleBgImage.bind(this)}
+                                        onDelete={this.props.handleBackgroundDelete.bind(this)}
+                                    />
+                                </div> }
                             </div>
                         </div>
-                    </div>
-                </div>
+                        <div style={{flex: 1}}>
+                            <div
+                                className={
+                                    this.props.classes.column +
+                                    " " +
+                                    this.props.classes.columnSeparator
+                                }
+                            >
+                                <h4>Font </h4>
+                                <div style={{marginTop: "15px"}}>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Tooltip title="Chose the default text color">
+                                            <Typography gutterBottom>
+                                                <FormControlLabel
+                                                    control={
+                                                        this.props.createColorPicker(
+                                                            "textColorStyles",
+                                                            "showTextColorPicker",
+                                                            "textColor"
+                                                        )} label="Text color" />
+                                            </Typography>
+
+                                        </Tooltip>
+                                    </div>
+                                    <div>
+                                        <Autocomplete
+                                            id="fontFamilyDropdown"
+                                            onChange={this.props.handleFontFamily}
+                                            className={this.props.classes.option}
+                                            options={this.props.data.fontFamilies}
+                                            autoHighlight
+                                            getOptionLabel={(option) => option.family}
+                                            value={this.getFontFamilyItem(
+                                                this.props.data.fontFamily
+                                            )}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    className={this.props.classes.textfield}
+                                                    {...params}
+                                                    label="Select a Font Family"
+                                                    variant="outlined"
+                                                />
+                                            )}
+                                        />
+                                    </div>
+
+                                    <Typography gutterBottom>Font Size</Typography>
+                                    <Slider
+                                        className={this.props.classes.pageOptionsSlider}
+                                        onChange={(event, newValue) => {
+                                            this.props.handleFontSize(event, newValue);
+                                        }}
+                                        value={this.props.data.fontSize}
+                                        aria-labelledby="discrete-slider"
+                                        valueLabelDisplay="auto"
+                                        min={0.1}
+                                        max={10}
+                                        step={0.1}
+                                    />
+
+                                </div>
+
+                            </div>
+                            <div>
+                                <Typography gutterBottom>Box Spacing</Typography>
+                                <Slider
+                                    className={this.props.classes.pageOptionsSlider}
+                                    onChange={this.props.handleBoxSpacing}
+                                    value={this.props.data.config.layoutBoxSpacing[0]}
+                                    getAriaValueText={() =>
+                                        this.props.data.config.layoutBoxSpacing[0] + " pixels"
+                                    }
+                                    aria-labelledby="discrete-slider"
+                                    valueLabelDisplay="auto"
+                                    min={0}
+                                    max={150}
+                                />
+                            </div>
+                        </div>
+                    </div>}
+                    {"advanced" === this.state.contentType && <div>
+                        <div
+                            className={clsx(
+                                this.props.classes.column,
+                                this.props.classes.helper
+                            )}
+                        >
+                            <h4>Miscellaneous</h4>
+                            <div style={{marginTop: "15px"}}>
+
+                                <div>
+                                    <Tooltip title="This page will be saved as a template">
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.props.data.isTemplate || this.props.location?.state?.templateMode}
+                                                disabled={this.props.location?.state?.templateMode}
+                                                onChange={(event, checked) =>
+                                                    this.props.handlePageOptions({
+                                                        isTemplate: checked,
+                                                    })
+                                                }
+                                            />} label="Save as template" />
+                                    </Tooltip>
+                                </div>
+
+                                { !this.props.data.isTemplate && (
+                                    <div>
+                                        <Autocomplete
+                                            id="templateDropdown"
+                                            onChange={this.props.handleTemplateChange}
+                                            className={this.props.classes.option}
+                                            options={this.props.data.templates}
+                                            autoHighlight
+                                            getOptionLabel={(option) => option.label}
+                                            // value={this.props.data.template}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    className={this.props.classes.textfield}
+                                                    {...params}
+                                                    label="Select a template"
+                                                    variant="outlined"
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                ) }
+
+                                { this.props.data.isTemplate && (
+                                    <div style={{marginBottom: "15px"}}>
+                                        Template used:{" "}
+                                        <strong>
+                                            {this.props.data.template?.label || "none"}
+                                        </strong>
+                                    </div>
+                                ) }
+                            </div>
+                        </div>
+                    </div>}
+                </FormGroup>
             </MuiThemeProvider>
         )
     }
@@ -622,8 +698,17 @@ class ViewPageOptions extends React.PureComponent {
             modalSize: "large",
             defaultTheme: this.props.defaultTheme,
             closeButton: {
-                callback: (reason) => {
+                callback: async (reason) => {
                     if(reason !== 'backdropClick') {
+                        if(this.props.data.pageTitle.length === 0) {
+                            await this.setAsyncState({
+                                dialogTitleError: true,
+                                contentType: "general"
+                            });
+                            this.pageTitleRef.current.focus();
+                            return;
+                        }
+
                         this.props.closePageOptionsModal()
                     }
                 },
@@ -650,7 +735,6 @@ export default withStyles(styles)(ViewPageOptions);
 ViewPageOptions.propTypes = {
     data: PropTypes.object,
     classes: PropTypes.object,
-    pageTitleRef: PropTypes.object,
     location: PropTypes.object,
     closePageOptionsModal: PropTypes.func,
     handleInputChange: PropTypes.func,
