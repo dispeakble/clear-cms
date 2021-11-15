@@ -21,6 +21,7 @@ import GradientPicker from "components/GradientColorPicker/GradientColorPicker";
 import { withRouter } from "react-router-dom";
 import Snackbar from "components/Snackbar/Snackbar.js";
 
+
 import { Helmet } from "react-helmet";
 
 // for the modal
@@ -697,7 +698,7 @@ class ViewPagesEditor extends React.PureComponent {
               <Suspense fallback={loadingFallback}>
                 <LazyModule
                     style={{style}}
-                    element={{moduleOptions: el.moduleOptions}}
+                    element={{moduleOptions: el.moduleOptions, id: el.id}}
                     defaultTheme={this.props.defaultTheme}
                     onStartEditingModule={() => this.onStartEditingModule()}
                     onEndEditingModule={() => this.onEndEditingModule()}

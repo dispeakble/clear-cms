@@ -98,29 +98,29 @@ class PagelistModule extends Component {
     }
 
     handleEdit = async (id) => {
-        if (this.props.moduleOptions.data) {
+        if (this.props.moduleOptions) {
             await this.setAsyncState({
-                displayType: this.props.moduleOptions.data.displayType,
-                numberOfPagesToDisplayAtOnce: this.props.moduleOptions.data.numberOfPagesToDisplayAtOnce,
-                showTitle: this.props.moduleOptions.data.showTitle,
-                showDescription: this.props.moduleOptions.data.showDescription,
-                truncateDescription: this.props.moduleOptions.data.truncateDescription,
-                showMaxWords: this.props.moduleOptions.data.showMaxWords,
-                showThumbnail: this.props.moduleOptions.data.showThumbnail,
-                showModifiedDate: this.props.moduleOptions.data.showModifiedDate,
-                showBorder: this.props.moduleOptions.data.showBorder,
-                borderWidth: this.props.moduleOptions.data.borderWidth,
-                borderColor: this.props.moduleOptions.data.borderColor,
-                borderRadius: this.props.moduleOptions.data.borderRadius,
-                showShadow: this.props.moduleOptions.data.showShadow,
-                shadowColor: this.props.moduleOptions.data.shadowColor,
-                shadowSpread: this.props.moduleOptions.data.shadowSpread,
-                shadowTop: this.props.moduleOptions.data.shadowTop,
-                shadowLeft: this.props.moduleOptions.data.shadowLeft,
-                padding: this.props.moduleOptions.data.padding,
-                margin: this.props.moduleOptions.data.margin,
-                dynamicButtons: this.props.moduleOptions.data.dynamicButtons,
-                dynamicButtonsList: this.props.moduleOptions.data.dynamicButtonsList
+                displayType: this.props.moduleOptions.displayType,
+                numberOfPagesToDisplayAtOnce: this.props.moduleOptions.numberOfPagesToDisplayAtOnce,
+                showTitle: this.props.moduleOptions.showTitle,
+                showDescription: this.props.moduleOptions.showDescription,
+                truncateDescription: this.props.moduleOptions.truncateDescription,
+                showMaxWords: this.props.moduleOptions.showMaxWords,
+                showThumbnail: this.props.moduleOptions.showThumbnail,
+                showModifiedDate: this.props.moduleOptions.showModifiedDate,
+                showBorder: this.props.moduleOptions.showBorder,
+                borderWidth: this.props.moduleOptions.borderWidth,
+                borderColor: this.props.moduleOptions.borderColor,
+                borderRadius: this.props.moduleOptions.borderRadius,
+                showShadow: this.props.moduleOptions.showShadow,
+                shadowColor: this.props.moduleOptions.shadowColor,
+                shadowSpread: this.props.moduleOptions.shadowSpread,
+                shadowTop: this.props.moduleOptions.shadowTop,
+                shadowLeft: this.props.moduleOptions.shadowLeft,
+                padding: this.props.moduleOptions.padding,
+                margin: this.props.moduleOptions.margin,
+                dynamicButtons: this.props.moduleOptions.dynamicButtons,
+                dynamicButtonsList: this.props.moduleOptions.dynamicButtonsList
             });
         }
         await this.setAsyncState({

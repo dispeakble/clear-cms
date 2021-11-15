@@ -52,15 +52,15 @@ class SitemapModule extends Component {
     }
 
     handleEdit = async (id) => {
-        if (this.props.moduleOptions.data) {
+        if (this.props.moduleOptions) {
             await this.setAsyncState({
-                displayType: this.props.moduleOptions.data.displayType,
+                displayType: this.props.moduleOptions.displayType,
             });
             await this.setAsyncState({
-                usePagination: this.props.moduleOptions.data.usePagination,
+                usePagination: this.props.moduleOptions.usePagination,
             });
             await this.setAsyncState({
-                numberOfLinksPerPage: this.props.moduleOptions.data.numberOfLinksPerPage,
+                numberOfLinksPerPage: this.props.moduleOptions.numberOfLinksPerPage,
             });
         }
         await this.setAsyncState({

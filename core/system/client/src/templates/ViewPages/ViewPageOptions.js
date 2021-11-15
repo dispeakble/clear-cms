@@ -65,7 +65,7 @@ class ViewPageOptions extends React.PureComponent {
                 <Helmet>
                     <title>{this.props.data.editing ? "Edit " : "Add"} {this.props.data.pageTitle || " page"}</title>
                 </Helmet>
-                <FormGroup column>
+                <FormGroup>
                     <ToggleButtonGroup
                         onChange={this.handleTabChange.bind(this)}
                         value={this.state.contentType}
@@ -97,6 +97,14 @@ class ViewPageOptions extends React.PureComponent {
                                     }
                                 }}
                                 inputProps={{
+                                    onKeyDown: (evt) => {
+                                        if(evt.key === "Enter") {
+                                            this.props.closePageOptionsModal();
+                                            console.log(evt.key);
+                                        }
+
+                                    },
+                                    autoFocus: true,
                                     inputProps: {
                                         minLength: "1",
                                     },

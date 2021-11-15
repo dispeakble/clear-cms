@@ -85,8 +85,8 @@ class GalleryModule extends Component {
     new Promise((resolve) => this.setState(newState, resolve));
 
   componentDidMount() {
-    if (this.props.moduleOptions.data) {
-      let moduleOptions = this.props.moduleOptions.data;
+    if (this.props.moduleOptions) {
+      let moduleOptions = this.props.moduleOptions;
       this.setState({
         galleryTitle: moduleOptions.galleryTitle,
         imageSources: moduleOptions.imageSources,

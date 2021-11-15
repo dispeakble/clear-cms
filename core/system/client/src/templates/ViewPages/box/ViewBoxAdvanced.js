@@ -11,7 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
-import {TextField} from "@material-ui/core";
+import {FormControlLabel, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for the new color picker
@@ -22,9 +22,9 @@ class ViewBoxAdvanced extends React.PureComponent {
 
     state = {
         modalPositions: [
-            { label: "Top", value: "top" },
-            { label: "Center", value: "center" },
-            { label: "Bottom", value: "bottom"}
+            {label: "Top", value: "top"},
+            {label: "Center", value: "center"},
+            {label: "Bottom", value: "bottom"}
         ],
         DisplayOptions: {
             displayAsModal: false,
@@ -131,31 +131,32 @@ class ViewBoxAdvanced extends React.PureComponent {
                 <MuiThemeProvider theme={this.muiTheme}>
                     <div className={this.props.classes.optionGroup}>
                         <Typography gutterBottom>
-                            <Tooltip title="This box will be placed on top of all elements to be displayed as an important message">
-                            <Switch
-                                checked={this.state.DisplayOptions.displayAsModal}
-                                onChange={async () => {
-                                    await this.setAsyncState(prevState =>
-                                        ({
-                                            ...prevState,
-                                            DisplayOptions: {
-                                                ...prevState.DisplayOptions,
-                                                displayAsModal: !prevState.DisplayOptions.displayAsModal,
-                                            }
-                                        }));
-                                    this.saveChangedStyle();
-                                }
-                                }
-                            />
-                        </Tooltip>
-                            <span>Display as Modal</span>
+                            <Tooltip
+                                title="This box will be placed on top of all elements to be displayed as an important message">
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.DisplayOptions.displayAsModal}
+                                        onChange={async () => {
+                                            await this.setAsyncState(prevState =>
+                                                ({
+                                                    ...prevState,
+                                                    DisplayOptions: {
+                                                        ...prevState.DisplayOptions,
+                                                        displayAsModal: !prevState.DisplayOptions.displayAsModal,
+                                                    }
+                                                }));
+                                            this.saveChangedStyle();
+                                        }
+                                        }
+                                    />} label="Display as Modal"/>
+                            </Tooltip>
                         </Typography>
                     </div>
                     {this.state.DisplayOptions.displayAsModal && <div>
                         <div className={this.props.classes.optionGroup}>
                             <Autocomplete
                                 onChange={async (event, position) => {
-                                    if(!position) return;
+                                    if (!position) return;
                                     await this.setAsyncState(prevState => ({
                                         ...prevState,
                                         DisplayOptions: {
@@ -186,88 +187,88 @@ class ViewBoxAdvanced extends React.PureComponent {
                         <div className={this.props.classes.optionGroup} style={{maxWidth: "100%"}}>
                             <div style={{flex: 1}}>
                                 <Typography>
-                                    <Tooltip title="This box will have the rest of the screen dimmed with a transparent overlay color">
-                                        <Switch
-                                            checked={this.state.DisplayOptions.displayBackdrop}
-                                            onChange={async () => {
-                                                await this.setAsyncState(prevState => ({
-                                                    ...prevState,
-                                                    DisplayOptions: {
-                                                        ...prevState.DisplayOptions,
-                                                        displayBackdrop: !prevState.DisplayOptions
-                                                            .displayBackdrop,
-                                                    }
-                                                }));
-                                                this.saveChangedStyle();
-                                            }}
-                                        />
+                                    <Tooltip
+                                        title="This box will have the rest of the screen dimmed with a transparent overlay color">
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.state.DisplayOptions.displayBackdrop}
+                                                onChange={async () => {
+                                                    await this.setAsyncState(prevState => ({
+                                                        ...prevState,
+                                                        DisplayOptions: {
+                                                            ...prevState.DisplayOptions,
+                                                            displayBackdrop: !prevState.DisplayOptions
+                                                                .displayBackdrop,
+                                                        }
+                                                    }));
+                                                    this.saveChangedStyle();
+                                                }}
+                                            />} label="Display Backdrop"/>
                                     </Tooltip>
-                                    <span>Display Backdrop</span>
                                 </Typography>
                             </div>
                             <div style={{flex: 1}}>
                                 <Typography>
-                                    <Tooltip title="This box will have a checkbox with the text: Never show again. If the checkbox is selected then this box will not be displayed again">
-                                        <Switch
-                                            checked={this.state.DisplayOptions.neverShowAfterClosing}
-                                            onChange={async () => {
-                                                await this.setAsyncState(prevState => ({
-                                                    ...prevState,
-                                                    DisplayOptions: {
-                                                        ...prevState.DisplayOptions,
-                                                        neverShowAfterClosing: !prevState.DisplayOptions
-                                                            .neverShowAfterClosing,
-                                                    }
-                                                }));
-                                                this.saveChangedStyle();
-                                            }}
-                                        />
+                                    <Tooltip
+                                        title="This box will have a checkbox with the text: Never show again. If the checkbox is selected then this box will not be displayed again">
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.state.DisplayOptions.neverShowAfterClosing}
+                                                onChange={async () => {
+                                                    await this.setAsyncState(prevState => ({
+                                                        ...prevState,
+                                                        DisplayOptions: {
+                                                            ...prevState.DisplayOptions,
+                                                            neverShowAfterClosing: !prevState.DisplayOptions
+                                                                .neverShowAfterClosing,
+                                                        }
+                                                    }));
+                                                    this.saveChangedStyle();
+                                                }}
+                                            />} label="Never show after closing"/>
                                     </Tooltip>
-                                    <span>Never show after closing</span>
                                 </Typography>
                             </div>
                             <div style={{flex: 1}}>
                                 <Typography>
                                     <Tooltip title="This box will have a close button so the user can hide it">
-                                        <Switch
-                                            checked={this.state.DisplayOptions.showCloseButton}
-                                            onChange={async () => {
-                                                await this.setAsyncState(prevState => ({
-                                                    ...prevState,
-                                                    DisplayOptions: {
-                                                        ...prevState.DisplayOptions,
-                                                        showCloseButton: !prevState.DisplayOptions
-                                                            .showCloseButton,
-                                                    }
-                                                }));
-                                                this.saveChangedStyle();
-                                            }}
-                                        />
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.state.DisplayOptions.showCloseButton}
+                                                onChange={async () => {
+                                                    await this.setAsyncState(prevState => ({
+                                                        ...prevState,
+                                                        DisplayOptions: {
+                                                            ...prevState.DisplayOptions,
+                                                            showCloseButton: !prevState.DisplayOptions
+                                                                .showCloseButton,
+                                                        }
+                                                    }));
+                                                    this.saveChangedStyle();
+                                                }}
+                                            />} label="Show Close Button"/>
                                     </Tooltip>
-                                    <span>Show Close Button</span>
                                 </Typography>
                             </div>
                         </div>
                         <div className={this.props.classes.optionGroup}>
                             <Tooltip title="This box will have an action button.">
-                                <Switch
-                                    checked={this.state.DisplayOptions.showActionButton}
-                                    onChange={async () => {
-                                        await this.setAsyncState(prevState => ({
-                                            ...prevState,
-                                            DisplayOptions: {
-                                                ...prevState.DisplayOptions,
-                                                showActionButton: !prevState.DisplayOptions
-                                                    .showActionButton,
-                                            }
-                                        }));
-                                        this.saveChangedStyle();
-                                    }}
-                                />
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.DisplayOptions.showActionButton}
+                                        onChange={async () => {
+                                            await this.setAsyncState(prevState => ({
+                                                ...prevState,
+                                                DisplayOptions: {
+                                                    ...prevState.DisplayOptions,
+                                                    showActionButton: !prevState.DisplayOptions
+                                                        .showActionButton,
+                                                }
+                                            }));
+                                            this.saveChangedStyle();
+                                        }}
+                                    />} label="Show Action Button"/>
                             </Tooltip>
-                            <Typography>
-                                <span>Show Action Button</span>
-                            </Typography>
                         </div>
                         {this.state.DisplayOptions.showActionButton &&
                         <div style={{display: "flex"}}>
@@ -320,24 +321,22 @@ class ViewBoxAdvanced extends React.PureComponent {
                         }
                         <div className={this.props.classes.optionGroup}>
                             <Tooltip title="This box will have a cancel button similar to the close button">
-                                <Switch
-                                    checked={this.state.DisplayOptions.showCancelButton}
-                                    onChange={async () => {
-                                        await this.setAsyncState(prevState => ({
-                                            ...prevState,
-                                            DisplayOptions: {
-                                                ...prevState.DisplayOptions,
-                                                showCancelButton: !prevState.DisplayOptions
-                                                    .showCancelButton,
-                                            }
-                                        }));
-                                        this.saveChangedStyle();
-                                    }}
-                                />
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.DisplayOptions.showCancelButton}
+                                        onChange={async () => {
+                                            await this.setAsyncState(prevState => ({
+                                                ...prevState,
+                                                DisplayOptions: {
+                                                    ...prevState.DisplayOptions,
+                                                    showCancelButton: !prevState.DisplayOptions
+                                                        .showCancelButton,
+                                                }
+                                            }));
+                                            this.saveChangedStyle();
+                                        }}
+                                    />} label="Show Cancel Button"/>
                             </Tooltip>
-                            <Typography>
-                                <span>Show Cancel Button</span>
-                            </Typography>
                         </div>
                         {this.state.DisplayOptions.showCancelButton &&
                         <div style={{display: "flex"}}>
@@ -389,7 +388,6 @@ class ViewBoxAdvanced extends React.PureComponent {
                         </div>
                         }
                     </div>}
-
 
 
                 </MuiThemeProvider>

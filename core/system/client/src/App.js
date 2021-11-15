@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withRouter, Route, Switch } from "react-router-dom";
-
+import { Scrollbars } from 'react-custom-scrollbars';
 //Wrappers
 import Header from "components/Header/Header.js";
 import SideMenuLinks from "components/Header/SideMenuLinks.js";
@@ -404,13 +404,17 @@ class App extends Component {
               render={(props) => {
                 props.host = 'http://localhost:9696';
                 return (
+                    <Scrollbars style={{
+                      height: '100%'
+                    }}>
+                      <MainController
+                          {...props}
+                          defaultTheme={this.state.defaultPalette}
+                          services={this.state.services}
+                          moduleList={this.state.moduleList}
+                      />
+                    </Scrollbars>
 
-                <MainController
-                  {...props}
-                  defaultTheme={this.state.defaultPalette}
-                  services={this.state.services}
-                  moduleList={this.state.moduleList}
-                />
               );
               }}
             />

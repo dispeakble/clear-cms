@@ -33,8 +33,8 @@ class GalleryModule extends Component {
   };
 
   componentDidMount() {
-    if(this.props.element.moduleOptions.data){
-      const gall = this.props.element.moduleOptions.data
+    if(this.props.element.moduleOptions){
+      const gall = this.props.element.moduleOptions
       let gallery =  {
         showBullets: gall.bullets,
         showThumbnails: gall.thumbnails,
@@ -93,8 +93,8 @@ class GalleryModule extends Component {
 
   render() {
     let imgs = []
-    if(this.props.element.moduleOptions.data?.imageSources){
-      imgs = this.props.element.moduleOptions.data.imageSources.map(el => {
+    if(this.props.element.moduleOptions?.imageSources){
+      imgs = this.props.element.moduleOptions.imageSources.map(el => {
         return {
           title:  el?.title || "",
           description: el?.description || "",

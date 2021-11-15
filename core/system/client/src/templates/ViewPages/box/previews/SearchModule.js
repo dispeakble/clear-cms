@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 class SearchModule extends Component {
     render() {
-        let richText = this.props.element.moduleOptions.data;
+        let richText = this.props.element.moduleOptions;
         return (
             <div
                 key={this.props.i}

@@ -358,6 +358,9 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
       color: "#007272",
     },
   },
+  dropZone: {
+
+  },
   dropzoneColumn: {
     width: "50%",
     display: "inline-block",

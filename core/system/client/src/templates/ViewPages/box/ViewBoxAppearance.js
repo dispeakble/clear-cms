@@ -14,7 +14,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
-import {Accordion, AccordionDetails, AccordionSummary, TextField} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, FormControlLabel, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 // for accordion
@@ -221,7 +221,7 @@ class ViewBoxAppearance extends React.PureComponent {
 
         item.title = this.state.Title;
 
-        if(this.state.bgImageEnabled) {
+        if (this.state.bgImageEnabled) {
             item.backgroundImageString = this.state.backgroundImageString;
             item.bgimage = this.state.BgImage;
             item.backgroundImageFile = this.state.BgImageFile;
@@ -313,12 +313,12 @@ class ViewBoxAppearance extends React.PureComponent {
 
     // for color pickers
 
-    async handleColorPickerClick (displayColorPicker) {
+    async handleColorPickerClick(displayColorPicker) {
         await this.setAsyncState({[displayColorPicker]: !this.state.displayColorPicker});
         this.saveChangedStyle();
     }
 
-    async handleColorPickerClose (displayColorPicker) {
+    async handleColorPickerClose(displayColorPicker) {
         await this.setAsyncState({[displayColorPicker]: false});
         this.saveChangedStyle();
     }
@@ -329,7 +329,7 @@ class ViewBoxAppearance extends React.PureComponent {
         return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
-                MuiSwitch:{
+                MuiSwitch: {
                     colorPrimary: {
                         root: {
                             color: this.props.defaultTheme.secondary.main
@@ -392,7 +392,7 @@ class ViewBoxAppearance extends React.PureComponent {
                     }
                 },
                 MuiDropzonePreviewList: {
-                    removeButton:{
+                    removeButton: {
                         display: "none"
                     },
                     root: {
@@ -518,29 +518,30 @@ class ViewBoxAppearance extends React.PureComponent {
     render() {
         return (
             <MuiThemeProvider theme={this.muiTheme}>
-                    <Accordion classes={{root: this.props.classes.accordion}}>
-                        <AccordionSummary
-                            classes={{
-                                root: this.props.classes.accordionSummaryRoot,
-                                expanded: this.props.classes.accordionSummaryExpanded,
-                                content: this.props.classes.accordionSummaryContent,
-                            }}
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="panel1c-content"
-                        >
-                            <Typography className={this.props.classes.typography}>
-                                Font Options
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails className={this.props.classes.accordionDetails}>
-                            <div className={this.props.classes.optionGroup}>
-                                {this.state.TextColorShow && this.createColorPicker(
-                                    "itemTextColorStyles",
-                                    "displayItemTextColorPicker",
-                                    "TextColor"
-                                )}
-                                <Tooltip title="Enable Custom Text Color">
-                                    <Switch
+                <Accordion classes={{root: this.props.classes.accordion}}>
+                    <AccordionSummary
+                        classes={{
+                            root: this.props.classes.accordionSummaryRoot,
+                            expanded: this.props.classes.accordionSummaryExpanded,
+                            content: this.props.classes.accordionSummaryContent,
+                        }}
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1c-content"
+                    >
+                        <Typography className={this.props.classes.typography}>
+                            Font Options
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails className={this.props.classes.accordionDetails}>
+                        <div className={this.props.classes.optionGroup}>
+                            {this.state.TextColorShow && this.createColorPicker(
+                                "itemTextColorStyles",
+                                "displayItemTextColorPicker",
+                                "TextColor"
+                            )}
+                            <Tooltip title="Enable Custom Text Color">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.TextColorShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
@@ -550,16 +551,14 @@ class ViewBoxAppearance extends React.PureComponent {
                                             });
                                             this.saveChangedStyle();
                                         }}
-                                    />
-                                </Tooltip>
-                                <Typography>
-                                    <span>Text Color</span>
-                                </Typography>
-                            </div>
+                                    />} label="Text Color"/>
+                            </Tooltip>
+                        </div>
 
-                            <div className={this.props.classes.optionGroup}>
-                                <Tooltip title="Enable Custom Font Size">
-                                    <Switch
+                        <div className={this.props.classes.optionGroup}>
+                            <Tooltip title="Enable Custom Font Size">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.FontSizeShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
@@ -567,24 +566,22 @@ class ViewBoxAppearance extends React.PureComponent {
                                                     .FontSizeShow,
                                             });
                                         }}
-                                    />
-                                </Tooltip>
-                                <Typography>
-                                    <span>Font Size</span>
-                                </Typography>
-                            </div>
-                            {this.state.FontSizeShow && <Slider
-                                value={this.state.FontSize}
-                                onChange={this.handleItemFontSize.bind(this)}
-                                aria-labelledby="discrete-slider"
-                                valueLabelDisplay="auto"
-                                min={0.1}
-                                max={10}
-                                step={0.1}
-                            />}
-                            <div className={this.props.classes.optionGroup}>
-                                <Tooltip title="Enable Custom Font Family">
-                                    <Switch
+                                    />} label="Font Size"/>
+                            </Tooltip>
+                        </div>
+                        {this.state.FontSizeShow && <Slider
+                            value={this.state.FontSize}
+                            onChange={this.handleItemFontSize.bind(this)}
+                            aria-labelledby="discrete-slider"
+                            valueLabelDisplay="auto"
+                            min={0.1}
+                            max={10}
+                            step={0.1}
+                        />}
+                        <div className={this.props.classes.optionGroup}>
+                            <Tooltip title="Enable Custom Font Family">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.FontFamilyShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
@@ -594,59 +591,57 @@ class ViewBoxAppearance extends React.PureComponent {
                                             });
                                             this.saveChangedStyle();
                                         }}
+                                    />} label="Font Family"/>
+                            </Tooltip>
+                        </div>
+                        {this.state.FontFamilyShow &&
+                        <div>
+                            <Autocomplete
+                                onChange={this.handleItemFontFamily.bind(this)}
+                                className={this.props.classes.option}
+                                value={
+                                    this.state.FontFamilyOption
+                                }
+                                options={this.props.fontFamilies}
+                                autoHighlight
+                                getOptionLabel={(option) => option.family}
+                                renderInput={(params) => (
+                                    <TextField
+                                        className={this.props.classes.textfield}
+                                        {...params}
+                                        label="Select a Font Family"
+                                        variant="outlined"
                                     />
-                                </Tooltip>
-                                <Typography>
-                                    <span>Font Family</span>
-                                </Typography>
-                            </div>
-                            {this.state.FontFamilyShow &&
-                            <div>
-                                <Autocomplete
-                                    onChange={this.handleItemFontFamily.bind(this)}
-                                    className={this.props.classes.option}
-                                    value={
-                                        this.state.FontFamilyOption
-                                    }
-                                    options={this.props.fontFamilies}
-                                    autoHighlight
-                                    getOptionLabel={(option) => option.family}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            className={this.props.classes.textfield}
-                                            {...params}
-                                            label="Select a Font Family"
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                            </div>}
-
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion classes={{root: this.props.classes.accordion}}>
-                        <AccordionSummary
-                            classes={{
-                                root: this.props.classes.accordionSummaryRoot,
-                                expanded: this.props.classes.accordionSummaryExpanded,
-                                content: this.props.classes.accordionSummaryContent,
-                            }}
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="panel1c-content"
-                        >
-                            <Typography className={this.props.classes.typography}>
-                                Background options
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails className={this.props.classes.accordionDetails}>
-                            <div className={this.props.classes.optionGroup}>
-                                {this.state.BackgroundColorShow && this.createColorPicker(
-                                    "itemBgColorStyles",
-                                    "displayItemBgColorPicker",
-                                    "BackgroundColor"
                                 )}
-                                <Tooltip title="Enable Custom Text Color">
-                                    <Switch
+                            />
+                        </div>}
+
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion classes={{root: this.props.classes.accordion}}>
+                    <AccordionSummary
+                        classes={{
+                            root: this.props.classes.accordionSummaryRoot,
+                            expanded: this.props.classes.accordionSummaryExpanded,
+                            content: this.props.classes.accordionSummaryContent,
+                        }}
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1c-content"
+                    >
+                        <Typography className={this.props.classes.typography}>
+                            Background options
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails className={this.props.classes.accordionDetails}>
+                        <div className={this.props.classes.optionGroup}>
+                            {this.state.BackgroundColorShow && this.createColorPicker(
+                                "itemBgColorStyles",
+                                "displayItemBgColorPicker",
+                                "BackgroundColor"
+                            )}
+                            <Tooltip title="Enable Custom Text Color">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.BackgroundColorShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
@@ -657,21 +652,19 @@ class ViewBoxAppearance extends React.PureComponent {
 
                                             this.saveChangedStyle();
                                         }}
-                                    />
-                                </Tooltip>
-                                <Typography>
-                                    <span>Background Color</span>
-                                </Typography>
-                            </div>
+                                    />} label="Background Color"/>
+                            </Tooltip>
+                        </div>
 
-                            <div className={this.props.classes.optionGroup}>
-                                {this.state.BackgroundGradientColorShow && <div> {this.createGradientColorPicker(
-                                    "itemBgColorStyles",
-                                    "showBgGradientColorPickerModal",
-                                    "BackgroundGradientColor"
-                                )}</div> }
-                                <Tooltip title="Enable Gradient Background">
-                                    <Switch
+                        <div className={this.props.classes.optionGroup}>
+                            {this.state.BackgroundGradientColorShow && <div> {this.createGradientColorPicker(
+                                "itemBgColorStyles",
+                                "showBgGradientColorPickerModal",
+                                "BackgroundGradientColor"
+                            )}</div>}
+                            <Tooltip title="Enable Gradient Background">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.BackgroundGradientColorShow}
                                         onChange={async () => {
                                             await this.setAsyncState({
@@ -682,15 +675,13 @@ class ViewBoxAppearance extends React.PureComponent {
                                             });
                                             this.saveChangedStyle();
                                         }}
-                                    />
-                                </Tooltip>
-                                <Typography gutterBottom>
-                                    Gradient Color
-                                </Typography>
-                            </div>
-                            <div className={this.props.classes.optionGroup}>
-                                <Tooltip title="Enable background image">
-                                    <Switch
+                                    />} label="Gradient Color"/>
+                            </Tooltip>
+                        </div>
+                        <div className={this.props.classes.optionGroup}>
+                            <Tooltip title="Enable background image">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.bgImageEnabled}
                                         onChange={() => {
                                             this.setState({
@@ -698,61 +689,57 @@ class ViewBoxAppearance extends React.PureComponent {
                                                 BackgroundGradientColorShow: false
                                             })
                                         }}
-                                    />
-                                </Tooltip>
-                                <Typography>Background Image</Typography>
-                            </div>
-                            { this.state.bgImageEnabled &&<div className={this.props.classes.optionGroup}>
-                                <Tooltip title="Background Repeat">
-                                    <Switch
+                                    />} label="Background Image"/>
+                            </Tooltip>
+                        </div>
+                        {this.state.bgImageEnabled && <div className={this.props.classes.optionGroup}>
+                            <Tooltip title="Background Repeat">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.BgRepeat}
                                         onChange={this.handleItemBgRepeat.bind(this)}
-                                    />
-                                </Tooltip>
-                                <Typography>
-                                    <span>Background Repeat</span>
-                                </Typography>
-                            </div> }
-                            { this.state.bgImageEnabled && <div className={this.props.classes.optionGroup}>
-                                <Tooltip title="Background Stretch">
-                                    <Switch
+                                    />} label="Background Repeat"/>
+                            </Tooltip>
+                        </div>}
+                        {this.state.bgImageEnabled && <div className={this.props.classes.optionGroup}>
+                            <Tooltip title="Background Stretch">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.BgStretch}
                                         onChange={this.handleItemBgStretch.bind(this)}
-                                    />
-                                </Tooltip>
-                                <Typography>
-                                    Background Stretch
-                                </Typography>
-                            </div> }
-                            <div>
-                                { this.state.bgImageEnabled &&
-                                <DropzoneArea
-                                    maxFileSize={Math.pow(1024, 3)}
-                                    filesLimit={1}
-                                    className={this.props.classes.dropzone}
-                                    onChange={this.handleItemBgImage.bind(this)}
-                                /> }
-                            </div>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion classes={{root: this.props.classes.accordion}}>
-                        <AccordionSummary
-                            classes={{
-                                root: this.props.classes.accordionSummaryRoot,
-                                expanded: this.props.classes.accordionSummaryExpanded,
-                                content: this.props.classes.accordionSummaryContent,
-                            }}
-                            expandIcon={<ExpandMoreIcon/>}
-                            aria-controls="panel1c-content"
-                        >
-                            <Typography className={this.props.classes.typography}>
-                                Border options
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails className={this.props.classes.accordionDetails}>
-                            <div className={this.props.classes.optionGroup}>
-                                <Tooltip title="This box will have scrollbars if the content is larger">
-                                    <Switch
+                                    />} label="Background Stretch"/>
+                            </Tooltip>
+                        </div>}
+                        <div>
+                            {this.state.bgImageEnabled &&
+                            <DropzoneArea
+                                maxFileSize={Math.pow(1024, 3)}
+                                filesLimit={1}
+                                className={this.props.classes.dropzone}
+                                onChange={this.handleItemBgImage.bind(this)}
+                            />}
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion classes={{root: this.props.classes.accordion}}>
+                    <AccordionSummary
+                        classes={{
+                            root: this.props.classes.accordionSummaryRoot,
+                            expanded: this.props.classes.accordionSummaryExpanded,
+                            content: this.props.classes.accordionSummaryContent,
+                        }}
+                        expandIcon={<ExpandMoreIcon/>}
+                        aria-controls="panel1c-content"
+                    >
+                        <Typography className={this.props.classes.typography}>
+                            Border options
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails className={this.props.classes.accordionDetails}>
+                        <div className={this.props.classes.optionGroup}>
+                            <Tooltip title="This box will have scrollbars if the content is larger">
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.Scrollbars}
                                         onChange={async () => {
                                             await this.setAsyncState({
@@ -760,21 +747,19 @@ class ViewBoxAppearance extends React.PureComponent {
                                             });
                                             this.saveChangedStyle();
                                         }}
-                                    />
-                                </Tooltip>
-                                <Typography>
-                                    Use Scrollbars
-                                </Typography>
-                            </div>
-                            <div>
-                                <div className={this.props.classes.optionGroup}>
-                                    {this.state.BorderColorShow && this.createColorPicker(
-                                        "itemBorderColorStyles",
-                                        "displayItemBorderColorPicker",
-                                        "BorderColor"
-                                    )}
-                                    <Tooltip title="Enable border color">
-                                        <Switch
+                                    />} label="Use Scrollbars"/>
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <div className={this.props.classes.optionGroup}>
+                                {this.state.BorderColorShow && this.createColorPicker(
+                                    "itemBorderColorStyles",
+                                    "displayItemBorderColorPicker",
+                                    "BorderColor"
+                                )}
+                                <Tooltip title="Enable border color">
+                                    <FormControlLabel
+                                        control={<Switch
                                             checked={this.state.BorderColorShow}
                                             onChange={async () => {
                                                 await this.setAsyncState({
@@ -784,39 +769,36 @@ class ViewBoxAppearance extends React.PureComponent {
                                                 });
                                                 this.saveChangedStyle();
                                             }}
-                                        />
-                                    </Tooltip>
-                                    <Typography>
-                                        <span>Border Color</span>
-                                    </Typography>
-                                </div>
+                                        />} label="Border Color"/>
+                                </Tooltip>
                             </div>
-                            <div>
-                                <Typography><span>Border Thickness</span></Typography>
-                                <Slider
-                                    value={this.state.BorderWidth}
-                                    className={this.props.classes.sideMenuSlider}
-                                    onChange={this.handleBorderWidth.bind(this)}
-                                    aria-labelledby="discrete-slider"
-                                    valueLabelDisplay="auto"
-                                    min={0}
-                                    max={10}
-                                />
-                            </div>
-                            <div>
-                                <Typography>Rounded corners</Typography>
-                                <Slider
-                                    value={this.state.BorderRadius}
-                                    className={this.props.classes.sideMenuSlider}
-                                    onChange={this.handleBorderRadius.bind(this)}
-                                    aria-labelledby="discrete-slider"
-                                    valueLabelDisplay="auto"
-                                    min={0}
-                                    max={30}
-                                />
-                            </div>
-                        </AccordionDetails>
-                    </Accordion>
+                        </div>
+                        <div>
+                            <Typography><span>Border Thickness</span></Typography>
+                            <Slider
+                                value={this.state.BorderWidth}
+                                className={this.props.classes.sideMenuSlider}
+                                onChange={this.handleBorderWidth.bind(this)}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                min={0}
+                                max={10}
+                            />
+                        </div>
+                        <div>
+                            <Typography>Rounded corners</Typography>
+                            <Slider
+                                value={this.state.BorderRadius}
+                                className={this.props.classes.sideMenuSlider}
+                                onChange={this.handleBorderRadius.bind(this)}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                min={0}
+                                max={30}
+                            />
+                        </div>
+                    </AccordionDetails>
+                </Accordion>
                 <Modal
                     showModal={this.state.showBgGradientColorPickerModal}
                     {...this.state.bgGradientColorPickerModal}
