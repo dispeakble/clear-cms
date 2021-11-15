@@ -53,7 +53,12 @@ class MenuModule extends Component {
         flatLinks: [],
         stretchToFit: false,
         displayBgColorPicker: false,
-        bgColor: "",
+        bgColor: {
+            r:"",
+            g:"",
+            b:"",
+            a:""
+        },
         icons: [],
         icon: "",
         noLinksFound: false,
@@ -64,19 +69,19 @@ class MenuModule extends Component {
     };
 
     async componentDidMount() {
-        if (this.props.moduleOptions.data) {
+        if (this.props.moduleOptions) {
             await this.setAsyncState({
-                menuOptions: this.props.moduleOptions.data.links,
-                isMenuVertical: this.props.moduleOptions.data.isVertical,
-                stretchToFit: this.props.moduleOptions.data.stretchToFit,
-                bgColor: this.props.moduleOptions.data.backgroundColor,
-                horizontallyCentered: this.props.moduleOptions.data.horizontallyCentered,
-                verticallyCentered: this.props.moduleOptions.data.verticallyCentered,
-                menuIconSpace: this.props.moduleOptions.data.menuIconSpace,
+                menuOptions: this.props.moduleOptions.links,
+                isMenuVertical: this.props.moduleOptions.isVertical,
+                stretchToFit: this.props.moduleOptions.stretchToFit,
+                bgColor: this.props.moduleOptions.backgroundColor,
+                horizontallyCentered: this.props.moduleOptions.horizontallyCentered,
+                verticallyCentered: this.props.moduleOptions.verticallyCentered,
+                menuIconSpace: this.props.moduleOptions.menuIconSpace,
             });
-            if (this.props.moduleOptions.data.showAsAccordion) {
+            if (this.props.moduleOptions.showAsAccordion) {
                 await this.setAsyncState({
-                    showAsAccordion: this.props.moduleOptions.data.showAsAccordion,
+                    showAsAccordion: this.props.moduleOptions.showAsAccordion,
                 });
             }
             this.getAllLinks();
@@ -126,7 +131,7 @@ class MenuModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     sendStyles = (targetedColor) => {
-        let {r, g, b, a} = targetedColor
+        let {r, g, b, a} = targetedColor;
         return reactCSS({
             default: {
                 color: {
@@ -474,6 +479,11 @@ class MenuModule extends Component {
     }
 
     render() {
+
+        if(undefined === this.state.bgColor) {
+            return <></> ;
+        }
+
         const classes = this.props.classes;
         const bgColorStyles = this.sendStyles(this.state.bgColor);
 

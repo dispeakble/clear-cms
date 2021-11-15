@@ -46,13 +46,13 @@ class SitemapModule extends Component {
     }
 
     handleEdit = async (id) => {
-        if (this.props.moduleOptions.data) {
+        if (this.props.moduleOptions) {
             await this.setAsyncState({
-                title: this.props.moduleOptions.data.title,
-                description: this.props.moduleOptions.data.description,
-                showSuggestions: this.props.moduleOptions.data.showSuggestions,
-                showStartDate: this.props.moduleOptions.data.showStartDate,
-                showEndDate: this.props.moduleOptions.data.showEndDate
+                title: this.props.moduleOptions.title,
+                description: this.props.moduleOptions.description,
+                showSuggestions: this.props.moduleOptions.showSuggestions,
+                showStartDate: this.props.moduleOptions.showStartDate,
+                showEndDate: this.props.moduleOptions.showEndDate
             });
         }
         await this.setAsyncState({

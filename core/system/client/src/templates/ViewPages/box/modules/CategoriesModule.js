@@ -49,10 +49,10 @@ class CategoriesModule extends Component {
     }
 
     handleEdit = async (id) => {
-        if (this.props.moduleOptions.data) {
+        if (this.props.moduleOptions) {
             await this.setAsyncState({
-                displayType: this.props.moduleOptions.data.displayType,
-                categoriesPerPage: this.props.moduleOptions.data.categoriesPerPage,
+                displayType: this.props.moduleOptions.displayType,
+                categoriesPerPage: this.props.moduleOptions.categoriesPerPage,
             });
         }
         await this.setAsyncState({

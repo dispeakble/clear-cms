@@ -20,8 +20,8 @@ class CategoriesModule extends Component {
 
     async componentDidMount() {
         await this.setAsyncState({
-            displayType: this.props.element.moduleOptions.data.displayType,
-            categoriesPerPage: this.props.element.moduleOptions.data.categoriesPerPage
+            displayType: this.props.element.moduleOptions.displayType,
+            categoriesPerPage: this.props.element.moduleOptions.categoriesPerPage
         })
 
         await this.services.ws.subscribe({

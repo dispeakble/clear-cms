@@ -69,22 +69,22 @@ class ViewBoxGeneral extends React.PureComponent {
 
     async handleModuleSelection (event, newValue) {
         if (!newValue || !newValue.label) {
-            this.setState({
+            await this.setAsyncState({
                 selectedModule: -1
             });
             return;
         }
 
         let moduleName = newValue ? newValue.label : "";
+        this.item.module = moduleName;
+        this.item.moduleOptions = {};
 
         if(moduleName.length) {
-            this.setState({
+            await this.setAsyncState({
                 selectedModule: this.getModuleIndex(moduleName)
             });
         }
 
-        this.item.module = moduleName;
-        this.item.moduleOptions = {};
         this.props.onUpdate(this.item);
 
     }
@@ -133,6 +133,7 @@ class ViewBoxGeneral extends React.PureComponent {
                                 onChange: (event) => this.handleTitleUpdate(event),
                             }}
                             inputProps={{
+                                autoFocus: true,
                                 defaultValue: this.item.title,
                                 type: "text",
                             }}

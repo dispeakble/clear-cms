@@ -107,20 +107,20 @@ class MenuModule extends Component {
     const classes = this.props.classes;
     const style = {
       color: this.props.style.color || "inherit",
-      backgroundColor: this.props.element.moduleOptions.data.backgroundColor || "inherit",
+      backgroundColor: this.props.element.moduleOptions.backgroundColor || "inherit",
       fontSize: this.props.style.fontSize || "inherit",
       fontFamily: this.props.style.fontFamily || "inherit",
     };
 
-    let linksList = this.props.element.moduleOptions.data.links.filter(
+    let linksList = this.props.element.moduleOptions.links.filter(
       (link) => !link.parentId
     );
-    let isVertical = this.props.element.moduleOptions.data.isVertical;
-    let showAsAccordion = this.props.element.moduleOptions.data.showAsAccordion;
-      let stretchToFit = this.props.element.moduleOptions.data.stretchToFit;
-      let horizontallyCentered = this.props.element.moduleOptions.data.horizontallyCentered;
-      let verticallyCentered = this.props.element.moduleOptions.data.verticallyCentered;
-      let menuIconSpace = this.props.element.moduleOptions.data.menuIconSpace;
+    let isVertical = this.props.element.moduleOptions.isVertical;
+    let showAsAccordion = this.props.element.moduleOptions.showAsAccordion;
+      let stretchToFit = this.props.element.moduleOptions.stretchToFit;
+      let horizontallyCentered = this.props.element.moduleOptions.horizontallyCentered;
+      let verticallyCentered = this.props.element.moduleOptions.verticallyCentered;
+      let menuIconSpace = this.props.element.moduleOptions.menuIconSpace;
       if (verticallyCentered && isVertical) {
           style.display = "flex";
           style.alignContent = "stretch"

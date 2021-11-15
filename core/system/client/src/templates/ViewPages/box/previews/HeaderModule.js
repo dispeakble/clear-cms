@@ -28,7 +28,7 @@ class HeaderModule extends Component {
       });
 
       if (bg_name && bg_name.name) {
-        style.backgroundImage = `url(/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${bg_name.name})`;
+        style.backgroundImage = `url(/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.id}/module/${bg_name.name})`;
         style.backgroundRepeat = this.props.element.moduleOptions
             .backgroundRepeat
             ? "repeat"
@@ -62,7 +62,7 @@ class HeaderModule extends Component {
           <img
               style={{ maxWidth: "150px" }}
               className={classes.logoImage}
-              src={!logo_name ? "" : `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${logo_name.name}`}
+              src={!logo_name ? "" : `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.id}/module/${logo_name.name}`}
               alt={this.props.element.moduleOptions.logoTitle}
           />
         </a> : <></>

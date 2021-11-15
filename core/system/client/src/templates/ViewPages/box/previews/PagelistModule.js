@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 class TextModule extends Component {
     render() {
-        let richText = this.props.element.moduleOptions.data;
+        let richText = this.props.element.moduleOptions;
         return (
             <div
                 key={this.props.i}

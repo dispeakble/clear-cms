@@ -27,9 +27,9 @@ class SitemapModule extends Component {
 
     async componentDidMount() {
         await this.setAsyncState({
-            displayType: this.props.element.moduleOptions.data.displayType,
-            usePagination: this.props.element.moduleOptions.data.usePagination,
-            numberOfLinksPerPage: this.props.element.moduleOptions.data.numberOfLinksPerPage
+            displayType: this.props.element.moduleOptions.displayType,
+            usePagination: this.props.element.moduleOptions.usePagination,
+            numberOfLinksPerPage: this.props.element.moduleOptions.numberOfLinksPerPage
         })
 
         if(this.state.usePagination) {

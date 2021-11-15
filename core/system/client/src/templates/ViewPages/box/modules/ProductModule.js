@@ -64,9 +64,9 @@ class ProductModule extends Component {
     }
 
     handleEdit = async (id) => {
-        if (this.props.moduleOptions.data) {
+        if (this.props.moduleOptions) {
             await this.setAsyncState({
-                productProperty: this.props.moduleOptions.data.productProperty,
+                productProperty: this.props.moduleOptions.productProperty,
             });
         }
         await this.setAsyncState({
