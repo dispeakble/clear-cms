@@ -48,7 +48,7 @@ cd $base_path
 DOCKERHUB_USERNAME="cmsbot"
 DOCKERHUB_PASS="uB8V7B6IR5ll"
 BITBUCKET_USERNAME="the_dispeakble_one"
-BITBUCKET_PASS='3!mV11JPhaxh'
+BITBUCKET_PASS='WrBr1Xh611f9'
 
 #DOCKERHUB_CRED_FILE=./dockerhub_credentials.txt
 #if [[ -f "$DOCKERHUB_CRED_FILE" ]]; then
