@@ -16,6 +16,7 @@ class PagesController extends Component {
         add: (params) => this.add(params),
         addCategory: (params) => this.addCategory(params),
         edit: (params) => this.edit(params),
+        duplicate: (params) => this.duplicate(params),
         remove: (params) => this.remove(params),
         listCategories: (params) => this.listCategories(params),
         listTemplates: (params) => this.listTemplates(params),
@@ -222,7 +223,7 @@ class PagesController extends Component {
                                 files: fileList
                             });
 
-                            params.items[i].moduleOptions.data.files = item.moduleOptions.files.map((fileData) => {
+                            params.items[i].moduleOptions.files = item.moduleOptions.files.map((fileData) => {
                                 return {
                                     name: fileData.name
                                 }
@@ -378,6 +379,23 @@ class PagesController extends Component {
             } catch (err) {
                 resolve(null);
             }
+        });
+    }
+
+    duplicate(params) {
+        return new Promise((resolve) => {
+            (async () =>{
+                const duplicateResponse = await this.sendMessage({
+                    module: 'system',
+                    api: 'pages',
+                    act: 'duplicate',
+                    payload: {
+                        id: params.id
+                    }
+                });
+                console.log(duplicateResponse);
+                resolve(true);
+            })();
         });
     }
 

@@ -11875,10 +11875,10 @@ react-grid-layout@^1.2.5:
     react-draggable "^4.0.0"
     react-resizable "^3.0.4"
 
-react-h5-audio-player@^3.5.0:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/react-h5-audio-player/-/react-h5-audio-player-3.7.2.tgz#7219e290fc0260796d1e60624b65c0b69547e1ef"
-  integrity sha512-8k4ZLfNyr55k59slNovT7WId4vT0vhRDwjWvFKpUe38OzayUEHuh3HqmeH4aGqI1Dh9ZqlGgYnN8qfOnMAH2Rg==
+react-h5-audio-player@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-h5-audio-player/-/react-h5-audio-player-3.8.0.tgz#3a9d83a586263a57f272ac4721a06585b042a49b"
+  integrity sha512-/2trjilCbQBkg77o91sZg+N6dZvXIgz0pu/SqFhRhVUi5ZRhKS+z/28mnpr/s2HJjiis4cR9g2YKwnq6aBBLvw==
   dependencies:
     "@babel/runtime" "^7.10.2"
     "@iconify/icons-mdi" "^1.0.46"

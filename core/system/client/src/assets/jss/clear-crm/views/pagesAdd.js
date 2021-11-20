@@ -262,6 +262,8 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
   },
   accordion: {
     overflow: "visible",
+    marginTop: 0,
+    padding: "0 10px"
   },
   pageOptionsDetails: {
     display: "flex",
@@ -386,6 +388,31 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
     alignItems: "center",
     "& > div": {
       marginRight: "5px"
+    }
+  },
+  buttonsPosition: {
+    display: "grid",
+    gridGap: "0",
+    gridTemplateColumns:"repeat(3, 1fr)",
+    "& > button": {
+      border: "1px solid rgba(0,0,0,0.3)",
+      lineHeight: "50px",
+      cursor: "pointer",
+      "&.selected": {
+        background: "rgba(0,0,0,0.3)"
+      }
+    },
+    "& *:nth-child(1)": {
+      borderRadius: "5px 0 0"
+    },
+    "& *:nth-child(3)": {
+      borderRadius: "0 5px 0 0"
+    },
+    "& *:nth-child(7)": {
+      borderRadius: "0 0 0 5px"
+    },
+    "& *:nth-child(9)": {
+      borderRadius: "0 0 5px "
     }
   }
 };

@@ -1,17 +1,14 @@
-import {HttpStatus, Inject, Injectable} from "@nestjs/common";
+import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
-import * as mime from "mime";
 import {Observable} from "rxjs";
-import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
 import path from "path";
 
 @Injectable()
 export class PagesService {
 
-    private methods = ["list", "add", "remove", "edit", "get"];
-
+    private methods = ["list", "add", "remove", "edit", "get", "duplicate"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
     }
@@ -89,7 +86,7 @@ export class PagesService {
         })
     }
 
-    public get (params: any){
+    private get (params: any) {
         return new Observable(subscriber => {
             (async () => {
               try {
@@ -286,7 +283,7 @@ export class PagesService {
         })
     }
 
-    public add (params: any){
+    private add (params: any){
         return new Observable(subscriber => {
 
             (async () => {
@@ -375,7 +372,7 @@ export class PagesService {
                     const pageToCategory = await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
 
                     let boxesIds = []
-                    let boxPositions = []
+                    const boxPositions = []
                     if(items.length){
                         const newBoxes = items.filter(item => !item.templateUsed);
                         if(newBoxes.length) {
@@ -530,7 +527,7 @@ export class PagesService {
         })
     }
 
-    public edit (params: any){
+    private edit (params: any){
         return new Observable(subscriber => {
             (async () => {
                 try {
@@ -606,6 +603,7 @@ export class PagesService {
                                         api: 'fs',
                                         act: 'rm',
                                         payload: {
+                                            channel: 'system',
                                             selection: [`/pages/page-${params.id}/${oldConfig.data[0].bgimage}`]
                                         }
                                     }).toPromise();
@@ -644,7 +642,7 @@ export class PagesService {
                         }
                     };
 
-                    const config = await this.protocolService.sendMessage(configReq).toPromise();
+                    await this.protocolService.sendMessage(configReq).toPromise();
 
                     /*
                     1. get pages_to_boxes
@@ -676,7 +674,7 @@ export class PagesService {
                         const template_box_ids = ptb.data.filter(item => item.template_used !== 0).map((item) => item['box_id']);
                         missing_box_ids = missing_box_ids.filter(box_id => {
                             let found = false;
-                            params.items.forEach(item => {
+                            items.forEach(item => {
                                 found = found || (!!item.id && item.id === box_id);
                             })
                             return !found;
@@ -720,6 +718,7 @@ export class PagesService {
                                         api: 'fs',
                                         act: 'rm',
                                         payload: {
+                                            channel: 'system',
                                             selection: [`/pages/page-${params.id}/box-${box_id}`]
                                         }
                                     }).toPromise();
@@ -732,7 +731,7 @@ export class PagesService {
                     3. add new boxes and pages_to_boxes
                     */
 
-                    const newBoxes = params.items.filter(item => !item.hasOwnProperty('id'));
+                    const newBoxes = items.filter(item => !item.hasOwnProperty('id'));
 
                     if(newBoxes.length) {
                        await Promise.all(newBoxes.map(async newBox => {
@@ -757,7 +756,7 @@ export class PagesService {
                                    channel: 'system',
                                    data: {
                                        what: 'pages_to_boxes',
-                                       data:{
+                                       data: {
                                            page_id: params.id,
                                            box_id: newBoxDetail.data[0].id,
                                            x: newBox.x,
@@ -767,17 +766,17 @@ export class PagesService {
                                }
                            }).toPromise();
 
-                           newBoxDetail.data[0].ref = newBox.i;//for reference number
+                           newBoxDetail.data[0].ref = newBox.i; //for reference number
 
                            newBoxesDetails.push(newBoxDetail.data[0]);
                        }))
                     }
 
                     /*
-                    4. update existing boxes no matter what. could be a resize
+                    4. update existing boxes and relations no matter what. could be a resize
                     */
 
-                    const existingBoxes = params.items.filter(item => item.hasOwnProperty('id') && !item.templateUsed);
+                    const existingBoxes = items.filter(item => item.hasOwnProperty('id') && !item.templateUsed);
 
                     await Promise.all(existingBoxes.map(async box => {
                         await this.protocolService.sendMessage({
@@ -795,9 +794,7 @@ export class PagesService {
                                 }
                             }
                         }).toPromise();
-                    }));
 
-                    await Promise.all(existingBoxes.map(async box => {
                         await this.protocolService.sendMessage({
                             channel: 'db',
                             api: 'db',
@@ -817,13 +814,14 @@ export class PagesService {
                                 }
                             }
                         }).toPromise();
+
                     }));
 
                     /*
                     5. update existing boxes no matter what. (existing boxes from the template)
                    */
 
-                    const boxesFromTemplate = params.items.filter(item => item.hasOwnProperty('id') && item.templateUsed);
+                    const boxesFromTemplate = items.filter(item => item.hasOwnProperty('id') && item.templateUsed);
 
                     let existingBoxIdsFromTemplate = [];
 
@@ -832,10 +830,7 @@ export class PagesService {
                     }
 
                     const existingBoxesFromTemplate = boxesFromTemplate.filter((box) => {
-                        if(existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1) {
-                            return true
-                        }
-                        return false
+                        return existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1;
                     })
 
                     if(existingBoxesFromTemplate && existingBoxesFromTemplate.length) {
@@ -863,10 +858,7 @@ export class PagesService {
                     }
 
                     const newBoxesFromTemplate = boxesFromTemplate.filter((box) => {
-                        if(existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1) {
-                            return false
-                        }
-                        return true
+                        return !(existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1);
                     })
 
                     if(newBoxesFromTemplate && newBoxesFromTemplate.length) {
@@ -962,7 +954,7 @@ export class PagesService {
         })
     }
 
-    public remove (params: any){
+    private remove (params: any){
         return new Observable(subscriber => {
 
             (async () => {
@@ -1011,7 +1003,7 @@ export class PagesService {
                             }
                         };
 
-                        const boxes = await this.protocolService.sendMessage(boxesReq).toPromise();
+                        await this.protocolService.sendMessage(boxesReq).toPromise();
 
                     }
 
@@ -1053,7 +1045,7 @@ export class PagesService {
                             }
                         };
 
-                        const config = await this.protocolService.sendMessage(configReq).toPromise()
+                        await this.protocolService.sendMessage(configReq).toPromise()
                     }
 
                     //delete page
@@ -1089,6 +1081,147 @@ export class PagesService {
         })
     }
 
+    private duplicate(params: any) {
+        return new Observable(subscriber => {
+            (async () => {
+
+                try {
+                    const sourcePage = await this.protocolService.sendMessage({
+                        channel: 'db',
+                        api: 'db',
+                        act: 'get',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pages',
+                                data: {
+                                    id: params.id
+                                },
+                                limit: [0,1]
+                            }
+                        }
+                    }).toPromise();
+
+                    const source_p_t_b = await this.protocolService.sendMessage({
+                        channel: 'db',
+                        api: 'db',
+                        act: 'get',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pages_to_boxes',
+                                data: {
+                                    page_id: params.id
+                                },
+                                limit: [0,1]
+                            }
+                        }
+                    }).toPromise();
+
+                    if(sourcePage.data && sourcePage.data[0]) {
+
+                        const old_page_data = sourcePage.data[0];
+
+                        delete old_page_data.id;
+
+                        const newPage = await this.protocolService.sendMessage({
+                            channel: 'db',
+                            api: 'db',
+                            act: 'add',
+                            payload: {
+                                channel: 'system',
+                                what: 'pages',
+                                data: old_page_data
+                            }
+                        }).toPromise();
+
+                        if(source_p_t_b.data.length) {
+                            const copyAssets = await this.protocolService.sendMessage({
+                                channel: 'bucket',
+                                api: 'fs',
+                                act: 'copy',
+                                payload: {
+                                    channel: 'system',
+                                    replace: true,
+                                    source: `/pages/page-${params.id}`,
+                                    destination: `/pages/page-${newPage[0].id}`,
+                                }
+                            }).toPromise();
+
+                            const sptb = source_p_t_b.data;
+
+                            if(sptb && sptb.length) {
+                                sptb.map(async (s) => {
+
+                                    const old_box = await this.protocolService.sendMessage({
+                                        channel: 'db',
+                                        api: 'db',
+                                        act: 'get',
+                                        payload: {
+                                            channel: 'system',
+                                            what: 'pages_boxes',
+                                            where: {
+                                                id: s.box_id
+                                            }
+                                        }
+                                    }).toPromise();
+
+
+                                    delete old_box.id;
+
+                                    const new_box = await this.protocolService.sendMessage({
+                                        channel: 'db',
+                                        api: 'db',
+                                        act: 'add',
+                                        payload: {
+                                            channel: 'system',
+                                            what: 'pages_boxes',
+                                            data: old_box
+                                        }
+                                    }).toPromise();
+
+                                    const new_p_t_b = await this.protocolService.sendMessage({
+                                        channel: 'db',
+                                        api: 'db',
+                                        act: 'add',
+                                        payload: {
+                                            channel: 'system',
+                                            what: 'pages_to_boxes',
+                                            data: {
+                                                page_id: newPage.id,
+                                                box_id: new_box.id
+                                            }
+                                        }
+                                    }).toPromise();
+
+                                    const renameBoxFolders = await this.protocolService.sendMessage({
+                                        channel: 'bucket',
+                                        api: 'fs',
+                                        act: 'mv',
+                                        payload: {
+                                            channel: 'system',
+                                            replace: true,
+                                            source: `/pages/page-${params.id}/box-${s.id}`,
+                                            destination: `/pages/page-${newPage[0].id}/box-${new_box.id}`,
+                                        }
+                                    }).toPromise();
+
+                                    return s;
+                                })
+                            }
+
+                        }
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
+
+
+            })()
+
+        })
+    }
+
     private async _removeFiles(params) {
 
         return this.protocolService.sendMessage({
@@ -1096,6 +1229,7 @@ export class PagesService {
             api: 'fs',
             act: 'rm',
             payload: {
+                channel: 'system',
                 path: `/pages`,
                 selection: [`/page-${params.where.id}`]
             }

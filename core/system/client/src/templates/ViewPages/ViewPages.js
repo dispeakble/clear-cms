@@ -12,10 +12,11 @@ import { withRouter } from "react-router-dom";
 // for the modal
 import Modal from "../../components/Modal/Modal";
 
-import { Edit, DeleteForever, Visibility } from "@material-ui/icons";
+import {Edit, DeleteForever, Visibility, FileCopy} from "@material-ui/icons";
 import Checkbox from "@material-ui/core/Checkbox";
 
 import MaterialTable from "material-table";
+import PropTypes from "prop-types";
 
 class Pages extends Component {
     state = {
@@ -182,7 +183,7 @@ class Pages extends Component {
                         iconProps: {
                             style: { color: this.props.defaultTheme.primary?.main || "green" },
                         },
-                        onClick: (event) => {
+                        onClick: () => {
                             this.props.history.push({pathname: `/pages/add`, state: {
                                     templateMode: this.state.isTemplate
                                 }
@@ -220,6 +221,18 @@ class Pages extends Component {
                                     templateMode: this.state.isTemplate
                                 }
                             });
+                        },
+                    },
+                    {
+                        position: "row",
+                        tooltip: "Duplicate",
+                        icon: () => (
+                            <FileCopy color="primary" className={this.props.classes.editItemIcon} />
+                        ),
+                        onClick: async (event, rowData) => {
+                            alert(await this.props.control.duplicate({
+                                id: rowData.id
+                            }));
                         },
                     },
                     {
@@ -311,3 +324,11 @@ class Pages extends Component {
 }
 
 export default withRouter(withStyles(styles)(Pages));
+
+Pages.propTypes = {
+    history: PropTypes.object,
+    control: PropTypes.object,
+    classes: PropTypes.object,
+    location: PropTypes.object,
+    defaultTheme: PropTypes.object
+};
