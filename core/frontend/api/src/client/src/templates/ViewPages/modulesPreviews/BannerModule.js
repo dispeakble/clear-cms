@@ -33,12 +33,12 @@ class BannerModule extends Component {
     let banner = null, height = '', width = '';
 
     banner = this.pickByKey({
-      data: this.props.element.moduleOptions.data.files,
+      data: this.props.element.moduleOptions.files,
       what: 'sel',
       where: 'banner'
     });
 
-    const banner_size = this.props.element.moduleOptions.data.bannerSize;
+    const banner_size = this.props.element.moduleOptions.bannerSize;
 
     if (banner_size) {
       height = this.state.bannerSizes[banner_size]?.height;

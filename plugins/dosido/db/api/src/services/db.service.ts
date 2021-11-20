@@ -344,6 +344,7 @@ export class DbService {
             const dbTest = await this.testDb();
 
             if(dbTest) {
+                clearInterval(checkIntervalId);
                 clearTimeout(checkTimeoutId);
                 this.state.ready = true;
             }
@@ -377,7 +378,9 @@ export class DbService {
     public waitForDb() {
         return new Promise(resolve => {
             const checkIntervalId = setInterval(() => {
+                console.log('Waiting for Postgres')
                 if(this.state.ready) {
+                    clearInterval(checkIntervalId);
                     clearTimeout(checkTimeoutId);
                     resolve(true);
                 }

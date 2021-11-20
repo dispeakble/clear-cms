@@ -14,7 +14,7 @@ const fsp = fs.promises;
 @Injectable()
 export class FsService {
 
-    private methods = ["info", "chmod", "chown", "list", "completePath", "upload","read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["info", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
 
     private help: any;
 
@@ -492,23 +492,24 @@ export class FsService {
     }
 
     copy(params) {
-
         return new Observable((observer) => {
-            try {
+            (() => {
+                try {
+                    const replace_dest = params.replace ? 0 : fs.constants.COPYFILE_EXCL;
 
-                const replace_dest = params.replace ? 0 : fs.constants.COPYFILE_EXCL;
+                    fs.copyFileSync(this.help.path.realPath({path: params.source}), this.help.path.realPath({path: params.destination}), replace_dest);
 
-                fs.copyFileSync(this.help.path.realPath({path: params.source}), this.help.path.realPath({path: params.destination}), replace_dest);
+                    observer.complete();
+                } catch (err) {
+                    console.log(err);
+                    const msg = "Internal server error";
+                    observer.next({
+                        type: 'error', content_length: msg.length, content_type: "500", message: "Internal server error"
+                    });
+                    observer.complete();
+                }
 
-                observer.complete();
-            } catch (err) {
-                console.log(err);
-                const msg = "Internal server error";
-                observer.next({
-                    type: 'error', content_length: msg.length, content_type: "500", message: "Internal server error"
-                });
-                observer.complete();
-            }
+            })();
         });
     }
 

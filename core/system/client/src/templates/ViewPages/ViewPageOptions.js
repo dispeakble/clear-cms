@@ -31,9 +31,7 @@ class ViewPageOptions extends React.PureComponent {
         dialogTitleError: false
     };
 
-    muiTheme = {
-
-    };
+    muiTheme = {};
 
     pageTitleRef = createRef()
 
@@ -51,7 +49,7 @@ class ViewPageOptions extends React.PureComponent {
     }
 
     handleTabChange(event, nextView) {
-        if(nextView) {
+        if (nextView) {
             this.setState({
                 contentType: nextView
             })
@@ -59,80 +57,68 @@ class ViewPageOptions extends React.PureComponent {
     }
 
     renderPageOptions() {
-
         return (
             <MuiThemeProvider theme={this.muiTheme}>
                 <Helmet>
                     <title>{this.props.data.editing ? "Edit " : "Add"} {this.props.data.pageTitle || " page"}</title>
                 </Helmet>
                 <FormGroup>
-                    <ToggleButtonGroup
-                        onChange={this.handleTabChange.bind(this)}
-                        value={this.state.contentType}
-                        exclusive
-                    >
-                        <ToggleButton value="general" onClick={() => this.toggleContentType("general")}>
-                            General
-                        </ToggleButton>
-                        <ToggleButton value="appearance" onClick={() => this.toggleContentType("appearance")}>
-                            Appearance
-                        </ToggleButton>
-                        <ToggleButton value="advanced" onClick={() => this.toggleContentType("advanced")}>
-                            Advanced
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-
                     {"general" === this.state.contentType && <div>
-                        <div className={this.props.classes.pageTitleInputWrapper}>
-                            <CustomInput
-                                labelText={this.props.data.isTemplate ? "Template Title" : "Page Title"}
-                                id="pageTitle"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => {
-                                        this.setState({
-                                            dialogTitleError: false
-                                        })
-                                        this.props.handleInputChange(event)
-                                    }
-                                }}
-                                inputProps={{
-                                    onKeyDown: (evt) => {
-                                        if(evt.key === "Enter") {
-                                            this.props.closePageOptionsModal();
-                                            console.log(evt.key);
+                        <div style={{display: "flex"}}>
+                            <div style={{paddingRight: "5px", flex: 1}}>
+                                <CustomInput
+                                    labelText={this.props.data.isTemplate ? "Template Title" : "Page Title"}
+                                    id="pageTitle"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => {
+                                            this.setState({
+                                                dialogTitleError: false
+                                            })
+                                            this.props.handleInputChange(event)
                                         }
+                                    }}
+                                    inputProps={{
+                                        onKeyDown: (evt) => {
+                                            if (evt.key === "Enter") {
+                                                this.props.closePageOptionsModal();
+                                                console.log(evt.key);
+                                            }
 
-                                    },
-                                    autoFocus: true,
-                                    inputProps: {
-                                        minLength: "1",
-                                    },
-                                    inputRef: this.pageTitleRef,
-                                    value: this.props.data.pageTitle,
-                                    type: "text",
-                                }}
-                                error={this.state.dialogTitleError}
-                            />{" "}
-                            {!this.props.data.isTemplate && <CustomInput
-                                labelText="Page Link"
-                                id="pageLink"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.props.handleInputChange(event),
-                                }}
-                                inputProps={{
-                                    required: true,
-                                    inputProps: {
-                                        minLength: "3",
-                                        maxLength: "50",
-                                    },
-                                    value: this.props.data.pageLink,
-                                    type: "text",
-                                }}
-                            />}
-
+                                        },
+                                        autoFocus: true,
+                                        inputProps: {
+                                            minLength: "1",
+                                        },
+                                        inputRef: this.pageTitleRef,
+                                        value: this.props.data.pageTitle,
+                                        type: "text",
+                                    }}
+                                    error={this.state.dialogTitleError}
+                                    style={{marginRight: "5px"}}
+                                />
+                            </div>
+                            <div style={{paddingLeft: "5px", flex: 1}}>
+                                {!this.props.data.isTemplate && <CustomInput
+                                    labelText="Page Link"
+                                    id="pageLink"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.props.handleInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        required: true,
+                                        inputProps: {
+                                            minLength: "3",
+                                            maxLength: "50",
+                                        },
+                                        value: this.props.data.pageLink,
+                                        type: "text",
+                                    }}
+                                    style={{marginLeft: "5px"}}
+                                />}
+                            </div>
                         </div>
                         <div>
                             {!this.props.data.isTemplate &&
@@ -278,7 +264,7 @@ class ViewPageOptions extends React.PureComponent {
                                                         })
                                                     }
                                                 />}
-                                                label="Publish" />
+                                                label="Publish"/>
                                         </Tooltip>
                                     </Typography>
                                 </div>
@@ -299,55 +285,48 @@ class ViewPageOptions extends React.PureComponent {
                                                     })
                                                 }
                                             />}
-                                            label="Default Page" />
+                                            label="Default Page"/>
                                     </Tooltip>
                                 </div>
                             </>}
                         </div>
-                    </div> }
-                    {"appearance" === this.state.contentType && <div className={this.props.classes.pageTitleInputWrapper}>
+                    </div>}
+                    {"appearance" === this.state.contentType && <div>
                         <div style={{flex: 1}}>
+                            <h4>Background Color</h4>
                             <div
-                                className={
-                                    this.props.classes.column +
-                                    " " +
-                                    this.props.classes.columnSeparator
-                                }
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
                             >
-                                <h4>Background Color</h4>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <div style={{display: "block"}}>
-                                        <div
+                                <div style={{display: "block"}}>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        {this.props.data.pageBackgroundColor && <div
                                             style={{
                                                 display: "flex",
                                                 justifyContent: "space-between",
                                                 alignItems: "center",
                                             }}
                                         >
-                                            { this.props.data.pageBackgroundColor && <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center",
-                                                }}
-                                            >
+                                            <Tooltip title="Pick a background color">
+                                                <FormControlLabel
+                                                    control={this.props.createColorPicker(
+                                                        "bgColorStyles",
+                                                        "showBgColorPicker",
+                                                        "bgColor"
+                                                    )} label=""/>
+                                            </Tooltip>
+                                        </div>}
+                                        <div>
+                                            <Typography gutterBottom>
                                                 <Tooltip title="Pick a background color">
-                                                    <FormControlLabel
-                                                        control={this.props.createColorPicker(
-                                                            "bgColorStyles",
-                                                            "showBgColorPicker",
-                                                            "bgColor"
-                                                        )} label="" />
-                                                </Tooltip>
-                                            </div> }
-                                            <div>
-                                                <Typography gutterBottom>
-                                                    <Tooltip title="Pick a background color">
                                             <span>
                                                 <FormControlLabel
                                                     control={<Switch
@@ -358,34 +337,35 @@ class ViewPageOptions extends React.PureComponent {
                                                         })
                                                         }
                                                     />}
-                                                    label="Color" />
+                                                    label="Color"/>
                                             </span>
-                                                    </Tooltip>
-                                                </Typography>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div>
-                                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                            { this.props.data.pageBackgroundGradient && <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center",
-                                                }}
-                                            >
-                                                <Tooltip title="Pick gradient colors">
-                                                    {this.props.createGradientColorPicker(
-                                                        "bgColorStyles",
-                                                        "showBgGradientColorPickerModal",
-                                                        "bgGradientColor"
-                                                    )}
                                                 </Tooltip>
-                                            </div> }
-                                            <div>
-                                                <Typography gutterBottom>
-                                                    <Tooltip title="Compose a background gradient instead of a solid color">
+                                            </Typography>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <div style={{display: "flex", justifyContent: "space-between"}}>
+                                        {this.props.data.pageBackgroundGradient && <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <Tooltip title="Pick gradient colors">
+                                                {this.props.createGradientColorPicker(
+                                                    "bgColorStyles",
+                                                    "showBgGradientColorPickerModal",
+                                                    "bgGradientColor"
+                                                )}
+                                            </Tooltip>
+                                        </div>}
+                                        <div>
+                                            <Typography gutterBottom>
+                                                <Tooltip
+                                                    title="Compose a background gradient instead of a solid color">
                                             <span>
                                                 <FormControlLabel
                                                     control={<Switch
@@ -398,30 +378,30 @@ class ViewPageOptions extends React.PureComponent {
                                                         })
                                                         }
                                                     />}
-                                                    label="Gradient" />
+                                                    label="Gradient"/>
                                             </span>
-                                                    </Tooltip>
-                                                </Typography>
-                                            </div>
+                                                </Tooltip>
+                                            </Typography>
                                         </div>
                                     </div>
                                 </div>
-                                <h4>Background Image</h4>
+                            </div>
+                            <h4>Background Image</h4>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                }}
+                            >
                                 <div
                                     style={{
                                         display: "flex",
                                         justifyContent: "space-between",
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                        }}
-                                    >
-                                        <Typography gutterBottom>
+                                    <Typography gutterBottom>
 
-                                            <Tooltip title="This page will have a background image">
+                                        <Tooltip title="This page will have a background image">
                                         <span>
                                            <FormControlLabel
                                                control={<Switch
@@ -433,20 +413,20 @@ class ViewPageOptions extends React.PureComponent {
                                                        })
                                                    }
                                                />}
-                                               label="Enabled" />
+                                               label="Enabled"/>
                                         </span>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                        }}
-                                    >
-                                        { this.props.data.pageBackgroundImage && <Typography gutterBottom>
+                                        </Tooltip>
+                                    </Typography>
+                                </div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    {this.props.data.pageBackgroundImage && <Typography gutterBottom>
 
-                                            <Tooltip title="Repeat the background to fit the page">
+                                        <Tooltip title="Repeat the background to fit the page">
                                         <span>
                                            <FormControlLabel
                                                control={<Switch
@@ -458,20 +438,20 @@ class ViewPageOptions extends React.PureComponent {
                                                        })
                                                    }
                                                />}
-                                               label="Repeat" />
+                                               label="Repeat"/>
                                         </span>
-                                            </Tooltip>
-                                        </Typography> }
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                        }}
-                                    >
-                                        { this.props.data.pageBackgroundImage && <Typography gutterBottom>
+                                        </Tooltip>
+                                    </Typography>}
+                                </div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    {this.props.data.pageBackgroundImage && <Typography gutterBottom>
 
-                                            <Tooltip title="Stretch the background to fit the page">
+                                        <Tooltip title="Stretch the background to fit the page">
                                         <span>
                                             <FormControlLabel
                                                 control={<Switch
@@ -483,30 +463,24 @@ class ViewPageOptions extends React.PureComponent {
                                                         })
                                                     }
                                                 />}
-                                                label="Stretch" />
+                                                label="Stretch"/>
                                         </span>
-                                            </Tooltip>
-                                        </Typography> }
-                                    </div>
+                                        </Tooltip>
+                                    </Typography>}
                                 </div>
-                                { this.props.data.pageBackgroundImage && <div className={this.props.classes.dropzoneAreaWrapper}>
-                                    <DropzoneArea
-                                        maxFileSize={Math.pow(1024, 3)}
-                                        filesLimit={1}
-                                        onChange={this.props.handleBgImage.bind(this)}
-                                        onDelete={this.props.handleBackgroundDelete.bind(this)}
-                                    />
-                                </div> }
                             </div>
+                            {this.props.data.pageBackgroundImage &&
+                            <div className={this.props.classes.dropzoneAreaWrapper}>
+                                <DropzoneArea
+                                    maxFileSize={Math.pow(1024, 3)}
+                                    filesLimit={1}
+                                    onChange={this.props.handleBgImage.bind(this)}
+                                    onDelete={this.props.handleBackgroundDelete.bind(this)}
+                                />
+                            </div>}
                         </div>
                         <div style={{flex: 1}}>
-                            <div
-                                className={
-                                    this.props.classes.column +
-                                    " " +
-                                    this.props.classes.columnSeparator
-                                }
-                            >
+                            <div>
                                 <h4>Font </h4>
                                 <div style={{marginTop: "15px"}}>
                                     <div
@@ -524,7 +498,7 @@ class ViewPageOptions extends React.PureComponent {
                                                             "textColorStyles",
                                                             "showTextColorPicker",
                                                             "textColor"
-                                                        )} label="Text color" />
+                                                        )} label="Text color"/>
                                             </Typography>
 
                                         </Tooltip>
@@ -564,9 +538,7 @@ class ViewPageOptions extends React.PureComponent {
                                         max={10}
                                         step={0.1}
                                     />
-
                                 </div>
-
                             </div>
                             <div>
                                 <Typography gutterBottom>Box Spacing</Typography>
@@ -606,11 +578,11 @@ class ViewPageOptions extends React.PureComponent {
                                                         isTemplate: checked,
                                                     })
                                                 }
-                                            />} label="Save as template" />
+                                            />} label="Save as template"/>
                                     </Tooltip>
                                 </div>
 
-                                { !this.props.data.isTemplate && (
+                                {!this.props.data.isTemplate && (
                                     <div>
                                         <Autocomplete
                                             id="templateDropdown"
@@ -630,16 +602,16 @@ class ViewPageOptions extends React.PureComponent {
                                             )}
                                         />
                                     </div>
-                                ) }
+                                )}
 
-                                { this.props.data.isTemplate && (
+                                {this.props.data.isTemplate && (
                                     <div style={{marginBottom: "15px"}}>
                                         Template used:{" "}
                                         <strong>
                                             {this.props.data.template?.label || "none"}
                                         </strong>
                                     </div>
-                                ) }
+                                )}
                             </div>
                         </div>
                     </div>}
@@ -673,7 +645,7 @@ class ViewPageOptions extends React.PureComponent {
                     }
                 },
                 MuiDropzonePreviewList: {
-                    removeButton:{
+                    removeButton: {
                         display: "none"
                     },
                     root: {
@@ -696,19 +668,43 @@ class ViewPageOptions extends React.PureComponent {
 
     render() {
 
+        const classes = this.props.classes;
+
+        const header = (
+            <div className={classes.boxOptionsHeader}>
+                <div>{this.props.data.isTemplate ? "Template Options" : "Page Options"}</div>
+                <ToggleButtonGroup
+                    onChange={this.handleTabChange.bind(this)}
+                    value={this.state.contentType}
+                    exclusive
+                >
+                    <ToggleButton value="general" onClick={() => this.toggleContentType("general")}>
+                        General
+                    </ToggleButton>
+                    <ToggleButton value="appearance" onClick={() => this.toggleContentType("appearance")}>
+                        Appearance
+                    </ToggleButton>
+                    <ToggleButton value="advanced" onClick={() => this.toggleContentType("advanced")}>
+                        Advanced
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </div>
+
+        )
+
         const modalProps = {
             id: "pageOptions",
             name: "pageOptions",
             resize: true,
-            title: this.props.data.isTemplate ? "Template Options" : "Page Options",
+            title: header,
             content: this.renderPageOptions(),
             showModal: this.props.data.showPageOptionsModal,
             modalSize: "large",
             defaultTheme: this.props.defaultTheme,
             closeButton: {
                 callback: async (reason) => {
-                    if(reason !== 'backdropClick') {
-                        if(this.props.data.pageTitle.length === 0) {
+                    if (reason !== 'backdropClick') {
+                        if (this.props.data.pageTitle.length === 0) {
                             await this.setAsyncState({
                                 dialogTitleError: true,
                                 contentType: "general"
@@ -725,7 +721,7 @@ class ViewPageOptions extends React.PureComponent {
         }
 
         return (
-            <Modal { ...modalProps } />
+            <Modal {...modalProps} />
         )
     }
 

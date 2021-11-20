@@ -43,7 +43,7 @@ export class SystemService {
             });
             const rejectTimeout = setTimeout(() => {
                 reject(false);
-            }, 1000);
+            }, 300);
         })
 
     }
@@ -62,7 +62,7 @@ export class SystemService {
                 } catch (err) {
                     console.log(`${params.channel} not ready yet`);
                 }
-            }, 2000);
+            }, 300);
         });
     }
 

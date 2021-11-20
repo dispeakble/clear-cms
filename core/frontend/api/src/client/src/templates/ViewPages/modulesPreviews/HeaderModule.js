@@ -17,26 +17,26 @@ class HeaderModule extends Component {
             },
             logo_name = null;
 
-        if (this.props.element.moduleOptions.data.files) {
+        if (this.props.element.moduleOptions.files) {
             const bg_name = this.pickByKey({
-                data: this.props.element.moduleOptions.data.files,
+                data: this.props.element.moduleOptions.files,
                 what: 'sel',
                 where: 'bg'
             });
 
             logo_name = this.pickByKey({
-                data: this.props.element.moduleOptions.data.files,
+                data: this.props.element.moduleOptions.files,
                 what: 'sel',
                 where: 'logo'
             });
 
             if (bg_name && bg_name.name) {
                 style.backgroundImage = `url(/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${bg_name.name})`;
-                style.backgroundRepeat = this.props.element.moduleOptions.data
+                style.backgroundRepeat = this.props.element.moduleOptions
                     .backgroundRepeat
                     ? "repeat"
                     : "no-repeat";
-                style.backgroundSize = this.props.element.moduleOptions.data
+                style.backgroundSize = this.props.element.moduleOptions
                     .backgroundStretch
                     ? "cover"
                     : "auto";
@@ -45,7 +45,7 @@ class HeaderModule extends Component {
 
             }
 
-            if (this?.props?.element?.moduleOptions?.data?.isModuleSticky) {
+            if (this?.props?.element?.moduleOptions?.isModuleSticky) {
                 style.position = "fixed !important";
                 style.top = "inherit";
                 style.left = "inherit";
@@ -64,18 +64,18 @@ class HeaderModule extends Component {
                 data-grid={this.props.element}
                 style={style}
                 className={
-                    this.props.element.moduleOptions.data.isModuleSticky
+                    this.props.element.moduleOptions.isModuleSticky
                         ? classes.stickyHeader
                         : ""
                 }
             >
                 {
                     (logo_name && logo_name.name) && <div className={classes.logoImage}>
-                        <Link href={`/${this.props.element.moduleOptions.data.logoLink}`}>
+                        <Link href={`/${this.props.element.moduleOptions.logoLink}`}>
                             <a><img
                                 style={{width: '100%'}}
                                 src={!logo_name ? "" : `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${logo_name.name}`}
-                                alt={this.props.element.moduleOptions.data.logoTitle}/></a></Link>
+                                alt={this.props.element.moduleOptions.logoTitle}/></a></Link>
                     </div>
                 }
             </div>

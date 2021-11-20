@@ -197,7 +197,7 @@ class ViewPagesPreview extends React.Component {
       let LazyComponent = null;
       let LazyComponentName = el.module.replace(" ", "");
       if (el.module === "Header Module") {
-        style.position = el.moduleOptions.data.isModuleSticky
+        style.position = el.moduleOptions.isModuleSticky
           ? "fixed !important"
           : "";
         style.top = "0";
