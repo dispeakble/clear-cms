@@ -1,22 +1,15 @@
 import React, {Component} from "react";
 
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 
-import {withStyles} from "@material-ui/core/styles";
+import {createTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
-// for the material-table within the edit modal options modal
 import MaterialTable from "material-table";
 
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import {
@@ -27,31 +20,69 @@ import {
     Clear,
 } from "@material-ui/icons";
 
-import Button from "components/CustomButtons/Button.js";
-
 import {Editor} from "@tinymce/tinymce-react";
 import PropTypes from "prop-types";
+import Modal from "components/Modal/Modal";
 
 class AccordionModule extends Component {
     state = {
         tableRef: React.createRef(),
         sections: [],
-        sectionTitle: "",
         sectionContent: "",
-        showEditModal: false,
+        showMultipleDeleteModal: false,
         expanded: "",
     };
+
+    muiTheme = {};
+
+    deleteModalProps = {
+        name: "deleteSections",
+        title: "Delete selected sections",
+        content: "Are you sure you want to delete these sections?",
+        closeButton: {
+            callback: () => {
+                this.closeMultipleDeleteModal()
+            },
+            label: "Cancel",
+        },
+        confirmButton: {
+            show: true,
+            callback: () => {
+                this.multipleDeleteCallback()
+            },
+            label: "Delete",
+        },
+    }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
-
-        console.log(this.props.moduleOptions.sections);
-
-        /*this.setState({
-            sections: this.props.moduleOptions.sections
-        })*/
+        if (this.props.moduleOptions.sections && this.props.moduleOptions.sections.length) {
+            this.setState({
+                sections: this.props.moduleOptions.sections
+            })
+        }
+        this.muiTheme = this.createDefaultTheme();
     }
+
+    createDefaultTheme = () => {
+        return createTheme({
+            palette: this.props.defaultTheme,
+            overrides: {
+                MuiAccordionDetails:{
+                    root: {
+                        display: "block"
+                    },
+                },
+                MuiAccordionSummary: {
+                    root: {
+                        padding: "0 16px",
+                        minHeight: "0 !important"
+                    },
+                },
+            },
+        });
+    };
 
     showMultipleDeleteModal(evt, data, table) {
         this.setState({
@@ -66,24 +97,19 @@ class AccordionModule extends Component {
     }
 
     async multipleDeleteCallback() {
-        switch (this.state.table) {
-            case "main":
-                let sections = [...this.state.sections];
-                let sectionsIds = [];
-                let multipleDeleteData = this.state.multipleDeleteData;
-                multipleDeleteData.map((column) =>
-                    sectionsIds.push(column.tableData.id)
-                );
-                sections = sections.filter((column) => {
-                    return !sectionsIds.includes(column.tableData.id);
-                });
-                await this.setAsyncState({sections});
-                this.state.tableRef.current &&
-                this.state.tableRef.current.onQueryChange();
-                break;
-            default:
-                break;
-        }
+        let sections = [...this.state.sections];
+        let sectionsIds = [];
+        let multipleDeleteData = this.state.multipleDeleteData;
+        multipleDeleteData.map((column) =>
+            sectionsIds.push(column.tableData.id)
+        );
+        sections = sections.filter((column) => {
+            return !sectionsIds.includes(column.tableData.id);
+        });
+        await this.setAsyncState({sections});
+        this.props.onUpdate({sections: this.state.sections});
+        this.state.tableRef.current &&
+        this.state.tableRef.current.onQueryChange();
 
         this.closeMultipleDeleteModal();
     }
@@ -98,10 +124,13 @@ class AccordionModule extends Component {
         });
     }
 
-    handleDelete(id) {
+    async handleDelete(id) {
         let sections = [...this.state.sections];
         let newSections = sections.filter((section) => section.id !== id);
-        this.setState({sections: newSections});
+        await this.setAsyncState({sections: newSections});
+
+        this.props.onUpdate({sections: this.state.sections});
+
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
     }
 
@@ -117,16 +146,10 @@ class AccordionModule extends Component {
 
         await this.setAsyncState({
             sections
-        })
+        });
 
-        this.handleUpdate();
+        this.props.onUpdate({sections: this.state.sections});
 
-    }
-
-    handleUpdate() {
-        this.props.onUpdate({
-            columns: this.state.sections
-        })
     }
 
     tableOptions = {
@@ -138,6 +161,9 @@ class AccordionModule extends Component {
                         title: col.columnTitle,
                         field: col.fieldName,
                         type: col.dataType,
+                        validate: rowData => {
+                            return rowData.title === '' ? 'Name cannot be empty' : ''
+                        }
                     });
                     return col;
                 });
@@ -163,7 +189,7 @@ class AccordionModule extends Component {
                         newData.id = this.state.sections.length + 1;
                         let newSections = sections.concat(newData);
                         await this.setAsyncState({sections: newSections});
-                        this.handleUpdate();
+                        this.props.onUpdate({sections: this.state.sections});
                         resolve();
                     }),
                 onRowUpdate: (newData, oldData) =>
@@ -173,6 +199,7 @@ class AccordionModule extends Component {
                         const index = oldData.tableData.id;
                         dataUpdate[index] = newData;
                         await this.setAsyncState({sections: dataUpdate});
+                        this.props.onUpdate({sections: this.state.sections});
                         resolve();
                     }),
                 onRowDelete: (oldData) => {
@@ -181,6 +208,7 @@ class AccordionModule extends Component {
                         const index = oldData.tableData.id;
                         dataDelete.splice(index, 1);
                         await this.setAsyncState({sections: dataDelete});
+                        this.props.onUpdate({sections: this.state.sections});
                         resolve();
                     });
                 },
@@ -217,28 +245,23 @@ class AccordionModule extends Component {
             icons: {
                 Add: () => <AddCircle className={this.props.classes.addIcon}/>,
                 Check: () => (
-                    <IconButton color="primary">
-                        <Check color="primary"/>{" "}
-                    </IconButton>
+                    <Check color="primary"/>
                 ),
                 Clear: () => (
-                    <IconButton color="error">
-                        <Clear color="error"/>{" "}
-                    </IconButton>
+                    <Clear color="error"/>
                 ),
                 Edit: () => (
-                    <IconButton color="primary">
-                        <Edit color="primary"/>{" "}
-                    </IconButton>
+                    <Edit color="primary"/>
                 ),
                 Delete: () => (
-                    <IconButton color="primary">
-                        <DeleteForever color="error"/>{" "}
-                    </IconButton>
+                    <DeleteForever color="error"/>
                 ),
             },
-            columns: [{title: "Section Title", field: "title"}],
+            columns: [{
+                title: "Section Title", field: "title"
+            }],
             options: {
+                search: false,
                 selection: true,
                 actionsColumnIndex: -1,
                 actionsCellStyle: {
@@ -249,129 +272,78 @@ class AccordionModule extends Component {
     };
 
     render() {
-        const classes = this.props.classes;
-
         return (
-            <React.Fragment>
-                <MaterialTable
-                    tableRef={this.state.tableRef}
-                    title="Accordion Sections"
-                    columns={this.tableOptions.props.columns}
-                    data={() => this.tableOptions.actions.getData()}
-                    options={this.tableOptions.props.options}
-                    actions={this.tableOptions.actions.customActions}
-                    icons={this.tableOptions.props.icons}
-                    editable={this.tableOptions.actions.editable}
-                />{" "}
-                {this.state.sections.length ? (
-                    <h4 style={{textAlign: "center", margin: "30px 0 20px 0"}}>
-                        {" "}
-                        Accordion Preview
-                    </h4>
-                ) : (
-                    ""
-                )}
-                {this.state.sections.map((section, idx) => {
-                    const id = `panel${idx}a-content`;
-                    return (
-                        <Accordion
-                            key={id}
-                            expanded={this.state.expanded === id}
-                            onChange={() => this.handleContentEdit(section.id, id)}
-                        >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon/>}
-                                style={{display: "initial"}}
-                            >
-                                <Typography
-                                    title={section.title}
-                                    className={classes.heading}
+            <MuiThemeProvider theme={this.muiTheme}>
+                <div style={{
+                    display: "flex"
+                }}>
+                    <div style={{
+                        flex: 1,
+                        marginRight: "10px"
+                    }}>
+                        <MaterialTable
+                            tableRef={this.state.tableRef}
+                            title="Accordion Sections"
+                            columns={this.tableOptions.props.columns}
+                            data={() => this.tableOptions.actions.getData()}
+                            options={this.tableOptions.props.options}
+                            actions={this.tableOptions.actions.customActions}
+                            icons={this.tableOptions.props.icons}
+                            editable={this.tableOptions.actions.editable}
+                        />
+                    </div>
+                    <div style={{
+                        flex: 1,
+                        marginLeft: "10px"
+                    }}>
+                        {this.state.sections.map((section, idx) => {
+                            const id = `panel${idx}a-content`;
+                            return (
+                                <Accordion
+                                    key={id}
+                                    expanded={this.state.expanded === id}
+                                    onChange={() => this.handleContentEdit(section.id, id)}
                                 >
-                                    {section.title}
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                {this.state.expanded === id && <Editor
-                                    id="editor"
-                                    initialValue={this.state.sectionContent}
-                                    init={{
-                                        height: 500,
-                                        min_width: "100%",
-                                        menubar: false,
-                                        plugins: [
-                                            "advlist autolink lists link image charmap print preview anchor",
-                                            "searchreplace visualblocks code fullscreen",
-                                            "insertdatetime media table paste code help wordcount",
-                                        ],
-                                        toolbar:
-                                            "undo redo" +
-                                            " | formatselect" +
-                                            " | bold italic forecolor backcolor" +
-                                            " | alignleft aligncenter alignright alignjustify" +
-                                            " | bullist numlist outdent indent" +
-                                            " | removeformat",
-                                        init_instance_callback: function () {
-                                            var annoyingMessage = document.querySelector(
-                                                ".tox-notifications-container"
-                                            );
-                                            annoyingMessage.style.display = "none";
-                                        },
-                                    }}
-                                    onEditorChange={(event) =>
-                                        this.handleInputChange(event, section.id)
-                                    }
-                                />}
-                            </AccordionDetails>
-                        </Accordion>
-                    );
-                })}
-                <Dialog
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showMultipleDeleteModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeMultipleDeleteModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <div>Are you sure you want to proceed ?</div>
-                    </DialogContent>
-
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            disabled={this.state.isBtnDisabled}
-                            color="transparent"
-                            simple
-                            onClick={() => this.multipleDeleteCallback()}
-                        >
-                            <div>Proceed</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            simple
-                            onClick={() => {
-                                this.closeMultipleDeleteModal();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </React.Fragment>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon/>}
+                                    >{section.title}</AccordionSummary>
+                                    <AccordionDetails style={{
+                                        padding: 0
+                                    }}>
+                                        {this.state.expanded === id && <Editor
+                                            id="editor"
+                                            initialValue={this.state.sectionContent}
+                                            init={{
+                                                height: 500,
+                                                min_width: "100%",
+                                                plugins: 'print preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+                                                menubar: 'file edit view insert format tools table tc help',
+                                                toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+                                                init_instance_callback: function () {
+                                                    var annoyingMessage = document.querySelector(
+                                                        ".tox-notifications-container"
+                                                    );
+                                                    if (annoyingMessage && annoyingMessage.style) {
+                                                        annoyingMessage.style.display = "none";
+                                                    }
+                                                },
+                                            }}
+                                            onEditorChange={(event) =>
+                                                this.handleInputChange(event, section.id)
+                                            }
+                                        />}
+                                    </AccordionDetails>
+                                </Accordion>
+                            );
+                        })}
+                    </div>
+                </div>
+                <Modal
+                    modalSize="small"
+                    showModal={this.state.showMultipleDeleteModal}
+                    {...this.deleteModalProps}
+                />
+            </MuiThemeProvider>
         );
     }
 }
@@ -380,5 +352,7 @@ export default withStyles(styles)(AccordionModule);
 
 AccordionModule.propTypes = {
     classes: PropTypes.object,
+    moduleOptions: PropTypes.object,
+    defaultTheme: PropTypes.object,
     onUpdate: PropTypes.func,
 };

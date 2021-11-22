@@ -51,6 +51,7 @@
     "react-grid-layout": "^1.2.5",
     "react-h5-audio-player": "^3.8.0",
     "react-helmet": "^6.1.0",
+    "react-html-parser": "^2.0.2",
     "react-icons": "^4.2.0",
     "react-image-gallery": "^1.0.8",
     "react-image-magnify": "^2.7.4",

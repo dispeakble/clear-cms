@@ -1,4 +1,4 @@
-import React, {createRef, Suspense} from "react";
+import React, {Suspense} from "react";
 import _ from "lodash";
 import {
   createTheme,
