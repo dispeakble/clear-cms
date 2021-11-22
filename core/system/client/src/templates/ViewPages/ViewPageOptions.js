@@ -9,9 +9,6 @@ import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
 import {FormControlLabel, FormGroup, MuiThemeProvider, TextField} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import clsx from "clsx";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "../../components/CustomButtons/Button";
 import React, {createRef} from "react";
 import {Helmet} from "react-helmet";
 import Modal from "../../components/Modal/Modal";
@@ -28,8 +25,79 @@ class ViewPageOptions extends React.PureComponent {
 
     state = {
         contentType: "general",
-        dialogTitleError: false
+        dialogTitleError: false,
+        showNewCategoryModal: false
     };
+
+    addNewCategoryModalProps = {
+        id: "newCategory",
+        name: "newCategory",
+        resize: true,
+        title: "Add a new category",
+        content: (<div>
+            <form onSubmit={this.props.handleNewCategory}>
+                <div style={{
+                    display: "flex"
+                }}>
+                    <div style={{
+                        flex: 1,
+                        marginRight: "10px"
+                    }}>
+                        <TextField
+                            disabled
+                            value={this.props.data.dialogValue.title}
+                            label="title"
+                            type="text"
+                        />
+                    </div>
+                    <div style={{
+                        flex: 1,
+                        marginLeft: "10px"
+                    }}>
+                        <TextField
+                            autoFocus
+                            onChange={(event) =>
+                                this.props.handlePageOptions({
+                                    dialogValue: {
+                                        ...this.props.data.dialogValue,
+                                        description: event.target.value,
+                                    },
+                                })
+                            }
+                            label="description"
+                            type="text"
+                        />
+                    </div>
+                </div>
+                <div>
+                    {this.props.data.dialogErr && (
+                        <Typography color="error">Category Already Exist Please Check again</Typography>
+                    )}
+                </div>
+            </form>
+        </div>),
+        modalSize: "small",
+        defaultTheme: this.props.defaultTheme,
+        closeButton: {
+            callback: () => {
+                this.props.handlePageOptions({
+                    dialogValue: {
+                        title: "",
+                        description: "",
+                    },
+                    openNewCategory: false,
+                })
+            },
+            label: "Cancel",
+        },
+        confirmButton: {
+            show: true,
+            callback: () => {
+                this.deleteCallback()
+            },
+            label: "Add",
+        },
+    }
 
     muiTheme = {};
 
@@ -154,92 +222,10 @@ class ViewPageOptions extends React.PureComponent {
                                         />
                                     )}
                                 />
-
-                                <Dialog
-                                    open={this.props.data.openNewCategory}
-                                    onClose={() =>
-                                        this.props.handlePageOptions({
-                                            dialogValue: {
-                                                title: "",
-                                                description: "",
-                                            },
-                                            openNewCategory: false,
-                                        })
-                                    }
-                                    aria-labelledby="form-dialog-title"
-                                >
-                                    <form onSubmit={this.props.handleNewCategory}>
-                                        <DialogTitle
-                                            style={{textAlign: "center"}}
-                                            id="form-dialog-title"
-                                        >
-                                            Add a new category
-                                        </DialogTitle>
-                                        <DialogContent
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-evenly",
-                                            }}
-                                        >
-                                            <TextField
-                                                autoFocus
-                                                disabled
-                                                margin="dense"
-                                                id="title"
-                                                value={this.props.data.dialogValue.title}
-                                                label="title"
-                                                type="text"
-                                            />
-
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="description"
-                                                value={this.props.data.dialogValue.description}
-                                                onChange={(event) =>
-                                                    this.props.handlePageOptions({
-                                                        dialogValue: {
-                                                            ...this.props.data.dialogValue,
-                                                            description: event.target.value,
-                                                        },
-                                                    })
-                                                }
-                                                label="description"
-                                                type="text"
-                                            />
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button type="submit" color="primary">
-                                                Add
-                                            </Button>
-                                            <Button
-                                                onClick={() =>
-                                                    this.props.handlePageOptions({
-                                                        dialogValue: {
-                                                            title: "",
-                                                            description: "",
-                                                        },
-                                                        openNewCategory: false,
-                                                    })
-                                                }
-                                                style={{color: this.props.defaultTheme.secondary.main}}
-                                            >
-                                                Cancel
-                                            </Button>
-
-                                        </DialogActions>
-                                        {this.props.data.dialogErr && (
-                                            <p
-                                                style={{
-                                                    textAlign: "center",
-                                                    color: "red",
-                                                }}
-                                            >
-                                                Category Already Exist Please Check again
-                                            </p>
-                                        )}
-                                    </form>
-                                </Dialog>
+                                <Modal
+                                    showModal={this.props.data.openNewCategory}
+                                    {...this.addNewCategoryModalProps}
+                                />
                             </div>}
                         </div>
                         <div>

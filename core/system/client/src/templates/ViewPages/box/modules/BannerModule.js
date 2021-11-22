@@ -1,342 +1,321 @@
-import React, { Component } from "react";
-import ArtTrack from "@material-ui/icons/ArtTrack";
+import React, {Component} from "react";
 
-import { withStyles, createTheme } from "@material-ui/core/styles";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import {withStyles, createTheme} from "@material-ui/core/styles";
+import {MuiThemeProvider} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-
-import { DropzoneArea } from "material-ui-dropzone";
-
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
+import {DropzoneDialog} from "material-ui-dropzone";
 
 import Typography from "@material-ui/core/Typography";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
-import { TextField } from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Button from "components/CustomButtons/Button.js";
-import {DeleteForever} from "@material-ui/icons";
+import PropTypes from "prop-types";
+import Button from "components/CustomButtons/Button";
 
 class BannerModule extends Component {
-  state = {
-    bannerTitle: "",
-    bannerSizes: [
-      { label: "250 x 250" },
-      { label: "200 x 200" },
-      { label: "468 x 60" },
-      { label: "728 x 90" },
-      { label: "300 x 250" },
-      { label: "336 x 280" },
-      { label: "120 x 600" },
-      { label: "160 x 600" },
-      { label: "300 x 600" },
-      { label: "970 x 90" },
-    ],
-    bannerSize: "",
+    state = {
+        bannerTitle: "",
+        bannerLink: "",
+        bannerSizes: [
+            {label: "250 x 250"},
+            {label: "200 x 200"},
+            {label: "468 x 60"},
+            {label: "728 x 90"},
+            {label: "300 x 250"},
+            {label: "336 x 280"},
+            {label: "120 x 600"},
+            {label: "160 x 600"},
+            {label: "300 x 600"},
+            {label: "970 x 90"},
+        ],
+        bannerSize: 0,
+        linkNav: 0,
+        linkNavs: [{label: "On Page"}, {label: "New Tab"}],
+        files: [],
+        banner: "",
+        bannerBinary: "",
+        showFileUploader: false,
+    };
 
-    linkNav: 0,
-    linkNavs: [{ label: "On Page" }, { label: "New Tab" }],
-    bgImage: "",
-    bgImageFile: "",
-  };
-  getTheme = () => {
-    return createTheme({
-      palette: this.props.defaultTheme,
-      overrides: {
-        MuiDialogTitle: {
-          root: {
-            padding: "16px 24px 0",
-          },
-        },
-      },
-    });
-  };
-
-  createDefaultTheme = () => {
-    return createTheme({
-      palette: this.props.defaultTheme,
-
-      overrides: {
-        MuiDropzoneArea: {
-          root: {
-            height: "145px",
-            minHeight: "145px",
-          },
-          text: {
-            fontSize: "1rem",
-          },
-        },
-      },
-    });
-  };
-
-  setAsyncState = (newState) =>
-    new Promise((resolve) => this.setState(newState, resolve));
-
-  handleEdit = async (id) => {
-    await this.setAsyncState({
-      itemModuleEditId: id,
-      showModuleOptionsModal: true,
-    });
-  };
-
-  closeModuleOptionsModal() {
-    this.setState({ showModuleOptionsModal: false });
-  }
-
-  handleInputChange = (event) => {
-    switch (event.target.id) {
-      case "bannerTitle":
-        let bannerTitle = this.state.bannerTitle;
-        bannerTitle = event.target.value + "";
-        this.setState({ bannerTitle });
-        break;
-      case "bannerLink":
-        let bannerLink = this.state.bannerLink;
-        bannerLink = event.target.value + "";
-        this.setState({ bannerLink });
-        break;
-      default:
-        break;
+    componentDidMount() {
+        if (this.props.moduleOptions) {
+            let {moduleOptions} = this.props;
+            this.setState({
+                bannerTitle: moduleOptions.bannerTitle,
+                bannerLink: moduleOptions.bannerLink,
+                bannerSize: moduleOptions.bannerSize,
+                linkNav: moduleOptions.linkNav,
+                files: moduleOptions.files,
+                bannerBinary: moduleOptions.bannerBinary,
+            });
+        }
     }
-  };
 
-  getBannerSizeIndex(name) {
-    return Number(
-      this.state.bannerSizes.findIndex((type) => {
-        return type.label === name;
-      })
-    );
-  }
+    getTheme = () => {
+        return createTheme({
+            palette: this.props.defaultTheme,
+            overrides: {
+                MuiDialogTitle: {
+                    root: {
+                        padding: "16px 24px 0",
+                    },
+                },
+            },
+        });
+    };
 
-  handleBannerSize = async (event, newValue) => {
-    if (!newValue || !newValue.label) {
-      return;
+    createDefaultTheme = () => {
+        return createTheme({
+            palette: this.props.defaultTheme,
+
+            overrides: {
+                MuiDropzoneArea: {
+                    root: {
+                        height: "145px",
+                        minHeight: "145px",
+                    },
+                    text: {
+                        fontSize: "1rem",
+                    },
+                },
+            },
+        });
+    };
+
+    setAsyncState = (newState) =>
+        new Promise((resolve) => this.setState(newState, resolve));
+
+    handleInputChange = async (event) => {
+        switch (event.target.id) {
+            case "bannerTitle":
+                await this.setAsyncState({
+                    bannerTitle: event.target.value
+                });
+                break;
+            case "bannerLink":
+                await this.setAsyncState({
+                    bannerLink: event.target.value
+                });
+                break;
+            default:
+                break;
+        }
+
+        this.handleUpdate();
+    };
+
+    getBannerSizeLabel(index) {
+        const item = this.state.bannerSizes[index];
+        return item.label;
     }
-    await this.setAsyncState({
-      bannerSize: this.getBannerSizeIndex(newValue.label),
-    });
-  };
 
-  getLinkNavIndex(name) {
-    return Number(
-      this.state.linkNavs.findIndex((type) => {
-        return type.label === name;
-      })
-    );
-  }
-
-  handleLinkNav = async (event, newValue) => {
-    if (!newValue || !newValue.label) {
-      return;
+    getBannerSizeIndex(name) {
+        return Number(
+            this.state.bannerSizes.findIndex((type) => {
+                return type.label === name;
+            })
+        );
     }
-    await this.setAsyncState({
-      linkNav: this.getLinkNavIndex(newValue.label),
-    });
-  };
 
-  toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  }
+    handleBannerSize = async (event, newValue) => {
+        if (!newValue || !newValue.label) {
+            return;
+        }
+        await this.setAsyncState({
+            bannerSize: this.getBannerSizeIndex(newValue.label),
+        });
 
-  handleBgImage = async (event) => {
-    if (event.length) {
-      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+        this.handleUpdate();
+    };
 
-      this.setAsyncState({
-        bgImage: strings[0],
-        bgImageFile: event[0]
-      });
+    getLinkNavLabel(index) {
+        const item = this.state.linkNavs[index];
+        return item.label;
     }
-  };
 
-  fileExtension = (string) => {
-    const p = string.split('.');
-    return p[p.length - 1];
-  }
+    getLinkNavIndex(name) {
+        return Number(
+            this.state.linkNavs.findIndex((type) => {
+                return type.label === name;
+            })
+        );
+    }
 
-  render() {
-    return (
-      <MuiThemeProvider theme={this.createDefaultTheme}>
-        <div
-          style={{
-            textAlign: "center",
-          }}
-        >
-          <Tooltip title="Banner Module">
-            <IconButton
-              onClick={() => this.handleEdit(this.props.boxId)}
-              color="primary"
-              size="medium"
-            >
-              <ArtTrack />
-            </IconButton>
-          </Tooltip>
+    handleLinkNav = async (event, newValue) => {
+        if (!newValue || !newValue.label) {
+            return;
+        }
+        await this.setAsyncState({
+            linkNav: this.getLinkNavIndex(newValue.label),
+        });
 
-          <Dialog
-            fullWidth={true}
-            style={{ width: "40%", margin: "0 auto" }}
-            maxWidth={"md"}
-            onBackdropClick={() => "false"}
-            classes={{
-              root: this.props.classes.center,
-              paper: this.props.classes.modal,
-            }}
-            open={this.state.showModuleOptionsModal}
-            TransitionComponent={this.transition}
-            keepMounted
-            onClose={() => this.closeModuleOptionsModal()}
-            aria-labelledby="classic-modal-slide-title"
-            aria-describedby="classic-modal-slide-description"
-          >
-            <DialogTitle
-              style={{
-                textAlign: "center",
-              }}
-              id="classic-modal-slide-title"
-              disableTypography
-              className={this.props.classes.modalHeader}
-            >
-              <h4 className={this.props.classes.modalTitle}>
-                Edit Banner Module
-              </h4>
-            </DialogTitle>
-            <DialogContent
-              id="classic-modal-slide-description"
-              className={this.props.classes.modalBody}
-            >
-              <CustomInput
-                labelText="Title"
-                id="bannerTitle"
-                required="required"
-                formControlProps={{
-                  fullWidth: true,
-                  onChange: (event) => this.handleInputChange(event),
-                }}
-                inputProps={{
-                  value: this.state.bannerTitle,
-                  type: "text",
-                }}
-              />
-              <Autocomplete
-                style={{ margin: "5% 0" }}
-                id="moduleDropdown"
-                onChange={this.handleBannerSize}
-                className={this.props.classes.option}
-                autoHighlight
-                getOptionLabel={(option) => option.label}
-                defaultValue={this.state.bannerSizes[this.state.bannerSize]}
-                options={this.state.bannerSizes}
-                renderInput={(params) => (
-                  <TextField
-                    className={this.props.classes.textfield}
-                    {...params}
-                    label="Size"
-                    variant="outlined"
-                  />
-                )}
-              />{" "}
-              <CustomInput
-                labelText="Link"
-                id="bannerLink"
-                required="required"
-                formControlProps={{
-                  fullWidth: true,
-                  onChange: (event) => this.handleInputChange(event),
-                }}
-                inputProps={{
-                  value: this.state.bannerLink,
-                  type: "text",
-                }}
-              />
-              <Autocomplete
-                style={{ margin: "5% 0" }}
-                id="moduleDropdown"
-                onChange={this.handleLinkNav}
-                className={this.props.classes.option}
-                autoHighlight
-                getOptionLabel={(option) => option.label}
-                defaultValue={this.state.linkNavs[this.state.linkNav]}
-                options={this.state.linkNavs}
-                renderInput={(params) => (
-                  <TextField
-                    className={this.props.classes.textfield}
-                    {...params}
-                    label="Link Navigation"
-                    variant="outlined"
-                  />
-                )}
-              />{" "}
-              <Typography id="discrete-slider" gutterBottom>
+        this.handleUpdate();
+    };
 
-                <div style={{
-                  display: "flex",
-                  justifyContent: "space-between"
-                }}>
-                  <div>Image</div>
-                  {this.state.bgImage && <DeleteForever onClick={() => this.setState({
-                    bgImage: "",
-                    bgImageFile: ""
-                  })} style={{color: this.props.defaultTheme.secondary.main}}/>}
+    toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
+    async handleFile(event) {
+        if (event.length) {
+            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+            await this.setAsyncState({
+                banner: strings[0],
+                bannerBinary: event[0]
+            });
+            await this.setAsyncState({
+                showFileUploader: false
+            })
+        }
+
+        let files = [];
+        if (this.state.bannerBinary) {
+            files.push({
+                sel: 'banner',
+                name: `banner.${this.fileExtension(this.state.bannerBinary.name)}`,
+                file: this.state.bannerBinary
+            });
+        }
+
+        await this.setAsyncState({
+            files
+        });
+
+        this.handleUpdate()
+
+    }
+
+    closeFileUploader() {
+        this.setState({
+            showFileUploader: false
+        });
+    }
+    
+    handleUpdate = async () => {
+        this.props.onUpdate({
+            bannerTitle: this.state.bannerTitle,
+            bannerLink: this.state.bannerLink,
+            bannerSize: this.state.bannerSize,
+            linkNav: this.state.linkNav,
+            files: this.state.files
+        })
+    }
+    
+    fileExtension = (string) => {
+        const p = string.split('.');
+        return p[p.length - 1];
+    }
+
+    render() {
+        const classes = this.props.classes;
+        return (
+            <MuiThemeProvider theme={this.createDefaultTheme}>
+                <div style={{ textAlign: "center" }}>
+                    <h4 className={classes.modalTitle}>
+                        Edit Banner Module
+                    </h4>
+                    <CustomInput
+                        labelText="Title"
+                        id="bannerTitle"
+                        required="required"
+                        formControlProps={{
+                            fullWidth: true,
+                            onChange: this.handleInputChange.bind(this),
+                        }}
+                        inputProps={{
+                            value: this.state.bannerTitle,
+                            type: "text",
+                        }}
+                    />
+                    <Autocomplete
+                        style={{margin: "5% 0"}}
+                        id="moduleDropdown"
+                        onChange={this.handleBannerSize}
+                        className={classes.option}
+                        autoHighlight
+                        getOptionLabel={(option) => option.label}
+                        value={this.state.bannerSizes[this.state.bannerSize] || null}
+                        options={this.state.bannerSizes}
+                        renderInput={(params) => (
+                            <TextField
+                                className={classes.textfield}
+                                {...params}
+                                label="Size"
+                                variant="outlined"
+                            />
+                        )}
+                    />{" "}
+                    <CustomInput
+                        labelText="Link"
+                        id="bannerLink"
+                        required="required"
+                        formControlProps={{
+                            fullWidth: true,
+                            onChange: (event) => this.handleInputChange(event),
+                        }}
+                        inputProps={{
+                            value: this.state.bannerLink,
+                            type: "text",
+                        }}
+                    />
+                    <Autocomplete
+                        style={{margin: "5% 0"}}
+                        id="moduleDropdown"
+                        onChange={this.handleLinkNav}
+                        className={classes.option}
+                        autoHighlight
+                        getOptionLabel={(option) => option.label}
+                        value={this.state.linkNavs[this.state.linkNav] || null}
+                        options={this.state.linkNavs}
+                        renderInput={(params) => (
+                            <TextField
+                                className={classes.textfield}
+                                {...params}
+                                label="Link Navigation"
+                                variant="outlined"
+                            />
+                        )}
+                    />{" "}
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between"
+                    }}>
+                        <div>
+                            <Typography id="discrete-slider" gutterBottom>
+                                <span>Image</span>
+                            </Typography>
+                        </div>
+                    </div>
+                    <Button onClick={() => {
+                        this.setState({
+                            showFileUploader: true
+                        });
+                    }} color="primary">Upload Banner Image</Button>
+                    <DropzoneDialog
+                        open={this.state.showFileUploader}
+                        onSave={this.handleFile.bind(this)}
+                        onClose={this.closeFileUploader.bind(this)}
+                        filesLimit={1}
+                        maxFileSize={Math.pow(1024, 3)}
+                    />
                 </div>
-                <DropzoneArea
-                    maxFileSize={Math.pow(1024, 3)}
-                  clearOnUnmount={true}
-                  filesLimit={1}
-                  className={this.props.classes.dropzone}
-                  onChange={this.handleBgImage.bind(this)}
-                />
-              </Typography>
-            </DialogContent>
-            <DialogActions className={this.props.classes.modalFooter}>
-              <Button
-                disabled={this.state.isBtnDisabled}
-                color="primary"
-                onClick={() => {
-                  let files = [];
-                  if(this.state.bgImageFile){
-                    files.push({
-                      sel: 'banner',
-                      name: `banner.${this.fileExtension(this.state.bgImageFile.name)}`,
-                      file: this.state.bgImageFile
-                    });
-                  }
-                  this.props.handleSave(this.state.itemModuleEditId, {
-                    files: files,
-                    bannerTitle: this.state.bannerTitle,
-                    bannerSize: this.state.bannerSize,
-                    bannerSizes: this.state.bannerSizes});
-                  this.closeModuleOptionsModal();
-                }}
-              >
-                <div>Save</div>
-              </Button>
-              <Button
-                color="danger"
-                onClick={() => {
-                  this.closeModuleOptionsModal();
-                }}
-              >
-                Cancel
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      </MuiThemeProvider>
-    );
-  }
+            </MuiThemeProvider>
+        );
+    }
 }
 
 export default withStyles(styles)(BannerModule);
+
+BannerModule.propTypes = {
+    classes: PropTypes.object,
+    moduleOptions: PropTypes.object,
+    defaultTheme: PropTypes.object,
+    onUpdate: PropTypes.func
+};

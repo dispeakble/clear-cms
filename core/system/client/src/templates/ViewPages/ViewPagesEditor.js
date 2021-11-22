@@ -376,10 +376,9 @@ class ViewPagesEditor extends React.PureComponent {
       });
     }
 
-
     let categoriesFromStorage = await this.props.control.listCategories();
 
-    let categories = this.state.categories;
+    let categories = [];
 
     if (categoriesFromStorage) {
       categoriesFromStorage.map((category) => {
@@ -1337,11 +1336,11 @@ class ViewPagesEditor extends React.PureComponent {
     });
   };
 
-  handleNewCategory = async (event) => {
+  handleNewCategory = async (event) => {//TODO can be moved into ViewPageOptions
     event.preventDefault();
     event.persist();
     const newTitle = `${this.state.dialogValue.title}`;
-    const newDescription = `${this.state.dialogValue.title}`;
+    const newDescription = `${this.state.dialogValue.description}`;
 
     let categoriesFromStorage = await this.props.control.listCategories({
       where: {
