@@ -45,6 +45,8 @@ if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
     echo
     echo "Running Rancher ($APP_VERSION)"
 
+    docker pull rancher/rancher-agent:$APP_VERSION
+
     docker run -d --restart=always \
         -p 9080:80 \
         -p 9443:443 \

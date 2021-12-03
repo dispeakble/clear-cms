@@ -2,8 +2,8 @@
 
 CMS_NAME="cms-cluster"
 
-SSL_KEY_FILENAME="../../ssl/key.pem"
-SSL_CERT_FILENAME="../../ssl/cert.pem"
+#SSL_KEY_FILENAME="../../ssl/key.pem"
+#SSL_CERT_FILENAME="../../ssl/cert.pem"
 
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
@@ -31,36 +31,6 @@ fi
 
 source "${BASH_SOURCE%/*}/rancher-login.sh"
 
-function createCluster() {
-    sleep 2
-    echo "Creating the Cluster $1:"
-    rancher cluster create --network-provider flannel --rke-config "${BASH_SOURCE%/*}/config.yaml" $1
-    rancherLogin
-    sleep 2
-    rancher context switch
-
-    sleep 2
-    echo "Registering node:"
-    ADD_NODE=$(rancher cluster add-node $1 | grep docker)
-    ROLES=" --etcd --controlplane --worker"
-
-    echo $ADD_NODE$ROLES
-
-    if [ -z "${ADD_NODE}" ]; then
-        return 1
-    else
-        eval $ADD_NODE$ROLES
-    fi
-
-    checkCluster
-
-    rancherLogin
-
-
-
-    return 0
-}
-
 saveKubeConfig() {
   rancher cluster kf $1 >~/.kube/config
 
@@ -68,37 +38,13 @@ saveKubeConfig() {
 
   rancher cluster kf $1 >~/.kube/config
 
-  # Replacing localhost IP to real IP
+  # Replacing fakeclient.local IP to real IP
   MY_IP=$(get_my_ip)
   sed -i -e "s/127.0.0.1/$MY_IP/g" ~/.kube/config
 }
 
 clusterExists() {
   [ "$(rancher cluster ls | grep $1 | awk '{print $3}')" ]
-}
-
-function checkCluster() {
-    echo "The cluster is being built. Please wait..."
-    CLUSTER_STATE=0
-    wait_count=0
-    while [ "$CLUSTER_STATE" -lt 1 ] && ((wait_count < 600)); do
-      if [ "$wait_count" -gt 130 ]; then
-
-        echo -en "\r If this message does not go away please contact the administrator"
-        else
-        echo -en "\r$(echo "scale=2; 100 / 130 * $wait_count" | bc)% - ( $wait_count seconds ) complete"
-      fi
-
-        sleep 1
-        wait_count=$((wait_count + 1))
-        CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
-    done
-    if [ "$CLUSTER_STATE" -lt 1 ]; then
-        echo "Cluster cannot be detected. Check Rancher UI"
-        exit 1
-    fi
-    echo "\nCluster created!\n"
-    return 0
 }
 
 function createSecret() {
@@ -181,39 +127,39 @@ function waitForLonghornStorageClass(){
 }
 
 
-function launchLonghorn () {
-  sudo apt install tgt lvm2
-  echo '--------'
-  echo "$(rancher project ls | grep Storage)"
-  echo '--------'
-  if [ -z "$(rancher project ls | grep Storage)" ]; then
-    echo "Creating the Storage project"
-    rancher project create Storage
-  fi
-
-  rancher context switch Storage
-  sleep 1
-  if [ -z "$(rancher namespace ls | grep longhorn-system)" ]; then
-    echo "$(rancher namespace ls | grep longhorn-system)"
-    echo "Creating Storage:longhorn-system namespace"
-    rancher namespace create longhorn-system
-  fi
-
-#  waitForCatalog "cattle-global-data:library-longhorn"
-#
-#  if [ -z "$(getApp longhorn)" ]; then
-#    rancher app install --no-prompt --namespace longhorn-system \
-#    --version 1.1.2 \
-#    cattle-global-data:library-longhorn longhorn
+#function launchLonghorn () {
+#  sudo apt install tgt lvm2
+#  echo '--------'
+#  echo "$(rancher project ls | grep Storage)"
+#  echo '--------'
+#  if [ -z "$(rancher project ls | grep Storage)" ]; then
+#    echo "Creating the Storage project"
+#    rancher project create Storage
 #  fi
-  helm repo add longhorn https://charts.longhorn.io
-  helm repo update
-  helm install longhorn longhorn/longhorn --namespace longhorn-system
-  waitForApp "longhorn"
-  rancher wait --timeout 300 longhorn
-  waitForLonghornStorageClass
-  printf '\n' > /dev/tty
-}
+#
+#  rancher context switch Storage
+#  sleep 1
+#  if [ -z "$(rancher namespace ls | grep longhorn-system)" ]; then
+#    echo "$(rancher namespace ls | grep longhorn-system)"
+#    echo "Creating Storage:longhorn-system namespace"
+#    rancher namespace create longhorn-system
+#  fi
+#
+##  waitForCatalog "cattle-global-data:library-longhorn"
+##
+##  if [ -z "$(getApp longhorn)" ]; then
+##    rancher app install --no-prompt --namespace longhorn-system \
+##    --version 1.1.2 \
+##    cattle-global-data:library-longhorn longhorn
+##  fi
+#  helm repo add longhorn https://charts.longhorn.io
+#  helm repo update
+#  helm install longhorn longhorn/longhorn --namespace longhorn-system
+#  waitForApp "longhorn"
+#  rancher wait --timeout 300 longhorn
+#  waitForLonghornStorageClass
+#  printf '\n' > /dev/tty
+#}
 
 function launchRedis() {
 
@@ -309,33 +255,33 @@ function launchPGAdmin() {
   printf '\n' > /dev/tty
 }
 
-function launchMetalLB(){
-
-createNamespace "metallb-system"
-checkApp "cattle-global-data:bitnami-metallb"
-sleep 5
-sed -e "s|MY_IP_RANGE|127.0.0.230-127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
-rancher app install --no-prompt --namespace metallb-system \
-  --set existingConfigMap=metallbconfig \
-  --helm-timeout 300 \
-  --helm-wait \
-  cattle-global-data:bitnami-metallb metallb
-}
-
-function launchTraefik(){
-
-  rancher context switch System
-
-  rancher kubectl delete --all pods --namespace=ingress-nginx
-  rancher kubectl delete --all deployments --namespace=ingress-nginx
-  rancher kubectl delete --all services --namespace=ingress-nginx
-  rancher kubectl delete --all daemonsets --namespace=ingress-nginx
-
-  rancher app install --no-prompt --namespace kube-system \
-  --helm-timeout 300 \
-  --helm-wait \
-  cattle-global-data:library-traefik traefik
-}
+#function launchMetalLB(){
+#
+#createNamespace "metallb-system"
+#checkApp "cattle-global-data:bitnami-metallb"
+#sleep 5
+#sed -e "s|MY_IP_RANGE|127.0.0.230-127.0.0.240/28|g" ${BASH_SOURCE%/*}/configMaps/metallb-system.config.yaml | rancher kubectl apply -f -
+#rancher app install --no-prompt --namespace metallb-system \
+#  --set existingConfigMap=metallbconfig \
+#  --helm-timeout 300 \
+#  --helm-wait \
+#  cattle-global-data:bitnami-metallb metallb
+#}
+#
+#function launchTraefik(){
+#
+#  rancher context switch System
+#
+#  rancher kubectl delete --all pods --namespace=ingress-nginx
+#  rancher kubectl delete --all deployments --namespace=ingress-nginx
+#  rancher kubectl delete --all services --namespace=ingress-nginx
+#  rancher kubectl delete --all daemonsets --namespace=ingress-nginx
+#
+#  rancher app install --no-prompt --namespace kube-system \
+#  --helm-timeout 300 \
+#  --helm-wait \
+#  cattle-global-data:library-traefik traefik
+#}
 
 function createNamespace() {
   rancher namespaces create $1
@@ -347,9 +293,7 @@ function createConfig() {
 
 echo "Using storage type: $STORAGE_TYPE"
 
-sleep 10
-
-#rancherForceLogin
+rancherForceLogin
 #sleep 2
 #
 #saveKubeConfig local

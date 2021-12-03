@@ -1,16 +1,23 @@
 
-DEFAULT_CLUSTER_PASSWORD="1qaz"
-RANCHER_SERVER_URL="https://clearcms-cluster.local:9443"
+
+RANCHER_SERVER_URL="https://fakeclient.local:9443"
+
+while true; do
+  echo $(docker logs $(docker ps --format "{{.ID}}") 2>&1 | grep -i 'password')
+done
 
 getBoostrapPass() {
   RANCHER_STRING=$(docker logs $(docker ps --format "{{.ID}}")  2>&1 | grep "Bootstrap Password:")
+
+
+
   DEFAULT_PASS=${RANCHER_STRING##* }
   #DEFAULT_PASS=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
   echo $DEFAULT_PASS
 }
 
 getRancherToken() {
-  TEMP_TOKEN=$(curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3-public/localProviders/local?action=login' -H 'content-type: application/json' --data-binary '{"username":"admin","password":"'$RANCHER_PASS'","ttl":60000}' | jq -r .token)
+  #TEMP_TOKEN=$(curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3-public/localProviders/local?action=login' -H 'content-type: application/json' --data-binary '{"username":"'$DEFAULT_CLUSTER_USERNAME'","password":"'$RANCHER_PASS'","ttl":60000}' | jq -r .token)
   #TOKEN=${TEMP_TOKEN##*:}
   echo $TEMP_TOKEN
 }
@@ -18,27 +25,30 @@ getRancherToken() {
 rancherForceLogin() {
     echo "Force Rancher Login"
     RANCHER_PASS=$(getBoostrapPass)
-    while [ ! -n "$RANCHER_PASS" ]; do
+    while [ -n "$RANCHER_PASS" ]; do
       echo "password not here yet..."
       RANCHER_PASS=$(getBoostrapPass)
       echo $RANCHER_PASS
       sleep 1
     done
-    RANCHER_DATA='{"username":"admin","password":"'$RANCHER_PASS'","ttl":60000}'
+
+    exit 0
+
+    RANCHER_DATA='{"username":"'$DEFAULT_CLUSTER_USERNAME'","password":"'$RANCHER_PASS'","ttl":60000}'
     echo $RANCHER_DATA
 
-    LOGINTOKEN=$(getRancherToken)
-    while [ ! -n "$LOGINTOKEN" ]; do
-        echo "token not here yet..."
-        echo $LOGINTOKEN
-        sleep 1
-    done
-
-    echo "Login Token: $LOGINTOKEN"
+#    LOGINTOKEN=$(getRancherToken)
+#    while [ ! -n "$LOGINTOKEN" ]; do
+#        echo "token not here yet..."
+#        echo $LOGINTOKEN
+#        sleep 1
+#    done
+#
+#    echo "Login Token: $LOGINTOKEN"
 #    if [ "$LOGINTOKEN" = null ]; then
 #        echo "Token is null. trying to set it"
-#        LOGINTOKEN=$(curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3-public/localProviders/local?action=login' -H 'content-type: application/json' --data-binary '{"username":"admin","password":"'$RANCHER_PASS'","ttl":60000}' | jq -r .token)
-#        curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3/users?action=changepassword' -H 'Content-Type: application/json' -H "Authorization: Bearer '$LOGINTOKEN'" --data-binary '{"currentPassword":"admin","newPassword":"'$DEFAULT_CLUSTER_PASSWORD'"}'
+#        LOGINTOKEN=$(curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3-public/localProviders/local?action=login' -H 'content-type: application/json' --data-binary '{"username":"'$DEFAULT_CLUSTER_USERNAME'","password":"'$RANCHER_PASS'","ttl":60000}' | jq -r .token)
+#        curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3/users?action=changepassword' -H 'Content-Type: application/json' -H "Authorization: Bearer '$LOGINTOKEN'" --data-binary '{"currentPassword":"'$DEFAULT_CLUSTER_USERNAME'","newPassword":"'$DEFAULT_CLUSTER_PASSWORD'"}'
 #    else
 #        curl --proxy-insecure -k -s $RANCHER_SERVER_URL'/v3/users?action=changepassword' -H 'Content-Type: application/json' -H "Authorization: Bearer '$LOGINTOKEN'" --data-binary '{"currentPassword":"'$RANCHER_PASS'","newPassword":"'$DEFAULT_CLUSTER_PASSWORD'"}'
 #    fi
