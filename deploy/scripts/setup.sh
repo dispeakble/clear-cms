@@ -17,9 +17,6 @@ installService() {
       exit 1
   fi
 }
-if [ -z "$(command -v curl)" ]; then
-  sudo apt-get -y install curl
-fi
 
 if [ -z "$(command -v jq)" ]; then
   sudo apt-get -y install jq
