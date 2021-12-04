@@ -710,6 +710,7 @@ class ViewPagesEditor extends React.PureComponent {
                     handleSave={async (id, data) => {
                       await this.saveModuleOptions(id, data);
                     }}
+                    services={this.props.services}
                 />
               </Suspense>
           ) : (
@@ -1499,6 +1500,7 @@ class ViewPagesEditor extends React.PureComponent {
                 isLivePreview={true}
                 control={this.props.control}
                 items={this.state.items}
+                services={this.props.services}
                 pageConfig={this.preparePageConfiguration()} /> : <></>}
             { !this.state.livePreview ? <div className={classes.gridLayout}>
               <div
