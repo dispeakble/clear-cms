@@ -23,7 +23,7 @@ if [ -z "$(cat /etc/sysctl.conf | grep fs.inotify.max_user_watches=524288)" ]; t
   echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 fi
 
-installService "infrastructure/install-packages.sh"
+source "./infrastructure/install-packages.sh"
 
 source "./setup.sh"
 
@@ -37,5 +37,7 @@ echo "scaling down cms-proxy"
 kubectl scale deployment --replicas 0 -n default cms-proxy
 echo "scaling down cms-system"
 kubectl scale deployment --replicas 0 -n default cms-system
+
+sleep 5
 
 service docker restart

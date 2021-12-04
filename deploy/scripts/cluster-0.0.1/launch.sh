@@ -91,7 +91,7 @@ function checkCluster() {
         CLUSTER_STATE=$(rancher cluster $1 | grep -c -w active)
     done
     if [ "$CLUSTER_STATE" -lt 1 ]; then
-        echo "Cluster cannot be detected. Check Rancher UI"
+        echo "\nCluster cannot be detected. Check Rancher UI\n"
         exit 1
     fi
     echo "\nCluster created!\n"
@@ -169,7 +169,6 @@ function launchLonghorn () {
 
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --no-prompt --namespace longhorn-system \
-    --version 1.1.2 \
     --helm-timeout 300 \
     --helm-wait \
     cattle-global-data:library-longhorn longhorn
@@ -220,6 +219,7 @@ function launchRedis() {
    --set master.service.type=NodePort \
    --set master.service.nodePort=$REDIS_NODE_PORT \
    --set global.redis.password=$REDIS_PASSWORD \
+   --set volumePermissions.enabled=true \
    --helm-timeout 300 \
    --helm-wait \
    cattle-global-data:bitnami-redis redis

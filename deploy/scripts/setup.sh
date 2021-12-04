@@ -78,6 +78,13 @@ BITBUCKET_PASS='WrBr1Xh611f9'
 #echo "Dockerhub username: $DOCKERHUB_USERNAME"
 #echo "Bitbucket username: $BITBUCKET_USERNAME"
 
+if [ -z "$(lscpu | grep VT-x)" ]; then
+  printf "Cannot continue because no Virtualization was found\n" > /dev/tty
+  return 1;
+else
+  printf "Virtualization was found\n" > /dev/tty
+  fi
+
 installService "cluster-0.0.1/run-rancher.sh"
 installService "infrastructure/install-rancher-cli.sh"
 installService "cluster-0.0.1/launch.sh"
