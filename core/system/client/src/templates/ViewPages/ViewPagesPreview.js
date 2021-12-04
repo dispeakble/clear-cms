@@ -246,7 +246,7 @@ class ViewPagesPreview extends React.Component {
             return (
                 <div key={`box-${el.i}`} data-grid={el} style={style}>
                     <Suspense fallback={loadingFallback}>
-                        <LazyComponent services={this.props.services} i={i} element={el}
+                        <LazyComponent services={this.props.services} i={i} element={el} moduleOptions={el.moduleOptions}
                                        pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}}/>
                     </Suspense>
                 </div>

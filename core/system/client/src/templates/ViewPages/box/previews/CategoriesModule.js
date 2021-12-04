@@ -13,15 +13,15 @@ class CategoriesModule extends Component {
 
     state = {
         displayType: "background",
-        categoriesPerPage: "4",
+        categoriesPerPage: 10,
         categories:[],
         currentPage: 1
     };
 
     async componentDidMount() {
         await this.setAsyncState({
-            displayType: this.props.element.moduleOptions.displayType,
-            categoriesPerPage: this.props.element.moduleOptions.categoriesPerPage
+            displayType: this.props.moduleOptions.displayType,
+            categoriesPerPage: this.props.moduleOptions.categoriesPerPage
         })
 
         await this.services.ws.subscribe({
@@ -31,7 +31,7 @@ class CategoriesModule extends Component {
             }
         });
 
-        await this.updateCategoryPage(this.state.currentPage);
+        await this.updateCategoryPage(this.state.currentPage - 1);
     }
 
     setAsyncState = (newState) =>
@@ -67,7 +67,7 @@ class CategoriesModule extends Component {
             where: {
                 parentId: 0
             },
-            limit: [pageNumber, this.state.categoriesPerPage]
+            limit: [pageNumber, this.state.categoriesPerPage || 10]
         });
 
         await this.setAsyncState({
@@ -154,7 +154,7 @@ class CategoriesModule extends Component {
                             await this.setAsyncState({
                                 currentPage: value
                             })
-                            await this.updateCategoryPage(value);
+                            await this.updateCategoryPage(value - 1);
                         }}
                     />
                 </div>

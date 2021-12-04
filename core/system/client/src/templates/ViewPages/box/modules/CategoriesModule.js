@@ -64,10 +64,15 @@ class CategoriesModule extends Component {
 
 
                 <Autocomplete
-                    onChange={(event, displayCategory) => displayCategory &&
-                        this.setState({
-                            displayType: displayCategory.value
-                        })
+                    onChange={async (event, displayCategory) => {
+                        if(displayCategory){
+                            await this.setAsyncState({
+                                displayType: displayCategory.value
+                            });
+
+                            this.props.onUpdate(this.state);
+                        }
+                    }
                     }
                     className={this.props.classes.option}
                     value={
@@ -86,11 +91,14 @@ class CategoriesModule extends Component {
                     )}
                 />
                 <Autocomplete
-                    onChange={(event, categoriesPerPage) => categoriesPerPage &&
-                        this.setState({
-                            categoriesPerPage: categoriesPerPage
-                        })
-                    }
+                    onChange={async (event, categoriesPerPage) => {
+                        if(categoriesPerPage) {
+                            await this.setAsyncState({
+                                categoriesPerPage: categoriesPerPage
+                            });
+                            this.props.onUpdate(this.state);
+                        }
+                    }}
                     onInputChange={(event, value) =>{
                         this.setState({
                             categoriesPerPage: value
