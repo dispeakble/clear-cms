@@ -169,6 +169,7 @@ function launchLonghorn () {
 
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --no-prompt --namespace longhorn-system \
+    --version 1.1.2 \
     --helm-timeout 300 \
     --helm-wait \
     cattle-global-data:library-longhorn longhorn
@@ -212,6 +213,7 @@ function launchRedis() {
   sleep 5
 
   rancher app install --no-prompt --namespace default \
+   --version 15.4.2 \
    --set architecture=standalone \
    --set global.storageClass=longhorn \
    --set master.persistence.size=1Gi \
