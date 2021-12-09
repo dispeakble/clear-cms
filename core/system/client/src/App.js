@@ -106,13 +106,6 @@ class App extends Component {
             active: false
           },
           {
-            toLink: "/images",
-            name: "Images",
-            controller: "images",
-            icon: "image",
-            active: false,
-          },
-          {
             toLink: "/labels",
             name: "Labels",
             controller: "labels",
@@ -124,13 +117,6 @@ class App extends Component {
             icon: "monetization_on",
             controller: "prices",
             name: "Prices",
-            active: false,
-          },
-          {
-            toLink: "/availability",
-            name: "Availability",
-            controller: "availability",
-            icon: "shopping_cart",
             active: false,
           },
           {

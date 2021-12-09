@@ -45,7 +45,7 @@ export class SystemService {
             });
             const rejectTimeout = setTimeout(() => {
                 reject(false);
-            }, 1000);
+            }, 300);
         })
 
     }

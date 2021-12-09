@@ -8,7 +8,7 @@ APP_VERSION="v2.4.15"
 #APP_VERSION="latest"
 RANCHER_STORE="$HOME/rancher/rancher-store"
 
-ABSOLUTE_PATH=$HOME
+ABSOLUTE_PATH="$HOME"
 #ABSOLUTE_PATH="/home/dosidoweb"
 
 #RANCHER_CERTIFICATE="$ABSOLUTE_PATH/rancher/ssl/cert.pem"
@@ -44,6 +44,8 @@ fi
 if [ $(docker ps | grep -c rancher/rancher:) -lt 1 ]; then
     echo
     echo "Running Rancher ($APP_VERSION)"
+
+    docker pull rancher/rancher-agent:$APP_VERSION
 
     docker run -d --restart=always \
         -p 9080:80 \
