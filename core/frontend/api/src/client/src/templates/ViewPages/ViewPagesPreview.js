@@ -29,6 +29,7 @@ class ViewPagesPreview extends React.Component {
     title: this.props.pageData?.pageConfig?.pageTitle,
     pageLink: this.props.pageData?.pageConfig?.pageLink,
     items: [],
+    allPages: false,
     pageConfig: this.props.pageData?.pageConfig,
     fontUnit: "rem",
     layouts: {},
@@ -191,6 +192,14 @@ class ViewPagesPreview extends React.Component {
       style.overflow = "hidden";
     }
 
+    /*
+    if(el.module && el.module.toLowerCase().includes('pagelist')){
+      this.setState({
+        allPages: true
+      })
+    }
+    */
+
     const loadingFallback = (() => {
       return <span>Loading...</span>;
     })();
@@ -221,7 +230,7 @@ class ViewPagesPreview extends React.Component {
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent i={i} element={el} style={styleModule} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
+            <LazyComponent i={i} element={el} style={styleModule} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} allPages={this.props.allPages} allCategories={this.props.allCategories}  />
           </Suspense>
         </div>
       );
