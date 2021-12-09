@@ -1,14 +1,19 @@
 .clear-crm_search-bar{
-  height: 40px;
+  height: 100%;
   margin: 10px;
+  width: calc(100% - 20px);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &--search{
-    height: 100%;
-    max-width: 300px;
+    height: 40px;
+    width: 100%;
     position: relative;
     overflow: hidden;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background: white;
 
     border-radius: 50px;
 
