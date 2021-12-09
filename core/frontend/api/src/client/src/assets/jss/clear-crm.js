@@ -200,6 +200,11 @@ const cardSubtitle = {
   marginTop: "-.375rem",
 };
 
+const customRed = {
+  width: "255px",
+  background : "red",
+}
+
 export {
   drawerWidth,
   transition,
@@ -234,4 +239,5 @@ export {
   cardTitle,
   cardLink,
   cardSubtitle,
+  customRed
 };

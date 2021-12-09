@@ -1,71 +1,19 @@
 import React from 'react';
 import { NextPage } from 'next';
-import { withRouter } from 'next/router';
-import Head from 'next/head'
+import PageContent from "./PageContent";
 
-import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
+import { withRouter } from 'next/router';
+
 
 const PageComponent: NextPage = (props) => {
-  return(
-      <>
-          <Head>
-              <link
-                  rel="stylesheet"
-                  type="text/css"
-                  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
-              />
-          </Head>
-          <ViewPagesPreview {...props} />
-
-      </>
-  )
+    return PageContent.renderContent(props);
 };
 
-//----------------------------SG----------------------------
+
 
 export async function getServerSideProps(context: any) {
-
-    let result: any = null;
-
-    try {
-
-        //TODO based on the config from the DB
-        //get the url for product details
-        //get the url for categories list
-        //get the url for product list
-        //get the url for product search (can be the same as above but with filters)
-        //get the url for checkout
-
-
-        const obs = await context.req.apiHub({
-            protocolMethod: 'sendMessage',
-            channel: 'frontendapi',
-            api: 'pages',
-            act: 'get',
-            payload: {
-                body: {
-                    how: 'AND',
-                    where: {
-                        is_default: 1,
-                        publish: 1
-                    }
-                }
-            }
-        });
-        const res = obs.toPromise();
-        result = await res;
-    } catch (err) {
-        console.log(err);
-        return {
-            notFound: true,
-        };
-    }
-
-    return {
-        props: {
-            pageData: result['data']
-        }, // will be passed to the page component as props
-    }
+    context.isIndex = true;
+    return PageContent.getServerSideProps(context);
 }
 
 //-----------------------------SSG---------------------------
