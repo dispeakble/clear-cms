@@ -26,10 +26,11 @@ class SitemapModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     async componentDidMount() {
+        const {displayType,usePagination,numberOfLinksPerPage  } = this.props.element.moduleOptions;
         await this.setAsyncState({
-            displayType: this.props.element.moduleOptions.displayType,
-            usePagination: this.props.element.moduleOptions.usePagination,
-            numberOfLinksPerPage: this.props.element.moduleOptions.numberOfLinksPerPage
+            displayType: displayType,
+            usePagination: usePagination,
+            numberOfLinksPerPage: numberOfLinksPerPage
         })
 
         if(this.state.usePagination) {
