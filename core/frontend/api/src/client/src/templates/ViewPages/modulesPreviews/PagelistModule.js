@@ -1,8 +1,19 @@
 import React, {Component} from "react";
+import Link from "next/link"
 
 class PagelistModule extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            pages : [],
+        }
+    }
+
+    componentDidMount() {
+        this.setState({
+            pages: this.props.allPages
+        })
     }
 
     render() {
@@ -13,7 +24,19 @@ class PagelistModule extends Component {
                 data-grid={this.props.element}
                 style={this.props.style}
             >
-                test pagelist
+                <ul className="clear-crm_pagelist-list">
+                    {this.state.pages &&
+                        this.state.pages.filter((page) => (page.pageConfig.pageLink || page.pageConfig.defaultPage) && page.pageConfig.publish)
+                            .map((page, index) => <li key={index} className="clear-crm_pagelist-list--item">
+                                <Link href={`/${page.pageConfig.pageLink}`}>
+                                    <a>
+                                        {page.pageConfig.pageTitle}
+                                    </a>
+                                </Link>
+                            </li>)
+                    }
+                </ul>
+
             </div>
         )
     }

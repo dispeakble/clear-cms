@@ -8,6 +8,8 @@ class PageContent{
 
     static async getServerSideProps(context: any) {
         let result: any = null;
+        let pages: any = null;
+        let categories: any = null;
 
         try {
 
@@ -27,18 +29,42 @@ class PageContent{
                 payload: {
                     body: {
                         how: 'AND',
-                        where: !context.isIndex ? {
+                        where: {
                             publish: 1,
                             pageLink: context.req.params[0]
-                        } : {
-                            publish: true,
-                            isDefault: true
                         }
                     }
                 }
             });
             const res = obs.toPromise();
             result = await res;
+
+            const allPagesObs = await context.req.apiHub({
+                protocolMethod: 'sendMessage',
+                channel: 'frontendapi',
+                api: 'pages',
+                act: 'list',
+                payload: {
+                    body: {
+                        how: 'AND',
+                        where: {
+                            publish: 1,
+                        }
+                    }
+                }
+            });
+            const pagesRes = allPagesObs.toPromise();
+            pages = await pagesRes;
+
+            const allCategoriesObs = await context.req.apiHub({
+                protocolMethod: 'sendMessage',
+                channel: 'frontendapi',
+                api: 'categories',
+                act: 'list'
+            });
+            const categoriesRes = allCategoriesObs.toPromise();
+            categories = await categoriesRes;
+
         } catch (err) {
             console.log(err);
             return {
@@ -46,14 +72,22 @@ class PageContent{
             };
         }
 
+
+
+
         return {
             props: {
-                pageData: result['data']
+                pageData: result['data'],
+                allPages: pages['data'],
+                allCategories: categories['data']
             }, // will be passed to the page component as props
         }
     }
 
     static renderContent(props: any) {
+
+
+
         return(
             <>
                 <Head>
@@ -63,6 +97,7 @@ class PageContent{
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
                 </Head>
+                {console.log("check categories : ",props.allCategories)}
                 <ViewPagesPreview {...props} />
             </>
         )
