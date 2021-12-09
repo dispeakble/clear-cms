@@ -11,6 +11,7 @@ import getConfig from 'next/config'
 import BoxModal from "../../components/BoxModal/BoxModal";
 import GoogleFontLoader from 'react-google-font-loader';
 
+
 const { publicRuntimeConfig } = getConfig();
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -129,6 +130,7 @@ class ViewPagesPreview extends React.Component {
     el.static = true;
 
     let style = {};
+    let styleModule = {};
 
     if (el.backgroundImage) {
       style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
@@ -193,6 +195,13 @@ class ViewPagesPreview extends React.Component {
       return <span>Loading...</span>;
     })();
 
+    styleModule = {
+      fontFamily: style.fontFamily,
+      color: style.color,
+      textColor: style.textColor,
+      fontSize: style.fontSize
+    };
+
     if (el.module) {
       let LazyComponent = null;
       let LazyComponentName = el.module.replace(" ", "");
@@ -212,7 +221,7 @@ class ViewPagesPreview extends React.Component {
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent i={i} element={el} style={style} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
+            <LazyComponent i={i} element={el} style={styleModule} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
           </Suspense>
         </div>
       );
