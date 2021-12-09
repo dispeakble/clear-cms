@@ -5,7 +5,7 @@ import PageContent from "./PageContent";
 import { withRouter } from 'next/router';
 
 
-const PageComponent: NextPage = (props) => {
+const PageComponent: NextPage = (props ) => {
   return PageContent.renderContent(props);
 };
 
