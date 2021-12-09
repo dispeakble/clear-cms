@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import Button from "components/CustomButtons/Button.js";
 
 // for the modal
@@ -9,7 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import ArtTrack from "@material-ui/icons/ArtTrack";
 
-import { withStyles, createTheme } from "@material-ui/core/styles";
+import {withStyles, createTheme} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
@@ -24,6 +24,19 @@ class SitemapModule extends Component {
         showStartDate: false,
         showEndDate: false
     };
+
+    componentDidMount() {
+        if (this.props.moduleOptions) {
+            const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.moduleOptions;
+            this.setState({
+                title,
+                description,
+                showSuggestions,
+                showStartDate,
+                showEndDate,
+            });
+        }
+    }
 
     getTheme = () => {
         return createTheme({
@@ -42,7 +55,7 @@ class SitemapModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     closeModuleOptionsModal() {
-        this.setState({ showModuleOptionsModal: false });
+        this.setState({showModuleOptionsModal: false});
     }
 
     handleEdit = async (id) => {
@@ -62,149 +75,93 @@ class SitemapModule extends Component {
     };
 
     render() {
-        const classes = this.props.classes;
-
         return (
             <div
                 style={{
                     textAlign: "center",
                 }}
             >
-                <IconButton
-                    onClick={() => this.handleEdit(this.props.boxId)}
-                    color="primary"
-                    size="medium"
-                >
-                    <ArtTrack />
-                </IconButton>
 
-                <Dialog
-                    onBackdropClick={() => "false"}
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showModuleOptionsModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeModuleOptionsModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <div>
-                            <Typography>Title</Typography>
-                            <Tooltip title="Enable Title">
-                                <Switch
-                                    value={this.state.title}
-                                    checked={this.state.title}
-                                    onChange={() => {
-                                        this.setState({
-                                            title: !this.state
-                                                .title,
-                                        });
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div>
-                            <Typography>Description</Typography>
-                            <Tooltip title="Enable Description">
-                                <Switch
-                                    value={this.state.description}
-                                    checked={this.state.description}
-                                    onChange={() => {
-                                        this.setState({
-                                            description: !this.state
-                                                .description,
-                                        });
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div>
-                            <Typography>Show Suggestions</Typography>
-                            <Tooltip title="Enable Suggestions">
-                                <Switch
-                                    value={this.state.showSuggestions}
-                                    checked={this.state.showSuggestions}
-                                    onChange={() => {
-                                        this.setState({
-                                            showSuggestions: !this.state
-                                                .showSuggestions,
-                                        });
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div>
-                            <Typography>Show Start Date</Typography>
-                            <Tooltip title="Show Start Date">
-                                <Switch
-                                    value={this.state.showStartDate}
-                                    checked={this.state.showStartDate}
-                                    onChange={() => {
-                                        this.setState({
-                                            showStartDate: !this.state
-                                                .showStartDate,
-                                        });
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div>
-                            <Typography>Show End Date</Typography>
-                            <Tooltip title="Show End Date">
-                                <Switch
-                                    value={this.state.showEndDate}
-                                    checked={this.state.showEndDate}
-                                    onChange={() => {
-                                        this.setState({
-                                            showEndDate: !this.state
-                                                .showEndDate,
-                                        });
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
-                    </DialogContent>
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            disabled={this.state.isBtnDisabled}
-                            color="primary"
-                            onClick={() => {
-                                this.props.handleSave(this.state.itemModuleEditId, {
-                                    title: this.state.title,
-                                    description: this.state.description,
-                                    showSuggestions: this.state.showSuggestions,
-                                    showStartDate: this.state.showStartDate,
-                                    showEndDate: this.state.showEndDate
+                <div>
+                    <Typography>Title</Typography>
+                    <Tooltip title="Enable Title">
+                        <Switch
+                            value={this.state.title}
+                            checked={this.state.title}
+                            onChange={async () => {
+                                await this.setAsyncState({
+                                    title: !this.state
+                                        .title,
                                 });
-                                this.closeModuleOptionsModal();
+                                this.props.onUpdate(this.state);
                             }}
-                        >
-                            <div>Save</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            onClick={async () => {
-                                this.closeModuleOptionsModal();
+                        />
+                    </Tooltip>
+                </div>
+                <div>
+                    <Typography>Description</Typography>
+                    <Tooltip title="Enable Description">
+                        <Switch
+                            value={this.state.description}
+                            checked={this.state.description}
+                            onChange={async () => {
+                                await this.setAsyncState({
+                                    description: !this.state
+                                        .description,
+                                });
+                                this.props.onUpdate(this.state);
                             }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                        />
+                    </Tooltip>
+                </div>
+                <div>
+                    <Typography>Show Suggestions</Typography>
+                    <Tooltip title="Enable Suggestions">
+                        <Switch
+                            value={this.state.showSuggestions}
+                            checked={this.state.showSuggestions}
+                            onChange={async () => {
+                                await this.setAsyncState({
+                                    showSuggestions: !this.state
+                                        .showSuggestions,
+                                });
+                                this.props.onUpdate(this.state);
+                            }}
+                        />
+                    </Tooltip>
+                </div>
+                <div>
+                    <Typography>Show Start Date</Typography>
+                    <Tooltip title="Show Start Date">
+                        <Switch
+                            value={this.state.showStartDate}
+                            checked={this.state.showStartDate}
+                            onChange={async () => {
+                                await this.setAsyncState({
+                                    showStartDate: !this.state
+                                        .showStartDate,
+                                });
+                                this.props.onUpdate(this.state);
+                            }}
+                        />
+                    </Tooltip>
+                </div>
+                <div>
+                    <Typography>Show End Date</Typography>
+                    <Tooltip title="Show End Date">
+                        <Switch
+                            value={this.state.showEndDate}
+                            checked={this.state.showEndDate}
+                            onChange={async () => {
+                                await this.setState({
+                                    showEndDate: !this.state
+                                        .showEndDate,
+                                });
+                                this.props.onUpdate(this.state);
+                            }}
+                        />
+                    </Tooltip>
+                </div>
             </div>
         );
     }
