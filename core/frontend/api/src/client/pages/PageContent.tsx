@@ -27,10 +27,12 @@ class PageContent{
                 payload: {
                     body: {
                         how: 'AND',
-                        where: {
-                            //TODO check if isIndex === true then where: {publish: true, isDefault: true}
+                        where: context.isIndex ? {
                             publish: 1,
                             pageLink: context.req.params[0]
+                        } : {
+                            publish: true,
+                            isDefault: true
                         }
                     }
                 }
