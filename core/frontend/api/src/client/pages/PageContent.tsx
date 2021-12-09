@@ -27,7 +27,7 @@ class PageContent{
                 payload: {
                     body: {
                         how: 'AND',
-                        where: context.isIndex ? {
+                        where: !context.isIndex ? {
                             publish: 1,
                             pageLink: context.req.params[0]
                         } : {
