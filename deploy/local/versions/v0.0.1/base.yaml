@@ -1,0 +1,157 @@
+version: "3.2"
+services:
+
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    restart: always
+    command: "redis-server --requirepass '${REDIS_DEFAULT_PASSWORD}'"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ${PWD}/volumes/redis:/usr/local/etc/redis
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.1
+
+  postgres:
+    container_name: postgres
+    image: "postgres:11.14-alpine" # use latest official postgres version
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_DEFAULT_USER}
+      POSTGRES_DB: ${POSTGRES_DEFAULT_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_DEFAULT_PASSWORD}
+    volumes:
+      - ${PWD}/../pg.db/db.schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgresdata:/var/lib/postgresql
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.2
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    healthcheck:
+      test: |
+        apk add --no-cache sqlite
+        sqlite3 /var/lib/pgadmin/pgadmin4.db 'INSERT OR IGNORE INTO server (id, user_id, servergroup_id, name, host, port, maintenance_db, username, password, ssl_mode, use_ssh_tunnel, tunnel_port, tunnel_authentication, connect_timeout) VALUES (10, 1, 1, "chatbot_prog_1", "postgres", 5432, "dbname", "dbuser", NULL, "prefer", 0, 22, 0, 0);' '.exit'
+        exit 1
+      interval: 0s
+      timeout: 10s
+      retries: 1
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ${PWD}/versions/config/pgadmin4/servers.json:/pgadmin4/servers.json
+      - pgadmindata:/var/lib
+      - ${PWD}/versions/config/pgadmin4/pgpass.txt:/pgpass.txt
+    ports:
+      - "5050:80"
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.3
+
+  cms-hub:
+    container_name: cms-hub
+    image: "dispeakble/crm-hub:${CMS_HUB_VERSION}"
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - redis_server=172.28.1.1
+      - redis_port=6379
+      - redis_password=${REDIS_DEFAULT_PASSWORD}
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.10
+    tty: true
+
+  cms-db:
+    container_name: cms-db
+    image: "dispeakble/crm-db:${CMS_DB_VERSION}"
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - cms-hub
+    volumes:
+      - postgresdata:/var/lib/postgresql
+    environment:
+      - redis_server=172.28.1.1
+      - redis_port=6379
+      - redis_password=${REDIS_DEFAULT_PASSWORD}
+      - pg_host=172.28.1.2
+      - pg_port=5432
+      - pg_user=${POSTGRES_DEFAULT_USER}
+      - pg_password=${POSTGRES_DEFAULT_PASSWORD}
+      - pg_db=${POSTGRES_DEFAULT_DB}
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.11
+    tty: true
+
+  cms-bucket:
+    container_name: cms-bucket
+    image: "dispeakble/crm-bucket:${CMS_BUCKET_VERSION}"
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - cms-hub
+    volumes:
+      - cms-bucket:/usr/src/var
+    environment:
+      - redis_server=172.28.1.1
+      - redis_port=6379
+      - redis_password=${REDIS_DEFAULT_PASSWORD}
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.12
+    tty: true
+networks:
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+volumes:
+  redisdata:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/volumes/redis'
+  postgresdata:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/volumes/postgres'
+  pgadmindata:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/volumes/pgadmin'
+  cms-bucket:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/volumes/cms/bucket'
