@@ -70,15 +70,6 @@ class VideoModule extends Component {
         });
     };
 
-    handleEdit = async (id) => {
-        await this.setAsyncState({
-            itemModuleEditId: id,
-            showModuleOptionsModal: true,
-        });
-        await this.setAsyncState({
-            editGalleryType: this.state.editGalleryType,
-        });
-    };
 
     handleVolume = async (event, newValue) => {
         await this.setAsyncState({
@@ -133,10 +124,6 @@ class VideoModule extends Component {
                 break;
         }
     };
-
-    closeModuleOptionsModal() {
-        this.setState({showModuleOptionsModal: false});
-    }
 
     render() {
         const videoProps = {
@@ -226,8 +213,6 @@ class VideoModule extends Component {
                                 <Switch
                                     checked={this.state.controls}
                                     onChange={async () => {
-
-                                        console.log('video controls onChange', !this.state.controls);
                                         this.setAsyncState({
 
                                             controls: !this.state.controls,

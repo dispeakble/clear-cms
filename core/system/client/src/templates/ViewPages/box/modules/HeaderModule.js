@@ -36,6 +36,7 @@ class HeaderModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
+        console.log(this.props.moduleOptions);
         if (this.props.moduleOptions) {
             let { moduleOptions } = this.props;
             this.setState({
@@ -77,6 +78,20 @@ class HeaderModule extends Component {
         this.handleSave();
     }
 
+    async handleLogo(event) {
+        if (event.length) {
+            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+            await this.setAsyncState({
+                logoImage: strings[0],
+                logoImageFile: event[0]
+            });
+            await this.setAsyncState({
+                showLogoUploader: false
+            })
+        }
+        this.handleSave();
+    }
+
     handleLogoSize(event, newValue) {
         this.setState({logoWidth: newValue});
     }
@@ -105,19 +120,7 @@ class HeaderModule extends Component {
         });
     }
 
-    async handleLogo(event) {
-        if (event.length) {
-            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-            await this.setAsyncState({
-                logoImage: strings[0],
-                logoImageFile: event[0]
-            });
-            await this.setAsyncState({
-                showLogoUploader: false
-            })
-        }
-        this.handleSave();
-    }
+
 
     async handleInputChange(event) {
         switch (event.target.id) {
@@ -151,7 +154,6 @@ class HeaderModule extends Component {
                 file: this.state.logoImageFile
             });
         }
-
         this.props.onUpdate({
             files: files,
             logoTitle: this.state.logoTitle,
