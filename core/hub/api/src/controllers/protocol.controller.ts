@@ -40,6 +40,7 @@ export class ProtocolController {
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
+        console.log('Hub started')
     }
 
     private perform(data: payloadInterface){

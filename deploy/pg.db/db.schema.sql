@@ -1115,7 +1115,7 @@ CREATE INDEX u_added ON public.users USING btree (added);
 -- Name: u_email; Type: INDEX; Schema: public; Owner: cms
 --
 
-CREATE INDEX u_email ON public.users USING btree (email COLLATE "C.UTF-8");
+CREATE INDEX u_email ON public.users USING btree (email);
 
 
 --
@@ -1132,7 +1132,6 @@ CREATE INDEX u_type ON public.users USING btree (type);
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: cms
 --
 
-REVOKE ALL ON SCHEMA public FROM postgres;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
 GRANT ALL ON SCHEMA public TO cms;
 GRANT ALL ON SCHEMA public TO PUBLIC;

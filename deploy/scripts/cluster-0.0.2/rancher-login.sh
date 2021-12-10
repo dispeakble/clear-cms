@@ -40,6 +40,9 @@ rancherForceLogin() {
     echo $SERVER_URL_JSN
     curl --proxy-insecure -k 'https://127.0.0.1:9443/v3/settings/server-url' -H 'Content-Type: application/json' -H "Authorization: Bearer $RANCHER_API_TOKEN" -X PUT --data-binary "$SERVER_URL_JSN"
 
+
+    sleep 10
+
     rancherLogin
 
 }

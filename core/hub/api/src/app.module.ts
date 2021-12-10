@@ -1,5 +1,4 @@
 import {Module, Scope} from '@nestjs/common';
-import { AppController } from './controllers/app.controller';
 import { ProtocolController } from './controllers/protocol.controller';
 import { AppService } from './services/app.service';
 import { RedisCacheModule } from "./cache/redisCache.module";
@@ -31,7 +30,7 @@ import {ModuleService} from "./services/module.service";
     ]),
     RedisCacheModule
   ],
-  controllers: [AppController, ProtocolController],
+  controllers: [ProtocolController],
   providers: [AppService, ProtocolService, ModuleService]
 })
 
