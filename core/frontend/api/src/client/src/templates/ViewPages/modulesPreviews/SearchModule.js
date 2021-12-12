@@ -35,6 +35,10 @@ class SearchModule extends Component {
         this.clearSearchBtn.current.classList.remove('show-clear');
     }
 
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     render() {
         return (
             <div
