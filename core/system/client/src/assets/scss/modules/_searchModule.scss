@@ -1,0 +1,68 @@
+.clear-crm_search-bar{
+  height: 100%;
+  margin: 10px;
+  width: calc(100% - 20px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &--search{
+    height: 40px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background: white;
+
+    border-radius: 50px;
+
+    .search-icon{
+      position: absolute;
+      left: 10px;
+      top: 0;
+      height: 100%;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      svg{
+        max-height: 20px;
+      }
+    }
+
+    .search-input{
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      left: 50px;
+      input[type="text"]{
+        height: 100%;
+        width: 100%;
+        border: none;
+      }
+      z-index: 5;
+    }
+
+    .search-clear{
+      height: 100%;
+      width: 20px;
+      top: 0;
+      right: 8px;
+      position: absolute;
+      z-index: 6;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      svg{
+        stroke: #666;
+        height: 16px;
+      }
+    }
+
+    .show-clear{
+      display: flex;
+    }
+  }
+}
