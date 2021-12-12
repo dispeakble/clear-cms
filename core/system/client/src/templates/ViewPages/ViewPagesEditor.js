@@ -696,6 +696,7 @@ class ViewPagesEditor extends React.PureComponent {
           {el.module && LazyModule ? (
               <Suspense fallback={loadingFallback}>
                 <LazyModule
+                    control={this.props.control}
                     style={{style}}
                     element={{moduleOptions: el.moduleOptions, id: el.id}}
                     defaultTheme={this.props.defaultTheme}

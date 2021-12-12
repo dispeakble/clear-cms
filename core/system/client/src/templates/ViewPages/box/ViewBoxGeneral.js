@@ -162,6 +162,7 @@ class ViewBoxGeneral extends React.PureComponent {
                     {module && LazyModule && (
                         <Suspense fallback={loadingFallback}>
                             <LazyModule
+                                control={this.props.control}
                                 defaultTheme={this.props.defaultTheme}
                                 onUpdate={(moduleOptions) => this.handleModuleUpdate(moduleOptions)}
                                 onStartEditingModule={() => this.onStartEditingModule()}

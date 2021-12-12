@@ -39,6 +39,11 @@ class ViewPagesPreview extends React.Component {
     modalItems: {}
   };
 
+  control = {
+    pageList: this.props.pagesData,
+    categoryList: this.props.categorieData
+  }
+
   setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
   async componentDidMount() {
@@ -230,7 +235,7 @@ class ViewPagesPreview extends React.Component {
       return (
         <div key={`box-${el.i}`} data-grid={el} style={style}>
           <Suspense fallback={loadingFallback}>
-            <LazyComponent i={i} element={el} style={styleModule} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} allPages={this.props.allPages} allCategories={this.props.allCategories}  />
+            <LazyComponent control={this.control} i={i} element={el} style={styleModule} pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}} />
           </Suspense>
         </div>
       );

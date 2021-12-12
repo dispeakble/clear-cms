@@ -300,6 +300,7 @@ class ViewDashboard extends Component {
                         {el.module && LazyModule ? (
                             <Suspense fallback={loadingFallback}>
                                 <LazyModule
+                                    control={this.props.control}
                                     defaultTheme={this.props.defaultTheme}
                                     onStartEditingModule={() => this.onStartEditingModule()}
                                     onEndEditingModule={() => this.onEndEditingModule()}
