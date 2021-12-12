@@ -66,7 +66,6 @@ class ViewPagesPreview extends React.Component {
 
     componentDidMount() {
         this.loadPage();
-        console.log("here", this.props.control)
     }
 
     async loadPage() {
