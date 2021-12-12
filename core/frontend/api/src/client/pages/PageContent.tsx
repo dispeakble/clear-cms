@@ -42,31 +42,37 @@ class PageContent{
 
 
             //fetch pages list
-            const pagesObs = await context.req.apiHub({
-                protocolMethod: 'sendMessage',
-                channel: 'frontendapi',
-                api: 'pages',
-                act: 'list',
-                payload: {
-                    body: {
-                        where: {
-                            publish: 1,
+
+            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('pagelist'))) {
+                const pagesObs = await context.req.apiHub({
+                    protocolMethod: 'sendMessage',
+                    channel: 'frontendapi',
+                    api: 'pages',
+                    act: 'list',
+                    payload: {
+                        body: {
+                            where: {
+                                publish: 1,
+                            }
                         }
                     }
-                }
-            });
-            const pagesRes = pagesObs.toPromise();
-            pages = await pagesRes;
+                });
+                const pagesRes = pagesObs.toPromise();
+                pages = await pagesRes;
+            }
 
             //fetch categories list
-            const categoriesObs = await context.req.apiHub({
-                protocolMethod: 'sendMessage',
-                channel: 'frontendapi',
-                api: 'categories',
-                act: 'list',
-            });
-            const categoriesRes = categoriesObs.toPromise();
-            categories = await categoriesRes;
+
+            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('categories'))) {
+                const categoriesObs = await context.req.apiHub({
+                    protocolMethod: 'sendMessage',
+                    channel: 'frontendapi',
+                    api: 'categories',
+                    act: 'list',
+                });
+                const categoriesRes = categoriesObs.toPromise();
+                categories = await categoriesRes;
+            }
 
         } catch (err) {
             console.log(err);
