@@ -117,15 +117,15 @@ class SearchModule extends Component {
                                         onKeyDown={this.onKeyDownHandler}
                                         onBlur={() =>{
                                             setTimeout(() => {
-                                                this.suggestionsRef?.current?.classList?.add("hide-suggestions")
-                                            },100)
+                                                return this.suggestionsRef?.current.classList.add("hide-suggestions");
+                                            },300)
                                         }}
                                         onFocus={() => {
                                             setTimeout(() => {
                                                 if(this.state._searchSuggestions.length){
-                                                    this.suggestionsRef?.current?.classList?.remove("hide-suggestions")
+                                                    return this.suggestionsRef?.current.classList.remove("hide-suggestions");
                                                 }
-                                            }, 100)
+                                            }, 300)
                                         }}
                                     />
                                 </form>
