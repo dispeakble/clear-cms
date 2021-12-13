@@ -41,7 +41,7 @@ class ViewPagesPreview extends React.Component {
 
   control = {
     pageList: this.props.pagesData,
-    categoryList: this.props.categorieData
+    categoryList: this.props.categoriesData
   }
 
   setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));

@@ -43,7 +43,7 @@ class PageContent{
 
             //fetch pages list
 
-            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('pagelist'))) {
+            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('pagelist' || 'search'))) {
                 const pagesObs = await context.req.apiHub({
                     protocolMethod: 'sendMessage',
                     channel: 'frontendapi',
@@ -63,7 +63,7 @@ class PageContent{
 
             //fetch categories list
 
-            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('categories'))) {
+            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('categories' || 'search'))) {
                 const categoriesObs = await context.req.apiHub({
                     protocolMethod: 'sendMessage',
                     channel: 'frontendapi',
@@ -84,7 +84,7 @@ class PageContent{
             props: {
                 pageData: page.data,
                 pagesData: pages.data,
-                categoriesData: categories
+                categoriesData: categories.data
             },
         }
     }
