@@ -149,9 +149,9 @@ class SearchModule extends Component {
                         </div>
                     </div>
 
-                    <div ref={this.suggestionsRef} className={this.state._searchSuggestions.length ? "search-suggestions" : "hide-suggestions"}>
+                    <div ref={this.suggestionsRef} className={(this.state._searchSuggestions.length && this.state.showSuggestions) ? "search-suggestions" : "hide-suggestions"}>
                         <ul>
-                        {this.state._searchSuggestions &&
+                        {(this.state._searchSuggestions && this.state.showSuggestions) &&
                             this.state._searchSuggestions.map((suggestion, index) =>
                                 {
                                     if(suggestion.pageConfig){
