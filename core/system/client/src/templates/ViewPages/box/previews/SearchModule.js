@@ -28,7 +28,11 @@ class SearchModule extends Component {
                 showStartDate,
                 showEndDate,
             });
+
+            console.log(this.props.element.moduleOptions)
         }
+
+
 
         await this.setState({
             pageList: await this.props.control.list(),
@@ -52,7 +56,8 @@ class SearchModule extends Component {
                     }
                     else {
                         const regex = new RegExp(`${this.state._search}`, "gi");
-                        return object.title.match(regex)
+                        if(this.state.title && this.state.description) return object.description.match(regex) || object.title.match(regex)
+                        return this.state.description ? object.description.match(regex) : object.title.match(regex)
                     }
                 }
             )
@@ -117,13 +122,13 @@ class SearchModule extends Component {
                                         onKeyDown={this.onKeyDownHandler}
                                         onBlur={() =>{
                                             setTimeout(() => {
-                                                return this.suggestionsRef?.current.classList.add("hide-suggestions");
+                                                return this.suggestionsRef?.current?.classList.add("hide-suggestions");
                                             },300)
                                         }}
                                         onFocus={() => {
                                             setTimeout(() => {
                                                 if(this.state._searchSuggestions.length){
-                                                    return this.suggestionsRef?.current.classList.remove("hide-suggestions");
+                                                    return this.suggestionsRef?.current?.classList.remove("hide-suggestions");
                                                 }
                                             }, 300)
                                         }}
@@ -145,6 +150,7 @@ class SearchModule extends Component {
                             </div>
                         </div>
                     </div>
+
                     <div ref={this.suggestionsRef} className={this.state._searchSuggestions.length ? "search-suggestions" : "hide-suggestions"}>
                         <ul>
                         {this.state._searchSuggestions &&
