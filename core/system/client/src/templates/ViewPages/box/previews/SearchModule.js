@@ -28,8 +28,6 @@ class SearchModule extends Component {
                 showStartDate,
                 showEndDate,
             });
-
-            console.log(this.props.element.moduleOptions)
         }
 
 
@@ -123,14 +121,14 @@ class SearchModule extends Component {
                                         onBlur={() =>{
                                             setTimeout(() => {
                                                 return this.suggestionsRef?.current?.classList.add("hide-suggestions");
-                                            },300)
+                                            },100)
                                         }}
                                         onFocus={() => {
                                             setTimeout(() => {
                                                 if(this.state._searchSuggestions.length){
                                                     return this.suggestionsRef?.current?.classList.remove("hide-suggestions");
                                                 }
-                                            }, 300)
+                                            }, 100)
                                         }}
                                     />
                                 </form>

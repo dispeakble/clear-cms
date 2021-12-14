@@ -9,6 +9,11 @@ class SearchModule extends Component {
         super(props);
 
         this.state = {
+            title: false,
+            description: false,
+            showSuggestions: false,
+            showStartDate: false,
+            showEndDate: false,
             _search : "",
             pageList: [],
             categoryList: [],
@@ -22,10 +27,23 @@ class SearchModule extends Component {
 
     async componentDidMount() {
 
+        if(this.props.element.moduleOptions) {
+            const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.element.moduleOptions;
+            this.setState({
+                title,
+                description,
+                showSuggestions,
+                showStartDate,
+                showEndDate,
+            });
+        }
+
         await this.setState({
             pageList: await this.props.control.pageList,
             categoryList: await this.props.control.categoryList
         });
+
+
     }
 
 
@@ -46,7 +64,8 @@ class SearchModule extends Component {
                     }
                     else {
                         const regex = new RegExp(`${this.state._search}`, "gi");
-                        return object?.title?.match(regex)
+                        if(this.state.title && this.state.description) return object.description.match(regex) || object.title.match(regex)
+                        return this.state.description ? object.description.match(regex) : object.title.match(regex)
                     }
                 }
             )
