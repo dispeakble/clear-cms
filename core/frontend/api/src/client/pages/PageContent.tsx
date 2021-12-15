@@ -7,9 +7,18 @@ import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 class PageContent{
 
     static async getServerSideProps(context: any) {
-        let page : any = null;
+        let page: any = null;
         let pages: any = null;
         let categories: any = null;
+
+
+        const pagePayload = context.isIndex ? {
+            publish: 1,
+            is_default: 1
+        } : {
+            publish: 1,
+            pageLink: context.req.params[0]
+        }
 
 
         try {
@@ -29,16 +38,12 @@ class PageContent{
                 act: 'get',
                 payload: {
                     body: {
-                        how: 'AND',
-                        where: {
-                            ...(!context.isIndex && { publish: 1, pageLink: context.req.params[0]}),
-                            ...(context.isIndex && { publish: 1, is_default: 1})
-                        }
+                        how: "AND",
+                        where: pagePayload
                     }
                 }
             });
-            const pageRes = pageObs.toPromise();
-            page = await pageRes;
+            page = await pageObs.toPromise();
 
 
             //fetch pages list
@@ -57,8 +62,7 @@ class PageContent{
                         }
                     }
                 });
-                const pagesRes = pagesObs.toPromise();
-                pages = await pagesRes;
+                pages = await pagesObs.toPromise();
             }
 
             //fetch categories list
@@ -70,8 +74,7 @@ class PageContent{
                     api: 'categories',
                     act: 'list',
                 });
-                const categoriesRes = categoriesObs.toPromise();
-                categories = await categoriesRes;
+                categories = await categoriesObs.toPromise();
             }
 
         } catch (err) {
