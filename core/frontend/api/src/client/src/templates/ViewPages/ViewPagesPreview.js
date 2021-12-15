@@ -29,11 +29,9 @@ class ViewPagesPreview extends React.Component {
     title: this.props.pageData?.pageConfig?.pageTitle,
     pageLink: this.props.pageData?.pageConfig?.pageLink,
     items: [],
-    allPages: false,
     pageConfig: this.props.pageData?.pageConfig,
     fontUnit: "rem",
     layouts: {},
-    //pageDataLoaded: false,
     modals: [],
     googleFonts: [],
     modalItems: {}
@@ -196,14 +194,6 @@ class ViewPagesPreview extends React.Component {
     } else {
       style.overflow = "hidden";
     }
-
-    /*
-    if(el.module && el.module.toLowerCase().includes('pagelist')){
-      this.setState({
-        allPages: true
-      })
-    }
-    */
 
     const loadingFallback = (() => {
       return <span>Loading...</span>;
