@@ -99,11 +99,18 @@ class PageContent{
         return(
             <>
                 <Head>
+                    <title>{props.pageData.pageConfig.pageTitle}</title>
+                    <meta name="description" content={`${props.pageData.pageConfig?.pageDescription}`} />
+                    <meta property="og:title" content={`${props.pageData.pageConfig.pageTitle}`} />
+                    <meta property="og:description" content={`${props.pageData.pageConfig?.pageDescription}`} />
+                    <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
+                    <meta property="og:type" content="website" />
                     <link
                         rel="stylesheet"
                         type="text/css"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
+                    <link rel="icon" href="../src/assets/img/favicon.png"/>
                 </Head>
                 <ViewPagesPreview {...props} />
             </>
