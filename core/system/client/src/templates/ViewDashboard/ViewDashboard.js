@@ -278,7 +278,7 @@ class ViewDashboard extends Component {
                 callback: () => {
                     this.handleEditItem(el.id);
                 },
-                icon: <Edit style={{ color: this.props.defaultTheme.primary.main }} />,
+                icon: <Edit style={{ color: this.props?.defaultTheme?.primary?.main }} />,
                 name: "Edit Item",
             },
         ];

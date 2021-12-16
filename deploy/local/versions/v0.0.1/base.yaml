@@ -32,7 +32,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DEFAULT_DB}
       POSTGRES_PASSWORD: ${POSTGRES_DEFAULT_PASSWORD}
     volumes:
-      - ${PWD}/../pg.db/db.schema.sql:/docker-entrypoint-initdb.d/init.sql
+      - ${PWD}/../../pg.db/db.schema.sql:/docker-entrypoint-initdb.d/init.sql
       - postgresdata:/var/lib/postgresql
     networks:
       node_net:

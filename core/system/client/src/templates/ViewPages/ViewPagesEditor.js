@@ -656,7 +656,7 @@ class ViewPagesEditor extends React.PureComponent {
             </Tooltip>
             <Tooltip title="Make a copy of this box">
               <IconButton onClick={() => { this.onDuplicate(el.i) }}>
-                <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                <Avatar style={{backgroundColor: this.props?.defaultTheme?.primary?.main, color: this.props?.defaultTheme?.primary?.contrastText}}>
                   <FileCopy/>
                 </Avatar>
               </IconButton>
@@ -1025,7 +1025,7 @@ class ViewPagesEditor extends React.PureComponent {
       overrides: {
         MuiSwitch: {
           switchBase: {
-            color: this.props.defaultTheme.primary.main
+            color: this.props?.defaultTheme?.primary?.main
           }
         },
         MuiIconButton:{
@@ -1543,7 +1543,7 @@ class ViewPagesEditor extends React.PureComponent {
                   <IconButton onClick={(evt) => {
                     this.onAddItem(evt)
                   }}>
-                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                    <Avatar style={{backgroundColor: this.props?.defaultTheme?.primary?.main, color: this.props?.defaultTheme?.primary?.contrastText}}>
                       <AddCircle/>
                     </Avatar>
                   </IconButton>
@@ -1554,7 +1554,7 @@ class ViewPagesEditor extends React.PureComponent {
                       showBoxesFromTemplate: true
                     })
                   }}>
-                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                    <Avatar style={{backgroundColor: this.props?.defaultTheme?.primary?.main, color: this.props?.defaultTheme?.primary?.contrastText}}>
                       <PostAdd/>
                     </Avatar>
                   </IconButton>
@@ -1566,8 +1566,8 @@ class ViewPagesEditor extends React.PureComponent {
                     })
                   }}>
                     <Avatar style={{
-                      backgroundColor: this.props.defaultTheme.primary.main,
-                      color: this.props.defaultTheme.primary.contrastText
+                      backgroundColor: this.props?.defaultTheme?.primary?.main,
+                      color: this.props?.defaultTheme?.primary?.contrastText
                     }}>
                       {this.state.livePreview ? <StopScreenShare /> : <ScreenShare/>}
                     </Avatar>
@@ -1577,7 +1577,7 @@ class ViewPagesEditor extends React.PureComponent {
                   <IconButton onClick={() => {
                     window.open( `/pages/preview/${this.state.page_id}` )
                   }}>
-                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                    <Avatar style={{backgroundColor: this.props?.defaultTheme?.primary?.main, color: this.props?.defaultTheme?.primary?.contrastText}}>
                       <Visibility/>
                     </Avatar>
                   </IconButton>
@@ -1586,7 +1586,7 @@ class ViewPagesEditor extends React.PureComponent {
                   <IconButton onClick={(evt) => {
                     this.openPageOptionsModal()
                   }}>
-                    <Avatar style={{backgroundColor: this.props.defaultTheme.primary.main, color: this.props.defaultTheme.primary.contrastText}}>
+                    <Avatar style={{backgroundColor: this.props?.defaultTheme?.primary?.main, color: this.props?.defaultTheme?.primary?.contrastText}}>
                       <Settings/>
                     </Avatar>
                   </IconButton>
