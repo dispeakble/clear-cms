@@ -105,12 +105,16 @@ class PageContent{
                     <meta property="og:description" content={`${props.pageData.pageConfig?.pageDescription}`} />
                     <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     <meta property="og:type" content="website" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <meta charSet="UTF-8" />
                     <link
                         rel="stylesheet"
                         type="text/css"
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
+
                     <link rel="icon" href="../src/assets/img/favicon.png"/>
+
                 </Head>
                 <ViewPagesPreview {...props} />
             </>
