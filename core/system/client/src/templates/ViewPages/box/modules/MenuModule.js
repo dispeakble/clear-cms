@@ -38,6 +38,7 @@ import reactCSS from "reactcss";
 // for Font Awesome
 import Icon from "@material-ui/core/Icon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import PropTypes from "prop-types";
 
 class MenuModule extends Component {
     state = {
@@ -488,7 +489,7 @@ class MenuModule extends Component {
         const bgColorStyles = this.sendStyles(this.state.bgColor);
 
         return (
-            <MuiThemeProvider>
+            <React.Fragment>
                 <Accordion>
                     <AccordionSummary
                         classes={{
@@ -510,12 +511,12 @@ class MenuModule extends Component {
 
                             <div>
                                 <Typography gutterBottom style={{display: "flex", alignItems: "center"}}>
-                                    <div
+                                    <span
                                         style={bgColorStyles.swatch}
                                         onClick={() => this.handleClick("displayBgColorPicker")}
                                     >
-                                        <div style={bgColorStyles.color}/>
-                                    </div>
+                                        <span style={bgColorStyles.color}/>
+                                    </span>
                                     <span style={{display: "inline", marginLeft: "10px"}}>Background Color</span>
                                 </Typography>
 
@@ -695,9 +696,15 @@ class MenuModule extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </MuiThemeProvider>
+            </React.Fragment>
         );
     }
 }
 
 export default withRouter(withStyles(styles)(MenuModule));
+
+MenuModule.propTypes = {
+    classes: PropTypes.object,
+    moduleOptions: PropTypes.object,
+    onUpdate: PropTypes.func
+};
