@@ -612,7 +612,7 @@ class ViewPageOptions extends React.PureComponent {
             overrides: {
                 MuiSwitch: {
                     switchBase: {
-                        color: this.props.defaultTheme.primary.main
+                        color: this.props?.defaultTheme?.primary?.main
                     }
                 },
                 MuiDropzoneArea: {
