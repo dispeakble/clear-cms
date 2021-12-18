@@ -1145,7 +1145,7 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 INSERT INTO public.auth_admin(
 	email, fullname, fname, lname, password, active)
-	VALUES ('ovidiu.alexa@gmail.com', 'Ovidiu Alexa', 'Ovidiu', 'Alexa', MD5('1qaz'), 1);
+	VALUES ('admin@localhost.local', 'Administrator', 'Admin', 'Boss', MD5('1qaz'), 1);
 
 -- Main themes: dark and day
 

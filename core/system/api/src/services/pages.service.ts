@@ -101,7 +101,7 @@ export class PagesService {
                               fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
-                                  id: params.id
+                                  id: Number(params.id)
                               }
                           }
                       }
@@ -120,7 +120,7 @@ export class PagesService {
                               fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
-                                  page_id: params.id
+                                  page_id: Number(params.id)
                               }
                           }
                       }
@@ -156,7 +156,7 @@ export class PagesService {
                               fields: ["*"],//it's optional. defaults to *
                               how: "OR",
                               where: {
-                                  page_id: params.id
+                                  page_id: Number(params.id)
                               }
                           }
                       }
@@ -204,7 +204,7 @@ export class PagesService {
                               what: 'pages_to_categories',
                               fields: ["category_id"],
                               where: {
-                                  page_id: params.id
+                                  page_id: Number(params.id)
                               }
                           }
                       }
@@ -217,7 +217,7 @@ export class PagesService {
                   }
 
                   const formattedPage = {
-                      id: params.id,
+                      id: Number(params.id),
                       pageConfig: {
                           backgroundColor: config.bgcolor,
                           backgroundGradientColor: config.bggradientcolor,
@@ -278,8 +278,6 @@ export class PagesService {
                   subscriber.complete();
               }
             })()
-
-
         })
     }
 
@@ -542,7 +540,7 @@ export class PagesService {
                             data: {
                                 what: 'pages',
                                 where: {
-                                    id: params.id
+                                    id: Number(params.id)
                                 },
                                 data: {
                                     title: pageConfig.pageTitle,
@@ -569,7 +567,7 @@ export class PagesService {
                                 fields: ["*"],//it's optional. defaults to *
                                 how: "OR",
                                 where: {
-                                    page_id: params.id
+                                    page_id: Number(params.id)
                                 }
                             }
                         }
@@ -604,7 +602,7 @@ export class PagesService {
                                         act: 'rm',
                                         payload: {
                                             channel: 'system',
-                                            selection: [`/pages/page-${params.id}/${oldConfig.data[0].bgimage}`]
+                                            selection: [`/pages/page-${Number(params.id)}/${oldConfig.data[0].bgimage}`]
                                         }
                                     }).toPromise();
                                 } catch (err) {
@@ -658,7 +656,7 @@ export class PagesService {
                                 what: 'pages_to_boxes',
                                 how: "OR",
                                 where: {
-                                    page_id: params.id
+                                    page_id: Number(params.id)
                                 }
                             }
                         }
@@ -692,7 +690,7 @@ export class PagesService {
                                             what: 'pages_to_boxes',
                                             where: {
                                                 box_id: box_id,
-                                                page_id: params.id
+                                                page_id: Number(params.id)
                                             }
                                         }
                                     }
@@ -719,7 +717,7 @@ export class PagesService {
                                         act: 'rm',
                                         payload: {
                                             channel: 'system',
-                                            selection: [`/pages/page-${params.id}/box-${box_id}`]
+                                            selection: [`/pages/page-${Number(params.id)}/box-${box_id}`]
                                         }
                                     }).toPromise();
                                 }
@@ -757,7 +755,7 @@ export class PagesService {
                                    data: {
                                        what: 'pages_to_boxes',
                                        data: {
-                                           page_id: params.id,
+                                           page_id: Number(params.id),
                                            box_id: newBoxDetail.data[0].id,
                                            x: newBox.x,
                                            y: newBox.y
@@ -808,7 +806,7 @@ export class PagesService {
                                         y: box.y
                                     },
                                     where: {
-                                        page_id: params.id,
+                                        page_id: Number(params.id),
                                         box_id: box.id
                                     }
                                 }
@@ -848,7 +846,7 @@ export class PagesService {
                                             y: box.y
                                         },
                                         where: {
-                                            page_id: params.id,
+                                            page_id: Number(params.id),
                                             box_id: box.id
                                         }
                                     }
@@ -875,7 +873,7 @@ export class PagesService {
                                             x: box.x,
                                             y: box.y,
                                             template_used: box.templateUsed,
-                                            page_id: params.id,
+                                            page_id: Number(params.id),
                                             box_id: box.id
                                         }
                                     }
@@ -911,7 +909,7 @@ export class PagesService {
                             data: {
                                 what: 'pages_to_categories',
                                 where: {
-                                    page_id: params.id
+                                    page_id: Number(params.id)
                                 }
                             }
                         }
@@ -940,7 +938,7 @@ export class PagesService {
                     subscriber.next({
                         success: "The page was saved",
                         data: {
-                            pageId: params.id,
+                            pageId: Number(params.id),
                             items: boxesIds
                         }
                     })
@@ -961,7 +959,7 @@ export class PagesService {
                 try {
                     await this._removeFiles({
                         where: {
-                            id: params.id
+                            id: Number(params.id)
                         }
                     })
 
@@ -976,7 +974,7 @@ export class PagesService {
                                 what: 'pages_to_boxes',
                                 how: 'OR',
                                 where: {
-                                    page_id: params.id || 0
+                                    page_id: Number(params.id) || 0
                                 }
                             }
                         }
@@ -1018,7 +1016,7 @@ export class PagesService {
                                 what: 'pages_to_config',
                                 how: 'OR',
                                 where: {
-                                    page_id: params.id || 0
+                                    page_id: Number(params.id) || 0
                                 }
                             }
                         }
@@ -1059,7 +1057,7 @@ export class PagesService {
                                 what: 'pages',
                                 how: 'OR',
                                 where: {
-                                    id: params.id || 0
+                                    id: Number(params.id) || 0
                                 }
                             }
                         }
@@ -1069,7 +1067,7 @@ export class PagesService {
 
                     subscriber.next({
                         success: "The page was removed",
-                        data: params.id
+                        data: Number(params.id)
                     })
                     subscriber.complete();
                 } catch(err) {
@@ -1095,7 +1093,7 @@ export class PagesService {
                             data: {
                                 what: 'pages',
                                 data: {
-                                    id: params.id
+                                    id: Number(params.id)
                                 },
                                 limit: [0,1]
                             }
@@ -1111,7 +1109,7 @@ export class PagesService {
                             data: {
                                 what: 'pages_to_boxes',
                                 data: {
-                                    page_id: params.id
+                                    page_id: Number(params.id)
                                 },
                                 limit: [0,1]
                             }
@@ -1143,7 +1141,7 @@ export class PagesService {
                                 payload: {
                                     channel: 'system',
                                     replace: true,
-                                    source: `/pages/page-${params.id}`,
+                                    source: `/pages/page-${Number(params.id)}`,
                                     destination: `/pages/page-${newPage[0].id}`,
                                 }
                             }).toPromise();
@@ -1201,7 +1199,7 @@ export class PagesService {
                                         payload: {
                                             channel: 'system',
                                             replace: true,
-                                            source: `/pages/page-${params.id}/box-${s.id}`,
+                                            source: `/pages/page-${Number(params.id)}/box-${s.id}`,
                                             destination: `/pages/page-${newPage[0].id}/box-${new_box.id}`,
                                         }
                                     }).toPromise();

@@ -1,5 +1,4 @@
 import React from 'react';
-import { NextPage } from 'next';
 import Head from 'next/head'
 import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 
@@ -78,7 +77,6 @@ class PageContent{
             }
 
         } catch (err) {
-            console.log(err);
             return {
                 notFound: true,
             };
@@ -93,12 +91,17 @@ class PageContent{
     }
 
     static renderContent(props: any) {
-
-
-
         return(
             <>
                 <Head>
+                    <title>{props.pageData.pageConfig.pageTitle}</title>
+                    <meta name="description" content={`${props.pageData?.pageConfig?.pageDescription}`} />
+                    <meta property="og:title" content={`${props.pageData?.pageConfig.pageTitle}`} />
+                    <meta property="og:description" content={`${props.pageData?.pageConfig?.pageDescription}`} />
+                    <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
+                    <meta property="og:type" content="website" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <meta charSet="UTF-8" />
                     <link
                         rel="stylesheet"
                         type="text/css"
@@ -111,8 +114,5 @@ class PageContent{
     }
 
 }
-
-
-
 
 export default PageContent;

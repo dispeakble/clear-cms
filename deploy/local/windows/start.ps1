@@ -52,6 +52,9 @@ echo "$CMS_HUB_VERSION"
 echo "$CMS_DB_VERSION"
 echo "$CMS_BUCKET_VERSION"
 
+((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace 'admin@localhost.local', $INIT_PGADMIN_DEFAULT_EMAIL) | Set-Content -Path ..\..\pg.db\db.schema.sql
+((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace "MD5('1qaz')", "MD5('$PGADMIN_DEFAULT_PASSWORD')") | Set-Content -Path ..\..\pg.db\db.schema.sql
+
 #[System.Environment]::SetEnvironmentVariable("VERSION", $VERSION, 'Machine')
 #[System.Environment]::SetEnvironmentVariable("REDIS_DEFAULT_PASSWORD", $REDIS_DEFAULT_PASSWORD, 'Machine')
 #[System.Environment]::SetEnvironmentVariable("POSTGRES_DEFAULT_USER", $POSTGRES_DEFAULT_USER, 'Machine')
