@@ -27,26 +27,32 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     constructor(private sessionService: SessionService) {
     }
 
+    private async checkSession(client) {
+        let hasAccess = null;
+        try {
+            hasAccess = await this.sessionService.checkByCookie({cookies: client.handshake.headers.cookie.replace(/ /g,"")});
+        } catch (err) {
+            console.log(err);
+        }
+
+        if(!hasAccess){
+            client.emit('auth', {method:"redirect", data:{location:'/view-auth'}});
+            client.emit('disconnect');
+            client.disconnect(true);
+            return console.log('Client does not have access. Please go away');
+        }
+    }
+
 
     afterInit(server: Server) {
         console.log('Websocket Initialized...');
-        server.on('connection', async (socket, ...rest) => {
+        server.on('connection', async (client, ...rest) => {
+            await this.checkSession(client);
 
-            const hasAccess = await this.sessionService.checkByCookie({cookies: socket.handshake.headers.cookie.replace(/ /g,"")});
-
-            if(!hasAccess){
-                socket.emit('auth', {method:"redirect", data:{location:'/view-auth'}});
-                socket.emit('disconnect');
-                socket.disconnect(true);
-                return console.log('Client does not have access. Please go away');
-            }
-
-            socket.on('disconnect', this.handleDisconnect);
+            client.on('disconnect', this.handleDisconnect);
             console.log('Websocket Connected...', rest);
-            return {sid: socket.id}
+            return {sid: client.id}
         })
-
-
     }
 
     async handleConnection(client: Socket, @Session() session) {
@@ -65,10 +71,10 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
 
     @SubscribeMessage('S')
     onMessage(@ConnectedSocket() client: Socket, @MessageBody() params: any): Promise<WsResponse> {
-        //console.log(`Message received for ${client.id}`);
-        //console.log(params);
         return new Promise<WsResponse>(async (resolve) => {
             try {
+                await this.checkSession(client);
+
                 const response = await this.callbacks['onMessage']({data: params, client: client});
                 response.id = params.id;
                 const payload = {
@@ -83,7 +89,6 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
         })
     }
 
-    //app functionality
     registerCallbacks(params) {
         const cbNames = Object.keys(params.callbacks);
         cbNames.map((cb) => {
