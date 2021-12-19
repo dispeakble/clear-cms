@@ -9,6 +9,7 @@ import {withRouter} from "react-router-dom";
 import {Helmet} from "react-helmet";
 import BoxModal from "../../components/BoxModal/BoxModal";
 import GoogleFontLoader from 'react-google-font-loader';
+import PropTypes from "prop-types";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -246,13 +247,13 @@ class ViewPagesPreview extends React.Component {
             return (
                 <div key={`box-${el.i}`} data-grid={el} style={style}>
                     <Suspense fallback={loadingFallback}>
-                        <LazyComponent control={this.props.control} services={this.props.services} i={i} element={el} moduleOptions={el.moduleOptions}
+                        <LazyComponent control={this.props.control} services={this.props.services} i={i} element={el} boxId={el.id || -1} moduleOptions={el.moduleOptions}
                                        pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}}/>
                     </Suspense>
                 </div>
             );
         } else {
-            return <div key={i} data-grid={el} style={style}></div>;
+            return <div key={`box-${el.i}`} data-grid={el} style={style}></div>;
         }
     }
 
@@ -392,7 +393,7 @@ class ViewPagesPreview extends React.Component {
                             </div>
                         </div>
                     </MuiThemeProvider>
-                    {Object.keys(this.state.modalItems).map(itemKey => <BoxModal
+                    {Object.keys(this.state.modalItems).map(itemKey => <BoxModal key={itemKey}
                         showModal={this.state.modalItems[itemKey].show}
                         {...this.state.modalItems[itemKey]}
                     />)}
@@ -403,3 +404,15 @@ class ViewPagesPreview extends React.Component {
 }
 
 export default withRouter(withStyles(styles)(ViewPagesPreview));
+
+ViewPagesPreview.propTypes = {
+    classes: PropTypes.object,
+    control: PropTypes.object,
+    services: PropTypes.object,
+    history: PropTypes.object,
+    location: PropTypes.object,
+    isLivePreview: PropTypes.object,
+    pageConfig: PropTypes.object,
+    items: PropTypes.array,
+    hideBackground: PropTypes.bool,
+};
