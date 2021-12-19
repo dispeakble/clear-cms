@@ -9,7 +9,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import {DeleteForever} from "@material-ui/icons";
 import PropTypes from "prop-types";
 import {Accordion, AccordionDetails, AccordionSummary, FormControlLabel, FormGroup} from "@material-ui/core";
 import Button from "../../../../components/CustomButtons/Button";
@@ -30,10 +29,11 @@ class HeaderModule extends Component {
         showBackgroundUploader: false,
         logoPosition: "left center",
         logoWidth: 100,
-        disableBackground: false,
-        disableLogo: false,
+        enabledBackground: false,
+        enabledLogo: false,
         backgroundPosition: 'center center',
         temporaryDeleted: [],
+        files: []
     };
 
     setAsyncState = (newState) =>
@@ -41,19 +41,19 @@ class HeaderModule extends Component {
 
     componentDidMount() {
         if (this.props.moduleOptions) {
-            let { moduleOptions } = this.props;
+            let {moduleOptions} = this.props;
             this.setState({
-                isModuleSticky: moduleOptions.isModuleSticky,
-                backgroundRepeat: moduleOptions.backgroundRepeat,
-                backgroundStretch: moduleOptions.backgroundStretch,
+                isModuleSticky: !!moduleOptions.isModuleSticky,
+                backgroundRepeat: !!moduleOptions.backgroundRepeat,
+                backgroundStretch: !!moduleOptions.backgroundStretch,
                 logoTitle: moduleOptions.logoTitle,
                 logoLink: moduleOptions.logoLink,
                 files: moduleOptions.files,
                 logoWidth: moduleOptions.logoWidth || 100,
                 backgroundPosition: moduleOptions.backgroundPosition || this.state.backgroundPosition,
                 logoPosition: moduleOptions.logoPosition || this.state.logoPosition,
-                disableBackground: moduleOptions.disableBackground,
-                disableLogo: moduleOptions.disableLogo,
+                enabledBackground: !!moduleOptions.enabledBackground,
+                enabledLogo: !!moduleOptions.enabledLogo,
             });
         }
     }
@@ -81,14 +81,31 @@ class HeaderModule extends Component {
             await this.setAsyncState({
                 showBackgroundUploader: false
             });
+
+            let files = this.state.files;
+
+            const bgIndex = files.findIndex(i => i && i.sel === 'bg');
+
+            if (this.state.backgroundImageFile && this.state.enabledBackground) {
+                const bgPayload = {
+                    sel: 'bg',
+                    name: `background.${this.fileExtension(this.state.backgroundImageFile.name)}`,
+                    file: this.state.backgroundImageFile
+                };
+
+                if(bgIndex && bgIndex > -1) {
+                    files[bgIndex] = bgPayload;
+                } else {
+                    files.push(bgPayload);
+                }
+            }
+
+            this.handleSave({files});
         }
-        this.handleSave();
     }
 
     async handleLogoSize(event, newValue) {
-
-        await this.setAsyncState({logoWidth: Number(newValue)});
-        this.props.onUpdate(this.state);
+        this.handleSave({logoWidth: Number(newValue)});
     }
 
     closeLogoUploader() {
@@ -117,9 +134,9 @@ class HeaderModule extends Component {
 
     async handleImageDelete(type) {
         const files = this.state.files || [];
-        let tempFiles = this.state.temporaryDeleted || [];
-        const tempFileIndex = tempFiles.findIndex(i => i.sel === type);
-        const fileIndex = files.findIndex(i => i.sel === type);
+        const tempFiles = this.state.temporaryDeleted || [];
+        const tempFileIndex = tempFiles.findIndex(i => i && i.sel === type);
+        const fileIndex = files.findIndex(i => i && i.sel === type);
 
         if (fileIndex >= 0) {
             if (tempFileIndex >= 0) {
@@ -130,22 +147,24 @@ class HeaderModule extends Component {
             files.splice(fileIndex, 1);
         }
 
-
         if (type === 'logo') {
-            await this.setAsyncState({disableLogo: !this.state.disableLogo});
+            //very fishy
+            await this.setAsyncState({enabledLogo: !this.state.enabledLogo});
         }
         if (type === 'bg') {
-            await this.setAsyncState({disableBackground: !this.state.disableBackground});
+            //very fishy
+            await this.setAsyncState({enabledBackground: !this.state.enabledBackground});
         }
 
-        if (type === 'bg' && !this.state.disableBackground) {
+        if (type === 'bg' && this.state.enabledBackground) {
             if (tempFileIndex >= 0 && fileIndex >= 0) {
                 files.splice(fileIndex, 1, tempFiles[tempFileIndex]);
             } else if (tempFileIndex >= 0) {
                 files.push(tempFiles[tempFileIndex]);
             }
         }
-        if (type === 'logo' && !this.state.disableLogo) {
+
+        if (type === 'logo' && this.state.enabledLogo) {
             if (tempFileIndex >= 0 && fileIndex >= 0) {
                 files.splice(fileIndex, 1, tempFiles[tempFileIndex]);
             } else if (tempFileIndex >= 0) {
@@ -158,7 +177,9 @@ class HeaderModule extends Component {
         } else {
             tempFiles.push(files[fileIndex]);
         }
-        this.props.onUpdate(this.state);
+
+        this.handleSave({files});
+
     }
 
     async handleLogo(event) {
@@ -171,66 +192,62 @@ class HeaderModule extends Component {
             await this.setAsyncState({
                 showLogoUploader: false
             })
+
+
+            let files = this.state.files;
+
+            const logoIndex = files.findIndex(i => i && i.sel === 'logo');
+
+            if (this.state.logoImageFile && this.state.enabledLogo) {
+                const logoPayload = {
+                    sel: 'logo',
+                    name: `logo.${this.fileExtension(this.state.logoImageFile.name)}`,
+                    file: this.state.logoImageFile
+                };
+
+                if(logoIndex && logoIndex > -1) {
+                    files[logoIndex] = logoPayload;
+                } else {
+                    files.push(logoPayload);
+                }
+            }
+
+            this.handleSave({files});
+
         }
-        this.handleSave();
     }
 
     async handleInputChange(event) {
         switch (event.target.id) {
             case "logoTitle":
-                await this.setAsyncState({logoTitle: event.target.value});
+                this.handleSave({logoTitle: event.target.value});
                 break;
             case "logoLink":
-                await this.setAsyncState({logoLink: event.target.value});
+                this.handleSave({logoLink: event.target.value});
                 break;
             default:
                 break;
         }
-        this.handleSave();
     }
 
-    handleSave() {
-        let files = this.state.files || [];
-        const bgIndex = files.findIndex(i => i.sel === 'bg');
-        const logoIndex = files.findIndex(i => i.sel === 'logo');
+    handleSave(params) {
+        this.props.onUpdate(Object.assign({}, {
+            isModuleSticky: this.state.isModuleSticky,
+            files: this.state.files,
 
-        if (this.state.backgroundImageFile && bgIndex >= 0 && !this.state.disableBackground) {
-            files[bgIndex] = {
-                sel: 'bg',
-                name: `background.${this.fileExtension(this.state.backgroundImageFile.name)}`,
-                file: this.state.backgroundImageFile
-            };
-        } else if (this.state.backgroundImageFile && !this.state.disableBackground) {
-            files.push({
-                sel: 'bg',
-                name: `background.${this.fileExtension(this.state.backgroundImageFile.name)}`,
-                file: this.state.backgroundImageFile
-            });
-        }
-
-
-        if (this.state.logoImageFile && logoIndex >= 0 && !this.state.disableLogo) {
-            files[logoIndex] = {
-                sel: 'logo',
-                name: `logo.${this.fileExtension(this.state.logoImageFile.name)}`,
-                file: this.state.logoImageFile
-            }
-        } else if (this.state.logoImageFile && !this.state.disableLogo) {
-            files.push({
-                sel: 'logo',
-                name: `logo.${this.fileExtension(this.state.logoImageFile.name)}`,
-                file: this.state.logoImageFile
-            });
-        }
-
-        this.props.onUpdate({
-            files: files,
+            enabledLogo: this.state.enabledLogo,
             logoTitle: this.state.logoTitle,
             logoLink: this.state.logoLink,
-            isModuleSticky: this.state.isModuleSticky,
+            logoPosition: this.state.logoPosition,
+            logoWidth: this.state.logoWidth,
+
+            enabledBackground: this.state.enabledBackground,
             backgroundRepeat: this.state.backgroundRepeat,
-            backgroundStretch: this.state.backgroundStretch
-        })
+            backgroundStretch: this.state.backgroundStretch,
+            backgroundPosition: this.state.backgroundPosition,
+        }, params));
+
+        this.setState(params);
     }
 
     fileExtension = (string) => {
@@ -257,21 +274,81 @@ class HeaderModule extends Component {
     }
     setImgPosition = async (type = 'logo', pos) => {
         if (type === 'bg') {
-            await this.setAsyncState({backgroundPosition: pos});
-            this.props.onUpdate(this.state);
+            this.handleSave({backgroundPosition: pos});
         }
         if (type === 'logo') {
-            await this.setAsyncState({logoPosition: pos});
-            this.props.onUpdate(this.state);
+            this.handleSave({logoPosition: pos});
         }
+    }
+
+    positionButtons = (type) => {
+
+        const vert = ["top", "center", "bottom"];
+        const horiz = ["left", "center", "right"];
+
+        let buttons = [];
+
+        vert.map((v, vi) => {
+            horiz.map((h, hi) => {
+                buttons.push(<button key={`${type}-${hi}-${vi}`} onClick={() => {
+                    this.setImgPosition(type, `${h} ${v}`)
+                }} className={this.imgPosStateClass(type, `${h} ${v}`)}>
+                    {h !== v ? `${h} ${v}` : h }
+                </button>)
+            })
+        })
+
+        return buttons;
     }
 
     render() {
         const classes = this.props.classes;
 
         return (
-            <div style={{textAlign: "center"}}>
-                <FormGroup column>
+            <div>
+                <FormGroup column="true">
+                    <div style={{display: "flex", alignItems: "stretch", justifyContent: "space-between"}}>
+                        <Typography gutterBottom>
+                            <Tooltip title="Make the header permanently visible">
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.isModuleSticky}
+                                        onChange={async () => {
+                                            this.handleSave({
+                                                isModuleSticky: !this.state.isModuleSticky,
+                                            });
+                                        }}
+                                        inputProps={{'aria-label': 'controlled'}}
+                                    />}
+                                    label="Sticky Header"/>
+                            </Tooltip>
+                        </Typography>
+                        <Typography gutterBottom>
+                            <Tooltip title="Logo Enabled">
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={this.state.enabledLogo}
+                                            onChange={async () => this.handleImageDelete('logo')}
+                                            inputProps={{'aria-label': 'controlled'}}
+                                        />}
+                                    label="Logo Enabled"/>
+                            </Tooltip>
+                        </Typography>
+                        <Typography gutterBottom>
+                            <Tooltip title="Background Enabled">
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={this.state.enabledBackground}
+                                            onChange={async () => this.handleImageDelete('bg')}
+                                            inputProps={{'aria-label': 'controlled'}}
+                                        />}
+                                    label="Background Enabled"/>
+                            </Tooltip>
+                        </Typography>
+                    </div>
+                    { this.state.enabledBackground && (
                     <Accordion classes={{root: this.props.classes.accordion}}>
                         <AccordionSummary
                             classes={{
@@ -287,137 +364,62 @@ class HeaderModule extends Component {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails className={this.props.classes.accordionDetails}>
-                            {
-                                !this.state.disableBackground && (
-                                    <div>
-                                        <div style={{display: "flex", justifyContent: "space-between"}}>
-                                            {this.state.backgroundImageFile && <DeleteForever onClick={async () => {
-                                                await this.setAsyncState({
-                                                    backgroundImage: "",
-                                                    backgroundImageFile: ""
-                                                })
-                                                this.props.onUpdate(this.state);
-                                            }} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                                        </div>
-                                        <Button onClick={() => {
-                                            this.showBackgroundUploader()
-                                        }} color="primary">Upload Background Image</Button>
-                                        <DropzoneDialog
-                                            open={this.state.showBackgroundUploader}
-                                            onSave={this.handleBackground.bind(this)}
-                                            onClose={this.closeBackgroundUploader.bind(this)}
-                                            filesLimit={1}
-                                            maxFileSize={Math.pow(1024, 3)}
-                                        />
-                                    </div>
-                                )
-                            }
+                            <>
+                                <div style={{textAlign: "center"}}>
+                                    <Button onClick={() => {
+                                        this.showBackgroundUploader()
+                                    }} color="primary">Upload Background Image</Button>
 
-                            <div style={{display: "grid", gridGap: "12px", gridTemplateColumns: "repeat(3, 1fr)"}}>
-
-                                <Typography style={{flex: '0 1 ~ "calc(33% - 15px)"'}} gutterBottom>
-                                    <Tooltip title="Make the header permanently visible">
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={this.state.isModuleSticky}
-                                                onChange={async () => {
-                                                    await this.setAsyncState({
-                                                        isModuleSticky: !this.state.isModuleSticky,
-                                                    });
-                                                    this.props.onUpdate(this.state)
-                                                }}
-                                                inputProps={{'aria-label': 'controlled'}}
-                                            />}
-                                            label="Sticky Header"/>
-                                    </Tooltip>
-                                </Typography>
-                                <Typography gutterBottom>
-                                    <Tooltip title="Background Repeat">
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={this.state.backgroundRepeat}
-                                                onChange={async () => {
-                                                    await this.setAsyncState({
-                                                        backgroundRepeat: !this.state.backgroundRepeat,
-                                                    });
-                                                    this.props.onUpdate(this.state)
-                                                }}
-                                                inputProps={{'aria-label': 'controlled'}}
-                                            />}
-                                            label="Background Repeat"/>
-                                    </Tooltip>
-                                </Typography>
-                                <Typography gutterBottom>
-                                    <Tooltip title="Background Stretch">
-                                        <FormControlLabel
-                                            control={
-                                                <Switch
-                                                    checked={this.state.backgroundStretch}
+                                    <DropzoneDialog
+                                        open={this.state.showBackgroundUploader}
+                                        onSave={this.handleBackground.bind(this)}
+                                        onClose={this.closeBackgroundUploader.bind(this)}
+                                        filesLimit={1}
+                                        maxFileSize={Math.pow(1024, 3)}
+                                    />
+                                </div>
+                                <div style={{display: "grid", gridGap: "12px", gridTemplateColumns: "repeat(3, 1fr)"}}>
+                                    <Typography gutterBottom>
+                                        <Tooltip title="Background Repeat">
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.backgroundRepeat}
                                                     onChange={async () => {
-                                                        await this.setAsyncState({
-                                                            backgroundStretch: !this.state.backgroundStretch,
+                                                        this.handleSave({
+                                                            backgroundRepeat: !this.state.backgroundRepeat,
                                                         });
-                                                        this.props.onUpdate(this.state)
                                                     }}
                                                     inputProps={{'aria-label': 'controlled'}}
                                                 />}
-                                            label="Background Stretch"/>
-                                    </Tooltip>
-                                </Typography>
-                                <Typography gutterBottom>
-                                    <Tooltip title="Disable Background">
-                                        <FormControlLabel
-                                            control={
-                                                <Switch
-                                                    checked={this.state.disableBackground}
-                                                    onChange={async () => this.handleImageDelete('bg')}
-                                                    inputProps={{'aria-label': 'controlled'}}
-                                                />}
-                                            label="Disable Background"/>
-                                    </Tooltip>
-                                </Typography>
-                            </div>
-                            <div className={classes.buttonsPosition}>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', 'left top')
-                                }} className={this.imgPosStateClass('bg', 'left top')}>
-                                    left top
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "center top");
-                                }} className={this.imgPosStateClass('bg', 'center top')}>center top
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "right top");
-                                }} className={this.imgPosStateClass('bg', 'right top')}>right top
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "left center");
-                                }} className={this.imgPosStateClass('bg', 'left center')}>left center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "center center");
-                                }} className={this.imgPosStateClass('bg', 'center center')}>center center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "right center");
-                                }} className={this.imgPosStateClass('bg', 'right center')}>right center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "bottom left");
-                                }} className={this.imgPosStateClass('bg', 'bottom left')}>bottom left
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "bottom center");
-                                }} className={this.imgPosStateClass('bg', 'bottom center')}>bottom center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('bg', "bottom right");
-                                }} className={this.imgPosStateClass('bg', 'bottom right')}>bottom right
-                                </button>
-                            </div>
+                                                label="Background Repeat"/>
+                                        </Tooltip>
+                                    </Typography>
+                                    <Typography gutterBottom>
+                                        <Tooltip title="Background Stretch">
+                                            <FormControlLabel
+                                                control={
+                                                    <Switch
+                                                        checked={this.state.backgroundStretch}
+                                                        onChange={async () => {
+                                                            this.handleSave({
+                                                                backgroundStretch: !this.state.backgroundStretch,
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                label="Background Stretch"/>
+                                        </Tooltip>
+                                    </Typography>
+                                </div>
+                                <div className={classes.buttonsPosition}>
+                                    {this.positionButtons('bg')}
+                                </div>
+                            </>
+
                         </AccordionDetails>
                     </Accordion>
+                    )}
+                    { this.state.enabledLogo && (
                     <Accordion classes={{root: this.props.classes.accordion}}>
                         <AccordionSummary
                             classes={{
@@ -433,150 +435,88 @@ class HeaderModule extends Component {
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails className={this.props.classes.accordionDetails}>
-                            {
-                                !this.state.disableLogo && (
+                            <>
+                                <div style={{
+                                    display: "flex", justifyContent: "center", alignItems: 'center'
+                                }}>
                                     <div>
-                                        <div style={{
-                                            display: "flex", justifyContent: "center", alignItems: 'center'
-                                        }}>
-                                            <div>
-                                                <div style={{display: "flex"}}>
-                                                    {this.state.logoImageFile && <DeleteForever onClick={async () => {
-                                                        await this.setAsyncState({
-                                                            backgroundImage: "",
-                                                            logoImageFile: ""
-                                                        })
-                                                        this.props.onUpdate(this.state);
-                                                    }} style={{color: this.props.defaultTheme.secondary.main}}/>}
-                                                </div>
-                                                <Button onClick={() => {
-                                                    this.showLogoUploader()
-                                                }} color="primary">Upload Logo Image</Button>
-                                                <DropzoneDialog
-                                                    open={this.state.showLogoUploader}
-                                                    onSave={this.handleLogo.bind(this)}
-                                                    onClose={this.closeLogoUploader.bind(this)}
-                                                    filesLimit={1}
-                                                    maxFileSize={Math.pow(1024, 3)}
-                                                />
-                                            </div>
-
-                                        </div>
+                                        <Button onClick={() => {
+                                            this.showLogoUploader()
+                                        }} color="primary">Upload Logo Image</Button>
+                                        <DropzoneDialog
+                                            open={this.state.showLogoUploader}
+                                            onSave={this.handleLogo.bind(this)}
+                                            onClose={this.closeLogoUploader.bind(this)}
+                                            filesLimit={1}
+                                            maxFileSize={Math.pow(1024, 3)}
+                                        />
                                     </div>
-                                )
-                            }
-                            <div style={{display: "grid", gridGap: "12px", gridTemplateColumns: "repeat(2, 1fr)"}}>
-                                <div>
-                                    <CustomInput
-                                        labelText="Logo Title"
-                                        id="logoTitle"
-                                        required="required"
-                                        formControlProps={{
-                                            fullWidth: true,
-                                            onChange: (event) => this.handleInputChange(event),
-                                        }}
-                                        inputProps={{
-                                            value: this.state.logoTitle,
-                                            type: "text",
-                                        }}
-                                    />
-                                </div>
-                                <div>
-                                    <CustomInput
-                                        labelText="Logo Link"
-                                        id="logoLink"
-                                        required="required"
-                                        formControlProps={{
-                                            fullWidth: true,
-                                            onChange: (event) => this.handleInputChange(event),
-                                        }}
-                                        inputProps={{
-                                            value: this.state.logoLink,
-                                            type: "text",
-                                        }}
-                                    />
-                                </div>
-                            </div>
 
-                            <div>
-                                <Typography gutterBottom>
-                                    Logo size
-                                </Typography>
-                                <div>
-                                    <Slider
-                                        valueLabelFormat={(value) => {
-                                            return `${value}%`;
-                                        }}
-                                        defaultValue={this.props.moduleOptions.logoWidth || this.state.logoWidth}
-                                        className={this.props.classes.sideMenuSlider}
-                                        onChangeCommitted={this.handleLogoSize.bind(this)}
-                                        aria-labelledby="discrete-slider"
-                                        valueLabelDisplay="auto"
-                                        min={1}
-                                        max={100}
-                                    />
                                 </div>
-                            </div>
-                            <div>
-                                <Typography gutterBottom>
-                                    <Tooltip title="Disable Logo">
-                                        <FormControlLabel
-                                            control={
-                                                <Switch
-                                                    checked={this.state.disableLogo}
-                                                    onChange={async () => this.handleImageDelete('logo')}
-                                                    inputProps={{'aria-label': 'controlled'}}
-                                                />}
-                                            label="Disable Logo"/>
-                                    </Tooltip>
-                                </Typography>
-                            </div>
-                            <div>
-                                <Typography gutterBottom>
-                                    Logo position
-                                </Typography>
-                            </div>
-                            <div className={classes.buttonsPosition}>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', 'left top')
-                                }} className={this.imgPosStateClass('logo', 'left top')}>
-                                    left top
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "center top");
-                                }} className={this.imgPosStateClass('logo', 'center top')}>center top
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "right top");
-                                }} className={this.imgPosStateClass('logo', 'right top')}>right top
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "left center");
-                                }} className={this.imgPosStateClass('logo', 'left center')}>left center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "center center");
-                                }} className={this.imgPosStateClass('logo', 'center center')}>center center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "right center");
-                                }} className={this.imgPosStateClass('right center')}>right center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "bottom left");
-                                }} className={this.imgPosStateClass('logo', 'bottom left')}>bottom left
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "bottom center");
-                                }} className={this.imgPosStateClass('logo', 'bottom center')}>bottom center
-                                </button>
-                                <button onClick={() => {
-                                    this.setImgPosition('logo', "bottom right");
-                                }} className={this.imgPosStateClass('logo', 'bottom right')}>bottom right
-                                </button>
-                            </div>
+                                <div style={{display: "grid", gridGap: "12px", gridTemplateColumns: "repeat(2, 1fr)"}}>
+                                    <div>
+                                        <CustomInput
+                                            labelText="Logo Title"
+                                            id="logoTitle"
+                                            required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => this.handleInputChange(event),
+                                            }}
+                                            inputProps={{
+                                                value: this.state.logoTitle,
+                                                type: "text",
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <CustomInput
+                                            labelText="Logo Link"
+                                            id="logoLink"
+                                            required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => this.handleInputChange(event),
+                                            }}
+                                            inputProps={{
+                                                value: this.state.logoLink,
+                                                type: "text",
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <Typography gutterBottom>
+                                        Logo size
+                                    </Typography>
+                                    <div>
+                                        <Slider
+                                            valueLabelFormat={(value) => {
+                                                return `${value}%`;
+                                            }}
+                                            defaultValue={this.props.moduleOptions.logoWidth || this.state.logoWidth}
+                                            className={this.props.classes.sideMenuSlider}
+                                            onChangeCommitted={this.handleLogoSize.bind(this)}
+                                            aria-labelledby="discrete-slider"
+                                            valueLabelDisplay="auto"
+                                            min={1}
+                                            max={100}
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <Typography gutterBottom>
+                                        Logo position
+                                    </Typography>
+                                </div>
+                                <div className={classes.buttonsPosition}>
+                                    {this.positionButtons('logo')}
+                                </div>
+                            </>
                         </AccordionDetails>
-                    </Accordion>
+                    </Accordion>)
+                    }
                 </FormGroup>
             </div>
         );
