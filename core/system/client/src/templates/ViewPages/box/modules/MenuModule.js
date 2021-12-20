@@ -69,19 +69,19 @@ class MenuModule extends Component {
         muiTheme: {}
     };
 
-    async componentDidMount() {
-        if (this.props.moduleOptions) {
-            await this.setAsyncState({
-                menuOptions: this.props.moduleOptions.links,
-                isMenuVertical: this.props.moduleOptions.isVertical,
+    componentDidMount() {
+        if (Object.keys(this.props.moduleOptions).length !== 0) {
+            this.setState({
+                menuOptions: this.props.moduleOptions.menuOptions,
+                isMenuVertical: this.props.moduleOptions.isMenuVertical,
                 stretchToFit: this.props.moduleOptions.stretchToFit,
-                bgColor: this.props.moduleOptions.backgroundColor,
+                bgColor: this.props.moduleOptions.bgColor,
                 horizontallyCentered: this.props.moduleOptions.horizontallyCentered,
                 verticallyCentered: this.props.moduleOptions.verticallyCentered,
                 menuIconSpace: this.props.moduleOptions.menuIconSpace,
             });
             if (this.props.moduleOptions.showAsAccordion) {
-                await this.setAsyncState({
+                this.setState({
                     showAsAccordion: this.props.moduleOptions.showAsAccordion,
                 });
             }
@@ -293,11 +293,11 @@ class MenuModule extends Component {
                     new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             delete newData.tableData;
-                            let menuOptions = [...this.state.menuOptions];
-                            newData.id = this.state.menuOptions.length + 1;
+                            let menuOptions = typeof this.state.menuOptions === typeof [] ? [...this.state.menuOptions] : [];
+                            newData.id = menuOptions.length + 1;
                             let newMenuOptions = menuOptions.concat(newData);
-
                             await this.setAsyncState({menuOptions: newMenuOptions});
+                            this.props.onUpdate(this.state);
                             this.getAllLinks();
                             resolve();
                         }, 100);
@@ -310,17 +310,19 @@ class MenuModule extends Component {
                             const index = oldData.tableData.id;
                             dataUpdate[index] = newData;
                             await this.setAsyncState({menuOptions: dataUpdate});
+                            this.props.onUpdate(this.state);
                             this.getAllLinks();
                             resolve();
                         }, 100);
                     }),
                 onRowDelete: (oldData) =>
                     new Promise((resolve, reject) => {
-                        setTimeout(() => {
+                        setTimeout(async () => {
                             const dataDelete = [...this.state.menuOptions];
                             const index = oldData.tableData.id;
                             dataDelete.splice(index, 1);
-                            this.setState({menuOptions: dataDelete});
+                            await this.setAsyncState({menuOptions: dataDelete});
+                            this.props.onUpdate(this.state);
                             resolve();
                         }, 100);
                     }),
@@ -473,10 +475,11 @@ class MenuModule extends Component {
             showModuleOptionsModal: true,
         });
     };
-    handleSlider = (e, newValue) => {
-        this.setState({
+    handleSlider = async (e, newValue) => {
+        await this.setAsyncState({
             menuIconSpace: newValue
-        })
+        });
+        this.props.onUpdate(this.state);
     }
 
     render() {
@@ -486,7 +489,7 @@ class MenuModule extends Component {
         }
 
         const classes = this.props.classes;
-        const bgColorStyles = this.sendStyles(this.state.bgColor);
+        const bgColorStyles = this.sendStyles(this.state.bgColor || {r:0,b:0,g:0,a:1});
 
         return (
             <React.Fragment>
@@ -530,10 +533,13 @@ class MenuModule extends Component {
                                         />
                                         <SketchPicker
                                             color={this.state.bgColor}
-                                            onChange={(color) => {
-                                                this.setState({
+                                            onChange={async (color) => {
+
+                                                await this.setAsyncState({
                                                     bgColor: color.rgb,
                                                 });
+
+                                                this.props.onUpdate(this.state);
                                             }}
                                         />
                                     </div>
@@ -544,10 +550,11 @@ class MenuModule extends Component {
                                     <Tooltip title="The menu will have collapsible sections for the submenus">
                                         <Switch
                                             checked={this.state.showAsAccordion}
-                                            onChange={() => {
-                                                this.setState({
+                                            onChange={async () => {
+                                                await this.setAsyncState({
                                                     showAsAccordion: !this.state.showAsAccordion,
                                                 });
+                                                this.props.onUpdate(this.state);
                                             }}
                                             value={this.state.showAsAccordion}
                                         />
@@ -560,10 +567,11 @@ class MenuModule extends Component {
                                     <Tooltip title="Show the menu links in vertical order">
                                         <Switch
                                             checked={this.state.isMenuVertical}
-                                            onChange={() => {
-                                                this.setState({
+                                            onChange={async () => {
+                                                await this.setAsyncState({
                                                     isMenuVertical: !this.state.isMenuVertical,
                                                 });
+                                                this.props.onUpdate(this.state);
                                             }}
                                             value={this.state.isMenuVertical}
                                         />
@@ -576,10 +584,11 @@ class MenuModule extends Component {
                                     <Tooltip title="Stretches the menu horizontally and vertically">
                                         <Switch
                                             checked={this.state.stretchToFit}
-                                            onChange={() => {
-                                                this.setState({
+                                            onChange={async () => {
+                                                await this.setAsyncState({
                                                     stretchToFit: !this.state.stretchToFit,
                                                 });
+                                                this.props.onUpdate(this.state);
                                             }}
                                             value={this.state.stretchToFit}
                                         />
@@ -594,10 +603,11 @@ class MenuModule extends Component {
                                 <Tooltip title="The text will be aligned horizontally">
                                     <Switch
                                         checked={this.state.horizontallyCentered}
-                                        onChange={() => {
-                                            this.setState({
+                                        onChange={async () => {
+                                            await this.setAsyncState({
                                                 horizontallyCentered: !this.state.horizontallyCentered,
                                             });
+                                            this.props.onUpdate(this.state);
                                         }}
                                         value={this.state.horizontallyCentered}
                                     />
@@ -608,10 +618,11 @@ class MenuModule extends Component {
                                 <Tooltip title="The text will be aligned vertically">
                                     <Switch
                                         checked={this.state.verticallyCentered}
-                                        onChange={() => {
-                                            this.setState({
+                                        onChange={async () => {
+                                            await this.setAsyncState({
                                                 verticallyCentered: !this.state.verticallyCentered,
                                             });
+                                            this.props.onUpdate(this.state);
                                         }}
                                         value={this.state.verticallyCentered}
                                     />
@@ -623,7 +634,7 @@ class MenuModule extends Component {
                                 <Tooltip title="The amount of space between the icons and the text">
                                     <Slider
                                         aria-label="Temperature"
-                                        defaultValue={this.state.menuIconSpace}
+                                        defaultValue={this.props.moduleOptions.menuIconSpace || this.state.menuIconSpace}
                                         valueLabelDisplay="auto"
                                         step={0.5}
                                         marks
