@@ -170,7 +170,6 @@ class App extends Component {
       this.getTheme();
 
       this.unlisten = this.props.history.listen((location, action) => {
-        console.log("on route change");
         if (!this.state.services.ws.isConnected && !['/view-auth', '/logout'].includes(window.location.pathname)) {
           this.props.history.push("/view-auth")
         }

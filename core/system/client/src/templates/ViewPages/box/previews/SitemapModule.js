@@ -183,7 +183,6 @@ class SitemapModule extends Component {
     }
 
     render() {
-        console.log("state", this.state.currentPage);
         return (
             <div
                 key={this.props.i}
