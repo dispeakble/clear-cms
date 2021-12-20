@@ -1350,9 +1350,9 @@ class ViewPagesEditor extends React.PureComponent {
         pageConfig: pageConfig,
         items: this.state.items,
       };
-      const pagedata = await this.props.control.add(newPage);
+      const pageData = await this.props.control.add(newPage);
 
-      this.props.history.push(`/pages/edit/${pagedata.pageId}`);
+      this.props.history.push(`/pages/edit/${pageData.pageId}`);
 
     }
   };
