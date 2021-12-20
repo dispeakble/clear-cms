@@ -84,10 +84,7 @@ class ChartModule extends Component {
   handleInputChange = (event) => {
     switch (event.target.id) {
       case "chartTitle":
-        let chartTitle = this.state.chartTitle;
-        chartTitle = event.target.value + "";
-        console.log(event.target.value);
-        this.setState({ chartTitle });
+        this.setState({ chartTitle: String(event.target.value) });
         break;
       default:
         break;
@@ -115,8 +112,6 @@ class ChartModule extends Component {
   handleUploadedFile = async (event) => {
     if (event.length) {
       let strings = await Promise.all(event.map((file) => this.toStr(file)));
-
-      console.log(strings[0]);
 
       this.setAsyncState({
         rows: JSON.parse(strings[0]),

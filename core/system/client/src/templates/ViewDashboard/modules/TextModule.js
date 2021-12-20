@@ -85,7 +85,6 @@ class TextModule extends Component {
 
   render() {
     const classes = this.props.classes;
-    console.log("props", this.props);
     return (
       <div
         style={{

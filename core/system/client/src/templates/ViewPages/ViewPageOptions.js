@@ -150,7 +150,6 @@ class ViewPageOptions extends React.PureComponent {
                                         onKeyDown: (evt) => {
                                             if (evt.key === "Enter") {
                                                 this.props.closePageOptionsModal();
-                                                console.log(evt.key);
                                             }
 
                                         },

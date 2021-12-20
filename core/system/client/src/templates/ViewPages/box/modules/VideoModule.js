@@ -227,7 +227,6 @@ class VideoModule extends Component {
                                     checked={this.state.controls}
                                     onChange={async () => {
 
-                                        console.log('video controls onChange', !this.state.controls);
                                         this.setAsyncState({
 
                                             controls: !this.state.controls,

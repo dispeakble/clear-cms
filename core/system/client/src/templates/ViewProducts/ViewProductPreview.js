@@ -70,7 +70,6 @@ class ProductPreview extends Component {
         } else {
             await this.fetchAndSet(product_id);
         }
-        console.log("Preview", this.props);
     }
 
     async fetchAndSet(id) {
@@ -250,7 +249,6 @@ class ProductPreview extends Component {
 
     render() {
         const classes = this.props.classes;
-        console.log("state", this.state);
         return (
             <React.Fragment>
                 <Helmet>
