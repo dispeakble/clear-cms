@@ -91,16 +91,25 @@ class PageContent{
     }
 
     static renderContent(props: any) {
+
+        const {pageMetaTitle, pageMetaDescription, pageFavicon} = JSON.parse(props.pageData?.pageConfig.data) ||
+            { pageMetaTitle: null,
+            pageMetaDescription: null,
+            pageFavicon: null}
+
+
         return(
             <>
                 <Head>
-                    <title>{props.pageData.pageConfig.pageTitle}</title>
-                    <meta name="description" content={`${props.pageData?.pageConfig?.pageDescription}`} />
-                    <meta property="og:title" content={`${props.pageData?.pageConfig.pageTitle}`} />
-                    <meta property="og:description" content={`${props.pageData?.pageConfig?.pageDescription}`} />
+                    <title>{pageMetaTitle}</title>
+                    <meta name="description" content={`${pageMetaDescription}`} />
+                    <meta property="og:title" content={`${pageMetaTitle}`} />
+                    <meta property="og:description" content={`${pageMetaDescription}`} />
                     <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     <meta property="og:type" content="website" />
+                    <meta property="og:image" content={`${pageFavicon}`} />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <link rel="icon" type="image/*" href={`${pageFavicon}`} />
                     <meta charSet="UTF-8" />
                     <link
                         rel="stylesheet"

@@ -16,6 +16,7 @@ export class PagesService {
     private help = {
         giveBoxValues: (values) => {
             return {
+                data: values.data || {},
                 title: values.title,
                 module: values.module,
                 fontsize: values.fontSize || null,
@@ -219,6 +220,7 @@ export class PagesService {
                   const formattedPage = {
                       id: Number(params.id),
                       pageConfig: {
+                          data: config.data,
                           backgroundColor: config.bgcolor,
                           backgroundGradientColor: config.bggradientcolor,
                           backgroundImage: config.bgimage,
@@ -315,6 +317,7 @@ export class PagesService {
                             data: {
                                 what: 'page_config',
                                 data: {
+                                    data: pageConfig.data,
                                     bgcolor: pageConfig.backgroundColor,
                                     bggradientcolor: pageConfig.backgroundGradientColor,
                                     bgimage: pageConfig.backgroundImage,
@@ -625,6 +628,7 @@ export class PagesService {
                                     id: pagesToConfig.data[0].config_id
                                 },
                                 data: {
+                                    data: pageConfig.data,
                                     bgcolor: pageConfig.backgroundColor,
                                     bggradientcolor: pageConfig.backgroundGradientColor,
                                     bgimage: pageConfig.backgroundImage,

@@ -97,6 +97,11 @@ class ViewPagesEditor extends React.PureComponent {
     fontFamily: "Roboto",
     pageTitle: "",
     pageLink: "",
+    pageMetaTitle: "",
+    pageMetaDescription: "",
+    useWebsiteTitle: false,
+    useDefaultFavicon: true,
+    pageFavicon: "",
     showBgColorPicker: false,
     showBgGradientColorPickerModal: false,
     showTextColorPicker: false,
@@ -293,6 +298,7 @@ class ViewPagesEditor extends React.PureComponent {
   async fetchAndSet(page_id, isForTemplate) {
     let currentPage = await this.props.control.get({ id: parseInt(page_id) });
     const { pageConfig, items } = currentPage;
+
     if (items !== null) {
 
       this.setState({
@@ -324,6 +330,11 @@ class ViewPagesEditor extends React.PureComponent {
         fontFamily: pageConfig.fontFamily,
         ...(!isForTemplate && { pageTitle: pageConfig.pageTitle }),
         pageLink: pageConfig.pageLink,
+        pageMetaTitle: pageConfig.pageMetaTitle,
+        pageMetaDescription: pageConfig.pageMetaDescription,
+        useWebsiteTitle: pageConfig.useWebsiteTitle,
+        useDefaultFavicon: pageConfig.useDefaultFavicon,
+        pageFavicon: pageConfig.pageFavicon,
         defaultConfig: savedLayoutBoxSpacing,
         config: savedLayoutBoxSpacing,
         categoryId: pageConfig.categoryId,
@@ -459,7 +470,8 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   preparePageConfiguration() {
-    return {
+
+    const payload = {
       backgroundColor: this.state.bgColor,
       backgroundGradientColor: this.state.bgGradientColor,
       backgroundImage: this.state.pageBackgroundImage ? this.state.backgroundImage : "",
@@ -471,6 +483,11 @@ class ViewPagesEditor extends React.PureComponent {
       layoutBoxSpacing: this.state.config.layoutBoxSpacing,
       pageTitle: this.state.pageTitle,
       pageLink: this.state.pageLink,
+      pageMetaTitle: this.state.pageMetaTitle,
+      pageMetaDescription: this.state.pageMetaDescription,
+      useWebsiteTitle: this.state.useWebsiteTitle,
+      useDefaultFavicon: this.state.useDefaultFavicon,
+      pageFavicon: this.state.pageFavicon,
       publish: this.state.publish,
       backgroundRepeat: this.state.pageBackgroundRepeat,
       backgroundStretch: this.state.pageBackgroundStretch,
@@ -479,7 +496,11 @@ class ViewPagesEditor extends React.PureComponent {
       categoryId: this.state.categoryId,
       isTemplate: this.state.isTemplate,
       templateUsed: this.state.template?.label,
-    }
+    };
+
+    payload.data = JSON.stringify(_.cloneDeep(payload));
+
+    return payload;
   }
 
   createElement(el) {
@@ -1317,9 +1338,9 @@ class ViewPagesEditor extends React.PureComponent {
         pageConfig: pageConfig,
         items: this.state.items,
       };
-      const pagedata = await this.props.control.add(newPage);
+      const pageData = await this.props.control.add(newPage);
 
-      this.props.history.push(`/pages/edit/${pagedata.pageId}`);
+      this.props.history.push(`/pages/edit/${pageData.pageId}`);
 
     }
   };

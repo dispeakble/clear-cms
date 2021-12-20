@@ -211,6 +211,7 @@ export class PagesService {
                             defaultPage: !!page.is_default,
                             fontFamily: config.fontfamily,
                             fontSize: config.fontsize,
+                            data: config.data,
                             layoutBoxSpacing: [config.boxsizing, config.boxsizing],
                             pageLink: page.pagelink,
                             categoryId: categoryId,
