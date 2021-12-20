@@ -72,7 +72,6 @@ class TableModule extends Component {
         return tableCols;
       },
       getPreviewData: () => {
-        console.log(this.state.previewData);
         return new Promise((resolve) => {
           //TODO ADD NEW STATE FOR TABLE DATA/VALUES
           setTimeout(() => {

@@ -3,7 +3,6 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
-import path from "path";
 
 @Injectable()
 export class PagesService {

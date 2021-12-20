@@ -399,7 +399,8 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
       lineHeight: "50px",
       cursor: "pointer",
       "&.selected": {
-        background: "rgba(0,0,0,0.3)"
+        background: "rgba(0,0,0,0.3)",
+        color: "white"
       }
     },
     "& *:nth-child(1)": {
