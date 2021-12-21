@@ -649,10 +649,14 @@ class ViewPageOptions extends React.PureComponent {
                                             control={<Switch
                                                 checked={this.props.data.useWebsiteTitle}
 
-                                                onChange={(event, checked) =>
+                                                onChange={async (event, checked) =>{
+                                                    let websiteData = await this.props.getWebsiteData()
                                                     this.props.handlePageOptions({
                                                         useWebsiteTitle: checked,
+                                                        websiteInfo: websiteData
                                                     })
+                                                }
+
                                                 }
                                             />} label="include site title in the meta title (ex: Facebook - Index)"/>
                                     </Tooltip>

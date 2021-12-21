@@ -85,23 +85,25 @@ class PageContent{
             props: {
                 pageData: page.data,
                 pagesData: pages.data,
-                categoriesData: categories.data
+                categoriesData: categories.data,
             },
         }
     }
 
     static renderContent(props: any) {
 
-        const {pageMetaTitle, pageMetaDescription, pageFavicon} = JSON.parse(props.pageData.pageConfig.data) ||
-            { pageMetaTitle: null, pageMetaDescription: null, pageFavicon: null}
+        const {pageMetaTitle, pageMetaDescription, pageFavicon, useWebsiteTitle, websiteInfo} = JSON.parse(props.pageData.pageConfig.data) ||
+            { pageMetaTitle: null, pageMetaDescription: null, pageFavicon: null, useWebsiteTitle: false, websiteInfo: null}
+
+        const WebsiteTitle = JSON.parse(websiteInfo.data).websiteName + ' - ' + pageMetaTitle
 
 
         return(
             <>
                 <Head>
-                    <title>{pageMetaTitle}</title>
+                    <title>{`${useWebsiteTitle ? WebsiteTitle : pageMetaTitle}`}</title>
                     <meta name="description" content={`${pageMetaDescription}`} />
-                    <meta property="og:title" content={`${pageMetaTitle}`} />
+                    <meta property="og:title" content={`${useWebsiteTitle ? WebsiteTitle : pageMetaTitle}`} />
                     <meta property="og:description" content={`${pageMetaDescription}`} />
                     <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     <meta property="og:type" content="website" />
@@ -115,6 +117,7 @@ class PageContent{
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
                 </Head>
+
                 <ViewPagesPreview {...props} />
             </>
         )

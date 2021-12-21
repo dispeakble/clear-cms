@@ -46,6 +46,7 @@ import ViewPageOptions from "./ViewPageOptions";
 import Typography from "@material-ui/core/Typography";
 import ViewBoxOptions from "./ViewBoxOptions";
 import Avatar from "@material-ui/core/Avatar";
+import * as shortId from "shortid";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -102,6 +103,7 @@ class ViewPagesEditor extends React.PureComponent {
     useWebsiteTitle: false,
     useDefaultFavicon: true,
     pageFavicon: "",
+    websiteInfo: false,
     showBgColorPicker: false,
     showBgGradientColorPickerModal: false,
     showTextColorPicker: false,
@@ -269,6 +271,10 @@ class ViewPagesEditor extends React.PureComponent {
     googleFonts: []
   };
 
+
+
+
+
   setUsedGoogleFonts() {
     const fonts = [];
 
@@ -334,6 +340,7 @@ class ViewPagesEditor extends React.PureComponent {
         useWebsiteTitle: JSON.parse(pageConfig.data).useWebsiteTitle,
         useDefaultFavicon: JSON.parse(pageConfig.data).useDefaultFavicon,
         pageFavicon: JSON.parse(pageConfig.data).pageFavicon,
+        websiteInfo: JSON.parse(pageConfig.data).websiteInfo,
         defaultConfig: savedLayoutBoxSpacing,
         config: savedLayoutBoxSpacing,
         categoryId: pageConfig.categoryId,
@@ -369,6 +376,11 @@ class ViewPagesEditor extends React.PureComponent {
     this.setUsedGoogleFonts();
 
   }
+
+  getWebsiteData = async () => {
+    return (await this.props.control.websiteData())
+  }
+
   async componentDidMount() {
     let editing = this.state.editing;
     // TODO: debug why match.params is empty
@@ -487,6 +499,7 @@ class ViewPagesEditor extends React.PureComponent {
       useWebsiteTitle: this.state.useWebsiteTitle,
       useDefaultFavicon: this.state.useDefaultFavicon,
       pageFavicon: this.state.pageFavicon,
+      websiteInfo: this.state.websiteInfo,
       publish: this.state.publish,
       backgroundRepeat: this.state.pageBackgroundRepeat,
       backgroundStretch: this.state.pageBackgroundStretch,
@@ -758,6 +771,9 @@ class ViewPagesEditor extends React.PureComponent {
 
     await this.setAsyncState({ items });
   };
+
+
+
 
 
   toBase64(file) {//TODO MOVE TO HELPERS
@@ -1339,7 +1355,6 @@ class ViewPagesEditor extends React.PureComponent {
         items: this.state.items,
       };
       const pagedata = await this.props.control.add(newPage);
-      console.log('on create', pagedata)
 
       this.props.history.push(`/pages/edit/${pagedata.pageId}`);
 
@@ -1485,6 +1500,7 @@ class ViewPagesEditor extends React.PureComponent {
 
               <ViewPageOptions
                   data={this.state}
+                  getWebsiteData={this.getWebsiteData}
                   defaultTheme={this.props.defaultTheme}
                   createColorPicker={this.createColorPicker}
                   createGradientColorPicker={this.createGradientColorPicker}

@@ -21,6 +21,7 @@ class PagesController extends Component {
         listCategories: (params) => this.listCategories(params),
         listTemplates: (params) => this.listTemplates(params),
         getPublicTheme: () => this.getPublicTheme(),
+        websiteData : () => this.websiteData(),
     };
 
     help = {
@@ -61,6 +62,26 @@ class PagesController extends Component {
                 act: params.act,
                 payload: params.payload
             });
+        });
+    }
+
+    websiteData() {
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: "system",
+                    api: "generalSettings",
+                    act: "getInfo",
+                    payload: {
+                        useSession: true
+                    }
+                });
+                const editPage = _.cloneDeep(response);
+                response.editPage = editPage
+                resolve(response)
+            } catch (err) {
+                resolve(null);
+            }
         });
     }
 
