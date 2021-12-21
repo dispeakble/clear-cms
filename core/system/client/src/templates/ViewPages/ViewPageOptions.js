@@ -636,6 +636,7 @@ class ViewPageOptions extends React.PureComponent {
                                 <div>
                                     <TextField
                                         className={this.props.classes.textfield}
+                                        value={this.props.data.pageMetaTitle}
                                         onChange={(e) =>
                                             this.props.handlePageOptions({
                                                 pageMetaTitle: e.target.value
@@ -649,6 +650,7 @@ class ViewPageOptions extends React.PureComponent {
                                         <FormControlLabel
                                             control={<Switch
                                                 checked={this.props.data.useWebsiteTitle}
+
                                                 onChange={(event, checked) =>
                                                     this.props.handlePageOptions({
                                                         useWebsiteTitle: checked,
@@ -663,6 +665,7 @@ class ViewPageOptions extends React.PureComponent {
                                     <TextField
                                         className={this.props.classes.textfield}
                                         label="meta description"
+                                        value={this.props.data.pageMetaDescription}
                                         onChange={(e) =>
                                             this.props.handlePageOptions({
                                                 pageMetaDescription: e.target.value
