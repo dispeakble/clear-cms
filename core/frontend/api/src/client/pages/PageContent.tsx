@@ -95,8 +95,6 @@ class PageContent{
         const {pageMetaTitle, pageMetaDescription, pageFavicon} = JSON.parse(props.pageData.pageConfig.data) ||
             { pageMetaTitle: null, pageMetaDescription: null, pageFavicon: null}
 
-        console.log(JSON.parse(props.pageData.pageConfig.data))
-
 
         return(
             <>
