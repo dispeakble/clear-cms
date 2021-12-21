@@ -43,6 +43,10 @@ class ProductModule extends Component {
         }]
     };
 
+    componentDidMount() {
+        console.log('props', this.props.moduleOptions);
+    }
+
     getTheme = () => {
         return createTheme({
             palette: this.props.defaultTheme,
@@ -63,17 +67,14 @@ class ProductModule extends Component {
         this.setState({showModuleOptionsModal: false});
     }
 
-    handleEdit = async (id) => {
-        if (this.props.moduleOptions) {
-            await this.setAsyncState({
-                productProperty: this.props.moduleOptions.productProperty,
-            });
-        }
-        await this.setAsyncState({
-            itemModuleEditId: id,
-            showModuleOptionsModal: true,
+    getIndex = (productList, label) => {
+        let index;
+        index = [...productList].findIndex((property) => {
+            return property.value === label.value
         });
-    };
+        return index;
+    }
+
 
     render() {
         return (
@@ -86,12 +87,17 @@ class ProductModule extends Component {
                 <div>
                     <Autocomplete
                         onChange={async (event, label) => {
-                            this.setState({
-                                productProperty: label
+                            let newProductList = [...this.state.productProperty];
+                            let index = this.getIndex(this.state.productProperty, label)
+                            if(index >= 0) {
+                                newProductList.splice(index, 1)
+                            }else {
+                                newProductList.push(label)
+                            }
+                            await this.setAsyncState({
+                                productProperty: newProductList
                             });
-                            this.props.onUpdate({
-                                productProperty: this.state.productProperty
-                            });
+                            this.props.onUpdate(this.state);
                         }}
                         disableCloseOnSelect
                         className={this.props.classes.option}
@@ -99,17 +105,20 @@ class ProductModule extends Component {
                         options={this.state.productPropertyList}
                         autoHighlight
                         getOptionLabel={(option) => option.label || ""}
-                        renderOption={(props, option) => (
-                            <span {...props}>
+                        renderOption={(props) => {
+                            const index = this.getIndex(this.state.productProperty, props);
+                            return (
+                                <span {...props}>
                                     <Checkbox
                                         icon={<CheckBoxOutlineBlank fontSize={"small"}/>}
                                         checkedIcon={<CheckBox fontSize={"small"}/>}
                                         style={{marginRight: 8}}
-                                        checked={option.selected}
+                                        checked={index >= 0}
                                     />
-                                {props.label}
+                                    {props.label}
                                 </span>
-                        )}
+                            )
+                        }}
                         renderInput={(params) => (
                             <TextField
                                 className={this.props.classes.textfield}

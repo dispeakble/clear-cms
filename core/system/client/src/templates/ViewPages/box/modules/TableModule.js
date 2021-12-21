@@ -142,7 +142,6 @@ class TableModule extends Component {
                 definedColumns = definedColumns.filter((column) => {
                     return !definedColumnsIds.includes(column.tableData.id);
                 });
-                console.log(definedColumns);
                 await this.setAsyncState({definedColumns});
                 this.state.tableRef.current &&
                 this.state.tableRef.current.onQueryChange();
@@ -210,15 +209,11 @@ class TableModule extends Component {
             case "leftNumber":
                 await this.setAsyncState({leftNumber: event.target.value});
                 this.refreshPreview();
-                console.log(this.state.leftNumber);
-                console.log(this.state.rightNumber);
                 break;
 
             case "rightNumber":
                 await this.setAsyncState({rightNumber: event.target.value});
                 this.refreshPreview();
-                console.log(this.state.leftNumber);
-                console.log(this.state.rightNumber);
                 break;
             default:
                 break;
@@ -301,7 +296,6 @@ class TableModule extends Component {
                     return tableCols;
                 },
                 getPreviewData: () => {
-                    console.log(this.state.previewData);
                     return new Promise((resolve) => {
                         //TODO ADD NEW STATE FOR TABLE DATA/VALUES
                         setTimeout(() => {

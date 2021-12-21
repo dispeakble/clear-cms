@@ -20,7 +20,6 @@ class VideoModule extends Component {
   //   })
   // }
   componentDidMount() {
-    console.log('video module - componentDidMount', this.props);
 
     this.setState({
       url: this.props.moduleOptions.url,
