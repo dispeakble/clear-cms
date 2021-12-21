@@ -15,7 +15,6 @@ export class PagesService {
     private help = {
         giveBoxValues: (values) => {
             return {
-                data: values.data || {},
                 title: values.title,
                 module: values.module,
                 fontsize: values.fontSize || null,

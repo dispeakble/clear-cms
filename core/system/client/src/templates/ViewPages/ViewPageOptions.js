@@ -187,43 +187,43 @@ class ViewPageOptions extends React.PureComponent {
                         </div>
                         <div>
                             {!this.props.data.isTemplate &&
-                            <div>
-                                <Autocomplete
-                                    id="categoryDropdown"
-                                    onChange={this.props.handleCategory}
-                                    onInputChange={this.props.handleCategoryUniqueness}
-                                    className={this.props.classes.option}
-                                    value={this.props.data.currentCategory}
-                                    filterOptions={(options, params) => {
-                                        const filtered = filter(options, params);
-                                        if (
-                                            params.inputValue !== "" &&
-                                            this.props.data.isUniqueTitle
-                                        ) {
-                                            filtered.push({
-                                                value: params.inputValue,
-                                                label: `Add "${params.inputValue}"`,
-                                            });
-                                        }
-                                        return filtered;
-                                    }}
-                                    options={this.props.data.flatCategories}
-                                    autoHighlight
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            className={this.props.classes.textfield}
-                                            label="Select a category"
-                                            {...params}
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                                <Modal
-                                    showModal={this.props.data.openNewCategory}
-                                    {...this.addNewCategoryModalProps}
-                                />
-                            </div>}
+                                <div>
+                                    <Autocomplete
+                                        id="categoryDropdown"
+                                        onChange={this.props.handleCategory}
+                                        onInputChange={this.props.handleCategoryUniqueness}
+                                        className={this.props.classes.option}
+                                        value={this.props.data.currentCategory}
+                                        filterOptions={(options, params) => {
+                                            const filtered = filter(options, params);
+                                            if (
+                                                params.inputValue !== "" &&
+                                                this.props.data.isUniqueTitle
+                                            ) {
+                                                filtered.push({
+                                                    value: params.inputValue,
+                                                    label: `Add "${params.inputValue}"`,
+                                                });
+                                            }
+                                            return filtered;
+                                        }}
+                                        options={this.props.data.flatCategories}
+                                        autoHighlight
+                                        getOptionLabel={(option) => option.label}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                className={this.props.classes.textfield}
+                                                label="Select a category"
+                                                {...params}
+                                                variant="outlined"
+                                            />
+                                        )}
+                                    />
+                                    <Modal
+                                        showModal={this.props.data.openNewCategory}
+                                        {...this.addNewCategoryModalProps}
+                                    />
+                                </div>}
                         </div>
                         <div>
                             {!this.props.data.isTemplate &&
