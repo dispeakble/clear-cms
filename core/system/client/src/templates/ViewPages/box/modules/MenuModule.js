@@ -71,7 +71,7 @@ class MenuModule extends Component {
 
     componentDidMount() {
         if (Object.keys(this.props.moduleOptions).length !== 0) {
-            this.setState({
+            const statePayload = {
                 menuOptions: this.props.moduleOptions.menuOptions,
                 isMenuVertical: this.props.moduleOptions.isMenuVertical,
                 stretchToFit: this.props.moduleOptions.stretchToFit,
@@ -79,12 +79,14 @@ class MenuModule extends Component {
                 horizontallyCentered: this.props.moduleOptions.horizontallyCentered,
                 verticallyCentered: this.props.moduleOptions.verticallyCentered,
                 menuIconSpace: this.props.moduleOptions.menuIconSpace,
-            });
+                showAsAccordion: false,
+            };
+
             if (this.props.moduleOptions.showAsAccordion) {
-                this.setState({
-                    showAsAccordion: this.props.moduleOptions.showAsAccordion,
-                });
+                statePayload.showAsAccordion = this.props.moduleOptions.showAsAccordion
             }
+
+            this.setState(statePayload);
             this.getAllLinks();
         }
 
@@ -187,9 +189,8 @@ class MenuModule extends Component {
     };
 
     getLinksNested(id) {
-        let result = "";
         let link = this.state.menuOptions.find((el) => el.id === id);
-        result = link.text;
+        let result = link.text;
         if (link && link.parentId) {
             result = this.getLinksNested(link.parentId) + "/" + result;
         }
@@ -221,39 +222,7 @@ class MenuModule extends Component {
 
     tableOptions = {
         getTheme: () => {
-            /*
-              error?: PaletteColorOptions;
-            warning?: PaletteColorOptions;
-            info?: PaletteColorOptions;
-            success?: PaletteColorOptions;
-              */
             return createTheme({
-                /*palette: {
-                    text: {
-                        //primary: "#F00",
-                        //secondary: "#0F0",
-                        disabled: "#00F",
-                        hint: "#333",
-                    },
-                    error: {
-                        main: "#FF0000",
-                    },
-                    warning: {
-                        main: "#FF0000",
-                    },
-                    info: {
-                        main: "#FF0000",
-                    },
-                    success: {
-                        main: "#FF0000",
-                    },
-                    primary: {
-                        main: "#008B8B",
-                    },
-                    secondary: {
-                        main: "#008B8B",
-                    },
-                },*/
                 overrides: {
                     MuiTableCell: {
                         head: {
@@ -290,7 +259,7 @@ class MenuModule extends Component {
             },
             editable: {
                 onRowAdd: (newData) =>
-                    new Promise((resolve, reject) => {
+                    new Promise((resolve) => {
                         setTimeout(async () => {
                             delete newData.tableData;
                             let menuOptions = typeof this.state.menuOptions === typeof [] ? [...this.state.menuOptions] : [];
@@ -303,7 +272,7 @@ class MenuModule extends Component {
                         }, 100);
                     }),
                 onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve, reject) => {
+                    new Promise((resolve) => {
                         setTimeout(async () => {
                             delete newData.tableData;
                             const dataUpdate = [...this.state.menuOptions];
@@ -316,7 +285,7 @@ class MenuModule extends Component {
                         }, 100);
                     }),
                 onRowDelete: (oldData) =>
-                    new Promise((resolve, reject) => {
+                    new Promise((resolve) => {
                         setTimeout(async () => {
                             const dataDelete = [...this.state.menuOptions];
                             const index = oldData.tableData.id;
@@ -717,5 +686,6 @@ export default withRouter(withStyles(styles)(MenuModule));
 MenuModule.propTypes = {
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
-    onUpdate: PropTypes.func
+    onUpdate: PropTypes.func,
+    defaultTheme: PropTypes.object
 };
