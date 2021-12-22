@@ -223,7 +223,7 @@ class PagesController extends Component {
 
                 //Uploading page background
                 if (params.pageConfig.backgroundImageFile) {
-                    await this.uploadImages({
+                    await this.uploadFiles({
                         path: "/pages/page-" + response.pageId + "/",
                         files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
                     })
@@ -235,7 +235,7 @@ class PagesController extends Component {
                         //Uploading box background
 
                         if (item.backgroundImageFile) {
-                            this.uploadImages({
+                            this.uploadFiles({
                                 path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/",
                                 files: [{
                                     name: `background.${this.help.fileExtension(item.backgroundImageFile.name)}`,
@@ -247,7 +247,7 @@ class PagesController extends Component {
                         if (item.module && newFiles && newFiles.length) {
                             //Uploading box files
 
-                            this.uploadImages({
+                            this.uploadFiles({
                                 path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/module/",
                                 files: newFiles
                             });
@@ -299,7 +299,7 @@ class PagesController extends Component {
                             });
                         }
 
-                        await this.uploadImages({
+                        await this.uploadFiles({
                             path: "/pages/page-" + params.id + "/",
                             files: [{
                                 name: params.pageConfig.backgroundImage,
@@ -358,7 +358,7 @@ class PagesController extends Component {
                 await Promise.all(params.items.map(async (item, i) => {
                     if (item.backgroundImageFile) {
                         item.backgroundImage = item.backgroundImageFile.name;
-                        await this.uploadImages({
+                        await this.uploadFiles({
                             path: "/pages/page-" + params.id + "/box-" + item.id,
                             files: [{
                                 name: `background.${this.help.fileExtension(item.backgroundImageFile.name)}`,
@@ -385,7 +385,7 @@ class PagesController extends Component {
                             }
                         });
 
-                        await this.uploadImages({
+                        await this.uploadFiles({
                             path: "/pages/page-" + params.id + "/box-" + item.id + "/module",
                             files: fileList
                         });
@@ -422,7 +422,7 @@ class PagesController extends Component {
         });
     }
 
-    uploadImages(params) {
+    uploadFiles(params) {
         return new Promise(resolve => {
             var formData = new FormData();
 

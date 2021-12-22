@@ -194,7 +194,7 @@ class ViewPagesEditor extends React.PureComponent {
       name: "confirmDeleteBoxModal",
       title: "Confirm Delete Box",
       itemId: "",
-      content: <div>Are you sure you want to delete this box?</div>,
+      content: "Are you sure you want to delete this box?",
       modalSize: "small",
       closeButton: {
         callback: () => {
@@ -736,7 +736,7 @@ class ViewPagesEditor extends React.PureComponent {
                       defaultTheme={this.props.defaultTheme}
                       onStartEditingModule={() => this.onStartEditingModule()}
                       onEndEditingModule={() => this.onEndEditingModule()}
-                      boxId={el.i}
+                      boxId={Number(el.i)}
                       moduleOptions={el.moduleOptions}
                       pageOptions={{
                         page_id: this.state.page_id

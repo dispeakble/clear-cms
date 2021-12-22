@@ -14,11 +14,11 @@ class TableModule extends Component {
   };
 
   componentDidMount() {
-    if (this.props.element.moduleOptions.previewData) {
+    if (this.props.moduleOptions.previewData) {
       this.setState({
-        previewData: this.props.element.moduleOptions.previewData,
-        columns: this.props.element.moduleOptions.columns,
-        tableConfig: this.props.element.moduleOptions.tableConfig,
+        previewData: this.props.moduleOptions.previewData,
+        columns: this.props.moduleOptions.columns,
+        tableConfig: this.props.moduleOptions.tableConfig,
       });
     }
   }

@@ -22,8 +22,8 @@ class SearchModule extends Component {
     suggestionsRef = createRef();
 
     async componentDidMount() {
-        if(this.props.element.moduleOptions) {
-            const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.element.moduleOptions;
+        if(this.props.moduleOptions) {
+            const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.moduleOptions;
             this.setState({
                 title,
                 description,
@@ -99,9 +99,7 @@ class SearchModule extends Component {
         return (
             <div
                 key={this.props.i}
-                data-grid={this.props.element}
                 style={this.props.style}
-
             >
                 <div style={{position: "relative"}}>
                     <div className="clear-crm_search-bar">

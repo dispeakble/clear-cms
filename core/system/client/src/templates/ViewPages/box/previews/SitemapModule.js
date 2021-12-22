@@ -26,7 +26,7 @@ class SitemapModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     async componentDidMount() {
-        const {displayType,usePagination,numberOfLinksPerPage  } = this.props.element.moduleOptions;
+        const {displayType,usePagination,numberOfLinksPerPage  } = this.props.moduleOptions;
         await this.setAsyncState({
             displayType: displayType,
             usePagination: usePagination,
@@ -186,7 +186,6 @@ class SitemapModule extends Component {
         return (
             <div
                 key={this.props.i}
-                data-grid={this.props.element}
                 style={this.props.style}
             >
                 {this.state.displayType === "displayAsCompleteList" &&
