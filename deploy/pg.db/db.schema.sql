@@ -504,7 +504,7 @@ CREATE TABLE public.page_config (
     bgstretch smallint,
     bggradient smallint,
     templateused character varying,
-    data text,
+    data text
 );
 
 
