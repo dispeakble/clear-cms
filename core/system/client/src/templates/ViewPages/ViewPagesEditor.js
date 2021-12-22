@@ -47,7 +47,6 @@ import ViewPageOptions from "./ViewPageOptions";
 import Typography from "@material-ui/core/Typography";
 import ViewBoxOptions from "./ViewBoxOptions";
 import Avatar from "@material-ui/core/Avatar";
-import * as shortId from "shortid";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -1489,6 +1488,9 @@ class ViewPagesEditor extends React.PureComponent {
                     this.setState({
                       showBoxOptions: false
                     })
+                  }}
+                  pageOptions={{
+                    page_id: this.state.page_id
                   }}
                   fontFamilies={this.state.fontFamilies}
                   item={this.state.boxEditorProps.item}
