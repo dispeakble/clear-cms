@@ -7,9 +7,9 @@ class AudioModule extends Component {
   state = { url: [], volume: 0.5, autoplay: false, enabled: false };
   componentDidMount() {
     this.setState({
-      url: this.props.element.moduleOptions.url,
-      volume: this.props.element.moduleOptions.volume,
-      autoplay: this.props.element.moduleOptions.autoplay || false,
+      url: this.props.moduleOptions.url,
+      volume: this.props.moduleOptions.volume,
+      autoplay: this.props.moduleOptions.autoplay || false,
       enabled: true
     })
   }

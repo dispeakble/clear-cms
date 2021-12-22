@@ -9,7 +9,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import { Scrollbars } from 'react-custom-scrollbars';
 import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
-import {withRouter} from "react-router-dom";
 import {Divider, Tooltip} from "@material-ui/core";
 import PropTypes from "prop-types";
 
@@ -114,7 +113,6 @@ class Modal extends Component {
 
     }
 
-
     render() {
 
         const classes = this.props.classes;
@@ -141,11 +139,7 @@ class Modal extends Component {
             disableRestoreFocus={true}
             disableEnforceFocus={true}
         >
-            <DialogTitle
-                id="classic-modal-slide-title"
-                disableTypography
-                className={classes.modalHeader}
-            >
+            <DialogTitle disableTypography className={classes.modalHeader}>
                 <h4 className={classes.modalTitle}>{this.props.title}</h4>
                 <Tooltip title="Close">
                     <IconButton
@@ -163,17 +157,18 @@ class Modal extends Component {
                 </Tooltip>
             </DialogTitle>
             <Divider/>
-            <DialogContent
-                className={classes.modalBody}
-            >
-                <Scrollbars autoHide universal style={{
-                    height: '100%'
-                }}>
+            <DialogContent className={classes.modalBody}>
+                {this.props.modalSize !== 'small' ?
+                    <Scrollbars autoHide universal style={{ height: '100%' }}>
+                        <div style={{padding: '24px'}}>
+                            {this.props.content}
+                        </div>
+                    </Scrollbars> :
                     <div style={{padding: '24px'}}>
-                        {this.props.modalContent}
                         {this.props.content}
                     </div>
-                </Scrollbars>
+                }
+
             </DialogContent>
             <DialogActions className={classes.modalFooter}>
                 {this.props.confirmButton && (
@@ -212,9 +207,11 @@ class Modal extends Component {
     }
 }
 
-export default withRouter(withStyles(styles)(Modal));
+export default withStyles(styles)(Modal);
 
 Modal.propTypes = {
+    id: PropTypes.string,
+    defaultTheme: PropTypes.object,
     resize: PropTypes.bool,
     saveDimensions: PropTypes.bool,
     closeButton: PropTypes.object,
@@ -224,6 +221,5 @@ Modal.propTypes = {
     modalSize: PropTypes.string,
     showModal: PropTypes.bool,
     title: PropTypes.any,
-    modalContent: PropTypes.object,
     content: PropTypes.any
 };

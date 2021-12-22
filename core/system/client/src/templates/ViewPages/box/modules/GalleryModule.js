@@ -302,8 +302,8 @@ class GalleryModule extends Component {
     }
 
     handleUpdate(params) {
-        this.props.onUpdate(Object.assign({}, {
-            files: this.state.files.map(el => {delete el.tableData; return el}),
+        const payload = Object.assign({}, {
+            files: this.state.files,
             galleryTitle: this.state.galleryTitle,
             galleryType: this.state.galleryType,
             infiniteSliding: this.state.infiniteSliding,
@@ -318,22 +318,17 @@ class GalleryModule extends Component {
             tbnSliding: this.state.tbnSliding,
             slideInterval: this.state.slideInterval,
             slideDuration: this.state.slideDuration,
-        }, params));
+        }, params);
+
+        this.props.onUpdate(payload);
 
         this.setState(params);
     }
 
     render() {
-        //const classes = this.props.classes;
-
-
         //1. upload using normal multiple uploader
         //2. preview both URL and base64 strings
-        //3. sorting dragging
-        //4. no pagination
-        //5. no sorting in headers
-        //6. no draggable headers
-        //7. edit and upload specific image
+        //3. edit specific image
 
         return (
             <div>

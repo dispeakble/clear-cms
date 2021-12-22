@@ -31,7 +31,7 @@ class AccordionModule extends Component {
     render() {
         return (
             <React.Fragment>
-                {this.props.element.moduleOptions.sections.map((section, idx) => {
+                {this.props.moduleOptions.sections.map((section, idx) => {
                     const id = `panel${idx}a-content`;
                     return (
                         <Accordion
