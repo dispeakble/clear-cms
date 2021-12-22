@@ -1,13 +1,4 @@
 import React, {Component} from "react";
-import Button from "components/CustomButtons/Button.js";
-
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
-import ArtTrack from "@material-ui/icons/ArtTrack";
 
 import {withStyles, createTheme} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
@@ -15,6 +6,7 @@ import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
+import PropTypes from "prop-types";
 
 class SitemapModule extends Component {
     state = {
@@ -168,3 +160,12 @@ class SitemapModule extends Component {
 }
 
 export default withStyles(styles)(SitemapModule);
+
+SitemapModule.propTypes = {
+    onUpdate: PropTypes.func,
+    boxId: PropTypes.number,
+    classes: PropTypes.object,
+    moduleOptions: PropTypes.object,
+    pageOptions: PropTypes.object,
+    defaultTheme: PropTypes.object
+};

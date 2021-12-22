@@ -120,6 +120,8 @@ class ViewPagesPreview extends React.Component {
                         label: el.displayOptions.actionButtonTitle,
                     },
                 }
+
+                return el;
             })
 
             this.setUsedGoogleFonts();
@@ -318,6 +320,7 @@ class ViewPagesPreview extends React.Component {
                 if (item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
                     fonts.push({font: item.fontFamily});
                 }
+                return item;
             });
         }
         this.setState({

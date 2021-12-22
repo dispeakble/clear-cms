@@ -6,6 +6,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import { Scrollbars } from 'react-custom-scrollbars';
 import Close from "@material-ui/icons/Close";
 import Button from "components/CustomButtons/Button.js";
 import {withRouter} from "react-router-dom";
@@ -163,11 +164,16 @@ class Modal extends Component {
             </DialogTitle>
             <Divider/>
             <DialogContent
-                id="classic-modal-slide-description"
                 className={classes.modalBody}
             >
-                {this.props.modalContent}
-                {this.props.content}
+                <Scrollbars autoHide universal style={{
+                    height: '100%'
+                }}>
+                    <div style={{padding: '24px'}}>
+                        {this.props.modalContent}
+                        {this.props.content}
+                    </div>
+                </Scrollbars>
             </DialogContent>
             <DialogActions className={classes.modalFooter}>
                 {this.props.confirmButton && (

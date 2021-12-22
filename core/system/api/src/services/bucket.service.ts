@@ -187,6 +187,18 @@ export class BucketService {
         return new Promise(async (resolve) => {
 
             const params = data.path;
+
+            const response = {
+                type: "object",
+                content_type: "object",
+                data: {
+                    modified: "",
+                    size: "",
+                    etagId: "",
+                    file_name: ""
+                }
+            };
+
             let file_name = '';
 
             if (data.path && data.path.length) {
@@ -205,22 +217,26 @@ export class BucketService {
                     stats = await fsp.stat(path.join(file_path, file_name));
                 }
             } catch (err) {
-                file_name = this.defaultPath;
-                stats = await fsp.stat(path.join(file_path, file_name));
+                try {
+                    file_name = this.defaultPath;
+                    stats = await fsp.stat(path.join(file_path, file_name));
+                } catch (err) {
+                    console.warn(err.message);
+                }
+
             }
 
-            const etagId = etag.default(stats);
-            resolve({
-                type: "object",
-                content_type: "object",
-                data: {
+            if(stats) {
+                const etagId = etag.default(stats);
+                response.data = {
                     modified: stats.mtimeMs,
                     size: stats.size,
                     etagId,
                     file_name: file_name
-                }
-            });
+                };
+            }
 
+            resolve(response);
         });
     }
 

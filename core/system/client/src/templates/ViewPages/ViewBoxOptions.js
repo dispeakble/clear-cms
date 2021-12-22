@@ -92,7 +92,8 @@ class ViewBoxOptions extends React.Component {
             defaultTheme: this.props.defaultTheme,
             onUpdate: (data) => this.onUpdate(data),
             item: this.item,
-            fontFamilies: this.props.fontFamilies
+            fontFamilies: this.props.fontFamilies,
+            page_id: this.props.pageOptions.page_id,
         };
 
         //this time it won't be lazy loaded
@@ -137,6 +138,7 @@ export default withStyles(styles)(ViewBoxOptions);
 
 
 ViewBoxOptions.propTypes = {
+    pageOptions: PropTypes.object,
     item: PropTypes.object,
     fontFamilies: PropTypes.array,
     classes: PropTypes.object,

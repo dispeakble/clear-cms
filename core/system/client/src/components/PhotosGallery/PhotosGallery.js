@@ -27,11 +27,11 @@ const PhotosGallery = ({ items, onChange, classes }) => {
         onChange(arrayMoveImmutable(items, oldIndex, newIndex));
     };
 
-    const updateSelection = (index) => {
+    const updateSelection = useCallback((index) => {
         const newItems = [...items];
         newItems[index].selected = !newItems[index].selected;
         onChange(newItems);
-    }
+    }, [onChange, items])
 
     const imageRenderer = useCallback(
         ({ index, left, top, key, photo }) => (
@@ -55,7 +55,7 @@ const PhotosGallery = ({ items, onChange, classes }) => {
                     top={top}
                 />
         ),
-        [selectAll, selectMode, onChange]
+        [selectAll, selectMode, updateSelection]
     );
 
     const handleStateChange = (event) => {

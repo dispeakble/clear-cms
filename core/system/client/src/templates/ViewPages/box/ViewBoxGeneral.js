@@ -122,8 +122,12 @@ class ViewBoxGeneral extends React.PureComponent {
 
         return (
             <MuiThemeProvider theme={this.state.theme}>
-                <div style={{display: "flex", justifyContent: "space-between"}}>
-                    <div style={{flex: 1, marginRight: "10px"}}>
+                <div style={{
+                    display: 'grid',
+                    columnGap: '10px',
+                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
+                }}>
+                    <div>
                         <CustomInput
                             labelText="Title"
                             id="itemTitle"
@@ -139,7 +143,7 @@ class ViewBoxGeneral extends React.PureComponent {
                             }}
                         />
                     </div>
-                    <div style={{flex: 1, marginLeft: "10px"}}>
+                    <div>
                         <Autocomplete
                             onChange={(event, newValue) => this.handleModuleSelection(event, newValue)}
                             className={this.props.classes.option}
@@ -156,7 +160,6 @@ class ViewBoxGeneral extends React.PureComponent {
                             )}
                         />
                     </div>
-
                 </div>
                 <div>
                     {module && LazyModule && (
@@ -169,7 +172,7 @@ class ViewBoxGeneral extends React.PureComponent {
                                 onEndEditingModule={() => this.onEndEditingModule()}
                                 boxId={item.i}
                                 moduleOptions={this.item.moduleOptions}
-                                pageId={this.state.page_id}
+                                pageId={this.props.page_id}
                                 onSave={(data) => {
                                     this.item.moduleOptions = data;
                                 }}
@@ -185,6 +188,7 @@ class ViewBoxGeneral extends React.PureComponent {
 export default withRouter(withStyles(styles)(ViewBoxGeneral));
 
 ViewBoxGeneral.propTypes = {
+    page_id: PropTypes.number,
     item: PropTypes.object,
     classes: PropTypes.object,
     location: PropTypes.object,

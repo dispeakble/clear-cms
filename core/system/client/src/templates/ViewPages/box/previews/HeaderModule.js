@@ -14,7 +14,7 @@ class HeaderModule extends Component {
         enabledBackground: false,
         enabledLogo: false,
         logoLinkProps: {},
-        logoImgProps: {}
+        logoImgProps: {},
     }
 
     pickByKey(params) {
@@ -114,7 +114,7 @@ class HeaderModule extends Component {
     render() {
         return (
             <div style={this.state.containerStyle} className={ this.state.isModuleSticky ? this.props.classes.itemWrapper : "" }>
-                { this.state.enabledLogo ? <a {...this.state.logoLinkProps}><img {...this.state.logoImgProps} src={this.state.logo_src} /></a> : "" }
+                { this.state.enabledLogo ? <a {...this.state.logoLinkProps}><img alt={this.props.moduleOptions.logoTitle} {...this.state.logoImgProps} src={this.state.logo_src} /></a> : "" }
             </div>
         );
     }
