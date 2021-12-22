@@ -1,9 +1,6 @@
 import React from "react";
 import {withStyles, createTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pageBoxEdit.js";
-import {
-    DeleteForever,
-} from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import {withRouter} from "react-router-dom";

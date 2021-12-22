@@ -172,7 +172,8 @@ class PagesController extends Component {
                         item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
                     }
                     item.backgroundImageFile = "";//for the DB we don't need to send binaries
-                    if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
+
+                    /*if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
 
                         newFiles = item.moduleOptions.files.map(newFile => {
                             return {
@@ -181,13 +182,13 @@ class PagesController extends Component {
                             }
                         });
 
-                        item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
-                            return {
-                                name: itemFile.name,
-                                sel: itemFile.sel
-                            }
-                        });
-                    }
+
+                    }*/
+
+                    item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
+                        delete itemFile.file;
+                        return itemFile;
+                    });
 
                     return item;
                 });
@@ -309,18 +310,9 @@ class PagesController extends Component {
                     item.backgroundImageFile = "";//for the DB we don't need to send binaries
                     if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
                         item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
-                            return {
-                                name: itemFile.name,
-                                sel: itemFile.sel
-                            }
+                            delete itemFile.file;
+                            return itemFile;
                         });
-                    }
-                    if (item.moduleOptions?.imageSources) {
-                        item.moduleOptions.imageSources = item.moduleOptions.imageSources.map(el => {
-                            return {
-                                ...el, file: el.path, fileItem: "", fileBase64: ""
-                            }
-                        })
                     }
                     return item;
                 });
@@ -367,7 +359,9 @@ class PagesController extends Component {
                     if (item.moduleOptions?.files && item.moduleOptions?.files.length) {
                         const fileList = [];
                         item.moduleOptions.files.forEach((fileData) => {
-                            fileList.push({file: fileData.file, name: fileData.name})
+                            if(fileData.file) {
+                                fileList.push({file: fileData.file, name: fileData.name})
+                            }
                         });
 
                         await this.uploadImages({

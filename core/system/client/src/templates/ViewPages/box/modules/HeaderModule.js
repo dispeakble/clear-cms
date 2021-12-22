@@ -295,7 +295,9 @@ class HeaderModule extends Component {
                 }} className={this.imgPosStateClass(type, `${h} ${v}`)}>
                     {h !== v ? `${h} ${v}` : h }
                 </button>)
+                return h;
             })
+            return v;
         })
 
         return buttons;

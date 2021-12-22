@@ -2,6 +2,7 @@ import React, { Component, createRef } from "react";
 import {Link} from "react-router-dom";
 import {ReactComponent as SearchIcon} from "../../../../assets/icons/search.svg"
 import {ReactComponent as ClearIcon} from "../../../../assets/icons/clear.svg"
+import PropTypes from "prop-types";
 
 class SearchModule extends Component {
     state = {
@@ -82,7 +83,7 @@ class SearchModule extends Component {
     }
 
     onKeyDownHandler = (e) => {
-        if(e.keyCode == 8 && this.state._search.length < 2){
+        if(e.keyCode === 8 && this.state._search.length < 2){
             this.setState({
                 _search: "",
                 _searchSuggestions: []
@@ -167,3 +168,11 @@ class SearchModule extends Component {
 }
 
 export default SearchModule;
+
+SearchModule.propTypes = {
+    boxId: PropTypes.number,
+    classes: PropTypes.object,
+    moduleOptions: PropTypes.object,
+    pageOptions: PropTypes.object,
+    defaultTheme: PropTypes.object
+};

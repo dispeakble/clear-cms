@@ -45,10 +45,7 @@ const modalStyle = {
     lineHeight: "1"
   },
   modalBody: {
-    paddingTop: "24px",
-    paddingRight: "24px",
-    paddingBottom: "16px",
-    paddingLeft: "24px",
+    padding: "0",
     position: "relative"
   },
   modalFooter: {
