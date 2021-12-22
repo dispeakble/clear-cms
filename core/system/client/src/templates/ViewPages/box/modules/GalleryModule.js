@@ -303,7 +303,7 @@ class GalleryModule extends Component {
 
     handleUpdate(params) {
         this.props.onUpdate(Object.assign({}, {
-            files: this.state.files,
+            files: this.state.files.map(el => {delete el.tableData; return el}),
             galleryTitle: this.state.galleryTitle,
             galleryType: this.state.galleryType,
             infiniteSliding: this.state.infiniteSliding,

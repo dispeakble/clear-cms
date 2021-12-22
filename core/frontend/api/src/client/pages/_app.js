@@ -1,7 +1,8 @@
 import "../src/assets/scss/clear-crm.scss"
+import { HelmetProvider } from 'react-helmet-async';
 
 function MyApp({Component, pageProps}){
-    return <Component {...pageProps} />
+    return <HelmetProvider><Component {...pageProps} /></HelmetProvider>
 }
 /**
 MyApp.getInitialProps = async (appContext) => {

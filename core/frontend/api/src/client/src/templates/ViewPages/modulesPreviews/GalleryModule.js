@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import ReactImageMagnify from "react-image-magnify";
 import ImageGallery from "react-image-gallery";
-import { createTheme } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
 class GalleryModule extends Component {
@@ -23,16 +22,14 @@ class GalleryModule extends Component {
         images: []
     };
 
-    createDefaultTheme = () => {
-        return createTheme({
-            palette: this.props.defaultTheme,
-        });
-    };
+    componentDidMount() {
 
-    static async getDerivedStateFromProps(props, state) {
-        if(props.moduleOptions){
-            const mo = props.moduleOptions;
-            let gallery =  {
+        const mo = this.props.element.moduleOptions;
+        const pageId = this.props.pageOptions.page_id;
+        const boxId = this.props.element.id;
+
+        if (mo) {
+            let gallery = {
                 showBullets: mo.bullets,
                 showThumbnails: mo.thumbnails,
                 infinite: mo.infiniteSliding,
@@ -48,33 +45,39 @@ class GalleryModule extends Component {
             }
 
             let images = [];
-            if(props.moduleOptions?.files){
-                images = await Promise.all(props.moduleOptions.files.map(async (img) => {
-
-                    const imgObject = {
-                        title:  img?.title || "",
-                        description: img?.description || "",
-                        original: `/files/pages/page-${props.pageOptions.page_id}/box-${props.boxId}/module/${img?.name}`,
-                        thumbnail: `/files/pages/page-${props.pageOptions.page_id}/box-${props.boxId}/module/${img?.name}`,
-                        link: img?.link,
-                    };
-
-                    imgObject.renderItem = (item) => {
-                        const style = {
-                            background: `url(${item.original}) no-repeat center center`,
-                            backgroundSize: 'cover',
-                            display: 'block',
-                            height: '100%'
+            if (mo?.files) {
+                images = mo.files.map((img) => {
+                    try {
+                        const imgObject = {
+                            title: img?.title || "",
+                            description: img?.description || "",
+                            original: `/files/pages/page-${pageId}/box-${boxId}/module/${img?.name}`,
+                            thumbnail: `/files/pages/page-${pageId}/box-${boxId}/module/${img?.name}`,
+                            link: img?.link,
                         };
 
-                        if(item.link.length) {
-                            return <a href={item.link} style={style}>&nbsp;</a>
+                        imgObject.renderItem = (item) => {
+                            const style = {
+                                background: `url(${item.original}) no-repeat center center`,
+                                backgroundSize: 'cover',
+                                display: 'block',
+                                height: '100%'
+                            };
+
+
+                            if (item.link.length) {
+                                return <a href={item.link} style={style}>&nbsp;</a>
+                            }
+                            return <div style={style}>&nbsp;</div>
                         }
-                        return <div style={style}>&nbsp;</div>
+
+                        return imgObject;
+                    } catch (err) {
+                        console.log(err);
                     }
 
-                    return imgObject;
-                }))
+                })
+
             }
 
             this.setState({
@@ -89,7 +92,7 @@ class GalleryModule extends Component {
             <ReactImageMagnify
                 {...{
                     smallImage: {
-                        alt: "Wristwatch by Ted Baker London",
+                        alt: args.title,
                         isFluidWidth: true,
                         src: `${args.thumbnail}`,
                     },
@@ -98,7 +101,7 @@ class GalleryModule extends Component {
                         height: 300,
                         src: `${args.original}`,
                     },
-                    enlargedImagePortalId: `${this.props.boxId}-enlargeImage`,
+                    enlargedImagePortalId: `${this.props.element.id}-enlargeImage`,
                 }}
             />
         );
@@ -139,7 +142,7 @@ class GalleryModule extends Component {
             items: this.state.images,
         };
 
-        if(this.state.gallery.zoom) {
+        if (this.state.gallery.zoom) {
             galleryProps.renderItem = (...args) => {
                 return this.renderZoom(args[0]);
             }
@@ -150,7 +153,7 @@ class GalleryModule extends Component {
                 <ImageGallery
                     {...galleryProps}
                 />
-                { this.state.gallery.zoom && <div id={`${this.props.boxId}-enlargeImage`} /> }
+                {this.state.gallery.zoom && <div id={`${this.props.element.id}-enlargeImage`}/>}
             </React.Fragment>
         );
 
@@ -160,9 +163,9 @@ class GalleryModule extends Component {
 export default GalleryModule;
 
 GalleryModule.propTypes = {
-    boxId: PropTypes.number,
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
+    element: PropTypes.object,
     pageOptions: PropTypes.object,
     defaultTheme: PropTypes.object
 };

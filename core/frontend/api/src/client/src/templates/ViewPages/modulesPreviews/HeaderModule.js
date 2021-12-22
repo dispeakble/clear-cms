@@ -61,7 +61,6 @@ class HeaderModule extends Component {
         return (
             <div
                 key={this.props.i}
-                data-grid={this.props.element}
                 style={style}
                 className={
                     this.props.element.moduleOptions.isModuleSticky

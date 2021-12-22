@@ -167,7 +167,6 @@ class MenuModule extends Component {
                     isVertical ? classes.verticalLinksMenu : classes.horizontalLinksMenu
                 }
                 key={this.props.i}
-                data-grid={this.props.element}
                 style={gridStyle}
             >
                 {(() => {

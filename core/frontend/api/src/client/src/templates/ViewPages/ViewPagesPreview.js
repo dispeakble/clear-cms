@@ -5,7 +5,7 @@ import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import styles from "../../assets/jss/clear-crm/views/pagePreview.js";
 import { WidthProvider, Responsive } from "react-grid-layout";
 import { withRouter } from 'next/router'
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { connect } from "react-redux";
 import getConfig from 'next/config'
 import BoxModal from "../../components/BoxModal/BoxModal";
