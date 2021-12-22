@@ -53,8 +53,6 @@ class CategoriesModule extends Component {
     };
 
     render() {
-        const classes = this.props.classes;
-
         return (
             <div
                 style={{

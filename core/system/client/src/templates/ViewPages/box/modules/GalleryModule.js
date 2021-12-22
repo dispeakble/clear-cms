@@ -1,728 +1,644 @@
-import React, { Component } from "react";
-import Button from "components/CustomButtons/Button.js";
-import ArtTrack from "@material-ui/icons/ArtTrack";
-import { DropzoneArea } from "material-ui-dropzone";
+import React, {Component} from "react";
 
-import { DeleteForever, Edit } from "@material-ui/icons";
+import {withStyles} from "@material-ui/core/styles";
+import styles from "assets/jss/clear-crm/views/pageBoxEdit.js";
 
-import { withStyles, createTheme } from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import CustomInput from "components/CustomInput/CustomInput.js";
 
-import { TextField } from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, FormControlLabel, TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-
-import Drawer from "@material-ui/core/Drawer";
-
-import { ReactSortable } from "react-sortablejs";
+import PropTypes from "prop-types";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Slider from "@material-ui/core/Slider";
+import MaterialTable from "material-table";
+import {Check, Clear, DeleteForever, Edit} from "@material-ui/icons";
+import TumbnailComponent from "components/PhotosGallery/Thumbnail";
 
 class GalleryModule extends Component {
-  state = {
-    galleryTitle: "",
-    galleryTypes: [{ label: "Carousel" }],
-    editGalleryType: "",
-    temporaryImageSources: [],
-    imageSources: [],
-    showEditImageMenu: false,
-    showDropZone: false,
-    editImageTitle: "",
-    editImageDescription: "",
-    editImageLink: "",
-    imageOnEditPath: "",
+    state = {
+        galleryTitle: "Default Gallery Title",
+        galleryType: 0,
 
-    // Carousel Add-ons
-    infiniteSliding: false,
-    fullscreenButton: false,
-    playButton: false,
-    bullets: false,
-    thumbnails: false,
-    navigation: false,
-    index: false,
-    tbnSliding: false,
-    playInterval: 2000,
-    slideDuration: 450,
-  };
-  getTheme = () => {
-    return createTheme({
-      palette: this.props.defaultTheme,
-      overrides: {
-        MuiDialogTitle: {
-          root: {
-            padding: "16px 24px 0",
-          },
+        //existing array
+        files: [],
+
+        /* START Carousel Add-ons */
+        infiniteSliding: true,
+        fullscreenButton: false,
+        zoom: true,
+        autoPlay: true,
+        playButton: false,
+        bullets: false,
+        thumbnails: false,
+        navigation: false,
+        index: false,
+        tbnSliding: true,
+        slideInterval: 2000,
+        slideDuration: 450,
+        /* END Carousel Add-ons */
+
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+        /* * * * * * * never add to onUpdate from here down! * * * * * * */
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+        galleryTypes: [{label: "Carousel"}],
+
+        //table
+        galleryImagesRef: React.createRef()
+    };
+
+    tableOptions = {
+        title: "Gallery images",
+        tableRef: this.state.galleryImagesRef,
+        columns: [
+            {
+                title: "Preview", field: "thumbnail", width: 50, sorting: false, render: (rowData) => {
+
+                    const rd = {...rowData};
+
+                    if (!rd.file) {
+                        rd.name = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${rd.name}`;
+                    }
+
+                    return <TumbnailComponent key={`g-${Math.random()}`} rowData={rd}/>
+                }
+            },
+            {title: "Title", field: "title"},
+            {title: "Description", field: "description", sorting: false},
+            {title: "Link", field: "link", sorting: false},
+            {title: "Position", field: "position", type: 'numeric', width: 150, defaultSort: 'asc'}
+        ],
+        options: {
+            selection: true,
+            actionsColumnIndex: -1,
+            actionsCellStyle: {
+                width: "auto",
+            },
         },
-        MuiDialog: {
-          paper: {
-            width: "100% !important",
-          },
-          paperWidthSm: {
-            maxWidth: "100vw !important",
-            width: "100% !important",
-          },
-        },
-      },
-    });
-  };
-
-  setAsyncState = (newState) =>
-    new Promise((resolve) => this.setState(newState, resolve));
-
-  componentDidMount() {
-    if (this.props.moduleOptions) {
-      let moduleOptions = this.props.moduleOptions;
-      this.setState({
-        galleryTitle: moduleOptions.galleryTitle,
-        imageSources: moduleOptions.imageSources,
-        infiniteSliding: moduleOptions.infiniteSliding,
-        fullscreenButton: moduleOptions.fullscreenButton,
-        playButton: moduleOptions.playButton,
-        bullets: moduleOptions.bullets,
-        thumbnails: moduleOptions.thumbnails,
-        navigation: moduleOptions.navigation,
-        index: moduleOptions.index,
-        tbnSliding: moduleOptions.tbnSliding,
-        playInterval: moduleOptions.playInterval,
-        slideDuration: moduleOptions.slideDuration,
-        editGalleryType: moduleOptions.galleryType,
-        temporaryImageSources: moduleOptions.imageSources,
-      });
-    }
-  }
-
-
-  closeModuleOptionsModal() {
-    this.setState({ showModuleOptionsModal: false });
-  }
-
-  handleEdit = async (id) => {
-    await this.setAsyncState({
-      itemModuleEditId: id,
-      showModuleOptionsModal: true,
-    });
-    await this.setAsyncState({
-      editGalleryType: this.state.editGalleryType,
-    });
-  };
-
-  toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  }
-
-  handleInputChange = (event) => {
-    switch (event.target.id) {
-      case "galleryTitle":
-        let galleryTitle = this.state.galleryTitle;
-        galleryTitle = event.target.value + "";
-        this.setState({ galleryTitle });
-        break;
-      case "imageTitle":
-        let editImageTitle = this.state.editImageTitle;
-        editImageTitle = event.target.value + "";
-        this.setState({ editImageTitle });
-        break;
-      case "imageDescription":
-        let editImageDescription = this.state.editImageDescription;
-        editImageDescription = event.target.value;
-        this.setState({ editImageDescription });
-        break;
-      case "imageLink":
-        let editImageLink = this.state.editImageLink;
-        editImageLink = event.target.value;
-        this.setState({ editImageLink });
-        break;
-      case "playInterval":
-        let playInterval = this.state.playInterval;
-        playInterval = event.target.value;
-        this.setState({ playInterval });
-        break;
-      case "slideDuration":
-        let slideDuration = this.state.slideDuration;
-        slideDuration = event.target.value;
-        this.setState({ slideDuration });
-        break;
-      default:
-        break;
-    }
-  };
-
-  saveChangedStyle = () => {
-    let imageSources = [...this.state.imageSources];
-
-    let imageOnEdit = imageSources.find(
-      (img) => img.path === this.state.imageOnEditPath
-    );
-
-    imageOnEdit.title = this.state.editImageTitle;
-    imageOnEdit.description = this.state.editImageDescription;
-    imageOnEdit.link = this.state.editImageLink;
-
-    this.closeEditSideMenu();
-  };
-
-  onRemoveItem = async (path) => {
-    let imageSources = [...this.state.imageSources];
-
-    let newImageSources = imageSources.filter((img) => img.path !== path);
-
-    this.setState({
-      imageSources: newImageSources,
-      temporaryImageSources: newImageSources,
-    });
-
-    // localStorage.setItem("adminThemes", JSON.stringify(newThumbnails));
-  };
-
-  handleUploadedImage = async (event) => {
-    let temporaryImageSources = [...this.state.imageSources];
-
-    if (event.length) {
-      await Promise.all(
-          event.map(async (file) => {
-            let baseFile = await this.toBase64(file)
-            if (!temporaryImageSources.includes(file)) {
-              temporaryImageSources.push({path: file.path, title: file.title, file: baseFile, fileItem: file, fileBase64: baseFile});
+        actions: [{
+            icon: 'add',
+            tooltip: 'Add Images',
+            position: "toolbar",
+            onClick: () => {
+                this.imageUploader.click();
             }
-            return file;
-          })
-      );
+        }],
+        icons: {
+            Check: () => (
+                <Check color="primary"/>
+            ),
+            Clear: () => (
+                <Clear color="error"/>
+            ),
+            Edit: () => (
+                <Edit color="primary"/>
+            ),
+            Delete: () => (
+                <DeleteForever color="error"/>
+            ),
+        },
+        editable: {
+            onRowAdd: null,
+            onRowUpdate: (newData, oldData) =>
+                new Promise((resolve) => {
+                    setTimeout(() => {
+                        delete newData.tableData;
+                        newData.file = oldData.file;
+                        const index = oldData.tableData.id;
+
+                        if (newData.position !== oldData.position) {
+                            this.handleUpdate({files: this.updateOrder(newData, index)});
+                        } else {
+                            const dataUpdate = [...this.state.files];
+                            dataUpdate[index] = newData;
+                            this.handleUpdate({files: this.reorderFiles(dataUpdate)});
+                        }
+
+                        resolve();
+                    }, 300);
+
+                }),
+            onRowDelete: (oldData) =>
+                new Promise((resolve) => {
+                    const dataDelete = [...this.state.files];
+                    const index = oldData.tableData.id;
+                    dataDelete.splice(index, 1);
+                    this.handleUpdate({files: this.reorderFiles(dataDelete)});
+                    setTimeout(() => {
+                        resolve();
+                    }, 0)
+                }),
+        }
+    };
+
+    imageUploader = null;
+
+    setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
+
+    componentDidMount() {
+        let moduleOptions = this.props.moduleOptions;
+        if (moduleOptions && Object.keys(moduleOptions).length) {
+            this.setState(moduleOptions);
+        }
     }
 
-    this.setState({ temporaryImageSources });
-  };
-
-  closeEditSideMenu = () => {
-    this.setState({ showEditImageMenu: false });
-  };
-
-  handleImageEdit = (path) => {
-    let imageSources = [...this.state.imageSources];
-
-    let imageOnEdit = imageSources.find((img) => img.path === path);
-
-    this.setState({
-      editImageTitle: imageOnEdit.title,
-      editImageDescription: imageOnEdit.description,
-      editImageLink: imageOnEdit.link,
-    });
-
-    this.setState({ imageOnEditPath: path, showEditImageMenu: true });
-  };
-
-  getGalleryIndex(name) {
-    return Number(
-      this.state.galleryTypes.findIndex((type) => {
-        return type.label === name;
-      })
-    );
-  }
-
-  handleGalleryType = async (event, newValue) => {
-    if (!newValue || !newValue.label) {
-      return;
+    getImagesRows() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(this.state.files);
+            }, 0);
+        });
     }
-    console.log("type", newValue)
-    await this.setAsyncState({
-      editGalleryType: this.getGalleryIndex(newValue.label),
-    });
-  };
 
-  render() {
-    const classes = this.props.classes;
+    handleInputChange = (event) => {
+        switch (event.target.id) {
+            case "galleryTitle":
+                this.setState({galleryTitle: event.target.value + ""});
+                break;
+            case "slideInterval":
+                this.setState({slideInterval: Number(event.target.value)});
+                break;
+            case "slideDuration":
+                this.setState({slideDuration: Number(event.target.value)});
+                break;
+            default:
+                break;
+        }
+    };
 
-    return (
-        <div
-            style={{
-              textAlign: "center",
-            }}
-        >
-          <IconButton
-              onClick={() => this.handleEdit(this.props.boxId)}
-              color="primary"
-              size="medium"
-          >
-            <ArtTrack/>
-          </IconButton>
+    getGalleryIndex(name) {
+        return Number(
+            this.state.galleryTypes.findIndex((type) => {
+                return type.label === name;
+            })
+        );
+    }
 
-          <Dialog
-              fullWidth={true}
-              maxWidth={"md"}
-              onBackdropClick={() => "false"}
-              classes={{
-                root: classes.center,
-                paper: classes.modal,
-              }}
-              open={this.state.showModuleOptionsModal}
-              TransitionComponent={this.transition}
-              keepMounted
-              onClose={() => this.closeModuleOptionsModal()}
-              aria-labelledby="classic-modal-slide-title"
-              aria-describedby="classic-modal-slide-description"
-          >
-            <DialogTitle
-                id="classic-modal-slide-title"
-                disableTypography
-                className={classes.modalHeader}
-            >
-              <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-            </DialogTitle>
-            <DialogContent
-                id="classic-modal-slide-description"
-                className={classes.modalBody}
-            >
-              {" "}
-              <Autocomplete
-                  id="moduleDropdown"
-                  onChange={this.handleGalleryType}
-                  className={this.props.classes.option}
-                  autoHighlight
-                  getOptionLabel={(option) => option.label}
-                  defaultValue={this.state.galleryTypes[this.state.editGalleryType]}
-                  options={this.state.galleryTypes}
-                  renderInput={(params) => (
-                      <TextField
-                          className={this.props.classes.textfield}
-                          {...params}
-                          label="Gallery Type"
-                          variant="outlined"
-                      />
-                  )}
-              />
-              <CustomInput
-                  labelText="Gallery Title"
-                  id="galleryTitle"
-                  required="required"
-                  formControlProps={{
-                    fullWidth: true,
-                    onChange: (event) => this.handleInputChange(event),
-                  }}
-                  inputProps={{
-                    value: this.state.galleryTitle,
-                    type: "text",
-                  }}
-              />
-              {this.state.editGalleryType === 0 ? (
-                  <React.Fragment>
-                    <h4 style={{textAlign: "center"}}>Optional Add-ons</h4>
-                    <div style={{display: "flex"}}>
-                      <div style={{width: "50%"}}>
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Allow Infinite Sliding">
-                            <Switch
-                                checked={this.state.infiniteSliding}
-                                onChange={() => {
-                                  this.setState({
-                                    infiniteSliding: !this.state.infiniteSliding,
-                                    open: true,
-                                  });
-                                }}
+    handleGalleryType = async (event, newValue) => {
+        if (!newValue || !newValue.label) {
+            return;
+        }
+        await this.setAsyncState({
+            galleryType: this.getGalleryIndex(newValue.label),
+        });
+    };
+
+    handleSlideInterval = (event, newValue) => {
+        const slideInterval = newValue;
+        this.handleUpdate({slideInterval});
+    }
+
+    handleSlideDuration = (event, newValue) => {
+        const slideDuration = newValue;
+        this.handleUpdate({slideDuration});
+    }
+
+    ValueLabelComponent(props) {
+        const { children, open, value } = props;
+
+        return (
+            <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+                {children}
+            </Tooltip>
+        );
+    }
+
+    ValueLabelSeconds(value) {
+        return (
+            <div style={{whiteSpace: 'nowrap'}}>{`${value / 1000} seconds`}</div>
+        );
+    }
+
+    handleImageUpload(event) {
+        const newFiles = Array.from(event.target.files).map((file, index) => {
+
+            return {
+                file: file,
+                name: '',
+                sel: 0,
+                title: file.name,
+                description: file.name,
+                link: "",
+                position: 0,
+            }
+        });
+
+        const allFiles = this.reorderFiles(this.state.files.concat(newFiles));
+
+        this.handleUpdate({
+            files: allFiles
+        });
+    }
+
+    updateOrder(data, index) {
+        const files = [...this.state.files];
+
+        data.position = data.position > files.length ? files.length : data.position;
+        data.position = data.position < 1 ? 1 : data.position;
+
+        let newFiles = [];
+
+        files.map((el, i) => {
+
+            if (data.position > files[index].position) {
+                if (index !== i) {
+                    newFiles.push(el);
+                }
+            }
+
+            if (i === data.position - 1) {
+                newFiles.push(Object.assign({}, data));
+            }
+
+            if (data.position < files[index].position) {
+                if (index !== i) {
+                    newFiles.push(el);
+                }
+            }
+
+            return el;
+
+        });
+
+        return this.reorderFiles(newFiles)
+
+    }
+
+    reorderFiles(files) {
+
+        if (files.length) {
+            files = files.map((el, index) => {
+                let ext = "";
+
+                let name = "";
+
+                if (el.file) {
+                    ext = el.file.name.split('.').pop();
+                    name = `${index + 1}.${ext}`;
+                } else {
+                    name = el.name;
+                }
+
+                return {
+                    file: el.file,
+                    title: el.title,
+                    description: el.description,
+                    link: el.link,
+                    name: name,
+                    original: el.file ? `${index + 1}.${ext}` : el.original,
+                    sel: index + 1,
+                    position: index + 1
+                }
+            })
+        }
+
+        return files;
+
+    }
+
+    handleUpdate(params) {
+        this.props.onUpdate(Object.assign({}, {
+            files: this.state.files,
+            galleryTitle: this.state.galleryTitle,
+            galleryType: this.state.galleryType,
+            infiniteSliding: this.state.infiniteSliding,
+            fullscreenButton: this.state.fullscreenButton,
+            zoom: this.state.zoom,
+            autoPlay: this.state.autoPlay,
+            playButton: this.state.playButton,
+            bullets: this.state.bullets,
+            thumbnails: this.state.thumbnails,
+            navigation: this.state.navigation,
+            index: this.state.index,
+            tbnSliding: this.state.tbnSliding,
+            slideInterval: this.state.slideInterval,
+            slideDuration: this.state.slideDuration,
+        }, params));
+
+        this.setState(params);
+    }
+
+    render() {
+        //const classes = this.props.classes;
+
+
+        //1. upload using normal multiple uploader
+        //2. preview both URL and base64 strings
+        //3. sorting dragging
+        //4. no pagination
+        //5. no sorting in headers
+        //6. no draggable headers
+        //7. edit and upload specific image
+
+        return (
+            <div>
+                <div style={{
+                    display: 'grid',
+                    columnGap: '10px',
+                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
+                }}>
+                    <CustomInput
+                        labelText="Gallery Title"
+                        id="galleryTitle"
+                        required="required"
+                        formControlProps={{
+                            fullWidth: true,
+                            onChange: (event) => this.handleInputChange(event),
+                        }}
+                        inputProps={{
+                            value: this.state.galleryTitle,
+                            type: "text",
+                        }}
+                    />
+                    <Autocomplete
+                        id="moduleDropdown"
+                        onChange={this.handleGalleryType}
+                        className={this.props.classes.option}
+                        autoHighlight
+                        getOptionLabel={(option) => option.label}
+                        defaultValue={this.state.galleryTypes[this.state.galleryType]}
+                        options={this.state.galleryTypes}
+                        renderInput={(params) => (
+                            <TextField
+                                className={this.props.classes.textfield}
+                                {...params}
+                                label="Gallery Type"
+                                variant="outlined"
                             />
-                          </Tooltip>
-                          Infinite Sliding
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Show Fullscreen Button">
-                            <Switch
-                                checked={this.state.fullscreenButton}
-                                onChange={() => {
-                                  this.setState({
-                                    fullscreenButton: !this.state.fullscreenButton,
-                                    open: true,
-                                  });
+                        )}
+                    />
+                </div>
+                {this.state.galleryType === 0 ? (
+                    <div style={{marginBottom: '24px'}}>
+                        <Accordion classes={{root: this.props.classes.accordion}}>
+                            <AccordionSummary
+                                classes={{
+                                    root: this.props.classes.accordionSummaryRoot,
+                                    expanded: this.props.classes.accordionSummaryExpanded,
+                                    content: this.props.classes.accordionSummaryContent,
                                 }}
-                            />
-                          </Tooltip>
-                          Fullscreen Button
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Show Play Button">
-                            <Switch
-                                checked={this.state.playButton}
-                                onChange={() => {
-                                  this.setState({
-                                    playButton: !this.state.playButton,
-                                    open: true,
-                                  });
-                                }}
-                            />
-                          </Tooltip>
-                          Play Button
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Show Bullets">
-                            <Switch
-                                checked={this.state.bullets}
-                                onChange={() => {
-                                  this.setState({
-                                    bullets: !this.state.bullets,
-                                    open: true,
-                                  });
-                                }}
-                            />
-                          </Tooltip>
-                          Show Bullets
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Show Thumbnails">
-                            <Switch
-                                checked={this.state.thumbnails}
-                                onChange={() => {
-                                  this.setState({
-                                    thumbnails: !this.state.thumbnails,
-                                    open: true,
-                                  });
-                                }}
-                            />
-                          </Tooltip>
-                          Thumbnails
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Show Navigation">
-                            <Switch
-                                checked={this.state.navigation}
-                                onChange={() => {
-                                  this.setState({
-                                    navigation: !this.state.navigation,
-                                    open: true,
-                                  });
-                                }}
-                            />
-                          </Tooltip>
-                          Navigation
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Show Index">
-                            <Switch
-                                checked={this.state.index}
-                                onChange={() => {
-                                  this.setState({
-                                    index: !this.state.index,
-                                    open: true,
-                                  });
-                                }}
-                            />
-                          </Tooltip>
-                          Index
-                        </Typography>
-
-                        <Typography id="discrete-slider" gutterBottom>
-                          <Tooltip title="Slide on mouse over thumbnails">
-                            <Switch
-                                checked={this.state.tbnSliding}
-                                onChange={() => {
-                                  this.setState({
-                                    tbnSliding: !this.state.tbnSliding,
-                                    open: true,
-                                  });
-                                }}
-                            />
-                          </Tooltip>
-                          Slide on mouse over thumbnails
-                        </Typography>
-                      </div>
-
-                      <div style={{width: "50%"}}>
-                        <div style={{width: "90%", margin: "0 auto"}}>
-                          <CustomInput
-                              labelText="Play Interval"
-                              id="playInterval"
-                              required="required"
-                              formControlProps={{
-                                fullWidth: true,
-                                onChange: (event) => this.handleInputChange(event),
-                              }}
-                              inputProps={{
-                                value: this.state.playInterval,
-                                type: "text",
-                              }}
-                          />
-                        </div>
-
-                        <div style={{width: "90%", margin: "0 auto"}}>
-                          <CustomInput
-                              labelText="Slide Duration"
-                              id="slideDuration"
-                              required="required"
-                              formControlProps={{
-                                fullWidth: true,
-                                onChange: (event) => this.handleInputChange(event),
-                              }}
-                              inputProps={{
-                                value: this.state.slideDuration,
-                                type: "text",
-                              }}
-                          />
-                        </div>
-                      </div>
+                                expandIcon={<ExpandMoreIcon/>}
+                                aria-controls="panel1c-content"
+                            >
+                                <Typography className={this.props.classes.typography}>
+                                    Advanced gallery settings
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <div style={{
+                                    display: 'grid',
+                                    columnGap: '24px',
+                                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
+                                }}>
+                                    <div>
+                                        <Typography>Seconds between slides</Typography>
+                                        <Slider
+                                            defaultValue={this.state.slideInterval}
+                                            onChangeCommitted={this.handleSlideInterval.bind(this)}
+                                            aria-labelledby="discrete-slider"
+                                            valueLabelDisplay="auto"
+                                            ValueLabelComponent={this.ValueLabelComponent.bind(this)}
+                                            valueLabelFormat={this.ValueLabelSeconds.bind(this)}
+                                            min={100}
+                                            max={10000}
+                                            step={100}
+                                        />
+                                    </div>
+                                    <div>
+                                        <Typography>Seconds to animate one slide</Typography>
+                                        <Slider
+                                            defaultValue={this.state.slideDuration}
+                                            onChangeCommitted={this.handleSlideDuration.bind(this)}
+                                            aria-labelledby="discrete-slider"
+                                            ValueLabelComponent={this.ValueLabelComponent.bind(this)}
+                                            valueLabelFormat={this.ValueLabelSeconds.bind(this)}
+                                            valueLabelDisplay="auto"
+                                            min={100}
+                                            max={10000}
+                                            step={100}
+                                        />
+                                    </div>
+                                </div>
+                                <div style={{
+                                    display: 'grid',
+                                    columnGap: '10px',
+                                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
+                                }}>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Allow Infinite Sliding">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.infiniteSliding}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                infiniteSliding: !this.state.infiniteSliding
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Infinite Sliding"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip
+                                                title="Continue sliding images even if the mouse cursor is over the thumbnails">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.tbnSliding}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                tbnSliding: !this.state.tbnSliding
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Uninterrupted sliding"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                </div>
+                                <div style={{
+                                    display: 'grid',
+                                    columnGap: '10px',
+                                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
+                                }}>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="The gallery will slide the photos automatically">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.autoPlay}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                autoPlay: !this.state.autoPlay
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Auto Play"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show Play Button">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.playButton}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                playButton: !this.state.playButton
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Play Button"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show Fullscreen Button">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.fullscreenButton}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                fullscreenButton: !this.state.fullscreenButton
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Fullscreen Button"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show a bigger preview">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.zoom}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                zoom: !this.state.zoom
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Zoom"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show Bullets">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.bullets}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                bullets: !this.state.bullets
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Bullets"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show Thumbnails">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.thumbnails}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                thumbnails: !this.state.thumbnails
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Thumbnails"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show Navigation">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.navigation}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                navigation: !this.state.navigation
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Navigation"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <Tooltip title="Show Index">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.index}
+                                                        onChange={() => {
+                                                            this.handleUpdate({
+                                                                index: !this.state.index
+                                                            });
+                                                        }}
+                                                        inputProps={{'aria-label': 'controlled'}}
+                                                    />}
+                                                    label="Index"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                </div>
+                            </AccordionDetails>
+                        </Accordion>
                     </div>
-                  </React.Fragment>
-              ) : (
-                  ""
-              )}
-              {!this.state.imageSources.length ? (
-                  <div style={{padding: "30px 0"}}>No images found.</div>
-              ) : (
-                  !this.state.showDropZone && (
-                      <ReactSortable
-                          list={this.state.imageSources}
-                          setList={(newState) => {
-                            this.setState({imageSources: newState});
-                          }}
-                      >
-                        {this.state.imageSources.map((img) => (
-                            <React.Fragment>
-                              <Card
-                                  className={this.props.classes.root}
-                                  style={{margin: "20px", width: "35%"}}
-                              >
-                                <CardActionArea>
-                                  <CardMedia
-                                      onClick={() => this.handleImageEdit(img.path)}
-                                      style={{backgroundSize: "contain"}}
-                                      className={this.props.classes.media}
-                                      // image="../watermelon.jpg"
-                                  />
-                                  <CardContent style={{textAlign: "center"}}>
-                                    <h3>{img.title}</h3>
-                                    <p>{img.description}</p>
-                                    <img alt={img.title}
-                                         src={img.fileBase64 || `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${img.file}`}/>
-                                  </CardContent>
-                                </CardActionArea>
-                                <CardActions style={{justifyContent: "flex-end"}}>
-                                  <Tooltip title="Edit Image">
-                                    <IconButton
-                                        onClick={() => this.handleImageEdit(img.path)}
-                                        style={{cursor: "pointer"}}
-                                        color="primary"
-                                        size="medium"
-                                    >
-                                      <Edit/>
-                                    </IconButton>
-                                  </Tooltip>
-                                  <Tooltip title="Remove Image">
-                                    <IconButton
-                                        onClick={() => {
-                                          this.onRemoveItem(img.path);
-                                        }}
-                                        style={{cursor: "pointer"}}
-                                        color="error"
-                                        size="medium"
-                                    >
-                                      <DeleteForever/>
-                                    </IconButton>
-                                  </Tooltip>
-                                </CardActions>
-                              </Card>
-                            </React.Fragment>
-                        ))}
-                      </ReactSortable>
-                  )
-              )}
-              <div>
-                {this.state.showDropZone ? (
-                    <React.Fragment>
-                      <DropzoneArea
-                          maxFileSize={Math.pow(1024, 3)}
-                          clearOnUnmount={true}
-                          filesLimit={100}
-                          className={this.props.classes.dropzone}
-                          onChange={this.handleUploadedImage}
-                      />
-                      <Button
-                          color="primary"
-                          onClick={() => {
-                            this.setState({
-                              showDropZone: false,
-                              imageSources: this.state.temporaryImageSources,
-                            });
-                          }}
-                      >
-                        OK
-                      </Button>
-                      <Button
-                          color="danger"
-                          onClick={() => {
-                            this.setState({
-                              showDropZone: false,
-                            });
-                          }}
-                      >
-                        Cancel
-                      </Button>
-                    </React.Fragment>
                 ) : (
                     ""
                 )}
-              </div>
-              <Button
-                  style={{display: this.state.showDropZone ? "none" : "block"}}
-                  color="primary"
-                  onClick={() => {
-                    this.setState({
-                      showDropZone: true,
-                    });
-                  }}
-              >
-                Upload images
-              </Button>
-              <Drawer
-                  BackdropProps={{invisible: true}}
-                  variant="temporary"
-                  anchor={"left"}
-                  open={this.state.showEditImageMenu}
-                  onClose={this.handleEditMenu}
-                  className={this.props.classes.sideMenu}
-              >
-                <div className={this.props.classes.sideMenuEditor}>
-                  <div className={this.props.classes.sideMenuEditorForm}>
-                    <h3>Edit Image Properties</h3>
-                  </div>
-                  <div style={{width: "90%", margin: "0 auto"}}>
-                    <CustomInput
-                        labelText="Image Title"
-                        id="imageTitle"
-                        required="required"
-                        formControlProps={{
-                          fullWidth: true,
-                          onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                          value: this.state.editImageTitle,
-                          type: "text",
-                        }}
-                    />
-                  </div>
-                  <div style={{width: "90%", margin: "0 auto"}}>
-                    <CustomInput
-                        labelText="Image Description"
-                        id="imageDescription"
-                        required="required"
-                        formControlProps={{
-                          fullWidth: true,
-                          onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                          value: this.state.editImageDescription,
-                          type: "text",
-                          multiline: true,
-                          rows: 5,
-                        }}
-                    />
-                  </div>
-                  <div style={{width: "90%", margin: "0 auto"}}>
-                    <CustomInput
-                        labelText="Image Link"
-                        id="imageLink"
-                        required="required"
-                        formControlProps={{
-                          fullWidth: true,
-                          onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                          value: this.state.editImageLink,
-                          type: "text",
-                        }}
-                    />
-                  </div>
-                </div>
-                <div className={this.props.classes.sideMenuActionHolder}>
-                  <Button
-                      className={this.props.classes.sideMenuSaveBtn}
-                      color="primary"
-                      onClick={() => {
-                        this.saveChangedStyle();
-                      }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                      className={this.props.classes.sideMenuCancelBtn}
-                      color="danger"
-                      onClick={() => {
-                        this.closeEditSideMenu();
-                      }}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </Drawer>
-            </DialogContent>
-            <DialogActions className={classes.modalFooter}>
-              <Button
-                  disabled={this.state.isBtnDisabled}
-                  color="primary"
-                  onClick={() => {
-                    console.log("gallery", this.state)
-                    this.props.handleSave(this.state.itemModuleEditId, {
-                      galleryTitle: this.state.galleryTitle,
-                      imageSources: this.state.imageSources,
-                      infiniteSliding: this.state.infiniteSliding,
-                      fullscreenButton: this.state.fullscreenButton,
-                      playButton: this.state.playButton,
-                      bullets: this.state.bullets,
-                      thumbnails: this.state.thumbnails,
-                      navigation: this.state.navigation,
-                      index: this.state.index,
-                      tbnSliding: this.state.tbnSliding,
-                      playInterval: this.state.playInterval,
-                      slideDuration: this.state.slideDuration,
-                      galleryType: this.state.editGalleryType,
-                      files: this.state.imageSources.reduce((prev, curr) => {
-                        if (curr.fileItem) {
-                          prev.push({
-                            file: curr.fileItem,
-                            name: curr.fileItem.name,
-                          })
-                        }
-                        return prev
-                      }, []),
-                    });
-                    this.closeModuleOptionsModal();
-                  }}
-              >
-                <div>Save</div>
-              </Button>
-              <Button
-                  color="danger"
-                  onClick={() => {
-                    this.closeModuleOptionsModal();
-                  }}
-              >
-                Cancel
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-    );
-  }
+
+                <MaterialTable
+                    {...this.tableOptions}
+                    data={this.state.files}
+                />
+
+                <input id="imageUploader"
+                       type="file"
+                       multiple={true}
+                       ref={(ref) => this.imageUploader = ref}
+                       style={{display: 'none'}}
+                       onChange={this.handleImageUpload.bind(this)}
+                />
+            </div>
+        );
+    }
 }
 
 export default withStyles(styles)(GalleryModule);
+
+GalleryModule.propTypes = {
+    classes: PropTypes.object,
+    boxId: PropTypes.number,
+    pageId: PropTypes.number,
+    moduleOptions: PropTypes.object,
+    defaultTheme: PropTypes.object,
+    onUpdate: PropTypes.func,
+    pageOptions: PropTypes.object
+};

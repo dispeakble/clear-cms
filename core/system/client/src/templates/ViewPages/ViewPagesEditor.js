@@ -61,6 +61,7 @@ class ViewPagesEditor extends React.PureComponent {
   };
 
   state = {
+    page_id: 0,
     configStates: {
       showBackgroundColor: false,
     },
@@ -288,6 +289,7 @@ class ViewPagesEditor extends React.PureComponent {
         if(item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
           fonts.push({font: item.fontFamily});
         }
+        return item;
       });
     }
     this.setState({
@@ -384,8 +386,6 @@ class ViewPagesEditor extends React.PureComponent {
 
   async componentDidMount() {
     let editing = this.state.editing;
-    // TODO: debug why match.params is empty
-    // let page_id = Number(this.props.match.params.id);
     let page_id = this.props.location.pathObject[2];
 
     let temps = await this.props.control.listTemplates();
