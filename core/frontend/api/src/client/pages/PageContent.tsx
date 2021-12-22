@@ -85,22 +85,31 @@ class PageContent{
             props: {
                 pageData: page.data,
                 pagesData: pages.data,
-                categoriesData: categories.data
+                categoriesData: categories.data,
             },
         }
     }
 
     static renderContent(props: any) {
+
+        const {pageMetaTitle, pageMetaDescription, pageFavicon, useWebsiteTitle, websiteInfo} = JSON.parse(props.pageData.pageConfig.data) ||
+            { pageMetaTitle: null, pageMetaDescription: null, pageFavicon: null, useWebsiteTitle: false, websiteInfo: null}
+
+        const WebsiteTitle = JSON.parse(websiteInfo.data).websiteName + ' - ' + pageMetaTitle
+
+
         return(
             <>
                 <Head>
-                    <title>{props.pageData.pageConfig.pageTitle}</title>
-                    <meta name="description" content={`${props.pageData?.pageConfig?.pageDescription}`} />
-                    <meta property="og:title" content={`${props.pageData?.pageConfig.pageTitle}`} />
-                    <meta property="og:description" content={`${props.pageData?.pageConfig?.pageDescription}`} />
+                    <title>{`${useWebsiteTitle ? WebsiteTitle : pageMetaTitle}`}</title>
+                    <meta name="description" content={`${pageMetaDescription}`} />
+                    <meta property="og:title" content={`${useWebsiteTitle ? WebsiteTitle : pageMetaTitle}`} />
+                    <meta property="og:description" content={`${pageMetaDescription}`} />
                     <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     <meta property="og:type" content="website" />
+                    <meta property="og:image" content={`${pageFavicon}`} />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <link rel="icon" type="image/*" href={`${pageFavicon}`} />
                     <meta charSet="UTF-8" />
                     <link
                         rel="stylesheet"
@@ -108,6 +117,7 @@ class PageContent{
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
                 </Head>
+
                 <ViewPagesPreview {...props} />
             </>
         )

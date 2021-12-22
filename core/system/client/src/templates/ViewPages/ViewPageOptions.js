@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import {DropzoneArea} from "material-ui-dropzone";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
-import {FormControlLabel, FormGroup, MuiThemeProvider, TextField} from "@material-ui/core";
+import {Button, FormControlLabel, FormGroup, MuiThemeProvider, TextField} from "@material-ui/core";
 import Slider from "@material-ui/core/Slider";
 import clsx from "clsx";
 import React, {createRef} from "react";
@@ -187,91 +187,107 @@ class ViewPageOptions extends React.PureComponent {
                         </div>
                         <div>
                             {!this.props.data.isTemplate &&
-                            <div>
-                                <Autocomplete
-                                    id="categoryDropdown"
-                                    onChange={this.props.handleCategory}
-                                    onInputChange={this.props.handleCategoryUniqueness}
-                                    className={this.props.classes.option}
-                                    value={this.props.data.currentCategory}
-                                    filterOptions={(options, params) => {
-                                        const filtered = filter(options, params);
-                                        if (
-                                            params.inputValue !== "" &&
-                                            this.props.data.isUniqueTitle
-                                        ) {
-                                            filtered.push({
-                                                value: params.inputValue,
-                                                label: `Add "${params.inputValue}"`,
-                                            });
-                                        }
-                                        return filtered;
-                                    }}
-                                    options={this.props.data.flatCategories}
-                                    autoHighlight
-                                    getOptionLabel={(option) => option.label}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            className={this.props.classes.textfield}
-                                            label="Select a category"
-                                            {...params}
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                                <Modal
-                                    showModal={this.props.data.openNewCategory}
-                                    {...this.addNewCategoryModalProps}
-                                />
-                            </div>}
+                                <div>
+                                    <Autocomplete
+                                        id="categoryDropdown"
+                                        onChange={this.props.handleCategory}
+                                        onInputChange={this.props.handleCategoryUniqueness}
+                                        className={this.props.classes.option}
+                                        value={this.props.data.currentCategory}
+                                        filterOptions={(options, params) => {
+                                            const filtered = filter(options, params);
+                                            if (
+                                                params.inputValue !== "" &&
+                                                this.props.data.isUniqueTitle
+                                            ) {
+                                                filtered.push({
+                                                    value: params.inputValue,
+                                                    label: `Add "${params.inputValue}"`,
+                                                });
+                                            }
+                                            return filtered;
+                                        }}
+                                        options={this.props.data.flatCategories}
+                                        autoHighlight
+                                        getOptionLabel={(option) => option.label}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                className={this.props.classes.textfield}
+                                                label="Select a category"
+                                                {...params}
+                                                variant="outlined"
+                                            />
+                                        )}
+                                    />
+                                    <Modal
+                                        showModal={this.props.data.openNewCategory}
+                                        {...this.addNewCategoryModalProps}
+                                    />
+                                </div>}
                         </div>
                         <div>
                             {!this.props.data.isTemplate &&
-                            <>
-                                <div>
-                                    <Typography
-                                        gutterBottom
+                                <>
+                                    <div>
+                                        <Typography
+                                            gutterBottom
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <Tooltip title="Enable Publishing">
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.props.data.publish}
+                                                        onChange={() =>
+                                                            this.props.handlePageOptions({
+                                                                publish: !this.props.data.publish,
+                                                            })
+                                                        }
+                                                    />}
+                                                    label="Publish"/>
+                                            </Tooltip>
+                                        </Typography>
+                                    </div>
+                                    <div
                                         style={{
                                             display: "flex",
                                             justifyContent: "space-between",
                                             alignItems: "center",
                                         }}
                                     >
-                                        <Tooltip title="Enable Publishing">
+                                        <Tooltip title="Set as default page">
                                             <FormControlLabel
                                                 control={<Switch
-                                                    checked={this.props.data.publish}
+                                                    checked={this.props.data.defaultPage}
                                                     onChange={() =>
                                                         this.props.handlePageOptions({
-                                                            publish: !this.props.data.publish,
+                                                            defaultPage: !this.props.data.defaultPage,
                                                         })
                                                     }
                                                 />}
-                                                label="Publish"/>
+                                                label="Default Page"/>
                                         </Tooltip>
-                                    </Typography>
+                                    </div>
+                                </>}
+                            <div style={{marginTop: "20px"}}>
+                                <div>
+                                    <h4>Upload a favicon (browser icon) :</h4>
+                                    <label htmlFor="contained-button-file">
+                                        <input style={{display: "none"}} accept="image/*" id="contained-button-file" multiple type="file"
+                                               onChange={async (e) =>
+                                                   this.props.handlePageOptions({
+                                                       pageFavicon : await this.toBase64(e.target.files[0])
+                                                   })
+                                               } />
+                                        <Button variant="contained" component="span">
+                                            Upload
+                                        </Button>
+                                    </label>
                                 </div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                    }}
-                                >
-                                    <Tooltip title="Set as default page">
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={this.props.data.defaultPage}
-                                                onChange={() =>
-                                                    this.props.handlePageOptions({
-                                                        defaultPage: !this.props.data.defaultPage,
-                                                    })
-                                                }
-                                            />}
-                                            label="Default Page"/>
-                                    </Tooltip>
-                                </div>
-                            </>}
+                            </div>
                         </div>
                     </div>}
                     {"appearance" === this.state.contentType && <div>
@@ -453,14 +469,14 @@ class ViewPageOptions extends React.PureComponent {
                                 </div>
                             </div>
                             {this.props.data.pageBackgroundImage &&
-                            <div className={this.props.classes.dropzoneAreaWrapper}>
-                                <DropzoneArea
-                                    maxFileSize={Math.pow(1024, 3)}
-                                    filesLimit={1}
-                                    onChange={this.props.handleBgImage.bind(this)}
-                                    onDelete={this.props.handleBackgroundDelete.bind(this)}
-                                />
-                            </div>}
+                                <div className={this.props.classes.dropzoneAreaWrapper}>
+                                    <DropzoneArea
+                                        maxFileSize={Math.pow(1024, 3)}
+                                        filesLimit={1}
+                                        onChange={this.props.handleBgImage.bind(this)}
+                                        onDelete={this.props.handleBackgroundDelete.bind(this)}
+                                    />
+                                </div>}
                         </div>
                         <div style={{flex: 1}}>
                             <div>
@@ -598,6 +614,63 @@ class ViewPageOptions extends React.PureComponent {
                             </div>
                         </div>
                     </div>}
+
+                    {"seo" === this.state.contentType &&
+                        <div className={clsx(
+                            this.props.classes.column,
+                            this.props.classes.helper
+                        )}>
+                            <h4>SEO meta attributes:</h4>
+                            <div style={{marginTop: "25px"}}>
+
+                                <div>
+                                    <TextField
+                                        className={this.props.classes.textfield}
+                                        value={this.props.data.pageMetaTitle}
+                                        onChange={(e) =>
+                                            this.props.handlePageOptions({
+                                                pageMetaTitle: e.target.value
+                                            })}
+                                        label="meta title"
+                                        variant="outlined"
+                                    />
+                                </div>
+                                <div>
+                                    <Tooltip title="add website title alongside the title">
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.props.data.useWebsiteTitle}
+
+                                                onChange={async (event, checked) =>{
+                                                    let websiteData = await this.props.getWebsiteData()
+                                                    this.props.handlePageOptions({
+                                                        useWebsiteTitle: checked,
+                                                        websiteInfo: websiteData
+                                                    })
+                                                }
+
+                                                }
+                                            />} label="include site title in the meta title (ex: Facebook - Index)"/>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                            <div style={{marginTop: "15px"}}>
+                                <div>
+                                    <TextField
+                                        className={this.props.classes.textfield}
+                                        label="meta description"
+                                        value={this.props.data.pageMetaDescription}
+                                        onChange={(e) =>
+                                            this.props.handlePageOptions({
+                                                pageMetaDescription: e.target.value
+                                            })}
+                                        variant="outlined"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
                 </FormGroup>
             </MuiThemeProvider>
         )
@@ -669,6 +742,9 @@ class ViewPageOptions extends React.PureComponent {
                     </ToggleButton>
                     <ToggleButton value="advanced" onClick={() => this.toggleContentType("advanced")}>
                         Advanced
+                    </ToggleButton>
+                    <ToggleButton value="seo" onClick={() => this.toggleContentType("seo")}>
+                        SEO
                     </ToggleButton>
                 </ToggleButtonGroup>
             </div>
