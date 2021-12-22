@@ -97,7 +97,7 @@ class GalleryModule extends Component {
             <ReactImageMagnify
                 {...{
                     smallImage: {
-                        alt: "Wristwatch by Ted Baker London",
+                        alt: args.title,
                         isFluidWidth: true,
                         src: `${args.thumbnail}`,
                     },

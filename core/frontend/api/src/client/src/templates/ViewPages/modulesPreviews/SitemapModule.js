@@ -21,7 +21,6 @@ class SitemapModule extends Component {
         return(
             <div
                 key={this.props.i}
-                data-grid={this.props.element}
                 style={this.props.style}
             >
                 <ul className="clear-crm_sitemap-list">

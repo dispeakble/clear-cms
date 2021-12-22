@@ -19,7 +19,6 @@ class ProductModule extends Component{
         return(
             <div
                 key={this.props.i}
-                data-grid={this.props.element}
                 style={this.props.style}
             >
                 product module

@@ -84,8 +84,8 @@ class PageContent{
         return {
             props: {
                 pageData: page.data,
-                pagesData: pages.data,
-                categoriesData: categories.data,
+                pagesData: pages?.data,
+                categoriesData: categories?.data,
             },
         }
     }
