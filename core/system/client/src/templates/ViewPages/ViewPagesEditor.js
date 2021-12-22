@@ -20,6 +20,7 @@ import { Responsive, WidthProvider } from "react-grid-layout";
 import GradientPicker from "components/GradientColorPicker/GradientColorPicker";
 import { withRouter } from "react-router-dom";
 import Snackbar from "components/Snackbar/Snackbar.js";
+import imageHelper from "helpers/image.helper";
 
 
 import { Helmet } from "react-helmet";
@@ -772,10 +773,6 @@ class ViewPagesEditor extends React.PureComponent {
     await this.setAsyncState({ items });
   };
 
-
-
-
-
   toBase64(file) {//TODO MOVE TO HELPERS
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -784,7 +781,6 @@ class ViewPagesEditor extends React.PureComponent {
       reader.onerror = (error) => reject(error);
     });
   }
-
   async onDuplicate(id) {
     try {
       const existingItem = this.getItemById(id);
@@ -808,7 +804,7 @@ class ViewPagesEditor extends React.PureComponent {
         const bgResponse = await fetch(`/files/pages/page-${existingItem.templateUsed ? existingItem.templateUsed : this.state.page_id}/box-${id}/${existingItem.backgroundImage}`);
         const bgBlob = await bgResponse.blob();
         targetItem.backgroundImageFile = new File([bgBlob], existingItem.backgroundImage);
-        targetItem.backgroundImageString = await Promise.all([this.toBase64(targetItem.backgroundImageFile)]);
+        targetItem.backgroundImageString = await Promise.all([imageHelper.toBase64(targetItem.backgroundImageFile)]);
       }
 
       items.push(targetItem);
@@ -1037,7 +1033,7 @@ class ViewPagesEditor extends React.PureComponent {
 
   handleBgImage = async (event) => {
     if (event.length) {
-      let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+      let strings = await Promise.all(event.map((file) => imageHelper.toBase64(file)));
 
       this.setState({
         pageBase64Image: strings[0],
