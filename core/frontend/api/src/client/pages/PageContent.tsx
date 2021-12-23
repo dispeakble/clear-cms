@@ -92,24 +92,31 @@ class PageContent{
 
     static renderContent(props: any) {
 
-        const {pageMetaTitle, pageMetaDescription, pageFavicon, useWebsiteTitle, websiteInfo} = JSON.parse(props.pageData.pageConfig.data) ||
+        const {pageMetaTitle, pageMetaDescription, useWebsiteTitle, websiteInfo} = JSON.parse(props.pageData.pageConfig.data) ||
             { pageMetaTitle: null, pageMetaDescription: null, pageFavicon: null, useWebsiteTitle: false, websiteInfo: null}
 
-        const WebsiteTitle = JSON.parse(websiteInfo.data).websiteName + ' - ' + pageMetaTitle
+        //check
+        const metas = {
+            _pageMetaTitle : pageMetaTitle ? pageMetaTitle : websiteInfo.defaultMetaTitle,
+            _pageMetaDescription : pageMetaDescription ? pageMetaDescription : websiteInfo.defaultMetaDescription,
+            _websiteFavicon: websiteInfo.defaultFavicon
+        }
 
+
+        const pageTitle = useWebsiteTitle ?  websiteInfo.websiteName + ' - ' + metas._pageMetaTitle : metas._pageMetaTitle
 
         return(
             <>
                 <Head>
-                    <title>{`${useWebsiteTitle ? WebsiteTitle : pageMetaTitle}`}</title>
-                    <meta name="description" content={`${pageMetaDescription}`} />
-                    <meta property="og:title" content={`${useWebsiteTitle ? WebsiteTitle : pageMetaTitle}`} />
-                    <meta property="og:description" content={`${pageMetaDescription}`} />
+                    <title>{`${pageTitle}`}</title>
+                    <meta name="description" content={`${metas._pageMetaDescription}`} />
+                    <meta property="og:title" content={`${pageTitle}`} />
+                    <meta property="og:description" content={`${metas._pageMetaDescription}`} />
                     <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     <meta property="og:type" content="website" />
-                    <meta property="og:image" content={`${pageFavicon}`} />
+                    <meta property="og:image" content={`${metas._websiteFavicon}`} />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    <link rel="icon" type="image/*" href={`${pageFavicon}`} />
+                    <link rel="icon" type="image/*" href={`${metas._websiteFavicon}`} />
                     <meta charSet="UTF-8" />
                     <link
                         rel="stylesheet"

@@ -15,10 +15,15 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 
 import styles from "assets/jss/clear-crm/views/generalSettings";
 
-import {Divider, TextField} from "@material-ui/core";
+import {FormControlLabel, TextField} from "@material-ui/core";
 import moment from "moment-timezone";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
+import {ToggleButtonGroup} from "@material-ui/lab";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import imageHelper from "../../helpers/image.helper";
+import Tooltip from "@material-ui/core/Tooltip";
+import Switch from "@material-ui/core/Switch";
 
 class ViewGeneralSettings extends Component {
     state = {
@@ -34,11 +39,22 @@ class ViewGeneralSettings extends Component {
             websiteOwner: {valid: false, empty: true},
             websiteAdminEmail: {valid: false, empty: true},
             applicationVersion: {valid: false, empty: true},
-            websiteTimezone: {valid: false, empty: true}
+            websiteTimezone: {valid: false, empty: true},
+            defaultMetaTitle: {valid: false, empty: true},
+            defaultMetaDescription: {valid: false, empty: true},
+            defaultFavicon: {valid: false, empty: true},
+            faviconName: {valid: false, empty: true},
+            includeWebsiteTitle: {valid: false, empty: true},
         },
         errors: "",
         messages: "",
         notification: "",
+        contentType: "general",
+        defaultMetaTitle: "",
+        defaultMetaDescription: "",
+        defaultFavicon: "",
+        faviconName: "",
+        includeWebsiteTitle: false,
         timezones: moment.tz.names()
     };
 
@@ -75,12 +91,34 @@ class ViewGeneralSettings extends Component {
                 valid: true,
                 empty: false
             };
+            validation.defaultMetaTitle = {
+                valid: true,
+                empty: false
+            };
+            validation.defaultMetaDescription = {
+                valid: true,
+                empty: false
+            };
+            validation.defaultFavicon = {
+                valid: true,
+                empty: false
+            };
+            validation.includeWebsiteTitle = {
+                valid: true,
+                empty: false
+            };
+
             this.setState({
                 websiteName: generalSettingsData.websiteName,
                 websiteDomain: generalSettingsData.websiteDomain,
                 websiteOwner: generalSettingsData.websiteOwner,
                 websiteAdminEmail: generalSettingsData.websiteAdminEmail,
                 applicationVersion: generalSettingsData.applicationVersion,
+                defaultMetaTitle: generalSettingsData.defaultMetaTitle,
+                defaultMetaDescription: generalSettingsData.defaultMetaDescription,
+                defaultFavicon: generalSettingsData.defaultFavicon,
+                faviconName: generalSettingsData.faviconName,
+                includeWebsiteTitle: generalSettingsData.includeWebsiteTitle,
                 websiteTimezone: generalSettingsData.websiteTimezone
             })
         }
@@ -141,6 +179,10 @@ class ViewGeneralSettings extends Component {
         }
     };
 
+
+
+
+
     openNotification(params) {
         this.setState({
             notification: <Snackbar
@@ -167,6 +209,11 @@ class ViewGeneralSettings extends Component {
             websiteOwner: this.state.websiteOwner,
             websiteAdminEmail: this.state.websiteAdminEmail,
             applicationVersion: this.state.applicationVersion,
+            defaultMetaTitle: this.state.defaultMetaTitle,
+            defaultMetaDescription: this.state.defaultMetaDescription,
+            defaultFavicon: this.state.defaultFavicon,
+            faviconName: this.state.faviconName,
+            includeWebsiteTitle: this.state.includeWebsiteTitle,
             websiteTimezone: this.state.websiteTimezone
         }});
         if (result) {
@@ -192,14 +239,239 @@ class ViewGeneralSettings extends Component {
         }
     }
 
+    handleTabChange(event, nextView) {
+        if (nextView) {
+            this.setState({
+                contentType: nextView
+            })
+        }
+    }
+
+    toggleContentType(type) {
+        this.setState({
+            contentType: type
+        })
+    }
+
     render() {
-
-        console.log("state", this.state)
-
         const classes = this.props.classes;
 
+        const content = {
+            header: () => {
+              return (
+                  <div className={classes.grid} style={{display: "flex", justifyContent:"center", padding:"15px 0"}}>
+                      <ToggleButtonGroup
+                          onChange={this.handleTabChange.bind(this)}
+                          value={this.state.contentType}
+                          exclusive
+                      >
+                          <ToggleButton value="general" className={classes.gridItem}  style={{minHeight: "40px", padding: "10px 25px"}} onClick={() => this.toggleContentType("general")}>
+                              General Settings
+                          </ToggleButton>
+                          <ToggleButton value="seo" className={classes.gridItem} style={{minHeight: "40px", padding: "10px 25px"}} onClick={() => this.toggleContentType("seo")}>
+                              SEO Settings
+                          </ToggleButton>
+                      </ToggleButtonGroup>
+                  </div>
+              )
+            },
+            generalSettings: () => {
+                return (
+                    <div className={classes.container}>
+
+                        <div className={classes.profile}>
+                            <div className={classes.name}>
+                                <form onSubmit={this.validateForm} autoComplete={"off"}>
+                                    <div>
+                                        <CustomInput
+                                            className={classes.column} labelText="Website Name" id="websiteName" required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: this.handleInputChange
+                                            }} inputProps={{
+                                            value: this.state.websiteName,
+                                            type: "text"
+                                        }}/>
+
+                                        <p style={{width: "15px"}}></p>
+
+                                        <CustomInput
+                                            className={classes.column} labelText="Website Domain" id="websiteDomain" required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: this.handleInputChange
+                                            }} inputProps={{
+                                            value: this.state.websiteDomain,
+                                            type: "text",
+                                        }}/>
+
+                                        <p style={{width: "15px"}}></p>
+
+                                        <CustomInput
+                                            className={classes.column} labelText="Website Owner" id="websiteOwner" required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: this.handleInputChange
+                                            }} inputProps={{
+                                            value: this.state.websiteOwner,
+                                            type: "text",
+                                        }}/>
+
+                                        <p style={{width: "15px"}}></p>
+
+                                        <CustomInput
+                                            className={classes.column} labelText="Website Admin Email" id="websiteAdminEmail"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: this.handleInputChange
+                                            }} inputProps={{
+                                            required: true,
+                                            value: this.state.websiteAdminEmail,
+                                            type: "email",
+                                            // endAdornment: (
+                                            //     <InputAdornment position="end">
+                                            //         <Icon className={classes.inputIconsColor}> email </Icon>
+                                            //     </InputAdornment>
+                                            // )
+                                        }}/>
+
+                                        <CustomInput
+                                            className={classes.column} labelText="Application Version" id="applicationVersion" required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: this.handleInputChange
+                                            }} inputProps={{
+                                            value: this.state.applicationVersion,
+                                            type: "text",
+                                        }}/>
+
+                                        <p style={{width: "15px"}}></p>
+
+                                        <Autocomplete
+                                            options={this.state.timezones}
+                                            autoHighlight
+                                            className={this.props.classes.option}
+                                            defaultValue={this.state.timezones[this.state.timezones.indexOf("America/Indiana/Winamac")]}
+                                            onChange={(ev, value) => {
+                                                if (value) {
+                                                    this.setState(
+                                                        {
+                                                            websiteTimezone: value,
+                                                        }
+                                                    )
+                                                }
+                                            }}
+                                            getOptionLabel={(option) => option + " (" + moment.tz(option).format("Z z") + ")"}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    className={this.props.classes.textfield}{...params}
+                                                    label="Select Timezone"
+                                                    variant="outlined"
+                                                />
+                                            )}
+                                        />
+
+                                        <p style={{width: "15px"}}></p>
+
+                                    </div>
+                                    <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit" color="primary" size="lg" className={classes.button}>Save Settings</Button>
+                                    <p style={{height: "15px", margin: 0}}>&nbsp;</p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )
+            },
+            seoSettings: () => {
+                return(
+                    <div className={classes.container}>
+                        <div className={classes.profile}>
+                            <div className={classes.name}>
+                                <form onSubmit={this.validateForm} autoComplete={"off"}>
+
+                                    <CustomInput
+                                        className={classes.column} labelText="Default meta title" id="defaultMetaTitle"
+                                        formControlProps={{
+                                            fullWidth: true,
+                                            onChange: this.handleInputChange
+                                        }} inputProps={{
+                                        value: this.state.defaultMetaTitle,
+                                        type: "text"
+                                    }}/>
+
+                                    <p style={{width: "15px"}}></p>
+
+                                    <div>
+                                        <Tooltip title="add website title alongside the pages title">
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.includeWebsiteTitle}
+
+                                                    onChange={async (event, checked) =>{
+                                                        this.setState({
+                                                            includeWebsiteTitle: checked,
+                                                        })
+                                                    }
+                                                    }
+                                                />} label="include site title in the meta title (ex: My Website - Index)"/>
+                                        </Tooltip>
+                                    </div>
+
+                                    <p style={{width: "15px"}}></p>
+
+                                    <CustomInput
+                                        className={classes.column} labelText="Default meta description" id="defaultMetaDescription"
+                                        formControlProps={{
+                                            fullWidth: true,
+                                            onChange: this.handleInputChange
+                                        }} inputProps={{
+                                        value: this.state.defaultMetaDescription,
+                                        type: "text"
+                                    }}/>
+
+                                    <p style={{width: "15px"}}></p>
+
+                                    <div>
+                                        <h4>Upload a favicon (browser icon):</h4>
+                                        <label htmlFor="contained-button-file">
+                                            <input style={{display: "none"}} accept="image/*" id="contained-button-file" multiple type="file"
+                                                   onChange={async (e) =>
+                                                       this.setState({
+                                                           faviconName: e.target.files[0].name,
+                                                           defaultFavicon: await imageHelper.toBase64(e.target.files[0])
+                                                       })
+                                                   } />
+                                            <Button variant="contained" disabled={false} className={classes.button} color="primary" size="md" component="span">
+                                                Upload
+                                            </Button>
+                                        </label>
+                                    </div>
+
+                                    <p style={{width: "15px"}}></p>
+
+                                    {
+                                        this.state.faviconName &&
+                                        <div style={{minHeight: "60px", marginTop: "40px"}}>
+                                            <img src={this.state.defaultFavicon} alt={this.state.faviconName} style={{height: "30px", width:"30px"}} />
+                                            <h5 style={{fontStyle: "italic", textDecoration:"underline", lineHeight: "0"}}>{this.state.faviconName}</h5>
+                                        </div>
+                                        || <h5 style={{fontStyle: "italic"}}>no file selected.</h5>
+                                    }
+
+                                    <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit" color="primary" size="lg" className={classes.button}>Save Settings</Button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )
+            },
+
+        }
+
+
         return (
-            <div>
+            <div style={{padding: "15px 0"}}>
                 <Helmet>
                     <title>General Settings</title>
                 </Helmet>
@@ -210,116 +482,15 @@ class ViewGeneralSettings extends Component {
                             {this.state.errors.length ? <Snackbar closeNotification={() => {
                                 this.setState({errors: ""})
                             }} open place="tc" color="warning" icon={AddAlert} message={this.state.errors}/> : ''}
-                            <h4 style={{
-                                lineHeight: "3.0em",
-                                paddingLeft: "15px",
-                                paddingRight: "15px",
-                                textAlign: "center"
-                            }}>General Settings<Divider /></h4>
+                            {content.header()}
 
-                            <div className={classes.container}>
+                            { this.state.contentType.includes("general") &&
+                                content.generalSettings()
+                            }
 
-                                <div className={classes.profile}>
-                                    <div className={classes.name}>
-                                        <form onSubmit={this.validateForm} autoComplete={"off"}>
-                                            <div>
-                                                <CustomInput
-                                                    className={classes.column} labelText="Website Name" id="websiteName" required="required"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: this.handleInputChange
-                                                    }} inputProps={{
-                                                    value: this.state.websiteName,
-                                                    type: "text"
-                                                }}/>
-
-                                                <p style={{width: "15px"}}></p>
-
-                                                <CustomInput
-                                                    className={classes.column} labelText="Website Domain" id="websiteDomain" required="required"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: this.handleInputChange
-                                                    }} inputProps={{
-                                                    value: this.state.websiteDomain,
-                                                    type: "text",
-                                                }}/>
-
-                                                <p style={{width: "15px"}}></p>
-
-                                                <CustomInput
-                                                    className={classes.column} labelText="Website Owner" id="websiteOwner" required="required"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: this.handleInputChange
-                                                    }} inputProps={{
-                                                    value: this.state.websiteOwner,
-                                                    type: "text",
-                                                }}/>
-
-                                                <p style={{width: "15px"}}></p>
-
-                                                <CustomInput
-                                                    className={classes.column} labelText="Website Admin Email" id="websiteAdminEmail"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: this.handleInputChange
-                                                    }} inputProps={{
-                                                    required: true,
-                                                    value: this.state.websiteAdminEmail,
-                                                    type: "email",
-                                                    // endAdornment: (
-                                                    //     <InputAdornment position="end">
-                                                    //         <Icon className={classes.inputIconsColor}> email </Icon>
-                                                    //     </InputAdornment>
-                                                    // )
-                                                }}/>
-
-                                                <CustomInput
-                                                    className={classes.column} labelText="Application Version" id="applicationVersion" required="required"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: this.handleInputChange
-                                                    }} inputProps={{
-                                                    value: this.state.applicationVersion,
-                                                    type: "text",
-                                                }}/>
-
-                                                <p style={{width: "15px"}}></p>
-
-                                                <Autocomplete
-                                                    options={this.state.timezones}
-                                                    autoHighlight
-                                                    className={this.props.classes.option}
-                                                    defaultValue={this.state.timezones[this.state.timezones.indexOf("America/Indiana/Winamac")]}
-                                                    onChange={(ev, value) => {
-                                                        if (value) {
-                                                            this.setState(
-                                                                {
-                                                                    websiteTimezone: value,
-                                                                }
-                                                            )
-                                                        }
-                                                    }}
-                                                    getOptionLabel={(option) => option + " (" + moment.tz(option).format("Z z") + ")"}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            className={this.props.classes.textfield}{...params}
-                                                            label="Select Timezone"
-                                                            variant="outlined"
-                                                        />
-                                                    )}
-                                                />
-
-                                                <p style={{width: "15px"}}></p>
-
-                                            </div>
-                                            <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit" color="primary" size="lg" className={classes.button}>Save Settings</Button>
-                                            <p style={{height: "15px", margin: 0}}>&nbsp;</p>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                            { this.state.contentType.includes("seo") &&
+                                content.seoSettings()
+                            }
                         </div>
                     </GridItem>
                 </GridContainer>
