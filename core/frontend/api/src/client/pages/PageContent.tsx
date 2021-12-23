@@ -86,6 +86,7 @@ class PageContent{
                 pageData: page.data,
                 pagesData: pages?.data,
                 categoriesData: categories?.data,
+                isIndex: context.isIndex || false,
             },
         }
     }
@@ -117,6 +118,10 @@ class PageContent{
                     <meta property="og:image" content={`${metas._websiteFavicon}`} />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                     <link rel="icon" type="image/*" href={`${metas._websiteFavicon}`} />
+                    {
+                        !props.isIndex &&
+                        <link rel="canonical" href={`${typeof window!=='undefined' ? window.location.href : ""}`} />
+                    }
                     <meta charSet="UTF-8" />
                     <link
                         rel="stylesheet"
