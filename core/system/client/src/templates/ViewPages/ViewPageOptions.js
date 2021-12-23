@@ -15,7 +15,6 @@ import {createTheme, withStyles} from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import {ToggleButtonGroup} from "@material-ui/lab";
-import imageHelper from "../../helpers/image.helper";
 
 
 const filter = createFilterOptions()
@@ -607,7 +606,6 @@ class ViewPageOptions extends React.PureComponent {
                         )}>
                             <h4>SEO Settings (Search Engine Optimization):</h4>
                             <div style={{marginTop: "25px"}}>
-
                                 <div>
                                     <TextField
                                         className={this.props.classes.textfield}
@@ -616,7 +614,7 @@ class ViewPageOptions extends React.PureComponent {
                                             this.props.handlePageOptions({
                                                 pageMetaTitle: e.target.value
                                             })}
-                                        label="Default meta title"
+                                        label="Page meta title"
                                         variant="outlined"
                                     />
                                 </div>
@@ -624,16 +622,13 @@ class ViewPageOptions extends React.PureComponent {
                                     <Tooltip title="add website title alongside the title">
                                         <FormControlLabel
                                             control={<Switch
-                                                checked={this.props.data.useWebsiteTtle}
+                                                checked={this.props.data.useWebsiteTitle}
 
                                                 onChange={async (event, checked) =>{
-                                                    let websiteData = await this.props.getWebsiteData()
-                                                    this.props.handlePageOptions({
-                                                        useWebsiteTitle: checked,
-                                                        websiteInfo: websiteData
-                                                    })
-                                                }
-
+                                                        this.props.handlePageOptions({
+                                                            useWebsiteTitle: checked,
+                                                        })
+                                                    }
                                                 }
                                             />} label="include site title in the meta title (ex: My Website - Index)"/>
                                     </Tooltip>
@@ -643,7 +638,7 @@ class ViewPageOptions extends React.PureComponent {
                                 <div>
                                     <TextField
                                         className={this.props.classes.textfield}
-                                        label="Default meta description"
+                                        label="Page meta description"
                                         value={this.props.data.pageMetaDescription}
                                         onChange={(e) =>
                                             this.props.handlePageOptions({
@@ -653,30 +648,6 @@ class ViewPageOptions extends React.PureComponent {
                                     />
                                 </div>
                             </div>
-                            <div style={{marginTop: "20px"}}>
-                                <div>
-                                    <h4>Upload a favicon (browser icon) :</h4>
-                                    <label htmlFor="contained-button-file">
-                                        <input style={{display: "none"}} accept="image/*" id="contained-button-file" multiple type="file"
-                                               onChange={async (e) =>
-                                                   this.props.handlePageOptions({
-                                                       selectedFavicon : e.target.files[0].name,
-                                                       pageFavicon : await imageHelper.toBase64(e.target.files[0]),
-                                                   })
-                                               } />
-                                        <Button variant="contained" component="span">
-                                            Upload
-                                        </Button>
-                                    </label>
-                                </div>
-                            </div>
-                            {
-                                this.props.data.selectedFavicon &&
-                                <div style={{marginTop: "18px", display:"flex", gap:"10px", alignItems: "center"}}>
-                                    <img src={this.props.data.pageFavicon} alt={this.props.data.selectedFavicon} style={{height: "20px", width:"20px"}} />
-                                    <h5 style={{fontStyle: "italic", lineHeight: "0", textDecoration:"underline"}}>{this.props.data.selectedFavicon}</h5>
-                                </div>
-                            }
                         </div>
                     }
 
@@ -744,7 +715,7 @@ class ViewPageOptions extends React.PureComponent {
                     exclusive
                 >
                     <ToggleButton value="general" onClick={() => this.toggleContentType("general")}>
-                        General Settings
+                        General
                     </ToggleButton>
                     <ToggleButton value="appearance" onClick={() => this.toggleContentType("appearance")}>
                         Appearance

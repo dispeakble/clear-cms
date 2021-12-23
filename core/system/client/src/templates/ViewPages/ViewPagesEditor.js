@@ -101,10 +101,7 @@ class ViewPagesEditor extends React.PureComponent {
     pageLink: "",
     pageMetaTitle: "",
     pageMetaDescription: "",
-    useWebsiteTitle: false,
-    useDefaultFavicon: true,
-    pageFavicon: "",
-    selectedFavicon: "",
+    useDefaultMeta: false,
     websiteInfo: false,
     showBgColorPicker: false,
     showBgGradientColorPickerModal: false,
@@ -341,9 +338,6 @@ class ViewPagesEditor extends React.PureComponent {
         pageMetaTitle: JSON.parse(pageConfig.data).pageMetaTitle,
         pageMetaDescription: JSON.parse(pageConfig.data).pageMetaDescription,
         useWebsiteTitle: JSON.parse(pageConfig.data).useWebsiteTitle,
-        useDefaultFavicon: JSON.parse(pageConfig.data).useDefaultFavicon,
-        pageFavicon: JSON.parse(pageConfig.data).pageFavicon,
-        selectedFavicon: JSON.parse(pageConfig.data).selectedFavicon,
         websiteInfo: JSON.parse(pageConfig.data).websiteInfo,
         defaultConfig: savedLayoutBoxSpacing,
         config: savedLayoutBoxSpacing,
@@ -482,7 +476,9 @@ class ViewPagesEditor extends React.PureComponent {
     this.setState({ temporaryModuleOptions: allTempModuleOptions });
   };
 
-  preparePageConfiguration() {
+  async preparePageConfiguration() {
+
+    let websiteData = await this.getWebsiteData()
 
     const payload = {
       backgroundColor: this.state.bgColor,
@@ -498,11 +494,8 @@ class ViewPagesEditor extends React.PureComponent {
       pageLink: this.state.pageLink,
       pageMetaTitle: this.state.pageMetaTitle,
       pageMetaDescription: this.state.pageMetaDescription,
-      useWebsiteTitle: this.state.useWebsiteTitle,
-      useDefaultFavicon: this.state.useDefaultFavicon,
-      pageFavicon: this.state.pageFavicon,
-      selectedFavicon: this.state.selectedFavicon,
-      websiteInfo: this.state.websiteInfo,
+      useWebsiteTitle: this.state.useWebsiteTitle && websiteData.includeWebsiteTitle,
+      websiteInfo: websiteData,
       publish: this.state.publish,
       backgroundRepeat: this.state.pageBackgroundRepeat,
       backgroundStretch: this.state.pageBackgroundStretch,
@@ -1328,7 +1321,7 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   savePage = async () => {
-    const pageConfig = this.preparePageConfiguration();
+    const pageConfig = await this.preparePageConfiguration();
     if (this.state.editing) {
       const page = {
         id: this.state.page_id,
@@ -1501,7 +1494,6 @@ class ViewPagesEditor extends React.PureComponent {
 
               <ViewPageOptions
                   data={this.state}
-                  getWebsiteData={this.getWebsiteData}
                   defaultTheme={this.props.defaultTheme}
                   createColorPicker={this.createColorPicker}
                   createGradientColorPicker={this.createGradientColorPicker}

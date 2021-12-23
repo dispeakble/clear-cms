@@ -65,24 +65,19 @@ class PagesController extends Component {
         });
     }
 
-    websiteData() {
-        return new Promise(async resolve => {
-            try {
-                const response = await this.sendMessage({
-                    module: "system",
-                    api: "generalSettings",
-                    act: "getInfo",
-                    payload: {
-                        useSession: true
-                    }
-                });
-                const editPage = _.cloneDeep(response);
-                response.editPage = editPage
-                resolve(response)
-            } catch (err) {
-                resolve(null);
+    async websiteData() {
+        const response = await this.sendMessage({
+            module: "system",
+            api: "generalSettings",
+            act: "getInfo",
+            payload: {
+                useSession: true
             }
         });
+        if (response.data) {
+            return JSON.parse(response.data);
+        }
+        return null;
     }
 
     listCategories(params) {
