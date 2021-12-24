@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {Link} from "react-router-dom"
-
+import PropTypes from 'prop-types';
 
 class PagelistModule extends Component {
     constructor(props) {
@@ -47,6 +47,10 @@ class PagelistModule extends Component {
         )
     }
 
+}
+
+PagelistModule.propTypes = {
+    style: PropTypes.object,
 }
 
 export default PagelistModule;
