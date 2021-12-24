@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import ArtTrack from "@material-ui/icons/ArtTrack";
-
+import { DateRangePicker } from "materialui-daterange-picker";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-
 class CalendarModule extends Component {
   state = {
-    selectedDate: [null, null],
+    withRange: false,
+    open: true,
+    dateRange: {},
   };
   getTheme = () => {
     return createTheme({
@@ -24,8 +22,16 @@ class CalendarModule extends Component {
     });
   };
 
+  componentDidMount() {
+    const {moduleOptions}=this.props
+    this.setState({
+      dateRange: moduleOptions.dateRange,
+
+    });
+  }
+
   setAsyncState = (newState) =>
-    new Promise((resolve) => this.setState(newState, resolve));
+      new Promise((resolve) => this.setState(newState, resolve));
 
   closeModuleOptionsModal() {
     this.setState({ showModuleOptionsModal: false });
@@ -33,17 +39,21 @@ class CalendarModule extends Component {
 
   render() {
     return (
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        <Tooltip title="Calendar Module">
-          <IconButton color="primary" size="medium">
-            <ArtTrack />
-          </IconButton>
-        </Tooltip>
-      </div>
+        <div
+            style={{
+              textAlign: "center",
+            }}
+        >
+          <DateRangePicker
+              style={{ backgroundColor: "white !important" }}
+              open={this.state.open}
+              value={this.state.dateRange}
+              onChange={ async (range) => {
+                await  this.setAsyncState({dateRange: range})
+                this.props.onUpdate(this.state)
+              }}
+          />
+        </div>
     );
   }
 }

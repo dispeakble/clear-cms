@@ -1,16 +1,19 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { DateRangePicker } from "materialui-daterange-picker";
-import { TextField } from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
+import moment from 'moment';
 
 class CalendarModule extends Component {
   state = {
     withRange: false,
     open: true,
-    dateRange: {},
   };
+
+
 
   setOpen = () => {
     this.setState({ open: !this.state.open });
@@ -26,17 +29,12 @@ class CalendarModule extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <Typography id="discrete-slider" gutterBottom>
+      <React.Fragment >
+        <Typography style={{marginTop: 30}} id="discrete-slider" gutterBottom>
           <Tooltip title="Enable Range Calendar">
             <Switch
               checked={this.state.withRange}
-              onChange={() => {
-                this.setState({
-                  withRange: !this.state.withRange,
-                  open: true,
-                });
-              }}
+              onChange={this.changeCalendar}
             />
           </Tooltip>
           Range Calendar
@@ -50,22 +48,36 @@ class CalendarModule extends Component {
             onChange={(range) => this.setDateRange(range)}
           />
         ) : (
-          <form noValidate>
+          <form style={{display: 'flex', gap: 30, width: '80%'}} noValidate>
             <TextField
+                style={{flex: 1}}
               id="date"
-              label="Birthday"
+              label="Start Date"
               type="date"
-              defaultValue="2017-05-24"
-              // className={classes.textField}
+              defaultValue={moment(this.props.moduleOptions.dateRange.startDate).format('YYYY-MM-DD')}
               InputLabelProps={{
                 shrink: true,
               }}
+            />
+            <TextField
+                style={{flex: 1}}
+                id="date"
+                label="End Date"
+                type="date"
+                defaultValue={moment(this.props.moduleOptions.dateRange.endDate).format('YYYY-MM-DD')}
+                InputLabelProps={{
+                  shrink: true,
+                }}
             />
           </form>
         )}
       </React.Fragment>
     );
   }
+}
+
+CalendarModule.propTypes = {
+  moduleOptions: PropTypes.object,
 }
 
 export default CalendarModule;
