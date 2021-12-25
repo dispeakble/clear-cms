@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactPlayer from "react-player/lazy";
+import PropTypes from 'prop-types';
 
 class VideoModule extends Component {
   state = {
@@ -8,26 +9,25 @@ class VideoModule extends Component {
     controls: false,
     loop: false,
     volume: 50,
+    videoURL: '',
+    files: [],
   };
-  // componentDidMount() {
-  //   this.setState({
-  //     url: this.props.element.moduleOptions.url,
-  //     volume: this.props.element.moduleOptions.volume,
-  //     autoplay: this.props.element.moduleOptions.autoplay,
-  //     loop: this.props.element.moduleOptions.loop,
-  //     controls: this.props.element.moduleOptions.controls,
-  //     enabled: true
-  //   })
-  // }
-  componentDidMount() {
 
-    this.setState({
-      url: this.props.moduleOptions.url,
-      mute: this.props.moduleOptions.mute,
-      controls: this.props.moduleOptions.controls,
-      loop: this.props.moduleOptions.loop,
-      volume: this.props.moduleOptions.volume,
-    });
+  componentDidMount() {
+    const {moduleOptions} = this.props;
+    const newState = {
+      url: moduleOptions.url,
+      mute: moduleOptions.mute,
+      controls: moduleOptions.controls,
+      loop: moduleOptions.loop,
+      volume: moduleOptions.volume,
+      videoURL: moduleOptions.videoURL,
+      files: moduleOptions.files || [],
+    }
+    if(newState.files?.length > 0) {
+      newState.url = `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.boxId}/module/${newState.files[0].name}`
+    }
+    this.setState(newState);
   }
   render() {
     return (
@@ -36,11 +36,15 @@ class VideoModule extends Component {
         mute={this.state.mute}
         controls={this.state.controls}
         loop={this.state.loop}
-        url={this.state.url}
+        url={this.state.url || this.state.videoURL}
         volume={this.state.volume}
       />
     );
   }
+}
+
+VideoModule.propTypes = {
+  moduleOptions: PropTypes.object,
 }
 
 export default VideoModule;
