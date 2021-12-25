@@ -4,7 +4,8 @@ import "react-h5-audio-player/lib/styles.css";
 import PropTypes from "prop-types";
 
 class AudioModule extends Component {
-  state = { url: [], volume: 0.5, autoplay: false, enabled: false };
+  state = { url: '', volume: 0.5, autoplay: false, enabled: false };
+
   componentDidMount() {
     this.setState({
       url: this.props.moduleOptions.url,
@@ -24,7 +25,6 @@ class AudioModule extends Component {
     if(this.state.autoplay) {
       audioProps.autoPlay = true;
     }
-
     return this.state.enabled ? (<AudioPlayer {...audioProps} /> ) : "";
   }
 }

@@ -17,15 +17,24 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import Switch from "@material-ui/core/Switch";
 
+import {DropzoneDialog} from 'material-ui-dropzone';
+import Button from "../../../../components/CustomButtons/Button";
+import {FcaudioFile} from "react-icons/all";
+
 class AudioModule extends Component {
-    sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}];
+    sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Uplode"}];
     state = {
         url: "",
         sourceType: 0,
         volume: 0.1,
         sliderVolume: 0,
         autoplay: false,
-        enabled: false
+        enabled: false,
+        showDropZone: false ,
+        files: [],
+        index:'',
+        audio: '',
+        audioFile: {},
     };
     getTheme = () => {
         return createTheme({
@@ -44,15 +53,23 @@ class AudioModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
-        this.setState({
+        const newState = {
             autoplay: this.props.moduleOptions.autoplay,
             sourceType: this.props.moduleOptions.sourceType,
             url: this.props.moduleOptions.url,
             variableName: this.props.moduleOptions.variableName || "",
             sliderVolume: this.props.moduleOptions.volume * 100,
             volume: this.props.moduleOptions.volume,
-            enabled: true
-        });
+            enabled: true,
+            audio:  this.props.moduleOptions.audio || '' ,
+            audioFile: this.props.moduleOptions.audioFile || {},
+            files: this.props.moduleOptions.files || []
+        }
+
+        if(newState.files?.length > 0){
+            newState.url = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0]?.name}`;
+        }
+        this.setState(newState);
     }
 
     getIndex(name) {
@@ -70,7 +87,6 @@ class AudioModule extends Component {
         await this.setAsyncState({
             sourceType: this.getIndex(newValue.label),
         });
-
         this.props.onUpdate(this.state);
     };
 
@@ -82,6 +98,20 @@ class AudioModule extends Component {
 
         this.props.onUpdate(this.state);
     };
+
+
+    showLogoUploader() {
+        this.setState({
+            showDropZone: true,
+            enabled:true,
+
+        });
+    }
+    closeLogoUploader() {
+        this.setState({
+            showDropZone: false
+        });
+    }
 
     handleInputChange = async (event) => {
         switch (event.target.id) {
@@ -99,9 +129,58 @@ class AudioModule extends Component {
         }
     };
 
+
+    toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
+    async handleAudio(event) {
+        if (event.length) {
+            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+            await this.setAsyncState({
+                audio: strings[0],
+                audioFile: event[0]
+            });
+
+            this.setState({
+                showDropZone: false
+            });
+
+            let files = this.state.files;
+            const audioFile = !!files[0];
+            
+            if (this.state.audioFile) {
+                const audioPayload = {
+                    sel: 'audio',
+                    name: `audio.${this.fileExtension(this.state.audioFile.name)}`,
+                    file: this.state.audioFile
+                };
+
+                if(audioFile) {
+                    files[0] = audioPayload;
+                } else {
+                    files.push(audioPayload);
+                }
+                await this.setAsyncState({files: files, url: `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${files[0].name}`});
+                this.props.onUpdate(this.state);
+            }
+
+        }
+    }
+
+    fileExtension = (string) => {
+        const p = string.split('.');
+        return p[p.length - 1];
+    }
+
     render() {
         const audioProps = {
-            src: this.state.url || "",
+            src: this.state.audio || this.state.url,
             volume: this.state.volume,
             layout: "horizontal-reverse",
             onVolumeChange: (evt) => {
@@ -115,6 +194,17 @@ class AudioModule extends Component {
                     { this.state.enabled && <AudioPlayer {...audioProps} /> }
                 </div>
                 <div>
+                    <div>
+
+                        <DropzoneDialog
+                            open={this.state.showDropZone}
+                            onSave={this.handleAudio.bind(this)}
+                            onClose={this.closeLogoUploader.bind(this)}
+                            filesLimit={1}
+                            acceptedFiles={['audio/*']}
+                            maxFileSize={Math.pow(1024, 3)}
+                        />
+                    </div>
                     <FormControlLabel
                         control={<Switch
                             checked={this.state.autoplay}
@@ -161,36 +251,50 @@ class AudioModule extends Component {
                         />
                     )}
                 />{" "}
-                <CustomInput
-                    labelText="URL"
-                    id="url"
-                    required="required"
-                    formControlProps={{
-                        fullWidth: true,
-                        onChange: (event) => this.handleInputChange(event),
-                    }}
-                    inputProps={{
-                        value: this.state.url,
-                        type: "text",
-                    }}
-                />
+                {
+                    this.state.sourceType === 2 ?(
+                        <Button onClick={() => {
+                            this.showLogoUploader()
+                        }} color="primary">Upload Logo Image</Button>
 
-                {this.state.sourceType === 1 && <React.Fragment>
-                    <CustomInput
-                        labelText="Variable name"
-                        id="variableName"
-                        required="required"
-                        formControlProps={{
-                            fullWidth: true,
-                            onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                            value: this.state.variableName,
-                            type: "text",
-                        }}
-                    />
+                    ):(
+                        <>
+                            <CustomInput
+                                labelText="URL"
+                                id="url"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => this.handleInputChange(event),
+                                }}
+                                inputProps={{
+                                    value: this.state.url,
+                                    type: "text",
+                                }}
+                            />
 
-                </React.Fragment>}
+                            {this.state.sourceType === 1 && <React.Fragment>
+                                <CustomInput
+                                    labelText="Variable name"
+                                    id="variableName"
+                                    required="required"
+                                    formControlProps={{
+                                        fullWidth: true,
+                                        onChange: (event) => this.handleInputChange(event),
+                                    }}
+                                    inputProps={{
+                                        value: this.state.variableName,
+                                        type: "text",
+                                    }}
+                                />
+
+
+
+                            </React.Fragment>}
+                        </>
+                    )
+                }
+
             </div>
         );
     }
@@ -203,4 +307,5 @@ AudioModule.propTypes = {
     onUpdate: PropTypes.func,
     moduleOptions: PropTypes.object,
     defaultTheme: PropTypes.object,
+    pageOptions:PropTypes.object,
 };
