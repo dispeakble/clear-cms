@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-
+import {DropzoneDialog} from 'material-ui-dropzone'
+// import {Accordion, AccordionDetails, AccordionSummary, FormControlLabel, FormGroup} from "@material-ui/core";
 import ReactPlayer from "react-player/lazy";
 
 import {withStyles, createTheme} from "@material-ui/core/styles";
@@ -15,17 +16,24 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Switch from "@material-ui/core/Switch";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
+import Button from "../../../../components/CustomButtons/Button";
+import PropTypes from "prop-types";
 
 class VideoModule extends Component {
     state = {
         url: "",
-        sourceTypes: [{label: "Exact URL"}, {label: "Query String Variable"}],
+        sourceTypes: [{label: "Exact URL"}, {label: "Query String Variable"}, {label: 'Upload Video'}],
         mute: null,
         controls: false,
         loop: false,
         sourceId: 0,
         enablePlayer: true,
         volume: 50,
+        showDropZone: false,
+        showUploadButton: false,
+        video: '',
+        videoFile: {},
+        files: []
     };
     getTheme = () => {
         return createTheme({
@@ -42,15 +50,23 @@ class VideoModule extends Component {
 
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
-    
+
     componentDidMount() {
-        this.setState({
-            url: this.props.moduleOptions.url,
-            mute: this.props.moduleOptions.mute,
-            controls: this.props.moduleOptions.controls,
-            loop: this.props.moduleOptions.loop,
-            volume: this.props.moduleOptions.volume,
-        });
+        const {moduleOptions} = this.props;
+        const newState = {
+            url: moduleOptions.url,
+            mute: moduleOptions.mute,
+            controls: moduleOptions.controls,
+            loop: moduleOptions.loop,
+            volume: moduleOptions.volume,
+            files: moduleOptions.files || [],
+            videoURL: moduleOptions.videoURL,
+            videoFile: moduleOptions.files[0]?.file || {},
+        }
+        if (newState.files?.length > 0) {
+            newState.url = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0].name}`;
+        }
+        this.setState(newState);
     }
 
     getIndex(name) {
@@ -62,6 +78,15 @@ class VideoModule extends Component {
     }
 
     handleSourceType = async (event, newValue) => {
+        if (newValue.label === 'Upload Video') {
+            this.setState({
+                showUploadButton: true,
+            });
+        } else if (newValue.label !== 'Upload Video' && this.state.showUploadButton) {
+            this.setState({
+                showUploadButton: false,
+            });
+        }
         if (!newValue || !newValue.label) {
             return;
         }
@@ -69,6 +94,11 @@ class VideoModule extends Component {
             sourceId: this.getIndex(newValue.label),
         });
     };
+
+    fileExtension = (string) => {
+        const p = string.split('.');
+        return p[p.length - 1];
+    }
 
     handleEdit = async (id) => {
         await this.setAsyncState({
@@ -80,6 +110,15 @@ class VideoModule extends Component {
         });
     };
 
+    toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
     handleVolume = async (event, newValue) => {
         await this.setAsyncState({
             volume: newValue,
@@ -87,15 +126,57 @@ class VideoModule extends Component {
         });
     };
 
+    showDropZone = () => {
+        this.setState({
+            showDropZone: true,
+        });
+    }
+
+    closeDropZone = () => {
+        this.setState({
+            showDropZone: false,
+        });
+    }
+
+    handleVideoUpload = async (event) => {
+        if (event.length) {
+            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+            await this.setAsyncState({
+                video: strings[0],
+                videoFile: event[0]
+            });
+            await this.setAsyncState({
+                showDropZone: false
+            });
+
+            let files = this.state.files;
+
+            const logoIndex = files.findIndex(i => i && i.sel === 'video');
+
+            if (this.state.videoFile) {
+                const logoPayload = {
+                    sel: 'video',
+                    name: `video.${this.fileExtension(this.state.videoFile.name)}`,
+                    file: this.state.videoFile,
+                };
+
+                if (logoIndex && logoIndex > -1) {
+                    files[logoIndex] = logoPayload;
+                } else {
+                    files.push(logoPayload);
+                }
+            }
+        }
+        this.props.onUpdate(this.state);
+    }
+
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "url":
                 let url = this.state.url;
                 url = event.target.value;
-                await this.setAsyncState({url, enablePlayer: false});
+                await this.setAsyncState({url, enablePlayer: false, files: []});
                 this.props.onUpdate(this.state)
-
-                // this.setState({ url, enablePlayer: false });
 
                 setTimeout(async () => {
                     await this.setAsyncState({url, enablePlayer: true});
@@ -106,11 +187,9 @@ class VideoModule extends Component {
             case "folderPath":
                 let folderPath = this.state.folderPath;
                 folderPath = event.target.value;
-                // this.setState({ folderPath, enablePlayer: false });
                 await this.setAsyncState({folderPath, enablePlayer: false});
                 this.props.onUpdate(this.state);
                 setTimeout(async () => {
-                    // this.setState({ enablePlayer: true });
                     await this.setAsyncState({enablePlayer: true});
                     this.props.onUpdate(this.state);
                 }, 30);
@@ -120,11 +199,9 @@ class VideoModule extends Component {
             case "fileExtension":
                 let fileExtension = this.state.fileExtension;
                 fileExtension = event.target.value;
-                // this.setState({ fileExtension, enablePlayer: false });
                 await this.setAsyncState({fileExtension, enablePlayer: false})
                 this.onUpdate(this.state);
                 setTimeout(async () => {
-                    // this.setState({ enablePlayer: true });
                     await this.setAsyncState({enablePlayer: true});
                     this.props.onUpdate(this.state);
                 }, 30);
@@ -147,6 +224,7 @@ class VideoModule extends Component {
             url: this.state.url,
             mute: this.state.mute
         };
+
 
         return (
             <div>
@@ -179,6 +257,8 @@ class VideoModule extends Component {
                         />
                     )}
                 />
+
+
                 <Typography id="discrete-slider" gutterBottom>
                     Default Volume
                     <Slider
@@ -201,6 +281,7 @@ class VideoModule extends Component {
                                             enablePlayer: false,
                                             mute: this.state.mute ? null : true
                                         });
+
                                         if (this.state.mute) {
                                             this.setState({
                                                 volume: 0,
@@ -226,16 +307,13 @@ class VideoModule extends Component {
                                 <Switch
                                     checked={this.state.controls}
                                     onChange={async () => {
-
-                                        this.setAsyncState({
-
+                                        await this.setAsyncState({
                                             controls: !this.state.controls,
                                             enablePlayer: false,
                                         })
                                         this.props.onUpdate(this.state);
 
                                         setTimeout(() => {
-                                            // this.setState({enablePlayer: true});
                                             this.setAsyncState({
                                                 enablePlayer: true,
                                             })
@@ -283,6 +361,20 @@ class VideoModule extends Component {
                             type: "text",
                         }}
                     />
+                ) : this.state.showUploadButton ? (
+                    <div>
+                        <Button onClick={() => {
+                            this.showDropZone()
+                        }} color="primary">Upload Video</Button>
+                        <DropzoneDialog
+                            open={this.state.showDropZone}
+                            onSave={this.handleVideoUpload.bind(this)}
+                            onClose={this.closeDropZone.bind(this)}
+                            acceptedFiles={['video/mp4', 'video/webm', 'video/quicktime']}
+                            filesLimit={1}
+                            maxFileSize={Math.pow(1024, 3)}
+                        />
+                    </div>
                 ) : (
                     <React.Fragment>
                         <CustomInput
@@ -329,6 +421,11 @@ class VideoModule extends Component {
             </div>
         );
     }
+}
+
+VideoModule.propTypes = {
+    moduleOptions: PropTypes.object,
+    onUpdate: PropTypes.func,
 }
 
 export default withStyles(styles)(VideoModule);
