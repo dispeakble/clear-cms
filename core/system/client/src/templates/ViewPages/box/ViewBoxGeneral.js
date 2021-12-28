@@ -170,7 +170,7 @@ class ViewBoxGeneral extends React.PureComponent {
                                 onUpdate={(moduleOptions) => this.handleModuleUpdate(moduleOptions)}
                                 onStartEditingModule={() => this.onStartEditingModule()}
                                 onEndEditingModule={() => this.onEndEditingModule()}
-                                boxId={item.i}
+                                boxId={item.id || 0}
                                 moduleOptions={this.item.moduleOptions}
                                 pageId={this.props.page_id}
                                 onSave={(data) => {

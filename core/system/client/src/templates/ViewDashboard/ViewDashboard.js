@@ -12,6 +12,8 @@ import _ from "lodash";
 import {Responsive, WidthProvider} from "react-grid-layout";
 import MoreMenu from "../../components/MoreMenu/MoreMenu";
 import ViewBoxEditor from "./ViewBoxEditor";
+import {FormControlLabel, FormGroup} from "@material-ui/core";
+import Switch from "@material-ui/core/Switch";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -45,6 +47,7 @@ class ViewDashboard extends Component {
         boxEditorProps: {
             item: {},
         },
+        editing: false
     };
 
     setAsyncState = (newState) =>
@@ -246,6 +249,10 @@ class ViewDashboard extends Component {
             itemStyle.borderRadius = el.borderRadius;
         }
 
+        if (el.backgroundColor) {
+            itemStyle.backgroundColor = el.backgroundColor;
+        }
+
         //adding default box styles
         itemStyle.padding = "5px";
 
@@ -286,17 +293,23 @@ class ViewDashboard extends Component {
         return (
             <div key={i} data-grid={el} style={itemStyle}>
                 <div className={this.props.classes.boxContent}>
-                    <div className={this.props.classes.renderBoxTitle}>
-                        <h1>{el.title}</h1>
-                    </div>
-                    <div style={{ color: "black", verticalAlign: "middle" }}>
-                        <Tooltip title="Drag Box">
-                            <IconButton className="MyDragHandleClassName" color="primary">
-                                <OpenWith color="primary" />
-                            </IconButton>
-                        </Tooltip>
-                    </div>
-                    <div>
+                    {this.state.editing && <div className={this.props.classes.boxControls}>
+                        <div className={this.props.classes.renderBoxTitle}>
+                            <h1>{el.title}</h1>
+                        </div>
+                        <div style={{ color: "black", verticalAlign: "middle" }}>
+                            <Tooltip title="Drag Box">
+                                <IconButton className="MyDragHandleClassName" color="primary">
+                                    <OpenWith color="primary" />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+
+                        <div className={this.props.classes.itemSpeedDialWrapper}>
+                            <MoreMenu itemActions={itemActions} />
+                        </div>
+                    </div> }
+                    <div className={this.props.classes.moduleContent}>
                         {el.module && LazyModule ? (
                             <Suspense fallback={loadingFallback}>
                                 <LazyModule
@@ -316,10 +329,8 @@ class ViewDashboard extends Component {
                             ""
                         )}
                     </div>
-                    <div className={this.props.classes.itemSpeedDialWrapper}>
-                        <MoreMenu itemActions={itemActions} />
-                    </div>
                 </div>
+
             </div>
         );
     }
@@ -353,16 +364,35 @@ class ViewDashboard extends Component {
                             data={this.state.boxEditorProps}
                         />
                     )}
-                    <div>
-                        <Tooltip title="Add a new box">
-                            <IconButton onClick={(evt) => this.onAddItem(evt)}>
-                                <AddCircle
-                                    className={this.props.classes.rightSideIcon}
-                                    color="primary"
-                                />{" "}
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                    <FormGroup column="true">
+                        <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
+                            <div>
+                                <Tooltip title="Add a new box">
+                                    <IconButton onClick={(evt) => this.onAddItem(evt)}>
+                                        <AddCircle
+                                            className={this.props.classes.rightSideIcon}
+                                            color="primary"
+                                        />{" "}
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                            <div>
+                                <Tooltip title="Toggle editing mode">
+                                    <FormControlLabel
+                                        control={<Switch
+                                            checked={this.state.editing}
+                                            onChange={() => {
+                                                this.setState({
+                                                    editing: !this.state.editing
+                                                })
+                                            }}
+                                            inputProps={{'aria-label': 'controlled'}}
+                                        />}
+                                        label="Editing"/>
+                                </Tooltip>
+                            </div>
+                        </div>
+                    </FormGroup>
                     <div className={this.props.classes.gridLayout}>
                         <div
                             style={{

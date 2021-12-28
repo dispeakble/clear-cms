@@ -30,7 +30,13 @@ class ViewBoxEditor extends React.PureComponent {
     state = {
         temporaryModuleOptions: {},
         modulesList: [//TODO GET THESE VALUES FROM A LIST IN DB
+            { label: "Admin Activity Module" },
+            { label: "Frontend Activity Module" },
             { label: "Text Module" },
+            { label: "Clock Module" },
+            { label: "CPU Module" },
+            { label: "RAM Module" },
+            { label: "NET Module" },
         ],
         editItemFontSizeShow: false,
         editItemFontFamilyShow: false,

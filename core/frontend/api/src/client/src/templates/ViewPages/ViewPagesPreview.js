@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import getConfig from 'next/config'
 import BoxModal from "../../components/BoxModal/BoxModal";
 import GoogleFontLoader from 'react-google-font-loader';
+import ActivityService from "../../services/activity.service";
 
 
 const { publicRuntimeConfig } = getConfig();
@@ -45,6 +46,11 @@ class ViewPagesPreview extends React.Component {
   setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
   async componentDidMount() {
+
+    const activityService = new ActivityService();
+
+    activityService.start();
+
     await this.setAsyncState({
       pageLink: this.props.pageData?.pageConfig?.pageLink,
       items: this.props.pageData?.items,

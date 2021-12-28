@@ -26,6 +26,7 @@ import AdminProfileController from "./controllers/admin-profile.controller";
 import WsService from "services/ws.service";
 import AuthGuardService from "./services/authGuard.service";
 import * as shortId from "shortid";
+import PropTypes from "prop-types";
 
 class App extends Component {
   header = null
@@ -412,3 +413,7 @@ class App extends Component {
 }
 
 export default withRouter(withStyles(styles)(App));
+
+App.propTypes = {
+  classes: PropTypes.object,
+}
