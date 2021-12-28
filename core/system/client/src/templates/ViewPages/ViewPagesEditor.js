@@ -544,11 +544,7 @@ class ViewPagesEditor extends React.PureComponent {
       itemStyle.backgroundImage = "";
     }
 
-    if (el.backgroundRepeat) {
-      itemStyle.backgroundRepeat = "repeat";
-    } else {
-      itemStyle.backgroundRepeat = "no-repeat";
-    }
+    itemStyle.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
 
     if (el.backgroundStretch) {
       itemStyle.backgroundSize = "cover";
@@ -587,65 +583,61 @@ class ViewPagesEditor extends React.PureComponent {
     //adding default box styles
     itemStyle.padding = "5px";
 
-    let style = {};
+    const moduleStyle = {};
 
     if (el.backgroundImage) {
-      style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
+      moduleStyle.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
     }
 
-    if (el.backgroundRepeat) {
-      style.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
-    }
+    moduleStyle.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
 
-    if (el.backgroundStretch) {
-      style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
-    }
+    moduleStyle.backgroundSize = el.backgroundStretch ? "cover" : "auto";
 
     if (el.backgroundGradient) {
-      style.backgroundImage = el.backgroundGradientColor;
+      moduleStyle.backgroundImage = el.backgroundGradientColor;
     }
 
     if (el.backgroundColor) {
-      style.backgroundColor = el.backgroundColor;
+      moduleStyle.backgroundColor = el.backgroundColor;
     }
 
     if (el.borderColor) {
-      style.borderColor = el.borderColor;
+      moduleStyle.borderColor = el.borderColor;
     }
 
     if (el.borderWidth) {
-      style.borderStyle = "solid";
-      style.borderWidth = el.borderWidth + "px";
+      moduleStyle.borderStyle = "solid";
+      moduleStyle.borderWidth = el.borderWidth + "px";
     }
 
     if (el.borderRadius) {
-      style.borderRadius = el.borderRadius;
+      moduleStyle.borderRadius = el.borderRadius;
     }
 
     if (Number(el.fontSize)) {
-      style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
-      style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+      moduleStyle.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+      moduleStyle.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
     } else if (this.state.pageConfig?.fontSize) {
-      style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
-      style.lineHeight = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      moduleStyle.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+      moduleStyle.lineHeight = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
     }
 
     if (el.fontFamily) {
-      style.fontFamily = el.fontFamily;
+      moduleStyle.fontFamily = el.fontFamily;
     } else if (this.state.pageConfig?.fontFamily) {
-      style.fontFamily = this.state.pageConfig.fontFamily;
+      moduleStyle.fontFamily = this.state.pageConfig.fontFamily;
     }
 
     if (el.textColor) {
-      style.color = el.textColor;
+      moduleStyle.color = el.textColor;
     } else if (this.state.pageConfig?.textColor) {
-      style.textColor = this.state.pageConfig.textColor;
+      moduleStyle.textColor = this.state.pageConfig.textColor;
     }
 
     if (el.showScrollbars) {
-      style.overflow = "auto";
+      moduleStyle.overflow = "auto";
     } else {
-      style.overflow = "hidden";
+      moduleStyle.overflow = "hidden";
     }
 
     let LazyModule;
@@ -654,8 +646,6 @@ class ViewPagesEditor extends React.PureComponent {
     })();
 
     LazyModule = false;
-
-
 
     if (el.module) {
       const moduleType = el.module.replaceAll(" ", "");
@@ -726,13 +716,14 @@ class ViewPagesEditor extends React.PureComponent {
             {el.module && LazyModule ? (
                 <Suspense fallback={loadingFallback}>
                   <LazyModule
+                      key={`box-${el.id || el.i}`}
                       control={this.props.control}
-                      style={{style}}
+                      style={{style: moduleStyle}}
                       element={{moduleOptions: el.moduleOptions, id: el.id}}
                       defaultTheme={this.props.defaultTheme}
                       onStartEditingModule={() => this.onStartEditingModule()}
                       onEndEditingModule={() => this.onEndEditingModule()}
-                      boxId={Number(el.i)}
+                      boxId={el.cloneId ? el.cloneId : Number(el.id || 0)}
                       moduleOptions={el.moduleOptions}
                       pageOptions={{
                         page_id: this.state.page_id
@@ -792,6 +783,8 @@ class ViewPagesEditor extends React.PureComponent {
 
       const targetItem = Object.assign({}, existingItem);
       targetItem.i = newId + "";
+      targetItem.cloneId = existingItem.id;
+      targetItem.files = existingItem.files;
       targetItem.x = 0;
       targetItem.y = Infinity;
 
@@ -804,12 +797,12 @@ class ViewPagesEditor extends React.PureComponent {
 
       items.push(targetItem);
 
-      await this.setAsyncState({
+      this.setState({
         items: items
       });
-      await this.setAsyncState({
+      /*await this.setAsyncState({
         addAnItem: !this.state.addAnItem
-      });
+      });*/
       window.scrollTo(0,document.body.scrollHeight);
     } catch (err) {
       console.log(err);
@@ -966,28 +959,6 @@ class ViewPagesEditor extends React.PureComponent {
       })
     }
   }
-
-  handleEditItem = async (id) => {
-    const item = this.getItemById(id);
-    await this.setAsyncState({
-      itemEditId: id,
-      templateEditId: item.templateUsed
-    });
-
-    if(item.templateUsed) {
-      this.setState({
-        showConfirmEditModal: true
-      })
-    } else {
-      await this.setAsyncState({
-        boxEditorProps: {
-          item,
-        },
-        showEditMenu: !this.state.showEditMenu,
-        pageTransitionPadding: "300px",
-      });
-    }
-  };
 
   handleDiscard = () => {
     this.setState({ showDiscardModal: true });
@@ -1614,9 +1585,7 @@ class ViewPagesEditor extends React.PureComponent {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title={this.state.isTemplate ? "Template Options" : "Page Options"}>
-                    <IconButton onClick={(evt) => {
-                      this.openPageOptionsModal()
-                    }}>
+                    <IconButton onClick={this.openPageOptionsModal.bind(this)}>
                       <Avatar style={{backgroundColor: this.props?.defaultTheme?.primary?.main, color: this.props?.defaultTheme?.primary?.contrastText}}>
                         <Settings/>
                       </Avatar>
@@ -1685,5 +1654,6 @@ ViewPagesEditor.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
   control: PropTypes.object,
+  services: PropTypes.object,
   defaultTheme: PropTypes.object
 };

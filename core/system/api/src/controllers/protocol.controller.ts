@@ -3,6 +3,7 @@ import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {Observable} from "rxjs";
+import {ResourcesService} from "../services/resources.service";
 
 @Controller()
 export class ProtocolController {
@@ -54,7 +55,9 @@ export class ProtocolController {
         @Inject('ProductLabelsService') private productLabelsService,
         @Inject('ProductLocalityService') private productLocalityService,
         @Inject('ProductPricesService') private productPricesService,
-        @Inject('EcommerceTemplatesService') private ecommerceTemplatesService){
+        @Inject('EcommerceTemplatesService') private ecommerceTemplatesService,
+        @Inject('ResourcesService') private resourcesService,
+    ){
 
 
     }

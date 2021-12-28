@@ -13,6 +13,6 @@ Write-Output "Creating volume folders"
 
 Write-Output "Installing NodeJs packages"
 
-#.\infrastructure\install-packages.ps1
+.\infrastructure\install-packages.ps1
 
 echo "**************** Finished Installation *****************"

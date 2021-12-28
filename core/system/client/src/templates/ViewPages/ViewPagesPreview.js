@@ -387,7 +387,7 @@ class ViewPagesPreview extends React.Component {
                                     }}
                                     compactType="vertical"
                                     cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}
-                                    useCSSTransforms={false}
+                                    useCSSTransforms={true}
                                 >
                                     {this.state.items.length
                                         ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))

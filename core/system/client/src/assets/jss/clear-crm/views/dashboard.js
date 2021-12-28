@@ -11,7 +11,7 @@ const javascriptStyles = {
     margin: "0 15px 0",
     "& .react-grid-item": {
       boxSizing: "border-box",
-      "&:hover > $boxContent" : {
+      "&:hover $boxControls" : {
         opacity: 1,
         "& $itemSpeedDialWrapper": {
           display: "flex"
@@ -167,10 +167,27 @@ const javascriptStyles = {
     }
   },
   boxContent: {
+    position: "relative"
+  },
+  boxControls: {
     transition: "opacity 0.3s",
-    opacity: "0",
+    opacity: 0,
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    position: "absolute",
+    zIndex: 10,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
+  },
+  moduleContent: {
+    position: "absolute",
+    zIndex: 9,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0
   },
   itemSpeedDial:{
     display: "none"

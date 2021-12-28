@@ -15,7 +15,8 @@ class DashboardController extends Component {
         getBoxList: () => this.getBoxList(),
         addBox: (params) => this.addBox(params),
         editBox: (params) => this.editBox(params),
-        removeBox: (params) => this.removeBox(params)
+        removeBox: (params) => this.removeBox(params),
+        getHardwareInfo: (params) => this.getHardwareInfo(params)
     };
 
     async componentDidMount() {
@@ -94,13 +95,24 @@ class DashboardController extends Component {
         return response;
     }
 
+    async getHardwareInfo(params) {
+        const response = await this.sendMessage({
+            module: "system",
+            api: "resources",
+            act: "getHardwareInfo",
+            payload: params
+        });
+
+        return response;
+    }
+
     onMessage(params) {
         try {
             this.messageCallbacks[params.id](params.data);
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in admin profile controller', params);
+        console.log('got message in dashboard controller', params);
     }
 
     sendMessage(params) {
