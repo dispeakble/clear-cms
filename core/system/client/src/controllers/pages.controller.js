@@ -22,6 +22,7 @@ class PagesController extends Component {
         listTemplates: (params) => this.listTemplates(params),
         getPublicTheme: () => this.getPublicTheme(),
         websiteData : () => this.websiteData(),
+        removeBucketItem: (params) => this.removeBucketItem(params)
     };
 
     help = {
@@ -79,6 +80,8 @@ class PagesController extends Component {
         }
         return null;
     }
+
+
 
     listCategories(params) {
         return new Promise(async resolve => {
@@ -271,6 +274,28 @@ class PagesController extends Component {
                 });
                 resolve(response)
             } catch (err) {
+                resolve(null);
+            }
+        });
+    }
+
+    async removeBucketItem(params){
+
+
+        return new Promise(async resolve => {
+            try {
+                const response = await this.sendMessage({
+                    module: 'system',
+                    api: 'bucket',
+                    act: 'rm',
+                    payload: {
+                        path : `/pages/page-${params.pageId}`,
+                        selection: [`box-${params.boxId}`]
+                    }
+                });
+                resolve(response)
+            } catch (err) {
+                console.log(err)
                 resolve(null);
             }
         });

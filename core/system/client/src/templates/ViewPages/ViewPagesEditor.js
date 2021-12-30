@@ -139,6 +139,7 @@ class ViewPagesEditor extends React.PureComponent {
     openNewCategory: false,
     isUniqueTitle: false,
     dialogErr: false,
+    deletedBoxes: [],
     bgGradientColorPickerModal: {
       name: "bgGradientColorPickerModal",
       title: "Gradient Color Picker",
@@ -203,9 +204,10 @@ class ViewPagesEditor extends React.PureComponent {
       confirmButton: {
         show: true,
         callback: () => {
-          this.setState({ showConfirmDeleteBoxModal: false });
+          this.setState({ showConfirmDeleteBoxModal: false, deletedBoxes: [...this.state.deletedBoxes, this.state.confirmDeleteBoxModal.itemId]});
           this.onRemoveItem(this.state.confirmDeleteBoxModal.itemId);
-        },
+        }
+        ,
         label: "Delete",
       },
     },
@@ -377,6 +379,10 @@ class ViewPagesEditor extends React.PureComponent {
 
   getWebsiteData = async () => {
     return (await this.props.control.websiteData())
+  }
+
+  removeGalleryFiles = async (pi, bi) => {
+    return (await this.props.control.removeBucketItem({pageId: pi, boxId: bi}))
   }
 
   async componentDidMount() {
@@ -891,7 +897,19 @@ class ViewPagesEditor extends React.PureComponent {
     }
   };
 
+  onRemoveGalleryItem(i){
+    this.setState({
+      deletedBoxes: [...this.state.deletedBoxes, i]
+    })
+  }
+
   onRemoveItem(i) {
+
+    if (this.state.items.filter(item => item.i === i)[0]?.module.toLowerCase().includes("gallery"))
+    {
+      this.onRemoveGalleryItem(this.state.items.filter(item => item.i === i)[0]?.id)
+    }
+
     this.setState({
       itemEditId: "",
     });
@@ -1300,6 +1318,13 @@ class ViewPagesEditor extends React.PureComponent {
         items: this.state.items,
       };
       await this.props.control.edit({...page, editPage: this.state.editPage});
+
+      if(this.state.deletedBoxes){
+        this.state.deletedBoxes.map(async (box) => await this.removeGalleryFiles(this.state.page_id, box))
+        this.setState({
+          deleteBoxes : []
+        })
+      }
 
       this.setState({
         showSavedMessage: true
