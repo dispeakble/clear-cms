@@ -381,8 +381,19 @@ class ViewPagesEditor extends React.PureComponent {
     return (await this.props.control.websiteData())
   }
 
-  removeGalleryFiles = async (pi, bi) => {
-    return (await this.props.control.removeBucketItem({pageId: pi, boxId: bi}))
+  removeGalleryFiles = async (pId, bId) => {
+    return (await this.props.control.removeBucketItem({pageId: pId, boxId: bId}))
+  }
+
+  removeAllGalleryFiles = async (boxes) => {
+    boxes.map(
+        async (box) =>
+            await this.removeGalleryFiles(this.state.page_id, box)
+    )
+    //clear state
+    this.setState({
+      deleteBoxes : []
+    })
   }
 
   async componentDidMount() {
@@ -904,10 +915,13 @@ class ViewPagesEditor extends React.PureComponent {
   }
 
   onRemoveItem(i) {
-
-    if (this.state.items.filter(item => item.i === i)[0]?.module.toLowerCase().includes("gallery"))
+    const removedItem = this.state.items.filter(item => item.i === i)[0]
+    if ( removedItem
+        ?.module
+        .toLowerCase()
+        .includes("gallery"))
     {
-      this.onRemoveGalleryItem(this.state.items.filter(item => item.i === i)[0]?.id)
+      this.onRemoveGalleryItem(removedItem?.id)
     }
 
     this.setState({
@@ -1319,11 +1333,8 @@ class ViewPagesEditor extends React.PureComponent {
       };
       await this.props.control.edit({...page, editPage: this.state.editPage});
 
-      if(this.state.deletedBoxes){
-        this.state.deletedBoxes.map(async (box) => await this.removeGalleryFiles(this.state.page_id, box))
-        this.setState({
-          deleteBoxes : []
-        })
+      if(this.state.deletedBoxes.length > 0){
+        await this.removeAllGalleryFiles(this.state.deletedBoxes)
       }
 
       this.setState({

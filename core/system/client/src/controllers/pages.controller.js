@@ -280,8 +280,6 @@ class PagesController extends Component {
     }
 
     async removeBucketItem(params){
-
-
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
@@ -295,7 +293,6 @@ class PagesController extends Component {
                 });
                 resolve(response)
             } catch (err) {
-                console.log(err)
                 resolve(null);
             }
         });
