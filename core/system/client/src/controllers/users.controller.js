@@ -9,8 +9,8 @@ class UsersController extends Component {
     control = {
         list: (params) => this.list(params),
         add: (params) => this.add(params),
-        edit: (params) => this.edit(params),
-        remove: (params) => this.remove(params),
+        set: (params) => this.set(params),
+        rem: (params) => this.rem(params),
     };
 
     channel = 'users';
@@ -55,7 +55,7 @@ class UsersController extends Component {
                     module: 'system',
                     api: 'users',
                     act: 'list',
-                    payload: {}
+                    payload: params,
                 });
                 resolve(response)
             } catch (err) {
@@ -88,13 +88,13 @@ class UsersController extends Component {
         });
     }
 
-    remove(params){
+    rem(params){
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'users',
-                    act: 'remove',
+                    act: 'rem',
                     payload: {
                         id: params.id
                     }
@@ -107,24 +107,20 @@ class UsersController extends Component {
         });
     }
 
-    edit(params){
+    set(params){
         return new Promise(async resolve => {
             try {
                 const payload = {
                     module: 'system',
                     api: 'users',
-                    act: 'edit',
+                    act: 'set',
                     payload: {
-                        id: params.id,
-                        fname: params.fname,
-                        lname: params.lname,
-                        email: params.email,
-                        type: params.type,
-                        active: params.active
+                        fields: params.fields,
+                        where: params.where
                     }
                 };
                 if(params.password && params.password.length) {
-                    payload.payload.password = params.password;
+                    payload.fields.payload.password = params.password;
                 }
                 const response = await this.sendMessage(payload);
 

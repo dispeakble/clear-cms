@@ -31,7 +31,8 @@ export class AppController {
     constructor(
       @Inject('ProtocolService') private protocolService,
       @Inject('SystemService') private systemService,
-      @Inject('DbService') private dbService
+      @Inject('DbService') private dbService,
+      @Inject('SequelizeService') private sqlService,
     ) {
 
     }

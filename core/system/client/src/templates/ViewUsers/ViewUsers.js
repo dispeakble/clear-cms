@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/categories.js";
+import styles from "assets/jss/clear-crm/views/users.js";
 import PropTypes from "prop-types";
 
 import { Helmet } from "react-helmet";
@@ -29,6 +29,7 @@ import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Checkbox from "@material-ui/core/Checkbox";
 import Modal from "../../components/Modal/Modal";
+import moment from "moment";
 
 class Users extends Component {
     state = {
@@ -36,6 +37,26 @@ class Users extends Component {
         showModal: false,
         users: [],
         showMultipleDeleteModal: false,
+        deleteModal: {
+            name: "deleteModal",
+            title: "Delete Selected Users",
+            content: <div>Are you sure you want to remove the selected users ?</div>,
+            modalSize: "small",
+            resize: false,
+            saveDimensions: false,
+            closeButton: {
+                callback: () => {
+                    this.setState({ showMultipleDeleteModal: false });
+                },
+                label: "Cancel",
+            },
+            confirmButton: {
+                callback: async () => {
+                    await this.multipleDeleteCallback();
+                },
+                label: "Proceed",
+            },
+        },
         defaultTheme: "",
         userTypes: [{
             id: 1, label: "Admin"
@@ -61,52 +82,14 @@ class Users extends Component {
     };
 
     async componentDidMount() {
-        this.list();
+
     }
 
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
-    getUsersNested(id) {
-        let result = "";
-        let cat = this.state.users.find((el) => el.id === id);
-        result = cat.title;
-        if (cat && cat.parentid) {
-            result = this.getUsersNested(cat.parentid) + "/" + result;
-        }
-        return result;
-    }
-
-    list = async () => {
-        let result = [];
-
-        let users = await this.props.control.list();
-        if(!users) {
-            users = [];
-        }
-
-        await this.setAsyncState({
-            users
-        })
-
-        if (users && users.length) {
-            let links = users;
-            links.map((el) => {
-                let catTitle = el.title;
-                if (el.parentid) {
-                    catTitle = this.getUsersNested(el.parentid) + "/" + el.title;
-                }
-                result.push({
-                    id: el.id,
-                    label: catTitle,
-                });
-                return el;
-            });
-
-            await this.setAsyncState({
-                flatUsers: result,
-            });
-        }
+    refresh = async () => {
+        this.state.tableRef.current && this.state.tableRef.current.onQueryChange()
     };
 
     openErrorModal = (message) => {
@@ -127,7 +110,15 @@ class Users extends Component {
             return createTheme({
                 palette: this.props.defaultTheme,
                 overrides: {
+                    MuiAutocomplete: {
+                        input: {
+                            padding: "0 !important"
+                        }
+                    },
                     MuiTableCell: {
+                        root:{
+                            padding: "1px 5px"
+                        },
                         head: {
                             "&:last-child": {
                                 width: "1px !important",
@@ -149,16 +140,35 @@ class Users extends Component {
             });
         },
         actions: {
-            getData: () => {
+            getData: (query) => {
                 return new Promise((resolve) => {
-                    setTimeout(() => {
-                        let payload = {
-                            totalCount: this.state.users.length,
-                            page: 0,
-                            data: this.state.users,
+
+                    (async () => {
+
+                        const payload = {
+                            search: query.search,
+                            limit: [query.page * query.pageSize, query.pageSize]
                         };
-                        resolve(payload);
-                    }, 300);
+
+                        if(query.orderBy) {
+                            const orderBy = {};
+
+                            orderBy[query.orderBy.field] = query.orderDirection;
+                            payload.order = orderBy;
+                        }
+
+                        const result = await this.props.control.list(payload);
+
+                        if(result && result.rows) {
+                            resolve({
+                                data: result.rows,
+                                page: query.page,
+                                totalCount: result.count,
+                            })
+                        }
+                    })()
+
+
                 });
             },
             editable: {
@@ -176,29 +186,32 @@ class Users extends Component {
                             type: newData.type,
                             active: newData.active
                         });
-                        this.list()
+                        this.refresh()
                         resolve();
                     }),
                 onRowUpdate: (newData, oldData) =>
                     new Promise(async (resolve) => {
-                        await this.props.control.edit({
-                            id: oldData.id,
-                            fname: newData.fname,
-                            lname: newData.lname,
-                            email: newData.email,
-                            password: newData.password,
-                            type: newData.type,
-                            active: newData.active
+                        await this.props.control.set({
+                            fields: {
+                                fname: newData.fname,
+                                lname: newData.lname,
+                                email: newData.email,
+                                password: newData.password,
+                                type: newData.type,
+                                active: newData.active
+                            }, where: {
+                                id: oldData.id
+                            }
                         });
-                        this.list();
+                        this.refresh();
                         resolve();
                     }),
                 onRowDelete: (oldData) =>
                     new Promise(async (resolve) => {
-                        await this.props.control.remove({
+                        await this.props.control.rem({
                             id: [oldData.id]
                         });
-                        this.list();
+                        this.refresh();
                         resolve();
                     }),
             },
@@ -233,7 +246,8 @@ class Users extends Component {
                     type: "string",
                     field: "fname",
                     title: "First Name",
-                    validate: rowData => rowData.fname !== ""
+                    validate: rowData => rowData.fname !== "",
+                    defaultSort: 'asc'
                 },
                 {
                     type: "string",
@@ -251,6 +265,37 @@ class Users extends Component {
                     type: "string",
                     field: "password",
                     title: "Password",
+                    sorting: false,
+                    render: (rowData) => {
+                        return Array(rowData.password.length).fill('*');
+                    }
+                },
+                {
+                    type: "date",
+                    field: "createdAt",
+                    title: "Signed up",
+                    editable: 'never',
+                    render: rowData => {
+                        return moment(rowData.createdAt).format('DD/MMM/YYYY')
+                    }
+                },
+                {
+                    type: "date",
+                    field: "updatedAt",
+                    title: "Last updated",
+                    editable: 'never',
+                    render: rowData => {
+                        return moment(rowData.updatedAt).format('DD/MMM/YYYY')
+                    }
+                },
+                {
+                    type: "date",
+                    field: "accessedAt",
+                    title: "Last accessed",
+                    editable: 'never',
+                    render: rowData => {
+                        return !rowData.accessedAt ? '-' : moment(rowData.accessedAt).format('DD/MMM/YYYY')
+                    }
                 },
                 {
                     type: "numeric",
@@ -339,10 +384,12 @@ class Users extends Component {
     multipleDeleteCallback = async () => {
         let ids = [];
         this.state.multipleDeleteData.map((user) => ids.push(user.id));
-        await this.props.control.remove({
-            id: ids
+        await this.props.control.rem({
+            id: {
+                'OR': ids
+            }
         });
-        this.list();
+        this.refresh();
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
         this.closeMultipleDeleteModal();
     };
@@ -355,14 +402,14 @@ class Users extends Component {
                 <Helmet>
                     <title>Users</title>
                 </Helmet>
-                <div className={classes.categoriesPanel}>
-                    <div className={classes.categoriesWrapper}>
+                <div className={classes.panel}>
+                    <div className={classes.wrapper}>
                         <MuiThemeProvider theme={this.tableOptions.getTheme()}>
                             <MaterialTable
                                 title="Users"
                                 tableRef={this.state.tableRef}
                                 columns={this.tableOptions.props.columns}
-                                data={() => this.tableOptions.actions.getData()}
+                                data={(query) => this.tableOptions.actions.getData(query)}
                                 icons={this.tableOptions.props.icons}
                                 options={this.tableOptions.props.options}
                                 editable={this.tableOptions.actions.editable}
@@ -373,52 +420,10 @@ class Users extends Component {
                     </div>
                 </div>
 
-                <Dialog
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showMultipleDeleteModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeMultipleDeleteModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <div>Are you sure you want to delete the selected users?</div>
-                    </DialogContent>
-
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            disabled={this.state.isBtnDisabled}
-                            color="transparent"
-                            simple
-                            onClick={() => this.multipleDeleteCallback()}
-                        >
-                            <div>Delete</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            simple
-                            onClick={() => {
-                                this.closeMultipleDeleteModal();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Modal
+                    showModal={this.state.showMultipleDeleteModal}
+                    {...this.state.deleteModal}
+                />
                 <Modal
                     showModal={this.state.showErrorModal}
                     {...this.state.errorModal}
