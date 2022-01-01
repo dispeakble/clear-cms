@@ -34,7 +34,7 @@
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
     "mobx-state-tree": "^5.0.2",
-    "moment": "2.26.0",
+    "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "mst-react-router": "^2.3.1",
     "nouislider": "14.5.0",

@@ -6,34 +6,44 @@ import {payloadInterface} from "../interfaces/payload.interface";
 @Injectable()
 export class UsersService {
 
-    private methods = ["list", "add", "remove", "edit"];
+    private methods = ["list", "add", "rem", "set"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
-    public list (params: any){
+    public list(params: any) {
         return new Observable(subscriber => {
+
+            const whereObj = {
+                'OR': []
+            };
+
+            ["fname", "lname", "email"].map(field => {
+                whereObj['OR'].push({[field]: {'LIKE': `%${params.search}%`}});
+            })
+
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
-                act: 'get',
+                api: 'sql',
+                act: 'list',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'users',
-                        fields: ["id", "fname", "lname", "email", "type", "active", "added", "accessed"],
-                        where: params?.where
+                        what: 'user',
+                        fields: ["id", "fname", "lname", "email", "type", "active", "createdAt", "accessedAt", "updatedAt"],
+                        where: null,
+                        order: params?.order,
+                        limit: params?.limit
                     }
                 }
             };
 
-            this.protocolService.sendMessage(payload).subscribe(data => {
-                let response = null;
+            if (params.search && params.search.length > 2) {
+                payload.payload.data.where = whereObj;
+            }
 
-                if (data && data.hasOwnProperty('data')) {
-                    response = data.data;
-                }
-                subscriber.next({type: 'users_list', data: response});
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next({type: 'users_list', data: data});
             }, err => {
                 subscriber.error(err);
             }, () => {
@@ -42,28 +52,26 @@ export class UsersService {
         })
     }
 
-    public add (params: any){
+    public add(params: any) {
         return new Observable(subscriber => {
 
             (async () => {
                 try {
                     const request: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'add',
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'users',
+                                what: 'user',
                                 data: {
-                                    fname: params.fname,
-                                    lname: params.lname,
-                                    email: params.email,
-                                    password: params.password,
-                                    type: params.type,
-                                    active: params.active,
-                                    added: Date.now(),
-                                    accessed: 0
+                                    fname: String(params.fname),
+                                    lname: String(params.lname),
+                                    email: String(params.email),
+                                    password: String(params.password),
+                                    type: Number(params.type),
+                                    active: Number(params.active)
                                 }
                             }
                         }
@@ -76,7 +84,7 @@ export class UsersService {
                         data: res
                     })
                     subscriber.complete();
-                } catch(err) {
+                } catch (err) {
                     subscriber.error(err);
                     subscriber.complete();
                 }
@@ -85,27 +93,18 @@ export class UsersService {
         })
     }
 
-    public edit (params: any){
+    public set(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'set',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'users',
-                        where: {
-                            id: params.id
-                        },
-                        data: {
-                            fname: params.fname,
-                            lname: params.lname,
-                            email: params.email,
-                            password: params.password,
-                            type: params.type,
-                            active: params.active
-                        }
+                        what: 'user',
+                        fields: params.fields,
+                        where: params.where
                     }
                 }
             };
@@ -123,17 +122,16 @@ export class UsersService {
         })
     }
 
-    public remove (params: any){
+    public rem(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'rem',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'users',
-                        how: 'OR',
+                        what: 'user',
                         where: {
                             id: params.id
                         }

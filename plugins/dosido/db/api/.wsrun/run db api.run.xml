@@ -15,6 +15,7 @@
       <env name="redis_port" value="6379" />
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="pg_port" value="5432" />
+      <env name="dev" value="true" />
     </envs>
     <method v="2" />
   </configuration>
