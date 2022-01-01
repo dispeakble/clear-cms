@@ -8,6 +8,8 @@ $INIT_REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
 $CMS_HUB_VERSION="1639086625"
 $CMS_DB_VERSION="1639086625"
 $CMS_BUCKET_VERSION="1639086625"
+$CMS_FRONTEND_PROXY_VERSION="1639086625"
+$CMS_ADMIN_PROXY_VERSION="1639086625"
 $PWD=$pwd.Path
 
 if (($VERSION = Read-Host "Installation revision (Enter for default: $INIT_VERSION )") -eq '') { $VERSION = $INIT_VERSION }
@@ -35,6 +37,8 @@ $env:PGADMIN_DEFAULT_PASSWORD=$PGADMIN_DEFAULT_PASSWORD
 $env:CMS_HUB_VERSION=$CMS_HUB_VERSION
 $env:CMS_DB_VERSION=$CMS_DB_VERSION
 $env:CMS_BUCKET_VERSION=$CMS_BUCKET_VERSION
+$env:CMS_FRONTEND_PROXY_VERSION=$CMS_FRONTEND_PROXY_VERSION
+$env:CMS_ADMIN_PROXY_VERSION=$CMS_ADMIN_PROXY_VERSION
 
 $env:PWD=$PWD
 
@@ -51,6 +55,8 @@ echo "$PGADMIN_DEFAULT_PASSWORD"
 echo "$CMS_HUB_VERSION"
 echo "$CMS_DB_VERSION"
 echo "$CMS_BUCKET_VERSION"
+echo "$CMS_FRONTEND_PROXY_VERSION"
+echo "$CMS_ADMIN_PROXY_VERSION"
 
 ((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace 'admin@localhost.local', $INIT_PGADMIN_DEFAULT_EMAIL) | Set-Content -Path ..\..\pg.db\db.schema.sql
 ((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace "MD5('1qaz')", "MD5('$PGADMIN_DEFAULT_PASSWORD')") | Set-Content -Path ..\..\pg.db\db.schema.sql
