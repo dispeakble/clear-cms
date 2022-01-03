@@ -58,6 +58,7 @@ class ChartModule extends Component {
         enableChart: true,
     };
 
+
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
@@ -71,10 +72,12 @@ class ChartModule extends Component {
     }
 
     handleEdit = async (id) => {
-        await this.setAsyncState({
+        this.handleUpdate({
             itemModuleEditId: id,
             showModuleOptionsModal: true,
-        });
+        })
+
+
     };
 
     closeModuleOptionsModal() {
@@ -84,8 +87,10 @@ class ChartModule extends Component {
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "chartTitle":
-                await this.setAsyncState({chartTitle: String(event.target.value)});
-                this.props.onUpdate(this.state);
+                this.handleUpdate({
+                    chartTitle: String(event.target.value)
+                })
+
                 break;
             default:
                 break;
@@ -113,17 +118,32 @@ class ChartModule extends Component {
     handleUploadedFile = async (event) => {
         if (event.length) {
             let strings = await Promise.all(event.map((file) => this.toStr(file)));
-
-            await this.setAsyncState({
+            this.handleUpdate({
                 data: JSON.parse(strings[0]),
                 enableChart: false,
-            });
-            this.props.onUpdate(this.state);
+            })
+
+
             setTimeout(() => {
                 this.setState({enableChart: true});
             }, 30);
         }
     };
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            chartType: this.state.chartType,
+            bgImage: this.state.bgImage,
+            columns: this.state.columns,
+            data: this.state.data,
+            enableChart: this.state.enableChart,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
 
     render() {
         return (
@@ -148,8 +168,10 @@ class ChartModule extends Component {
                     getOptionLabel={(option) => option.label}
                     inputValue={this.state.chartType}
                     onInputChange={async (event, newInputValue) => {
-                        await this.setAsyncState({chartType: newInputValue});
-                        this.props.onUpdate(this.state);
+                        this.handleUpdate({
+                            chartType: newInputValue
+                        })
+
                     }}
                     options={this.state.chartTypes}
                     renderInput={(params) => (
