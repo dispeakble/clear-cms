@@ -225,6 +225,7 @@ class ViewPageOptions extends React.PureComponent {
                                     />
                                 </div>}
                         </div>
+
                         <div>
                             {!this.props.data.isTemplate &&
                                 <>
