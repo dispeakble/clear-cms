@@ -69,6 +69,8 @@ class MenuModule extends Component {
         muiTheme: {}
     };
 
+
+
     componentDidMount() {
         if (Object.keys(this.props.moduleOptions).length !== 0) {
             const statePayload = {
@@ -114,7 +116,12 @@ class MenuModule extends Component {
             };
         });
 
-        this.setState({icons, muiTheme: this.getTheme()});
+
+
+        this.handleUpdate({
+            icons, muiTheme: this.getTheme()
+        })
+
     }
 
     getTheme = () => {
@@ -167,14 +174,21 @@ class MenuModule extends Component {
     };
 
     showMultipleDeleteModal = (evt, data) => {
-        this.setState({multipleDeleteData: data, showMultipleDeleteModal: true});
+        this.handleUpdate({
+            multipleDeleteData: data,
+            showMultipleDeleteModal: true
+        })
+
     };
 
     closeMultipleDeleteModal = () => {
-        this.setState({showMultipleDeleteModal: false});
+        this.handleUpdate({
+            showMultipleDeleteModal: false
+        })
+
     };
 
-    multipleDeleteCallback = async () => {
+    multipleDeleteCallback =  () => {
         let menuOptions = [...this.state.menuOptions];
         let menuIds = [];
         let multipleDeleteData = this.state.multipleDeleteData;
@@ -182,7 +196,10 @@ class MenuModule extends Component {
         menuOptions = menuOptions.filter((option) => {
             return !menuIds.includes(option.id);
         });
-        await this.setAsyncState({menuOptions});
+        this.handleUpdate({
+            menuOptions
+        })
+
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
 
         this.closeMultipleDeleteModal();
@@ -214,9 +231,10 @@ class MenuModule extends Component {
                 return el;
             });
 
-            await this.setAsyncState({
+            this.handleUpdate({
                 flatLinks: result,
-            });
+            })
+
         }
     };
 
@@ -260,38 +278,45 @@ class MenuModule extends Component {
             editable: {
                 onRowAdd: (newData) =>
                     new Promise((resolve) => {
-                        setTimeout(async () => {
+                        setTimeout( () => {
                             delete newData.tableData;
                             let menuOptions = typeof this.state.menuOptions === typeof [] ? [...this.state.menuOptions] : [];
                             newData.id = menuOptions.length + 1;
                             let newMenuOptions = menuOptions.concat(newData);
-                            await this.setAsyncState({menuOptions: newMenuOptions});
-                            this.props.onUpdate(this.state);
+                            this.handleUpdate({
+                                menuOptions: newMenuOptions
+                            })
+
+
                             this.getAllLinks();
                             resolve();
                         }, 100);
                     }),
                 onRowUpdate: (newData, oldData) =>
                     new Promise((resolve) => {
-                        setTimeout(async () => {
+                        setTimeout( () => {
                             delete newData.tableData;
                             const dataUpdate = [...this.state.menuOptions];
                             const index = oldData.tableData.id;
                             dataUpdate[index] = newData;
-                            await this.setAsyncState({menuOptions: dataUpdate});
-                            this.props.onUpdate(this.state);
+                            this.handleUpdate({
+                            menuOptions: dataUpdate
+                            })
+
                             this.getAllLinks();
                             resolve();
                         }, 100);
                     }),
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
-                        setTimeout(async () => {
+                        setTimeout( () => {
                             const dataDelete = [...this.state.menuOptions];
                             const index = oldData.tableData.id;
                             dataDelete.splice(index, 1);
-                            await this.setAsyncState({menuOptions: dataDelete});
-                            this.props.onUpdate(this.state);
+                            this.handleUpdate({
+                                menuOptions: dataDelete
+                            })
+
                             resolve();
                         }, 100);
                     }),
@@ -427,28 +452,69 @@ class MenuModule extends Component {
     };
 
     handleClick = () => {
-        this.setState({displayBgColorPicker: !this.state.displayBgColorPicker});
+        this.handleUpdate({
+            displayBgColorPicker: !this.state.displayBgColorPicker
+        })
+
     };
 
     handleColorPickerClose = () => {
-        this.setState({displayBgColorPicker: false});
+        this.handleUpdate({
+            displayBgColorPicker: false
+        })
+
     };
 
     closeModuleOptionsModal() {
-        this.setState({showModuleOptionsModal: false});
+        this.handleUpdate({
+            showModuleOptionsModal: false
+        })
+
     }
 
-    handleEdit = async (id) => {
-        await this.setAsyncState({
+    handleEdit =  (id) => {
+        this.handleUpdate({
             itemModuleEditId: id,
             showModuleOptionsModal: true,
-        });
+        })
+
     };
-    handleSlider = async (e, newValue) => {
-        await this.setAsyncState({
+    handleSlider =  (e, newValue) => {
+        this.handleUpdate({
             menuIconSpace: newValue
-        });
-        this.props.onUpdate(this.state);
+        })
+
+    }
+
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            menuOptions: this.state.menuOptions,
+            itemModuleEditId: this.state.itemModuleEditId,
+            showModuleOptionsModal: this.state.showModuleOptionsModal,
+            modalTitle: this.state.modalTitle,
+            richFormattedText: this.state.richFormattedText,
+            showMultipleDeleteModal: this.state.showMultipleDeleteModal,
+            tableRef: this.state.tableRef,
+            isMenuVertical: this.state.isMenuVertical,
+            showAsAccordion: this.state.showAsAccordion,
+            flatLinks: this.state.flatLinks,
+            stretchToFit: this.state.stretchToFit,
+            displayBgColorPicker: this.state.displayBgColorPicker,
+            bgColor: this.state.bgColor,
+            icons: this.state.icons,
+            icon: this.state.icon,
+
+            noLinksFound: this.state.noLinksFound,
+            horizontallyCentered: this.state.horizontallyCentered,
+            verticallyCentered: this.state.verticallyCentered,
+            menuIconSpace: this.state.menuIconSpace,
+            muiTheme: this.state.muiTheme,
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
     }
 
     render() {
@@ -502,13 +568,12 @@ class MenuModule extends Component {
                                         />
                                         <SketchPicker
                                             color={this.state.bgColor}
-                                            onChange={async (color) => {
-
-                                                await this.setAsyncState({
+                                            onChange={ (color) => {
+                                                this.handleUpdate({
                                                     bgColor: color.rgb,
-                                                });
+                                                })
 
-                                                this.props.onUpdate(this.state);
+
                                             }}
                                         />
                                     </div>
@@ -519,11 +584,11 @@ class MenuModule extends Component {
                                     <Tooltip title="The menu will have collapsible sections for the submenus">
                                         <Switch
                                             checked={this.state.showAsAccordion}
-                                            onChange={async () => {
-                                                await this.setAsyncState({
+                                            onChange={ () => {
+                                                this.handleUpdate({
                                                     showAsAccordion: !this.state.showAsAccordion,
-                                                });
-                                                this.props.onUpdate(this.state);
+                                                })
+
                                             }}
                                             value={this.state.showAsAccordion}
                                         />
@@ -536,11 +601,11 @@ class MenuModule extends Component {
                                     <Tooltip title="Show the menu links in vertical order">
                                         <Switch
                                             checked={this.state.isMenuVertical}
-                                            onChange={async () => {
-                                                await this.setAsyncState({
+                                            onChange={ () => {
+                                                this.handleUpdate({
                                                     isMenuVertical: !this.state.isMenuVertical,
-                                                });
-                                                this.props.onUpdate(this.state);
+                                                })
+
                                             }}
                                             value={this.state.isMenuVertical}
                                         />
@@ -553,11 +618,11 @@ class MenuModule extends Component {
                                     <Tooltip title="Stretches the menu horizontally and vertically">
                                         <Switch
                                             checked={this.state.stretchToFit}
-                                            onChange={async () => {
-                                                await this.setAsyncState({
+                                            onChange={ () => {
+                                                this.handleUpdate({
                                                     stretchToFit: !this.state.stretchToFit,
-                                                });
-                                                this.props.onUpdate(this.state);
+                                                })
+
                                             }}
                                             value={this.state.stretchToFit}
                                         />
@@ -572,11 +637,11 @@ class MenuModule extends Component {
                                 <Tooltip title="The text will be aligned horizontally">
                                     <Switch
                                         checked={this.state.horizontallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
+                                        onChange={ () => {
+                                            this.handleUpdate({
                                                 horizontallyCentered: !this.state.horizontallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
+                                            })
+
                                         }}
                                         value={this.state.horizontallyCentered}
                                     />
@@ -587,11 +652,11 @@ class MenuModule extends Component {
                                 <Tooltip title="The text will be aligned vertically">
                                     <Switch
                                         checked={this.state.verticallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
+                                        onChange={ () => {
+                                            this.handleUpdate({
                                                 verticallyCentered: !this.state.verticallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
+                                            })
+
                                         }}
                                         value={this.state.verticallyCentered}
                                     />

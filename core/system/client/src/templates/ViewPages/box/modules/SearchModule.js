@@ -17,6 +17,8 @@ class SitemapModule extends Component {
         showEndDate: false
     };
 
+
+
     componentDidMount() {
         if (this.props.moduleOptions) {
             const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.moduleOptions;
@@ -66,6 +68,20 @@ class SitemapModule extends Component {
         });
     };
 
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            title: this.state.title,
+            description: this.state.description,
+            showSuggestions: this.state.showSuggestions,
+            showStartDate: this.state.showStartDate,
+            showEndDate: this.state.showEndDate,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         return (
             <div
@@ -80,12 +96,13 @@ class SitemapModule extends Component {
                         <Switch
                             value={this.state.title}
                             checked={this.state.title}
-                            onChange={async () => {
-                                await this.setAsyncState({
+                            onChange={ () => {
+                                this.handleUpdate({
                                     title: !this.state
                                         .title,
-                                });
-                                this.props.onUpdate(this.state);
+
+                                })
+
                             }}
                         />
                     </Tooltip>
@@ -96,12 +113,13 @@ class SitemapModule extends Component {
                         <Switch
                             value={this.state.description}
                             checked={this.state.description}
-                            onChange={async () => {
-                                await this.setAsyncState({
+                            onChange={ () => {
+                                this.handleUpdate({
                                     description: !this.state
                                         .description,
-                                });
-                                this.props.onUpdate(this.state);
+
+                                })
+
                             }}
                         />
                     </Tooltip>
@@ -113,11 +131,12 @@ class SitemapModule extends Component {
                             value={this.state.showSuggestions}
                             checked={this.state.showSuggestions}
                             onChange={async () => {
-                                await this.setAsyncState({
+                                this.handleUpdate({
                                     showSuggestions: !this.state
                                         .showSuggestions,
-                                });
-                                this.props.onUpdate(this.state);
+
+                                })
+
                             }}
                         />
                     </Tooltip>
@@ -128,12 +147,12 @@ class SitemapModule extends Component {
                         <Switch
                             value={this.state.showStartDate}
                             checked={this.state.showStartDate}
-                            onChange={async () => {
-                                await this.setAsyncState({
+                            onChange={ () => {
+                                this.handleUpdate({
                                     showStartDate: !this.state
                                         .showStartDate,
-                                });
-                                this.props.onUpdate(this.state);
+                                })
+
                             }}
                         />
                     </Tooltip>
@@ -144,12 +163,13 @@ class SitemapModule extends Component {
                         <Switch
                             value={this.state.showEndDate}
                             checked={this.state.showEndDate}
-                            onChange={async () => {
-                                await this.setState({
+                            onChange={ () => {
+                                this.handleUpdate({
                                     showEndDate: !this.state
                                         .showEndDate,
-                                });
-                                this.props.onUpdate(this.state);
+
+                                })
+
                             }}
                         />
                     </Tooltip>

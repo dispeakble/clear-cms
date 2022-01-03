@@ -65,7 +65,7 @@ class TableModule extends Component {
         rowsOnPage: 5,
         leftNumber: 0,
         rightNumber: 0,
-
+        dataUrl: '',
         previewData: [],
 
         showMultipleDeleteModal: false,
@@ -73,11 +73,13 @@ class TableModule extends Component {
         table: ""
     };
 
+
+
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
-
+        console.log(this.props.moduleOptions, '///')
         const tableConfig = this.props.moduleOptions?.tableConfig;
         if(tableConfig) {
             this.setState({
@@ -91,7 +93,11 @@ class TableModule extends Component {
                 pagination: tableConfig.pagination,
                 export: tableConfig.export,
                 fixedColumns: tableConfig.fixedColumns,
-                remoteData: tableConfig.remoteData
+                remoteData: tableConfig.remoteData,
+                rowsOnPage: tableConfig.rowsOnPage,
+                leftNumber: tableConfig.leftNumber,
+                rightNumber: tableConfig.rightNumber,
+                dataUrl: tableConfig.dataUrl,
             })
         }
         const definedColumns = this.props.moduleOptions?.columns;
@@ -179,10 +185,10 @@ class TableModule extends Component {
         });
     }
 
-    handleInputChange = async (event) => {
+    handleInputChange =  (event) => {
         switch (event.target.id) {
             case "rowsOnPage":
-                await this.setAsyncState({rowsOnPage: event.target.value});
+                this.handleUpdate({rowsOnPage: event.target.value})
                 this.refreshPreview();
                 break;
             case "dataUrl":
@@ -204,15 +210,17 @@ class TableModule extends Component {
 
                 await this.setAsyncState({ dataUrl });
                 this.refreshPreview();*/
+                this.handleUpdate({dataUrl: event.target.value});
 
                 break;
             case "leftNumber":
-                await this.setAsyncState({leftNumber: event.target.value});
+                this.handleUpdate({leftNumber: event.target.value})
+
                 this.refreshPreview();
                 break;
 
             case "rightNumber":
-                await this.setAsyncState({rightNumber: event.target.value});
+                this.handleUpdate({rightNumber: event.target.value})
                 this.refreshPreview();
                 break;
             default:
@@ -243,7 +251,38 @@ class TableModule extends Component {
             }
         });
     }
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            tableRef: React.createRef(),
+            previewTableRef:React.createRef(),
+            showPreview: this.state.showPreview,
+            definedColumns: this.state.definedColumns,
+            search: this.state.search,
+            editable: this.state.editable,
+            sortable: this.state.sortable,
+            columnDrag: this.state.columnDrag,
+            filter: this.state.filter,
+            pagination: this.state.pagination,
+            export: this.state.export,
+            fixedColumns: this.state.fixedColumns,
+            remoteData: this.state.remoteData,
+            rowsOnPage: this.state.rowsOnPage,
+            leftNumber: this.state.leftNumber,
 
+
+            dataUrl: this.state.dataUrl,
+            rightNumber: this.state.rightNumber,
+            previewData: this.state.previewData,
+            showMultipleDeleteModal: this.state.showMultipleDeleteModal,
+            multipleDeleteData: this.state.multipleDeleteData,
+            table: this.state.table,
+            test: '',
+
+        }, params);
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         const classes = this.props.classes;
 
@@ -312,12 +351,13 @@ class TableModule extends Component {
                     ? {
                         onRowAdd: (newData) =>
                             new Promise((resolve) => {
-                                setTimeout(async () => {
+                                setTimeout( () => {
                                     delete newData.tableData;
                                     let previewData = [...this.state.previewData];
                                     newData.id = this.state.previewData.length + 1;
                                     let newPreviewData = previewData.concat(newData);
-                                    await this.setAsyncState({previewData: newPreviewData});
+                                    this.handleUpdate({previewData: newPreviewData})
+
                                     this.saveChangedStyles();
                                     resolve();
                                 }, 100);
@@ -329,7 +369,8 @@ class TableModule extends Component {
                                     const dataUpdate = [...this.state.previewData];
                                     const index = oldData.tableData.id;
                                     dataUpdate[index] = newData;
-                                    await this.setAsyncState({previewData: dataUpdate});
+                                    this.handleUpdate({previewData: dataUpdate})
+
                                     this.saveChangedStyles();
                                     resolve();
                                 }, 100);
@@ -340,7 +381,8 @@ class TableModule extends Component {
                                     const dataDelete = [...this.state.previewData];
                                     const index = oldData.tableData.id;
                                     dataDelete.splice(index, 1);
-                                    await this.setAsyncState({previewData: dataDelete});
+                                    this.handleUpdate({previewData: dataDelete})
+
                                     this.saveChangedStyles();
                                     // // localStorage.setItem(
                                     // //   "previewData",
@@ -428,12 +470,13 @@ class TableModule extends Component {
                 editable: {
                     onRowAdd: (newData) =>
                         new Promise((resolve, reject) => {
-                            setTimeout(async () => {
+                            setTimeout( () => {
                                 delete newData.tableData;
                                 let definedColumns = [...this.state.definedColumns];
                                 newData.id = this.state.definedColumns.length + 1;
                                 let newDefinedColumns = definedColumns.concat(newData);
-                                await this.setAsyncState({definedColumns: newDefinedColumns});
+                                this.handleUpdate({definedColumns: newDefinedColumns})
+
                                 this.saveChangedStyles();
                                 //this.getAllDefinedColumns();
                                 // localStorage.setItem(
@@ -445,23 +488,23 @@ class TableModule extends Component {
                         }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise((resolve, reject) => {
-                            setTimeout(async () => {
+                            setTimeout( () => {
                                 delete newData.tableData;
                                 const dataUpdate = [...this.state.definedColumns];
                                 const index = oldData.tableData.id;
                                 dataUpdate[index] = newData;
-                                await this.setAsyncState({definedColumns: dataUpdate});
+                                this.handleUpdate({definedColumns: dataUpdate})
                                 this.saveChangedStyles();
                                 resolve();
                             }, 100);
                         }),
                     onRowDelete: (oldData) => {
                         return new Promise((resolve, reject) => {
-                            setTimeout(async () => {
+                            setTimeout( () => {
                                 const dataDelete = [...this.state.definedColumns];
                                 const index = oldData.tableData.id;
                                 dataDelete.splice(index, 1);
-                                await this.setAsyncState({definedColumns: dataDelete});
+                                this.handleUpdate({definedColumns: dataDelete})
                                 this.saveChangedStyles();
                                 // localStorage.setItem(
                                 //   "definedColumns",
@@ -479,13 +522,14 @@ class TableModule extends Component {
                         ) || this.state.dataTypes[0]
                     );
                 },
-                refreshPreview: async () => {
-                    await this.setAsyncState({
+                refreshPreview:  () => {
+                    this.handleUpdate({
                         showPreview: false,
-                    });
-                    await this.setAsyncState({
+                    })
+                    this.handleUpdate({
                         showPreview: true,
-                    });
+                    })
+
                 },
                 customActions: [
                     {
@@ -578,10 +622,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Search Bar">
                                 <Switch
                                     checked={this.state.search}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             search: !this.state.search,
-                                        });
+                                        })
+
                                         dataTableOptions.props.options.search = this.state.search;
                                         this.saveChangedStyles();
                                         this.refreshPreview();
@@ -594,10 +639,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Column Edit">
                                 <Switch
                                     checked={this.state.editable}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             editable: !this.state.editable,
-                                        });
+                                        })
+
                                         dataTableOptions.actions.editable = this.state
                                             .editable
                                             ? {
@@ -670,10 +716,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Pagination">
                                 <Switch
                                     checked={this.state.pagination}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             pagination: !this.state.pagination,
-                                        });
+                                        })
+
                                         dataTableOptions.props.options.paging = this.state.pagination;
                                         this.saveChangedStyles();
                                         this.refreshPreview();
@@ -715,10 +762,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Column Drag">
                                 <Switch
                                     checked={this.state.columnDrag}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             columnDrag: !this.state.columnDrag,
-                                        });
+                                        })
+
                                         dataTableOptions.props.options.draggable = this.state.columnDrag;
                                         this.saveChangedStyles();
                                         this.refreshPreview();
@@ -732,10 +780,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Filter">
                                 <Switch
                                     checked={this.state.filter}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             filter: !this.state.filter,
-                                        });
+                                        })
+
                                         dataTableOptions.props.options.filtering = this.state.filter;
                                         this.refreshPreview();
                                     }}
@@ -748,10 +797,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Fixed Columns">
                                 <Switch
                                     checked={this.state.fixedColumns}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             fixedColumns: !this.state.fixedColumns,
-                                        });
+                                        })
+
                                         this.saveChangedStyles();
                                     }}
                                 />
@@ -819,10 +869,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Export">
                                 <Switch
                                     checked={this.state.export}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             export: !this.state.export,
-                                        });
+                                        })
+
                                         dataTableOptions.props.options.exportButton = this.state.export;
                                         this.saveChangedStyles();
                                         this.refreshPreview();
@@ -835,10 +886,12 @@ class TableModule extends Component {
                             <Tooltip title="Enable Column Ordering">
                                 <Switch
                                     checked={this.state.sortable}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             sortable: !this.state.sortable,
-                                        });
+                                        })
+
+
                                         dataTableOptions.props.options.sorting = this.state.sortable;
                                         this.saveChangedStyles();
                                         this.refreshPreview();
@@ -851,10 +904,11 @@ class TableModule extends Component {
                             <Tooltip title="Enable Remote Data">
                                 <Switch
                                     checked={this.state.remoteData}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             remoteData: !this.state.remoteData,
-                                        });
+                                        })
+
                                         this.saveChangedStyles();
                                     }}
                                 />
@@ -965,5 +1019,7 @@ class TableModule extends Component {
         );
     }
 }
+
+
 
 export default withStyles(styles)(TableModule);

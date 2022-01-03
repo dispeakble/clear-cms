@@ -5,6 +5,7 @@ import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import PropTypes from "prop-types";
 
 class CategoriesModule extends Component {
     state = {
@@ -19,6 +20,19 @@ class CategoriesModule extends Component {
         categoriesPerPage: "4"
     };
 
+     componentDidMount() {
+
+
+
+        if (this.props.moduleOptions) {
+            let {moduleOptions} = this.props;
+            this.setState({
+                showImageAsOptions: moduleOptions.showImageAsOptions,
+                displayType: moduleOptions.displayType,
+                categoriesPerPage: moduleOptions.categoriesPerPage,
+             });
+        }
+    }
     getTheme = () => {
         return createTheme({
             palette: this.props.defaultTheme,
@@ -36,22 +50,39 @@ class CategoriesModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     closeModuleOptionsModal() {
+
         this.setState({ showModuleOptionsModal: false });
     }
 
     handleEdit = async (id) => {
         if (this.props.moduleOptions) {
-            await this.setAsyncState({
+            this.handleUpdate({
                 displayType: this.props.moduleOptions.displayType,
                 categoriesPerPage: this.props.moduleOptions.categoriesPerPage,
-            });
+            })
+
         }
-        await this.setAsyncState({
+        this.handleUpdate({
             itemModuleEditId: id,
             showModuleOptionsModal: true,
-        });
+        })
+
     };
 
+
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            showImageAsOptions: this.state.showImageAsOptions,
+            displayType: this.state.displayType,
+            categoriesPerPage: this.state.categoriesPerPage,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         return (
             <div
@@ -62,19 +93,20 @@ class CategoriesModule extends Component {
 
 
                 <Autocomplete
-                    onChange={async (event, displayCategory) => {
+                    onChange={ (event, displayCategory) => {
                         if(displayCategory){
-                            await this.setAsyncState({
+                            this.handleUpdate({
                                 displayType: displayCategory.value
-                            });
+                            })
 
-                            this.props.onUpdate(this.state);
+
+
                         }
                     }
                     }
                     className={this.props.classes.option}
                     value={
-                        this.state.showImageAsOptions.find(option => option.value === this.state.displayType)
+                        this.state.showImageAsOptions?.find(option => option.value === this.state.displayType)
                     }
                     options={this.state.showImageAsOptions}
                     autoHighlight
@@ -89,18 +121,19 @@ class CategoriesModule extends Component {
                     )}
                 />
                 <Autocomplete
-                    onChange={async (event, categoriesPerPage) => {
+                    onChange={ (event, categoriesPerPage) => {
                         if(categoriesPerPage) {
-                            await this.setAsyncState({
+                            this.handleUpdate({
                                 categoriesPerPage: categoriesPerPage
-                            });
-                            this.props.onUpdate(this.state);
+                            })
+
                         }
                     }}
                     onInputChange={(event, value) =>{
-                        this.setState({
+                        this.handleUpdate({
                             categoriesPerPage: value
                         })
+
                     }
                     }
                     className={this.props.classes.option}
@@ -124,3 +157,10 @@ class CategoriesModule extends Component {
 }
 
 export default withStyles(styles)(CategoriesModule);
+CategoriesModule.propTypes = {
+
+    moduleOptions: PropTypes.object,
+
+    onUpdate: PropTypes.func,
+
+};

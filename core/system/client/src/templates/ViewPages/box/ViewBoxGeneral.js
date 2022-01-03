@@ -29,7 +29,8 @@ class ViewBoxGeneral extends React.PureComponent {
             {label: "Chart Module"},
             {label: "Accordion Module"},
             {label: "Sitemap Module"},
-            {label: "Search Module"}
+            {label: "Search Module"},
+            {label: 'Card Module'}
         ]
     }
 

@@ -17,51 +17,59 @@ class TextModule extends React.PureComponent {
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
-        this.moduleOptions = Object.assign({} , this.props.moduleOptions);
+        this.moduleOptions = Object.assign({}, this.props.moduleOptions);
         this.setState({
             fakeChange: !this.state.fakeChange
         })
     }
 
-    handleInputChange(textData) {
-        this.moduleOptions.textData = textData;
-        this.props.onUpdate(this.moduleOptions);
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            textData: this.moduleOptions.textData,
+        }, params)
+
+        this.props.onUpdate(payload);
+        this.moduleOptions.textData = params;
+
+
     }
 
 
     render() {
-        return (<Editor
-            initialValue={this.moduleOptions.textData}
-            init={{
-                height: 500,
-                //menubar: false,
-                /*plugins: [
-                  "advlist autolink lists link image charmap print preview anchor",
-                  "searchreplace visualblocks code fullscreen",
-                  "insertdatetime media table paste code help wordcount",
-                ],*/
-                plugins: 'print preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+        return (
+            <Editor
+                initialValue={this.moduleOptions.textData}
+                init={{
+                    height: 500,
+                    //menubar: false,
+                    /*plugins: [
+                      "advlist autolink lists link image charmap print preview anchor",
+                      "searchreplace visualblocks code fullscreen",
+                      "insertdatetime media table paste code help wordcount",
+                    ],*/
+                    plugins: 'print preview importcss searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
 
-                menubar: 'file edit view insert format tools table tc help',
-                toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
-                /*toolbar:
-                    "undo redo"
-                    + " | formatselect"
-                    + " | bold italic forecolor backcolor"
-                    + " | alignleft aligncenter alignright alignjustify"
-                    +" | bullist numlist outdent indent"
-                    + " | removeformat",*/
-                init_instance_callback: function (editor) {
-                    var annoyingMessage = document.querySelector(
-                        ".tox-notifications-container"
-                    );
-                    if (annoyingMessage && annoyingMessage.style) {
-                        annoyingMessage.style.display = "none";
-                    }
-                },
-            }}
-            onEditorChange={(event) => this.handleInputChange(event)}
-        />);
+                    menubar: 'file edit view insert format tools table tc help',
+                    toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+                    /*toolbar:
+                        "undo redo"
+                        + " | formatselect"
+                        + " | bold italic forecolor backcolor"
+                        + " | alignleft aligncenter alignright alignjustify"
+                        +" | bullist numlist outdent indent"
+                        + " | removeformat",*/
+                    init_instance_callback: function (editor) {
+                        var annoyingMessage = document.querySelector(
+                            ".tox-notifications-container"
+                        );
+                        if (annoyingMessage && annoyingMessage.style) {
+                            annoyingMessage.style.display = "none";
+                        }
+                    },
+                }}
+                onEditorChange={(event) => this.handleUpdate(event)}
+            />);
     }
 }
 

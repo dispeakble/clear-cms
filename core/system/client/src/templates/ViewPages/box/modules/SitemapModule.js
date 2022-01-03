@@ -24,6 +24,8 @@ class SitemapModule extends Component {
         modalTitle: "Sitemap content",
     };
 
+
+
     componentDidMount() {
         console.log('from sitemap module', this.props);
         const {displayOptions, displayType, usePagination, numberOfLinksPerPage, modalTitle} = this.props.moduleOptions;
@@ -52,6 +54,22 @@ class SitemapModule extends Component {
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            displayOptions: this.state.displayOptions,
+            displayType: this.state.displayType,
+            usePagination: this.state.usePagination,
+            numberOfLinksPerPage: this.state.numberOfLinksPerPage,
+            modalTitle: this.state.modalTitle,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
+
     render() {
         // const classes = this.props.classes;
 
@@ -62,12 +80,12 @@ class SitemapModule extends Component {
                 }}
             >
                 <Autocomplete
-                    onChange={async (event, displayCategory) => {
+                    onChange={ (event, displayCategory) => {
                         if (displayCategory) {
-                            await this.setAsyncState({
+                            this.handleUpdate({
                                 displayType: displayCategory.value
-                            });
-                            this.props.onUpdate(this.state);
+                            })
+
                         }
                     }}
                     className={this.props.classes.option}
@@ -90,10 +108,10 @@ class SitemapModule extends Component {
                     <Checkbox
                         checked={this.state.usePagination}
                         onChange={async (event, checked) => {
-                            await this.setAsyncState({
+                            this.handleUpdate({
                                 usePagination: checked,
-                            });
-                            this.props.onUpdate(this.state);
+                            })
+
                         }}
                     />
                     Use Pagination
@@ -104,10 +122,11 @@ class SitemapModule extends Component {
                         labelText="Number of link per Page"
                         id="numberOfLinksPerPage"
                         onChange={async (e) => {
-                            await this.setAsyncState({
+                            this.handleUpdate({
                                 numberOfLinksPerPage: e.target.value
-                            });
-                            this.props.onUpdate(this.state);
+
+                            })
+
                         }}
                         disabled={!this.state.usePagination}
                         InputProps={{
