@@ -230,9 +230,8 @@ class Pages extends Component {
                             <FileCopy color="primary" className={this.props.classes.editItemIcon} />
                         ),
                         onClick: async (event, rowData) => {
-                            alert(await this.props.control.duplicate({
-                                id: rowData.id
-                            }));
+                            console.log('clicked me', rowData.id)
+                            this.props.control.duplicate({id: rowData.id})
                         },
                     },
                     {

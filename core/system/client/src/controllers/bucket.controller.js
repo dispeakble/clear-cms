@@ -19,7 +19,7 @@ class BucketController extends Component {
         move: (params) => this.move(params),
         download: (params) => this.download(params),
         archive: (params) => this.archive(params),
-        extract: (params) => this.extract(params)
+        extract: (params) => this.extract(params),
         //rem: (params) => this.remData(params)
     };
     channel = 'bucket';
