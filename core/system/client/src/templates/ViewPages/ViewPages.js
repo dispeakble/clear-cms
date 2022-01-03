@@ -69,7 +69,7 @@ class Pages extends Component {
             sction:{
                 callback: ()=>{
                     this.sectionn()
-                 }
+                }
 
             },
             closeButton: {
@@ -89,7 +89,7 @@ class Pages extends Component {
 
 
 
-};
+    };
 
     componentDidMount() {
         this.fetchPages();
@@ -185,35 +185,35 @@ class Pages extends Component {
     };
 
 
-       handleDuplicate = async ()=>{
-           let data = this.state.pagedata;
+    handleDuplicate = async ()=>{
+        let data = this.state.pagedata;
 
-            const page = await  this.props.control.get({id: String(data.id)});
-                let newpageconfig=page.pageConfig;
-            newpageconfig.pageTitle=this.state.newpagetitle;
-           newpageconfig.publish=this.state.newpublish;
-           newpageconfig.defaultPage=this.state.newdefault;
+        const page = await  this.props.control.get({id: String(data.id)});
+        let newpageconfig=page.pageConfig;
+        newpageconfig.pageTitle=this.state.newpagetitle;
+        newpageconfig.publish=this.state.newpublish;
+        newpageconfig.defaultPage=this.state.newdefault;
 
-           let newPage = {
-               id:0,
-                 pageConfig: newpageconfig,
-               items: page.items,
-           };
-           const pageData = this.props.control.duplicate(newPage)
-           console.log(pageData)
-            if(data.isTemplate){
-                if(pageData?.items?.length==0){
-                  await this.props.history.push(`/pages/template/${pageData.pageId}`);
-                 }else{
-                    await this.props.history.push(`/pages/template/${pageData.pageId}`);
-                     }
-                 }else{
-                if(pageData?.items?.length==0){
-                   await this.props.history.push(`/pages/${pageData.pageId}`);
-                }else{
-                   await this.props.history.push(`/pages/${pageData.pageId}`);
-                    } }
-       }
+        let newPage = {
+            id:0,
+            pageConfig: newpageconfig,
+            items: page.items,
+        };
+        const pageData = this.props.control.duplicate(newPage)
+        console.log(pageData)
+        if(data.isTemplate){
+            if(pageData?.items?.length==0){
+                await this.props.history.push(`/pages/template/${pageData.pageId}`);
+            }else{
+                await this.props.history.push(`/pages/template/${pageData.pageId}`);
+            }
+        }else{
+            if(pageData?.items?.length==0){
+                await this.props.history.push(`/pages/${pageData.pageId}`);
+            }else{
+                await this.props.history.push(`/pages/${pageData.pageId}`);
+            } }
+    }
 
 
 
@@ -366,7 +366,7 @@ class Pages extends Component {
                     ...(this.state.isTemplate ? [] : [{
                         title: "Category",
                         field: "category",
-                        },
+                    },
                         {
                             title: "Publish",
                             headerStyle: {
@@ -407,7 +407,7 @@ class Pages extends Component {
                             <ToggleButtonGroup
                                 value={this.state.isTemplate}
                                 exclusive
-                               >
+                            >
                                 <ToggleButton value={false} onClick={()=>this.props.history.push('./')}>
                                     Pages
                                 </ToggleButton>
@@ -429,8 +429,8 @@ class Pages extends Component {
                 </div>
                 <Modalpage
                     modalSize="small"
-                showModal={this.state.showDeleteModal}
-                {...this.state.deleteModalProps}
+                    showModal={this.state.showDeleteModal}
+                    {...this.state.deleteModalProps}
                 />
                 {/*<Modalpage*/}
                 {/*    modalSize="small"*/}
@@ -445,64 +445,64 @@ class Pages extends Component {
                     }}>
                         <h5> Publish Page </h5>
                         <hr/>
-                    <div style={{paddingRight: "5px", flex: 1}}>
+                        <div style={{paddingRight: "5px", flex: 1}}>
 
-                        <CustomInput
-                            labelText={this.state?.pagedata?.isTemplate ? "Template Title" : "Page Title"}
-                            id="pageTitle"
-                             value={this.state.newpagetitle}
+                            <CustomInput
+                                labelText={this.state?.pagedata?.isTemplate ? "Template Title" : "Page Title"}
+                                id="pageTitle"
+                                value={this.state.newpagetitle}
 
-                            formControlProps={{
-                                fullWidth: true,
-                                onChange: (e) => {
-                                    this.setState({
-                                        dialogTitleError: false,
-                                        newpagetitle:e.target.value
-                                    })
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (e) => {
+                                        this.setState({
+                                            dialogTitleError: false,
+                                            newpagetitle:e.target.value
+                                        })
 
 
-                                }
-                            }}
-                            inputProps={{
-                                autoFocus: true,
-                                inputProps: {
-                                    minLength: "1",
-                                },
-                                value: this.state.newpagetitle,
-                                type: "text",
-                            }}
-                            style={{marginRight: "5px"}}
-                        />
-                        <div>
-                            <Typography>Publish</Typography>
-                            <Tooltip title="Publish">
-
-                            <Switch
-
-                                value={this.state.newpublish}
-                                checked={this.state.newpublish}
-                                onChange={() => {
-                                    this.setState({
-                                        newpublish: !this.state.newpublish
-                                    })
-
+                                    }
                                 }}
+                                inputProps={{
+                                    autoFocus: true,
+                                    inputProps: {
+                                        minLength: "1",
+                                    },
+                                    value: this.state.newpagetitle,
+                                    type: "text",
+                                }}
+                                style={{marginRight: "5px"}}
                             />
-                            </Tooltip>
+                            <div>
+                                <Typography>Publish</Typography>
+                                <Tooltip title="Publish">
+
+                                    <Switch
+
+                                        value={this.state.newpublish}
+                                        checked={this.state.newpublish}
+                                        onChange={() => {
+                                            this.setState({
+                                                newpublish: !this.state.newpublish
+                                            })
+
+                                        }}
+                                    />
+                                </Tooltip>
 
 
+                            </div>
+
+
+                            <button onClick={()=>{
+                                this.handleDuplicate()
+
+                            }}
+                                    style={{
+                                        float:'right'
+                                    }}
+                            > Publish </button>
                         </div>
-
-
-                        <button onClick={()=>{
-                            this.handleDuplicate()
-
-                        }}
-                                style={{
-                                    float:'right'
-                                }}
-                        > Publish </button>
-                    </div>
 
                     </div>
                 </Modal>

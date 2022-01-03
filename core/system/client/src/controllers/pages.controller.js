@@ -369,9 +369,6 @@ class PagesController extends Component {
                     payload: paramsClone
                 });
 
-
-                console.log(response)
-
                 params.items = params.items.map((item) => {
                     response.items.map((dbItem) => {
                         if (Number(item.i) === Number(dbItem.ref)) {
@@ -438,7 +435,7 @@ class PagesController extends Component {
 
 
         if(params.id ==0){
-          console.log('dfvbgadsvfasdf')
+            console.log('dfvbgadsvfasdf')
             return new Promise(async resolve => {
                 try {
                     if (params.pageConfig.backgroundImageFile) {
