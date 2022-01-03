@@ -90,20 +90,22 @@ class BannerModule extends Component {
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "bannerTitle":
-                await this.setAsyncState({
+                this.handleUpdate({
                     bannerTitle: event.target.value
-                });
+                })
+
                 break;
             case "bannerLink":
-                await this.setAsyncState({
+                this.handleUpdate({
                     bannerLink: event.target.value
-                });
+                })
+
                 break;
             default:
                 break;
         }
 
-        this.handleUpdate();
+
     };
 
     getBannerSizeLabel(index) {
@@ -123,11 +125,10 @@ class BannerModule extends Component {
         if (!newValue || !newValue.label) {
             return;
         }
-        await this.setAsyncState({
+        this.handleUpdate({
             bannerSize: this.getBannerSizeIndex(newValue.label),
-        });
+        })
 
-        this.handleUpdate();
     };
 
     getLinkNavLabel(index) {
@@ -147,11 +148,10 @@ class BannerModule extends Component {
         if (!newValue || !newValue.label) {
             return;
         }
-        await this.setAsyncState({
+        this.handleUpdate({
             linkNav: this.getLinkNavIndex(newValue.label),
-        });
+        })
 
-        this.handleUpdate();
     };
 
     toBase64(file) {
@@ -166,13 +166,13 @@ class BannerModule extends Component {
     async handleFile(event) {
         if (event.length) {
             let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-            await this.setAsyncState({
+            this.handleUpdate({
                 banner: strings[0],
-                bannerBinary: event[0]
-            });
-            await this.setAsyncState({
+                bannerBinary: event[0],
                 showFileUploader: false
+
             })
+
         }
 
         let files = [];
@@ -183,12 +183,12 @@ class BannerModule extends Component {
                 file: this.state.bannerBinary
             });
         }
-
-        await this.setAsyncState({
+        this.handleUpdate({
             files
-        });
+        })
 
-        this.handleUpdate()
+
+
 
     }
 
@@ -198,21 +198,40 @@ class BannerModule extends Component {
         });
     }
     
-    handleUpdate = async () => {
-        this.props.onUpdate({
-            bannerTitle: this.state.bannerTitle,
-            bannerLink: this.state.bannerLink,
-            bannerSize: this.state.bannerSize,
-            linkNav: this.state.linkNav,
-            files: this.state.files
-        })
-    }
+    // handleUpdate = async () => {
+    //     this.props.onUpdate({
+    //         bannerTitle: this.state.bannerTitle,
+    //         bannerLink: this.state.bannerLink,
+    //         bannerSize: this.state.bannerSize,
+    //         linkNav: this.state.linkNav,
+    //         files: this.state.files
+    //     })
+    // }
     
     fileExtension = (string) => {
         const p = string.split('.');
         return p[p.length - 1];
     }
 
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            bannerTitle: this.state.bannerTitle,
+            bannerLink: this.state.bannerLink,
+            bannerSizes: this.state.bannerSizes,
+            bannerSize: this.state.bannerSize,
+            linkNav: this.state.linkNav,
+            linkNavs: this.state.linkNavs,
+            files: this.state.files,
+            banner: this.state.banner,
+            bannerBinary: this.state.bannerBinary,
+            showFileUploader: this.state.showFileUploader,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         const classes = this.props.classes;
         return (

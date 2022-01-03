@@ -35,6 +35,8 @@ class VideoModule extends Component {
         videoFile: {},
         files: []
     };
+
+
     getTheme = () => {
         return createTheme({
             palette: this.props.defaultTheme,
@@ -90,9 +92,11 @@ class VideoModule extends Component {
         if (!newValue || !newValue.label) {
             return;
         }
-        await this.setAsyncState({
+        this.handleUpdate({
             sourceId: this.getIndex(newValue.label),
-        });
+
+        })
+
     };
 
     fileExtension = (string) => {
@@ -110,6 +114,8 @@ class VideoModule extends Component {
         });
     };
 
+    handleVolume =  (event, newValue) => {
+        this.handleUpdate({
     toBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -123,9 +129,12 @@ class VideoModule extends Component {
         await this.setAsyncState({
             volume: newValue,
             mute: false,
-        });
+
+        })
+
     };
 
+    handleInputChange =  (event) => {
     showDropZone = () => {
         this.setState({
             showDropZone: true,
@@ -175,23 +184,26 @@ class VideoModule extends Component {
             case "url":
                 let url = this.state.url;
                 url = event.target.value;
-                await this.setAsyncState({url, enablePlayer: false, files: []});
-                this.props.onUpdate(this.state)
+                this.handleUpdate({url, enablePlayer: false})
+
+
 
                 setTimeout(async () => {
-                    await this.setAsyncState({url, enablePlayer: true});
-                    this.props.onUpdate(this.state)
+                    this.handleUpdate({url, enablePlayer: true})
+
                 }, 30);
                 break;
 
             case "folderPath":
                 let folderPath = this.state.folderPath;
                 folderPath = event.target.value;
-                await this.setAsyncState({folderPath, enablePlayer: false});
-                this.props.onUpdate(this.state);
+                // this.setState({ folderPath, enablePlayer: false });
+                this.handleUpdate({folderPath, enablePlayer: false})
+
                 setTimeout(async () => {
-                    await this.setAsyncState({enablePlayer: true});
-                    this.props.onUpdate(this.state);
+                    // this.setState({ enablePlayer: true });
+                    this.handleUpdate({enablePlayer: true})
+
                 }, 30);
 
                 break;
@@ -199,11 +211,13 @@ class VideoModule extends Component {
             case "fileExtension":
                 let fileExtension = this.state.fileExtension;
                 fileExtension = event.target.value;
-                await this.setAsyncState({fileExtension, enablePlayer: false})
-                this.onUpdate(this.state);
+                // this.setState({ fileExtension, enablePlayer: false });
+                this.handleUpdate({fileExtension, enablePlayer: false})
+
                 setTimeout(async () => {
-                    await this.setAsyncState({enablePlayer: true});
-                    this.props.onUpdate(this.state);
+                    // this.setState({ enablePlayer: true });
+                    this.handleUpdate({enablePlayer: true})
+
                 }, 30);
                 break;
             default:
@@ -215,6 +229,24 @@ class VideoModule extends Component {
         this.setState({showModuleOptionsModal: false});
     }
 
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            url: this.state.url,
+            sourceTypes: this.state.sourceTypes,
+            mute: this.state.mute,
+            controls: this.state.controls,
+            loop: this.state.loop,
+            sourceId: this.state.sourceId,
+            enablePlayer: this.state.enablePlayer,
+            volume: this.state.volume,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
+
     render() {
         const videoProps = {
             volume: this.state.volume ? this.state.volume / 100 : 0,
@@ -224,7 +256,6 @@ class VideoModule extends Component {
             url: this.state.url,
             mute: this.state.mute
         };
-
 
         return (
             <div>
@@ -257,8 +288,6 @@ class VideoModule extends Component {
                         />
                     )}
                 />
-
-
                 <Typography id="discrete-slider" gutterBottom>
                     Default Volume
                     <Slider
@@ -276,11 +305,11 @@ class VideoModule extends Component {
                             <Tooltip title="Mute Video">
                                 <Switch
                                     checked={this.state.mute}
-                                    onChange={async () => {
-                                        await this.setAsyncState({
+                                    onChange={ () => {
+                                        this.handleUpdate({
                                             enablePlayer: false,
                                             mute: this.state.mute ? null : true
-                                        });
+                                        })
 
                                         if (this.state.mute) {
                                             this.setState({
@@ -292,9 +321,8 @@ class VideoModule extends Component {
                                             });
                                         }
 
-                                        await this.setAsyncState({
-                                            enablePlayer: false
-                                        });
+
+
                                     }}
                                 />
                             </Tooltip>
@@ -307,17 +335,22 @@ class VideoModule extends Component {
                                 <Switch
                                     checked={this.state.controls}
                                     onChange={async () => {
-                                        await this.setAsyncState({
+                                        this.handleUpdate({
                                             controls: !this.state.controls,
                                             enablePlayer: false,
+
                                         })
-                                        this.props.onUpdate(this.state);
+
+
+
 
                                         setTimeout(() => {
-                                            this.setAsyncState({
+                                            // this.setState({enablePlayer: true});
+                                            this.handleUpdate({
                                                 enablePlayer: true,
+
                                             })
-                                            this.props.onUpdate(this.state);
+
                                         }, 30);
                                     }}
                                 />
@@ -331,14 +364,18 @@ class VideoModule extends Component {
                                 <Switch
                                     checked={this.state.loop}
                                     onChange={() => {
-                                        this.setState({
+                                        this.handleUpdate({
                                             loop: !this.state.loop,
                                             enablePlayer: false,
-                                        });
+
+                                        })
+
                                         setTimeout(() => {
-                                            this.setState({
+                                            this.handleUpdate({
                                                 enablePlayer: true,
-                                            });
+
+                                            })
+
                                         }, 30);
                                     }}
                                 />

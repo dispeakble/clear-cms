@@ -36,6 +36,7 @@ class HeaderModule extends Component {
         files: []
     };
 
+
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
@@ -74,13 +75,15 @@ class HeaderModule extends Component {
     async handleBackground(event) {
         if (event.length) {
             let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-            await this.setAsyncState({
+            this.handleUpdate({
                 backgroundImage: strings[0],
                 backgroundImageFile: event[0]
-            });
-            await this.setAsyncState({
+            })
+            this.handleUpdate({
                 showBackgroundUploader: false
-            });
+            })
+
+
 
             let files = this.state.files;
 
@@ -105,7 +108,10 @@ class HeaderModule extends Component {
     }
 
     async handleLogoSize(event, newValue) {
-        this.handleSave({logoWidth: Number(newValue)});
+        this.handleUpdate({
+            logoWidth: Number(newValue)
+        })
+
     }
 
     closeLogoUploader() {
@@ -127,12 +133,13 @@ class HeaderModule extends Component {
     }
 
     showBackgroundUploader() {
-        this.setState({
+        this.handleUpdate({
             showBackgroundUploader: true
-        });
+        })
+
     }
 
-    async handleImageDelete(type) {
+     handleImageDelete(type) {
         const files = this.state.files || [];
         const tempFiles = this.state.temporaryDeleted || [];
         const tempFileIndex = tempFiles.findIndex(i => i && i.sel === type);
@@ -149,11 +156,17 @@ class HeaderModule extends Component {
 
         if (type === 'logo') {
             //very fishy
-            await this.setAsyncState({enabledLogo: !this.state.enabledLogo});
+            this.handleUpdate({
+                enabledLogo: !this.state.enabledLog
+            })
+
         }
         if (type === 'bg') {
             //very fishy
-            await this.setAsyncState({enabledBackground: !this.state.enabledBackground});
+            this.handleUpdate({
+                enabledBackground: !this.state.enabledBackground
+            })
+
         }
 
         if (type === 'bg' && this.state.enabledBackground) {
@@ -185,13 +198,12 @@ class HeaderModule extends Component {
     async handleLogo(event) {
         if (event.length) {
             let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-            await this.setAsyncState({
+            this.handleUpdate({
                 logoImage: strings[0],
-                logoImageFile: event[0]
-            });
-            await this.setAsyncState({
+                logoImageFile: event[0],
                 showLogoUploader: false
             })
+
 
 
             let files = this.state.files;
@@ -220,10 +232,16 @@ class HeaderModule extends Component {
     async handleInputChange(event) {
         switch (event.target.id) {
             case "logoTitle":
-                this.handleSave({logoTitle: event.target.value});
+                this.handleUpdate({
+                    logoTitle: event.target.value
+                })
+
                 break;
             case "logoLink":
-                this.handleSave({logoLink: event.target.value});
+                this.handleUpdate({
+                    logoLink: event.target.value
+                })
+
                 break;
             default:
                 break;
@@ -303,6 +321,32 @@ class HeaderModule extends Component {
         return buttons;
     }
 
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            moduleId: this.state.moduleId,
+            openEditor: this.state.openEditor,
+            editorTitle: this.state.editorTitle,
+            isModuleSticky: this.state.isModuleSticky,
+            logoTitle: this.state.logoTitle,
+            logoLink: this.state.logoLink,
+            backgroundRepeat: this.state.backgroundRepeat,
+            backgroundStretch: this.state.backgroundStretch,
+            showLogoUploader: this.state.showLogoUploader,
+            showBackgroundUploader: this.state.showBackgroundUploader,
+            logoPosition: this.state.logoPosition,
+            logoWidth: this.state.logoWidth,
+            enabledBackground: this.state.enabledBackground,
+            enabledLogo: this.state.enabledLogo,
+            backgroundPosition: this.state.backgroundPosition,
+            temporaryDeleted: this.state.temporaryDeleted,
+            files: this.state.files,
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         const classes = this.props.classes;
 
@@ -315,7 +359,10 @@ class HeaderModule extends Component {
                                 <FormControlLabel
                                     control={<Switch
                                         checked={this.state.isModuleSticky}
-                                        onChange={async () => {
+                                        onChange={ () => {
+                                            this.handleUpdate({
+                                                isModuleSticky: !this.state.isModuleSticky,
+                                            })
                                             this.handleSave({
                                                 isModuleSticky: !this.state.isModuleSticky,
                                             });
@@ -331,7 +378,8 @@ class HeaderModule extends Component {
                                     control={
                                         <Switch
                                             checked={this.state.enabledLogo}
-                                            onChange={async () => this.handleImageDelete('logo')}
+                                            onChange={ () =>
+                                                this.handleImageDelete('logo')}
                                             inputProps={{'aria-label': 'controlled'}}
                                         />}
                                     label="Logo Enabled"/>
@@ -343,7 +391,7 @@ class HeaderModule extends Component {
                                     control={
                                         <Switch
                                             checked={this.state.enabledBackground}
-                                            onChange={async () => this.handleImageDelete('bg')}
+                                            onChange={ () => this.handleImageDelete('bg')}
                                             inputProps={{'aria-label': 'controlled'}}
                                         />}
                                     label="Background Enabled"/>
@@ -387,9 +435,12 @@ class HeaderModule extends Component {
                                                 control={<Switch
                                                     checked={this.state.backgroundRepeat}
                                                     onChange={async () => {
-                                                        this.handleSave({
-                                                            backgroundRepeat: !this.state.backgroundRepeat,
-                                                        });
+                                                        this.handleUpdate({
+                                                            backgroundRepeat: !this.state.backgroundRepeat
+                                                        })
+                                                        // this.handleSave({
+                                                        //     backgroundRepeat: !this.state.backgroundRepeat,
+                                                        // });
                                                     }}
                                                     inputProps={{'aria-label': 'controlled'}}
                                                 />}
@@ -403,9 +454,12 @@ class HeaderModule extends Component {
                                                     <Switch
                                                         checked={this.state.backgroundStretch}
                                                         onChange={async () => {
-                                                            this.handleSave({
+                                                            this.handleUpdate({
                                                                 backgroundStretch: !this.state.backgroundStretch,
-                                                            });
+                                                            })
+                                                            // this.handleSave({
+                                                            //     backgroundStretch: !this.state.backgroundStretch,
+                                                            // });
                                                         }}
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}

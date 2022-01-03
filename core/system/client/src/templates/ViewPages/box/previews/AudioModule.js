@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 
 class AudioModule extends Component {
   state = { url: '', volume: 0.5, autoplay: false, enabled: false };
-
   componentDidMount() {
     this.setState({
       url: this.props.moduleOptions.url,
@@ -34,4 +33,3 @@ export default AudioModule;
 AudioModule.propTypes = {
   moduleOptions: PropTypes.object
 };
-

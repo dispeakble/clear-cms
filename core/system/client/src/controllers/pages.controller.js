@@ -21,7 +21,8 @@ class PagesController extends Component {
         listCategories: (params) => this.listCategories(params),
         listTemplates: (params) => this.listTemplates(params),
         getPublicTheme: () => this.getPublicTheme(),
-        websiteData : () => this.websiteData(),
+        websiteData: () => this.websiteData(),
+
     };
 
     help = {
@@ -170,9 +171,11 @@ class PagesController extends Component {
 
 
     add(params) {
+        console.log(params)
+
+
         return new Promise(async resolve => {
             try {
-
                 if (params.pageConfig.backgroundImageFile) {
                     params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                 }
@@ -180,34 +183,49 @@ class PagesController extends Component {
                 const dbPayload = _.cloneDeep(params);
 
                 //we will add new boxes to get the IDs
-
-                let newFiles = null;
-
-                dbPayload.items = dbPayload.items.map((item) => {
-                    if (item.backgroundImageFile) {
-                        item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
-                    }
-                    item.backgroundImageFile = "";//for the DB we don't need to send binaries
-
-                    /*if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
-
-                        newFiles = item.moduleOptions.files.map(newFile => {
-                            return {
-                                file: newFile.file,
-                                name: newFile.name
-                            }
-                        });
+                let newFiles =[];
+                let vall=[];
 
 
-                    }*/
+                if(dbPayload.items.length > 0){
 
-                    item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
-                        delete itemFile.file;
-                        return itemFile;
+                    dbPayload.items = dbPayload.items.map((item) => {
+                        if (!!item.backgroundImageFile) {
+                            item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
+                        }
+                        item.backgroundImageFile = "";//for the DB we don't need to send binaries
+
+                        if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
+
+
+
+                            newFiles = item.moduleOptions.files.map(newFile => {
+                                console.log(item.moduleOptions.file)
+
+                                return {
+                                    file: item.moduleOptions.file,
+                                    name: newFile.name,
+                                    url:newFile.name
+                                }
+                            });
+
+
+                        }
+
+                        if(item.moduleOptions.files){
+                            item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
+                                delete itemFile.file;
+                                return itemFile;
+                            });
+                        }
+
+                        return item;
                     });
+                }
 
-                    return item;
-                });
+                console.log(dbPayload)
+
+
 
                 const response = await this.sendMessage({
                     module: 'system',
@@ -223,13 +241,15 @@ class PagesController extends Component {
                         files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
                     })
                 }
-
+                console.log(response)
                 await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
+
                     return new Promise((resolve_upload) => {
 
                         //Uploading box background
 
                         if (item.backgroundImageFile) {
+
                             this.uploadFiles({
                                 path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/",
                                 files: [{
@@ -240,14 +260,19 @@ class PagesController extends Component {
                         }
 
                         if (item.module && newFiles && newFiles.length) {
+
+
+
+
                             //Uploading box files
 
                             this.uploadFiles({
                                 path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/module/",
-                                files: newFiles
+                                files: newFiles[0],
                             });
 
                         }
+
 
                         resolve_upload(true);
                     });
@@ -259,6 +284,7 @@ class PagesController extends Component {
             }
         });
     }
+
 
     remove(params) {
         return new Promise(async resolve => {
@@ -280,6 +306,7 @@ class PagesController extends Component {
         return new Promise(async resolve => {
             try {
                 if (params.pageConfig.backgroundImageFile) {
+
                     params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                     if (params.pageConfig.backgroundImageFile) {
                         if (params.pageConfig.oldBackgroundImage) {
@@ -320,7 +347,9 @@ class PagesController extends Component {
                 //we will add new boxes to get the IDs
 
                 paramsClone.items = paramsClone.items.map((item) => {
+
                     if (item.backgroundImageFile) {
+
                         item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
                     }
                     item.backgroundImageFile = "";//for the DB we don't need to send binaries
@@ -352,6 +381,7 @@ class PagesController extends Component {
 
                 await Promise.all(params.items.map(async (item, i) => {
                     if (item.backgroundImageFile) {
+
                         item.backgroundImage = item.backgroundImageFile.name;
                         await this.uploadFiles({
                             path: "/pages/page-" + params.id + "/box-" + item.id,
@@ -373,9 +403,10 @@ class PagesController extends Component {
                     }
 
                     if (item.moduleOptions?.files && item.moduleOptions?.files.length) {
+
                         const fileList = [];
                         item.moduleOptions.files.forEach((fileData) => {
-                            if(fileData.file) {
+                            if (fileData.file) {
                                 fileList.push({file: fileData.file, name: fileData.name})
                             }
                         });
@@ -401,23 +432,159 @@ class PagesController extends Component {
     }
 
     duplicate(params) {
-        return new Promise((resolve) => {
-            (async () => {
-                const duplicateResponse = await this.sendMessage({
-                    module: 'system',
-                    api: 'pages',
-                    act: 'duplicate',
-                    payload: {
-                        id: params.id
+
+
+        if(params.id ==0){
+            console.log('dfvbgadsvfasdf')
+            return new Promise(async resolve => {
+                try {
+                    if (params.pageConfig.backgroundImageFile) {
+                        params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                     }
-                });
-                console.log(duplicateResponse);
-                resolve(true);
-            })();
-        });
+
+                    const dbPayload = _.cloneDeep(params);
+
+                    //we will add new boxes to get the IDs
+                    let newFiles =[];
+                    let vall=[];
+
+
+                    if(dbPayload.items.length > 0){
+
+                        dbPayload.items = dbPayload.items.map((item) => {
+                            if (!!item.backgroundImageFile) {
+                                item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
+                            }
+                            item.backgroundImageFile = "";//for the DB we don't need to send binaries
+
+                            if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
+
+
+
+                                newFiles = item.moduleOptions.files.map(newFile => {
+                                    console.log(item.moduleOptions.file)
+
+                                    return {
+                                        file: item.moduleOptions.file,
+                                        name: newFile.name,
+                                        url:newFile.name
+                                    }
+                                });
+
+
+                            }
+
+                            if(item.moduleOptions.files){
+                                item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
+                                    delete itemFile.file;
+                                    return itemFile;
+                                });
+                            }
+
+                            return item;
+                        });
+                    }
+
+                    console.log(dbPayload)
+
+
+
+                    const response = await this.sendMessage({
+                        module: 'system',
+                        api: 'pages',
+                        act: 'add',
+                        payload: dbPayload
+                    });
+
+                    //Uploading page background
+                    if (params.pageConfig.backgroundImageFile) {
+                        await this.uploadFiles({
+                            path: "/pages/page-" + response.pageId + "/",
+                            files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
+                        })
+                    }
+                    console.log(response)
+                    await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
+
+                        return new Promise((resolve_upload) => {
+
+                            //Uploading box background
+
+                            if (item.backgroundImageFile) {
+
+                                this.uploadFiles({
+                                    path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/",
+                                    files: [{
+                                        name: `background.${this.help.fileExtension(item.backgroundImageFile.name)}`,
+                                        file: item.backgroundImageFile
+                                    }]
+                                });
+                            }
+
+                            if (item.module && newFiles && newFiles.length) {
+
+
+
+
+                                //Uploading box files
+
+                                this.uploadFiles({
+                                    path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/module/",
+                                    files: newFiles[0],
+                                });
+
+                            }
+
+
+                            resolve_upload(true);
+                        });
+
+                    }))
+                    resolve(response)
+                } catch (err) {
+                    resolve(null);
+                }
+            });
+
+
+
+        }else{
+
+            return new Promise((resolve) => {
+
+                (async () => {
+                    const duplicateResponse = await this.sendMessage({
+                        module: 'system',
+                        api: 'pages',
+                        act: 'duplicate',
+                        payload: {
+                            id: params.id
+                        }
+                    });
+                    console.log({duplicateResponse});
+
+                    resolve(true);
+                    // return duplicateResponse
+                })();
+
+
+            });
+
+        }
+
+
+
+
+
+
+
+
     }
 
+
     uploadFiles(params) {
+
+        console.log(params)
         return new Promise(resolve => {
             var formData = new FormData();
 
@@ -426,7 +593,11 @@ class PagesController extends Component {
             formData.append('totalFiles', params.files.length);
 
             //always place the files at the end
+
+
+
             Array.from(params.files).forEach(fileData => {
+
                 formData.append(fileData.name || fileData.file.name, fileData.file, fileData.name || fileData.file.name);
             });
             axios.post("/bucket", formData, {
@@ -462,6 +633,8 @@ class PagesController extends Component {
                 return <ViewPagesEditor control={this.control} {...this.props} />;
             case 'preview':
                 return <ViewPagesPreview control={this.control} {...this.props} />;
+            case 'duplicate':
+                return <ViewPagesEditor control={this.control} {...this.props} />;
         }
 
     }

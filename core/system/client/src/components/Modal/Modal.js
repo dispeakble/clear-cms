@@ -12,7 +12,7 @@ import Button from "components/CustomButtons/Button.js";
 import {Divider, Tooltip} from "@material-ui/core";
 import PropTypes from "prop-types";
 
-class Modal extends Component {
+class Modalpage extends Component {
 
     constructor(props) {
         super(props);
@@ -207,9 +207,9 @@ class Modal extends Component {
     }
 }
 
-export default withStyles(styles)(Modal);
+export default withStyles(styles)(Modalpage);
 
-Modal.propTypes = {
+Modalpage.propTypes = {
     id: PropTypes.string,
     defaultTheme: PropTypes.object,
     resize: PropTypes.bool,

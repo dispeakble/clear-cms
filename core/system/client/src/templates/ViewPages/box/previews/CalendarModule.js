@@ -11,6 +11,7 @@ class CalendarModule extends Component {
   state = {
     withRange: false,
     open: true,
+    dateRange: {},
   };
 
 
@@ -29,6 +30,16 @@ class CalendarModule extends Component {
 
   render() {
     return (
+        <React.Fragment >
+          <Typography style={{marginTop: 30}} id="discrete-slider" gutterBottom>
+            <Tooltip title="Enable Range Calendar">
+              <Switch
+                  checked={this.state.withRange}
+                  onChange={this.changeCalendar}
+              />
+            </Tooltip>
+            Range Calendar
+          </Typography>
       <React.Fragment >
         <Typography style={{marginTop: 30}} id="discrete-slider" gutterBottom>
           <Tooltip title="Enable Range Calendar">
@@ -72,6 +83,38 @@ class CalendarModule extends Component {
           </form>
         )}
       </React.Fragment>
+          {this.state.withRange ? (
+              <DateRangePicker
+                  style={{ backgroundColor: "white !important" }}
+                  open={this.state.open}
+                  toggle={this.setOpen}
+                  onChange={(range) => this.setDateRange(range)}
+              />
+          ) : (
+              <form style={{display: 'flex', gap: 30, width: '80%'}} noValidate>
+                <TextField
+                    style={{flex: 1}}
+                    id="date"
+                    label="Start Date"
+                    type="date"
+                    defaultValue={moment(this.props.moduleOptions.dateRange.startDate).format('YYYY-MM-DD')}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                />
+                <TextField
+                    style={{flex: 1}}
+                    id="date"
+                    label="End Date"
+                    type="date"
+                    defaultValue={moment(this.props.moduleOptions.dateRange.endDate).format('YYYY-MM-DD')}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                />
+              </form>
+          )}
+        </React.Fragment>
     );
   }
 }

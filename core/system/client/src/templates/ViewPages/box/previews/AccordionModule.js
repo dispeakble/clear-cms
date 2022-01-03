@@ -23,11 +23,25 @@ class AccordionModule extends Component {
     }
 
     handleChange(id) {
-        this.setState({
+        this.handleUpdate({
             expanded: id,
-        });
+        })
+        // this.setState({
+        //     expanded: id,
+        // });
     }
 
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            expanded: this.state.files,
+            sections: this.state.galleryTitle,
+
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         return (
             <React.Fragment>

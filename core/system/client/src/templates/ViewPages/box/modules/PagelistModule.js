@@ -1,8 +1,14 @@
-import React, {Component} from "react";
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import Button from "components/CustomButtons/Button.js";
 
 // for the modal
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import ArtTrack from "@material-ui/icons/ArtTrack";
 
 import {withStyles, createTheme} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
@@ -17,6 +23,7 @@ import {ThemeProvider as MuiThemeProvider} from "@material-ui/styles";
 import reactCSS from "reactcss";
 import {AddCircle, Check, Clear, DeleteForever, Edit} from "@material-ui/icons";
 import {Autocomplete} from "@material-ui/lab";
+import PropTypes from "prop-types";
 
 class PagelistModule extends Component {
     state = {
@@ -66,6 +73,7 @@ class PagelistModule extends Component {
         }]
     };
 
+
     getTheme = () => {
         return createTheme({
             palette: this.props.defaultTheme,
@@ -83,35 +91,83 @@ class PagelistModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     async componentDidMount() {
-        const {moduleOptions} = this.props
-        await this.setAsyncState({
-            borderColorStyles: this.sendStyles(this.state.borderColor),
-            shadowColorStyles: this.sendStyles(this.state.shadowColor),
-            numberOfPagesToDisplayAtOnce: moduleOptions.numberOfPagesToDisplayAtOnce,
-            showTitle: moduleOptions.showTitle,
-            truncateDescription: moduleOptions.truncateDescription,
-            showDescription: moduleOptions.showDescription,
-            showThumbnail: moduleOptions.showThumbnail,
-            showModifiedDate: moduleOptions.showModifiedDate,
-            dynamicButtons: moduleOptions.dynamicButtons,
-            showShadow: moduleOptions.showShadow,
-            padding: moduleOptions.padding,
-            margin: moduleOptions.margin,
-            shadowLeft: moduleOptions.shadowLeft || this.state.shadowLeft,
-            shadowTop: moduleOptions.shadowTop || this.state.shadowTop,
-            borderWidth: moduleOptions.borderWidth || this.state.borderWidth,
-            shadowSpread: moduleOptions.shadowSpread,
-            borderRadius: moduleOptions.borderRadius || this.state.borderRadius,
-            showMaxWords: moduleOptions.showMaxWords || this.state.showMaxWords,
-            dynamicButtonsList: moduleOptions.dynamicButtonsList || [],
-            borderColor: moduleOptions.borderColor,
-            shadowColor: moduleOptions.shadowColor,
-        });
+        await this.setAsyncState({borderColorStyles: this.sendStyles(this.state.borderColor),
+            shadowColorStyles: this.sendStyles(this.state.shadowColor)});
+
+
+         if (this.props.moduleOptions) {
+             let {moduleOptions} = this.props;
+             this.setState({
+
+
+                 numberOfPagesToDisplayAtOnce: moduleOptions.numberOfPagesToDisplayAtOnce,
+                 showTitle: moduleOptions.showTitle,
+                 showDescription: moduleOptions.showDescription,
+                 truncateDescription: moduleOptions.truncateDescription,
+                 showMaxWords: moduleOptions.showMaxWords,
+                 showThumbnail: moduleOptions.showThumbnail,
+                 showModifiedDate: moduleOptions.showModifiedDate,
+                 showBorder: moduleOptions.showBorder,
+                 borderWidth: moduleOptions.borderWidth,
+                 borderColor: moduleOptions.borderColor,
+                 borderRadius: moduleOptions.borderRadius,
+                 showShadow: moduleOptions.showShadow,
+                 shadowColor: moduleOptions.shadowColor,
+                 shadowSpread: moduleOptions.shadowSpread,
+                 shadowTop: moduleOptions.shadowTop,
+
+                 shadowLeft: moduleOptions.shadowLeft,
+                 padding: moduleOptions.padding,
+                 margin: moduleOptions.margin,
+                 dynamicButtons: moduleOptions.dynamicButtons,
+                 dynamicButtonsList: moduleOptions.dynamicButtonsList,
+                 borderColorStyles: moduleOptions.borderColorStyles,
+                 shadowColorStyles: moduleOptions.shadowColorStyles,
+                 displayBorderColorPicker: moduleOptions.displayBorderColorPicker,
+                 displayShadowColorPicker: moduleOptions.displayShadowColorPicker,
+                 targetTypes: moduleOptions.targetTypes,
+             });
+         }
     }
 
     closeModuleOptionsModal() {
         this.setState({showModuleOptionsModal: false});
     }
+
+    handleEdit =  (id) => {
+        if (this.props.moduleOptions) {
+            this.handleUpdate({
+                displayType: this.props.moduleOptions.displayType,
+                numberOfPagesToDisplayAtOnce: this.props.moduleOptions.numberOfPagesToDisplayAtOnce,
+                showTitle: this.props.moduleOptions.showTitle,
+                showDescription: this.props.moduleOptions.showDescription,
+                truncateDescription: this.props.moduleOptions.truncateDescription,
+                showMaxWords: this.props.moduleOptions.showMaxWords,
+                showThumbnail: this.props.moduleOptions.showThumbnail,
+                showModifiedDate: this.props.moduleOptions.showModifiedDate,
+                showBorder: this.props.moduleOptions.showBorder,
+                borderWidth: this.props.moduleOptions.borderWidth,
+                borderColor: this.props.moduleOptions.borderColor,
+                borderRadius: this.props.moduleOptions.borderRadius,
+                showShadow: this.props.moduleOptions.showShadow,
+                shadowColor: this.props.moduleOptions.shadowColor,
+                shadowSpread: this.props.moduleOptions.shadowSpread,
+                shadowTop: this.props.moduleOptions.shadowTop,
+                shadowLeft: this.props.moduleOptions.shadowLeft,
+                padding: this.props.moduleOptions.padding,
+                margin: this.props.moduleOptions.margin,
+                dynamicButtons: this.props.moduleOptions.dynamicButtons,
+                dynamicButtonsList: this.props.moduleOptions.dynamicButtonsList
+
+            })
+
+        }
+        this.handleUpdate({
+            itemModuleEditId: id,
+            showModuleOptionsModal: true,
+        })
+
+    };
 
     handleInputChange(event) {
         if (event.target) {
@@ -186,11 +242,11 @@ class PagelistModule extends Component {
                         />
                         <SketchPicker
                             color={this.state[targetedColor]}
-                            onChange={async (color) => {
-                                await this.setAsyncState({
+                            onChange={(color) => {
+                                this.handleUpdate({
                                     [targetedColor]: color.hex,
-                                });
-                                this.props.onUpdate(this.state);
+                                })
+
                             }}
                         />
                     </div>
@@ -200,21 +256,23 @@ class PagelistModule extends Component {
     };
 
     handleColorPickerClick = (displayColorPicker) => {
-        this.setState({[displayColorPicker]: !this.state.displayColorPicker});
+        this.handleUpdate({[displayColorPicker]: !this.state.displayColorPicker })
+
     };
 
     handleColorPickerClose = (displayColorPicker) => {
-        this.setState({[displayColorPicker]: false});
+        this.handleUpdate({ [displayColorPicker]: false})
+
     };
 
-    handleBorderWidth = async (event, newValue) => {
-        await this.setAsyncState({borderWidth: newValue});
-        this.props.onUpdate(this.state)
+    handleBorderWidth =  (event, newValue) => {
+        this.handleUpdate({ borderWidth: newValue })
+
     };
 
-    handleBorderRadius = async (event, newValue) => {
-        await this.setAsyncState({borderRadius: newValue});
-        this.props.onUpdate(this.state)
+    handleBorderRadius =  (event, newValue) => {
+        this.handleUpdate({borderRadius: newValue})
+
     };
 
     tableOptions = {
@@ -247,7 +305,7 @@ class PagelistModule extends Component {
                 return new Promise((resolve) => {
                     setTimeout(() => {
                         let payload = {
-                            totalCount: this.state.dynamicButtonsList.length,
+                            totalCount: this.state?.dynamicButtonsList?.length,
                             page: 0,
                             data: this.state.dynamicButtonsList,
                         };
@@ -258,13 +316,14 @@ class PagelistModule extends Component {
             editable: {
                 onRowAdd: async (newData) => {
                     console.log("rowData", newData);
+
                     await this.setAsyncState(prevState => {
                         return {
                             ...prevState,
                             dynamicButtonsList: [
                                 ...prevState.dynamicButtonsList,
                                 ...[{
-                                    id: prevState.dynamicButtonsList.length + 1,
+                                    id: prevState.dynamicButtonsList?.length + 1,
                                     title: newData.title,
                                     url: newData.url,
                                     text: newData.text,
@@ -274,11 +333,9 @@ class PagelistModule extends Component {
                                 }]
                             ]
                         }
-                    });
-                    this.props.onUpdate(this.state)
-
+                    })
                 },
-                onRowUpdate: async (newData, oldData) => {
+                onRowUpdate: async (newData, oldData) =>{
                     const newDynamicButtonsList = this.state.dynamicButtonsList;
                     const oldDataIndex = newDynamicButtonsList.findIndex(button => button.id === oldData.id);
                     newDynamicButtonsList[oldDataIndex] = {
@@ -296,9 +353,8 @@ class PagelistModule extends Component {
                             dynamicButtonsList: newDynamicButtonsList
                         }
                     })
-                    this.props.onUpdate(this.state)
                 },
-                onRowDelete: async (oldData) => {
+                onRowDelete: async (oldData) =>{
                     const newDynamicButtonsList = this.state.dynamicButtonsList.filter(button => button.id !== oldData.id);
                     await this.setAsyncState(prevState => {
                         return {
@@ -306,7 +362,6 @@ class PagelistModule extends Component {
                             dynamicButtonsList: newDynamicButtonsList
                         }
                     })
-                    this.props.onUpdate(this.state)
                 },
             },
             customActions: [
@@ -332,18 +387,18 @@ class PagelistModule extends Component {
         },
         props: {
             icons: {
-                Add: () => <AddCircle style={{color: this.props.defaultTheme.primary?.main || "green"}}/>,
+                Add: () => <AddCircle style={{ color: this.props.defaultTheme.primary?.main || "green" }} />,
                 Check: () => (
-                    <Check color="primary"/>
+                    <Check color="primary" />
                 ),
                 Clear: () => (
-                    <Clear color="error"/>
+                    <Clear color="error" />
                 ),
                 Edit: () => (
-                    <Edit color="primary"/>
+                    <Edit color="primary" />
                 ),
                 Delete: () => (
-                    <DeleteForever color="error"/>
+                    <DeleteForever color="error" />
                 ),
             },
             columns: [
@@ -407,7 +462,7 @@ class PagelistModule extends Component {
                     field: "showAsLink",
                     title: "Show As Link",
                     initialEditValue: 0,
-                    render: (rowData) => <Checkbox disabled checked={rowData.showAsLink === 1}/>,
+                    render: (rowData) => <Checkbox disabled checked={rowData.showAsLink === 1} />,
                     editComponent: (columnData) => {
                         return (
                             <Checkbox checked={columnData.rowData.showAsLink === 1} onChange={(ev, checked) => {
@@ -416,7 +471,7 @@ class PagelistModule extends Component {
                                     showAsLink: checked ? 1 : 0,
                                 });
                             }
-                            }/>
+                            } />
                         )
                     }
                 },
@@ -444,8 +499,7 @@ class PagelistModule extends Component {
                                     }
                                 }}
                             >
-                                {this.state.positionTypes.map((position, index) => <MenuItem key={index}
-                                                                                             value={position.value}>{position.label}</MenuItem>)}
+                                {this.state.positionTypes.map((position, index) => <MenuItem key={index} value={position.value}>{position.label}</MenuItem>)}
                             </Select>
                         );
                     }
@@ -469,6 +523,43 @@ class PagelistModule extends Component {
         },
     };
 
+
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            numberOfPagesToDisplayAtOnce: this.state.numberOfPagesToDisplayAtOnce,
+            showTitle: this.state.showTitle,
+            showDescription: this.state.showDescription,
+            truncateDescription: this.state.truncateDescription,
+            showMaxWords: this.state.showMaxWords,
+            showThumbnail: this.state.showThumbnail,
+            showModifiedDate: this.state.showModifiedDate,
+            showBorder: this.state.showBorder,
+            borderWidth: this.state.borderWidth,
+            borderColor: this.state.borderColor,
+            borderRadius: this.state.borderRadius,
+            showShadow: this.state.showShadow,
+            shadowColor: this.state.shadowColor,
+            shadowSpread: this.state.shadowSpread,
+            shadowTop: this.state.shadowTop,
+
+            shadowLeft: this.state.shadowLeft,
+            padding: this.state.padding,
+            margin: this.state.margin,
+            dynamicButtons: this.state.dynamicButtons,
+            dynamicButtonsList: this.state.dynamicButtonsList,
+            borderColorStyles: this.state.borderColorStyles,
+            shadowColorStyles: this.state.shadowColorStyles,
+            displayBorderColorPicker: this.state.displayBorderColorPicker,
+            displayShadowColorPicker: this.state.displayShadowColorPicker,
+            targetTypes: this.state.targetTypes,
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
+
     render() {
         const classes = this.props.classes;
         return (
@@ -478,18 +569,16 @@ class PagelistModule extends Component {
                 }}
             >
 
-
                 <div>
                     <Typography>Number of Pages to Display At Once </Typography>
                     <TextField
                         labelText="Number of Pages to Display At Once"
                         id="numnberOfPagesToDisplayAtOnce"
-                        onChange={async (e) => {
-                            await this.setAsyncState({
+                        onChange={(e) =>
+                            this.handleUpdate({
                                 numberOfPagesToDisplayAtOnce: e.target.value
                             })
-                            this.props.onUpdate(this.state)
-                        }}
+                        }
                         InputProps={{
                             inputProps: {
                                 value: this.state.numberOfPagesToDisplayAtOnce,
@@ -506,12 +595,12 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.showTitle}
                             checked={this.state.showTitle}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showTitle: !this.state.showTitle
+                            onChange={() => {
+                                this.handleUpdate({
+                                    showTitle: !this.state
+                                        .showTitle,
                                 })
-                                this.props.onUpdate(this.state)
+
                             }}
                         />
                     </Tooltip>
@@ -522,12 +611,13 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.showDescription}
                             checked={this.state.showDescription}
+                            onChange={() => {
+                                this.handleUpdate({
+                                    showDescription: !this.state
+                                        .showDescription,
 
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showDescription: !this.state.showDescription
                                 })
-                                this.props.onUpdate(this.state)
+
                             }}
                         />
                     </Tooltip>
@@ -538,12 +628,13 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.truncateDescription}
                             checked={this.state.truncateDescription}
+                            onChange={() => {
+                                this.handleUpdate({
+                                    truncateDescription: !this.state
+                                        .truncateDescription,
 
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    truncateDescription: !this.state.truncateDescription
                                 })
-                                this.props.onUpdate(this.state)
+
                             }}
                         />
                     </Tooltip>
@@ -552,13 +643,11 @@ class PagelistModule extends Component {
                             <TextField
                                 label="Show Max Words"
                                 id="showMaxWords"
-
-                                onChange={async (e) => {
-                                    await this.setAsyncState({
+                                onChange={(e) =>
+                                    this.handleUpdate({
                                         showMaxWords: e.target.value
                                     })
-                                    this.props.onUpdate(this.state)
-                                }}
+                                }
                                 inputProps={{
                                     value: this.state.showMaxWords,
                                     type: "number",
@@ -577,11 +666,11 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.showThumbnail}
                             checked={this.state.showThumbnail}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showThumbnail: !this.state.showThumbnail
+                            onChange={() => {
+                                this.handleUpdate({
+                                    showThumbnail: !this.state
+                                        .showThumbnail,
                                 })
-                                this.props.onUpdate(this.state)
                             }}
                         />
                     </Tooltip>
@@ -592,11 +681,12 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.showModifiedDate}
                             checked={this.state.showModifiedDate}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showModifiedDate: !this.state.showModifiedDate
+                            onChange={() => {
+                                this.handleUpdate({
+                                    showModifiedDate: !this.state
+                                        .showModifiedDate,
                                 })
-                                this.props.onUpdate(this.state)
+
                             }}
                         />
                     </Tooltip>
@@ -607,14 +697,13 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.dynamicButtons}
                             checked={this.state.dynamicButtons}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    dynamicButtons: !this.state.dynamicButtons
+                            onChange={() => {
+                                this.handleUpdate({
+                                    dynamicButtons: !this.state
+                                        .dynamicButtons,
                                 })
-                                this.props.onUpdate(this.state)
-                            }}
 
+                            }}
                         />
                     </Tooltip>
                     {this.state.dynamicButtons &&
@@ -674,12 +763,12 @@ class PagelistModule extends Component {
                         <Switch
                             value={this.state.showShadow}
                             checked={this.state.showShadow}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showShadow: !this.state.showShadow
+                            onChange={() => {
+                                this.handleUpdate({
+                                    showShadow: !this.state
+                                        .showShadow,
                                 })
-                                this.props.onUpdate(this.state)
+
                             }}
                         />
                     </Tooltip>
@@ -699,12 +788,11 @@ class PagelistModule extends Component {
                                 <TextField
                                     label="Shadow Spread"
                                     id="spread"
-                                    onChange={async (e) => {
-                                        await this.setAsyncState({
+                                    onChange={(e) =>
+                                        this.handleUpdate({
                                             shadowSpread: e.target.value
                                         })
-                                        this.props.onUpdate(this.state)
-                                    }}
+                                    }
                                     inputProps={{
                                         value: this.state.shadowSpread,
                                         type: "number",
@@ -719,12 +807,11 @@ class PagelistModule extends Component {
                                 <TextField
                                     label="Top Shadow"
                                     id="topShadow"
-                                    onChange={async (e) => {
-                                        await this.setAsyncState({
+                                    onChange={(e) =>
+                                        this.handleUpdate({
                                             shadowTop: e.target.value
                                         })
-                                        this.props.onUpdate(this.state)
-                                    }}
+                                    }
                                     inputProps={{
                                         value: this.state.shadowTop,
                                         type: "number",
@@ -739,12 +826,11 @@ class PagelistModule extends Component {
                                 <TextField
                                     label="Left Shadow"
                                     id="leftShadow"
-                                    onChange={async (e) => {
-                                        await this.setAsyncState({
+                                    onChange={(e) =>
+                                        this.handleUpdate({
                                             shadowLeft: e.target.value
                                         })
-                                        this.props.onUpdate(this.state)
-                                    }}
+                                    }
                                     inputProps={{
                                         value: this.state.shadowLeft,
                                         type: "number",
@@ -762,12 +848,11 @@ class PagelistModule extends Component {
                     <TextField
                         label="Padding"
                         id="padding"
-                        onChange={async (e) => {
-                            await this.setAsyncState({
+                        onChange={(e) =>
+                            this.handleUpdate({
                                 padding: e.target.value
                             })
-                            this.props.onUpdate(this.state)
-                        }}
+                        }
                         inputProps={{
                             value: this.state.padding,
                             type: "number",
@@ -782,12 +867,11 @@ class PagelistModule extends Component {
                     <TextField
                         label="Margin"
                         id="margin"
-                        onChange={async (e) => {
-                            await this.setAsyncState({
+                        onChange={(e) =>
+                            this.handleUpdate({
                                 margin: e.target.value
                             })
-                            this.props.onUpdate(this.state)
-                        }}
+                        }
                         inputProps={{
                             value: this.state.margin,
                             type: "number",
@@ -798,6 +882,82 @@ class PagelistModule extends Component {
                         size={"small"}
                     />
                 </div>
+                {/*<IconButton*/}
+                {/*    onClick={() => this.handleEdit(this.props.boxId)}*/}
+                {/*    color="primary"*/}
+                {/*    size="medium"*/}
+                {/*>*/}
+                {/*    <ArtTrack />*/}
+                {/*</IconButton>*/}
+
+                {/*<Dialog*/}
+                {/*    onBackdropClick={() => "false"}*/}
+                {/*    classes={{*/}
+                {/*        root: classes.center,*/}
+                {/*        paper: classes.modal,*/}
+                {/*    }}*/}
+                {/*    open={this.state.showModuleOptionsModal}*/}
+                {/*    TransitionComponent={this.transition}*/}
+                {/*    keepMounted*/}
+                {/*    onClose={() => this.closeModuleOptionsModal()}*/}
+                {/*    aria-labelledby="classic-modal-slide-title"*/}
+                {/*    aria-describedby="classic-modal-slide-description"*/}
+                {/*>*/}
+                {/*    <DialogTitle*/}
+                {/*        id="classic-modal-slide-title"*/}
+                {/*        disableTypography*/}
+                {/*        className={classes.modalHeader}*/}
+                {/*    >*/}
+                {/*        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>*/}
+                {/*    </DialogTitle>*/}
+                {/*    <DialogContent*/}
+                {/*        id="classic-modal-slide-description"*/}
+                {/*        className={`${classes.modalBody} ${classes.pageListModuleFields}`}*/}
+                {/*    >*/}
+                {/*   */}
+                {/*    </DialogContent>*/}
+                {/*    <DialogActions className={classes.modalFooter}>*/}
+                {/*        <Button*/}
+                {/*            disabled={this.state.isBtnDisabled}*/}
+                {/*            color="primary"*/}
+                {/*            onClick={() => {*/}
+                {/*                this.props.handleSave(this.state.itemModuleEditId, {*/}
+                {/*                    numberOfPagesToDisplayAtOnce: this.state.numberOfPagesToDisplayAtOnce,*/}
+                {/*                    showTitle: this.state.showTitle,*/}
+                {/*                    showDescription: this.state.showDescription,*/}
+                {/*                    truncateDescription: this.state.truncateDescription,*/}
+                {/*                    showMaxWords: this.state.showMaxWords,*/}
+                {/*                    showThumbnail: this.state.showThumbnail,*/}
+                {/*                    showModifiedDate: this.state.showModifiedDate,*/}
+                {/*                    showBorder: this.state.showBorder,*/}
+                {/*                    borderWidth: this.state.borderWidth,*/}
+                {/*                    borderColor: this.state.borderColor,*/}
+                {/*                    borderRadius: this.state.borderRadius,*/}
+                {/*                    showShadow: this.state.showShadow,*/}
+                {/*                    shadowColor: this.state.shadowColor,*/}
+                {/*                    shadowSpread: this.state.shadowSpread,*/}
+                {/*                    shadowTop: this.state.shadowTop,*/}
+                {/*                    shadowLeft: this.state.shadowLeft,*/}
+                {/*                    padding: this.state.padding,*/}
+                {/*                    margin: this.state.margin,*/}
+                {/*                    dynamicButtons: this.state.dynamicButtons,*/}
+                {/*                    dynamicButtonsList: this.state.dynamicButtonsList*/}
+                {/*                });*/}
+                {/*                this.closeModuleOptionsModal();*/}
+                {/*            }}*/}
+                {/*        >*/}
+                {/*            <div>Save</div>*/}
+                {/*        </Button>*/}
+                {/*        <Button*/}
+                {/*            color="danger"*/}
+                {/*            onClick={async () => {*/}
+                {/*                this.closeModuleOptionsModal();*/}
+                {/*            }}*/}
+                {/*        >*/}
+                {/*            Cancel*/}
+                {/*        </Button>*/}
+                {/*    </DialogActions>*/}
+                {/*</Dialog>*/}
             </div>
         );
     }
