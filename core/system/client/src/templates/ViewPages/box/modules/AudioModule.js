@@ -19,7 +19,7 @@ import Switch from "@material-ui/core/Switch";
 
 import {DropzoneDialog} from 'material-ui-dropzone';
 import Button from "../../../../components/CustomButtons/Button";
-import {FcaudioFile} from "react-icons/all";
+import {FcAudioFile} from "react-icons/all";
 
 class AudioModule extends Component {
     sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Uplode"}];
@@ -30,12 +30,14 @@ class AudioModule extends Component {
         sliderVolume: 0,
         autoplay: false,
         enabled: false,
-        showDropZone: false ,
+        showImageUploader: false ,
         files: [],
         index:'',
-        audio: '',
-        audioFile: {},
+        myfile:[],
+        newurl:'',
+        AudioFile:{}
     };
+
     getTheme = () => {
         return createTheme({
             palette: this.props.defaultTheme,
@@ -53,21 +55,22 @@ class AudioModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
+        console.log(this.props.moduleOptions)
         const newState = {
             autoplay: this.props.moduleOptions.autoplay,
             sourceType: this.props.moduleOptions.sourceType,
-            url: this.props.moduleOptions.url,
+            url: this.props.moduleOptions?.url,
             variableName: this.props.moduleOptions.variableName || "",
             sliderVolume: this.props.moduleOptions.volume * 100,
             volume: this.props.moduleOptions.volume,
             enabled: true,
-            audio:  this.props.moduleOptions.audio || '' ,
-            audioFile: this.props.moduleOptions.audioFile || {},
-            files: this.props.moduleOptions.files || []
+            files: this.props.moduleOptions.files || [],
+            AudioFile: this.props.moduleOptions.AudioFile
+
         }
 
         if(newState.files?.length > 0){
-            newState.url = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0]?.name}`;
+            newState.newurl = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0].name}`;
         }
         this.setState(newState);
     }
@@ -84,45 +87,50 @@ class AudioModule extends Component {
         if (!newValue || !newValue.label) {
             return;
         }
-        await this.setAsyncState({
+        this.handleUpdate({
             sourceType: this.getIndex(newValue.label),
-        });
-        this.props.onUpdate(this.state);
+        })
+
     };
 
-    handleVolume = async (newValue) => {
-        await this.setAsyncState({
+    handleVolume =  (newValue) => {
+        this.handleUpdate({
             sliderVolume: newValue * 100,
             volume: newValue
-        });
+        })
 
-        this.props.onUpdate(this.state);
+
+
     };
 
 
     showLogoUploader() {
         this.setState({
-            showDropZone: true,
+            showImageUploader: true,
             enabled:true,
 
         });
     }
-    closeLogoUploader() {
+    closeAudioUploder() {
         this.setState({
-            showDropZone: false
+            showImageUploader: false
         });
     }
 
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "url":
-                await this.setAsyncState({url: event.target.value});
-                this.props.onUpdate(this.state);
+                this.handleUpdate({
+                    url: event.target.value
+                })
+
                 break;
 
             case "variableName":
-                await this.setAsyncState({variableName: event.target.value});
-                this.props.onUpdate(this.state);
+                this.handleUpdate({
+                    variableName: event.target.value
+                })
+
                 break;
             default:
                 break;
@@ -140,47 +148,126 @@ class AudioModule extends Component {
     }
 
     async handleAudio(event) {
+        console.log(this.state.newurl)
         if (event.length) {
             let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-            await this.setAsyncState({
-                audio: strings[0],
-                audioFile: event[0]
-            });
 
-            this.setState({
-                showDropZone: false
-            });
+            this.handleUpdate({
+                Audio: strings[0],
+                AudioFile: event[0],
+                showImageUploader: false
 
+            })
             let files = this.state.files;
-            const audioFile = !!files[0];
-            
-            if (this.state.audioFile) {
-                const audioPayload = {
+           // const logoIndex = files.findIndex(i => i && i.sel === 'logo');
+
+            if (this.state.AudioFile) {
+
+                const logoPayload = {
                     sel: 'audio',
-                    name: `audio.${this.fileExtension(this.state.audioFile.name)}`,
-                    file: this.state.audioFile
+                    name: `audio.${this.fileExtension(this.state.AudioFile.name)}`,
+                    file: this.state.AudioFile,
                 };
+                console.log(logoPayload)
 
-                if(audioFile) {
-                    files[0] = audioPayload;
-                } else {
-                    files.push(audioPayload);
-                }
-                await this.setAsyncState({files: files, url: `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${files[0].name}`});
-                this.props.onUpdate(this.state);
+
+
+                let imageLink=`/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${logoPayload.name}`;
+                this.setState({
+                    url:strings[0],
+                });
+                this.setState({
+                    myfile:event[0]
+                })
+                files.push(logoPayload);
+
+
+
+                // if(logoIndex && logoIndex > -1) {
+                //     files[logoIndex] = logoPayload;
+                // } else {
+                //     files.push(logoPayload);
+                // }
             }
-
+            console.log(this.dataURItoBlob(strings[0]))
+            this.handleSave({files});
         }
     }
+     dataURItoBlob(dataURI) {
+        // convert base64 to raw binary data held in a string
+        // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+        var byteString = atob(dataURI.split(',')[1]);
 
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to an ArrayBuffer
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        //Old Code
+        //write the ArrayBuffer to a blob, and you're done
+        //var bb = new BlobBuilder();
+        //bb.append(ab);
+        //return bb.getBlob(mimeString);
+
+        //New Code
+        return new Blob([ab], {type: mimeString});
+
+
+    }
+
+    handleSave(params) {
+
+
+        this.props.onUpdate(Object.assign({}, {
+            url: this.state.url,
+            files: this.state.files,
+            sourceType:this.state.files,
+
+            volume: this.state.volume,
+            sliderVolume: this.state.sliderVolume,
+            autoplay: this.state.autoplay,
+            enabled: this.state.enabled,
+            showImageUploader: this.state.showImageUploader,
+            file: this.state.myfile
+
+
+        }, params));
+
+        this.setState(params);
+    }
     fileExtension = (string) => {
         const p = string.split('.');
         return p[p.length - 1];
     }
 
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            url: this.state.url,
+            sourceType: this.state.sourceType,
+            volume: this.state.volume,
+            sliderVolume: this.state.sliderVolume,
+            autoplay: this.state.autoplay,
+            enabled: this.state.enabled,
+            showImageUploader: this.state.showImageUploader,
+            files: this.state.files,
+            index: this.state.index,
+            file:this.state.myfile,
+            AudioFile:this.state.AudioFile
+        }, params);
+
+        this.props.onUpdate(payload);
+
+        this.setState(params);
+    }
     render() {
         const audioProps = {
-            src: this.state.audio || this.state.url,
+            src: this.state.url || "",
             volume: this.state.volume,
             layout: "horizontal-reverse",
             onVolumeChange: (evt) => {
@@ -197,9 +284,9 @@ class AudioModule extends Component {
                     <div>
 
                         <DropzoneDialog
-                            open={this.state.showDropZone}
+                            open={this.state.showImageUploader}
                             onSave={this.handleAudio.bind(this)}
-                            onClose={this.closeLogoUploader.bind(this)}
+                            onClose={this.closeAudioUploder.bind(this)}
                             filesLimit={1}
                             acceptedFiles={['audio/*']}
                             maxFileSize={Math.pow(1024, 3)}
@@ -208,11 +295,11 @@ class AudioModule extends Component {
                     <FormControlLabel
                         control={<Switch
                             checked={this.state.autoplay}
-                            onChange={async () => {
-                                await this.setAsyncState({
+                            onChange={ () => {
+                                this.handleUpdate({
                                     autoplay: !this.state.autoplay,
-                                });
-                                this.props.onUpdate(this.state)
+                                })
+
                             }}
                             inputProps={{'aria-label': 'controlled'}}
                         />}
@@ -255,7 +342,7 @@ class AudioModule extends Component {
                     this.state.sourceType === 2 ?(
                         <Button onClick={() => {
                             this.showLogoUploader()
-                        }} color="primary">Upload Logo Image</Button>
+                        }} color="primary">Upload Audio</Button>
 
                     ):(
                         <>
