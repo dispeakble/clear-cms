@@ -10,7 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import {withStyles, createTheme} from "@material-ui/core/styles";
+import {withStyles, createTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
@@ -66,12 +66,15 @@ class MenuModule extends Component {
         horizontallyCentered: false,
         verticallyCentered: false,
         menuIconSpace: 0,
-        muiTheme: {}
+        muiTheme: {},
+        backgroundPosition:'center center'
     };
 
     componentDidMount() {
+
+
         if (Object.keys(this.props.moduleOptions).length !== 0) {
-            const statePayload = {
+            this.setState({
                 menuOptions: this.props.moduleOptions.menuOptions,
                 isMenuVertical: this.props.moduleOptions.isMenuVertical,
                 stretchToFit: this.props.moduleOptions.stretchToFit,
@@ -79,14 +82,20 @@ class MenuModule extends Component {
                 horizontallyCentered: this.props.moduleOptions.horizontallyCentered,
                 verticallyCentered: this.props.moduleOptions.verticallyCentered,
                 menuIconSpace: this.props.moduleOptions.menuIconSpace,
-                showAsAccordion: false,
-            };
 
-            if (this.props.moduleOptions.showAsAccordion) {
-                statePayload.showAsAccordion = this.props.moduleOptions.showAsAccordion
+
+            });
+            if(this.props.moduleOptions.backgroundPosition){
+                this.setState({
+                    backgroundPosition:this.props.moduleOptions.backgroundPosition
+                })
+
             }
-
-            this.setState(statePayload);
+            if (this.props.moduleOptions.showAsAccordion) {
+                this.setState({
+                    showAsAccordion: this.props.moduleOptions.showAsAccordion,
+                });
+            }
             this.getAllLinks();
         }
 
@@ -189,8 +198,9 @@ class MenuModule extends Component {
     };
 
     getLinksNested(id) {
+        let result = "";
         let link = this.state.menuOptions.find((el) => el.id === id);
-        let result = link.text;
+        result = link.text;
         if (link && link.parentId) {
             result = this.getLinksNested(link.parentId) + "/" + result;
         }
@@ -222,7 +232,39 @@ class MenuModule extends Component {
 
     tableOptions = {
         getTheme: () => {
+            /*
+              error?: PaletteColorOptions;
+            warning?: PaletteColorOptions;
+            info?: PaletteColorOptions;
+            success?: PaletteColorOptions;
+              */
             return createTheme({
+                /*palette: {
+                    text: {
+                        //primary: "#F00",
+                        //secondary: "#0F0",
+                        disabled: "#00F",
+                        hint: "#333",
+                    },
+                    error: {
+                        main: "#FF0000",
+                    },
+                    warning: {
+                        main: "#FF0000",
+                    },
+                    info: {
+                        main: "#FF0000",
+                    },
+                    success: {
+                        main: "#FF0000",
+                    },
+                    primary: {
+                        main: "#008B8B",
+                    },
+                    secondary: {
+                        main: "#008B8B",
+                    },
+                },*/
                 overrides: {
                     MuiTableCell: {
                         head: {
@@ -259,7 +301,7 @@ class MenuModule extends Component {
             },
             editable: {
                 onRowAdd: (newData) =>
-                    new Promise((resolve) => {
+                    new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             delete newData.tableData;
                             let menuOptions = typeof this.state.menuOptions === typeof [] ? [...this.state.menuOptions] : [];
@@ -272,7 +314,7 @@ class MenuModule extends Component {
                         }, 100);
                     }),
                 onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
+                    new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             delete newData.tableData;
                             const dataUpdate = [...this.state.menuOptions];
@@ -285,7 +327,7 @@ class MenuModule extends Component {
                         }, 100);
                     }),
                 onRowDelete: (oldData) =>
-                    new Promise((resolve) => {
+                    new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             const dataDelete = [...this.state.menuOptions];
                             const index = oldData.tableData.id;
@@ -450,12 +492,59 @@ class MenuModule extends Component {
         });
         this.props.onUpdate(this.state);
     }
+    imgPosStateClass = (type = 'logo', pos) => {
+        let posClass = '';
+        if (type === 'bg') {
+            posClass = this.state.backgroundPosition === pos ? 'selected' : '';
+            return posClass;
+        }
+
+
+        return posClass;
+    }
+    setImgPosition = async (type = 'logo', pos) => {
+
+        if (type === 'bg') {
+
+            await this.setAsyncState({
+                backgroundPosition: pos
+            });
+            this.props.onUpdate(this.state);
+        }
+
+    }
+
+    positionButtons = (type) => {
+
+        const vert = ["top", "center", "bottom"];
+        const horiz = ["left", "center", "right"];
+
+        let buttons = [];
+
+        vert.map((v, vi) => {
+            horiz.map((h, hi) => {
+                buttons.push(
+                    <Tooltip title={`${h} ${v}`}>
+                    <button key={`${type}-${hi}-${vi}`} onClick={() => {
+                    this.setImgPosition(type, `${h} ${v}`)
+                }} className={this.imgPosStateClass(type, `${h} ${v}`)}>
+                    {h !== v ? `${h} ${v}` : h }
+                </button>
+                </Tooltip>
+                )
+                return h;
+            })
+            return v;
+        })
+
+        return buttons;
+    }
 
     render() {
 
-        if(undefined === this.state.bgColor) {
-            return <></> ;
-        }
+        // if(undefined === this.state.bgColor) {
+        //     return <></> ;
+        // }
 
         const classes = this.props.classes;
         const bgColorStyles = this.sendStyles(this.state.bgColor || {r:0,b:0,g:0,a:1});
@@ -503,11 +592,11 @@ class MenuModule extends Component {
                                         <SketchPicker
                                             color={this.state.bgColor}
                                             onChange={async (color) => {
-
+                                                console.log('color',color);
                                                 await this.setAsyncState({
                                                     bgColor: color.rgb,
                                                 });
-
+                                                console.log('now state on color change', this.state)
                                                 this.props.onUpdate(this.state);
                                             }}
                                         />
@@ -569,35 +658,14 @@ class MenuModule extends Component {
                         </div>
                         <div style={{flex: 1}}>
                             <Typography id="discrete-slider" gutterBottom>
-                                <Tooltip title="The text will be aligned horizontally">
-                                    <Switch
-                                        checked={this.state.horizontallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                horizontallyCentered: !this.state.horizontallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
-                                        }}
-                                        value={this.state.horizontallyCentered}
-                                    />
-                                </Tooltip>
-                                Text to Center Horizontally
+                                Align Item
+                                <div className={classes.buttonsPosition}>
+                                    {this.positionButtons('bg')}
+                                </div>
+
+
                             </Typography>
-                            <Typography id="discrete-slider" gutterBottom>
-                                <Tooltip title="The text will be aligned vertically">
-                                    <Switch
-                                        checked={this.state.verticallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                verticallyCentered: !this.state.verticallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
-                                        }}
-                                        value={this.state.verticallyCentered}
-                                    />
-                                </Tooltip>
-                                Text to Center Vertically
-                            </Typography>
+
                             <Typography id="discrete-slider" gutterBottom>
                                 Spacing Between Icon and Menu
                                 <Tooltip title="The amount of space between the icons and the text">
@@ -686,6 +754,5 @@ export default withRouter(withStyles(styles)(MenuModule));
 MenuModule.propTypes = {
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
-    onUpdate: PropTypes.func,
-    defaultTheme: PropTypes.object
+    onUpdate: PropTypes.func
 };

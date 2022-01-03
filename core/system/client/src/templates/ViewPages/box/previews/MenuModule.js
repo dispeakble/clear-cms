@@ -9,6 +9,19 @@ import Icon from "@material-ui/core/Icon";
 import PropTypes from "prop-types";
 
 class MenuModule extends Component {
+    state={
+        backgroundPosition:'center center'
+    }
+
+    componentDidMount() {
+
+
+        const payload={
+            backgroundPosition:this.props.moduleOptions.backgroundPosition
+
+        }
+        this.setState(payload)
+    }
 
     createMenu(params, options) {
         const createLink = (elm) => {
@@ -57,14 +70,26 @@ class MenuModule extends Component {
             fontSize: options.style.fontSize,
             fontFamily: options.style.fontFamily,
             border: "1px solid rgba(0,0,0,0.3)",
+            backgroundPosition:this.state.backgroundPosition
+
         };
+        const myArray = this.state.backgroundPosition.split(" ");
+
+      let   styleList={
+          display:'flex',
+          justifyContent:myArray[0],
+          alignItems:myArray[1]
+
+        }
+
 
         if (options.showAsAccordion) {
             if (options.stretchToFit && options.isTopLevel) {
                 accordionStyle.width = "100%";
             }
             return (
-                <List component="nav" disablePadding>
+                <List component="nav" disablePadding
+                style={styleList}>
                     <LinksMenu
                         style={accordionStyle}
                         accordionStyle={accordionStyle}
@@ -167,6 +192,13 @@ class MenuModule extends Component {
         if(horizontallyCentered){
             gridStyle.textAlign= "center"
         }
+
+       if(this.props.moduleOptions.backgroundPosition){
+
+
+           gridStyle.backgroundPosition = this.state.backgroundPosition || 'center center';
+
+       }
 
         return (
             <div
