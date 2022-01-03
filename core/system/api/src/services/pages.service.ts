@@ -1123,6 +1123,7 @@ export class PagesService {
                         const old_page_data = sourcePage.data[0];
 
                         delete old_page_data.id;
+                        old_page_data.is_default = 0
 
                         const newPage = await this.protocolService.sendMessage({
                             channel: 'db',
@@ -1130,23 +1131,42 @@ export class PagesService {
                             act: 'add',
                             payload: {
                                 channel: 'system',
-                                what: 'pages',
-                                data: old_page_data
+                                data: {
+                                    what: 'pages',
+                                    data: old_page_data
+                                }
                             }
                         }).toPromise();
 
+                        console.log("new page", newPage)
+
                         if(source_p_t_b.data.length) {
-                            const copyAssets = await this.protocolService.sendMessage({
+                            //create new folder
+                            const newFILE = await this.protocolService.sendMessage({
+                                channel: 'bucket',
+                                api: 'fs',
+                                act: 'mkdir',
+                                payload: {
+                                    channel: 'system',
+                                    path: '/pages',
+                                    name: `page-${Number(newPage.data[0].id)}`
+                                }
+                            }).toPromise();
+
+                            const copyFILES = await this.protocolService.sendMessage({
                                 channel: 'bucket',
                                 api: 'fs',
                                 act: 'copy',
-                                payload: {
-                                    channel: 'system',
-                                    replace: true,
-                                    source: `/pages/page-${Number(params.id)}`,
-                                    destination: `/pages/page-${newPage[0].id}`,
+                                payload:{
+                                    channel:'system',
+                                    source_path:'pages',
+                                    src:`page-${params.id}`,
+                                    dest_path:'pages',
+                                    dest: `page-${Number(newPage.data[0].id)}`
                                 }
-                            }).toPromise();
+                            }).toPromise()
+
+                            console.log('copy', copyFILES)
 
                             const sptb = source_p_t_b.data;
 

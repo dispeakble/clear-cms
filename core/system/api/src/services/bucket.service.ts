@@ -483,7 +483,7 @@ export class BucketService {
         })
     }
 
-    public mkdir (params: any){
+    public mkdir (params: any) {
         return new Observable(subscriber => {
             const payload: payloadInterface = {
                 channel: 'bucket',
@@ -503,6 +503,30 @@ export class BucketService {
             });
         })
     }
+
+
+    public copy(params: any){
+        return new Observable(subscriber => {
+            //check if the file already exists in the selected folder
+            //if it already exists then ask the user to overwrite
+            const payload: payloadInterface = {
+                channel: 'bucket',
+                api: 'fs',
+                act: 'copy',
+                payload: {
+                    source: path.join(params.source_path, params.src),
+                    destination: path.join(params.dest_path, params.dest),
+                }
+            };
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next(data);
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+        }
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
