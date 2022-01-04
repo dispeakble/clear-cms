@@ -9,7 +9,6 @@ class VideoModule extends Component {
     controls: false,
     loop: false,
     volume: 50,
-    videoURL: '',
     files: [],
   };
 
@@ -21,24 +20,20 @@ class VideoModule extends Component {
       controls: moduleOptions.controls,
       loop: moduleOptions.loop,
       volume: moduleOptions.volume,
-      videoURL: moduleOptions.videoURL,
       files: moduleOptions.files || [],
-    }
-    if(newState.files?.length > 0) {
-      newState.url = `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.boxId}/module/${newState.files[0].name}`
     }
     this.setState(newState);
   }
   render() {
     return (
-      <ReactPlayer
-        playing
-        mute={this.state.mute}
-        controls={this.state.controls}
-        loop={this.state.loop}
-        url={this.state.url || this.state.videoURL}
-        volume={this.state.volume}
-      />
+        <ReactPlayer
+            playing
+            mute={this.state.mute}
+            controls={this.state.controls}
+            loop={this.state.loop}
+            url={this.state.url}
+            volume={this.state.volume}
+        />
     );
   }
 }
