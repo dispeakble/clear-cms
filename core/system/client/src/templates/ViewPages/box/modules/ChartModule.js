@@ -1,15 +1,11 @@
 import React, {Component} from "react";
 import Chart from "react-google-charts";
-
 // for the modal
 import PropTypes from "prop-types";
-
 import Typography from "@material-ui/core/Typography";
 import CustomInput from "components/CustomInput/CustomInput.js";
-
 import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
 import {DropzoneArea} from "material-ui-dropzone";
 
 class ChartModule extends Component {
