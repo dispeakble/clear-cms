@@ -22,7 +22,7 @@ import Button from "../../../../components/CustomButtons/Button";
 import {FcAudioFile} from "react-icons/all";
 
 class AudioModule extends Component {
-    sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Uplode"}];
+    sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Upload Audio"}];
     state = {
         url: "",
         sourceType: 0,
@@ -30,11 +30,9 @@ class AudioModule extends Component {
         sliderVolume: 0,
         autoplay: false,
         enabled: false,
-        showImageUploader: false ,
+        showAudioUploader: false ,
         files: [],
         index:'',
-        myfile:[],
-        newurl:'',
         AudioFile:{}
     };
 
@@ -55,7 +53,6 @@ class AudioModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
-        console.log(this.props.moduleOptions)
         const newState = {
             autoplay: this.props.moduleOptions.autoplay,
             sourceType: this.props.moduleOptions.sourceType,
@@ -69,9 +66,6 @@ class AudioModule extends Component {
 
         }
 
-        if(newState.files?.length > 0){
-            newState.newurl = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0].name}`;
-        }
         this.setState(newState);
     }
 
@@ -106,14 +100,14 @@ class AudioModule extends Component {
 
     showLogoUploader() {
         this.setState({
-            showImageUploader: true,
+            showAudioUploader: true,
             enabled:true,
 
         });
     }
     closeAudioUploder() {
         this.setState({
-            showImageUploader: false
+            showAudioUploader: false
         });
     }
 
@@ -148,19 +142,14 @@ class AudioModule extends Component {
     }
 
     async handleAudio(event) {
-        console.log(this.state.newurl)
-        if (event.length) {
+   if (event.length) {
             let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-
             this.handleUpdate({
                 Audio: strings[0],
                 AudioFile: event[0],
-                showImageUploader: false
-
+                showAudioUploader: false
             })
             let files = this.state.files;
-           // const logoIndex = files.findIndex(i => i && i.sel === 'logo');
-
             if (this.state.AudioFile) {
 
                 const logoPayload = {
@@ -168,78 +157,26 @@ class AudioModule extends Component {
                     name: `audio.${this.fileExtension(this.state.AudioFile.name)}`,
                     file: this.state.AudioFile,
                 };
-                console.log(logoPayload)
-
-
-
-                let imageLink=`/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${logoPayload.name}`;
                 this.setState({
                     url:strings[0],
                 });
-                this.setState({
-                    myfile:event[0]
-                })
                 files.push(logoPayload);
-
-
-
-                // if(logoIndex && logoIndex > -1) {
-                //     files[logoIndex] = logoPayload;
-                // } else {
-                //     files.push(logoPayload);
-                // }
             }
-            console.log(this.dataURItoBlob(strings[0]))
-            this.handleSave({files});
-        }
+            this.handleUpdate({files});
+   }
     }
-     dataURItoBlob(dataURI) {
-        // convert base64 to raw binary data held in a string
-        // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+    dataURItoBlob(dataURI) {
         var byteString = atob(dataURI.split(',')[1]);
-
-        // separate out the mime component
         var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-        // write the bytes of the string to an ArrayBuffer
         var ab = new ArrayBuffer(byteString.length);
         var ia = new Uint8Array(ab);
         for (var i = 0; i < byteString.length; i++) {
             ia[i] = byteString.charCodeAt(i);
         }
-
-        //Old Code
-        //write the ArrayBuffer to a blob, and you're done
-        //var bb = new BlobBuilder();
-        //bb.append(ab);
-        //return bb.getBlob(mimeString);
-
-        //New Code
         return new Blob([ab], {type: mimeString});
+         }
 
 
-    }
-
-    handleSave(params) {
-
-
-        this.props.onUpdate(Object.assign({}, {
-            url: this.state.url,
-            files: this.state.files,
-            sourceType:this.state.files,
-
-            volume: this.state.volume,
-            sliderVolume: this.state.sliderVolume,
-            autoplay: this.state.autoplay,
-            enabled: this.state.enabled,
-            showImageUploader: this.state.showImageUploader,
-            file: this.state.myfile
-
-
-        }, params));
-
-        this.setState(params);
-    }
     fileExtension = (string) => {
         const p = string.split('.');
         return p[p.length - 1];
@@ -254,15 +191,11 @@ class AudioModule extends Component {
             sliderVolume: this.state.sliderVolume,
             autoplay: this.state.autoplay,
             enabled: this.state.enabled,
-            showImageUploader: this.state.showImageUploader,
+            showAudioUploader: this.state.showAudioUploader,
             files: this.state.files,
-            index: this.state.index,
-            file:this.state.myfile,
             AudioFile:this.state.AudioFile
         }, params);
-
         this.props.onUpdate(payload);
-
         this.setState(params);
     }
     render() {
@@ -284,7 +217,7 @@ class AudioModule extends Component {
                     <div>
 
                         <DropzoneDialog
-                            open={this.state.showImageUploader}
+                            open={this.state.showAudioUploader}
                             onSave={this.handleAudio.bind(this)}
                             onClose={this.closeAudioUploder.bind(this)}
                             filesLimit={1}
@@ -338,11 +271,12 @@ class AudioModule extends Component {
                         />
                     )}
                 />{" "}
+
                 {
                     this.state.sourceType === 2 ?(
                         <Button onClick={() => {
                             this.showLogoUploader()
-                        }} color="primary">Upload Logo Image</Button>
+                        }} color="primary">Upload Audio</Button>
 
                     ):(
                         <>
