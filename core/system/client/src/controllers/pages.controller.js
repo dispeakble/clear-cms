@@ -171,7 +171,7 @@ class PagesController extends Component {
 
 
     add(params) {
-        console.log(params)
+
 
 
         return new Promise(async resolve => {
@@ -184,7 +184,7 @@ class PagesController extends Component {
 
                 //we will add new boxes to get the IDs
                 let newFiles =[];
-                let vall=[];
+
 
 
                 if(dbPayload.items.length > 0){
@@ -200,7 +200,7 @@ class PagesController extends Component {
 
 
                             newFiles = item.moduleOptions.files.map(newFile => {
-                                console.log(item.moduleOptions.file)
+
 
                                 return {
                                     file: item.moduleOptions.file,
@@ -223,7 +223,7 @@ class PagesController extends Component {
                     });
                 }
 
-                console.log(dbPayload)
+
 
 
 
@@ -241,7 +241,7 @@ class PagesController extends Component {
                         files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
                     })
                 }
-                console.log(response)
+
                 await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
 
                     return new Promise((resolve_upload) => {
@@ -369,9 +369,6 @@ class PagesController extends Component {
                     payload: paramsClone
                 });
 
-
-                console.log(response)
-
                 params.items = params.items.map((item) => {
                     response.items.map((dbItem) => {
                         if (Number(item.i) === Number(dbItem.ref)) {
@@ -438,7 +435,7 @@ class PagesController extends Component {
 
 
         if(params.id ==0){
-          console.log('dfvbgadsvfasdf')
+
             return new Promise(async resolve => {
                 try {
                     if (params.pageConfig.backgroundImageFile) {
@@ -449,7 +446,7 @@ class PagesController extends Component {
 
                     //we will add new boxes to get the IDs
                     let newFiles =[];
-                    let vall=[];
+
 
 
                     if(dbPayload.items.length > 0){
@@ -465,7 +462,7 @@ class PagesController extends Component {
 
 
                                 newFiles = item.moduleOptions.files.map(newFile => {
-                                    console.log(item.moduleOptions.file)
+
 
                                     return {
                                         file: item.moduleOptions.file,
@@ -488,7 +485,7 @@ class PagesController extends Component {
                         });
                     }
 
-                    console.log(dbPayload)
+
 
 
 
@@ -506,7 +503,7 @@ class PagesController extends Component {
                             files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
                         })
                     }
-                    console.log(response)
+
                     await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
 
                         return new Promise((resolve_upload) => {
@@ -564,7 +561,6 @@ class PagesController extends Component {
                             id: params.id
                         }
                     });
-                    console.log({duplicateResponse});
 
                     resolve(true);
                     // return duplicateResponse
@@ -587,7 +583,7 @@ class PagesController extends Component {
 
     uploadFiles(params) {
 
-        console.log(params)
+
         return new Promise(resolve => {
             var formData = new FormData();
 

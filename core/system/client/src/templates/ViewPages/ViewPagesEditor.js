@@ -68,7 +68,6 @@ class ViewPagesEditor extends React.PureComponent {
         showSavedMessage: false,
         showErrorMessage: false,
         errorMessage: "",
-        onDupli:false,
         showPageOptionsModal: this.props.location.pathname.indexOf("edit") === -1,
         itemOnDeleteIndex: "",
         isAddBtnDisabled: true,
@@ -420,11 +419,8 @@ class ViewPagesEditor extends React.PureComponent {
         if (editing) {
             await this.fetchAndSet(page_id);
         } else {
-
             const defaultPublicTheme = await this.props.control.getPublicTheme();
-
             this.muiTheme = this.createDefaultTheme();
-
             if (defaultPublicTheme) {
                 if (defaultPublicTheme.bgcolor) {
                     this.setState({ bgColor: defaultPublicTheme.bgcolor, pageBackgroundColor: true });
@@ -452,35 +448,29 @@ class ViewPagesEditor extends React.PureComponent {
                     this.setState({ fontFamily: defaultPublicTheme.fontfamily });
                 }
             }
-
             if(this.props.location?.state?.templateMode) {
                 this.setState({
                     isTemplate: this.props.location.state.templateMode
                 })
             }
         }
-
         await this.setAsyncState({
             bgColorStyles: this.sendStyles(this.state.bgColor),
             textColorStyles: this.sendStyles(this.state.textColor),
         });
-
         this.setState({
             editing: editing,
             page_id: page_id,
             templates,
         });
     }
-
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
-
     setTemporaryModuleOptions = (id, data, isVertical) => {
         let allTempModuleOptions = this.state.temporaryModuleOptions;
         allTempModuleOptions[Number(id)] = { data: data, isVertical: isVertical };
         this.setState({ temporaryModuleOptions: allTempModuleOptions });
     };
-
     preparePageConfiguration() {
 
         const payload = {
@@ -591,9 +581,7 @@ class ViewPagesEditor extends React.PureComponent {
 
         //adding default box styles
         itemStyle.padding = "5px";
-
         let style = {};
-
         if (el.backgroundImage) {
             style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
         }
@@ -657,16 +645,11 @@ class ViewPagesEditor extends React.PureComponent {
         const loadingFallback = (() => {
             return <span>Loading...</span>;
         })();
-
         LazyModule = false;
-
-
-
         if (el.module) {
             const moduleType = el.module.replaceAll(" ", "");
             LazyModule = React.lazy(() => import(`./box/previews/${moduleType}`));
         }
-
         const classes = this.props.classes;
         return (
             <div key={i} data-grid={el} style={itemStyle}>
@@ -784,17 +767,9 @@ class ViewPagesEditor extends React.PureComponent {
 
 
     async onDuplicate(id) {
-        const pageConfig = this.preparePageConfiguration();
 
         try {
             const existingItem = this.getItemById(id);
-            console.log(existingItem)
-
-            this.setState({
-                onDupli:true
-            })
-
-
 
             let newId = 0;
 
@@ -852,7 +827,6 @@ class ViewPagesEditor extends React.PureComponent {
         try {
             this.state.items.map((item) => {
 
-                console.log(item)
                 newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
                 return item;
             });
@@ -1360,10 +1334,9 @@ class ViewPagesEditor extends React.PureComponent {
                 pageConfig: pageConfig,
                 items: this.state.items,
             };
-            console.log(page)
 
-            let vvv= await this.props.control.edit({...page, editPage: this.state.editPage});
-            console.log(vvv)
+             await this.props.control.edit({...page, editPage: this.state.editPage});
+
 
 
 
@@ -1377,31 +1350,13 @@ class ViewPagesEditor extends React.PureComponent {
                 })
             }, 3000);
 
-        }
-            // else if(this.state.onDupli ==true){
-            //   console.log('gdsgdfhghg')
-            //
-            //   const page = {
-            //
-            //
-            //     id: this.state.page_id,
-            //     pageConfig: pageConfig,
-            //     items: this.state.items,
-            //   };
-            //
-            //   const pageData =  this.props.control.duplicate(page);
-            //   console.log(pageData)
-            //
-            //   this.props.history.push(`/pages/edit/${page.id}`);
-            //
-        // }
-        else {
+        } else {
             let newPage = {
                 pageConfig: pageConfig,
                 items: this.state.items,
             };
 
-            console.log('gnabhdfbgfbdjgjdfbgd')
+
             const pageData = await this.props.control.add(newPage);
 
             this.props.history.push(`/pages/edit/${pageData.pageId}`);
@@ -1434,17 +1389,13 @@ class ViewPagesEditor extends React.PureComponent {
                 title: this.state.dialogValue.title
             }
         });
-
         if(!categoriesFromStorage?.length) {
             const newCategory = await this.props.control.addCategory({
                 title: newTitle,
                 description: newDescription,
             });
-
             categoriesFromStorage = await this.props.control.listCategories();
-
             const categories = [];
-
             categoriesFromStorage.map((category) => {
                 categories.push({
                     label: category.title,
@@ -1491,7 +1442,6 @@ class ViewPagesEditor extends React.PureComponent {
                 hasBgImage = true;
             }
         }
-
         if(hasBgImage) {
             bodyWrapperStyle.backgroundPosition = "center";
             if(this.state.pageBackgroundRepeat) {
