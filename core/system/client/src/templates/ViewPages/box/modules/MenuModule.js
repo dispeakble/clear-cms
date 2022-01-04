@@ -539,6 +539,53 @@ class MenuModule extends Component {
 
         return buttons;
     }
+    imgPosStateClass = (type = 'logo', pos) => {
+        let posClass = '';
+        if (type === 'bg') {
+            posClass = this.state.backgroundPosition === pos ? 'selected' : '';
+            return posClass;
+        }
+
+
+        return posClass;
+    }
+    setImgPosition = async (type = 'logo', pos) => {
+
+        if (type === 'bg') {
+
+            await this.setAsyncState({
+                backgroundPosition: pos
+            });
+            this.props.onUpdate(this.state);
+        }
+
+    }
+
+    positionButtons = (type) => {
+
+        const vert = ["top", "center", "bottom"];
+        const horiz = ["left", "center", "right"];
+
+        let buttons = [];
+
+        vert.map((v, vi) => {
+            horiz.map((h, hi) => {
+                buttons.push(
+                    <Tooltip title={`${h} ${v}`}>
+                        <button key={`${type}-${hi}-${vi}`} onClick={() => {
+                            this.setImgPosition(type, `${h} ${v}`)
+                        }} className={this.imgPosStateClass(type, `${h} ${v}`)}>
+                            {h !== v ? `${h} ${v}` : h }
+                        </button>
+                    </Tooltip>
+                )
+                return h;
+            })
+            return v;
+        })
+
+        return buttons;
+    }
 
     render() {
 

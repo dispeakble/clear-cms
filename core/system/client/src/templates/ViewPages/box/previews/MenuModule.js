@@ -75,10 +75,10 @@ class MenuModule extends Component {
         };
         const myArray = this.state.backgroundPosition.split(" ");
 
-      let   styleList={
-          display:'flex',
-          justifyContent:myArray[0],
-          alignItems:myArray[1]
+        let   styleList={
+            display:'flex',
+            justifyContent:myArray[0],
+            alignItems:myArray[1]
 
         }
 
@@ -89,7 +89,7 @@ class MenuModule extends Component {
             }
             return (
                 <List component="nav" disablePadding
-                style={styleList}>
+                      style={styleList}>
                     <LinksMenu
                         style={accordionStyle}
                         accordionStyle={accordionStyle}
@@ -193,12 +193,12 @@ class MenuModule extends Component {
             gridStyle.textAlign= "center"
         }
 
-       if(this.props.moduleOptions.backgroundPosition){
+        if(this.props.moduleOptions.backgroundPosition){
 
 
-           gridStyle.backgroundPosition = this.state.backgroundPosition || 'center center';
+            gridStyle.backgroundPosition = this.state.backgroundPosition || 'center center';
 
-       }
+        }
 
         return (
             <div
