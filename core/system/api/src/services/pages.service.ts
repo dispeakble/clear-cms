@@ -405,7 +405,7 @@ export class PagesService {
                                                 moduleoptions: item.moduleOptions,
                                                 borderstyle: item.borderStyle || "solid",
                                                 showscrollbars: item.showScrollbars? 1 : 0,
-                                                displayoptions: item.displayOptions
+                                                displayoptions: item.displayOptions,
                                             }
                                         })
                                     }

@@ -61,6 +61,7 @@
     "react-pose": "^4.0.10",
     "react-promise": "^3.0.2",
     "react-resizable": "^1.11.0",
+    "react-responsive-modal": "^6.2.0",
     "react-router": "^5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "3.4.1",

@@ -827,7 +827,34 @@ class ViewPagesEditor extends React.PureComponent {
                 h: existingItem.h,
             };
 
+            if(item?.moduleOptions && item?.moduleOptions?.files){
+                const fileList = item.moduleOptions.files.map((file) => {
+                    return {
+                        name: file.name
+                    }
+                });
 
+                await this.props.control.createFolder({
+                    path: `/pages/page-${this.state.page_id}`,
+                    name: `box-${Number(newId)}`
+                })
+
+                await this.props.control.createFolder({
+                    path: `/pages/page-${this.state.page_id}/box-${Number(newId)}`,
+                    name: `module`
+                })
+
+                if(fileList && fileList.length){
+                    for(let i=0; i<fileList.length; i++){
+                        await this.props.control.copyFiles({
+                            source_path: `/pages/page-${Number(this.state.page_id)}/box-${Number(id)}/module/`,
+                            src: fileList[i].name,
+                            dest_path: `/pages/page-${Number(this.state.page_id)}/box-${Number(newId)}/module/`,
+                            dest: fileList[i].name,
+                        })
+                    }
+                }
+            }
 
             items.push(item);
 
@@ -1354,8 +1381,6 @@ class ViewPagesEditor extends React.PureComponent {
         if (this.state.editing ) {
 
             const page = {
-
-
                 id: this.state.page_id,
                 pageConfig: pageConfig,
                 items: this.state.items,
@@ -1401,7 +1426,6 @@ class ViewPagesEditor extends React.PureComponent {
                 items: this.state.items,
             };
 
-            console.log('gnabhdfbgfbdjgjdfbgd')
             const pageData = await this.props.control.add(newPage);
 
             this.props.history.push(`/pages/edit/${pageData.pageId}`);

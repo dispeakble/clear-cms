@@ -86,9 +86,6 @@ class Pages extends Component {
                 label: "Duplicate",
             },
         },
-
-
-
     };
 
     componentDidMount() {
@@ -96,16 +93,7 @@ class Pages extends Component {
         if (this.props.location.pathname === "/pages/template") {
             this.setState({isTemplate: true})
         }
-
-
-
-
     }
-
-
-
-
-
 
     async fetchPages() {
         let pages = [];
@@ -196,11 +184,11 @@ class Pages extends Component {
 
         let newPage = {
             id:0,
+            oldPageId: String(data.id),
             pageConfig: newpageconfig,
             items: page.items,
         };
-        const pageData = this.props.control.duplicate(newPage)
-        console.log(pageData)
+        const pageData = await this.props.control.duplicate(newPage)
         if(data.isTemplate){
             if(pageData?.items?.length==0){
                 await this.props.history.push(`/pages/template/${pageData.pageId}`);
@@ -209,9 +197,9 @@ class Pages extends Component {
             }
         }else{
             if(pageData?.items?.length==0){
-                await this.props.history.push(`/pages/${pageData.pageId}`);
+                await this.props.history.push(`/pages/edit/${pageData.pageId}`);
             }else{
-                await this.props.history.push(`/pages/${pageData.pageId}`);
+                await this.props.history.push(`/pages/edit/${pageData.pageId}`);
             } }
     }
 
@@ -324,6 +312,7 @@ class Pages extends Component {
                         ),
                         onClick: async (event, rowData) => {
                             const page = await  this.props.control.get({id: String(rowData.id)});
+                            console.log('here', page)
                             let config=page.pageConfig;
                             console.log(this.props)
                             if(config.defaultPage){
@@ -491,10 +480,8 @@ class Pages extends Component {
 
                             </div>
 
-
                             <button onClick={()=>{
                                 this.handleDuplicate()
-
                             }}
                                     style={{
                                         float:'right'

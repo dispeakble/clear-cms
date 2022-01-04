@@ -20,6 +20,8 @@ class PagesController extends Component {
         remove: (params) => this.remove(params),
         listCategories: (params) => this.listCategories(params),
         listTemplates: (params) => this.listTemplates(params),
+        copyFiles: (params) => this.copyFiles(params),
+        createFolder: (params) => this.createFolder(params),
         getPublicTheme: () => this.getPublicTheme(),
         websiteData: () => this.websiteData(),
 
@@ -38,6 +40,7 @@ class PagesController extends Component {
         this.props.services.ws.subscribe({
             channel: this.channel,
             callbacks: {
+
                 message: (response) => this.onMessage(response)
             }
         });
@@ -45,7 +48,9 @@ class PagesController extends Component {
 
     onMessage(params) {
         try {
-            this.messageCallbacks[params.id](params.data);
+            if(this.messageCallbacks[params?.id]){
+                this.messageCallbacks[params.id](params.data);
+            }
         } catch (err) {
             console.log(err);
         }
@@ -171,9 +176,6 @@ class PagesController extends Component {
 
 
     add(params) {
-        console.log(params)
-
-
         return new Promise(async resolve => {
             try {
                 if (params.pageConfig.backgroundImageFile) {
@@ -195,21 +197,14 @@ class PagesController extends Component {
                         }
                         item.backgroundImageFile = "";//for the DB we don't need to send binaries
 
-                        if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
-
-
-
+                        if(item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
                             newFiles = item.moduleOptions.files.map(newFile => {
-                                console.log(item.moduleOptions.file)
-
                                 return {
-                                    file: item.moduleOptions.file,
+                                    file: newFile,
                                     name: newFile.name,
                                     url:newFile.name
                                 }
                             });
-
-
                         }
 
                         if(item.moduleOptions.files){
@@ -222,10 +217,6 @@ class PagesController extends Component {
                         return item;
                     });
                 }
-
-                console.log(dbPayload)
-
-
 
                 const response = await this.sendMessage({
                     module: 'system',
@@ -241,7 +232,6 @@ class PagesController extends Component {
                         files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
                     })
                 }
-                console.log(response)
                 await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
 
                     return new Promise((resolve_upload) => {
@@ -345,7 +335,6 @@ class PagesController extends Component {
                 const paramsClone = _.cloneDeep(params);
 
                 //we will add new boxes to get the IDs
-
                 paramsClone.items = paramsClone.items.map((item) => {
 
                     if (item.backgroundImageFile) {
@@ -432,10 +421,7 @@ class PagesController extends Component {
     }
 
     duplicate(params) {
-
-
         if(params.id ==0){
-            console.log('dfvbgadsvfasdf')
             return new Promise(async resolve => {
                 try {
                     if (params.pageConfig.backgroundImageFile) {
@@ -443,6 +429,7 @@ class PagesController extends Component {
                     }
 
                     const dbPayload = _.cloneDeep(params);
+                    delete dbPayload.oldPageId
 
                     //we will add new boxes to get the IDs
                     let newFiles =[];
@@ -450,28 +437,20 @@ class PagesController extends Component {
 
 
                     if(dbPayload.items.length > 0){
-
                         dbPayload.items = dbPayload.items.map((item) => {
                             if (!!item.backgroundImageFile) {
                                 item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
                             }
                             item.backgroundImageFile = "";//for the DB we don't need to send binaries
 
-                            if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
-
-
-
-                                newFiles = item.moduleOptions.files.map(newFile => {
-                                    console.log(item.moduleOptions.file)
-
+                            if (item.moduleOptions && item.moduleOptions.files) {
+                                newFiles = [...newFiles, item.moduleOptions.files.map(newFile => {
                                     return {
-                                        file: item.moduleOptions.file,
+                                        moduleId: item.id,
                                         name: newFile.name,
                                         url:newFile.name
                                     }
-                                });
-
-
+                                })]
                             }
 
                             if(item.moduleOptions.files){
@@ -485,16 +464,26 @@ class PagesController extends Component {
                         });
                     }
 
-                    console.log(dbPayload)
-
-
-
                     const response = await this.sendMessage({
                         module: 'system',
                         api: 'pages',
                         act: 'add',
                         payload: dbPayload
                     });
+
+                    const boxToBox = response?.items?.map((item,i) => {
+                        return{
+                            old: dbPayload.items[i].id,
+                            new: item
+                        }
+                    })
+
+                    if(response){
+                        await this.createFolder({
+                            path: '/pages',
+                            name: `page-${Number(response.pageId)}`
+                        })
+                    }
 
                     //Uploading page background
                     if (params.pageConfig.backgroundImageFile) {
@@ -503,7 +492,23 @@ class PagesController extends Component {
                             files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
                         })
                     }
-                    console.log(response)
+
+                    if(dbPayload.items){
+                        if(boxToBox && boxToBox.length){
+                            for(let i=0; i<boxToBox.length; i++){
+                                await this.createFolder({
+                                    path: `/pages/page-${Number(response.pageId)}`,
+                                    name: `box-${Number(boxToBox[i].new)}`
+                                });
+
+                                await this.createFolder({
+                                    path: `/pages/page-${Number(response.pageId)}/box-${Number(boxToBox[i].new)}/`,
+                                    name: `module`
+                                });
+                            }
+                        }
+                    }
+
                     await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
 
                         return new Promise((resolve_upload) => {
@@ -521,17 +526,24 @@ class PagesController extends Component {
                                 });
                             }
 
-                            if (item.module && newFiles && newFiles.length) {
-
-
-
+                            if (newFiles && newFiles.length) {
 
                                 //Uploading box files
 
-                                this.uploadFiles({
-                                    path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/module/",
-                                    files: newFiles[0],
-                                });
+                                boxToBox.map(async (box) => {
+                                    newFiles.map(async (files) => {
+                                        files.map(async (file) => {
+                                            if(file.moduleId == box.old){
+                                                await this.copyFiles({
+                                                    source_path : `/pages/page-${params.oldPageId}/box-${box.old}/module/`,
+                                                    src : file.name,
+                                                    dest_path : `/pages/page-${response.pageId}/box-${box.new}/module/`,
+                                                    dest : file.name,
+                                                })
+                                            }
+                                        })
+                                    })
+                                })
 
                             }
 
@@ -571,20 +583,36 @@ class PagesController extends Component {
             });
 
         }
+    }
 
+    async createFolder(params){
+        await this.sendMessage({
+            module: 'system',
+            api: 'bucket',
+            act: 'mkdir',
+            payload: {
+                path: params.path,
+                name: params.name
+            }
+        });
+    }
 
-
-
-
-
-
-
+    async copyFiles(params){
+        await this.sendMessage({
+            module: 'system',
+            api:'bucket',
+            act:'copy',
+            payload:{
+                source_path:params.source_path,
+                src:params.src,
+                dest_path:params.dest_path,
+                dest:params.dest,
+            }
+        })
     }
 
 
     uploadFiles(params) {
-
-        console.log(params)
         return new Promise(resolve => {
             var formData = new FormData();
 
@@ -593,13 +621,11 @@ class PagesController extends Component {
             formData.append('totalFiles', params.files.length);
 
             //always place the files at the end
-
-
-
-            Array.from(params.files).forEach(fileData => {
-
-                formData.append(fileData.name || fileData.file.name, fileData.file, fileData.name || fileData.file.name);
+            params.files.forEach(fileData => {
+                const file = new File([fileData.file], fileData.name ||  fileData.file.name, {type:'image/*'})
+                formData.append(fileData.name || fileData.file.name, file);
             });
+
             axios.post("/bucket", formData, {
                 onUploadProgress: evt => {
                     if (evt.loaded === evt.total) {
