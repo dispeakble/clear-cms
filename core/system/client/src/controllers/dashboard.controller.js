@@ -11,7 +11,6 @@ class DashboardController extends Component {
     messageCallbacks = {};
     control = {
         get: () => this.getData(),
-        set: (params) => this.setData(params),
         getBoxList: () => this.getBoxList(),
         addBox: (params) => this.addBox(params),
         editBox: (params) => this.editBox(params),
@@ -78,20 +77,6 @@ class DashboardController extends Component {
             payload: params
         });
 
-        return response;
-    }
-
-    async setData(params) {
-        const response = await this.sendMessage({
-            module: "system",
-            api: "dashboard",
-            act: "set",
-            payload: {
-                useSession: true,
-                payload: params
-            }
-        });
-        
         return response;
     }
 

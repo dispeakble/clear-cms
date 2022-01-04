@@ -96,10 +96,10 @@ class ViewBoxEditor extends React.PureComponent {
             editItemBorderColor: item.borderColor,
             editItemBorderStyle: item.borderStyle,
             editItemFontSize: item.fontSize || 5,
-            editItemBackgroundColor: item.backgroundColor || "",
+            editItemBackgroundColor: item.bgColor || "",
             editItemFontFamily: this.getFontFamilyIndex(item.fontFamily) || -1,
             editItemTextColor: item.textColor || "",
-            editItemBackgroundColorShow: Object.prototype.hasOwnProperty.call(item, "backgroundColor"),
+            editItemBackgroundColorShow: Object.prototype.hasOwnProperty.call(item, "bgColor"),
             editItemFontSizeShow: Object.prototype.hasOwnProperty.call(item, "fontSize"),
             editItemFontFamilyShow: Object.prototype.hasOwnProperty.call(item, "fontFamily"),
             editItemTextColorShow:Object.prototype.hasOwnProperty.call(item, "textColor"),
@@ -214,12 +214,10 @@ class ViewBoxEditor extends React.PureComponent {
         item.module = this.state.modulesList[this.state.editItemModule];
         item.module = item.module ? item.module.label : "";
 
-        //foundItem.moduleOptions = this.state.moduleOptions;
-
         if (this.state.editItemBackgroundColorShow) {
-            item.backgroundColor = this.state.editItemBackgroundColor;
+            item.bgColor = this.state.editItemBackgroundColor;
         } else {
-            delete item.backgroundColor;
+            delete item.bgColor;
         }
 
         if (this.state.editItemFontSizeShow) {
@@ -256,17 +254,10 @@ class ViewBoxEditor extends React.PureComponent {
             delete item.showScrollbars;
         }
 
-        if (Number(this.state.editItemBorderWidth)) {
-            item.borderColor = this.state.editItemBorderColor;
-            item.borderWidth = this.state.editItemBorderWidth;
-            item.borderRadius = this.state.editItemBorderRadius;
-            item.borderStyle = "solid";
-        } else {
-            delete item.borderColor;
-            delete item.borderWidth;
-            delete item.borderRadius;
-            delete item.borderStyle;
-        }
+        item.borderColor = this.state.editItemBorderColor;
+        item.borderWidth = this.state.editItemBorderWidth;
+        item.borderRadius = this.state.editItemBorderRadius;
+        item.borderStyle = "solid";
 
         this.props.onSave(item);
 

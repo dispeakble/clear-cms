@@ -249,8 +249,8 @@ class ViewDashboard extends Component {
             itemStyle.borderRadius = el.borderRadius;
         }
 
-        if (el.backgroundColor) {
-            itemStyle.backgroundColor = el.backgroundColor;
+        if (el.bgColor) {
+            itemStyle.bgColor = el.bgColor;
         }
 
         //adding default box styles

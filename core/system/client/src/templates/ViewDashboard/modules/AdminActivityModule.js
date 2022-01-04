@@ -6,7 +6,7 @@ import styles from "assets/jss/clear-crm/dashboard/activity";
 import PropTypes from "prop-types";
 import Chart from "react-google-charts";
 
-class ActivityModule extends Component {
+class AdminActivityModule extends Component {
     state = {
         chartType: "",
         act_data: [],
@@ -115,9 +115,9 @@ class ActivityModule extends Component {
     }
 }
 
-export default withStyles(styles)(ActivityModule);
+export default withStyles(styles)(AdminActivityModule);
 
-ActivityModule.propTypes = {
+AdminActivityModule.propTypes = {
     classes: PropTypes.object,
     control: PropTypes.object,
     services: PropTypes.object,

@@ -16,19 +16,20 @@ export class DashboardBoxService {
             return {
                 title: params.title,
                 module: params.module,
-                fontsize: params.fontSize || null,
-                fontfamily: params.fontFamily || null,
-                textcolor: params.textColor || null,
-                borderwidth: params.borderWidth,
-                bordercolor: params.borderColor,
-                borderradius: params.borderRadius,
-                bgcolor: params.backgroundColor || null,
+                fontSize: params.fontSize || null,
+                fontFamily: params.fontFamily || null,
+                textColor: params.textColor || null,
+                borderWidth: params.borderWidth,
+                borderColor: params.borderColor,
+                borderRadius: params.borderRadius,
+                borderStyle: params.borderStyle,
+                bgColor: params.bgColor || null,
                 x: params.x,
                 y: params.y,
                 width: params.w,
                 height: params.h,
-                moduleoptions: params.moduleOptions,
-                showscrollbars: params.showScrollbars ? 1 : 0
+                moduleOptions: params.moduleOptions,
+                scrollbars: params.scrollbars ? 1 : 0
             }
         }
     }
@@ -37,13 +38,12 @@ export class DashboardBoxService {
         return new Observable(subscriber => {
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
-                act: 'get',
+                api: 'sql',
+                act: 'list',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'dashboard_box',
-                        fields: ["*"],
+                        what: 'dashboardBox',
                         where: params?.where
                     }
                 }
@@ -52,27 +52,27 @@ export class DashboardBoxService {
             this.protocolService.sendMessage(payload).subscribe(data => {
                 let response = null;
 
-                if (data && data.hasOwnProperty('data')) {
-                    if (data.data.length > 0) {
-                       response = data.data.map((box, index) => {
+                if (data && data.hasOwnProperty('rows')) {
+                    if (data.rows.length > 0) {
+                       response = data.rows.map((box, index) => {
                            return {
-                               ...(box.bgcolor !== null && {backgroundColor: box.bgcolor}),
-                               borderColor: box.bordercolor,
-                               borderRadius: box.borderradius,
-                               borderStyle: box.borderstyle,
-                               borderWidth: box.borderwidth,
+                               ...(box.bgColor !== null && {bgColor: box.bgColor}),
+                               borderColor: box.borderColor,
+                               borderRadius: box.borderRadius,
+                               borderStyle: box.borderStyle,
+                               borderWidth: box.borderWidth,
                                h: box.height,
                                w: box.width,
                                id: box.id,
                                module: box.module,
-                               moduleOptions: JSON.parse(box.moduleoptions),
-                               showScrollbars: !!box.showscrollbars,
+                               moduleOptions: JSON.parse(box.moduleOptions),
+                               scrollbars: !!box.scrollbars,
                                title: box.title,
                                x: box.x,
                                y: box.y,
-                               ...(box.fontsize !== null && {fontSize: box.fontsize}),
-                               ...(box.fontfamily !== null && {fontFamily: box.fontfamily}),
-                               ...(box.textcolor !== null && {textColor: box.textcolor}),
+                               ...(box.fontSize !== null && {fontSize: box.fontSize}),
+                               ...(box.fontFamily !== null && {fontFamily: box.fontFamily}),
+                               ...(box.textColor !== null && {textColor: box.textColor}),
                            }
                        })
                     }
@@ -93,12 +93,12 @@ export class DashboardBoxService {
                 try {
                     const request: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'add',
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'dashboard_box',
+                                what: 'dashboardBox',
                                 data: this.help.giveBoxValues(params)
                             }
                         }
@@ -124,16 +124,16 @@ export class DashboardBoxService {
         return new Observable(subscriber => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'set',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'dashboard_box',
+                        what: 'dashboardBox',
                         where: {
                             id: params.id
                         },
-                        data: this.help.giveBoxValues(params)
+                        fields: this.help.giveBoxValues(params)
                     }
                 }
             };
@@ -155,13 +155,12 @@ export class DashboardBoxService {
         return new Observable(subscriber => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'rem',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'dashboard_box',
-                        how: 'OR',
+                        what: 'dashboardBox',
                         where: {
                             id: params.id
                         }
