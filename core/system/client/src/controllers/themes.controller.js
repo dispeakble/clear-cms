@@ -6,11 +6,11 @@ import ViewThemes from "../templates/ViewThemes/ViewThemes";
 class ThemesController extends Component {
     messageCallbacks = {};
     control = {
-        getOne: (params) => this.getOne(params),
-        getAll: (params) => this.getAll(params),
-        set: (params) => this.setData(params),
-        add: (params) => this.addData(params),
-        rem: (params) => this.remData(params)
+        get: (params) => this.get(params),
+        list: (params) => this.list(params),
+        set: (params) => this.set(params),
+        add: (params) => this.add(params),
+        rem: (params) => this.rem(params)
     };
     channel = 'themes';
 
@@ -24,35 +24,35 @@ class ThemesController extends Component {
 
     }
 
-    getOne(params) {
+    get(params) {
         return this.sendMessage({
             module: "system",
             api: params.type + "Themes",
-            act: "getOne",
+            act: "get",
             payload: {
                 where: params.data
             }
         });
     }
 
-    getAll(params) {
+    list(params) {
         return this.sendMessage({
             module: "system",
             api: params.type + "Themes",
-            act: "getAll",
+            act: "list",
             payload: null
         });
     }
 
-    async setData(params) {
-        if(params.data.isdefault) {
+    async set(params) {
+        if(params.data.isDefault) {
             localStorage.setItem('adminTheme', params.data.data)
         }
 
         await this.sendMessage({
             module: "system",
             api: params.type + "Themes",
-            act: "setInfo",
+            act: "set",
             payload: {
                 data: params.data,
                 where: params.where,
@@ -60,24 +60,24 @@ class ThemesController extends Component {
         });
     }
 
-    addData(params) {
-        if(params.data.isdefault) {
+    add(params) {
+        if(params.data.isDefault) {
             localStorage.setItem('adminTheme', params.data.data)
         }
 
         return this.sendMessage({
             module: "system",
             api: params.type + "Themes",
-            act: "addInfo",
+            act: "add",
             payload: params.data
         });
     }
 
-    remData(params) {
+    rem(params) {
         return this.sendMessage({
             module: "system",
             api: params.type + "Themes",
-            act: "remInfo",
+            act: "rem",
             payload: params.data
         });
     }

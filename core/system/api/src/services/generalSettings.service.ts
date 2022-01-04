@@ -18,15 +18,15 @@ export class GeneralSettingsService {
             (async () => {
                 const payload: payloadInterface = {
                     channel: 'db',
-                    api: 'db',
+                    api: 'sql',
                     act: 'get',
                     payload: {
                         channel: 'system',
                         data: {
-                            what: 'settings',
+                            what: 'setting',
                             fields: ["id", "data"],
                             where: {
-                                is_default: 1
+                                isDefault: 1
                             },
                         }
                     }
@@ -36,8 +36,8 @@ export class GeneralSettingsService {
 
                 let response = {};
 
-                if (data && data.hasOwnProperty('data') && data.data.length > 0) {
-                    response = data.data[0];
+                if (data && data.hasOwnProperty('data')) {
+                    response = data;
                     subscriber.next({
                         success: "General Settings Fetched",
                         data: response
@@ -58,16 +58,16 @@ export class GeneralSettingsService {
             (async () => {
                 const request: payloadInterface = {
                     channel: 'db',
-                    api: 'db',
+                    api: 'sql',
                     act: 'set',
                     payload: {
                         channel: 'system',
                         data: {
-                            what: 'settings',
+                            what: 'setting',
                             where: {
-                                is_default: 1
+                                isDefault: 1
                             },
-                            data: {
+                            fields: {
                                 data: params.payload.data
                             },
                         }
