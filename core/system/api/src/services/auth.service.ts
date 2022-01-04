@@ -4,7 +4,6 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
 import * as md5 from "md5";
 import {Observable} from "rxjs";
-import * as mime from "mime";
 
 @Injectable()
 export class AuthService {
@@ -64,7 +63,7 @@ export class AuthService {
 
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'get',
                 payload: {
                     channel: 'system',
@@ -82,16 +81,16 @@ export class AuthService {
             }
             observer.next({type: 'meta', content_type: 'application/json'});
             this.protocolService.sendMessage(payload).subscribe((auth_response) => {
-                if (auth_response && auth_response.data && auth_response.data.length) {
+                if (auth_response && auth_response && auth_response) {
                     observer.next({
                         type:'String',
-                        data: auth_response.data[0],
+                        data: auth_response,
                         mime: 'application/json',
                         callback: {
                             api: 'session',
                             act: 'register',
                             async: false,
-                            payload: auth_response.data[0]
+                            payload: auth_response
                         }
                     });
                 } else {

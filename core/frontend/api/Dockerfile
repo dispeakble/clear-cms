@@ -6,7 +6,7 @@ WORKDIR /usr/src/api
 
 RUN npm i -g @nestjs/cli
 
-COPY ./package*.json /usr/src/api/
+COPY ./package.json /usr/src/api/
 COPY ./yarn.lock /usr/src/api/
 
 RUN yarn install --ignore-engines
