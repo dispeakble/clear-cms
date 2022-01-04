@@ -10,7 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import {withStyles, createTheme} from "@material-ui/core/styles";
+import {withStyles, createTheme, MuiThemeProvider} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
@@ -66,12 +66,13 @@ class MenuModule extends Component {
         horizontallyCentered: false,
         verticallyCentered: false,
         menuIconSpace: 0,
-        muiTheme: {}
+        muiTheme: {},
+        backgroundPosition:'center center'
     };
 
     componentDidMount() {
         if (Object.keys(this.props.moduleOptions).length !== 0) {
-            const statePayload = {
+            this.setState({
                 menuOptions: this.props.moduleOptions.menuOptions,
                 isMenuVertical: this.props.moduleOptions.isMenuVertical,
                 stretchToFit: this.props.moduleOptions.stretchToFit,
@@ -79,16 +80,22 @@ class MenuModule extends Component {
                 horizontallyCentered: this.props.moduleOptions.horizontallyCentered,
                 verticallyCentered: this.props.moduleOptions.verticallyCentered,
                 menuIconSpace: this.props.moduleOptions.menuIconSpace,
-                showAsAccordion: false,
-            };
 
-            if (this.props.moduleOptions.showAsAccordion) {
-                statePayload.showAsAccordion = this.props.moduleOptions.showAsAccordion
+
+            });
+            if(this.props.moduleOptions.backgroundPosition){
+                this.setState({
+                    backgroundPosition:this.props.moduleOptions.backgroundPosition
+                })
             }
-
-            this.setState(statePayload);
+            if (this.props.moduleOptions.showAsAccordion) {
+                this.setState({
+                    showAsAccordion: this.props.moduleOptions.showAsAccordion,
+                });}
             this.getAllLinks();
         }
+
+
 
         let icons = Object.keys(Icons).filter((key) => {
             let show = true;
@@ -103,7 +110,6 @@ class MenuModule extends Component {
             } else if (key.includes("TwoTone")) {
                 show = false;
             }
-
             return show;
         });
 
@@ -182,15 +188,19 @@ class MenuModule extends Component {
         menuOptions = menuOptions.filter((option) => {
             return !menuIds.includes(option.id);
         });
-        await this.setAsyncState({menuOptions});
+        this.handleUpdate({
+            menuOptions
+        })
+
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
 
         this.closeMultipleDeleteModal();
     };
 
     getLinksNested(id) {
+        let result = "";
         let link = this.state.menuOptions.find((el) => el.id === id);
-        let result = link.text;
+        result = link.text;
         if (link && link.parentId) {
             result = this.getLinksNested(link.parentId) + "/" + result;
         }
@@ -199,7 +209,6 @@ class MenuModule extends Component {
 
     getAllLinks = async () => {
         let result = [];
-
         if (this.state.menuOptions && this.state.menuOptions.length) {
             let links = this.state.menuOptions;
             links.map((el) => {
@@ -259,7 +268,7 @@ class MenuModule extends Component {
             },
             editable: {
                 onRowAdd: (newData) =>
-                    new Promise((resolve) => {
+                    new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             delete newData.tableData;
                             let menuOptions = typeof this.state.menuOptions === typeof [] ? [...this.state.menuOptions] : [];
@@ -272,7 +281,7 @@ class MenuModule extends Component {
                         }, 100);
                     }),
                 onRowUpdate: (newData, oldData) =>
-                    new Promise((resolve) => {
+                    new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             delete newData.tableData;
                             const dataUpdate = [...this.state.menuOptions];
@@ -285,7 +294,7 @@ class MenuModule extends Component {
                         }, 100);
                     }),
                 onRowDelete: (oldData) =>
-                    new Promise((resolve) => {
+                    new Promise((resolve, reject) => {
                         setTimeout(async () => {
                             const dataDelete = [...this.state.menuOptions];
                             const index = oldData.tableData.id;
@@ -427,36 +436,101 @@ class MenuModule extends Component {
     };
 
     handleClick = () => {
-        this.setState({displayBgColorPicker: !this.state.displayBgColorPicker});
+
+        this.handleUpdate({
+            displayBgColorPicker: !this.state.displayBgColorPicker
+        })
     };
 
     handleColorPickerClose = () => {
-        this.setState({displayBgColorPicker: false});
+        this.handleUpdate({
+            displayBgColorPicker: false
+        })
     };
 
     closeModuleOptionsModal() {
-        this.setState({showModuleOptionsModal: false});
+        this.handleUpdate({
+            showModuleOptionsModal: false
+        })
     }
 
     handleEdit = async (id) => {
-        await this.setAsyncState({
+        this.handleUpdate({
             itemModuleEditId: id,
             showModuleOptionsModal: true,
-        });
+
+        })
     };
     handleSlider = async (e, newValue) => {
-        await this.setAsyncState({
+        this.handleUpdate({
             menuIconSpace: newValue
-        });
-        this.props.onUpdate(this.state);
+        })
+
+    }
+    imgPosStateClass = (type = 'logo', pos) => {
+        let posClass = '';
+        if (type === 'bg') {
+            posClass = this.state.backgroundPosition === pos ? 'selected' : '';
+            return posClass;
+        }
+
+
+        return posClass;
+    }
+    setImgPosition = async (type = 'bg', pos) => {
+
+        if (type === 'bg') {
+            this.handleUpdate({
+                backgroundPosition: pos
+            })
+        }
+
+    }
+
+    positionButtons = (type) => {
+
+        const vert = ["top", "center", "bottom"];
+        const horiz = ["left", "center", "right"];
+
+        let buttons = [];
+
+        vert.map((v, vi) => {
+            horiz.map((h, hi) => {
+                buttons.push(
+                    <Tooltip title={`${h} ${v}`}>
+                        <button key={`${type}-${hi}-${vi}`} onClick={() => {
+                            this.setImgPosition(type, `${h} ${v}`)
+                        }} className={this.imgPosStateClass(type, `${h} ${v}`)}>
+                            {h !== v ? `${h} ${v}` : h }
+                        </button>
+                    </Tooltip>
+                )
+                return h;
+            })
+            return v;
+        })
+
+        return buttons;
+    }
+
+    handleUpdate(params) {
+        const payload = Object.assign({}, {
+            menuOptions: this.state.menuOptions,
+            isMenuVertical: this.state.isMenuVertical,
+            stretchToFit: this.state.stretchToFit,
+            bgColor: this.state.bgColor,
+            horizontallyCentered: this.state.horizontallyCentered,
+            verticallyCentered: this.state.verticallyCentered,
+            menuIconSpace: this.state.menuIconSpace,
+            backgroundPosition: this.state.backgroundPosition,
+            showAsAccordion: this.state.showAsAccordion,
+
+        }, params);
+        this.props.onUpdate(payload);
+        this.setState(params);
     }
 
     render() {
-
-        if(undefined === this.state.bgColor) {
-            return <></> ;
-        }
-
         const classes = this.props.classes;
         const bgColorStyles = this.sendStyles(this.state.bgColor || {r:0,b:0,g:0,a:1});
 
@@ -503,12 +577,9 @@ class MenuModule extends Component {
                                         <SketchPicker
                                             color={this.state.bgColor}
                                             onChange={async (color) => {
-
-                                                await this.setAsyncState({
+                                                this.handleUpdate({
                                                     bgColor: color.rgb,
-                                                });
-
-                                                this.props.onUpdate(this.state);
+                                                })
                                             }}
                                         />
                                     </div>
@@ -520,10 +591,10 @@ class MenuModule extends Component {
                                         <Switch
                                             checked={this.state.showAsAccordion}
                                             onChange={async () => {
-                                                await this.setAsyncState({
+                                                this.handleUpdate({
                                                     showAsAccordion: !this.state.showAsAccordion,
-                                                });
-                                                this.props.onUpdate(this.state);
+                                                })
+
                                             }}
                                             value={this.state.showAsAccordion}
                                         />
@@ -537,10 +608,10 @@ class MenuModule extends Component {
                                         <Switch
                                             checked={this.state.isMenuVertical}
                                             onChange={async () => {
-                                                await this.setAsyncState({
+                                                this.handleUpdate({
                                                     isMenuVertical: !this.state.isMenuVertical,
-                                                });
-                                                this.props.onUpdate(this.state);
+                                                })
+
                                             }}
                                             value={this.state.isMenuVertical}
                                         />
@@ -554,10 +625,9 @@ class MenuModule extends Component {
                                         <Switch
                                             checked={this.state.stretchToFit}
                                             onChange={async () => {
-                                                await this.setAsyncState({
+                                                this.handleUpdate({
                                                     stretchToFit: !this.state.stretchToFit,
-                                                });
-                                                this.props.onUpdate(this.state);
+                                                })
                                             }}
                                             value={this.state.stretchToFit}
                                         />
@@ -569,35 +639,14 @@ class MenuModule extends Component {
                         </div>
                         <div style={{flex: 1}}>
                             <Typography id="discrete-slider" gutterBottom>
-                                <Tooltip title="The text will be aligned horizontally">
-                                    <Switch
-                                        checked={this.state.horizontallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                horizontallyCentered: !this.state.horizontallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
-                                        }}
-                                        value={this.state.horizontallyCentered}
-                                    />
-                                </Tooltip>
-                                Text to Center Horizontally
+                                Align Item
+                                <div className={classes.buttonsPosition}>
+                                    {this.positionButtons('bg')}
+                                </div>
+
+
                             </Typography>
-                            <Typography id="discrete-slider" gutterBottom>
-                                <Tooltip title="The text will be aligned vertically">
-                                    <Switch
-                                        checked={this.state.verticallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                verticallyCentered: !this.state.verticallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
-                                        }}
-                                        value={this.state.verticallyCentered}
-                                    />
-                                </Tooltip>
-                                Text to Center Vertically
-                            </Typography>
+
                             <Typography id="discrete-slider" gutterBottom>
                                 Spacing Between Icon and Menu
                                 <Tooltip title="The amount of space between the icons and the text">
@@ -686,6 +735,5 @@ export default withRouter(withStyles(styles)(MenuModule));
 MenuModule.propTypes = {
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
-    onUpdate: PropTypes.func,
-    defaultTheme: PropTypes.object
+    onUpdate: PropTypes.func
 };
