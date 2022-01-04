@@ -1,9 +1,10 @@
-import {BelongsToMany, Column, HasOne, Index, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, ForeignKey, HasOne, Index, Model, Table} from "sequelize-typescript";
 import {DataTypes} from "sequelize";
 import {ProductToCategory} from "../products/product.to.category.model";
 import {Product} from "../products/product.model";
 import {Page} from "../pages/page.model";
 import {PageToCategory} from "../pages/page.to.category.model";
+import {PageBox} from "../pages/page.box.model";
 
 @Table
 export class Category extends Model {
@@ -35,7 +36,5 @@ export class Category extends Model {
     @BelongsToMany(() => Page, () => PageToCategory)
     pages: Page[];
 
-    @HasOne(() => Category, "parentId")
-    categories: Category[];
 
 }

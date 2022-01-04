@@ -29,13 +29,13 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from '@material-ui/core/Tooltip';
 import _ from 'lodash';
+import PropTypes from "prop-types";
 //todo import modal content to add category
 
 class Categories extends Component {
     state = {
         tableRef: React.createRef(),
         showModal: false,
-        cat_list: [],
         categories: [],
         showMultipleDeleteModal: false,
         flatCategories: [],
@@ -45,52 +45,63 @@ class Categories extends Component {
     };
 
     async componentDidMount() {
-        this.list();
+        this.generateFlatCategories()
     }
 
     setAsyncState = (newState) =>
-        new Promise((resolve) => this.setState(newState, resolve));
+        new Promise((resolve) => this.setState(newState, () => resolve()));
 
-    getCategoriesNested(id) {
-        let result = "";
-        let cat = this.state.categories.find((el) => el.id === id);
-        result = cat.title;
-        if (cat && cat.parentid) {
-            result = this.getCategoriesNested(cat.parentid) + "/" + result;
+    refresh = () => {
+        this.generateFlatCategories();
+        this.state.tableRef.current && this.state.tableRef.current.onQueryChange()
+    };
+
+    getFlatCategory(row) {
+        if(!row.parentId) return "";
+
+        const cat = this.state.flatCategories.find((cat) => {
+            return cat.id === row.parentId
+        });
+
+        if(cat) {
+            return cat.label;
+        }
+
+        return "";
+    }
+
+    getCategoriesNested(id, categories) {
+        let cat = categories.find((el) => el.id === id);
+        let result = cat.title;
+        if (cat && cat.parentId) {
+            result = this.getCategoriesNested(cat.parentId, categories) + "/" + result;
         }
         return result;
     }
 
-    list = async () => {
+    generateFlatCategories = async () => {
+        let categories = await this.props.control.list();
+        if(!categories.count) {
+            return;
+        }
+
         let result = [];
 
-        let categories = await this.props.control.list();
-        if(!categories) {
-            categories = [];
-        }
-
-        await this.setAsyncState({
-            categories
-        })
-
-        if (categories && categories.length) {
-            let links = categories;
-            links.map((el) => {
-                let catTitle = el.title;
-                if (el.parentid) {
-                    catTitle = this.getCategoriesNested(el.parentid) + "/" + el.title;
-                }
-                result.push({
-                    id: el.id,
-                    label: catTitle,
-                });
-                return el;
+        categories.rows.map((el) => {
+            let catTitle = el.title;
+            if (el.parentId) {
+                catTitle = this.getCategoriesNested(el.parentId, categories.rows) + "/" + el.title;
+            }
+            result.push({
+                id: el.id,
+                label: catTitle,
             });
+            return el;
+        });
 
-            await this.setAsyncState({
-                flatCategories: result,
-            });
-        }
+        this.setState({
+            flatCategories: result,
+        });
     };
 
     tableOptions = {
@@ -121,69 +132,79 @@ class Categories extends Component {
         },
         actions: {
             getData: (query) => {
-                debugger
                 return new Promise((resolve) => {
-                    setTimeout(async () => {
-                        await this.setAsyncState({
-                            currentPage: query.page + 1,
-                        });
-                        //TODO SORT SERVER SIDE!!!!!!!!!!
-                        let truncatedData = this.state.categories.slice(
-                            query.page,
-                            query.pageSize
-                        );
-                        let payload = {
-                            totalCount: 100,
-                            page: 1,
-                            data: truncatedData,
+                    (async () => {
+                        const payload = {
+                            search: query.search,
+                            limit: [query.page * query.pageSize, query.pageSize]
                         };
-                        resolve(payload);
-                    }, 300);
+
+                        if(query.orderBy) {
+                            const orderBy = {};
+
+                            orderBy[query.orderBy.field] = query.orderDirection;
+                            payload.order = orderBy;
+                        }
+
+                        const result = await this.props.control.list(payload);
+
+                        if(result && result.rows) {
+                            resolve({
+                                data: result.rows,
+                                page: query.page,
+                                totalCount: result.count,
+                            })
+                        }
+                    })()
                 });
             },
             editable: {
                 onRowAdd: (newData) =>
-                    new Promise(async (resolve, reject) => {
-                        await this.props.control.add({
+                    new Promise((resolve) => {
+                        this.props.control.add({
                             title: newData.title,
                             description: newData.description,
-                            backgroundimage: newData.backgroundimage,
-                            parentid: newData.parentid || 0,
+                            backgroundImage: newData.backgroundImage,
+                            parentId: newData.parentId || 0,
+                        }).then(() => {
+                            this.refresh()
+                            resolve();
                         });
-                        this.list()
-                        resolve();
                     }),
                 onRowUpdate: (newData, oldData) =>
-                    new Promise(async (resolve, reject) => {
-                        await this.props.control.edit({
+                    new Promise((resolve) => {
+                        this.props.control.set({
                             id: oldData.id,
                             title: newData.title,
                             description: newData.description,
-                            backgroundimage: newData.backgroundimage,
-                            parentid: newData.parentid,
+                            backgroundImage: newData.backgroundImage,
+                            parentId: newData.parentId,
                             removeBg: this.state.removeBg[oldData.id]
+                        }).then(() => {
+                            this.setState({
+                                removeBg: {...this.state.removeBg, [oldData.id]: false}
+                            })
+                            this.refresh();
+                            resolve();
                         });
-                        this.setState({
-                            removeBg: {...this.state.removeBg, [oldData.id]: false}
-                        })
-                        this.list();
-                        resolve();
+
                     }),
                 onRowUpdateCancelled: () =>
-                    new Promise(async (resolve) => {
+                    new Promise((resolve) => {
                         this.setState({
                             removeBg: {}
                         })
                         resolve()
                     }),
                 onRowDelete: (oldData) =>
-                    new Promise(async (resolve, reject) => {
-                        await this.props.control.remove({
+                    new Promise((resolve) => {
+                        this.props.control.rem({
                             id: [oldData.id],
-                            backgroundimage: oldData.backgroundimage
+                            backgroundImage: oldData.backgroundImage
+                        }).then(() => {
+                            this.refresh();
+                            resolve();
                         });
-                        this.list();
-                        resolve();
                     }),
             },
             customActions: [
@@ -220,11 +241,11 @@ class Categories extends Component {
                 },
                 {
                     title: "Background Image",
-                    field: "backgroundimage",
-                    render: (rowData) => <Checkbox disabled checked={!!rowData.backgroundimage} />,
+                    field: "backgroundImage",
+                    render: (rowData) => <Checkbox disabled checked={!!rowData.backgroundImage} />,
                     editComponent: (columnData) => {
                         let renderCheckbox = false
-                        if((!_.isEmpty(columnData.rowData)) && columnData.rowData.backgroundimage && columnData?.rowData?.tableData && !this.state.removeBg[columnData.rowData.id] && !columnData.rowData.backgroundimage.name){
+                        if((!_.isEmpty(columnData.rowData)) && columnData.rowData.backgroundImage && columnData?.rowData?.tableData && !this.state.removeBg[columnData.rowData.id] && !columnData.rowData.backgroundImage.name){
                             renderCheckbox = true
                         }
                         return (
@@ -235,11 +256,11 @@ class Categories extends Component {
                                         if ( event.target?.files?.length) {
                                             columnData.onRowDataChange({
                                                 ...columnData.rowData,
-                                                backgroundimage: event.target.files[0],
+                                                backgroundImage: event.target.files[0],
                                             });
                                         }
                                     }}
-                                    name={"backgroundimage"}
+                                    name={"backgroundImage"}
                                 />
                                 {renderCheckbox &&
                                     (<Tooltip title="Remove background Image">
@@ -257,8 +278,9 @@ class Categories extends Component {
                 },
                 {
                     title: "Parent Id",
-                    field: "parentid",
+                    field: "parentId",
                     type: "numeric",
+                    render: this.getFlatCategory.bind(this),
                     editComponent: (columnData) => {
                         let filteredCats = this.state.flatCategories.filter(
                             (cat) => cat.id !== columnData.rowData.id
@@ -269,16 +291,15 @@ class Categories extends Component {
                                 autoHighlight
                                 className={this.props.classes.option}
                                 defaultValue={() => {
-                                    let foundLink = this.state.flatCategories.find(
-                                        (link) => link.id === columnData.rowData.parentid
+                                    return this.state.flatCategories.find(
+                                        (link) => link.id === columnData.rowData.parentId
                                     );
-                                    return foundLink;
                                 }}
                                 onChange={(ev, value) => {
-                                    if (value && value.label) {
+                                    if (value && value['label']) {
                                         columnData.onRowDataChange({
                                             ...columnData.rowData,
-                                            parentid: value.id,
+                                            parentId: value['id'],
                                         });
                                     }
                                 }}
@@ -296,10 +317,10 @@ class Categories extends Component {
                     },
                 },
             ],
-            parentChildData: (row, rows) => rows.find((a) => a.id === row.parentid),
+            parentChildData: (row, rows) => rows.find((a) => a.id === row.parentId),
             options: {
                 selection: true,
-                selectionStyle: styles.selection,
+                selectionStyle: styles['selection'],
                 actionsColumnIndex: -1,
                 actionsCellStyle: styles.tableActions,
                 cellStyle: styles.tableCells,
@@ -317,42 +338,38 @@ class Categories extends Component {
     };
 
     multipleDeleteCallback = async () => {
-        let categIds = [];
-        this.state.multipleDeleteData.map((categ) => categIds.push(categ.id));
-        await this.props.control.remove({
-            id: categIds
+        let catIds = [];
+        this.state.multipleDeleteData.map((cat) => catIds.push(cat.id));
+        await this.props.control.rem({
+            id: catIds
         });
-        this.list();
+        this.refresh();
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
         this.closeMultipleDeleteModal();
     };
 
     render() {
         const classes = this.props.classes;
-        const currentList = this.state.categories
         return (
             <React.Fragment>
                 <Helmet>
                     <title>Categories</title>
                 </Helmet>
-                <div className={classes.categoriesPanel}>
-                    <div className={classes.categoriesWrapper}>
-                        <MuiThemeProvider theme={this.tableOptions.getTheme()}>
-                            <MaterialTable
-                                title="Categories"
-                                tableRef={this.state.tableRef}
-                                columns={this.tableOptions.props.columns}
-                                parentChildData={this.tableOptions.props.parentChildData}
-                                data={currentList}
-                                icons={this.tableOptions.props.icons}
-                                options={this.tableOptions.props.options}
-                                editable={this.tableOptions.actions.editable}
-                                actions={this.tableOptions.actions.customActions}
-                            />
-                        </MuiThemeProvider>
-                    </div>
+                <div className={classes.wrapper}>
+                    <MuiThemeProvider theme={this.tableOptions.getTheme()}>
+                        <MaterialTable
+                            title="Categories"
+                            tableRef={this.state.tableRef}
+                            columns={this.tableOptions.props.columns}
+                            parentChildData={this.tableOptions.props.parentChildData}
+                            data={this.tableOptions.actions.getData.bind(this)}
+                            icons={this.tableOptions.props.icons}
+                            options={this.tableOptions.props.options}
+                            editable={this.tableOptions.actions.editable}
+                            actions={this.tableOptions.actions.customActions}
+                        />
+                    </MuiThemeProvider>
                 </div>
-
                 <Dialog
                     classes={{
                         root: classes.center,
@@ -381,7 +398,6 @@ class Categories extends Component {
 
                     <DialogActions className={classes.modalFooter}>
                         <Button
-                            disabled={this.state.isBtnDisabled}
                             color="transparent"
                             simple
                             onClick={() => this.multipleDeleteCallback()}
@@ -405,3 +421,9 @@ class Categories extends Component {
 }
 
 export default withStyles(styles)(Categories);
+
+Categories.propTypes = {
+    control: PropTypes.object,
+    defaultTheme: PropTypes.object,
+    classes: PropTypes.object
+}

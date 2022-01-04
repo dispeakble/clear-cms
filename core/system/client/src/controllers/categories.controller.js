@@ -10,8 +10,8 @@ class CategoriesController extends Component {
     control = {
         list: (params) => this.list(params),
         add: (params) => this.add(params),
-        edit: (params) => this.edit(params),
-        remove: (params) => this.remove(params),
+        set: (params) => this.set(params),
+        rem: (params) => this.rem(params),
     };
     channel = 'categories';
 
@@ -62,7 +62,7 @@ class CategoriesController extends Component {
                     module: 'system',
                     api: 'categories',
                     act: 'list',
-                    payload: {}
+                    payload: params
                 });
                 resolve(response)
             } catch (err) {
@@ -75,8 +75,8 @@ class CategoriesController extends Component {
         return new Promise(async resolve => {
             try {
                 let fileName = ""
-                if(params.backgroundimage){
-                    fileName = `background.${this.help.fileExtension(params.backgroundimage.name)}`
+                if(params.backgroundImage){
+                    fileName = `background.${this.help.fileExtension(params.backgroundImage.name)}`
                 }
                 const response = await this.sendMessage({
                     module: 'system',
@@ -85,15 +85,15 @@ class CategoriesController extends Component {
                     payload: {
                         title: params.title,
                         description: params.description,
-                        backgroundimage: fileName,
-                        parentid: params.parentid,
+                        backgroundImage: fileName,
+                        parentId: params.parentId,
                     }
                 });
 
-                if(params.backgroundimage){
+                if(params.backgroundImage){
                     await this.uploadImages({
                         path: "/categories/category-" + response.categoryId + "/",
-                        files: [{name: fileName, file: params.backgroundimage}]
+                        files: [{name: fileName, file: params.backgroundImage}]
                     })
                 }
 
@@ -104,19 +104,19 @@ class CategoriesController extends Component {
         });
     }
 
-    remove(params){
+    rem(params){
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'categories',
-                    act: 'remove',
+                    act: 'rem',
                     payload: {
                         id: params.id
                     }
                 });
 
-                if(params.backgroundimage){
+                if(params.backgroundImage){
                     await this.sendMessage({
                         module: 'system',
                         api: 'bucket',
@@ -135,27 +135,27 @@ class CategoriesController extends Component {
         });
     }
 
-    edit(params){
+    set(params){
         return new Promise(async resolve => {
             try {
-                let fileName = params.backgroundimage
-                if(params.backgroundimage && params.backgroundimage.name){
-                    fileName = `background.${this.help.fileExtension(params.backgroundimage.name)}`
+                let fileName = params.backgroundImage
+                if(params.backgroundImage && params.backgroundImage.name){
+                    fileName = `background.${this.help.fileExtension(params.backgroundImage.name)}`
                 }
                 console.log({...params})
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'categories',
-                    act: 'edit',
+                    act: 'set',
                     payload: {
                         id: params.id,
                         title: params.title,
                         description: params.description,
-                        backgroundimage: params.removeBg ? "" : fileName,
-                        parentid: params.parentid
+                        backgroundImage: params.removeBg ? "" : fileName,
+                        parentId: params.parentId
                     }
                 });
-                if(params.backgroundimage.name || (!params.backgroundimage) || params.removeBg){
+                if(params.backgroundImage.name || (!params.backgroundImage) || params.removeBg){
                     await this.sendMessage({
                         module: 'system',
                         api: 'bucket',
@@ -166,10 +166,10 @@ class CategoriesController extends Component {
                         }
                     });
                 }
-                if(params.backgroundimage.name){
+                if(params.backgroundImage.name){
                     await this.uploadImages({
                         path: "/categories/category-" + params.id + "/",
-                        files: [{name: fileName, file: params.backgroundimage}]
+                        files: [{name: fileName, file: params.backgroundImage}]
                     })
                 }
 

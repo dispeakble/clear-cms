@@ -10,17 +10,17 @@ import path from "path";
 @Injectable()
 export class CategoriesService {
 
-    private methods = ["list", "total", "add", "remove", "edit"];
+    private methods = ["list", "total", "add", "rem", "set"];
 
 
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
-    public total (params: any) {
+    public total(params: any) {
         return new Observable(subscriber => {
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'get',
                 payload: {
                     channel: 'system',
@@ -48,31 +48,39 @@ export class CategoriesService {
         });
     }
 
-    public list (params: any){
+    public list(params: any) {
         return new Observable(subscriber => {
+
+            const whereObj = {
+                'OR': []
+            };
+
+            ["title", "description"].map(field => {
+                whereObj['OR'].push({[field]: {'LIKE': `%${params.search}%`}});
+            })
+
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
-                act: 'get',
+                api: 'sql',
+                act: 'list',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'categories',
-                        fields: ["id", "title", "description", "backgroundimage", "parentid"],
-                        where: params?.where,
+                        what: 'category',
+                        fields: ["id", "title", "description", "backgroundImage", "parentId", "createdAt", "updatedAt"],
+                        where: null,
+                        order: params?.order,
                         limit: params?.limit
                     }
                 }
             };
 
+            if (params.search && params.search.length > 2) {
+                payload.payload.data.where = whereObj;
+            }
+
             this.protocolService.sendMessage(payload).subscribe(data => {
-                let response = null;
-
-                if (data && data.hasOwnProperty('data')) {
-                    response = data.data;
-                }
-
-                subscriber.next({type: 'categories_list', data: response, totalCategories: data.data.length});
+                subscriber.next({type: 'categories_list', data: data});
             }, err => {
                 subscriber.error(err);
             }, () => {
@@ -81,37 +89,37 @@ export class CategoriesService {
         })
     }
 
-    public add (params: any){
+    public add(params: any) {
         return new Observable(subscriber => {
 
             (async () => {
                 try {
                     const request: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'add',
                         payload: {
                             channel: 'system',
                             data: {
-                                what: 'categories',
+                                what: 'category',
                                 data: {
                                     title: params.title,
                                     description: params.description,
-                                    backgroundimage: params.backgroundimage,
-                                    parentid: params.parentid
+                                    backgroundImage: params.backgroundImage,
+                                    parentId: params.parentId
                                 }
                             }
                         }
                     };
 
-                    const cat = await this.protocolService.sendMessage(request).toPromise();
+                    const res = await this.protocolService.sendMessage(request).toPromise();
 
                     subscriber.next({
                         success: "The category was added",
-                        data: {categoryId: cat.data[0].id}
+                        data: {categoryId: res}
                     })
                     subscriber.complete();
-                } catch(err) {
+                } catch (err) {
                     subscriber.error(err);
                     subscriber.complete();
                 }
@@ -120,24 +128,24 @@ export class CategoriesService {
         })
     }
 
-    public edit (params: any){
+    public set(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'set',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'categories',
+                        what: 'category',
                         where: {
                             id: params.id
                         },
-                        data: {
+                        fields: {
                             title: params.title,
                             description: params.description,
-                            backgroundimage: params.backgroundimage,
-                            parentid: params.parentid
+                            backgroundImage: params.backgroundImage,
+                            parentId: params.parentId
                         }
                     }
                 }
@@ -145,7 +153,7 @@ export class CategoriesService {
 
             this.protocolService.sendMessage(request).subscribe(data => {
                 subscriber.next({
-                    success: "The category was edited",
+                    success: "The category was updated",
                     data: null
                 })
             }, err => {
@@ -156,19 +164,18 @@ export class CategoriesService {
         })
     }
 
-    public remove (params: any){
+    public rem(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'rem',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'categories',
-                        how: 'OR',
+                        what: 'category',
                         where: {
-                            id: params.id || 0
+                            id: Number(params.id)
                         }
                     }
                 }
@@ -179,26 +186,6 @@ export class CategoriesService {
                     success: "The category was removed",
                     data: null
                 })
-            }, err => {
-                subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
-        })
-    }
-
-    public completePath (params: any){
-        return new Observable(subscriber => {
-            const payload: payloadInterface = {
-                channel: 'bucket',
-                api: 'fs',
-                act: 'completePath',
-                payload: {
-                    path: params.path
-                }
-            };
-            this.protocolService.sendMessage(payload).subscribe(data => {
-                subscriber.next(data);
             }, err => {
                 subscriber.error(err);
             }, () => {
