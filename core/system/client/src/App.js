@@ -246,11 +246,11 @@ class App extends Component {
     const response = await this.sendMessage({
       module: 'system',
       api: 'adminThemes',
-      act: 'getOne',
+      act: 'get',
       payload: {
         fields: ["data"],
         where: {
-          isdefault: 1
+          isDefault: 1
         }
       }
     })

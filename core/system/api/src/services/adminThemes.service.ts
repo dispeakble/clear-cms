@@ -2,32 +2,27 @@ import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
-//import * as md5 from "md5";
 
 @Injectable()
 export class AdminThemesService {
 
-    private methods = ["getOne", "getAll", "addInfo", "setInfo", "remInfo"];
+    private methods = ["get", "list", "add", "set", "rem"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
 
     }
 
-    onApplicationBootstrap() {
-
-    }
-
-    public getAll() {
+    public list() {
         return new Observable((subscriber) => {
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
-                act: 'get',
+                api: 'sql',
+                act: 'list',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'admin_themes',
-                        fields: ["id", "title", "isdefault", "thumbnail"]
+                        what: 'adminTheme',
+                        fields: ["id", "title", "isDefault", "thumbnail"]
                     }
                 }
             };
@@ -35,8 +30,8 @@ export class AdminThemesService {
             this.protocolService.sendMessage(payload).subscribe(data => {
                 let response = null;
 
-                if (data && data.hasOwnProperty('data')) {
-                    response = data.data;
+                if (data && data.hasOwnProperty('rows')) {
+                    response = data.rows;
                 }
                 subscriber.next({type: 'admin_themes_list', data: response});
             }, err => {
@@ -48,17 +43,17 @@ export class AdminThemesService {
 
     }
 
-    public getOne(params) {
+    public get(params) {
         return new Observable((subscriber) => {
             const payload: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'get',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'admin_themes',
-                        fields: params.fields || ["title", "isdefault", "thumbnail", "data"],
+                        what: 'adminTheme',
+                        fields: params.fields || ["title", "isDefault", "thumbnail", "data"],
                         where: params.where,
                         limit: [0, 1]
                     }
@@ -66,36 +61,31 @@ export class AdminThemesService {
             };
 
             this.protocolService.sendMessage(payload).subscribe(data => {
-                let response = {};
-
-                if (data && data.hasOwnProperty('data')) {
-                    response = data.data[0];
-                }
-                    subscriber.next({type: 'admin_theme', data: response});
-                }, err => {
-                    subscriber.error(err);
-                }, () => {
-                    subscriber.complete();
+                subscriber.next({type: 'admin_theme', data: data});
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
             });
         });
     }
 
-    public async setInfo(params) {
+    public async set(params) {
 
-        if(params.data.isdefault){
+        if (params.data.isDefault) {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'set',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'admin_themes',
+                        what: 'adminTheme',
                         where: {
-                            isdefault: 1
+                            isDefault: 1
                         },
-                        data: {
-                            isdefault: 0
+                        fields: {
+                            isDefault: 0
                         }
                     }
                 }
@@ -107,14 +97,14 @@ export class AdminThemesService {
         return new Observable((subscriber) => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'set',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'admin_themes',
+                        what: 'adminTheme',
                         where: params.where,
-                        data: params.data
+                        fields: params.data
                     }
                 }
             };
@@ -132,29 +122,29 @@ export class AdminThemesService {
         });
     }
 
-    public async addInfo(params) {
-        if(params.isdefault){
-            await this.setInfo({
-                where:{
-                    isdefault: 1
+    public async add(params) {
+        if (params.isDefault) {
+            await this.set({
+                where: {
+                    isDefault: 1
                 },
-                data:{
-                    isdefault: 0
+                data: {
+                    isDefault: 0
                 }
             })
         }
         return new Observable((subscriber) => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'add',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'admin_themes',
+                        what: 'adminTheme',
                         data: {
                             title: params.title,
-                            isdefault: params.isdefault,
+                            isDefault: params.isDefault,
                             thumbnail: params.thumbnail,
                             data: params.data,
                         }
@@ -176,16 +166,16 @@ export class AdminThemesService {
 
     }
 
-    public remInfo(params) {
+    public rem(params) {
         return new Observable((subscriber) => {
             const request: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'rem',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'admin_themes',
+                        what: 'adminTheme',
                         where: params
                     }
                 }

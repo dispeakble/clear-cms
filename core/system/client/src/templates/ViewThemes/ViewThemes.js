@@ -61,6 +61,7 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import html2canvas from "html2canvas";
 import PropTypes from "prop-types";
 import ColorEditionSquare from "./themeEditor/src/component/color-edition-square";
+import Modal from "../../components/Modal/Modal";
 
 class ViewThemes extends Component {
     state = {
@@ -68,6 +69,7 @@ class ViewThemes extends Component {
         side: 0,
         themes: [],
         createModal: false,
+        showDeleteModal: false,
         data: {
             title: "",
             bgcolor: "",
@@ -78,7 +80,7 @@ class ViewThemes extends Component {
             fontsize: 13,
             textcolor: "#000000",
             fontfamily: "Arial",
-            isdefault: false,
+            isDefault: false,
             thumbnail: "",
             boxspacing: 10
         },
@@ -92,7 +94,7 @@ class ViewThemes extends Component {
             fontsize: 13,
             textcolor: "#000000",
             fontfamily: "Arial",
-            isdefault: false,
+            isDefault: false,
             thumbnail: "",
             boxspacing: 10
         },
@@ -119,6 +121,20 @@ class ViewThemes extends Component {
         colorPickerAnchor: null
     };
 
+    deleteModal = {
+        name: "deleteModal",
+        title: "Delete Theme",
+        content: <div>Are you sure you want delete this theme?</div>,
+        closeButton: {
+            callback: () => this.closeRemoveThemeModal(),
+            label: "Cancel",
+        },
+        confirmButton: {
+            callback: () => this.onRemoveItem(),
+            label: "Proceed",
+        },
+    }
+
     colorPickerAnchorOrigin = {
         vertical: "bottom",
         horizontal: "left",
@@ -140,49 +156,19 @@ class ViewThemes extends Component {
     }
 
     getThemes = async () => {
-        const themes = await this.props.control.getAll({type: this.state.side ? "admin" : "public"});
+        const themes = await this.props.control.list({type: this.state.side ? "admin" : "public"});
 
         if (themes && Array.isArray(themes)) {
             this.setState({themes});
         }
     }
 
-    // getThemes = () => {
-    //
-    //   return createTheme({
-    //     palette: this.state.fullEditorData,
-    //     overrides: {
-    //       MuiFab: {
-    //         root: {
-    //           boxShadow: "",
-    //         },
-    //       },
-    //       MuiDialog: {
-    //         paper: {
-    //           width: "100%",
-    //         },
-    //         paperWidthSm: {
-    //           maxWidth: "100vw",
-    //         },
-    //       },
-    //       MuiDropzoneArea: {
-    //         root: {
-    //           height: "145px",
-    //           minHeight: "145px",
-    //         },
-    //         text: {
-    //           fontSize: "1rem",
-    //         },
-    //       },
-    //     },
-    //   });
-    // };
     showRemoveThemeModal = (id) => {
-        this.setState({showRemoveThemeModal: true, itemToRemoveId: id});
+        this.setState({deleteModal: true, itemToRemoveId: id});
     };
 
     closeRemoveThemeModal = () => {
-        this.setState({showRemoveThemeModal: false});
+        this.setState({deleteModal: false});
     };
 
     onRemoveItem = async () => {
@@ -208,12 +194,12 @@ class ViewThemes extends Component {
 
     enableEditMode = async (id) => {
 
-        const theme = await this.props.control.getOne({
+        const theme = await this.props.control.get({
             type: this.state.side ? 'admin' : 'public',
             data: {id: id}
         });
 
-        theme.isdefault = !!theme.isdefault;
+        theme.isDefault = !!theme.isDefault;
         theme.id = id;
 
         const data = theme;
@@ -325,10 +311,10 @@ class ViewThemes extends Component {
     createColorPicker = (targetedColor, icon) => {
         return (
             <ColorEditionSquare
-            customIcon={icon}
-            name={targetedColor}
-            onChange={this.changeColorPicker}
-            value={this.state.data[targetedColor]}
+                customIcon={icon}
+                name={targetedColor}
+                onChange={this.changeColorPicker}
+                value={this.state.data[targetedColor]}
             />
         );
     };
@@ -416,7 +402,7 @@ class ViewThemes extends Component {
                 showEmptyTitleMessage: true,
             });
             return;
-        }else {
+        } else {
             this.setAsyncState({
                 showEmptyTitleMessage: false,
             });
@@ -435,7 +421,7 @@ class ViewThemes extends Component {
             await this.setAsyncState({publicType: this.state.side});
         }
         const previewEl = document.getElementById(this.state.side ? "adminPreviewElement" : "previewElement");
-        if(this.state.side) {
+        if (this.state.side) {
             previewEl.style.flex = "none";
             previewEl.style.width = "auto";
             previewEl.style.whiteSpace = "nowrap";
@@ -471,7 +457,7 @@ class ViewThemes extends Component {
                     where: {id: this.state.data.id},
                     data: {
                         title: this.state.data.title,
-                        isdefault: this.state.data.isdefault ? 1 : 0,
+                        isDefault: this.state.data.isDefault ? 1 : 0,
                         thumbnail: base64image,
                         data: data
                     }
@@ -480,7 +466,7 @@ class ViewThemes extends Component {
                 await this.props.control.add({
                     type: "admin", data: {
                         title: this.state.data.title,
-                        isdefault: this.state.data.isdefault ? 1 : 0,
+                        isDefault: this.state.data.isDefault ? 1 : 0,
                         thumbnail: base64image,
                         data: data
                     }
@@ -490,7 +476,7 @@ class ViewThemes extends Component {
 
             const theme = {
                 title: this.state.data.title,
-                isdefault: this.state.data.isdefault ? 1 : 0,
+                isDefault: this.state.data.isDefault ? 1 : 0,
                 bgcolor: this.state.data.bgcolor,
                 bgimage: this.state.data.bgimage,
                 fontsize: +this.state.data.fontsize,
@@ -518,7 +504,7 @@ class ViewThemes extends Component {
             }
         }
 
-        if (this.state.data.isdefault) {
+        if (this.state.data.isDefault) {
             window.location.reload();
         } else {
             await this.getThemes();
@@ -556,7 +542,7 @@ class ViewThemes extends Component {
                 maxWidth={'md'}
                 onMouseEnter={() => {
                     let data = this.state.data;
-                    data.isdefault = !!data.isdefault;
+                    data.isDefault = !!data.isDefault;
                     this.setState({data});
                 }}
                 style={{width: "100%"}}
@@ -658,7 +644,7 @@ class ViewThemes extends Component {
                                 )}
 
                                 <div style={{display: "flex"}}>
-                                    <div style={{flex:1}}>
+                                    <div style={{flex: 1}}>
                                         <CustomInput
                                             labelText="Theme Title"
                                             id="themeTitle"
@@ -684,16 +670,16 @@ class ViewThemes extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div style={{ height: "100%", display: this.state.publicType === 1 ? "block" : "none"}} >
+                            <div style={{height: "100%", display: this.state.publicType === 1 ? "block" : "none"}}>
                                 <Editor
                                     currentTheme={
                                         this.state.editMode ? this.state.fullEditorData : {}
                                     }
-                                        classes={{
-                                            root:{
-                                                backgroundColor:this.props.theme?.palette.background.paper
-                                            }
-                                        }}
+                                    classes={{
+                                        root: {
+                                            backgroundColor: this.props.theme?.palette.background.paper
+                                        }
+                                    }}
                                     style={{
                                         height: "100%",
                                         backgroundColor: this.props.theme?.palette.paper.main
@@ -704,16 +690,17 @@ class ViewThemes extends Component {
                                 />
                             </div>
 
-                            <div style={{ display: this.state.publicType === 0 ? "block" : "none"}}>
+                            <div style={{display: this.state.publicType === 0 ? "block" : "none"}}>
                                 <div className={this.props.classes.newThemeStylesWrapper}>
                                     <div className={this.props.classes.column}>
                                         <div style={{display: "flex"}}>
 
-                                            <Tooltip title="Set the default font family for the whole page" arrow={true} placement="top">
+                                            <Tooltip title="Set the default font family for the whole page" arrow={true}
+                                                     placement="top">
                                                 <Autocomplete
                                                     id="fontFamilyDropdown"
                                                     onChange={this.handleFontFamily}
-                                                    style={{flex:1}}
+                                                    style={{flex: 1}}
                                                     options={this.state.fontFamilies}
                                                     autoHighlight
                                                     getOptionLabel={(option) => option.label}
@@ -730,8 +717,9 @@ class ViewThemes extends Component {
                                                     )}
                                                 />
                                             </Tooltip>
-                                            <span style={{flex: 1, textAlign:"center"}}>
-                                                <Tooltip title="Set the default text color for the whole page" arrow={true} placement="top">
+                                            <span style={{flex: 1, textAlign: "center"}}>
+                                                <Tooltip title="Set the default text color for the whole page"
+                                                         arrow={true} placement="top">
                                                 <FormControlLabel
                                                     control={
                                                         this.createColorPicker(
@@ -745,7 +733,8 @@ class ViewThemes extends Component {
                                             </span>
 
 
-                                            <Tooltip title="Set the default text size for the whole page" arrow={true} placement="top">
+                                            <Tooltip title="Set the default text size for the whole page" arrow={true}
+                                                     placement="top">
                                                 <FormControlLabel
                                                     style={{flex: 1}}
                                                     control={
@@ -771,21 +760,24 @@ class ViewThemes extends Component {
                                         </div>
 
                                     </div>
-                                    <div className={ this.props.classes.column + " " + this.props.classes.columnSeparator }>
+                                    <div
+                                        className={this.props.classes.column + " " + this.props.classes.columnSeparator}>
                                         <div style={{display: "flex"}}>
-                                            <Tooltip title="Set the default background color" arrow={true} placement="top">
+                                            <Tooltip title="Set the default background color" arrow={true}
+                                                     placement="top">
                                                 <FormControlLabel
-                                                    style={{flex:1}}
+                                                    style={{flex: 1}}
                                                     control={
-                                                        this.createColorPicker( "bgcolor", Image )
+                                                        this.createColorPicker("bgcolor", Image)
                                                     }
                                                     label="Background Color"
                                                 />
                                             </Tooltip>
 
-                                            <Tooltip title="Repeats the background image on the whole page" arrow={true} placement="top">
+                                            <Tooltip title="Repeats the background image on the whole page" arrow={true}
+                                                     placement="top">
                                                 <FormControlLabel
-                                                    style={{flex:1}}
+                                                    style={{flex: 1}}
                                                     control={
                                                         <Switch
                                                             checked={!this.state.side && this.state.data.bgrepeat}
@@ -799,9 +791,10 @@ class ViewThemes extends Component {
                                                     label="Background Repeat"
                                                 />
                                             </Tooltip>
-                                            <Tooltip title="Stretches the background image on the whole page" arrow={true} placement="top">
+                                            <Tooltip title="Stretches the background image on the whole page"
+                                                     arrow={true} placement="top">
                                                 <FormControlLabel
-                                                    style={{flex:1}}
+                                                    style={{flex: 1}}
                                                     control={
                                                         <Switch
                                                             checked={!this.state.side && this.state.data.bgstretch}
@@ -823,10 +816,12 @@ class ViewThemes extends Component {
                                             </Tooltip>
                                         </div>
                                     </div>
-                                    <div className={ this.props.classes.column + " " + this.props.classes.columnSeparator }>
-                                        <Tooltip title="Adjust the spacing between boxes or modules" arrow={true} placement="top">
+                                    <div
+                                        className={this.props.classes.column + " " + this.props.classes.columnSeparator}>
+                                        <Tooltip title="Adjust the spacing between boxes or modules" arrow={true}
+                                                 placement="top">
                                             <FormControlLabel
-                                                style={{display:"flex"}}
+                                                style={{display: "flex"}}
                                                 control={
                                                     <Slider
                                                         key={`slider-box-spacing`}
@@ -838,7 +833,7 @@ class ViewThemes extends Component {
                                                                 data
                                                             });
                                                         }}
-                                                        value={ this.state.data.boxspacing }
+                                                        value={this.state.data.boxspacing}
                                                         aria-labelledby="discrete-slider"
                                                         valueLabelDisplay="auto"
                                                         min={0}
@@ -889,13 +884,13 @@ class ViewThemes extends Component {
                                                 <p style={{fontSize: "inherit", fontFamily: "inherit"}}>Home page</p>
                                             </AppBar>
 
-                                            <div className={this.props.classes.previewBodyWrapper} >
+                                            <div className={this.props.classes.previewBodyWrapper}>
                                                 <List
                                                     style={{
                                                         backgroundColor: this.state.data.bgcolor,
                                                         fontSize: "inherit",
                                                         fontFamily: this.state.data.fontfamily,
-                                                        minWidth:"150px"
+                                                        minWidth: "150px"
 
                                                     }}
                                                     className={this.props.classes.previewList}
@@ -906,44 +901,51 @@ class ViewThemes extends Component {
                                                         <ListItemIcon>
                                                             <InboxIcon/>
                                                         </ListItemIcon>
-                                                        <ListItemText className={this.props.classes.previewMenu} primary="Home"/>
+                                                        <ListItemText className={this.props.classes.previewMenu}
+                                                                      primary="Home"/>
                                                     </ListItem>
                                                     <ListItem button>
                                                         <ListItemIcon>
                                                             <ShoppingCart/>
                                                         </ListItemIcon>
-                                                        <ListItemText className={this.props.classes.previewMenu} primary="Products"/>
+                                                        <ListItemText className={this.props.classes.previewMenu}
+                                                                      primary="Products"/>
                                                     </ListItem>
                                                     <ListItem button>
                                                         <ListItemIcon>
                                                             <Book/>
                                                         </ListItemIcon>
-                                                        <ListItemText className={this.props.classes.previewMenu} primary="Blog"/>
+                                                        <ListItemText className={this.props.classes.previewMenu}
+                                                                      primary="Blog"/>
                                                     </ListItem>
                                                     <ListItem button>
                                                         <ListItemIcon>
                                                             <Announcement/>
                                                         </ListItemIcon>
-                                                        <ListItemText className={this.props.classes.previewMenu} primary="Newsletter"/>
+                                                        <ListItemText className={this.props.classes.previewMenu}
+                                                                      primary="Newsletter"/>
                                                     </ListItem>
                                                     <ListItem button>
                                                         <ListItemIcon>
                                                             <Share/>
                                                         </ListItemIcon>
-                                                        <ListItemText className={this.props.classes.previewMenu} primary="Social"/>
+                                                        <ListItemText className={this.props.classes.previewMenu}
+                                                                      primary="Social"/>
                                                     </ListItem>
                                                     <ListItem button>
                                                         <ListItemIcon>
                                                             <AlternateEmail/>
                                                         </ListItemIcon>
-                                                        <ListItemText className={this.props.classes.previewMenu} primary="Contact us"/>
+                                                        <ListItemText className={this.props.classes.previewMenu}
+                                                                      primary="Contact us"/>
                                                     </ListItem>
                                                 </List>
-                                                <div id="publicPreview" className={this.props.classes.previewText} style={{
-                                                    marginLeft: this.state.data.boxspacing,
-                                                    backgroundColor: this.state.data.bgcolor,
-                                                    padding: "10px"
-                                                }}>
+                                                <div id="publicPreview" className={this.props.classes.previewText}
+                                                     style={{
+                                                         marginLeft: this.state.data.boxspacing,
+                                                         backgroundColor: this.state.data.bgcolor,
+                                                         padding: "10px"
+                                                     }}>
                                                     <h4>
                                                         <b>Web Design</b>
                                                     </h4>
@@ -979,10 +981,10 @@ class ViewThemes extends Component {
                         <FormControlLabel
                             control={
                                 <Switch
-                                    checked={this.state.data.isdefault}
+                                    checked={this.state.data.isDefault}
                                     onChange={(event) => {
                                         let data = this.state.data;
-                                        data.isdefault = event.target.checked;
+                                        data.isDefault = event.target.checked;
                                         this.setState({data});
                                     }}
                                 />
@@ -1000,35 +1002,6 @@ class ViewThemes extends Component {
     togglePublicType = (event, newValue) => {
         this.setState({publicType: newValue, showEmptyTitleMessage: false});
     };
-
-    createRemoveThemeModal() {
-        return (
-            <Dialog
-                style={{width: "50%", margin: "0 auto"}}
-                open={this.state.showRemoveThemeModal}
-                TransitionComponent={this.transition}
-                keepMounted
-                classes={{
-                    root: this.props.classes.center,
-                    paper: this.props.classes.modal,
-                }}
-                aria-labelledby="classic-modal-slide-title"
-                aria-describedby="classic-modal-slide-description"
-            >
-                <DialogTitle id="classic-modal-slide-title" disableTypography>
-                    <h4>Remove Selected Theme</h4>
-                </DialogTitle>
-                <DialogContent id="classic-modal-slide-description">
-                    <div>Are you sure you want to proceed ?</div>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button color="primary" onClick={this.onRemoveItem}>Proceed</Button>
-                    <Button color="danger" onClick={this.closeRemoveThemeModal}>Cancel</Button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
 
     render() {
         let a11yProps = (index) => {
@@ -1063,7 +1036,7 @@ class ViewThemes extends Component {
                         }} {...a11yProps(1)} />
                     </Tabs>
                 </AppBar>
-                <div style={{display: "flex", "& > :lastChild":{marginRight: "0px"}}}>
+                <div style={{display: "flex", "& > :lastChild": {marginRight: "0px"}}}>
                     {this.adminThemeList()}
                 </div>
                 <div
@@ -1088,7 +1061,10 @@ class ViewThemes extends Component {
                     </Tooltip>
                 </div>
                 {this.state.createModal ? this.openEditor() : ""}
-                {this.createRemoveThemeModal()}
+                <Modal
+                    showModal={this.state.showDeleteModal}
+                    {...this.deleteModal}
+                />
             </React.Fragment>
         );
     }

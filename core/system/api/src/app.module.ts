@@ -25,7 +25,6 @@ import {
 } from '@nestjs/microservices';
 import {ProtocolService} from "./services/protocol.service";
 import {GotModule} from "@t00nday/nestjs-got";
-import { MainService } from './services/main.service';
 
 @Module({
   imports: [
@@ -61,7 +60,6 @@ import { MainService } from './services/main.service';
     AdminProfileService,
     AdminThemesService,
     PublicThemesService,
-    MainService,
     GeneralSettingsService,
     HelpService,
     DashboardBoxService,
