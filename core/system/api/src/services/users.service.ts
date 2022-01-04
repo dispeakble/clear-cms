@@ -111,7 +111,7 @@ export class UsersService {
 
             this.protocolService.sendMessage(request).subscribe(data => {
                 subscriber.next({
-                    success: "The user was edited",
+                    success: "The user was updated",
                     data: null
                 })
             }, err => {
@@ -133,7 +133,7 @@ export class UsersService {
                     data: {
                         what: 'user',
                         where: {
-                            id: params.id
+                            id: Number(params.id)
                         }
                     }
                 }

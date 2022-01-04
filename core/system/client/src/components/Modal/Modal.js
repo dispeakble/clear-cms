@@ -12,7 +12,7 @@ import Button from "components/CustomButtons/Button.js";
 import {Divider, Tooltip} from "@material-ui/core";
 import PropTypes from "prop-types";
 
-class ModalComponent extends Component {
+class Modal extends Component {
 
     constructor(props) {
         super(props);

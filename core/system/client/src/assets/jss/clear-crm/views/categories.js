@@ -42,24 +42,8 @@ const javascriptStyles = {
     textAlign: "center",
     paddingTop: "60px",
   },
-  categoriesWrapper: {
-    margin: "0 auto",
-    width: "80%",
-    height: "auto",
-    minWidth: "10rem",
-    "@media (max-width: 500px)" : {
-      width: "100%",
-    }
-  },
-  categoryWrapper: {
-    display: "inlineBlock",
-    float: "left",
-    width: "20%",
-    backgroundColor: "white",
-    padding: "10px",
-    border: "1px solid transparent",
-    borderRadius: "20px",
-    margin: "10px",
+  wrapper: {
+    margin: "60px 24px 0"
   },
   newCategory: {
     fontSize: "2rem",

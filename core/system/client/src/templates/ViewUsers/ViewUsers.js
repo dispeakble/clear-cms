@@ -17,13 +17,6 @@ import {
 // from material-table
 import MaterialTable from "material-table";
 
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "components/CustomButtons/Button.js";
-
 // for the dropdown
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -409,7 +402,7 @@ class Users extends Component {
                                 title="Users"
                                 tableRef={this.state.tableRef}
                                 columns={this.tableOptions.props.columns}
-                                data={(query) => this.tableOptions.actions.getData(query)}
+                                data={this.tableOptions.actions.getData.bind(this)}
                                 icons={this.tableOptions.props.icons}
                                 options={this.tableOptions.props.options}
                                 editable={this.tableOptions.actions.editable}
