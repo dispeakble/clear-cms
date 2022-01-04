@@ -5,10 +5,10 @@ RUN ["npm", "i", "-g", "@nestjs/cli"]
 RUN mkdir -p /usr/src/api
 WORKDIR /usr/src/api
 
-COPY ./package*.json /usr/src/api/
+COPY ./package.json /usr/src/api/
 COPY ./yarn.lock /usr/src/api/yarn.lock
 
-RUN npm install
+RUN yarn install
 
 COPY ./src /usr/src/api/src
 COPY ./config /usr/src/api/config

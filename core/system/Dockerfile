@@ -26,9 +26,10 @@ WORKDIR /usr/src/api
 
 RUN npm i -g @nestjs/cli
 
-COPY ./api/package*.json /usr/src/api/
+COPY ./api/package.json /usr/src/api/
+COPY ./api/yarn.lock /usr/src/api/
 
-RUN npm install
+RUN yarn install
 
 COPY ./api/src /usr/src/api/src
 COPY ./api/config /usr/src/api/config

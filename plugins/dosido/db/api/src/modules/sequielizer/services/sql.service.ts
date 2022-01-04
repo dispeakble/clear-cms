@@ -1,16 +1,67 @@
 import {Injectable} from '@nestjs/common';
-import {User} from "../models/user.model";
 import {Op} from "sequelize";
-import {Observable, Subscriber} from "rxjs";
+import {Observable} from "rxjs";
 import {InjectModel} from "@nestjs/sequelize";
-import moment from "moment";
+import {Locality} from "../models/general/locality.model";
+import {PageBox} from "../models/pages/page.box.model";
+import {PageConfig} from "../models/pages/page.config.model";
+import {Page} from "../models/pages/page.model";
+import {PageToBox} from "../models/pages/page.to.box.model";
+import {PageToCategory} from "../models/pages/page.to.category.model";
+import {PageToConfig} from "../models/pages/page.to.config.model";
+import {ProductLabel} from "../models/products/product.label.model";
+import {Product} from "../models/products/product.model";
+import {ProductToCategory} from "../models/products/product.to.category.model";
+import {ProductImage} from "../models/products/product.image.model";
+import {ProductToLabel} from "../models/products/product.to.label.model";
+import {ProductToLocality} from "../models/products/product.to.locality.model";
+import {ProductPrice} from "../models/products/product.price.model";
+import {ProductCurrency} from "../models/products/currency.model";
+import {AdminTheme} from "../models/admin/admin.theme.model";
+import {DashboardBox} from "../models/admin/dashboard.box.model";
+import {Setting} from "../models/admin/setting.model";
+import {Category} from "../models/general/category.model";
+import {PublicTheme} from "../models/general/public.theme.model";
+import {Auth} from "../models/admin/auth.model";
+import {User} from "../models/general/user.model";
 
 @Injectable()
 export class SqlService {
     private methods = ["list", "get", "add", "set", "rem"];
 
     constructor(
-        @InjectModel(User) private userModel: typeof User
+
+        //admin
+        @InjectModel(AdminTheme) private adminThemeModel: AdminTheme,
+        @InjectModel(Auth) private authModel: Auth,
+        @InjectModel(DashboardBox) private dashboardBoxModel: DashboardBox,
+        @InjectModel(Setting) private settingModel: Setting,
+
+        //general
+        @InjectModel(Category) private categoryModel: Category,
+        @InjectModel(Locality) private localityModel: Locality,
+        @InjectModel(PublicTheme) private publicThemeModel: PublicTheme,
+        @InjectModel(User) private userModel: User,
+
+        //pages
+        @InjectModel(PageBox) private pageBoxModel: PageBox,
+        @InjectModel(PageConfig) private pageConfigModel: PageConfig,
+        @InjectModel(Page) private pageModel: Page,
+        @InjectModel(PageToBox) private pageToBoxModel: PageToBox,
+        @InjectModel(PageToCategory) private pageToCategoryModel: PageToCategory,
+        @InjectModel(PageToConfig) private pageToConfigModel: PageToConfig,
+
+        //products
+        @InjectModel(ProductLabel) private productLabelModel: ProductLabel,
+        @InjectModel(Product) private productModel: Product,
+        @InjectModel(ProductToCategory) private productToCategoryModel: ProductToCategory,
+        @InjectModel(ProductImage) private productToImageModel: ProductImage,
+        @InjectModel(ProductToLabel) private productToLabelModel: ProductToLabel,
+        @InjectModel(ProductToLocality) private productToLocalityModel: ProductToLocality,
+        @InjectModel(ProductPrice) private productToPriceModel: ProductPrice,
+        @InjectModel(ProductCurrency) private productCurrency: ProductCurrency,
+
+
     ) { }
 
     /*convertDateToUnix(data) {
@@ -64,8 +115,8 @@ export class SqlService {
 
                 const payload: any = {};
 
-                if (params.fields) {
-                    payload.attributes = params.fields;
+                if (params.data.fields) {
+                    payload.attributes = params.data.fields;
                 }
 
                 if(params.data.where) {
@@ -89,6 +140,51 @@ export class SqlService {
 
                 try {
                     const result = await model.findAndCountAll(payload);
+                    subscriber.next(result);
+                    subscriber.complete();
+                } catch (err) {
+                    subscriber.error(err.message);
+                    subscriber.complete();
+                }
+
+            })()
+        });
+
+    }
+
+    get(params: any) {
+        return new Observable(subscriber => {
+            (async () => {
+                const model = this[`${params.data.what}Model`];
+
+                if(!model) {
+                    subscriber.error(`Model ${params.data.what} not found. Please define it.`);
+                    subscriber.complete();
+                    return;
+                }
+
+                const payload: any = {};
+
+                if (params.data.fields) {
+                    payload.attributes = params.data.fields;
+                }
+
+                if(params.data.where) {
+                    payload.where = this.convertWhereOp(params.data.where);
+                }
+
+                if(params.data.order) {
+                    const orderArray = [];
+
+                    Object.keys(params.data.order).map(key => {
+                        orderArray.push([key, params.data.order[key]]);
+                    });
+
+                    payload.order = orderArray;
+                }
+
+                try {
+                    const result = await model.findOne(payload);
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
