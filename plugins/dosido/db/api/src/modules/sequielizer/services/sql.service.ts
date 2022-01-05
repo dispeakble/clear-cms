@@ -77,6 +77,9 @@ export class SqlService {
     }*/
 
     private convertWhereOp(params: any) {
+        //ex: {where: {name:{'LIKE':'%abc%'}}}
+        //ex: {where: {name:{'OR':[{name: {'LIKE': '%abc%'}}, {active: 1}]}}}
+        //ex: {where: {id:[1,2,3,4]} //will be 1 OR 2 OR ...
         const result = {};
 
         if("object" !== typeof params) {

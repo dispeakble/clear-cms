@@ -276,7 +276,7 @@ class ViewDashboard extends Component {
                 },
                 icon: (
                     <DeleteForever
-                        style={{ color: this.props.defaultTheme.secondary.main }}
+                        style={{ color: this.props?.defaultTheme?.secondary?.main }}
                     />
                 ),
                 name: "Delete Item",
