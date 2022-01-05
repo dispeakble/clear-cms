@@ -2714,15 +2714,15 @@ INSERT INTO "public"."Auths"(
 	email, fullname, fname, lname, password, active)
 	VALUES ('admin@localhost.local', 'Administrator', 'Admin', 'Boss', MD5('1qaz'), 1);
 
-INSERT INTO "public"."Settings"(data, isDefault)
-    VALUES ('{"websiteName": "Test Website","websiteDomain": "www.testwebsite.com","websiteOwner": "Test Website Owner","websiteAdminEmail": "test@test.com","applicationVersion": "1.0.1"}', 1);
+INSERT INTO public."Settings"(data, "isDefault")
+	VALUES ('{"websiteName": "Test Website","websiteDomain": "www.testwebsite.com","websiteOwner": "Test Website Owner","websiteAdminEmail": "test@test.com","applicationVersion": "1.0.1"}', 1);
 
 INSERT INTO public.ecommerce_templates(
     type, template_id, title)
     VALUES ('product-details', 0, 'Product Template'),('product-list', 0, 'Product List Template'),('category', 0, 'Category Template'),('category-list', 0, 'Category List Template');
 INSERT INTO "public"."DashboardBoxes" (id, title, module, fontSize, fontFamily, textColor, borderWidth, borderColor, borderRadius, bgColor, height, width, moduleOptions, x, y, scrollbars) VALUES (8, 'New Box', 'RAM Module', NULL, NULL, NULL, 1, '#959595', 10, NULL, 14, 1, '{"data":""}', 11, 28, 0);
 INSERT INTO "public"."DashboardBoxes" (id, title, module, fontSize, fontFamily, textColor, borderWidth, borderColor, borderRadius, bgColor, height, width, moduleOptions, x, y, scrollbars) VALUES (9, 'New Box', 'NET Module', NULL, NULL, NULL, 1, '#818181', 10, NULL, 14, 1, '{"data":""}', 11, 42, 0);
-INSERT INTO "public"."DashboardBoxes" (id, title, module, fontSize, fontFamily, textColor, borderWidth, borderColor, borderRadius, bgColor, height, width, moduleOptions, x, y, scrollbars) VALUES (3, '123', 'Activity Module', NULL, NULL, '#3b3b3b', 1, '#959595', 10, '#b1b1b1', 56, 11, '{"data":""}', 0, 0, 0);
+INSERT INTO "public"."DashboardBoxes" (id, title, module, fontSize, fontFamily, textColor, borderWidth, borderColor, borderRadius, bgColor, height, width, moduleOptions, x, y, scrollbars) VALUES (3, '123', 'Admin Activity Module', NULL, NULL, '#3b3b3b', 1, '#959595', 10, '#b1b1b1', 56, 11, '{"data":""}', 0, 0, 0);
 INSERT INTO "public"."DashboardBoxes" (id, title, module, fontSize, fontFamily, textColor, borderWidth, borderColor, borderRadius, bgColor, height, width, moduleOptions, x, y, scrollbars) VALUES (7, 'New Box', 'CPU Module', NULL, NULL, NULL, 1, '#7e7e7e', 10, NULL, 14, 1, '{"data":""}', 11, 14, 0);
 INSERT INTO "public"."DashboardBoxes" (id, title, module, fontSize, fontFamily, textColor, borderWidth, borderColor, borderRadius, bgColor, height, width, moduleOptions, x, y, scrollbars) VALUES (6, 'New Box', 'Clock Module', NULL, NULL, NULL, 1, '#7a7a7a', 10, NULL, 14, 1, '{"data":""}', 11, 0, 0);
 

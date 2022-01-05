@@ -49,7 +49,7 @@ class ThemesController extends Component {
             localStorage.setItem('adminTheme', params.data.data)
         }
 
-        await this.sendMessage({
+        return this.sendMessage({
             module: "system",
             api: params.type + "Themes",
             act: "set",
