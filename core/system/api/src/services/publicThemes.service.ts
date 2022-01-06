@@ -151,6 +151,11 @@ export class PublicThemesService {
                             data: {
                                 what: 'publicTheme',
                                 where: params.where,
+                                fields: [
+                                    "title",
+                                    "data",
+                                    "isDefault",
+                                    "thumbnail",],
                                 data: {
                                     "title": params.data.title,
                                     "data": JSON.stringify(_data),
