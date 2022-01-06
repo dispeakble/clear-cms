@@ -463,6 +463,7 @@ class ViewThemes extends Component {
                     }
                 })
             } else {
+                console.log("entered FIRST")
                 await this.props.control.add({
                     type: "admin", data: {
                         title: this.state.data.title,
@@ -479,7 +480,7 @@ class ViewThemes extends Component {
                 isDefault: this.state.data.isDefault ? 1 : 0,
                 bgcolor: this.state.data.bgcolor,
                 bgimage: this.state.data.bgimage,
-                fontsize: +this.state.data.fontsize,
+                fontsize: this.state.data.fontsize,
                 textcolor: this.state.data.textcolor,
                 fontfamily: this.state.data.fontfamily,
                 boxspacing: this.state.data.boxspacing,
@@ -497,6 +498,7 @@ class ViewThemes extends Component {
                     data: theme
                 })
             } else {
+                console.log("entered SECOND")
                 await this.props.control.add({
                     type: "public",
                     data: theme
