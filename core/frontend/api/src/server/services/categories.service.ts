@@ -18,63 +18,71 @@ export class CategoriesService {
 
     public list (params: any){
         return new Observable(subscriber => {
-            const payload: payloadInterface = {
-                channel: 'db',
-                api: 'db',
-                act: 'get',
-                payload: {
-                    channel: 'frontend',
-                    data: {
-                        what: 'categories',
-                        fields: ["id", "title", "description", "backgroundimage", "parentid"],
-                        where: params?.where
+            (async () => {
+
+                try{
+                    const payload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'list',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'category',
+                                fields: ["id", "title", "description", "backgroundImage", "parentId"],
+                                where: params?.where
+                            }
+                        }
+                    };
+
+                    const res = await this.protocolService.sendMessage(payload).toPromise()
+
+                    let results = null
+
+                    if(res.hasOwnProperty('rows')){
+                        if(res.rows.length > 0){
+                            results = res.rows
+                        }
                     }
-                }
-            };
 
-            this.protocolService.sendMessage(payload).subscribe(data => {
-                let response = null;
-
-                if (data && data.hasOwnProperty('data')) {
-                    response = data.data;
+                    subscriber.next({type: 'categories recieved', data: results});
+                    subscriber.complete();
+                } catch(err){
+                    subscriber.error(err);
+                    subscriber.complete();
                 }
-                subscriber.next({type: 'categories_list', data: response});
-            }, err => {
-                subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
+            })();
         })
     }
 
-    public add (params: any){
+    public add(params: any){
         return new Observable(subscriber => {
 
             (async () => {
                 try {
-                    const request: payloadInterface = {
+                    const payload: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'add',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'categories',
+                                what: 'category',
                                 data: {
                                     title: params.title,
                                     description: params.description,
-                                    backgroundimage: params.backgroundimage,
-                                    parentid: params.parentid
+                                    backgroundImage: params.backgroundimage,
+                                    parentId: params.parentid
                                 }
                             }
                         }
                     };
 
-                    const cat = await this.protocolService.sendMessage(request).toPromise();
+                    const res = await this.protocolService.sendMessage(payload).toPromise();
 
                     subscriber.next({
                         success: "The category was added",
-                        data: {categoryId: cat.data[0].id}
+                        data: res
                     })
                     subscriber.complete();
                 } catch(err) {
@@ -88,68 +96,69 @@ export class CategoriesService {
 
     public edit (params: any){
         return new Observable(subscriber => {
-            const request: payloadInterface = {
-                channel: 'db',
-                api: 'db',
-                act: 'set',
-                payload: {
-                    channel: 'frontend',
-                    data: {
-                        what: 'categories',
-                        where: {
-                            id: params.id
-                        },
-                        data: {
-                            title: params.title,
-                            description: params.description,
-                            backgroundimage: params.backgroundimage,
-                            parentid: params.parentid
+            (async() => {
+                try{
+                    const payload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'set',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'category',
+                                where: {
+                                    id: params.id
+                                },
+                                data: {
+                                    title: params.title,
+                                    description: params.description,
+                                    backgroundImage: params.backgroundimage,
+                                    parentId: params.parentid
+                                }
+                            }
                         }
-                    }
-                }
-            };
+                    };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
-                subscriber.next({
-                    success: "The category was edited",
-                    data: null
-                })
-            }, err => {
-                subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
+                    const res = await this.protocolService.sendMessage(payload).toPromise()
+
+                    subscriber.next({type: "Category updated successfully", data: res})
+                    subscriber.complete()
+                } catch(err){
+                    subscriber.error(err)
+                    subscriber.complete()
+                }
+            })()
         })
     }
 
     public remove (params: any){
         return new Observable(subscriber => {
-            const request: payloadInterface = {
-                channel: 'db',
-                api: 'db',
-                act: 'rem',
-                payload: {
-                    channel: 'frontend',
-                    data: {
-                        what: 'categories',
-                        how: 'OR',
-                        where: {
-                            id: params.id || 0
+            (async() => {
+                try{
+                    const payload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'rem',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'category',
+                                how: 'OR',
+                                where: {
+                                    id: params.id || 0
+                                }
+                            }
                         }
-                    }
-                }
-            };
+                    };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
-                subscriber.next({
-                    success: "The category was removed",
-                    data: null
-                })
-            }, err => {
-                subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
+                    await this.protocolService.sendMessage(payload).toPromise()
+                    subscriber.next({type: "Category was removed", data: null})
+                    subscriber.complete()
+                }catch(err){
+                    subscriber.error(err)
+                    subscriber.complete()
+                }
+            })();
         })
     }
 
