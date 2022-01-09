@@ -141,6 +141,10 @@ export class SqlService {
                     payload.offset = params.data.limit[0];
                 }
 
+                if(params.data.include){
+                    payload.include = params.data.include;
+                }
+
                 try {
                     const result = await model.findAndCountAll(payload);
                     subscriber.next(result);
@@ -184,6 +188,10 @@ export class SqlService {
                     });
 
                     payload.order = orderArray;
+                }
+
+                if(params.data.include){
+                    payload.include = params.data.include;
                 }
 
                 try {
@@ -238,7 +246,7 @@ export class SqlService {
 
                     const where = this.convertWhereOp(params.data.where);
 
-                    const result = await model.update(params.data.fields, {where: where});
+                    const result = await model.update(params.data.data, {where: where});
 
                     subscriber.next(result);
                     subscriber.complete();

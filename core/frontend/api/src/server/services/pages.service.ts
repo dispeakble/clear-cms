@@ -14,48 +14,39 @@ export class PagesService {
 
     public list(params: any) {
         return new Observable(subscriber => {
-            const payload: payloadInterface = {
-                channel: 'db',
-                api: 'db',
-                act: 'get',
-                payload: {
-                    channel: 'frontend',
-                    data: {
-                        what: 'pages',
-                        fields: ["id", "title", "pagelink", "is_default", "publish", "cat_id"],
-                        how: "AND",
-                        ...(params.where && {where: params.where})
-                    }
-                }
-            };
-
-            this.protocolService.sendMessage(payload).subscribe(data => {
-                let response = null;
-
-                if (data && data.hasOwnProperty('data')) {
-                    const pages = data.data.map((page) => {
-                        return {
-                            id: page.id,
-                            pageConfig: {
-                                pageTitle: page.title,
-                                defaultPage: !!page.is_default,
-                                publish: !!page.publish,
-                                category: page.cat_id,
-                                isTemplate: !!page.istemplate,
-                                pageLink: page.pagelink,
+            (async () => {
+                try{
+                    const payload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'list',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'page',
+                                fields: ['*'],
+                                how: "AND",
+                                ...(params.where && {where: params.where})
                             }
-
                         }
-                    });
+                    };
 
-                    response = [...pages]
+                    const res = await this.protocolService.sendMessage(payload).toPromise();
+
+                    let results = null
+                    if(res && res.hasOwnProperty('rows')){
+                        if(res.rows.length > 0){
+                            results = res.rows
+                        }
+                    }
+
+                    subscriber.next({type: 'pages recieved', data: results});
+                    subscriber.complete();
+                } catch(err){
+                    subscriber.error(err);
+                    subscriber.complete();
                 }
-                subscriber.next({type: 'pages_list', data: response});
-            }, err => {
-                subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
+            })();
         })
     }
 
@@ -65,12 +56,13 @@ export class PagesService {
                 try {
                     const pageReq: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'get',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'pages'
+                                what: 'page',
+                                fields: ['*']
                             }
                         }
                     };
@@ -93,18 +85,19 @@ export class PagesService {
                         subscriber.complete();
                         return;
                     }
+                    /*
                     const pagesToConfigReq: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'get',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'pages_to_config',
+                                what: 'pageToConfig',
                                 fields: ["*"],//it's optional. defaults to *
                                 how: "OR",
                                 where: {
-                                    page_id: page.id
+                                    pageId: page.id
                                 }
                             }
                         }
@@ -113,12 +106,12 @@ export class PagesService {
 
                     const configReq: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'get',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'page_config',
+                                what: 'pageConfig',
                                 fields: ["*"],//it's optional. defaults to *
                                 how: "OR",
                                 where: {
@@ -129,18 +122,47 @@ export class PagesService {
                     };
                     let config = await this.protocolService.sendMessage(configReq).toPromise()
                     config = config.data[0]
+                    */
+
+                    const _configReq : payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'get',
+                        payload: {
+                            channel: "frontend",
+                            data: {
+                                what: 'pageToConfig',
+                                fields: ['data'],
+                                include:[
+                                    {
+                                        model: 'pageConfig',
+                                    },
+                                    {
+                                        model: 'page',
+                                        where:{
+                                            id: page.id
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+
+                    const pageConfig = await this.protocolService.sendMessage(_configReq).toPromise()
+
+                    /*
                     const pagesToBoxReq: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
-                        act: 'get',
+                        api: 'sql',
+                        act: 'list',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'pages_to_boxes',
+                                what: 'pageToBox',
                                 fields: ["*"],//it's optional. defaults to *
                                 how: "OR",
                                 where: {
-                                    page_id: page.id
+                                    pageId: page.id
                                 }
                             }
                         }
@@ -150,17 +172,17 @@ export class PagesService {
                     if (pageToBoxes.data?.length) {
                         const boxReq: payloadInterface = {
                             channel: 'db',
-                            api: 'db',
+                            api: 'sql',
                             act: 'get',
                             payload: {
                                 channel: 'frontend',
                                 data: {
-                                    what: 'page_box',
+                                    what: 'pageBox',
                                     fields: ["*"],//it's optional. defaults to *
                                     how: "OR",
-                                    where: pageToBoxes.data.map(({box_id}) => {
+                                    where: pageToBoxes.data.map(({boxId}) => {
                                         return {
-                                            id: box_id,
+                                            id: boxId,
                                         }
                                     })
                                 }
@@ -177,51 +199,90 @@ export class PagesService {
                             }
                         })
                     }
+                    */
+
+                    //TODO: retrieve page boxes using one request
+                    const _boxesReq : payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'list',
+                        payload: {
+                            channel: "frontend",
+                            data: {
+                                what: 'pageToBox',
+                                include:[
+                                    {
+                                        model: 'pageBox',
+                                    },
+                                    {
+                                        model: 'page',
+                                        where:{
+                                            id: page.id
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+
+                    const _boxesRes = await this.protocolService.sendMessage(_boxesReq).toPromise()
+                    let _boxesResults = null
+
+                    if(_boxesRes.hasOwnProperty('rows')){
+                        _boxesResults = _boxesRes.rows
+                    }
 
                     const pagesToCategoriesReq: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'get',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'pages_to_categories',
-                                fields: ["category_id"],
+                                what: 'PageToCategory',
+                                fields: ["categoryId"],
                                 where: {
-                                    page_id: page.id
+                                    pageId: page.id
                                 }
                             }
                         }
                     };
 
                     const pagesToCategories = await this.protocolService.sendMessage(pagesToCategoriesReq).toPromise();
-                    let categoryId = 0;
-                    if (pagesToCategories.data?.length) {
-                        categoryId = pagesToCategories.data[0].category_id;
-                    }
+                    const categoryId = pagesToCategories ? pagesToCategories.categoryId : 0;
+
+                    const {bgColor,
+                        bgImage,
+                        bgRepeat,
+                        bgStretch,
+                        bgGradient,
+                        fontFamily,
+                        fontSize,
+                        layoutBoxSpacing,
+                        textColor,
+                        templateUsed} = JSON.parse(pageConfig.data)
 
                     const formattedPage = {
                         id: page.id,
                         pageConfig: {
-                            backgroundColor: config.bgcolor,
-                            backgroundImage: config.bgimage,
-                            backgroundRepeat: !!config.bgrepeat,
-                            backgroundStretch: !!config.bgstretch,
-                            backgroundGradient: !!config.bggradient,
-                            defaultPage: !!page.is_default,
-                            fontFamily: config.fontfamily,
-                            fontSize: config.fontsize,
-                            data: config.data,
-                            layoutBoxSpacing: [config.boxsizing, config.boxsizing],
-                            pageLink: page.pagelink,
+                            backgroundColor: bgColor,
+                            backgroundImage: bgImage,
+                            backgroundRepeat: !!bgRepeat,
+                            backgroundStretch: !!bgStretch,
+                            backgroundGradient: !!bgGradient,
+                            defaultPage: !!page.isHome,
+                            fontFamily: fontFamily,
+                            fontSize: fontSize,
+                            layoutBoxSpacing: layoutBoxSpacing,
+                            pageLink: page.link,
                             categoryId: categoryId,
-                            isTemplate: !!page.istemplate,
+                            isTemplate: !!page.isTemplate,
                             pageTitle: page.title,
-                            publish: !!page.publish,
-                            textColor: config.textcolor,
-                            templateUsed: config.templateused,
+                            publish: !!page.active,
+                            textColor: textColor,
+                            templateUsed: templateUsed,
                         },
-                        items: boxes.data.map((box) => {
+                        items: _boxesResults.map((box) => {
                             return {
                                 ...(box.bgcolor !== null && {backgroundColor: box.bgcolor}),
                                 ...(box.bggradientcolor !== null && {backgroundGradientColor: box.bggradientcolor}),

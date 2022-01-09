@@ -6,42 +6,43 @@ import {Observable} from "rxjs";
 @Injectable()
 export class PublicThemesService {
 
-    private methods = ["getOne", "getAll", "addInfo", "setInfo", "remInfo"];
+    private methods = ["get", "list", "add", "set", "rem"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
 
     }
 
     onApplicationBootstrap() {
-
     }
 
-    public async getAll() {
+    public async list() {
         return new Observable((subscriber) => {
             (async () => {
                 try {
                     const payload: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
-                        act: 'get',
+                        api: 'sql',
+                        act: 'list',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'public_themes',
-                                fields: ["id", "title", "isdefault", "thumbnail"]
+                                what: 'publicTheme',
+                                fields: ["id", "title", "isDefault", "thumbnail"]
                             }
                         }
                     };
 
-                    const data = await this.protocolService.sendMessage(payload).toPromise();
+                    const res = await this.protocolService.sendMessage(payload).toPromise();
 
-                    let response = null;
+                    let results = null
 
-                    if (data && data.hasOwnProperty('data')) {
-                        response = data.data;
+                    if(res && res.hasOwnProperty('rows')){
+                        if(res.rows.length > 0){
+                            results = res.rows
+                        }
                     }
 
-                    subscriber.next({type: 'Themes recieved', data: response});
+                    subscriber.next({type: 'Themes received', data: results});
                     subscriber.complete();
                 } catch(err){
                     subscriber.error(err);
@@ -52,47 +53,49 @@ export class PublicThemesService {
 
     }
 
-    public async getOne(params) {
+    public async get(params) {
         return new Observable((subscriber) => {
             (async () => {
                 try {
                     const payload: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'get',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'public_themes',
+                                what: 'publicTheme',
                                 fields: [
+                                    "id",
                                     "title",
-                                    "bgcolor",
-                                    "bgimage",
-                                    "fontsize",
-                                    "fontfamily",
-                                    "textcolor",
-                                    "isdefault",
-                                    "thumbnail",
-                                    "boxspacing",
-                                    "bgrepeat",
-                                    "bgstretch",
-                                    "bggradient",
-                                    "mui"],
+                                    "data",
+                                    "isDefault",
+                                    "thumbnail",],
                                 where: params.where,
                                 limit: [0, 1]
                             }
                         }
                     };
 
-                    const data = await this.protocolService.sendMessage(payload).toPromise();
-
-                    let response = {};
-
-                    if (data && data.hasOwnProperty('data')) {
-                        response = data.data[0];
+                    const res = await this.protocolService.sendMessage(payload).toPromise();
+                    const results = {
+                        id: res.id,
+                        title: res.title,
+                        isDefault: res.isDefault,
+                        thumbnail : res.thumbnail,
+                        bgColor : JSON.parse(res.data).bgColor,
+                        bgImage: JSON.parse(res.data).bgImage,
+                        fontSize: JSON.parse(res.data).fontSize,
+                        fontFamily: JSON.parse(res.data).fontFamily,
+                        textColor: JSON.parse(res.data).textColor,
+                        boxSpacing: JSON.parse(res.data).boxSpacing,
+                        bgRepeat: JSON.parse(res.data).bgRepeat,
+                        bgStretch: JSON.parse(res.data).bgStretch,
+                        bgGradient: JSON.parse(res.data).bgGradient,
+                        mui: JSON.parse(res.data).mui
                     }
 
-                    subscriber.next({type: 'Theme recieved', data: response});
+                    subscriber.next({type: 'Theme received', data: results});
                     subscriber.complete();
                 } catch(err){
                     subscriber.error(err);
@@ -103,82 +106,61 @@ export class PublicThemesService {
 
     }
 
-    public async setInfo(params) {
+    public async set(params) {
         return new Observable((subscriber) => {
             (async () => {
                 try {
-                    if(params.data.isdefault){
-                        await this.setInfo({
+                    if(params.data.isDefault){
+                        await this.set({
                             where:{
-                                isdefault: 1
+                                isDefault: 1
                             },
                             data:{
-                                isdefault: 0
+                                isDefault: 0
                             }
                         })
                     }
 
+                    const _data = {
+                        bgColor: params.data.bgColor,
+                        bgImage: params.data.bgImage,
+                        fontSize: params.data.fontSize,
+                        textColor: params.data.textColor,
+                        fontFamily: params.data.fontFamily,
+                        boxSpacing: params.data.boxSpacing,
+                        bgRepeat: params.data.bgRepeat,
+                        bgStretch: params.data.bgStretch,
+                        bgGradient: params.data.bgGradient,
+                        mui: params.data.mui
+                    }
+
                     const request: payloadInterface = {
                         channel: 'db',
-                        api: 'db',
+                        api: 'sql',
                         act: 'set',
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'public_themes',
+                                what: 'publicTheme',
                                 where: params.where,
-                                data: params.data
-                            }
-                        }
-                    };
-
-                    await this.protocolService.sendMessage(request).toPromise();
-
-                    subscriber.next({type: "The theme was updated", data: null});
-                    subscriber.complete();
-                } catch(err){
-                    subscriber.error(err);
-                    subscriber.complete();
-                }
-            })()
-        })
-
-    }
-
-    public async addInfo(params) {
-        return new Observable((subscriber) => {
-            (async () => {
-                try {
-                    const request: payloadInterface = {
-                        channel: 'db',
-                        api: 'db',
-                        act: 'add',
-                        payload: {
-                            channel: 'frontend',
-                            data: {
-                                what: 'public_themes',
+                                fields: [
+                                    "title",
+                                    "data",
+                                    "isDefault",
+                                    "thumbnail",],
                                 data: {
-                                    "title": params.title,
-                                    "bgcolor": params.bgcolor,
-                                    "bgimage": params.bgimage,
-                                    "fontsize": params.fontsize,
-                                    "fontfamily": params.fontfamily,
-                                    "textcolor": params.textcolor,
-                                    "isdefault": params.isdefault,
-                                    "thumbnail": params.thumbnail,
-                                    "boxspacing": params.boxspacing,
-                                    "bgrepeat": params.bgrepeat,
-                                    "bgstretch": params.bgstretch,
-                                    "bggradient": params.bggradient,
-                                    "mui": params.mui
+                                    "title": params.data.title,
+                                    "data": JSON.stringify(_data),
+                                    "isDefault": params.data.isDefault,
+                                    "thumbnail": params.data.thumbnail,
                                 }
                             }
                         }
                     };
 
-                    await this.protocolService.sendMessage(request).toPromise();
+                    const res = await this.protocolService.sendMessage(request).toPromise();
 
-                    subscriber.next({type: "The theme was added", data: null});
+                    subscriber.next({type: "The theme was updated", data: res});
                     subscriber.complete();
                 } catch(err){
                     subscriber.error(err);
@@ -186,32 +168,78 @@ export class PublicThemesService {
                 }
             })()
         })
-        if(params.isdefault){
-            await this.setInfo({
-                where:{
-                    isdefault: 1
-                },
-                data:{
-                    isdefault: 0
-                }
-            })
-        }
-
-
     }
 
-    public async remInfo(params) {
+    public async add(params) {
+        return new Observable((subscriber) => {
+            (async () => {
+                try {
+
+                    if(params.isDefault){
+                        await this.set({
+                            where:{
+                                isDefault: 1
+                            },
+                            data:{
+                                isDefault: 0
+                            }
+                        })
+                    }
+
+                    const _data = {
+                        bgColor: params.bgColor,
+                        bgImage: params.bgImage,
+                        fontSize: params.fontSize,
+                        textColor: params.textColor,
+                        fontFamily: params.fontFamily,
+                        boxSpacing: params.boxSpacing,
+                        bgRepeat: params.bgRepeat,
+                        bgStretch: params.bgStretch,
+                        bgGradient: params.bgGradient,
+                        mui: params.mui
+                    }
+                    const request: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'add',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'publicTheme',
+                                data: {
+                                    "title": params.title,
+                                    "data": JSON.stringify(_data),
+                                    "isDefault": params.isdefault ? 1 : 0,
+                                    "thumbnail": params.thumbnail,
+                                }
+                            }
+                        }
+                    };
+
+                    const res = await this.protocolService.sendMessage(request).toPromise();
+
+                    subscriber.next({type: "The theme was added", data: res});
+                    subscriber.complete();
+                } catch(err){
+                    subscriber.error(err);
+                    subscriber.complete();
+                }
+            })()
+        })
+    }
+
+    public async rem(params) {
         return new Observable((subscriber) => {
             (async () => {
                try {
                    const request: payloadInterface = {
                        channel: 'db',
-                       api: 'db',
+                       api: 'sql',
                        act: 'rem',
                        payload: {
                            channel: 'frontend',
                            data: {
-                               what: 'public_themes',
+                               what: 'publicTheme',
                                where: params
                            }
                        }

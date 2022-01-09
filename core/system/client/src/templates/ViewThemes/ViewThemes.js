@@ -72,31 +72,31 @@ class ViewThemes extends Component {
         showDeleteModal: false,
         data: {
             title: "",
-            bgcolor: "",
-            bgimage: "",
-            bgrepeat: false,
-            bgstretch: false,
-            bggradient: false,
-            fontsize: 13,
-            textcolor: "#000000",
-            fontfamily: "Arial",
+            bgColor: "",
+            bgImage: "",
+            bgRepeat: false,
+            bgStretch: false,
+            bgGradient: false,
+            fontSize: 13,
+            textColor: "#000000",
+            fontFamily: "Arial",
             isDefault: false,
             thumbnail: "",
-            boxspacing: 10
+            boxSpacing: 10
         },
         defaults: {
             title: "",
-            bgcolor: "",
-            bgimage: "",
-            bgrepeat: false,
-            bgstretch: false,
-            bggradient: false,
-            fontsize: 13,
-            textcolor: "#000000",
-            fontfamily: "Arial",
+            bgColor: "",
+            bgImage: "",
+            bgRepeat: false,
+            bgStretch: false,
+            bgGradient: false,
+            fontSize: 13,
+            textColor: "#000000",
+            fontFamily: "Arial",
             isDefault: false,
             thumbnail: "",
-            boxspacing: 10
+            boxSpacing: 10
         },
         onPublic: false,
         onAdmin: false,
@@ -164,11 +164,11 @@ class ViewThemes extends Component {
     }
 
     showRemoveThemeModal = (id) => {
-        this.setState({deleteModal: true, itemToRemoveId: id});
+        this.setState({showDeleteModal: true, itemToRemoveId: id});
     };
 
     closeRemoveThemeModal = () => {
-        this.setState({deleteModal: false});
+        this.setState({showDeleteModal: false});
     };
 
     onRemoveItem = async () => {
@@ -357,7 +357,7 @@ class ViewThemes extends Component {
 
     handleFontFamily = (event, newValue) => {
         let data = this.state.data;
-        data.fontfamily = newValue.label;
+        data.fontFamily = newValue.label;
 
         let fontFamilyIndex = this.getFontFamilyIndex(newValue.label);
 
@@ -384,7 +384,7 @@ class ViewThemes extends Component {
             let strings = await Promise.all(event.map((file) => this.toBase64(file)));
 
             let data = this.state.data;
-            data.bgimage = strings[0];
+            data.bgImage = strings[0];
 
             await this.setAsyncState({data});
         }
@@ -411,12 +411,12 @@ class ViewThemes extends Component {
         if (!this.state.side) {
             let data = this.state.data;
 
-            data.bgrepeat = this.state.data.bgrepeat;
-            data.bgstretch = this.state.data.bgstretch;
-            data.bggradient = this.state.data.bggradient;
-            data.fontsize = this.state.data.fontsize;
-            data.fontfamily = this.state.data.fontfamily;
-            data.boxspacing = this.state.data.boxspacing;
+            data.bgRepeat = this.state.data.bgRepeat;
+            data.bgStretch = this.state.data.bgStretch;
+            data.bgGradient = this.state.data.bgGradient;
+            data.fontSize = this.state.data.fontSize;
+            data.fontFamily = this.state.data.fontFamily;
+            data.boxSpacing = this.state.data.boxSpacing;
             await this.setAsyncState({data});
             await this.setAsyncState({publicType: this.state.side});
         }
@@ -478,15 +478,15 @@ class ViewThemes extends Component {
             const theme = {
                 title: this.state.data.title,
                 isDefault: this.state.data.isDefault ? 1 : 0,
-                bgcolor: this.state.data.bgcolor,
-                bgimage: this.state.data.bgimage,
-                fontsize: this.state.data.fontsize,
-                textcolor: this.state.data.textcolor,
-                fontfamily: this.state.data.fontfamily,
-                boxspacing: this.state.data.boxspacing,
-                bgrepeat: this.state.data.bgrepeat ? 1 : 0,
-                bgstretch: this.state.data.bgstretch ? 1 : 0,
-                bggradient: this.state.data.bggradient ? 1 : 0,
+                bgColor: this.state.data.bgColor,
+                bgImage: this.state.data.bgImage,
+                fontSize: this.state.data.fontSize,
+                textColor: this.state.data.textColor,
+                fontFamily: this.state.data.fontFamily,
+                boxSpacing: this.state.data.boxSpacing,
+                bgRepeat: this.state.data.bgRepeat ? 1 : 0,
+                bgStretch: this.state.data.bgStretch ? 1 : 0,
+                bgGradient: this.state.data.bgGradient ? 1 : 0,
                 thumbnail: base64image,
                 mui: data
             };
@@ -498,7 +498,6 @@ class ViewThemes extends Component {
                     data: theme
                 })
             } else {
-                console.log("entered SECOND")
                 await this.props.control.add({
                     type: "public",
                     data: theme
@@ -745,10 +744,10 @@ class ViewThemes extends Component {
                                                             className={this.props.classes.pageOptionsSlider}
                                                             onChange={(event, newValue) => {
                                                                 let data = this.state.data;
-                                                                data.fontsize = newValue;
+                                                                data.fontSize = newValue;
                                                                 this.setState({data});
                                                             }}
-                                                            value={this.state.data.fontsize}
+                                                            value={this.state.data.fontSize}
                                                             aria-labelledby="discrete-slider"
                                                             valueLabelDisplay="auto"
                                                             min={5}
@@ -782,10 +781,10 @@ class ViewThemes extends Component {
                                                     style={{flex: 1}}
                                                     control={
                                                         <Switch
-                                                            checked={!this.state.side && this.state.data.bgrepeat}
+                                                            checked={!this.state.side && this.state.data.bgRepeat}
                                                             onChange={(event) => {
                                                                 let data = this.state.data;
-                                                                data.bgrepeat = event.target.checked;
+                                                                data.bgRepeat = event.target.checked;
                                                                 this.setState({data});
                                                             }}
                                                         />
@@ -799,10 +798,10 @@ class ViewThemes extends Component {
                                                     style={{flex: 1}}
                                                     control={
                                                         <Switch
-                                                            checked={!this.state.side && this.state.data.bgstretch}
+                                                            checked={!this.state.side && this.state.data.bgStretch}
                                                             onChange={(event) => {
                                                                 let data = this.state.data;
-                                                                data.bgstretch = event.target.checked;
+                                                                data.bgStretch = event.target.checked;
                                                                 this.setState({data});
                                                             }}
                                                         />
@@ -830,12 +829,12 @@ class ViewThemes extends Component {
                                                         className={this.props.classes.pageOptionsSlider}
                                                         onChange={(event, newValue) => {
                                                             let data = this.state.data;
-                                                            data.boxspacing = newValue;
+                                                            data.boxSpacing = newValue;
                                                             this.setState({
                                                                 data
                                                             });
                                                         }}
-                                                        value={this.state.data.boxspacing}
+                                                        value={this.state.data.boxSpacing}
                                                         aria-labelledby="discrete-slider"
                                                         valueLabelDisplay="auto"
                                                         min={0}
@@ -858,26 +857,26 @@ class ViewThemes extends Component {
                                             minWidth: "350px",
                                             margin: "0 auto",
                                             padding: "10px",
-                                            backgroundColor: this.state.data.bgcolor,
-                                            backgroundImage: `url(${this.state.data.bgimage})`,
-                                            color: this.state.data.textcolor,
-                                            fontSize: this.state.data.fontsize,
-                                            fontFamily: this.state.data.fontfamily,
-                                            backgroundRepeat: this.state.data.bgrepeat
+                                            backgroundColor: this.state.data.bgColor,
+                                            backgroundImage: `url(${this.state.data.bgImage})`,
+                                            color: this.state.data.textColor,
+                                            fontSize: this.state.data.fontSize,
+                                            fontFamily: this.state.data.fontFamily,
+                                            backgroundRepeat: this.state.data.bgRepeat
                                                 ? "repeat"
                                                 : "no-repeat",
-                                            backgroundSize: this.state.data.bgstretch
+                                            backgroundSize: this.state.data.bgStretch
                                                 ? "cover"
                                                 : "auto",
                                         }}>
                                             <AppBar
                                                 style={{
-                                                    backgroundColor: this.state.data.bgcolor,
+                                                    backgroundColor: this.state.data.bgColor,
                                                     color: "inherit",
                                                     fontSize: "inherit",
                                                     fontFamily: "inherit",
                                                     paddingLeft: "10px",
-                                                    marginBottom: this.state.data.boxspacing,
+                                                    marginBottom: this.state.data.boxSpacing,
                                                     boxShadow: "none",
                                                     border: "1px solid grey"
                                                 }}
@@ -889,9 +888,9 @@ class ViewThemes extends Component {
                                             <div className={this.props.classes.previewBodyWrapper}>
                                                 <List
                                                     style={{
-                                                        backgroundColor: this.state.data.bgcolor,
+                                                        backgroundColor: this.state.data.bgColor,
                                                         fontSize: "inherit",
-                                                        fontFamily: this.state.data.fontfamily,
+                                                        fontFamily: this.state.data.fontFamily,
                                                         minWidth: "150px"
 
                                                     }}
@@ -944,8 +943,8 @@ class ViewThemes extends Component {
                                                 </List>
                                                 <div id="publicPreview" className={this.props.classes.previewText}
                                                      style={{
-                                                         marginLeft: this.state.data.boxspacing,
-                                                         backgroundColor: this.state.data.bgcolor,
+                                                         marginLeft: this.state.data.boxSpacing,
+                                                         backgroundColor: this.state.data.bgColor,
                                                          padding: "10px"
                                                      }}>
                                                     <h4>
