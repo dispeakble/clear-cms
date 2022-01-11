@@ -75,8 +75,10 @@ export class CategoriesService {
                 }
             };
 
-            if (params.search && params.search.length > 2) {
+            if (params?.search && params?.search.length > 2) {
                 payload.payload.data.where = whereObj;
+            } else if(params?.where) {
+                payload.payload.data.where = params.where;
             }
 
             this.protocolService.sendMessage(payload).subscribe(data => {
@@ -116,7 +118,7 @@ export class CategoriesService {
 
                     subscriber.next({
                         success: "The category was added",
-                        data: {categoryId: res}
+                        data: res
                     })
                     subscriber.complete();
                 } catch (err) {
@@ -175,7 +177,7 @@ export class CategoriesService {
                     data: {
                         what: 'category',
                         where: {
-                            id: Number(params.id)
+                            id: params.id
                         }
                     }
                 }

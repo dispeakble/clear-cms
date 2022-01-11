@@ -53,7 +53,7 @@ class SearchModule extends Component {
                 (object) => {
                     if(object.pageConfig && object.pageConfig.publish){
                         const regex = new RegExp(`${this.state._search}`, "gi");
-                        return object.pageConfig.pageTitle.match(regex)
+                        return object.pageConfig.title.match(regex)
                     }
                     else {
                         const regex = new RegExp(`${this.state._search}`, "gi");
@@ -150,7 +150,7 @@ class SearchModule extends Component {
                                                         pathname: `/pages/preview/${suggestion.id}`
                                                     }}
                                                 >
-                                                    {suggestion.pageConfig.pageTitle} <span>page</span>
+                                                    {suggestion.pageConfig.title} <span>page</span>
                                                 </Link>
                                             </li>
                                         )

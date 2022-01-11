@@ -242,6 +242,8 @@ const javascriptStyles = {
     }
   },
   bodyWrapper: {
+    marginTop: "60px",
+    paddingBottom: "130px",
     minHeight: "100%",
     background: "white",
     backgroundImage: `linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CCC),

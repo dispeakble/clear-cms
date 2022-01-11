@@ -1,33 +1,33 @@
 import React from 'react'
 import DegreeInput from './DegreeInput'
-import { MdLibraryAdd, MdIndeterminateCheckBox } from 'react-icons/md'
+import {MdLibraryAdd, MdIndeterminateCheckBox} from 'react-icons/md'
 
-const ButtonControls = ({ store, gradient }) => {
-  return (
-    <div>
-      <button
-        onPointerUp={() => gradient.setMode('lch')}
-        className={gradient.mode === 'lch' ? 'activeButton' : ''}
-      >
-        LCH
-      </button>
-      <button
-        onPointerUp={() => gradient.setMode('lab')}
-        className={gradient.mode === 'lab' ? 'activeButton' : ''}
-      >
-        LAB
-      </button>
-      <button onPointerUp={gradient.removeGrade}>
-        <MdIndeterminateCheckBox />
-      </button>
-      <button onPointerUp={gradient.addGrade}>
-        <MdLibraryAdd />
-      </button>
-      <button onPointerUp={gradient.addColor}>Add Color</button>
-      <button onPointerUp={gradient.removeColor}>Remove Color</button>
-      <DegreeInput store={store} />
-    </div>
-  )
+const ButtonControls = ({store, gradient}) => {
+    return (
+        <div style={{display: 'flex', justifyContent: 'space-around'}}>
+            <span style={{width: '30%'}}>
+                <button
+                    onPointerUp={() => gradient.setMode('lch')}
+                    className={gradient.mode === 'lch' ? 'activeButton' : ''}
+                >
+                    LCH
+                </button>
+                <button
+                    onPointerUp={() => gradient.setMode('lab')}
+                    className={gradient.mode === 'lab' ? 'activeButton' : ''}
+                >
+                    LAB
+                </button>
+            </span>
+            <span>
+                <DegreeInput store={store} gradientColors={gradient.colors}/>
+            </span>
+            <span style={{width: '30%'}}>
+                <button onPointerUp={gradient.addColor}>Add Color</button>
+                <button onPointerUp={gradient.removeColor}>Remove Color</button>
+            </span>
+        </div>
+    )
 }
 
 export default ButtonControls

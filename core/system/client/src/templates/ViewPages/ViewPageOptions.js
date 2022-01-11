@@ -1,108 +1,93 @@
-import CustomInput from "../../components/CustomInput/CustomInput";
+import React, {createRef} from "react";
+import PropTypes from "prop-types";
+import {Helmet} from "react-helmet";
+
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import Switch from "@material-ui/core/Switch";
-import {DropzoneArea} from "material-ui-dropzone";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
-import {Button, FormControlLabel, FormGroup, MuiThemeProvider, TextField} from "@material-ui/core";
-import Slider from "@material-ui/core/Slider";
-import clsx from "clsx";
-import React, {createRef} from "react";
-import {Helmet} from "react-helmet";
-import Modal from "../../components/Modal/Modal";
-import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-import {createTheme, withStyles} from "@material-ui/core/styles";
-import PropTypes from "prop-types";
+import {FormControlLabel, FormGroup, MuiThemeProvider, TextField, Slider, Switch, FormLabel} from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import {ToggleButtonGroup} from "@material-ui/lab";
 
+import clsx from "clsx";
+import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+import {createTheme, withStyles} from "@material-ui/core/styles";
+
+import GradientColorPicker from "../../components/GradientColorPicker/GradientColorPicker";
+import CustomInput from "../../components/CustomInput/CustomInput";
+import Modal from "../../components/Modal/Modal";
+
+import imageHelper from "../../helpers/image.helper";
+import ColorPicker from "../../components/ColorPicker/ColorPicker";
+import Button from "../../components/CustomButtons/Button";
 
 const filter = createFilterOptions()
 
 class ViewPageOptions extends React.PureComponent {
-
     state = {
+        title: "",
+        link: "",
+        description: "",
+        isHome: false,
+        active: false,
+
+        hasBackgroundImage: false,
+        hasBackgroundRepeat: false,
+        hasBackgroundStretch: false,
+
+        hasBackgroundColor: false,
+        hasBackgroundGradient: false,
+        backgroundColor: "",
+        backgroundGradient: "",
+        textColor: "",
+        fontFamily: "",
+        fontSize: 11,
+
         contentType: "general",
         dialogTitleError: false,
-        showNewCategoryModal: false
+
+        flatCategories: [],
+        showNewCategoryModal: false,
+        uniqueCategory: false,
+        selectedCategories: [],
+        newCategoryData: {
+            title: "",
+            description: ""
+        },
+
+        showTextColorPicker: false,
+        showItemTextColorPicker: false,
+        config: {
+            layoutBoxSpacing: [10, 10],
+            layoutBoxPadding: {
+                lg: [0, 0],
+                md: [0, 0],
+                sm: [0, 0],
+                xs: [0, 0],
+                xxs: [0, 0],
+            },
+        },
+
     };
 
-    addNewCategoryModalProps = {
-        id: "newCategory",
-        name: "newCategory",
-        resize: true,
-        title: "Add a new category",
-        content: (<div>
-            <form onSubmit={this.props.handleNewCategory}>
-                <div style={{
-                    display: "flex"
-                }}>
-                    <div style={{
-                        flex: 1,
-                        marginRight: "10px"
-                    }}>
-                        <TextField
-                            disabled
-                            value={this.props.data.dialogValue.title}
-                            label="title"
-                            type="text"
-                        />
-                    </div>
-                    <div style={{
-                        flex: 1,
-                        marginLeft: "10px"
-                    }}>
-                        <TextField
-                            autoFocus
-                            onChange={(event) =>
-                                this.props.handlePageOptions({
-                                    dialogValue: {
-                                        ...this.props.data.dialogValue,
-                                        description: event.target.value,
-                                    },
-                                })
-                            }
-                            label="description"
-                            type="text"
-                        />
-                    </div>
-                </div>
-                <div>
-                    {this.props.data.dialogErr && (
-                        <Typography color="error">Category Already Exist Please Check again</Typography>
-                    )}
-                </div>
-            </form>
-        </div>),
-        modalSize: "small",
-        defaultTheme: this.props.defaultTheme,
-        closeButton: {
-            callback: () => {
-                this.props.handlePageOptions({
-                    dialogValue: {
-                        title: "",
-                        description: "",
-                    },
-                    openNewCategory: false,
-                })
-            },
-            label: "Cancel",
-        },
-        confirmButton: {
-            show: true,
-            callback: () => {
-                this.deleteCallback()
-            },
-            label: "Add",
-        },
-    }
-
+    imageUploader = null;
+    textColorRef = null;
     muiTheme = {};
-
-    pageTitleRef = createRef()
+    titleRef = createRef()
 
     componentDidMount() {
         this.muiTheme = this.createDefaultTheme();
+
+        this.setState({
+            title: this.props.data.title,
+            link: this.props.data.link,
+            description: this.props.data.description,
+            isHome: this.props.data.isHome,
+            backgroundColor: this.props.data.backgroundColor,
+            textColor: this.props.data.textColor,
+        });
+
+        this.getAllCategories();
     }
 
     setAsyncState = (newState) =>
@@ -122,26 +107,169 @@ class ViewPageOptions extends React.PureComponent {
         }
     }
 
+    async getAllCategories() {
+        let result = [];
+
+        let categoriesFromStorage = await this.props.control.listCategories();
+
+        let categories = [];
+
+        if (categoriesFromStorage?.count) {
+            categoriesFromStorage.rows.map((category) => {
+                categories.push({
+                    label: category.title,
+                    id: category.id,
+                    parentId: category.parentId,
+                });
+                return category;
+            });
+        }
+
+        if (categories.length) {
+            categories.map((el) => {
+                let catName = el.label;
+                if (el.parentId) {
+                    catName = this.getNestedCategories(el.parentId) + "/" + el.label;
+                }
+                result.push({
+                    id: el.id,
+                    label: catName,
+                });
+                return el;
+            });
+
+            await this.setAsyncState({
+                flatCategories: result,
+            });
+        }
+    }
+
+    getNestedCategories(id) {
+        let link = this.state.categories.find((el) => el.id === id);
+        let result = link.label || "";
+        if (link && link.parentId) {
+            result = this.getNestedCategories(link.parentId) + "/" + result;
+        }
+        return result;
+    }
+
+    handleNewCategory = async () => {
+        const newTitle = `${this.state.newCategoryData.title}`;
+        const newDescription = `${this.state.newCategoryData.description}`;
+
+        const newCategory = await this.props.control.addCategory({
+            title: newTitle,
+            description: newDescription,
+        });
+
+        await this.getAllCategories();
+
+        const currentCategories = this.state.selectedCategories;
+
+        currentCategories.push(newCategory.id);
+
+        this.setState({
+            selectedCategories: currentCategories
+        });
+
+        this.props.onSave({
+            categories: this.state.categories
+        });
+
+        this.setState({
+            openNewCategory: false
+        })
+    };
+
+    addNewCategoryModalProps = {
+        id: "newCategory",
+        name: "newCategory",
+        resize: true,
+        title: "Add a new category",
+        modalSize: "small",
+        width: "500px",
+        defaultTheme: this.props.defaultTheme,
+        closeButton: {
+            callback: () => {
+                this.setState({
+                    openNewCategory: false,
+                })
+            },
+            label: "Cancel",
+        },
+        confirmButton: {
+            show: true,
+            callback: () => {
+                this.handleNewCategory()
+            },
+            label: "Add",
+        },
+    }
+
+    async handleCategory(event, categories) {
+        if (categories.some(cat => !cat || !cat.id)) {
+            await this.setAsyncState({
+                newCategoryData: {
+                    title: categories.find(cat => !cat.id).value,
+                }
+            });
+
+            this.setState({
+                openNewCategory: true,
+            })
+        } else {
+            this.setState({
+                selectedCategories: categories.map(cat => cat.id)
+            });
+        }
+    }
+
+    handleCategoryFilter(options, params) {
+        const filtered = filter(options, params);
+        if (!filtered.length && params.inputValue.length) {
+
+            const existingCategory = this.props.control.listCategories({
+                where: {
+                    title: params.inputValue
+                }
+            });
+
+            if (!existingCategory?.count) {
+                filtered.push({
+                    value: params.inputValue,
+                    label: `Add "${params.inputValue}"`,
+                });
+            }
+
+        }
+        return filtered;
+    }
+
+    onUpdate(data) {
+        this.setState(data);
+        this.props.onSave(data);
+    }
+
     renderPageOptions() {
         return (
             <MuiThemeProvider theme={this.muiTheme}>
                 <Helmet>
-                    <title>{this.props.data.editing ? "Edit " : "Add"} {this.props.data.pageTitle || " page"}</title>
+                    <title>{this.props.editing ? "Edit " : "Add"} {this.state.title || " page"}</title>
                 </Helmet>
                 <FormGroup>
                     {"general" === this.state.contentType && <div>
                         <div style={{display: "flex"}}>
                             <div style={{paddingRight: "5px", flex: 1}}>
                                 <CustomInput
-                                    labelText={this.props.data.isTemplate ? "Template Title" : "Page Title"}
-                                    id="pageTitle"
+                                    labelText={this.state.isTemplate ? "Template Title" : "Page Title"}
+                                    id="title"
                                     formControlProps={{
                                         fullWidth: true,
                                         onChange: (event) => {
                                             this.setState({
                                                 dialogTitleError: false
                                             })
-                                            this.props.handleInputChange(event)
+                                            this.handleInputChange(event)
                                         }
                                     }}
                                     inputProps={{
@@ -155,8 +283,8 @@ class ViewPageOptions extends React.PureComponent {
                                         inputProps: {
                                             minLength: "1",
                                         },
-                                        inputRef: this.pageTitleRef,
-                                        value: this.props.data.pageTitle,
+                                        inputRef: this.titleRef,
+                                        value: this.state.title,
                                         type: "text",
                                     }}
                                     error={this.state.dialogTitleError}
@@ -164,13 +292,13 @@ class ViewPageOptions extends React.PureComponent {
                                 />
                             </div>
                             <div style={{paddingLeft: "5px", flex: 1}}>
-                                {!this.props.data.isTemplate && <CustomInput
+                                {!this.state.isTemplate && <CustomInput
                                     labelText="Page Link"
-                                    id="pageLink"
                                     required="required"
+                                    id="link"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.props.handleInputChange(event),
+                                        onChange: (event) => this.handleInputChange(event),
                                     }}
                                     inputProps={{
                                         required: true,
@@ -178,7 +306,7 @@ class ViewPageOptions extends React.PureComponent {
                                             minLength: "3",
                                             maxLength: "50",
                                         },
-                                        value: this.props.data.pageLink,
+                                        value: this.state.link,
                                         type: "text",
                                     }}
                                     style={{marginLeft: "5px"}}
@@ -186,47 +314,74 @@ class ViewPageOptions extends React.PureComponent {
                             </div>
                         </div>
                         <div>
-                            {!this.props.data.isTemplate &&
+                            {!this.state.isTemplate &&
                                 <div>
                                     <Autocomplete
                                         id="categoryDropdown"
-                                        onChange={this.props.handleCategory}
-                                        onInputChange={this.props.handleCategoryUniqueness}
+                                        multiple
+                                        onChange={this.handleCategory.bind(this)}
                                         className={this.props.classes.option}
-                                        value={this.props.data.currentCategory}
-                                        filterOptions={(options, params) => {
-                                            const filtered = filter(options, params);
-                                            if (
-                                                params.inputValue !== "" &&
-                                                this.props.data.isUniqueTitle
-                                            ) {
-                                                filtered.push({
-                                                    value: params.inputValue,
-                                                    label: `Add "${params.inputValue}"`,
-                                                });
-                                            }
-                                            return filtered;
-                                        }}
-                                        options={this.props.data.flatCategories}
+                                        value={this.state.selectedCategories.map(catId => this.state.flatCategories.find(flatCat => catId === flatCat.id))}
+                                        filterOptions={this.handleCategoryFilter.bind(this)}
+                                        options={this.state.flatCategories}
                                         autoHighlight
-                                        getOptionLabel={(option) => option.label}
+                                        getOptionLabel={(option) => {
+                                            if (option) {
+                                                return option.label;
+                                            }
+                                        }}
                                         renderInput={(params) => (
                                             <TextField
                                                 className={this.props.classes.textfield}
-                                                label="Select a category"
+                                                label="Select a categories"
                                                 {...params}
                                                 variant="outlined"
                                             />
                                         )}
                                     />
-                                    <Modal
-                                        showModal={this.props.data.openNewCategory}
-                                        {...this.addNewCategoryModalProps}
-                                    />
+                                    <Modal showModal={this.state.openNewCategory} {...this.addNewCategoryModalProps} >
+                                        <form onSubmit={() => this.handleNewCategory()}>
+                                            <div style={{display: "flex"}}>
+                                                <div style={{flex: 1, marginRight: "10px"}}>
+                                                    <CustomInput
+                                                        labelText="Category Title"
+                                                        formControlProps={{
+                                                            fullWidth: true,
+                                                        }}
+                                                        inputProps={{
+                                                            value: this.state.newCategoryData.title,
+                                                            type: "text",
+                                                            disabled: true
+                                                        }}
+                                                    />
+                                                </div>
+                                                <div style={{flex: 1, marginLeft: "10px"}}>
+                                                    <CustomInput
+                                                        labelText="Category Description"
+                                                        formControlProps={{
+                                                            fullWidth: true,
+                                                            onChange: (event) => {
+                                                                this.setState({
+                                                                    newCategoryData: {
+                                                                        title: this.state.newCategoryData.title,
+                                                                        description: event.target.value,
+                                                                    }
+                                                                });
+                                                            }
+                                                        }}
+                                                        inputProps={{
+                                                            type: "text",
+                                                            autoFocus: true
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </Modal>
                                 </div>}
                         </div>
                         <div>
-                            {!this.props.data.isTemplate &&
+                            {!this.state.isTemplate &&
                                 <>
                                     <div>
                                         <Typography
@@ -240,10 +395,10 @@ class ViewPageOptions extends React.PureComponent {
                                             <Tooltip title="Enable Publishing">
                                                 <FormControlLabel
                                                     control={<Switch
-                                                        checked={this.props.data.publish}
+                                                        checked={this.state.active}
                                                         onChange={() =>
-                                                            this.props.handlePageOptions({
-                                                                publish: !this.props.data.publish,
+                                                            this.onUpdate({
+                                                                active: !this.state.active,
                                                             })
                                                         }
                                                     />}
@@ -258,288 +413,238 @@ class ViewPageOptions extends React.PureComponent {
                                             alignItems: "center",
                                         }}
                                     >
-                                        <Tooltip title="Set as default page">
+                                        <Tooltip title="Set as the Home Page">
                                             <FormControlLabel
                                                 control={<Switch
-                                                    checked={this.props.data.defaultPage}
+                                                    checked={this.state.isHome}
                                                     onChange={() =>
-                                                        this.props.handlePageOptions({
-                                                            defaultPage: !this.props.data.defaultPage,
+                                                        this.onUpdate({
+                                                            isHome: !this.state.isHome,
                                                         })
                                                     }
                                                 />}
-                                                label="Default Page"/>
+                                                label="Home page"/>
                                         </Tooltip>
                                     </div>
                                 </>}
                         </div>
                     </div>}
-                    {"appearance" === this.state.contentType && <div>
-                        <div style={{flex: 1}}>
-                            <h4>Background Color</h4>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <div style={{display: "block"}}>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        {this.props.data.pageBackgroundColor && <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center",
+                    {"appearance" === this.state.contentType && (
+                        <div style={{display: 'flex'}}>
+                            <div style={{flex: 1}}>
+                                <h4>Background Options</h4>
+
+                                <Typography variant="caption">Solid color for the page background</Typography>
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    {this.state.hasBackgroundColor && <div style={{marginRight: '10px'}}>
+                                        <ColorPicker
+                                            color={this.state.backgroundColor}
+                                            onChange={(color) => {
+                                                this.onUpdate({
+                                                    backgroundColor: color
+                                                })
                                             }}
-                                        >
-                                            <Tooltip title="Pick a background color">
-                                                <FormControlLabel
-                                                    control={this.props.createColorPicker(
-                                                        "bgColorStyles",
-                                                        "showBgColorPicker",
-                                                        "bgColor"
-                                                    )} label=""/>
-                                            </Tooltip>
-                                        </div>}
-                                        <div>
-                                            <Typography gutterBottom>
-                                                <Tooltip title="Pick a background color">
-                                            <span>
-                                                <FormControlLabel
-                                                    control={<Switch
-                                                        checked={this.props.data.pageBackgroundColor}
-                                                        onChange={() => this.props.handlePageOptions({
-                                                            pageBackgroundGradient: false,
-                                                            pageBackgroundColor: !this.props.data.pageBackgroundColor
-                                                        })
-                                                        }
-                                                    />}
-                                                    label="Color"/>
-                                            </span>
-                                                </Tooltip>
-                                            </Typography>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div>
-                                    <div style={{display: "flex", justifyContent: "space-between"}}>
-                                        {this.props.data.pageBackgroundGradient && <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <Tooltip title="Pick gradient colors">
-                                                {this.props.createGradientColorPicker(
-                                                    "bgColorStyles",
-                                                    "showBgGradientColorPickerModal",
-                                                    "bgGradientColor"
-                                                )}
-                                            </Tooltip>
-                                        </div>}
-                                        <div>
-                                            <Typography gutterBottom>
-                                                <Tooltip
-                                                    title="Compose a background gradient instead of a solid color">
-                                            <span>
-                                                <FormControlLabel
-                                                    control={<Switch
-                                                        checked={this.props.data.pageBackgroundGradient}
-                                                        onChange={() => this.props.handlePageOptions({
-                                                            pageBackgroundColor: false,
-                                                            pageBackgroundImage: false,
-                                                            pageBackgroundGradient: !this.props.data
-                                                                .pageBackgroundGradient,
-                                                        })
-                                                        }
-                                                    />}
-                                                    label="Gradient"/>
-                                            </span>
-                                                </Tooltip>
-                                            </Typography>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h4>Background Image</h4>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    <Typography gutterBottom>
-
-                                        <Tooltip title="This page will have a background image">
-                                        <span>
-                                           <FormControlLabel
-                                               control={<Switch
-                                                   checked={this.props.data.pageBackgroundImage}
-                                                   onChange={() =>
-                                                       this.props.handlePageOptions({
-                                                           pageBackgroundGradient: false,
-                                                           pageBackgroundImage: !this.props.data.pageBackgroundImage
-                                                       })
-                                                   }
-                                               />}
-                                               label="Enabled"/>
-                                        </span>
-                                        </Tooltip>
-                                    </Typography>
-                                </div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    {this.props.data.pageBackgroundImage && <Typography gutterBottom>
-
-                                        <Tooltip title="Repeat the background to fit the page">
-                                        <span>
-                                           <FormControlLabel
-                                               control={<Switch
-                                                   checked={this.props.data.pageBackgroundRepeat}
-                                                   onChange={() =>
-                                                       this.props.handlePageOptions({
-                                                           pageBackgroundRepeat: !this.props.data
-                                                               .pageBackgroundRepeat,
-                                                       })
-                                                   }
-                                               />}
-                                               label="Repeat"/>
-                                        </span>
-                                        </Tooltip>
-                                    </Typography>}
-                                </div>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                    }}
-                                >
-                                    {this.props.data.pageBackgroundImage && <Typography gutterBottom>
-
-                                        <Tooltip title="Stretch the background to fit the page">
-                                        <span>
+                                        />
+                                    </div>}
+                                    <div>
+                                        <Typography gutterBottom>
                                             <FormControlLabel
                                                 control={<Switch
-                                                    checked={this.props.data.pageBackgroundStretch}
-                                                    onChange={() =>
-                                                        this.props.handlePageOptions({
-                                                            pageBackgroundStretch: !this.props.data
-                                                                .pageBackgroundStretch,
-                                                        })
+                                                    checked={this.state.hasBackgroundColor}
+                                                    onChange={() => this.onUpdate({
+                                                        hasBackgroundGradient: false,
+                                                        hasBackgroundColor: !this.state.hasBackgroundColor
+                                                    })
                                                     }
                                                 />}
-                                                label="Stretch"/>
-                                        </span>
-                                        </Tooltip>
-                                    </Typography>}
+                                                label="Solid Color"/>
+                                        </Typography>
+                                    </div>
                                 </div>
-                            </div>
-                            {this.props.data.pageBackgroundImage &&
-                                <div className={this.props.classes.dropzoneAreaWrapper}>
-                                    <DropzoneArea
-                                        maxFileSize={Math.pow(1024, 3)}
-                                        filesLimit={1}
-                                        onChange={this.props.handleBgImage.bind(this)}
-                                        onDelete={this.props.handleBackgroundDelete.bind(this)}
-                                    />
-                                </div>}
-                        </div>
-                        <div style={{flex: 1}}>
-                            <div>
-                                <h4>Font </h4>
-                                <div style={{marginTop: "15px"}}>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Tooltip title="Chose the default text color">
+
+                                <Typography variant="caption">Gradient composition for the page background</Typography>
+                                <div style={{display: "flex", alignItems: "center"}}>
+                                    {this.state.hasBackgroundGradient &&
+                                        <div style={{marginRight: '10px'}}>
+                                            <GradientColorPicker
+                                                color={this.state.backgroundGradient}
+                                                onChange={(color) => {
+                                                    this.onUpdate({
+                                                        backgroundGradient: color
+                                                    })
+                                                }}/>
+                                        </div>}
+                                    <div>
+                                        <Typography gutterBottom>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.hasBackgroundGradient}
+                                                    onChange={() => this.onUpdate({
+                                                        hasBackgroundColor: false,
+                                                        hasBackgroundImage: false,
+                                                        hasBackgroundGradient: !this.state.hasBackgroundGradient,
+                                                    })
+                                                    }
+                                                />}
+                                                label="Gradient Composition"/>
+                                        </Typography>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <Typography variant="caption">Custom image for the page background</Typography>
+                                    <Typography gutterBottom>
+                                        <FormControlLabel
+                                            control={<Switch
+                                                checked={this.state.hasBackgroundImage}
+                                                onChange={() =>
+                                                    this.onUpdate({
+                                                        hasBackgroundGradient: false,
+                                                        hasBackgroundImage: !this.state.hasBackgroundImage
+                                                    })
+                                                }
+                                            />}
+                                            label="Custom Image"/>
+                                    </Typography>
+                                </div>
+
+                                {this.state.hasBackgroundImage && (
+                                    <div>
+                                        <div>
+                                            <Typography variant="caption">Repeat the image throughout the
+                                                page</Typography>
                                             <Typography gutterBottom>
                                                 <FormControlLabel
-                                                    control={
-                                                        this.props.createColorPicker(
-                                                            "textColorStyles",
-                                                            "showTextColorPicker",
-                                                            "textColor"
-                                                        )} label="Text color"/>
+                                                    control={<Switch
+                                                        checked={this.state.hasBackgroundRepeat}
+                                                        onChange={() =>
+                                                            this.onUpdate({
+                                                                hasBackgroundRepeat: !this.state
+                                                                    .hasBackgroundRepeat,
+                                                            })
+                                                        }
+                                                    />}
+                                                    label="Repeat Image"/>
                                             </Typography>
+                                        </div>
 
-                                        </Tooltip>
+                                        <div>
+                                            <Typography variant="caption">Stretch the image to fill the
+                                                page</Typography>
+                                            <Typography gutterBottom>
+                                                <FormControlLabel
+                                                    control={<Switch
+                                                        checked={this.state.hasBackgroundStretch}
+                                                        onChange={() =>
+                                                            this.onUpdate({
+                                                                hasBackgroundStretch: !this.state
+                                                                    .hasBackgroundStretch,
+                                                            })
+                                                        }
+                                                    />}
+                                                    label="Stretch Image"/>
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <Button color={"primary"} onClick={() => {
+                                                this.imageUploader.click();
+                                            }}>Upload Background</Button>
+                                            <input id="imageUploader"
+                                                   type="file"
+                                                   multiple={true}
+                                                   ref={(ref) => this.imageUploader = ref}
+                                                   style={{display: 'none'}}
+                                                   onChange={(event) => this.handleBgImage(event)}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <Autocomplete
-                                            id="fontFamilyDropdown"
-                                            onChange={this.props.handleFontFamily}
-                                            className={this.props.classes.option}
-                                            options={this.props.data.fontFamilies}
-                                            autoHighlight
-                                            getOptionLabel={(option) => option.family}
-                                            value={this.getFontFamilyItem(
-                                                this.props.data.fontFamily
-                                            )}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    className={this.props.classes.textfield}
-                                                    {...params}
-                                                    label="Select a Font Family"
-                                                    variant="outlined"
-                                                />
-                                            )}
+                                )}
+                            </div>
+                            <div style={{flex: 1}}>
+                                <h4>Text Options</h4>
+
+                                <div>
+                                    <Typography variant="caption">Select a text color</Typography>
+                                    <div style={{display: 'flex'}}>
+                                        <ColorPicker
+                                            color={this.state.textColor}
+                                            customRef={(ref) => this.textColorRef = ref}
+                                            onChange={(color) => {
+                                                this.setState({
+                                                    textColor: color
+                                                })
+                                            }}
                                         />
+                                        <div style={{cursor: 'pointer', marginLeft: '10px'}} onClick={() => {
+                                            this.textColorRef.click()
+                                        }}>
+                                            <Typography gutterBottom>Text Color</Typography>
+                                        </div>
                                     </div>
-
-                                    <Typography gutterBottom>Font Size</Typography>
+                                </div>
+                                <div>
+                                    <Typography gutterBottom variant="caption">Select a font for the text</Typography>
+                                    <Autocomplete
+                                        id="fontFamilyDropdown"
+                                        onChange={this.handleFontFamily}
+                                        className={this.props.classes.option}
+                                        options={this.props.fontFamilies}
+                                        autoHighlight
+                                        getOptionLabel={(option) => option.family}
+                                        value={this.getFontFamilyItem(
+                                            this.state.fontFamily
+                                        )}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                className={this.props.classes.textfield}
+                                                {...params}
+                                                label="Font Family"
+                                                variant="outlined"
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div>
+                                    <Typography gutterBottom variant="caption">Select a text size</Typography>
+                                    <Autocomplete
+                                        id="fontSizeDropdown"
+                                        onChange={this.handleFontSize}
+                                        className={this.props.classes.option}
+                                        options={this.props.fontSizes}
+                                        getOptionLabel={(option) => option.label}
+                                        freeSolo
+                                        autoHighlight
+                                        value={this.getFontSizeItem(
+                                            this.state.fontSize
+                                        )}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                className={this.props.classes.textfield}
+                                                {...params}
+                                                label="Text Size"
+                                                variant="outlined"
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div>
+                                    <Typography gutterBottom>Box Spacing</Typography>
                                     <Slider
                                         className={this.props.classes.pageOptionsSlider}
-                                        onChange={(event, newValue) => {
-                                            this.props.handleFontSize(event, newValue);
-                                        }}
-                                        value={this.props.data.fontSize}
+                                        onChange={this.props.handleBoxSpacing}
+                                        value={this.state.config.layoutBoxSpacing[0]}
+                                        getAriaValueText={() =>
+                                            this.state.config.layoutBoxSpacing[0] + " pixels"
+                                        }
                                         aria-labelledby="discrete-slider"
                                         valueLabelDisplay="auto"
-                                        min={0.1}
-                                        max={10}
-                                        step={0.1}
+                                        min={0}
+                                        max={150}
                                     />
                                 </div>
                             </div>
-                            <div>
-                                <Typography gutterBottom>Box Spacing</Typography>
-                                <Slider
-                                    className={this.props.classes.pageOptionsSlider}
-                                    onChange={this.props.handleBoxSpacing}
-                                    value={this.props.data.config.layoutBoxSpacing[0]}
-                                    getAriaValueText={() =>
-                                        this.props.data.config.layoutBoxSpacing[0] + " pixels"
-                                    }
-                                    aria-labelledby="discrete-slider"
-                                    valueLabelDisplay="auto"
-                                    min={0}
-                                    max={150}
-                                />
-                            </div>
                         </div>
-                    </div>}
+                    )}
                     {"advanced" === this.state.contentType && <div>
                         <div
                             className={clsx(
@@ -554,10 +659,10 @@ class ViewPageOptions extends React.PureComponent {
                                     <Tooltip title="This page will be saved as a template">
                                         <FormControlLabel
                                             control={<Switch
-                                                checked={this.props.data.isTemplate || this.props.location?.state?.templateMode}
+                                                checked={this.state.isTemplate || this.props.location?.state?.templateMode}
                                                 disabled={this.props.location?.state?.templateMode}
                                                 onChange={(event, checked) =>
-                                                    this.props.handlePageOptions({
+                                                    this.onUpdate({
                                                         isTemplate: checked,
                                                     })
                                                 }
@@ -565,16 +670,16 @@ class ViewPageOptions extends React.PureComponent {
                                     </Tooltip>
                                 </div>
 
-                                {!this.props.data.isTemplate && (
+                                {!this.state.isTemplate && (
                                     <div>
                                         <Autocomplete
                                             id="templateDropdown"
                                             onChange={this.props.handleTemplateChange}
                                             className={this.props.classes.option}
-                                            options={this.props.data.templates}
+                                            options={this.state.templates}
                                             autoHighlight
                                             getOptionLabel={(option) => option.label}
-                                            // value={this.props.data.template}
+                                            // value={this.state.template}
                                             renderInput={(params) => (
                                                 <TextField
                                                     className={this.props.classes.textfield}
@@ -587,11 +692,11 @@ class ViewPageOptions extends React.PureComponent {
                                     </div>
                                 )}
 
-                                {this.props.data.isTemplate && (
+                                {this.state.isTemplate && (
                                     <div style={{marginBottom: "15px"}}>
                                         Template used:{" "}
                                         <strong>
-                                            {this.props.data.template?.label || "none"}
+                                            {this.state.template?.label || "none"}
                                         </strong>
                                     </div>
                                 )}
@@ -609,9 +714,9 @@ class ViewPageOptions extends React.PureComponent {
                                 <div>
                                     <TextField
                                         className={this.props.classes.textfield}
-                                        value={this.props.data.pageMetaTitle}
+                                        value={this.state.pageMetaTitle}
                                         onChange={(e) =>
-                                            this.props.handlePageOptions({
+                                            this.onUpdate({
                                                 pageMetaTitle: e.target.value
                                             })}
                                         label="Page meta title"
@@ -622,13 +727,13 @@ class ViewPageOptions extends React.PureComponent {
                                     <Tooltip title="add website title alongside the title">
                                         <FormControlLabel
                                             control={<Switch
-                                                checked={this.props.data.useWebsiteTitle}
+                                                checked={this.state.useWebsiteTitle}
 
-                                                onChange={async (event, checked) =>{
-                                                        this.props.handlePageOptions({
-                                                            useWebsiteTitle: checked,
-                                                        })
-                                                    }
+                                                onChange={async (event, checked) => {
+                                                    this.onUpdate({
+                                                        useWebsiteTitle: checked,
+                                                    })
+                                                }
                                                 }
                                             />} label="include site title in the meta title (ex: My Website - Index)"/>
                                     </Tooltip>
@@ -639,9 +744,9 @@ class ViewPageOptions extends React.PureComponent {
                                     <TextField
                                         className={this.props.classes.textfield}
                                         label="Page meta description"
-                                        value={this.props.data.pageMetaDescription}
+                                        value={this.state.pageMetaDescription}
                                         onChange={(e) =>
-                                            this.props.handlePageOptions({
+                                            this.onUpdate({
                                                 pageMetaDescription: e.target.value
                                             })}
                                         variant="outlined"
@@ -708,7 +813,7 @@ class ViewPageOptions extends React.PureComponent {
 
         const header = (
             <div className={classes.boxOptionsHeader}>
-                <div>{this.props.data.isTemplate ? "Template Options" : "Page Options"}</div>
+                <div>{this.state.isTemplate ? "Template Options" : "Page Options"}</div>
                 <ToggleButtonGroup
                     onChange={this.handleTabChange.bind(this)}
                     value={this.state.contentType}
@@ -737,18 +842,18 @@ class ViewPageOptions extends React.PureComponent {
             resize: true,
             title: header,
             content: this.renderPageOptions(),
-            showModal: this.props.data.showPageOptionsModal,
+            showModal: this.props.open,
             modalSize: "large",
             defaultTheme: this.props.defaultTheme,
             closeButton: {
                 callback: async (reason) => {
                     if (reason !== 'backdropClick') {
-                        if (this.props.data.pageTitle.length === 0) {
+                        if (this.state.title.length === 0) {
                             await this.setAsyncState({
                                 dialogTitleError: true,
                                 contentType: "general"
                             });
-                            this.pageTitleRef.current.focus();
+                            this.titleRef.current.focus();
                             return;
                         }
 
@@ -760,38 +865,134 @@ class ViewPageOptions extends React.PureComponent {
         }
 
         return (
-            <Modal {...modalProps} />
+            <div>
+                <Modal {...modalProps} />
+                <Modal
+                    showModal={this.state.showTemplateWarning}
+                    {...this.state.templateWarningModal}
+                />
+                <Modal
+                    showModal={this.state.showBoxesFromTemplate}
+                    {...this.state.boxesFromTemplate}
+                />
+            </div>
         )
     }
 
     getFontFamilyItem(name) {
-        return this.props.data.fontFamilies[
-            this.props.data.fontFamilies.findIndex((font) => {
+        return this.props.fontFamilies[
+            this.props.fontFamilies.findIndex((font) => {
                 return font.family === name;
             })
             ];
     }
+
+    getFontSizeItem(name) {
+        return this.props.fontSizes[
+            this.props.fontSizes.findIndex((font) => {
+                return font.value === name;
+            })
+        ];
+    }
+
+    handleInputChange = async (event) => {
+        switch (event.target.id) {
+            case "title":
+                this.setState({title: event.target.value});
+                break;
+            case "link":
+                this.setState({link: event.target.value});
+                break;
+            default:
+                break;
+        }
+    };
+
+    handleBoxSpacing = async (event, newValue) => {
+        if (this.state.config.layoutBoxSpacing[0] !== newValue) {
+            this.setState({
+                config: {
+                    "layoutBoxSpacing": [newValue, newValue],
+                    "layoutBoxPadding": {
+                        "lg": [0, 0],
+                        "md": [0, 0],
+                        "sm": [0, 0],
+                        "xs": [0, 0],
+                        "xxs": [0, 0]
+                    }
+                },
+            });
+        }
+    };
+
+    handleBgImage = async (event) => {
+        let strings = await Promise.all(Array.from(event.target.files).map((file) => imageHelper.toBase64(file)));
+        this.onUpdate({
+            pageBase64Image: strings[0],
+            backgroundImageFile: event[0],
+        });
+    };
+
+    handleBackgroundDelete() {
+        this.setState({
+            pageBase64Image: "",
+            backgroundImageFile: "",
+        });
+    }
+
+    getWebsiteData = async () => {
+        return (await this.props.control.websiteData())
+    }
+
+    handleColorPickerClick = (displayColorPicker) => {
+        this.setState({[displayColorPicker]: !this.state.displayColorPicker});
+    };
+
+    handleColorPickerClose = (displayColorPicker) => {
+        this.setState({[displayColorPicker]: false});
+    };
+
+    handleFontSize = (event, newValue) => {
+        this.setAsyncState({
+            fontSize: newValue.label,
+        });
+    };
+
+    handleFontFamily = async (event, newValue) => {
+        await this.setAsyncState({
+            fontFamily: newValue.family,
+        });
+        this.setUsedGoogleFonts();
+    };
+    handleTemplateChange = async (event, newValue) => {
+        await this.setAsyncState({
+            template: newValue || {},
+        });
+        if (newValue) {
+            await this.fetchAndSet(newValue?.id, true);
+        } else {
+            await this.setAsyncState({
+                items: [],
+                pageConfig: null,
+            })
+        }
+    };
 }
 
 export default withStyles(styles)(ViewPageOptions);
 
 ViewPageOptions.propTypes = {
+    open: PropTypes.bool,
+    editing: PropTypes.bool,
+    control: PropTypes.object,
     data: PropTypes.object,
     classes: PropTypes.object,
     location: PropTypes.object,
     closePageOptionsModal: PropTypes.func,
-    handleInputChange: PropTypes.func,
-    handlePageOptions: PropTypes.func,
+    onSave: PropTypes.func,
     handleBoxSpacing: PropTypes.func,
     handleTemplateChange: PropTypes.func,
-    handleNewCategory: PropTypes.func,
-    handleCategoryUniqueness: PropTypes.func,
-    createColorPicker: PropTypes.func,
-    handleCategory: PropTypes.func,
-    handleFontSize: PropTypes.func,
-    handleFontFamily: PropTypes.func,
-    handleBackgroundDelete: PropTypes.func,
-    handleBgImage: PropTypes.func,
-    createGradientColorPicker: PropTypes.func,
-    defaultTheme: PropTypes.object
+    defaultTheme: PropTypes.object,
+    fontFamilies: PropTypes.array,
+    fontSizes: PropTypes.array,
 };

@@ -20,14 +20,13 @@ import PropTypes from "prop-types";
 
 class Pages extends Component {
     state = {
+        tableRef: React.createRef(),
         showModal: false,
         cat_list: [],
         pages: [],
         templates: [],
         currentPage: 1,
         showDeleteModal: false,
-        pageToDeleteId: "",
-        deleteQty: 0,
         isTemplate: false,
         deleteModalProps: {
             name: "deleteSelectedImages",
@@ -50,10 +49,42 @@ class Pages extends Component {
     };
 
     componentDidMount() {
-        this.fetchPages();
         if (this.props.location.pathname === "/pages/template") {
             this.setState({isTemplate: true})
         }
+    }
+
+    async getData(query) {
+        return new Promise((resolve) => {
+
+            (async () => {
+
+                const payload = {
+                    search: query.search,
+                    isTemplate: this.state.isTemplate,
+                    limit: [query.page * query.pageSize, query.pageSize]
+                };
+
+                if(query.orderBy) {
+                    const orderBy = {};
+
+                    orderBy[query.orderBy.field] = query.orderDirection;
+                    payload.order = orderBy;
+                }
+
+                const result = await this.props.control.list(payload);
+
+                if(result && result.rows) {
+                    resolve({
+                        data: result.rows,
+                        page: query.page,
+                        totalCount: result.count,
+                    })
+                }
+            })()
+
+
+        });
     }
 
     async fetchPages() {
@@ -65,10 +96,10 @@ class Pages extends Component {
             pagesFromStorage.map((page) => {
                 pages.push({
                     id: page.id,
-                    title: page.pageConfig.pageTitle,
-                    publish: <Checkbox disabled checked={page.pageConfig.publish} />,
-                    defaultPage: (
-                        <Checkbox disabled checked={page.pageConfig.defaultPage} />
+                    title: page.pageConfig.title,
+                    active: <Checkbox disabled checked={page.pageConfig.active} />,
+                    isHome: (
+                        <Checkbox disabled checked={page.pageConfig.isHome} />
                     ),
                     isTemplate: page.pageConfig.isTemplate,
                     category: page.pageConfig.category,
@@ -83,50 +114,39 @@ class Pages extends Component {
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
-    showDeleteModal = (evt, data, deleteQty) => {
+    showDeleteModal = (evt, data) => {
         this.setState({
             deleteData: data,
             showDeleteModal: true,
-            pageToDeleteId: data.id,
-            deleteQty: deleteQty,
         });
     };
 
     closeDeleteModal = () => {
-        this.setState({ showDeleteModal: false, deleteQty: 0 });
+        this.setState({ showDeleteModal: false, });
     };
 
     deleteCallback = async () => {
-        if (this.state.deleteQty === 1) {
-            const pages = [...this.state.pages];
-            const index = this.state.pageToDeleteId;
+        let pages = [...this.state.pages]
+        let pagesIds = [];
+        let deleteData = this.state.deleteData;
+        deleteData.map((page) => pagesIds.push(page.id));
+        this.props.control.rem({id: pagesIds})
+        let newPages = pages.filter((page) => {
+            return !pagesIds.includes(page.id);
+        });
 
-            await this.props.control.remove({id: index})
+        await this.setAsyncState({ pages: newPages });
+        this.closeDeleteModal();
 
-            const newPages = pages.filter(function( obj ) {
-                return obj.id !== index;
-            });
+        this.refresh();
+    };
 
-            await this.setAsyncState({ pages: newPages, deleteQty: 0 });
-            this.closeDeleteModal();
-        } else {
-            let pages = [...this.state.pages]
-            let pagesIds = [];
-            let deleteData = this.state.deleteData;
-            deleteData.map((page) => pagesIds.push(page.id));
-            this.props.control.remove({id: pagesIds})
-            let newPages = pages.filter((page) => {
-                return !pagesIds.includes(page.id);
-            });
-
-            await this.setAsyncState({ pages: newPages });
-            this.closeDeleteModal();
-        }
+    refresh = async () => {
+        this.state.tableRef.current && this.state.tableRef.current.onQueryChange()
     };
 
     render() {
         const classes = this.props.classes;
-        const currentList = this.state.pages.filter(el => el.isTemplate === this.state.isTemplate)
         const tableOptions = {
             getTheme: () => {
                 return createTheme({
@@ -242,7 +262,7 @@ class Pages extends Component {
                         ),
                         tooltip: "Delete",
                         onClick: async (evt, data) => {
-                            this.showDeleteModal(evt, data, 1)
+                            this.showDeleteModal(evt, [data])
                         },
                     },
                 ],
@@ -259,14 +279,14 @@ class Pages extends Component {
                             headerStyle: {
                                 width: "300px",
                             },
-                            field: "publish",
+                            field: "active",
                         },
                         {
                             title: "Default Page",
                             headerStyle: {
                                 width: "300px",
                             },
-                            field: "defaultPage",
+                            field: "isHome",
                         }]),
                     { title: "Id", field: "id", hidden: true },
                 ],
@@ -279,6 +299,7 @@ class Pages extends Component {
                     },
                     cellStyle: styles.tableCells,
                     headerStyle: styles.tableHeader,
+                    debounceInterval: 300
                 },
             },
         };
@@ -305,8 +326,9 @@ class Pages extends Component {
                         <MuiThemeProvider theme={tableOptions.getTheme()}>
                             <MaterialTable
                                 title={this.state.isTemplate ? "Templates List" : "Pages List"}
+                                tableRef={this.state.tableRef}
                                 columns={tableOptions.props.columns}
-                                data={currentList} // if u use getData() it won't work
+                                data={this.getData.bind(this)}
                                 options={tableOptions.props.options}
                                 actions={tableOptions.actions.customActions}
                             />

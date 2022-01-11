@@ -27,7 +27,7 @@ import {User} from "../models/general/user.model";
 
 @Injectable()
 export class SqlService {
-    private methods = ["list", "get", "add", "set", "rem"];
+    private methods = ["list", "get", "add", "AddBulk", "set", "rem"];
 
     constructor(
 
@@ -76,13 +76,37 @@ export class SqlService {
         return data;
     }*/
 
+    private convertInclude(params: any[]) {
+
+        const includes = params.map((incl) => {
+
+            const result = {...incl};
+            const model = this[`${incl.model}Model`];
+
+            if(!model) {
+                return null;
+            }
+
+            result.model = model;
+
+            if(result.where) {
+                result.where = this.convertWhereOp(result.where);
+            }
+
+            return result;
+        });
+
+        return includes;
+
+    }
+
     private convertWhereOp(params: any) {
         //ex: {where: {name:{'LIKE':'%abc%'}}}
         //ex: {where: {name:{'OR':[{name: {'LIKE': '%abc%'}}, {active: 1}]}}}
         //ex: {where: {id:[1,2,3,4]} //will be 1 OR 2 OR ...
         const result = {};
 
-        if("object" !== typeof params) {
+        if("object" !== typeof params || Array.isArray(params)) {
             return params;
         }
 
@@ -108,6 +132,11 @@ export class SqlService {
     list(params: any) {
         return new Observable(subscriber => {
             (async () => {
+
+                if(undefined === params.data.count) {
+                    params.data.count = true;
+                }
+
                 const model = this[`${params.data.what}Model`];
 
                 if(!model) {
@@ -145,8 +174,19 @@ export class SqlService {
                     payload.include = params.data.include;
                 }
 
+                if(params.data.include) {
+                    payload.include = this.convertInclude(params.data.include);
+                }
+
                 try {
-                    const result = await model.findAndCountAll(payload);
+                    let result = null;
+                    if(params.data.count) {
+                        result = await model.findAndCountAll(payload);
+                    } else {
+                        result = await model.findAll(payload);
+                    }
+
+                    //will receive {count: Number, rows: []}
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
@@ -196,6 +236,7 @@ export class SqlService {
 
                 try {
                     const result = await model.findOne(payload);
+                    //will receive the requeste fields
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
@@ -221,6 +262,34 @@ export class SqlService {
                     }
 
                     const result = await model.create(params.data.data);
+
+                    subscriber.next(result.dataValues);
+                    subscriber.complete();
+                } catch (err) {
+                    subscriber.error(err.message);
+                    subscriber.complete();
+                }
+            })();
+        });
+    }
+
+    AddBulk(params: any) {
+        return new Observable(subscriber => {
+            (async () => {
+                try {
+                    const model = this[`${params.data.what}Model`];
+
+                    if(!model) {
+                        subscriber.error(`Model ${params.data.what} not found. Please define it.`);
+                        subscriber.complete();
+                        return;
+                    }
+
+                    const result = await model.bulkCreate(params.data.records, {
+                        returning: params.data.returning || false,
+                        validate: params.data.validate || false,
+                        fields: params.data.fields
+                    });
 
                     subscriber.next(result.dataValues);
                     subscriber.complete();

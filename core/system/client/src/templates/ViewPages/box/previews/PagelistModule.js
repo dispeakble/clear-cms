@@ -37,7 +37,7 @@ class PagelistModule extends Component {
                                             pathname: `/pages/preview/${page.id}`
                                         }}
                                     >
-                                        {page.pageConfig.pageTitle}
+                                        {page.pageConfig.title}
                                     </Link>
                                 </li>
                             )}

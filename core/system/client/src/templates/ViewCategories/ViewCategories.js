@@ -16,15 +16,10 @@ import {
 // from material-table
 import MaterialTable from "material-table";
 
-// for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "components/CustomButtons/Button.js";
+import Modal from "../../components/Modal/Modal";
 
 // for the dropdown
-import { TextField } from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Checkbox from "@material-ui/core/Checkbox";
 import Tooltip from '@material-ui/core/Tooltip';
@@ -41,7 +36,24 @@ class Categories extends Component {
         flatCategories: [],
         defaultTheme: "",
         removeBg: {},
-        currentPage: 1,
+        deleteModalProps: {
+            name: "deleteSelectedCategories",
+            title: "Delete selected categories",
+            content: "Are you sure you want to delete these categories?",
+            closeButton: {
+                callback: () => {
+                    this.closeMultipleDeleteModal()
+                },
+                label: "Cancel",
+            },
+            confirmButton: {
+                show: true,
+                callback: () => {
+                    this.multipleDeleteCallback()
+                },
+                label: "Delete",
+            },
+        }
     };
 
     async componentDidMount() {
@@ -370,51 +382,11 @@ class Categories extends Component {
                         />
                     </MuiThemeProvider>
                 </div>
-                <Dialog
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showMultipleDeleteModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeMultipleDeleteModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <div>Are you sure you want to delete the selected categories?</div>
-                    </DialogContent>
 
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            color="transparent"
-                            simple
-                            onClick={() => this.multipleDeleteCallback()}
-                        >
-                            <div>Delete</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            simple
-                            onClick={() => {
-                                this.closeMultipleDeleteModal();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Modal
+                    modalSize="small"
+                    showModal={this.state.showMultipleDeleteModal}
+                    {...this.state.deleteModalProps}/>
             </React.Fragment>
         );
     }

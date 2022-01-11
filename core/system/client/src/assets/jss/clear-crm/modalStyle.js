@@ -1,6 +1,6 @@
 const modalStyle = {
   smallModal: {
-    width: "40vw"
+    width: "420px",
   },
   normalModal: {
     width: "70vw",

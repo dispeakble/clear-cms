@@ -29,9 +29,7 @@ class ViewPagesPreview extends React.Component {
             fontFamily: "",
             textColor: "",
             layoutBoxSpacing: "",
-            pageTitle: "",
-            pageTitleFontSize: "",
-            pageTitleTextColor: "",
+            title: "",
         },
         modals: [],
         layouts: {},
@@ -359,7 +357,7 @@ class ViewPagesPreview extends React.Component {
         return (
             <React.Fragment>
                 <Helmet>
-                    <title>{this.state.pageConfig.pageTitle} </title>
+                    <title>{this.state.pageConfig.title} </title>
                 </Helmet>
                 {this.state.googleFonts.length ? <GoogleFontLoader
                     fonts={this.state.googleFonts}
