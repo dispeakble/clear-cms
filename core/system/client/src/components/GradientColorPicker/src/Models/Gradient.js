@@ -11,7 +11,9 @@ const Gradient = types
   .actions(self => ({
     addGrade: () => ++self.grades,
     removeGrade: () => self.grades > 2 && self.colors.length <= self.grades && --self.grades,
-    addColor: () => self.colors.push(chroma.random().rgba()),
+    addColor: () => {
+        self.colors.push(chroma.random().hex())
+    },
     removeColor: () => self.colors.length > 2 && self.colors.pop(),
     changeColor: (color, index) => {
         self.colors[index] = color

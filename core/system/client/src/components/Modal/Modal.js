@@ -56,11 +56,23 @@ class Modal extends Component {
                         textTransform: "none !important"
                     }
                 },
-                MuiDialog: {}
+                MuiDialog: {
+                    paper: {}
+                }
             }
         };
 
         let customSize = false;
+
+        if(this.props.width) {
+            customSize = true;
+            themeOptions.overrides.MuiDialog.paper.width = this.props.width;
+        }
+
+        if(this.props.height) {
+            customSize = true;
+            themeOptions.overrides.MuiDialog.paper.height = this.props.height;
+        }
 
         if(this.props.resize) {
             if(this.props.id && this.props.id.length) {
@@ -166,9 +178,9 @@ class Modal extends Component {
                     </Scrollbars> :
                     <div style={{padding: '24px'}}>
                         {this.props.content}
+                        {this.props.children}
                     </div>
                 }
-
             </DialogContent>
             <DialogActions className={classes.modalFooter}>
                 {this.props.confirmButton && (
@@ -213,6 +225,8 @@ Modal.propTypes = {
     id: PropTypes.string,
     defaultTheme: PropTypes.object,
     resize: PropTypes.bool,
+    width: PropTypes.string,
+    height: PropTypes.string,
     saveDimensions: PropTypes.bool,
     closeButton: PropTypes.object,
     confirmButton: PropTypes.object,
@@ -221,5 +235,10 @@ Modal.propTypes = {
     modalSize: PropTypes.string,
     showModal: PropTypes.bool,
     title: PropTypes.any,
-    content: PropTypes.any
+    content: PropTypes.any,
+    children: PropTypes.oneOfType([
+        PropTypes.any,
+        PropTypes.element,
+        PropTypes.string
+    ]),
 };

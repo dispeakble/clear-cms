@@ -13,8 +13,6 @@ export default ({ store }) => {
 
   return (
     <AnimatedHeader pose={visibility} className="controls">
-      <div className="ControlsRight" />
-
       <div className="ControlsMiddle">
         <ButtonControls store={store} gradient={store.selectedGradient} />
       </div>

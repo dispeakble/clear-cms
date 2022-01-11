@@ -14,12 +14,6 @@ export class PageBox extends Model {
     @Column
     module: string;
 
-    @Column
-    width: number;
-
-    @Column
-    height: number;
-
     @Column({type: DataTypes.TEXT})
     data: string;
 

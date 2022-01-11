@@ -17,11 +17,10 @@ class PagesController extends Component {
         addCategory: (params) => this.addCategory(params),
         edit: (params) => this.edit(params),
         duplicate: (params) => this.duplicate(params),
-        remove: (params) => this.remove(params),
+        rem: (params) => this.rem(params),
         listCategories: (params) => this.listCategories(params),
         listTemplates: (params) => this.listTemplates(params),
         getPublicTheme: () => this.getPublicTheme(),
-        websiteData : () => this.websiteData(),
     };
 
     help = {
@@ -65,21 +64,6 @@ class PagesController extends Component {
         });
     }
 
-    async websiteData() {
-        const response = await this.sendMessage({
-            module: "system",
-            api: "generalSettings",
-            act: "getInfo",
-            payload: {
-                useSession: true
-            }
-        });
-        if (response.data) {
-            return JSON.parse(response.data);
-        }
-        return null;
-    }
-
     listCategories(params) {
         return new Promise(async resolve => {
             try {
@@ -87,9 +71,7 @@ class PagesController extends Component {
                     module: 'system',
                     api: 'categories',
                     act: 'list',
-                    payload: {
-                        where: params?.where
-                    }
+                    payload: null
                 });
                 resolve(response)
             } catch (err) {
@@ -105,7 +87,7 @@ class PagesController extends Component {
                     module: 'system',
                     api: 'pages',
                     act: 'list',
-                    payload: {}
+                    payload: params
                 });
                 resolve(response)
             } catch (err) {
@@ -139,8 +121,6 @@ class PagesController extends Component {
                     act: 'get',
                     payload: params
                 });
-                const editPage = _.cloneDeep(response);
-                response.editPage = editPage
                 resolve(response)
             } catch (err) {
                 resolve(null);
@@ -156,11 +136,9 @@ class PagesController extends Component {
                     api: 'publicThemes',
                     act: 'getOne',
                     payload: {
-                        isdefault: 1
+                        isDefault: 1
                     }
                 });
-                const editPage = _.cloneDeep(response);
-                response.editPage = editPage
                 resolve(response)
             } catch (err) {
                 resolve(null);
@@ -179,36 +157,43 @@ class PagesController extends Component {
 
                 const dbPayload = _.cloneDeep(params);
 
-                //we will add new boxes to get the IDs
-
-                let newFiles = null;
 
                 dbPayload.items = dbPayload.items.map((item) => {
                     if (item.backgroundImageFile) {
                         item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
                     }
-                    item.backgroundImageFile = "";//for the DB we don't need to send binaries
 
-                    /*if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
+                    //for the DB we don't need to send binaries
+                    delete item.backgroundImageFile;
 
-                        newFiles = item.moduleOptions.files.map(newFile => {
-                            return {
-                                file: newFile.file,
-                                name: newFile.name
-                            }
+                    if(Array.isArray(item.moduleOptions.files)) {
+                        item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
+                            delete itemFile.file;
+                            return itemFile;
                         });
+                    }
 
+                    const itemKeys = Object.keys(item).filter(key => !(['title', 'module', 'moduleOptions'].includes(key)));
 
-                    }*/
+                    const moduleData = {};
 
-                    item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
-                        delete itemFile.file;
-                        return itemFile;
+                    itemKeys.map(key => {
+                        moduleData[key] = item[key]
+                        return key;
                     });
 
-                    return item;
+                    return {
+                        title: item.title,
+                        module: item.module,
+                        x: item.x,
+                        y: item.y,
+                        i: item.i,
+                        moduleOptions: item.moduleOptions,
+                        data: moduleData
+                    };
                 });
 
+                //we will add new boxes to get the page id and box ids
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'pages',
@@ -220,7 +205,10 @@ class PagesController extends Component {
                 if (params.pageConfig.backgroundImageFile) {
                     await this.uploadFiles({
                         path: "/pages/page-" + response.pageId + "/",
-                        files: [{name: params.pageConfig.backgroundImage, file: params.pageConfig.backgroundImageFile}]
+                        files: [{
+                            name: params.pageConfig.backgroundImage,
+                            file: params.pageConfig.backgroundImageFile
+                        }]
                     })
                 }
 
@@ -228,7 +216,6 @@ class PagesController extends Component {
                     return new Promise((resolve_upload) => {
 
                         //Uploading box background
-
                         if (item.backgroundImageFile) {
                             this.uploadFiles({
                                 path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/",
@@ -239,14 +226,15 @@ class PagesController extends Component {
                             });
                         }
 
-                        if (item.module && newFiles && newFiles.length) {
-                            //Uploading box files
+                        //Uploading box files
+                        if (item.module && Array.isArray(item.files) && item.files.length) {
+
+                            const newFiles = item.files.filter(fileObj => !!fileObj.file);
 
                             this.uploadFiles({
                                 path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/module/",
                                 files: newFiles
                             });
-
                         }
 
                         resolve_upload(true);
@@ -260,13 +248,13 @@ class PagesController extends Component {
         });
     }
 
-    remove(params) {
+    rem(params) {
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'pages',
-                    act: 'remove',
+                    act: 'rem',
                     payload: params
                 });
                 resolve(response)

@@ -18,7 +18,7 @@ class ViewBoxesFromTemplate extends React.PureComponent {
             templates = temps.map((temp) => {
                 return {
                     id: temp.id,
-                    label: temp.pageConfig.pageTitle,
+                    label: temp.pageConfig.title,
                 };
             });
         }

@@ -22,12 +22,12 @@ export class AdminProfileService {
             (async () => {
                 const payload: payloadInterface = {
                     channel: 'db',
-                    api: 'db',
+                    api: 'sql',
                     act: 'get',
                     payload: {
                         channel: 'system',
                         data: {
-                            what: 'auth_admin',
+                            what: 'auth',
                             fields: ["fname", "lname", "email"],
                             where: {
                                 id: params.client.id,
@@ -40,14 +40,8 @@ export class AdminProfileService {
 
                 const data = await this.protocolService.sendMessage(payload).toPromise();
 
-                let response = {};
-
-                if (data && data.hasOwnProperty('data')) {
-                    response = data.data[0];
-                }
-
                 subscriber.next({
-                    data: response
+                    data: data
                 });
                 subscriber.complete();
             })()
@@ -62,17 +56,17 @@ export class AdminProfileService {
 
         const request: payloadInterface = {
             channel: 'db',
-            api: 'db',
+            api: 'sql',
             act: 'set',
             payload: {
                 channel: 'system',
                 data: {
-                    what: 'auth_admin',
+                    what: 'auth',
                     where: {
                         id: params.client.id,
                         active: 1
                     },
-                    data: params.payload
+                    fields: params.payload
                 }
             }
         };
@@ -88,12 +82,12 @@ export class AdminProfileService {
 
             const checkPasswordRequest: payloadInterface = {
                 channel: 'db',
-                api: 'db',
+                api: 'sql',
                 act: 'get',
                 payload: {
                     channel: 'system',
                     data: {
-                        what: 'auth_admin',
+                        what: 'auth',
                         fields: ["password"],
                         where: {
                             id: params.client.id,
@@ -107,19 +101,19 @@ export class AdminProfileService {
 
             const response = await this.protocolService.sendMessage(checkPasswordRequest).toPromise();
 
-            if (response && response.data && response.data.length && response.data[0].password === md5.default(params.payload.password)) {
-                request.payload.data.data.password = md5.default(request.payload.data.data.confirmPassword);
+            if (response && response.password === md5.default(params.payload.password)) {
+                request.payload.data.fields.password = md5.default(request.payload.data.fields.confirmPassword);
 
             } else {
                 return {error: "Please type the correct current password and try again."};
             }
 
         } else {
-            delete request.payload.data.data.password;
+            delete request.payload.data.fields.password;
         }
 
-        delete request.payload.data.data.newPassword;
-        delete request.payload.data.data.confirmPassword;
+        delete request.payload.data.fields.newPassword;
+        delete request.payload.data.fields.confirmPassword;
 
         await this.protocolService.sendMessage(request).toPromise();
 

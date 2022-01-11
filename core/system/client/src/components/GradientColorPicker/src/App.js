@@ -8,8 +8,10 @@ import Store from './Models/Store'
 import defaultStore from './defaultStore'
 import { createBrowserHistory } from 'history'
 import './App.sass'
+import PropTypes from "prop-types";
+import chroma from "chroma-js";
 
-const routerModel = RouterModel.create()
+const routerModel = RouterModel.create();
 const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
 const store = Store.create({ ...defaultStore, router: routerModel })
 
@@ -31,8 +33,22 @@ class App extends Component {
   }
 
   render() {
+
+    const selected = store.selectedGradient
+    const linearGradient = chroma
+        .scale(selected.colors)
+        .mode(selected.mode)
+        .colors(selected.grades)
+
+    const backgroundStyle = {
+      background: `linear-gradient(${
+          selected.degrees.length === 0 ? '160' : selected.degrees
+      }deg,${linearGradient.toString()})`,
+      width: '100%'
+    }
+
     return (
-        <div className="gradient-color-picker">
+        <div className="gradient-color-picker" style={backgroundStyle}>
           <div className="container-controls">
             <Controls store={store} />
           </div>
@@ -41,4 +57,8 @@ class App extends Component {
     )
   }
 }
-export default observer(App)
+export default observer(App);
+
+App.propTypes = {
+  selectColor: PropTypes.func
+};
