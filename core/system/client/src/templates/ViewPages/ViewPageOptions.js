@@ -40,7 +40,7 @@ class ViewPageOptions extends React.PureComponent {
         backgroundColor: "",
         backgroundGradient: "",
         textColor: "",
-        fontFamily: "",
+        fontFamily: "Roboto",
         fontSize: 11,
 
         contentType: "general",
@@ -68,6 +68,8 @@ class ViewPageOptions extends React.PureComponent {
             },
         },
 
+        templates: []
+
     };
 
     imageUploader = null;
@@ -75,8 +77,20 @@ class ViewPageOptions extends React.PureComponent {
     muiTheme = {};
     titleRef = createRef()
 
-    componentDidMount() {
+    async componentDidMount() {
         this.muiTheme = this.createDefaultTheme();
+
+        let tpl = this.props.control.listTemplates();
+
+        let templates = [];
+
+        if (tpl && tpl.count) {
+            templates = tpl.rows.map((template) => {
+                return {
+                    id: template.id, label: template.title,
+                };
+            });
+        }
 
         this.setState({
             title: this.props.data.title,
@@ -85,9 +99,11 @@ class ViewPageOptions extends React.PureComponent {
             isHome: this.props.data.isHome,
             backgroundColor: this.props.data.backgroundColor,
             textColor: this.props.data.textColor,
+            templates
         });
 
         this.getAllCategories();
+
     }
 
     setAsyncState = (newState) =>
@@ -291,8 +307,8 @@ class ViewPageOptions extends React.PureComponent {
                                     style={{marginRight: "5px"}}
                                 />
                             </div>
-                            <div style={{paddingLeft: "5px", flex: 1}}>
-                                {!this.state.isTemplate && <CustomInput
+                            {!this.state.isTemplate && <div style={{paddingLeft: "5px", flex: 1}}>
+                                <CustomInput
                                     labelText="Page Link"
                                     required="required"
                                     id="link"
@@ -310,12 +326,13 @@ class ViewPageOptions extends React.PureComponent {
                                         type: "text",
                                     }}
                                     style={{marginLeft: "5px"}}
-                                />}
-                            </div>
+                                />
+                            </div>}
                         </div>
                         <div>
                             {!this.state.isTemplate &&
                                 <div>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Pick multiple categories or add new ones by typing</Typography>
                                     <Autocomplete
                                         id="categoryDropdown"
                                         multiple
@@ -333,7 +350,7 @@ class ViewPageOptions extends React.PureComponent {
                                         renderInput={(params) => (
                                             <TextField
                                                 className={this.props.classes.textfield}
-                                                label="Select a categories"
+                                                label="Select categories"
                                                 {...params}
                                                 variant="outlined"
                                             />
@@ -380,61 +397,46 @@ class ViewPageOptions extends React.PureComponent {
                                     </Modal>
                                 </div>}
                         </div>
+                        {!this.state.isTemplate &&
                         <div>
-                            {!this.state.isTemplate &&
-                                <>
-                                    <div>
-                                        <Typography
-                                            gutterBottom
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-between",
-                                                alignItems: "center",
-                                            }}
-                                        >
-                                            <Tooltip title="Enable Publishing">
-                                                <FormControlLabel
-                                                    control={<Switch
-                                                        checked={this.state.active}
-                                                        onChange={() =>
-                                                            this.onUpdate({
-                                                                active: !this.state.active,
-                                                            })
-                                                        }
-                                                    />}
-                                                    label="Publish"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Tooltip title="Set as the Home Page">
-                                            <FormControlLabel
-                                                control={<Switch
-                                                    checked={this.state.isHome}
-                                                    onChange={() =>
-                                                        this.onUpdate({
-                                                            isHome: !this.state.isHome,
-                                                        })
-                                                    }
-                                                />}
-                                                label="Home page"/>
-                                        </Tooltip>
-                                    </div>
-                                </>}
-                        </div>
+                            <div>
+                                <Typography variant="caption" style={{display: 'block', marginTop: '2rem'}}>Publish this page for the public or leave it as a draft</Typography>
+                                <div>
+                                    <FormControlLabel
+                                        control={<Switch
+                                            checked={this.state.active}
+                                            onChange={() =>
+                                                this.onUpdate({
+                                                    active: !this.state.active,
+                                                })
+                                            }
+                                        />}
+                                        label="Publish"/>
+                                </div>
+                            </div>
+                            <div>
+                                <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Make this the Home Page</Typography>
+                                <div>
+                                    <FormControlLabel
+                                        control={<Switch
+                                            checked={this.state.isHome}
+                                            onChange={() =>
+                                                this.onUpdate({
+                                                    isHome: !this.state.isHome,
+                                                })
+                                            }
+                                        />}
+                                        label="Home page"/>
+                                </div>
+                            </div>
+                        </div>}
                     </div>}
                     {"appearance" === this.state.contentType && (
                         <div style={{display: 'flex'}}>
                             <div style={{flex: 1}}>
                                 <h4>Background Options</h4>
 
-                                <Typography variant="caption">Solid color for the page background</Typography>
+                                <Typography variant="caption" style={{display: 'block', marginTop: '2rem'}}>Solid color for the page background</Typography>
                                 <div style={{display: "flex", alignItems: "center"}}>
                                     {this.state.hasBackgroundColor && <div style={{marginRight: '10px'}}>
                                         <ColorPicker
@@ -447,7 +449,7 @@ class ViewPageOptions extends React.PureComponent {
                                         />
                                     </div>}
                                     <div>
-                                        <Typography gutterBottom>
+                                        <Typography>
                                             <FormControlLabel
                                                 control={<Switch
                                                     checked={this.state.hasBackgroundColor}
@@ -462,7 +464,7 @@ class ViewPageOptions extends React.PureComponent {
                                     </div>
                                 </div>
 
-                                <Typography variant="caption">Gradient composition for the page background</Typography>
+                                <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Gradient composition for the page background</Typography>
                                 <div style={{display: "flex", alignItems: "center"}}>
                                     {this.state.hasBackgroundGradient &&
                                         <div style={{marginRight: '10px'}}>
@@ -475,7 +477,7 @@ class ViewPageOptions extends React.PureComponent {
                                                 }}/>
                                         </div>}
                                     <div>
-                                        <Typography gutterBottom>
+                                        <Typography>
                                             <FormControlLabel
                                                 control={<Switch
                                                     checked={this.state.hasBackgroundGradient}
@@ -492,7 +494,7 @@ class ViewPageOptions extends React.PureComponent {
                                 </div>
 
                                 <div>
-                                    <Typography variant="caption">Custom image for the page background</Typography>
+                                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Custom image for the page background</Typography>
                                     <Typography gutterBottom>
                                         <FormControlLabel
                                             control={<Switch
@@ -511,7 +513,7 @@ class ViewPageOptions extends React.PureComponent {
                                 {this.state.hasBackgroundImage && (
                                     <div>
                                         <div>
-                                            <Typography variant="caption">Repeat the image throughout the
+                                            <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Repeat the image throughout the
                                                 page</Typography>
                                             <Typography gutterBottom>
                                                 <FormControlLabel
@@ -529,7 +531,7 @@ class ViewPageOptions extends React.PureComponent {
                                         </div>
 
                                         <div>
-                                            <Typography variant="caption">Stretch the image to fill the
+                                            <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Stretch the image to fill the
                                                 page</Typography>
                                             <Typography gutterBottom>
                                                 <FormControlLabel
@@ -564,8 +566,8 @@ class ViewPageOptions extends React.PureComponent {
                                 <h4>Text Options</h4>
 
                                 <div>
-                                    <Typography variant="caption">Select a text color</Typography>
-                                    <div style={{display: 'flex'}}>
+                                    <Typography variant="caption" style={{display: 'block', marginTop: '2rem'}}>Select a text color</Typography>
+                                    <div style={{display: 'flex', marginBottom: '0.35rem'}}>
                                         <ColorPicker
                                             color={this.state.textColor}
                                             customRef={(ref) => this.textColorRef = ref}
@@ -575,15 +577,15 @@ class ViewPageOptions extends React.PureComponent {
                                                 })
                                             }}
                                         />
-                                        <div style={{cursor: 'pointer', marginLeft: '10px'}} onClick={() => {
+                                        <div style={{cursor: 'pointer', display: 'flex', alignItems: 'center'}} onClick={() => {
                                             this.textColorRef.click()
                                         }}>
-                                            <Typography gutterBottom>Text Color</Typography>
+                                            <Typography>Text Color</Typography>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <Typography gutterBottom variant="caption">Select a font for the text</Typography>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Select a font for the text</Typography>
                                     <Autocomplete
                                         id="fontFamilyDropdown"
                                         onChange={this.handleFontFamily}
@@ -605,7 +607,7 @@ class ViewPageOptions extends React.PureComponent {
                                     />
                                 </div>
                                 <div>
-                                    <Typography gutterBottom variant="caption">Select a text size</Typography>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Select a text size</Typography>
                                     <Autocomplete
                                         id="fontSizeDropdown"
                                         onChange={this.handleFontSize}
@@ -627,36 +629,16 @@ class ViewPageOptions extends React.PureComponent {
                                         )}
                                     />
                                 </div>
-                                <div>
-                                    <Typography gutterBottom>Box Spacing</Typography>
-                                    <Slider
-                                        className={this.props.classes.pageOptionsSlider}
-                                        onChange={this.props.handleBoxSpacing}
-                                        value={this.state.config.layoutBoxSpacing[0]}
-                                        getAriaValueText={() =>
-                                            this.state.config.layoutBoxSpacing[0] + " pixels"
-                                        }
-                                        aria-labelledby="discrete-slider"
-                                        valueLabelDisplay="auto"
-                                        min={0}
-                                        max={150}
-                                    />
-                                </div>
                             </div>
                         </div>
                     )}
-                    {"advanced" === this.state.contentType && <div>
-                        <div
-                            className={clsx(
-                                this.props.classes.column,
-                                this.props.classes.helper
-                            )}
-                        >
-                            <h4>Miscellaneous</h4>
+                    {"template" === this.state.contentType && <div>
+                        <div>
+                            <h4>Template</h4>
                             <div style={{marginTop: "15px"}}>
-
                                 <div>
-                                    <Tooltip title="This page will be saved as a template">
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Save this page as a template and reuse it for pages</Typography>
+                                    <div>
                                         <FormControlLabel
                                             control={<Switch
                                                 checked={this.state.isTemplate || this.props.location?.state?.templateMode}
@@ -667,14 +649,14 @@ class ViewPageOptions extends React.PureComponent {
                                                     })
                                                 }
                                             />} label="Save as template"/>
-                                    </Tooltip>
+                                    </div>
                                 </div>
-
                                 {!this.state.isTemplate && (
                                     <div>
+                                        <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Select a template for this page. Boxes from that template will be added to this page</Typography>
                                         <Autocomplete
                                             id="templateDropdown"
-                                            onChange={this.props.handleTemplateChange}
+                                            onChange={this.handleTemplateChange}
                                             className={this.props.classes.option}
                                             options={this.state.templates}
                                             autoHighlight
@@ -692,14 +674,30 @@ class ViewPageOptions extends React.PureComponent {
                                     </div>
                                 )}
 
-                                {this.state.isTemplate && (
+                                {this.state.isTemplate && this.props.editing &&
                                     <div style={{marginBottom: "15px"}}>
                                         Template used:{" "}
                                         <strong>
                                             {this.state.template?.label || "none"}
                                         </strong>
                                     </div>
-                                )}
+                                }
+
+                                <div>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Adjust the spacing between the boxes</Typography>
+                                    <Slider
+                                        className={this.props.classes.pageOptionsSlider}
+                                        onChange={this.handleBoxSpacing}
+                                        value={this.state.config.layoutBoxSpacing[0]}
+                                        getAriaValueText={() =>
+                                            this.state.config.layoutBoxSpacing[0] + " pixels"
+                                        }
+                                        aria-labelledby="discrete-slider"
+                                        valueLabelDisplay="auto"
+                                        min={0}
+                                        max={150}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>}
@@ -709,53 +707,72 @@ class ViewPageOptions extends React.PureComponent {
                             this.props.classes.column,
                             this.props.classes.helper
                         )}>
-                            <h4>SEO Settings (Search Engine Optimization):</h4>
+                            <h4>SEO Settings (Search Engine Optimization)</h4>
                             <div style={{marginTop: "25px"}}>
                                 <div>
-                                    <TextField
-                                        className={this.props.classes.textfield}
-                                        value={this.state.pageMetaTitle}
-                                        onChange={(e) =>
-                                            this.onUpdate({
-                                                pageMetaTitle: e.target.value
-                                            })}
-                                        label="Page meta title"
-                                        variant="outlined"
-                                    />
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page title. This will be used for the public and search engines</Typography>
+                                    <div>
+                                        <CustomInput
+                                            labelText="Page Title"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => {
+                                                    this.onUpdate({
+                                                        pageMetaTitle: event.target.value
+                                                    })
+                                                },
+                                            }}
+                                            inputProps={{
+                                                inputProps: {
+                                                    minLength: "1",
+                                                },
+                                                value: this.state.pageMetaTitle,
+                                                type: "text",
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                                 <div>
-                                    <Tooltip title="add website title alongside the title">
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page description</Typography>
+                                    <div>
+                                        <CustomInput
+                                            labelText="Page Description"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => {
+                                                    this.onUpdate({
+                                                        pageMetaDescription: event.target.value
+                                                    })
+                                                },
+                                            }}
+                                            inputProps={{
+                                                multiline: true,
+                                                inputProps: {
+                                                    minLength: "1",
+                                                },
+                                                value: this.state.pageMetaDescription,
+                                                type: "text",
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Add the website title before the page title (ex: My Website - Home Page)</Typography>
+                                    <div>
                                         <FormControlLabel
                                             control={<Switch
                                                 checked={this.state.useWebsiteTitle}
-
                                                 onChange={async (event, checked) => {
                                                     this.onUpdate({
                                                         useWebsiteTitle: checked,
                                                     })
-                                                }
-                                                }
-                                            />} label="include site title in the meta title (ex: My Website - Index)"/>
-                                    </Tooltip>
-                                </div>
-                            </div>
-                            <div style={{marginTop: "15px"}}>
-                                <div>
-                                    <TextField
-                                        className={this.props.classes.textfield}
-                                        label="Page meta description"
-                                        value={this.state.pageMetaDescription}
-                                        onChange={(e) =>
-                                            this.onUpdate({
-                                                pageMetaDescription: e.target.value
-                                            })}
-                                        variant="outlined"
-                                    />
+                                                }}
+                                            />} label="Include Website Name in Title"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     }
-
                 </FormGroup>
             </MuiThemeProvider>
         )
@@ -765,9 +782,32 @@ class ViewPageOptions extends React.PureComponent {
         return createTheme({
             palette: this.props.defaultTheme,
             overrides: {
+                MuiInputLabel: {
+                    outlined: {
+                        transform: 'translate(14px, 11px) scale(1)'
+                    }
+                },
+                MuiAutocomplete: {
+                    tag: {
+                        height: 'auto',
+                        margin: 0
+                    },
+                },
+                MuiChip: {
+                    deleteIcon: {
+                        margin: 0,
+                    }
+                },
+                MuiOutlinedInput: {
+                    root: {
+                        "&&& $input": {
+                            padding: "0"
+                        }
+                    }
+                },
                 MuiSwitch: {
                     switchBase: {
-                        color: this.props?.defaultTheme?.primary?.main
+                        color: this.props.defaultTheme?.primary?.main
                     }
                 },
                 MuiDropzoneArea: {
@@ -825,8 +865,8 @@ class ViewPageOptions extends React.PureComponent {
                     <ToggleButton value="appearance" onClick={() => this.toggleContentType("appearance")}>
                         Appearance
                     </ToggleButton>
-                    <ToggleButton value="advanced" onClick={() => this.toggleContentType("advanced")}>
-                        Advanced
+                    <ToggleButton value="template" onClick={() => this.toggleContentType("template")}>
+                        Template
                     </ToggleButton>
                     <ToggleButton value="seo" onClick={() => this.toggleContentType("seo")}>
                         SEO Settings
@@ -965,15 +1005,15 @@ class ViewPageOptions extends React.PureComponent {
         this.setUsedGoogleFonts();
     };
     handleTemplateChange = async (event, newValue) => {
-        await this.setAsyncState({
+        this.setState({
             template: newValue || {},
         });
         if (newValue) {
             await this.fetchAndSet(newValue?.id, true);
         } else {
-            await this.setAsyncState({
+            this.setState({
                 items: [],
-                pageConfig: null,
+                pageConfig: {},
             })
         }
     };
@@ -990,7 +1030,6 @@ ViewPageOptions.propTypes = {
     location: PropTypes.object,
     closePageOptionsModal: PropTypes.func,
     onSave: PropTypes.func,
-    handleBoxSpacing: PropTypes.func,
     handleTemplateChange: PropTypes.func,
     defaultTheme: PropTypes.object,
     fontFamilies: PropTypes.array,

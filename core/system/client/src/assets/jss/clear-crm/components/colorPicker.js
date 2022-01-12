@@ -1,10 +1,12 @@
 const colorPickerStyle = {
     swatch: {
-        width: "24px",
-        height: "24px",
+        width: "20px",
+        height: "20px",
         border: "2px solid #FFFFFF",
         borderRadius: "50%",
-        cursor: "pointer"
+        cursor: "pointer",
+        margin: '9px',
+        marginLeft: 0
     },
     popover: {
         display: "block",
