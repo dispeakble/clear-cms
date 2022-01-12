@@ -55,8 +55,6 @@ class ViewPagesEditor extends React.PureComponent {
             layoutBoxSpacing: [10, 10], layoutBoxPadding: {
                 lg: [0, 0], md: [0, 0], sm: [0, 0], xs: [0, 0], xxs: [0, 0],
             },
-
-            categories: [], templates: [],
         },
 
         boxId: "",
@@ -143,15 +141,7 @@ class ViewPagesEditor extends React.PureComponent {
         let editing = this.state.editing;
         let pageId = this.props.location.pathObject[2];
 
-        let tpl = await this.props.control.listTemplates();
-        let templates = [];
-        if (tpl && tpl.count) {
-            templates = tpl.rows.map((template) => {
-                return {
-                    id: template.id, label: template.title,
-                };
-            });
-        }
+
 
         const pageConfig = this.state.pageConfig;
 
@@ -165,7 +155,7 @@ class ViewPagesEditor extends React.PureComponent {
         }
 
         this.setState({
-            pageConfig, editing, pageId, templates,
+            pageConfig, editing, pageId
         });
     }
 
