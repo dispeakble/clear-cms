@@ -13,7 +13,18 @@ export async function getServerSideProps(context: any) {
     return PageContent.getServerSideProps(context);
 }
 
-/*export async function getStaticPaths() {
+
+/*
+
+export async function getStaticProps(context: any) {
+    return PageContent.getStaticProps(context);
+}
+
+export async function getStaticPaths(context: any) {
+    return PageContent.getStaticPaths(context);
+}
+
+export async function getStaticPaths() {
   const paths: any = [];
 
   return { paths, fallback: true }

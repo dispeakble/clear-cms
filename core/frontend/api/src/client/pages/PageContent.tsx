@@ -5,11 +5,128 @@ import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
 
 class PageContent{
 
-    static async getServerSideProps(context: any) {
+    /*
+    static async getStaticPaths(context: any){
+        let paths: any = null
+        let pages: any = null
+
+        console.log("context", context)
+
+        try{
+            const pagesRequest = await context.req.apiHub({
+                protocolMethod: 'sendMessage',
+                channel: 'frontendapi',
+                api: 'pages',
+                act: 'list'
+            })
+
+            pages = await pagesRequest.toPromise()
+            console.log("pages response", pages)
+            paths = pages.data.map((page: any) => {
+                console.log("page", page)
+                return{
+                    params: {slug: page.link}
+                }
+            })
+
+            console.log("paths here", paths)
+
+        }catch(err){
+            console.log(err.error)
+        }
+
+        console.log("paths", paths)
+
+        return {
+            fallback: false,
+            paths
+        }
+    }
+    static async getStaticProps(context: any){
         let page: any = null;
         let pages: any = null;
         let categories: any = null;
 
+
+        const pagePayload = context.isIndex ? {
+            active: 1,
+            isHome: 1
+        } : {
+            active: 1,
+            link: context.params.slug
+        }
+
+
+        try {
+
+            const pageObs = await context.req.apiHub({
+                protocolMethod: 'sendMessage',
+                channel: 'frontendapi',
+                api: 'pages',
+                act: 'get',
+                payload: {
+                    body: {
+                        how: "AND",
+                        where: pagePayload
+                    }
+                }
+            });
+            page = await pageObs.toPromise();
+
+
+            //fetch pages list
+
+            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('pagelist' || 'search'))) {
+                const pagesObs = await context.req.apiHub({
+                    protocolMethod: 'sendMessage',
+                    channel: 'frontendapi',
+                    api: 'pages',
+                    act: 'list',
+                    payload: {
+                        body: {
+                            where: {
+                                publish: 1,
+                            }
+                        }
+                    }
+                });
+                pages = await pagesObs.toPromise();
+            }
+
+            //fetch categories list
+
+            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('categories' || 'search'))) {
+                const categoriesObs = await context.req.apiHub({
+                    protocolMethod: 'sendMessage',
+                    channel: 'frontendapi',
+                    api: 'categories',
+                    act: 'list',
+                });
+                categories = await categoriesObs.toPromise();
+            }
+
+        } catch (err) {
+            return {
+                notFound: true,
+            };
+        }
+        return {
+            props: {
+                pageData: page.data,
+                pagesData: pages?.data,
+                categoriesData: categories?.data,
+                isIndex: context.isIndex || false,
+            },
+            revalidate: 20
+        }
+    }
+    
+     */
+
+    static async getServerSideProps(context: any) {
+        let page: any = null;
+        let pages: any = null;
+        let categories: any = null;
 
         const pagePayload = context.isIndex ? {
             publish: 1,
@@ -90,6 +207,7 @@ class PageContent{
             },
         }
     }
+    
 
     static renderContent(props: any) {
 

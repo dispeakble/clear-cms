@@ -10,11 +10,20 @@ const PageComponent: NextPage = (props) => {
 };
 
 
-
 export async function getServerSideProps(context: any) {
     context.isIndex = true;
     return PageContent.getServerSideProps(context);
 }
+
+
+/*
+
+export async function getStaticProps(context: any) {
+    context.isIndex = true;
+    return PageContent.getStaticProps(context);
+}
+
+ */
 
 //-----------------------------SSG---------------------------
 

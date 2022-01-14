@@ -14,9 +14,38 @@ export class PagesService {
 
     public list(params: any) {
         return new Observable(subscriber => {
+            const payload: payloadInterface = {
+                channel: 'db',
+                api: 'sql',
+                act: 'list',
+                payload: {
+                    channel: 'frontend',
+                    data: {
+                        what: 'page',
+                        where:{
+                            active: 1
+                        }
+                    }
+                }
+            };
+
+            this.protocolService.sendMessage(payload).subscribe(data => {
+                subscriber.next({type: 'pages list', data: data});
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
+    }
+
+    public search(params: any){
+        return new Observable(subscriber => {
             (async () => {
                 try{
-                    const payload: payloadInterface = {
+                    //TODO: retrieve list of pages accordingly to search params
+                    //if search only by title
+                    const pagesReq: payloadInterface = {
                         channel: 'db',
                         api: 'sql',
                         act: 'list',
@@ -24,29 +53,96 @@ export class PagesService {
                             channel: 'frontend',
                             data: {
                                 what: 'page',
-                                fields: ['*'],
-                                how: "AND",
-                                ...(params.where && {where: params.where})
+                                fields: ['title, link'],
+                                where:{
+                                    title: {'LIKE': `%${params.searchQuery}%`}
+                                }
                             }
                         }
                     };
 
-                    const res = await this.protocolService.sendMessage(payload).toPromise();
+                    const pages = await this.protocolService.sendMessage(pagesReq).toPromise()
 
-                    let results = null
-                    if(res && res.hasOwnProperty('rows')){
-                        if(res.rows.length > 0){
-                            results = res.rows
+                    //if search by category
+                    const pagesToCategoriesReq: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'get',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'pageToCategory',
+                                include:[{
+                                    module:'category',
+                                    required: true,
+                                    where: {
+                                        'OR': [
+                                            {description: {'LIKE': `%${params.searchQuery}%`}},
+                                            {title: {'LIKE': `%${params.searchQuery}%`}}
+                                        ]
+                                    }
+                                },{
+                                    module:'page',
+                                    required: true
+                                }],
+                            }
                         }
+                    };
+                    const pages_categories = await this.protocolService.sendMessage(pagesToCategoriesReq).toPromise()
+
+                    let pageToCategories:any = null
+                    if(pages_categories.hasOwnProperty('rows')){
+                        pageToCategories = pages_categories.rows
                     }
 
-                    subscriber.next({type: 'pages recieved', data: results});
+                    //TODO: retrieve list of pages and boxes(search in content) accordingly to search params
+
+                    const pagesToBoxesReq: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'get',
+                        payload: {
+                            channel: 'frontend',
+                            data: {
+                                what: 'pageToBox',
+                                include:[{
+                                    module:'pageBox',
+                                    required: true,
+                                    where: {
+                                        //TODO: check content to match search query
+                                    }
+                                },{
+                                    module:'page',
+                                    required: true
+                                }],
+                            }
+                        }
+                    };
+                    const pages_boxes = await this.protocolService.sendMessage(pagesToBoxesReq).toPromise()
+
+                    let pageToBoxes:any = null
+                    if(pages_boxes.hasOwnProperty('rows')){
+                        pageToBoxes = pages_boxes.rows
+                    }
+
+                    let data:any = null
+
+                    switch(params.searchMethod){
+                        case 'searchByPageTitle' : data = pages;break;
+                        case 'searchByPageCategory' : data = pageToCategories;break;
+                        case 'searchByBoxContent' : data = pageToBoxes ;break;
+                        default: data = pages;break;
+                    }
+
+
+                    subscriber.next({type: 'String', data: data});
                     subscriber.complete();
-                } catch(err){
+
+                }catch(err){
                     subscriber.error(err);
                     subscriber.complete();
                 }
-            })();
+            })()
         })
     }
 
@@ -75,8 +171,8 @@ export class PagesService {
                         pageReq.payload.data.where = params.body.where;
                     }
 
-                    let page = await this.protocolService.sendMessage(pageReq).toPromise()
-                    page = page.data[0];
+                    const page = await this.protocolService.sendMessage(pageReq).toPromise()
+
                     if(!page) {
                         subscriber.error({
                             message: "404 not found",
@@ -136,14 +232,16 @@ export class PagesService {
                                 include:[
                                     {
                                         model: 'pageConfig',
+                                        required: true,
                                     },
                                     {
                                         model: 'page',
-                                        where:{
-                                            id: page.id
-                                        }
+                                        required: true
                                     }
-                                ]
+                                ],
+                                where: {
+                                    pageId: page.id
+                                }
                             }
                         }
                     }
@@ -213,14 +311,16 @@ export class PagesService {
                                 include:[
                                     {
                                         model: 'pageBox',
+                                        required: true
                                     },
                                     {
                                         model: 'page',
-                                        where:{
-                                            id: page.id
-                                        }
+                                        required: true
                                     }
-                                ]
+                                ],
+                                where: {
+                                    pageId: page.id
+                                }
                             }
                         }
                     }
@@ -229,8 +329,56 @@ export class PagesService {
                     let _boxesResults = null
 
                     if(_boxesRes.hasOwnProperty('rows')){
-                        _boxesResults = _boxesRes.rows
+                        _boxesResults = _boxesRes.rows.map((box) => {
+                            const {
+                                fontSize,
+                                fontFamily,
+                                textColor,
+                                bgColor,
+                                bgGradientColor,
+                                bgImage,
+                                borderWidth,
+                                borderColor,
+                                borderRadius,
+                                bgRepeat,
+                                bgStretch,
+                                bgGradient,
+                                height,
+                                width,
+                                displayOptions,
+                                borderStyle,
+                                showScrollbars } = JSON.parse(box.data)
+
+                            return{
+                                id: box.boxId,
+                                title: box.title,
+                                module: box.module,
+                                moduleOptions: box.moduleOptions,
+                                x: box.x,
+                                y: box.y,
+                                templateUsed: box.templateUsed,
+                                fontSize: fontSize,
+                                fontFamily: fontFamily,
+                                textColor: textColor,
+                                bgColor: bgColor,
+                                bgGradientColor: bgGradientColor,
+                                bgImage: bgImage,
+                                borderWidth: borderWidth,
+                                borderColor: borderColor,
+                                borderRadius: borderRadius,
+                                bgRepeat: bgRepeat,
+                                bgStretch: bgStretch,
+                                bgGradient: bgGradient,
+                                height: height,
+                                width: width,
+                                displayOptions: displayOptions,
+                                borderStyle: borderStyle,
+                                showScrollbars: showScrollbars,
+                            }
+                        })
                     }
+
+
 
                     const pagesToCategoriesReq: payloadInterface = {
                         channel: 'db',
@@ -239,7 +387,7 @@ export class PagesService {
                         payload: {
                             channel: 'frontend',
                             data: {
-                                what: 'PageToCategory',
+                                what: 'pageToCategory',
                                 fields: ["categoryId"],
                                 where: {
                                     pageId: page.id
@@ -282,40 +430,39 @@ export class PagesService {
                             textColor: textColor,
                             templateUsed: templateUsed,
                         },
-                        items: _boxesResults.map((box) => {
+                        items: _boxesResults?.map((box) => {
                             return {
-                                ...(box.bgcolor !== null && {backgroundColor: box.bgcolor}),
-                                ...(box.bggradientcolor !== null && {backgroundGradientColor: box.bggradientcolor}),
-                                backgroundImage: box.bgimage,
-                                backgroundRepeat: !!box.bgrepeat,
-                                backgroundStretch: !!box.bgstretch,
-                                backgroundGradient: !!box.bggradient,
-                                borderColor: box.bordercolor,
-                                borderRadius: box.borderradius,
-                                borderStyle: box.borderstyle,
-                                borderWidth: box.borderwidth,
+                                ...(box.bgColor !== null && {backgroundColor: box.bgColor}),
+                                ...(box.bgGradientColor !== null && {backgroundGradientColor: box.bgGradientColor}),
+                                backgroundImage: box.bgImage,
+                                backgroundRepeat: !!box.bgRepeat,
+                                backgroundStretch: !!box.bgStretch,
+                                backgroundGradient: !!box.bgGradient,
+                                borderColor: box.borderColor,
+                                borderRadius: box.borderRadius,
+                                borderStyle: box.borderStyle,
+                                borderWidth: box.borderWidth,
                                 h: box.height,
                                 w: box.width,
                                 i: box.id.toString(),
                                 id: box.id,
                                 module: box.module,
-                                moduleOptions: JSON.parse(box.moduleoptions),
-                                displayOptions: JSON.parse(box.displayoptions),
-                                showScrollbars: !!box.showscrollbars,
+                                moduleOptions: JSON.parse(box.moduleOptions),
+                                displayOptions: JSON.parse(box.displayOptions),
+                                showScrollbars: !!box.showScrollbars,
                                 title: box.title,
                                 x: box.x,
                                 y: box.y,
-                                ...(box.fontsize !== null && {fontSize: box.fontsize}),
-                                ...(box.fontfamily !== null && {fontFamily: box.fontfamily}),
-                                ...(box.textcolor !== null && {textColor: box.textcolor}),
-                                templateUsed: box.template_used,
+                                ...(box.fontSize !== null && {fontSize: box.fontSize}),
+                                ...(box.fontFamily !== null && {fontFamily: box.fontFamily}),
+                                ...(box.textColor !== null && {textColor: box.textColor}),
+                                templateUsed: box.templateUsed,
                                 ...(box.template_used !== 0 && {
                                     resizeHandles: []
                                 })
                             }
                         })
                     }
-
 
                     subscriber.next({type: 'String', data: formattedPage});
                     subscriber.complete();
@@ -325,8 +472,6 @@ export class PagesService {
                     subscriber.complete();
                 }
             })()
-
-
         })
     }
 
