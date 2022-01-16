@@ -39,9 +39,9 @@ class ViewBoxesFromTemplate extends React.PureComponent {
                     onChange={async (event, value) =>  {
                         if(value) {
                             const template = await this.props.control.get({id: value.id});
-                            if(template.items && template.items.length > 0) {
+                            if(template.boxes && template.boxes.length > 0) {
                                 await this.setAsyncState({
-                                    boxList: template.items
+                                    boxList: template.boxes
                                 })
                             }
                             await this.setAsyncState({

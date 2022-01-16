@@ -13,7 +13,7 @@ class MenuModule extends Component {
     createMenu(params, options) {
         const createLink = (elm) => {
             return (
-                <li key={`menu-item-${elm.id}`} style={options.style}>
+                <li key={`menu-box-${elm.id}`} style={options.style}>
                     <a
                         style={options.style}
                         href={elm.href}

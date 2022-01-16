@@ -31,7 +31,7 @@ class PagelistModule extends Component {
                     {this.state.pages &&
                         this.state.pages.filter((page) => page.pageConfig.publish)
                             .map((page, index) =>
-                                <li key={index} className="clear-crm_pagelist-list--item">
+                                <li key={index} className="clear-crm_pagelist-list--box">
                                     <Link
                                         to={{
                                             pathname: `/pages/preview/${page.id}`

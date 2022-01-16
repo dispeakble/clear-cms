@@ -163,7 +163,7 @@ export class ProductPricesService {
                             channel: 'system',
                             data: {
                                 what: 'prices_to_products',
-                                how: 'OR',
+                                how: 'or',
                                 where: {
                                     id: params.id
                                 }

@@ -4,7 +4,9 @@ const imageHelper = {
             try {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
+                reader.onload = function (event) {
+                    resolve(event.target.result);
+                }
                 reader.onerror = (error) => reject(error);
             } catch (err) {
                 console.warn(err.message);

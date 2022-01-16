@@ -1,65 +1,53 @@
 import React, {Suspense} from "react";
-import {createTheme, MuiThemeProvider, withStyles} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pageBoxEdit.js";
-import {withRouter} from "react-router-dom";
 import PropTypes from "prop-types";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {TextField} from "@material-ui/core";
 import CustomInput from "../../../components/CustomInput/CustomInput";
+import Typography from "@material-ui/core/Typography";
+import ClipLoader from "react-spinners/ClipLoader";
 
 class ViewBoxGeneral extends React.PureComponent {
 
     state = {
         title: "",
         selectedModule: -1,
-        theme: {},
         modulesList: [//TODO GET THESE VALUES FROM A LIST IN DB
-            {label: "Header Module"},
-            {label: "Table Module"},
-            {label: "Text Module"},
-            {label: "Menu Module"},
-            {label: "Categories Module"},
-            {label: "Product Module"},
-            {label: "Pagelist Module"},
-            {label: "Gallery Module"},
-            {label: "Calendar Module"},
-            {label: "Video Module"},
+            {label: "Accordion Module"},
             {label: "Audio Module"},
             {label: "Banner Module"},
+            {label: "Calendar Module"},
+            {label: "Categories Module"},
             {label: "Chart Module"},
-            {label: "Accordion Module"},
+            {label: "Gallery Module"},
+            {label: "Header Module"},
+            {label: "Menu Module"},
+            {label: "Pagelist Module"},
+            {label: "Product Module"},
+            {label: "Search Module"},
             {label: "Sitemap Module"},
-            {label: "Search Module"}
+            {label: "Table Module"},
+            {label: "Text Module"},
+            {label: "Video Module"}
         ]
     }
 
-    item = this.props.item;
+    box = this.props.box;
 
-    setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
-
-    async componentDidMount() {
-        this.item = this.props.item;
-
-        await this.setAsyncState({
-            selectedModule: this.getModuleIndex(this.props.item.module)
-        });
-
-        this.item.title = this.props.item.title;
+    componentDidMount() {
+        this.box = this.props.box;
+        this.box.title = this.props.box.title;
 
         this.setState({
-            theme: createTheme({
-                palette: this.props.defaultTheme,
-                overrides: {
-                    MuiAccordionDetails: {
-                        root: {
-                            display: "initial"
-                        }
-                    }
-                }
-            })
+            selectedModule: this.getModuleIndex(this.props.box.module)
         });
-
     }
+
+    onUpdate = (data) => {
+        this.setState(data);
+        this.props.onUpdate(data);
+    };
 
     getModuleIndex(name) {
         return this.state.modulesList.findIndex((mod) => {
@@ -67,48 +55,47 @@ class ViewBoxGeneral extends React.PureComponent {
         });
     }
 
-    async handleModuleSelection (event, newValue) {
+    handleModuleSelection (event, newValue) {
         if (!newValue || !newValue.label) {
-            await this.setAsyncState({
+            this.setState({
                 selectedModule: -1
             });
             return;
         }
 
         let moduleName = newValue ? newValue.label : "";
-        this.item.module = moduleName;
-        this.item.moduleOptions = {};
+        this.box.module = moduleName;
+        this.box.moduleOptions = {};
 
         if(moduleName.length) {
-            await this.setAsyncState({
+            this.setState({
                 selectedModule: this.getModuleIndex(moduleName)
             });
         }
 
-        this.props.onUpdate(this.item);
-
-    }
-
-    handleTitleUpdate(event) {
-        this.item.title = event.target.value;
-        this.props.onUpdate(this.item);
+        this.props.onUpdate(this.box);
     }
 
     handleModuleUpdate(moduleOptions) {
-        this.item.moduleOptions = moduleOptions;
-        this.props.onUpdate(this.item);
+        this.box.moduleOptions = moduleOptions;
+        this.props.onUpdate(this.box);
     }
 
     render() {
-        const item = this.item;
-        if(!item) {
+        const box = this.box;
+        if(!box) {
             return "";
         }
         let LazyModule = false;
         let module = false;
 
         const loadingFallback = (() => {
-            return <span>Loading...</span>;
+            return <ClipLoader
+                size={50}
+                color={"#123abc"}
+                loading={true}
+                style={{ background: "none" }}
+            />;
         })();
 
         if(this.state.selectedModule > -1) {
@@ -121,78 +108,84 @@ class ViewBoxGeneral extends React.PureComponent {
         }
 
         return (
-            <MuiThemeProvider theme={this.state.theme}>
-                <div style={{
-                    display: 'grid',
-                    columnGap: '10px',
-                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
-                }}>
-                    <div>
-                        <CustomInput
-                            labelText="Title"
-                            id="itemTitle"
-                            required="required"
-                            formControlProps={{
-                                fullWidth: true,
-                                onChange: (event) => this.handleTitleUpdate(event),
-                            }}
-                            inputProps={{
-                                autoFocus: true,
-                                defaultValue: this.item.title,
-                                type: "text",
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <Autocomplete
-                            onChange={(event, newValue) => this.handleModuleSelection(event, newValue)}
-                            className={this.props.classes.option}
-                            value={this.state.modulesList[this.state.selectedModule] || null}
-                            options={this.state.modulesList}
-                            getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
-                            renderInput={(params) => (
-                                <TextField
-                                    className={this.props.classes.textfield}
-                                    {...params}
-                                    label="Select a module"
-                                    variant="outlined"
-                                />
-                            )}
-                        />
-                    </div>
-                </div>
-                <div>
-                    {module && LazyModule && (
-                        <Suspense fallback={loadingFallback}>
-                            <LazyModule
-                                control={this.props.control}
-                                defaultTheme={this.props.defaultTheme}
-                                onUpdate={(moduleOptions) => this.handleModuleUpdate(moduleOptions)}
-                                onStartEditingModule={() => this.onStartEditingModule()}
-                                onEndEditingModule={() => this.onEndEditingModule()}
-                                boxId={item.id || 0}
-                                moduleOptions={this.item.moduleOptions}
-                                pageId={this.props.page_id}
-                                onSave={(data) => {
-                                    this.item.moduleOptions = data;
+            <React.Fragment>
+                <div style={{display: "flex", flexDirection: "column", flex: 1}}>
+                    <div style={{
+                        display: 'grid',
+                        columnGap: '10px',
+                        gridTemplateColumns: 'repeat(2, 1fr [col-start])'
+                    }}>
+                        <div>
+                            <CustomInput
+                                labelText="Title"
+                                id="boxTitle"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => {
+                                        this.onUpdate({
+                                            title: event.target.value
+                                        })
+                                    },
+                                }}
+                                inputProps={{
+                                    autoFocus: true,
+                                    defaultValue: this.box.title,
+                                    type: "text",
                                 }}
                             />
-                        </Suspense>
-                    )}
+                        </div>
+                        <div>
+                            <Autocomplete
+                                onChange={(event, newValue) => this.handleModuleSelection(event, newValue)}
+                                className={this.props.classes.option}
+                                value={this.state.modulesList[this.state.selectedModule] || null}
+                                options={this.state.modulesList}
+                                getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
+                                renderInput={(params) => (
+                                    <TextField
+                                        className={this.props.classes.textfield}
+                                        {...params}
+                                        label="Select a module"
+                                        variant="outlined"
+                                    />
+                                )}
+                            />
+                        </div>
+                    </div>
+                    {(module && LazyModule) ? (
+                        <div style={{flex: 1}}>
+                            <Suspense fallback={loadingFallback}>
+                                <LazyModule
+                                    control={this.props.control}
+                                    defaultTheme={this.props.defaultTheme}
+                                    onUpdate={(moduleOptions) => this.handleModuleUpdate(moduleOptions)}
+                                    onStartEditingModule={() => this.onStartEditingModule()}
+                                    onEndEditingModule={() => this.onEndEditingModule()}
+                                    boxId={box.id || 0}
+                                    moduleOptions={this.box.moduleOptions}
+                                    pageId={this.props.page_id}
+                                    onSave={(data) => {
+                                        this.box.moduleOptions = data;
+                                    }}
+                                />
+                            </Suspense>
+                        </div>
+                    ) : <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
+                        <Typography variant={"h4"}> Please select a module </Typography>
+                    </div>}
                 </div>
-            </MuiThemeProvider>
+            </React.Fragment>
         );
     }
 }
 
-export default withRouter(withStyles(styles)(ViewBoxGeneral));
+export default withStyles(styles)(ViewBoxGeneral);
 
 ViewBoxGeneral.propTypes = {
     page_id: PropTypes.number,
-    item: PropTypes.object,
+    box: PropTypes.object,
     classes: PropTypes.object,
-    location: PropTypes.object,
-    history: PropTypes.object,
     control: PropTypes.object,
     showModal: PropTypes.bool,
     onClose: PropTypes.func,

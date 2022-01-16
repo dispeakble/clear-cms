@@ -12,7 +12,6 @@ class CPUModule extends Component {
         intervalId: null
     };
 
-
     options = {
         width: 136,
         height: 136,

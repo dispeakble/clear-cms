@@ -67,16 +67,16 @@ class GalleryModule extends Component {
                         imgObject.thumbnail = imgString;
                     }
 
-                    imgObject.renderItem = (item) => {
+                    imgObject.renderItem = (box) => {
                         const style = {
-                            background: `url(${item.original}) no-repeat center center`,
+                            background: `url(${box.original}) no-repeat center center`,
                             backgroundSize: 'cover',
                             display: 'block',
                             height: '100%'
                         };
 
-                        if(item.link.length) {
-                            return <a href={item.link} style={style}>&nbsp;</a>
+                        if(box.link.length) {
+                            return <a href={box.link} style={style}>&nbsp;</a>
                         }
                         return <div style={style}>&nbsp;</div>
                     }
@@ -144,7 +144,7 @@ class GalleryModule extends Component {
             slideOnThumbnailOver: this.state.gallery.slideOnThumbnailOver,
             slideInterval: this.state.gallery.slideInterval,
             slideDuration: this.state.gallery.slideDuration,
-            items: this.state.images,
+            boxes: this.state.images,
         };
 
         if(this.state.gallery.zoom) {

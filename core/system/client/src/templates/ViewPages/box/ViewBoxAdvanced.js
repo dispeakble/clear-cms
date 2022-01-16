@@ -1,13 +1,8 @@
 import React from "react";
-import {withStyles, createTheme} from "@material-ui/core/styles";
-import {MuiThemeProvider} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pageBoxEdit.js";
 import Typography from "@material-ui/core/Typography";
-import {withRouter} from "react-router-dom";
 
-import Tooltip from "@material-ui/core/Tooltip";
-
-// for speed dial
 import Switch from "@material-ui/core/Switch";
 
 // for the dropdown inside each field
@@ -17,6 +12,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 // for the new color picker
 import PropTypes from "prop-types";
 import CustomInput from "../../../components/CustomInput/CustomInput";
+import ColorPicker from "../../../components/ColorPicker/ColorPicker";
+import Slider from "@material-ui/core/Slider";
 
 class ViewBoxAdvanced extends React.PureComponent {
 
@@ -26,252 +23,210 @@ class ViewBoxAdvanced extends React.PureComponent {
             {label: "Center", value: "center"},
             {label: "Bottom", value: "bottom"}
         ],
-        DisplayOptions: {
-            displayAsModal: false,
-            showCloseButton: false,
-            showActionButton: false,
-            actionButtonText: "",
-            actionButtonLink: "",
-            actionButtonTitle: "",
-            showCancelButton: false,
-            cancelButtonLink: "",
-            cancelButtonText: "",
-            cancelButtonTitle: "",
-            modalPosition: "center",
-            displayBackdrop: false,
-            backDropColor: "",
-            neverShowAfterClosing: false
-        }
+        borderRadius: null,
+        borderWidth: null,
+        borderColor: "",
+        hasBorderColor: false,
+        scrollbars: false,
+        displayAsModal: false,
+        showCloseButton: false,
+        showActionButton: false,
+        actionButtonText: "",
+        actionButtonLink: "",
+        actionButtonTitle: "",
+        showCancelButton: false,
+        cancelButtonLink: "",
+        cancelButtonText: "",
+        cancelButtonTitle: "",
+        modalPosition: "center",
+        displayBackdrop: false,
+        backDropColor: "",
+        neverShowAfterClosing: false
     };
 
-    defaultTheme = {};
-    muiTheme = {};
-
-    async componentDidMount() {
-        const item = this.props.item;
-        await this.setAsyncState({
-            ...(item.displayOptions && {DisplayOptions: item.displayOptions})
-        });
+    componentDidMount() {
+        const box = this.props.box;
+        this.setState(box);
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
 
-    async handleDisplayInputChange(event) {
-        const DisplayOptions = {...this.state.DisplayOptions}
-        const stateName = event.target.id;
-        DisplayOptions[stateName] = event.target.value
-        await this.setAsyncState({
-            DisplayOptions: DisplayOptions
-        });
-        this.saveChangedStyle();
-    }
-
-    async saveChangedStyle() {
-        this.props.item.displayOptions = this.state.DisplayOptions;
-        this.props.onUpdate(this.props.item);
+    onUpdate = (data) => {
+        this.setState(data);
+        this.props.onUpdate(data);
     };
 
-    // for MuiThemeProvider
+    handleBorderWidth = (event, newValue) => {
+        this.onUpdate({borderWidth: newValue});
+    };
 
-    createDefaultTheme = () => {
-        return createTheme({
-            palette: this.props.defaultTheme,
-            overrides: {
-                MuiSwitch: {
-                    switchBase: {
-                        color: this.props?.defaultTheme?.primary?.main
-                    }
-                },
-                MuiFormControl: {
-                    root: {
-                        backgroundColor: "white",
-                    },
-                },
-                MuiInputBase: {
-                    root: {
-                        width: "100%",
-                        margin: "0 auto",
-                    },
-                },
-                MuiInputLabel: {
-                    formControl: {
-                        // width: "90%",
-                        marginLeft: "1%",
-                    },
-                },
-
-                MuiFormLabel: {
-                    root: {
-                        marginLeft: "5%",
-                    },
-                },
-                MuiAutocomplete: {
-                    endAdornment: {
-                        position: "absolute",
-                        top: "calc(50% - 14px)",
-                        right: "0px !important",
-                    },
-                },
-                MuiOutlinedInput: {
-                    root: {
-                        borderRadius: "",
-                        width: "100%",
-                        backgroundColor: "white",
-                        margin: "0 auto",
-                        height: "50px",
-                    },
-                }
-            },
-        });
+    handleBorderRadius = (event, newValue) => {
+        this.onUpdate({borderRadius: newValue});
     };
 
     render() {
         return (
             <React.Fragment>
-                <MuiThemeProvider theme={this.muiTheme}>
-                    <div className={this.props.classes.optionGroup}>
-                        <Typography gutterBottom>
-                            <Tooltip
-                                title="This box will be placed on top of all elements to be displayed as an important message">
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.DisplayOptions.displayAsModal}
-                                        onChange={async () => {
-                                            await this.setAsyncState(prevState =>
-                                                ({
-                                                    ...prevState,
-                                                    DisplayOptions: {
-                                                        ...prevState.DisplayOptions,
-                                                        displayAsModal: !prevState.DisplayOptions.displayAsModal,
-                                                    }
-                                                }));
-                                            this.saveChangedStyle();
-                                        }
-                                        }
-                                    />} label="Display as Modal"/>
-                            </Tooltip>
-                        </Typography>
+                <h4>Border options</h4>
+
+                <Typography variant="caption" style={{display: 'block'}}>Select a color for the border of this box</Typography>
+                <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                    {this.state.hasBorderColor && <div>
+                        <ColorPicker
+                            color={this.state.borderColor}
+                            onChange={(color) => {
+                                this.onUpdate({
+                                    borderColor: color
+                                })
+                            }}
+                        />
+                    </div>}
+                    <FormControlLabel
+                        control={<Switch
+                            checked={this.state.hasBorderColor}
+                            onChange={() => {
+                                this.onUpdate({
+                                    hasBorderColor: !this.state
+                                        .hasBorderColor
+                                });
+                            }}
+                        />} label="Border Color"/>
+                </div>
+                <div>
+                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Slide to adjust the border thickness of this box</Typography>
+                    <Slider
+                        value={this.state.borderWidth}
+                        className={this.props.classes.sideMenuSlider}
+                        onChange={this.handleBorderWidth.bind(this)}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        min={0}
+                        max={100}
+                    />
+                </div>
+                <div>
+                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Slide to adjust the corner roundness of this box</Typography>
+                    <Slider
+                        value={this.state.borderRadius}
+                        className={this.props.classes.sideMenuSlider}
+                        onChange={this.handleBorderRadius.bind(this)}
+                        aria-labelledby="discrete-slider"
+                        valueLabelDisplay="auto"
+                        min={0}
+                        max={100}
+                    />
+                </div>
+
+                <h4>Content options</h4>
+
+                <Typography variant="caption" style={{display: 'block'}}>Allow scrolling inside the box if the content exceeds its size</Typography>
+                <div style={{marginBottom: '0.35rem'}}>
+                    <FormControlLabel
+                        control={<Switch
+                            checked={this.state.scrollbars}
+                            onChange={() => {
+                                this.onUpdate({
+                                    scrollbars: !this.state.scrollbars
+                                });
+                            }}
+                        />} label="Allow scrolling"/>
+                </div>
+
+                <Typography variant="caption" style={{display: 'block'}}>This box will be placed on top of all elements to be displayed as an important message</Typography>
+                <div style={{marginBottom: '0.35rem'}}>
+                    <FormControlLabel
+                        control={<Switch
+                            checked={this.state.displayAsModal}
+                            onChange={() => {
+                                this.onUpdate({
+                                    displayAsModal: !this.state.displayAsModal,
+                                });
+                            }}
+                        />} label="Display on top"/>
+                </div>
+                {this.state.displayAsModal && <div>
+                    <Typography variant="caption" style={{display: 'block', marginBottom: '1rem'}}>Select the position of the box relative to the page</Typography>
+                    <div style={{marginBottom: '0.35rem'}}>
+                        <Autocomplete
+                            onChange={(event, position) => {
+                                if (!position) return;
+                                this.onUpdate({
+                                    modalPosition: position.value
+                                });
+                            }
+                            }
+                            className={this.props.classes.option}
+                            value={
+                                this.state.modalPositions.find(position => position.value === this.state.modalPosition)
+                            }
+                            options={this.state.modalPositions}
+                            autoHighlight
+                            getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
+                            renderInput={(params) => (
+                                <TextField
+                                    className={this.props.classes.textfield}
+                                    {...params}
+                                    label="Select a Modal Position"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
                     </div>
-                    {this.state.DisplayOptions.displayAsModal && <div>
-                        <div className={this.props.classes.optionGroup}>
-                            <Autocomplete
-                                onChange={async (event, position) => {
-                                    if (!position) return;
-                                    await this.setAsyncState(prevState => ({
-                                        ...prevState,
-                                        DisplayOptions: {
-                                            ...prevState.DisplayOptions,
-                                            modalPosition: position.value,
-                                        }
-                                    }))
-                                    this.saveChangedStyle();
-                                }
-                                }
-                                className={this.props.classes.option}
-                                value={
-                                    this.state.modalPositions.find(position => position.value === this.state.DisplayOptions.modalPosition)
-                                }
-                                options={this.state.modalPositions}
-                                autoHighlight
-                                getOptionLabel={(option) => option && option.hasOwnProperty('label') ? option.label : ""}
-                                renderInput={(params) => (
-                                    <TextField
-                                        className={this.props.classes.textfield}
-                                        {...params}
-                                        label="Select a Modal Position"
-                                        variant="outlined"
-                                    />
-                                )}
-                            />
-                        </div>
-                        <div className={this.props.classes.optionGroup} style={{maxWidth: "100%"}}>
-                            <div style={{flex: 1}}>
-                                <Typography>
-                                    <Tooltip
-                                        title="This box will have the rest of the screen dimmed with a transparent overlay color">
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={this.state.DisplayOptions.displayBackdrop}
-                                                onChange={async () => {
-                                                    await this.setAsyncState(prevState => ({
-                                                        ...prevState,
-                                                        DisplayOptions: {
-                                                            ...prevState.DisplayOptions,
-                                                            displayBackdrop: !prevState.DisplayOptions
-                                                                .displayBackdrop,
-                                                        }
-                                                    }));
-                                                    this.saveChangedStyle();
-                                                }}
-                                            />} label="Display Backdrop"/>
-                                    </Tooltip>
-                                </Typography>
-                            </div>
-                            <div style={{flex: 1}}>
-                                <Typography>
-                                    <Tooltip
-                                        title="This box will have a checkbox with the text: Never show again. If the checkbox is selected then this box will not be displayed again">
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={this.state.DisplayOptions.neverShowAfterClosing}
-                                                onChange={async () => {
-                                                    await this.setAsyncState(prevState => ({
-                                                        ...prevState,
-                                                        DisplayOptions: {
-                                                            ...prevState.DisplayOptions,
-                                                            neverShowAfterClosing: !prevState.DisplayOptions
-                                                                .neverShowAfterClosing,
-                                                        }
-                                                    }));
-                                                    this.saveChangedStyle();
-                                                }}
-                                            />} label="Never show after closing"/>
-                                    </Tooltip>
-                                </Typography>
-                            </div>
-                            <div style={{flex: 1}}>
-                                <Typography>
-                                    <Tooltip title="This box will have a close button so the user can hide it">
-                                        <FormControlLabel
-                                            control={<Switch
-                                                checked={this.state.DisplayOptions.showCloseButton}
-                                                onChange={async () => {
-                                                    await this.setAsyncState(prevState => ({
-                                                        ...prevState,
-                                                        DisplayOptions: {
-                                                            ...prevState.DisplayOptions,
-                                                            showCloseButton: !prevState.DisplayOptions
-                                                                .showCloseButton,
-                                                        }
-                                                    }));
-                                                    this.saveChangedStyle();
-                                                }}
-                                            />} label="Show Close Button"/>
-                                    </Tooltip>
-                                </Typography>
-                            </div>
-                        </div>
-                        <div className={this.props.classes.optionGroup}>
-                            <Tooltip title="This box will have an action button.">
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.DisplayOptions.showActionButton}
-                                        onChange={async () => {
-                                            await this.setAsyncState(prevState => ({
-                                                ...prevState,
-                                                DisplayOptions: {
-                                                    ...prevState.DisplayOptions,
-                                                    showActionButton: !prevState.DisplayOptions
-                                                        .showActionButton,
-                                                }
-                                            }));
-                                            this.saveChangedStyle();
-                                        }}
-                                    />} label="Show Action Button"/>
-                            </Tooltip>
-                        </div>
-                        {this.state.DisplayOptions.showActionButton &&
-                        <div style={{display: "flex"}}>
+
+                    <Typography variant="caption" style={{display: 'block'}}>This box will have the rest of the screen dimmed with a transparent overlay color</Typography>
+                    <div style={{marginBottom: '0.35rem'}}>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={this.state.displayBackdrop}
+                                onChange={() => {
+                                    this.onUpdate({
+                                        displayBackdrop: !this.state.displayBackdrop
+                                    });
+                                }}
+                            />} label="Display Backdrop"/>
+                    </div>
+
+                    <Typography variant="caption" style={{display: 'block'}}>This box will have a checkbox with the text: Never show again. If the checkbox is selected then this box will not be displayed again</Typography>
+                    <div style={{marginBottom: '0.35rem'}}>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={this.state.neverShowAfterClosing}
+                                onChange={() => {
+                                    this.onUpdate({
+                                        neverShowAfterClosing: !this.state.neverShowAfterClosing
+                                    });
+                                }}
+                            />} label="Never show after closing"/>
+                    </div>
+
+                    <Typography variant="caption" style={{display: 'block'}}>This box will have a close button so the user can hide it</Typography>
+                    <div style={{marginBottom: '0.35rem'}}>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={this.state.showCloseButton}
+                                onChange={() => {
+                                    this.onUpdate({
+                                        showCloseButton: !this.state.showCloseButton
+                                    });
+                                }}
+                            />} label="Show Close Button"/>
+                    </div>
+
+                    <Typography variant="caption" style={{display: 'block'}}>This box will have an action button</Typography>
+                    <div>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={this.state.showActionButton}
+                                onChange={() => {
+                                    this.onUpdate({
+                                        showActionButton: !this.state.showActionButton,
+                                    });
+                                }}
+                            />} label="Show Action Button"/>
+                    </div>
+
+                    {this.state.showActionButton &&
+                        <div style={{display: "flex", marginBottom: '1rem'}}>
                             <div style={{marginRight: "5px", flex: 1}}>
                                 <CustomInput
                                     labelText="Action button text"
@@ -279,10 +234,14 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     required="required"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                        onChange: (event) => {
+                                            this.onUpdate({
+                                                actionButtonText: event.target.value
+                                            })
+                                        }
                                     }}
                                     inputProps={{
-                                        value: this.state.DisplayOptions.actionButtonText,
+                                        value: this.state.actionButtonText,
                                         type: "text",
                                     }}
                                 />
@@ -294,10 +253,14 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     required="required"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                        onChange: (event) => {
+                                            this.onUpdate({
+                                                actionButtonLink: event.target.value
+                                            })
+                                        }
                                     }}
                                     inputProps={{
-                                        value: this.state.DisplayOptions.actionButtonLink,
+                                        value: this.state.actionButtonLink,
                                         type: "text",
                                     }}
                                 />
@@ -309,37 +272,35 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     required="required"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                        onChange: (event) => {
+                                            this.onUpdate({
+                                                actionButtonTitle: event.target.value
+                                            })
+                                        },
                                     }}
                                     inputProps={{
-                                        value: this.state.DisplayOptions.actionButtonTitle,
+                                        value: this.state.actionButtonTitle,
                                         type: "text",
                                     }}
                                 />
                             </div>
                         </div>
-                        }
-                        <div className={this.props.classes.optionGroup}>
-                            <Tooltip title="This box will have a cancel button similar to the close button">
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.DisplayOptions.showCancelButton}
-                                        onChange={async () => {
-                                            await this.setAsyncState(prevState => ({
-                                                ...prevState,
-                                                DisplayOptions: {
-                                                    ...prevState.DisplayOptions,
-                                                    showCancelButton: !prevState.DisplayOptions
-                                                        .showCancelButton,
-                                                }
-                                            }));
-                                            this.saveChangedStyle();
-                                        }}
-                                    />} label="Show Cancel Button"/>
-                            </Tooltip>
-                        </div>
-                        {this.state.DisplayOptions.showCancelButton &&
-                        <div style={{display: "flex"}}>
+                    }
+
+                    <Typography variant="caption" style={{display: 'block'}}>This box will have a cancel button similar to the close button</Typography>
+                    <div>
+                        <FormControlLabel
+                            control={<Switch
+                                checked={this.state.showCancelButton}
+                                onChange={() => {
+                                    this.onUpdate({
+                                        showCancelButton: !this.state.showCancelButton,
+                                    });
+                                }}
+                            />} label="Show Cancel Button"/>
+                    </div>
+                    {this.state.showCancelButton &&
+                        <div style={{display: "flex", marginBottom: '0.35rem'}}>
                             <div style={{marginRight: "5px", flex: 1}}>
                                 <CustomInput
                                     labelText="Cancel button text"
@@ -347,10 +308,14 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     required="required"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                        onChange: (event) => {
+                                            this.onUpdate({
+                                                cancelButtonText: event.target.value
+                                            })
+                                        }
                                     }}
                                     inputProps={{
-                                        value: this.state.DisplayOptions.cancelButtonText,
+                                        value: this.state.cancelButtonText,
                                         type: "text",
                                     }}
                                 />
@@ -362,10 +327,14 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     required="required"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                        onChange: (event) => {
+                                            this.onUpdate({
+                                                cancelButtonLink: event.target.value
+                                            })
+                                        }
                                     }}
                                     inputProps={{
-                                        value: this.state.DisplayOptions.cancelButtonLink,
+                                        value: this.state.cancelButtonLink,
                                         type: "text",
                                     }}
                                 />
@@ -377,30 +346,30 @@ class ViewBoxAdvanced extends React.PureComponent {
                                     required="required"
                                     formControlProps={{
                                         fullWidth: true,
-                                        onChange: (event) => this.handleDisplayInputChange(event),
+                                        onChange: (event) => {
+                                            this.onUpdate({
+                                                cancelButtonTitle: event.target.value
+                                            })
+                                        }
                                     }}
                                     inputProps={{
-                                        value: this.state.DisplayOptions.cancelButtonTitle,
+                                        value: this.state.cancelButtonTitle,
                                         type: "text",
                                     }}
                                 />
                             </div>
                         </div>
-                        }
-                    </div>}
-
-
-                </MuiThemeProvider>
+                    }
+                </div>}
             </React.Fragment>
         );
     }
 }
 
-export default withRouter(withStyles(styles)(ViewBoxAdvanced));
+export default withStyles(styles)(ViewBoxAdvanced);
 
 ViewBoxAdvanced.propTypes = {
-    item: PropTypes.object,
+    box: PropTypes.object,
     classes: PropTypes.object,
     onUpdate: PropTypes.func,
-    defaultTheme: PropTypes.object
 };

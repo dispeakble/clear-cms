@@ -130,6 +130,7 @@ services:
     image: "dispeakble/crm-proxy:${CMS_ADMIN_PROXY_VERSION}"
     restart: always
     depends_on:
+      - redis
       - cms-hub
       - cms-db
       - cms-bucket
@@ -151,6 +152,7 @@ services:
     image: "dispeakble/crm-frontend-proxy:${CMS_FRONTEND_PROXY_VERSION}"
     restart: always
     depends_on:
+      - redis
       - cms-hub
       - cms-db
       - cms-bucket

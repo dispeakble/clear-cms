@@ -14,7 +14,7 @@ const useStyles = makeStyles(styles);
 
 export default function Snackbar(props) {
   const classes = useStyles();
-  const { message, color, close, icon, place, open, rtlActive } = props;
+  const { message, color, close, icon, place, open, rtlActive, duration } = props;
   var action = [];
   const messageClasses = classNames({
     [classes.iconMessage]: icon !== undefined,
@@ -34,6 +34,7 @@ export default function Snackbar(props) {
   }
   return (
     <Snack
+      autoHideDuration={duration || 4000}
       anchorOrigin={{
         vertical: place.indexOf("t") === -1 ? "bottom" : "top",
         horizontal:

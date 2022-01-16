@@ -44,7 +44,6 @@ const customInputStyle = {
     fontWeight: "400",
     fontSize: "14px",
     lineHeight: "1.42857",
-    top: "10px",
     letterSpacing: "unset",
     "& + $underline": {
       marginTop: "0px",
@@ -57,8 +56,8 @@ const customInputStyle = {
     color: successColor + " !important",
   },
   formControl: {
-    margin: "0 0 17px 0",
-    paddingTop: "27px",
+    margin: 0,
+    paddingTop: "17px",
     position: "relative",
     "& .fab,& .far,& .fal,& .fas,& .material-icons": {
       color: "#495057",

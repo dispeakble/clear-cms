@@ -13,29 +13,24 @@ class ViewBoxOptions extends React.Component {
 
     state = {
         forceReset: false,
-        contentType: "general",
-        item: {}
+        contentType: "general"
     };
 
-    item = Object.assign({}, this.props.item);
+    box = Object.assign({}, this.props.box);
 
     componentDidMount() {
-
-        const initState = {
-            item: Object.assign({}, this.props.item)
-        };
+        const initState = {};
 
         try {
             const boxOptionsTab = localStorage.getItem("boxOptionsTab");
             if(boxOptionsTab && boxOptionsTab.length) {
                 initState.contentType = boxOptionsTab;
             }
-
         } catch (err) {
             console.log(err);
         }
 
-        this.setState({...initState});
+        this.setState(this.props.box);
     }
 
     setAsyncState = (newState) =>
@@ -55,12 +50,16 @@ class ViewBoxOptions extends React.Component {
             localStorage.setItem("boxOptionsTab", nextView);
         }
     }
-    onUpdate(item) {
-        this.item = item;
+
+    onUpdate(box) {
+        this.box = {...this.box, ...box};
+    }
+
+    onSave() {
+        this.props.onSave(this.box);
     }
 
     render() {
-
         const classes = this.props.classes;
 
         const header = (
@@ -91,12 +90,12 @@ class ViewBoxOptions extends React.Component {
         const payload = {
             defaultTheme: this.props.defaultTheme,
             onUpdate: (data) => this.onUpdate(data),
-            item: this.item,
+            box: this.box,
             fontFamilies: this.props.fontFamilies,
+            fontSizes: this.props.fontSizes,
             page_id: this.props.pageOptions.page_id,
         };
 
-        //this time it won't be lazy loaded
         content['general'] = <ViewBoxGeneral {...payload} />;
         content['appearance'] = <ViewBoxAppearance {...payload} />;
         content['advanced'] = <ViewBoxAdvanced {...payload} />;
@@ -104,6 +103,7 @@ class ViewBoxOptions extends React.Component {
             id: "boxEditor",
             name: "boxModal",
             resize: true,
+            modalSize: "normal",
             title: header,
             content: content[this.state.contentType],
             showModal: this.props.showModal,
@@ -111,7 +111,7 @@ class ViewBoxOptions extends React.Component {
             confirmButton: {
                 callback: async () => {
                     await this.setAsyncState({forceReset: !this.state.forceReset})
-                    this.props.onSave(this.item);
+                    this.props.onSave(this.box);
                 },
                 label: "Save"
             },
@@ -126,21 +126,18 @@ class ViewBoxOptions extends React.Component {
         }
 
         return (
-            <div>
-                <Modal { ...modalProps } />
-            </div>
+            <Modal { ...modalProps } />
         )
     }
-
 }
 
 export default withStyles(styles)(ViewBoxOptions);
 
-
 ViewBoxOptions.propTypes = {
     pageOptions: PropTypes.object,
-    item: PropTypes.object,
+    box: PropTypes.object,
     fontFamilies: PropTypes.array,
+    fontSizes: PropTypes.array,
     classes: PropTypes.object,
     location: PropTypes.object,
     history: PropTypes.object,

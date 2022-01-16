@@ -436,4 +436,5 @@ export default withStyles(styles)(ViewDashboard);
 ViewDashboard.propTypes = {
     defaultTheme: PropTypes.object,
     classes: PropTypes.object,
+    control: PropTypes.object,
 }

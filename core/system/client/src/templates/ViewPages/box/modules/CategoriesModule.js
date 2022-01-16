@@ -47,7 +47,7 @@ class CategoriesModule extends Component {
             });
         }
         await this.setAsyncState({
-            itemModuleEditId: id,
+            boxModuleEditId: id,
             showModuleOptionsModal: true,
         });
     };

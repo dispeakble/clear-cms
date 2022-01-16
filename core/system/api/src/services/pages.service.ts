@@ -1,8 +1,8 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
-import * as fs from "fs";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {omit} from "lodash";
 
 @Injectable()
 export class PagesService {
@@ -16,15 +16,15 @@ export class PagesService {
         return new Observable(subscriber => {
 
             const whereObj = {
-                'AND': {
+                'and': {
                     isTemplate: params.isTemplate ? 1 : 0
                 }
             };
 
             if (params.search && params.search.length > 2) {
-                whereObj['AND']['OR'] = [];
+                whereObj['and']['or'] = [];
                 ["title", "link"].map(field => {
-                    whereObj['AND']['OR'].push({[field]: {'LIKE': `%${params.search}%`}});
+                    whereObj['and']['or'].push({[field]: {'LIKE': `%${params.search}%`}});
                 });
             }
 
@@ -69,99 +69,42 @@ export class PagesService {
                                 what: 'page',
                                 where: {
                                     id: params.id
-                                }
+                                },
+                                include: [{
+                                    model: 'pageBox',
+                                    through: 'pageToBox',
+                                    required: false
+                                },{
+                                    model: 'category',
+                                    through: 'pageToCategory',
+                                    required: false
+                                },{
+                                    model: 'pageConfig',
+                                    through: 'pageToConfig',
+                                    required: false
+                                }]
                             }
                         }
                     };
 
                     const page = await this.protocolService.sendMessage(pageReq).toPromise()
 
-                    const pagesToConfigReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageToConfig',
-                                where: {
-                                    pageId: params.id
-                                }
-                            }
-                        }
-                    };
-                    const pagesToConfig = await this.protocolService.sendMessage(pagesToConfigReq).toPromise()
-
-                    const configReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageConfig',
-                                where: {
-                                    id: pagesToConfig.configId
-                                }
-                            }
-                        }
-                    };
-
-                    const config = await this.protocolService.sendMessage(configReq).toPromise()
-
-                    const pagesToBoxReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'list',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageToBox',
-                                include: [{
-                                    model: 'pageBox',
-                                    as: 'pageBox',
-                                    required: true
-                                }],
-                                where: {
-                                    pageId: params.id
-                                }
-                            }
-                        }
-                    };
-                    const boxes = await this.protocolService.sendMessage(pagesToBoxReq).toPromise()
-
-                    const pagesToCategoriesReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'list',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageToCategory',
-                                fields: ["categoryId"],
-                                where: {
-                                    pageId: params.id
-                                }
-                            }
-                        }
-                    };
-
-                    const pagesToCategories = await this.protocolService.sendMessage(pagesToCategoriesReq).toPromise();
-
                     const formattedPage = {
-                        ...page,
-                        pageConfig: {...JSON.parse(config.data), categories: pagesToCategories.rows.map(cat => cat.categoryId)}
+                            ...page,
+                            pageConfig: {...JSON.parse(page.pageConfig[0].data),
+                        },
+                        categories: page.categories ? page.categories.map(cat => cat.id) : []
                     }
 
-                    if(boxes.data && boxes.data.length) {
-                        formattedPage.items = boxes.data.map((box) => {
+                    /*if(boxes.data && boxes.data.length) {
+                        formattedPage.boxes = boxes.data.map((box) => {
                             return {
                                 ...box,
                                 moduleOptions: JSON.parse(box.moduleoptions),
                                 displayOptions: JSON.parse(box.displayoptions),
                             }
                         })
-                    }
+                    }*/
                     subscriber.next({type: 'page', data: formattedPage});
                     subscriber.complete();
                 } catch (err) {
@@ -178,7 +121,7 @@ export class PagesService {
 
             (async () => {
                 try {
-                    const {items, pageConfig} = params;
+                    const {boxes, pageProps, pageConfig} = params;
                     const pageReq: payloadInterface = {
                         channel: 'db',
                         api: 'sql',
@@ -188,16 +131,42 @@ export class PagesService {
                             data: {
                                 what: 'page',
                                 data: {
-                                    title: pageConfig.title,
-                                    isHome: pageConfig.isHome ? 1 : 0,
-                                    active: pageConfig.active ? 1 : 0,
-                                    link: String(pageConfig.link),
-                                    isTemplate: pageConfig.isTemplate ? 1 : 0,
+                                    title: pageProps.title,
+                                    isHome: pageProps.isHome ? 1 : 0,
+                                    active: pageProps.active ? 1 : 0,
+                                    link: String(pageProps.link),
+                                    isTemplate: pageProps.isTemplate ? 1 : 0,
+                                    templateId: pageProps.templateId
                                 }
                             }
                         }
                     };
                     const page = await this.protocolService.sendMessage(pageReq).toPromise();
+
+                    if(Array.isArray(pageConfig.categories) && pageConfig.categories.length) {
+                        const pageToCategoryReq = {
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'addBulk',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pageToCategory',
+                                    records: pageConfig.categories.map(catId => {
+                                        return {
+                                            pageId: page.id,
+                                            categoryId: catId
+                                        }
+                                    }),
+                                    fields: ['pageId', 'categoryId']
+                                }
+                            }
+                        };
+
+                        await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
+                    }
+
+                    delete pageConfig.categories;
 
                     const configReq: payloadInterface = {
                         channel: 'db',
@@ -208,7 +177,7 @@ export class PagesService {
                             data: {
                                 what: 'pageConfig',
                                 data: {
-                                    data: pageConfig.data
+                                    data: JSON.stringify(pageConfig)
                                 }
                             }
                         }
@@ -233,54 +202,31 @@ export class PagesService {
 
                     this.protocolService.sendMessage(pageToConfigReq).toPromise();
 
-                    if(Array.isArray(pageConfig.categories) && pageConfig.categories.length) {
-                        const pageToCategoryReq = {
-                            channel: 'db',
-                            api: 'sql',
-                            act: 'AddBulk',
-                            payload: {
-                                channel: 'system',
-                                data: {
-                                    what: 'pageToCategory',
-                                    records: pageConfig.categories.map(cat => {
-                                        return {
-                                            pageId: page.id,
-                                            categoryId: cat.id
-                                        }
-                                    }),
-                                    fields: ['pageId', 'categoryId']
-                                }
-                            }
-                        };
-
-                        await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
-                    }
-
                     let boxesIds = []
                     const boxPositions = []
-                    if (items.length) {
-                        const newBoxes = items.filter(item => !item.templateUsed);
+                    if (boxes.length) {
+                        const newBoxes = boxes.filter(box => !box.data.templateUsed);
                         if (newBoxes.length) {
                             const pageBoxReq: payloadInterface = {
                                 channel: 'db',
                                 api: 'sql',
-                                act: 'AddBulk',
+                                act: 'addBulk',
                                 payload: {
                                     channel: 'system',
                                     data: {
                                         what: 'pageBox',
-                                        records: newBoxes.map((item) => {
-                                            boxPositions.push({x: item.x, y: item.y});
+                                        records: newBoxes.map((box) => {
+                                            boxPositions.push({x: box.data.x, y: box.data.y});
                                             return {
-                                                title: item.title,
-                                                module: item.module,
-                                                data: item.data,
-                                                moduleOptions: item.moduleOptions
+                                                title: box.title,
+                                                module: box.module,
+                                                data: JSON.stringify(omit(box.data, ['i', 'x', 'y'])),
+                                                moduleOptions: JSON.stringify(box.moduleOptions),
                                             }
                                         }),
                                         fields: ['title', 'module', 'data', 'moduleOptions'],
                                         validate: true,
-                                        returning: ['id']
+                                        returning: true
                                     }
                                 }
                             };
@@ -290,36 +236,37 @@ export class PagesService {
                             const pageToBoxReq: payloadInterface = {
                                 channel: 'db',
                                 api: 'sql',
-                                act: 'AddBulk',
+                                act: 'addBulk',
                                 payload: {
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
-                                        records: boxes.data.map((box, index) => {
+                                        records: boxes.map((box, index) => {
                                             return {
                                                 pageId: page.id,
                                                 boxId: box.id,
                                                 x: boxPositions[index].x,
-                                                y: boxPositions[index].y
+                                                y: boxPositions[index].y,
+                                                templateUsed: 0
                                             }
                                         }),
                                         fields: ['pageId', 'boxId', 'x', 'y'],
-                                        returning: ['id']
+                                        returning: true
                                     }
                                 }
                             };
 
                             await this.protocolService.sendMessage(pageToBoxReq).toPromise();
-                            boxesIds = boxes.data.map((box) => box.id);
+                            boxesIds = boxes.map((box) => box.id);
                         }
 
                         // Select boxes from template other than inherited
-                        const newBoxesFromTemplate = items.filter(item => (item.templateUsed && pageConfig.templateUsed !== item.templateUsed))
+                        const newBoxesFromTemplate = boxes.filter(box => (box.data.templateUsed && pageConfig.templateUsed !== box.data.templateUsed))
                         if (newBoxesFromTemplate && newBoxesFromTemplate.length) {
                             const pageToBoxReq: payloadInterface = {
                                 channel: 'db',
                                 api: 'sql',
-                                act: 'AddBulk',
+                                act: 'addBulk',
                                 payload: {
                                     channel: 'system',
                                     data: {
@@ -328,21 +275,20 @@ export class PagesService {
                                             return {
                                                 pageId: page.id,
                                                 boxId: box.id,
-                                                x: box.x,
-                                                y: box.y,
-                                                templateUsed: box.templateUsed
+                                                x: box.data.x,
+                                                y: box.data.y,
+                                                templateUsed: box.data.templateUsed
                                             }
                                         }),
                                         fields: ['pageId', 'boxId', 'x', 'y'],
-                                        returning: ['id']
+                                        returning: true
                                     }
                                 }
                             };
                             await this.protocolService.sendMessage(pageToBoxReq).toPromise();
                         }
 
-                        /*// add boxes to the pages which are inherited from template
-                        //TODO check if we need this... 
+                        // add boxes to the pages which are inherited from template
                         if (pageConfig.templateUsed) {
                             const templateIdReq: payloadInterface = {
                                 channel: 'db',
@@ -371,13 +317,13 @@ export class PagesService {
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
-                                        data: items.filter(item => item.templateUsed).map((box) => {
+                                        data: boxes.filter(box => box.data.templateUsed).map((box) => {
                                             return {
                                                 pageId: page.id,
                                                 boxId: box.id,
                                                 templateUsed: templateId.id,
-                                                x: box.x,
-                                                y: box.y
+                                                x: box.data.x,
+                                                y: box.data.y
                                             }
                                         })
                                     }
@@ -385,13 +331,13 @@ export class PagesService {
                             };
 
                             await this.protocolService.sendMessage(pageToBoxReq).toPromise();
-                            boxesIds = [...boxesIds, ...items.map((box) => box.id)];
-                        }*/
+                            boxesIds = [...boxesIds, ...boxes.map((box) => box.id)];
+                        }
                     }
 
                     subscriber.next({
                         success: "The page was added",
-                        data: {pageId: page.id, items: boxesIds}
+                        data: {pageId: page.id, boxes: boxesIds}
                     })
                     subscriber.complete();
                 } catch (err) {
@@ -408,7 +354,11 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try {
-                    const {items, pageConfig} = params;
+                    /*
+                    * 1. update the page
+                    * */
+
+                    const {boxes, pageProps, pageConfig} = params;
                     const newBoxesDetails = [];
                     const pageReq: payloadInterface = {
                         channel: 'db',
@@ -421,13 +371,13 @@ export class PagesService {
                                 where: {
                                     id: params.id
                                 },
-                                fields: {
-                                    title: pageConfig.title,
-                                    isHome: pageConfig.isHome ? 1 : 0,
-                                    active: pageConfig.active ? 1 : 0,
-                                    categoryId: pageConfig.categoryId,
-                                    link: pageConfig.link || "",
-                                    isTemplate: pageConfig.isTemplate ? 1 : 0,
+                                data: {
+                                    title: pageProps.title,
+                                    isHome: pageProps.isHome ? 1 : 0,
+                                    active: pageProps.active ? 1 : 0,
+                                    link: pageProps.link || "",
+                                    isTemplate: pageProps.isTemplate ? 1 : 0,
+                                    templateId: pageProps.templateId,
                                 }
                             }
                         }
@@ -435,7 +385,55 @@ export class PagesService {
 
                     await this.protocolService.sendMessage(pageReq).toPromise();
 
-                    const pagesToConfigReq: payloadInterface = {
+                    /*
+                    * 2. delete unused category associations and add new ones
+                    * */
+
+                    const pageToCategoryDelReq = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'rem',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pageToCategory',
+                                where: {
+                                    'and': {
+                                        pageId: params.id,
+                                        categoryId: {
+                                            'notIn': pageConfig.categories || []
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    await this.protocolService.sendMessage(pageToCategoryDelReq).toPromise();
+
+                    if(pageConfig.categories.length) {
+                        const pageToCategoryReq = {
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'addBulk',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pageToCategory',
+                                    records: pageConfig.categories.map(catId => {
+                                        return {categoryId: catId, pageId: params.id}
+                                    }),
+                                    ignoreDuplicates: true
+                                }
+                            }
+                        };
+
+                        await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
+                    }
+
+                    delete pageConfig.categories;
+
+                    const pagesToConfigReq: payloadInterface = {//TODO CAN BE JOINED WITH PAGE pageConfig
                         channel: 'db',
                         api: 'sql',
                         act: 'get',
@@ -449,11 +447,15 @@ export class PagesService {
                             }
                         }
                     };
-                    const pagesToConfig = await this.protocolService.sendMessage(pagesToConfigReq).toPromise()
+                    const pagesToConfig = await this.protocolService.sendMessage(pagesToConfigReq).toPromise();
 
-                    if (!pageConfig.backgroundImage) {
+                    /*
+                    * 3. delete background image
+                    * */
+
+                    if (pageConfig.deleteOldBackground) {
                         //try to delete the existing background image
-                        const oldConfigReq: payloadInterface = {
+                        const oldConfigReq: payloadInterface = {//TODO CAN BE JOINED WITH PAGE pageToConfig
                             channel: 'db',
                             api: 'sql',
                             act: 'get',
@@ -474,14 +476,14 @@ export class PagesService {
                             try {
                                 const oldConfigData = JSON.parse(oldConfig.data);
 
-                                if (oldConfig.bgImage.length) {
+                                if (oldConfig.hasBackgroundImage && oldConfig.backgroundImage.length) {
                                     await this.protocolService.sendMessage({
                                         channel: 'bucket',
                                         api: 'fs',
                                         act: 'rm',
                                         payload: {
                                             channel: 'system',
-                                            selection: [`/pages/page-${Number(params.id)}/${oldConfigData.bgImage}`]
+                                            selection: [`/pages/page-${Number(params.id)}/${oldConfigData.backgroundImage}`]
                                         }
                                     }).toPromise();
                                 }
@@ -490,6 +492,10 @@ export class PagesService {
                             }
                         }
                     }
+
+                    /*
+                    * 4. update pageConfig
+                    * */
 
                     const configReq: payloadInterface = {
                         channel: 'db',
@@ -502,8 +508,8 @@ export class PagesService {
                                 where: {
                                     id: pagesToConfig.configId
                                 },
-                                fields: {
-                                    data: pageConfig.data
+                                data: {
+                                    data: JSON.stringify(pageConfig)
                                 }
                             }
                         }
@@ -512,43 +518,44 @@ export class PagesService {
                     await this.protocolService.sendMessage(configReq).toPromise();
 
                     /*
-                    1. get pages_to_boxes
+                    5. get pages_to_boxes
                     */
 
                     const ptb_req: payloadInterface = {
                         channel: 'db',
                         api: 'sql',
-                        act: 'get',
+                        act: 'list',
                         payload: {
                             channel: 'system',
                             data: {
                                 what: 'pageToBox',
                                 where: {
-                                    pageId: params.id
+                                    pageId: params.id,
                                 }
                             }
                         }
                     };
 
                     const ptb = await this.protocolService.sendMessage(ptb_req).toPromise();
-                    /*
-                    2. see what boxes are missing to delete them and theirs files
-                    */
-                    if (ptb.data && ptb.data.length) {
 
-                        let missing_boxIds = ptb.data.map(item => item['boxId']);
-                        const template_boxIds = ptb.data.filter(item => item.templateUsed !== 0).map((item) => item['boxId']);
+                    /*
+                    6. see what boxes are missing to delete them and theirs files
+                    */
+                    if (ptb.count) {
+
+                        let missing_boxIds = ptb.rows.map(box => box['boxId']);
+                        const template_boxIds = ptb.rows.filter(box => box.templateUsed !== 0).map((box) => box['boxId']);
                         missing_boxIds = missing_boxIds.filter(boxId => {
                             let found = false;
-                            items.forEach(item => {
-                                found = found || (item.id === boxId);
+                            boxes.forEach(box => {
+                                found = found || (box.id === boxId);
                             })
                             return !found;
                         });
 
                         if (missing_boxIds.length) {
                             await Promise.all(missing_boxIds.map(async boxId => {
-                                this.protocolService.sendMessage({
+                                await this.protocolService.sendMessage({
                                     channel: 'db',
                                     api: 'sql',
                                     act: 'rem',
@@ -579,6 +586,7 @@ export class PagesService {
                                             }
                                         }
                                     }).toPromise();
+
                                     await this.protocolService.sendMessage({
                                         channel: 'bucket',
                                         api: 'fs',
@@ -589,68 +597,92 @@ export class PagesService {
                                         }
                                     }).toPromise();
                                 }
-                            }))
+                            }));
                         }
                     }
 
                     /*
-                    3. add new boxes and pages_to_boxes
+                    7. add new boxes and pages_to_boxes
                     */
 
-                    const newBoxes = items.filter(item => !item.hasOwnProperty('id'));
+                    const newBoxes = boxes.filter(box => !box.id);
 
                     if (newBoxes.length) {
-                        await Promise.all(newBoxes.map(async newBox => {
-                            const newBoxDetail = await this.protocolService.sendMessage({
-                                channel: 'db',
-                                api: 'sql',
-                                act: 'add',
-                                payload: {
-                                    channel: 'system',
-                                    data: {
-                                        what: 'pageBox',
-                                        data: {
-                                            title: newBox.title,
-                                            module: newBox.module,
-                                            data: newBox.data,
-                                            moduleOptions: newBox.moduleOptions,
-                                        }
-                                    }
-                                }
-                            }).toPromise();
 
-                            await this.protocolService.sendMessage({
-                                channel: 'db',
-                                api: 'sql',
-                                act: 'add',
-                                payload: {
-                                    channel: 'system',
-                                    data: {
-                                        what: 'pageToBox',
-                                        data: {
+                        const newBoxesMeta = newBoxes.map(newBox => {
+                            return {
+                                x: newBox.data.x,
+                                y: newBox.data.y,
+                                i: newBox.data.i,
+                            }
+                        });
+
+                        const newBoxesData = newBoxes.map(newBox => {
+                            return {
+                                title: newBox.title,
+                                module: newBox.module,
+                                data: JSON.stringify(omit(newBox.data, ['x', 'y', 'i'])),
+                                moduleOptions: JSON.stringify(newBox.moduleOptions),
+                            }
+                        })
+
+                        const newAddedBoxes = await this.protocolService.sendMessage({
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'addBulk',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pageBox',
+                                    returning: true,
+                                    records: newBoxesData,
+                                    fields: ['title', 'module', 'data', 'moduleOptions']
+                                }
+                            }
+                        }).toPromise();
+
+                        const newPTB = await this.protocolService.sendMessage({
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'addBulk',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pageToBox',
+                                    records: newAddedBoxes.map((newBox, index) => {
+                                        return {
                                             pageId: params.id,
-                                            boxId: newBoxDetail.id,
-                                            x: newBox.x,
-                                            y: newBox.y
+                                            boxId: newBox.id,
+                                            x: newBoxesMeta[index].data.x,
+                                            y: newBoxesMeta[index].data.y,
+                                            templateUsed: 0
                                         }
-                                    }
+                                    }),
+                                    fields: ['pageId', 'boxId', 'x', 'y']
                                 }
-                            }).toPromise();
+                            }
+                        }).toPromise();
 
-                            newBoxDetail.ref = newBox.i; //for reference number. seamless update
+                        newAddedBoxes.map((newBox, index) => {//for reference number. seamless update
+                            newBox.ref = newBoxesMeta[index].i;
+                            newBoxesDetails.push({
+                                id: newBox.id,
+                                ref: newBoxesMeta[index].data.i
+                            })
+                            return newBox;
+                        });
 
-                            newBoxesDetails.push(newBoxDetail);
-                        }))
                     }
 
                     /*
-                    4. update existing boxes and relations no matter what. could be a resize
+                    8. update existing boxes and relations.
                     */
 
-                    const existingBoxes = items.filter(item => item.hasOwnProperty('id') && !item.templateUsed);
+                    const existingBoxes = boxes.filter(box => box.id && !box.data.templateUsed);
 
                     await Promise.all(existingBoxes.map(async box => {
-                        await this.protocolService.sendMessage({
+
+                        const pageBoxPayload =  {
                             channel: 'db',
                             api: 'sql',
                             act: 'set',
@@ -658,18 +690,20 @@ export class PagesService {
                                 channel: 'system',
                                 data: {
                                     what: 'pageBox',
-                                    fields: {
+                                    data: {
                                         title: box.title,
                                         module: box.module,
-                                        data: box.data,
-                                        moduleOptions: box.moduleOptions
+                                        data: JSON.stringify(omit(box.data, ['x', 'y', 'i'])),
+                                        moduleOptions: JSON.stringify(box.moduleOptions)
                                     },
                                     where: {
                                         id: box.id
                                     }
                                 }
                             }
-                        }).toPromise();
+                        }
+
+                        await this.protocolService.sendMessage(pageBoxPayload).toPromise();
 
                         await this.protocolService.sendMessage({
                             channel: 'db',
@@ -679,9 +713,9 @@ export class PagesService {
                                 channel: 'system',
                                 data: {
                                     what: 'pageToBox',
-                                    fields: {
-                                        x: box.x,
-                                        y: box.y
+                                    data: {
+                                        x: box.data.x,
+                                        y: box.data.y
                                     },
                                     where: {
                                         pageId: params.id,
@@ -694,15 +728,15 @@ export class PagesService {
                     }));
 
                     /*
-                    5. update existing boxes positions no matter what. (existing boxes from the template)
-                   */
+                    9. update existing boxes from templates
+                    */
 
-                    const boxesFromTemplate = items.filter(item => item.hasOwnProperty('id') && item.templateUsed);
+                    const boxesFromTemplate = boxes.filter(box => box.hasOwnProperty('id') && box.data.templateUsed);
 
                     let existingBoxIdsFromTemplate = [];
 
                     if (ptb.data && ptb.data.length) {
-                        existingBoxIdsFromTemplate = ptb.data.filter((box) => box.templateUsed).map((box) => box.boxId)
+                        existingBoxIdsFromTemplate = ptb.data.filter((box) => box.data.templateUsed).map((box) => box.boxId)
                     }
 
                     const existingBoxesFromTemplate = boxesFromTemplate.filter((box) => {
@@ -719,9 +753,9 @@ export class PagesService {
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
-                                        fields: {
-                                            x: box.x,
-                                            y: box.y
+                                        data: {
+                                            x: box.data.x,
+                                            y: box.data.y
                                         },
                                         where: {
                                             pageId: params.id,
@@ -732,6 +766,10 @@ export class PagesService {
                             }).toPromise();
                         }));
                     }
+
+                    /*
+                    * 10. add new boxes from template
+                    * */
 
                     const newBoxesFromTemplate = boxesFromTemplate.filter((box) => {
                         return !(existingBoxIdsFromTemplate.length && existingBoxIdsFromTemplate.indexOf(box.id) > -1);
@@ -748,9 +786,9 @@ export class PagesService {
                                     data: {
                                         what: 'pageToBox',
                                         data: {
-                                            x: box.x,
-                                            y: box.y,
-                                            templateUsed: box.templateUsed,
+                                            x: box.data.x,
+                                            y: box.data.y,
+                                            templateUsed: box.data.templateUsed,
                                             pageId: params.id,
                                             boxId: box.id
                                         }
@@ -770,55 +808,15 @@ export class PagesService {
 
                     if (existingBoxes.length) {
                         existingBoxes.map(box => {
-                            boxesIds.push({id: box.id, ref: existingBoxes.i})
+                            boxesIds.push({id: box.id})
                         });
                     }
-
-                    /*
-                    * 5. delete old category association and add a new one
-                    * //TODO CHECK IF THE ANY CATEGORY ASSOCIATION IS DELETED AND UPDATE ONLY WHAT IS NEEDED
-                    * */
-
-                    const pageToCategoryDelReq = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'rem',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageToCategory',
-                                where: {
-                                    pageId: params.id
-                                }
-                            }
-                        }
-                    };
-
-                    await this.protocolService.sendMessage(pageToCategoryDelReq).toPromise();
-
-                    const pageToCategoryReq = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'add',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageToCategory',
-                                data: {
-                                    pageId: params.id,
-                                    categoryId: params.pageConfig.categoryId,
-                                }
-                            }
-                        }
-                    };
-
-                    await this.protocolService.sendMessage(pageToCategoryReq).toPromise();
 
                     subscriber.next({
                         success: "The page was saved",
                         data: {
                             pageId: params.id,
-                            items: boxesIds
+                            boxes: boxesIds
                         }
                     })
                     subscriber.complete();
@@ -906,7 +904,7 @@ export class PagesService {
                     const pageToConfigReq: payloadInterface = {
                         channel: 'db',
                         api: 'sql',
-                        act: 'list',
+                        act: 'get',
                         payload: {
                             channel: 'system',
                             data: {
@@ -938,23 +936,26 @@ export class PagesService {
 
                     this.protocolService.sendMessage(remPageToConfigReq).toPromise();
 
-                    // delete config
-                    const configReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'rem',
-                        payload: {
-                            channel: 'system',
-                            data: {
-                                what: 'pageConfig',
-                                where: {
-                                    id: pageToConfig.rows.map(ptc => ptc.configId)
+                    if(pageToConfig) {
+                        // delete config
+                        const configReq: payloadInterface = {
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'rem',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pageConfig',
+                                    where: {
+                                        id: pageToConfig.configId
+                                    }
                                 }
                             }
-                        }
-                    };
+                        };
 
-                    this.protocolService.sendMessage(configReq).toPromise();
+                        this.protocolService.sendMessage(configReq).toPromise();
+                    }
+
 
                     // delete pageToConfig first because of foreign key
                     const pageToCategoryReq: payloadInterface = {
@@ -1011,6 +1012,10 @@ export class PagesService {
             (async () => {
 
                 try {
+
+                    /*
+                    * 1. get the source page
+                    * */
                     const sourcePage = await this.protocolService.sendMessage({
                         channel: 'db',
                         api: 'sql',
@@ -1021,15 +1026,113 @@ export class PagesService {
                                 what: 'page',
                                 data: {
                                     id: params.id
+                                },
+                                include: [{
+                                    model: 'pageBox',
+                                    through: 'pageToBox',
+                                    required: false
+                                },{
+                                    model: 'pageConfig',
+                                    through: 'pageToConfig',
+                                    required: false
+                                }]
+                            }
+                        }
+                    }).toPromise();
+
+                    if (!sourcePage) return;
+
+                    /*
+                    * 2. Create the new page
+                    * */
+
+                    const newPage = await this.protocolService.sendMessage({
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'page',
+                                data: omit(sourcePage.data, ['pageBoxes', 'pageConfigs'])
+                            }
+                        }
+                    }).toPromise();
+
+                    /*
+                    * 3. copy page config
+                    * */
+
+                    const newPageConfig = await this.protocolService.sendMessage({
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pageConfig',
+                                data: omit(sourcePage.pageConfigs[0], 'id')
+                            }
+                        }
+                    }).toPromise();
+
+                    const newPageToConfig = await this.protocolService.sendMessage({
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'add',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pageToConfig',
+                                data: {
+                                    pageId: newPage.id,
+                                    configId: newPageConfig.id
                                 }
                             }
                         }
                     }).toPromise();
 
+                    /*
+                    * 3. copy categories associations
+                    * */
+
+                    const ptc = await this.protocolService.sendMessage({
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'list',
+                        payload: {
+                            channel: 'system',
+                            data: {
+                                what: 'pageToCategory',
+                                data: {
+                                    pageId: params.id
+                                }
+                            }
+                        }
+                    }).toPromise();
+
+                    if(ptc.count) {
+                        const new_ptc = await this.protocolService.sendMessage({
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'addBulk',
+                            payload: {
+                                channel: 'system',
+                                data: {
+                                    what: 'pageToCategory',
+                                    records: ptc.rows.map(ptc_item => {
+                                        return omit(ptc_item, 'id');
+                                    }),
+                                    fields: ['pageId', 'categoryId']
+                                }
+                            }
+                        }).toPromise();
+                    }
+
                     const source_p_t_b = await this.protocolService.sendMessage({
                         channel: 'db',
                         api: 'sql',
-                        act: 'get',
+                        act: 'list',
                         payload: {
                             channel: 'system',
                             data: {
@@ -1041,99 +1144,80 @@ export class PagesService {
                         }
                     }).toPromise();
 
-                    if (sourcePage.data && sourcePage) {
-
-                        const old_page_data = sourcePage;
-
-                        delete old_page_data.id;
-
-                        const newPage = await this.protocolService.sendMessage({
-                            channel: 'db',
-                            api: 'sql',
-                            act: 'add',
+                    if (source_p_t_b.count) {
+                        const copyAssets = await this.protocolService.sendMessage({
+                            channel: 'bucket',
+                            api: 'fs',
+                            act: 'copy',
                             payload: {
                                 channel: 'system',
-                                what: 'page',
-                                data: old_page_data
+                                replace: true,
+                                source: `/pages/page-${params.id}`,
+                                destination: `/pages/page-${newPage.id}`,
                             }
                         }).toPromise();
 
-                        if (source_p_t_b.data.length) {
-                            const copyAssets = await this.protocolService.sendMessage({
-                                channel: 'bucket',
-                                api: 'fs',
-                                act: 'copy',
+                        source_p_t_b.rows.map(async (sptb) => {
+
+                            let newBox;
+
+                            if(!sptb.templateUsed) {
+                                const old_box = await this.protocolService.sendMessage({
+                                    channel: 'db',
+                                    api: 'sql',
+                                    act: 'get',
+                                    payload: {
+                                        channel: 'system',
+                                        what: 'pageBox',
+                                        where: {
+                                            id: sptb.boxId
+                                        }
+                                    }
+                                }).toPromise();
+
+                                newBox = await this.protocolService.sendMessage({
+                                    channel: 'db',
+                                    api: 'sql',
+                                    act: 'add',
+                                    payload: {
+                                        channel: 'system',
+                                        what: 'pageBox',
+                                        data: omit(old_box, 'id')
+                                    }
+                                }).toPromise();
+
+                                const renameBoxFolders = await this.protocolService.sendMessage({
+                                    channel: 'bucket',
+                                    api: 'fs',
+                                    act: 'mv',
+                                    payload: {
+                                        channel: 'system',
+                                        replace: true,
+                                        source: `/pages/page-${Number(params.id)}/box-${sptb.boxId}`,
+                                        destination: `/pages/page-${newPage[0].id}/box-${newBox.id}`,
+                                    }
+                                }).toPromise();
+
+                            }
+
+                            const new_p_t_b = await this.protocolService.sendMessage({
+                                channel: 'db',
+                                api: 'sql',
+                                act: 'add',
                                 payload: {
                                     channel: 'system',
-                                    replace: true,
-                                    source: `/pages/page-${Number(params.id)}`,
-                                    destination: `/pages/page-${newPage[0].id}`,
+                                    what: 'pageToBox',
+                                    data: {
+                                        pageId: newPage.id,
+                                        boxId: sptb.templateUsed ? sptb.boxId : newBox.id,
+                                        templateUsed: sptb.templateUsed ? sptb.templateUsed : 0
+                                    }
                                 }
                             }).toPromise();
 
-                            const sptb = source_p_t_b.data;
+                            return sptb;
+                        })
 
-                            if (sptb && sptb.length) {
-                                sptb.map(async (s) => {
-
-                                    const old_box = await this.protocolService.sendMessage({
-                                        channel: 'db',
-                                        api: 'sql',
-                                        act: 'get',
-                                        payload: {
-                                            channel: 'system',
-                                            what: 'pagesBox',
-                                            where: {
-                                                id: s.boxId
-                                            }
-                                        }
-                                    }).toPromise();
-
-
-                                    delete old_box.id;
-
-                                    const newBox = await this.protocolService.sendMessage({
-                                        channel: 'db',
-                                        api: 'sql',
-                                        act: 'add',
-                                        payload: {
-                                            channel: 'system',
-                                            what: 'pagesBox',
-                                            data: old_box
-                                        }
-                                    }).toPromise();
-
-                                    const new_p_t_b = await this.protocolService.sendMessage({
-                                        channel: 'db',
-                                        api: 'sql',
-                                        act: 'add',
-                                        payload: {
-                                            channel: 'system',
-                                            what: 'pageToBox',
-                                            data: {
-                                                pageId: newPage.id,
-                                                boxId: newBox.id
-                                            }
-                                        }
-                                    }).toPromise();
-
-                                    const renameBoxFolders = await this.protocolService.sendMessage({
-                                        channel: 'bucket',
-                                        api: 'fs',
-                                        act: 'mv',
-                                        payload: {
-                                            channel: 'system',
-                                            replace: true,
-                                            source: `/pages/page-${Number(params.id)}/box-${s.id}`,
-                                            destination: `/pages/page-${newPage[0].id}/box-${newBox.id}`,
-                                        }
-                                    }).toPromise();
-
-                                    return s;
-                                })
-                            }
-
-                        }
                     }
                 } catch (err) {
                     console.log(err);

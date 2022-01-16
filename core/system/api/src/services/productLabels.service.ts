@@ -166,7 +166,7 @@ export class ProductLabelsService {
                             channel: 'system',
                             data: {
                                 what: 'product_labels',
-                                how: 'OR',
+                                how: 'or',
                                 where: {
                                     id: params.id
                                 }

@@ -19,7 +19,6 @@ import Switch from "@material-ui/core/Switch";
 
 import {DropzoneDialog} from 'material-ui-dropzone';
 import Button from "../../../../components/CustomButtons/Button";
-import {FcaudioFile} from "react-icons/all";
 
 class AudioModule extends Component {
     sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Uplode"}];

@@ -421,7 +421,7 @@ export class FsService {
             const file = path.parse(source_name).base;
             const realSourcePath = this.help.path.realPath({path: params.path});
             try {
-                let mimeType = mime.lookup(realSourcePath)
+                let mimeType = mime.getType(realSourcePath)
                 let bs64 = fs.readFileSync(realSourcePath, {encoding: 'base64'})
                 observer.next({
                     type: "success",
@@ -704,7 +704,7 @@ export class FsService {
                         console.log(error);
                     }
 
-                    observer.next({type: 'meta', content_length: stats.size, content_type: mime.lookup(realPath)});
+                    observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(realPath)});
 
                     const readStream = fs.createReadStream(realPath);
 

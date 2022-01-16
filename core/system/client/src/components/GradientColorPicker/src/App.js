@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import chroma from "chroma-js";
 
 const routerModel = RouterModel.create();
-const history = syncHistoryWithStore(createBrowserHistory(), routerModel)
+syncHistoryWithStore(createBrowserHistory(), routerModel)
 const store = Store.create({ ...defaultStore, router: routerModel })
 
 class App extends Component {
