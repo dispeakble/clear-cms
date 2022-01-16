@@ -4,11 +4,12 @@ const modalStyle = {
   },
   normalModal: {
     width: "70vw",
-    height: "70vh",
+    height: "60vh",
     margin: "16px"
   },
   largeModal: {
-    height: "calc(100vh - 20px)",
+    width: "90vw",
+    height: "calc(100vh - 60px)",
     margin: "10px"
   },
   modal: {

@@ -15,11 +15,11 @@ export class UsersService {
         return new Observable(subscriber => {
 
             const whereObj = {
-                'OR': []
+                'or': []
             };
 
             ["fname", "lname", "email"].map(field => {
-                whereObj['OR'].push({[field]: {'LIKE': `%${params.search}%`}});
+                whereObj['or'].push({[field]: {'LIKE': `%${params.search}%`}});
             })
 
             const payload: payloadInterface = {

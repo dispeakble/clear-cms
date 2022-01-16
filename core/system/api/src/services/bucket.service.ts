@@ -295,7 +295,7 @@ export class BucketService {
                         stats = await fsp.stat(file_path);
                     }
 
-                    observer.next({type: 'meta', content_length: stats.size, content_type: mime.lookup(complete_path)});
+                    observer.next({type: 'meta', content_length: stats.size, content_type: mime.getType(complete_path)});
 
                     const readStream = fs.createReadStream(file_path, { highWaterMark: 32 * 1024 });
 

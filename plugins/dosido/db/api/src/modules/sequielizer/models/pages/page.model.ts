@@ -1,5 +1,11 @@
-import {Column, Index, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, Index, Model, Table} from "sequelize-typescript";
 import {DataTypes} from "sequelize";
+import {PageToBox} from "./page.to.box.model";
+import {PageBox} from "./page.box.model";
+import {Category} from "../general/category.model";
+import {PageToCategory} from "./page.to.category.model";
+import {PageConfig} from "./page.config.model";
+import {PageToConfig} from "./page.to.config.model";
 
 @Table
 export class Page extends Model {
@@ -37,4 +43,14 @@ export class Page extends Model {
     @Index
     @Column({type: DataTypes.DATE, defaultValue: DataTypes.NOW})
     updatedAt: number;
+
+    @BelongsToMany(() => PageBox, () => PageToBox)
+    boxes: PageBox[];
+
+    @BelongsToMany(() => Category, () => PageToCategory)
+    categories: Category[];
+
+    @BelongsToMany(() => PageConfig, () => PageToConfig)
+    pageConfig: PageConfig[];
+
 }

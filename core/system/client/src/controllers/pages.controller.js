@@ -64,7 +64,7 @@ class PagesController extends Component {
         });
     }
 
-    listCategories(params) {
+    listCategories() {
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
@@ -96,7 +96,7 @@ class PagesController extends Component {
         });
     }
 
-    listTemplates(params) {
+    listTemplates() {
         return new Promise(async resolve => {
             try {
                 const response = await this.sendMessage({
@@ -155,42 +155,26 @@ class PagesController extends Component {
                     params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                 }
 
-                const dbPayload = _.cloneDeep(params);
+                const paramsClone = _.cloneDeep(params);
+                
+                delete paramsClone.pageConfig.backgroundImageFile;
 
-
-                dbPayload.items = dbPayload.items.map((item) => {
-                    if (item.backgroundImageFile) {
-                        item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
+                paramsClone.boxes = paramsClone.boxes.map((box) => {
+                    if (box.data.backgroundImageFile) {
+                        box.data.backgroundImage = `background.${this.help.fileExtension(box.data.backgroundImageFile.name)}`;
                     }
 
                     //for the DB we don't need to send binaries
-                    delete item.backgroundImageFile;
+                    delete box.data.backgroundImageFile;
 
-                    if(Array.isArray(item.moduleOptions.files)) {
-                        item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
-                            delete itemFile.file;
-                            return itemFile;
+                    if(Array.isArray(box.moduleOptions.files)) {
+                        box.moduleOptions.files = box.moduleOptions.files.map(boxFile => {
+                            delete boxFile.file;
+                            return boxFile;
                         });
                     }
 
-                    const itemKeys = Object.keys(item).filter(key => !(['title', 'module', 'moduleOptions'].includes(key)));
-
-                    const moduleData = {};
-
-                    itemKeys.map(key => {
-                        moduleData[key] = item[key]
-                        return key;
-                    });
-
-                    return {
-                        title: item.title,
-                        module: item.module,
-                        x: item.x,
-                        y: item.y,
-                        i: item.i,
-                        moduleOptions: item.moduleOptions,
-                        data: moduleData
-                    };
+                    return box;
                 });
 
                 //we will add new boxes to get the page id and box ids
@@ -198,7 +182,7 @@ class PagesController extends Component {
                     module: 'system',
                     api: 'pages',
                     act: 'add',
-                    payload: dbPayload
+                    payload: paramsClone
                 });
 
                 //Uploading page background
@@ -212,27 +196,27 @@ class PagesController extends Component {
                     })
                 }
 
-                await Promise.all(params.items.filter(item => !item.templateUsed).map((item, i) => {
+                await Promise.all(params.boxes.filter(box => !box.data.templateUsed).map((box, i) => {
                     return new Promise((resolve_upload) => {
 
                         //Uploading box background
-                        if (item.backgroundImageFile) {
+                        if (box.data.backgroundImageFile) {
                             this.uploadFiles({
-                                path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/",
+                                path: "/pages/page-" + response.pageId + "/box-" + response.boxes[i] + "/",
                                 files: [{
-                                    name: `background.${this.help.fileExtension(item.backgroundImageFile.name)}`,
-                                    file: item.backgroundImageFile
+                                    name: `background.${this.help.fileExtension(box.data.backgroundImageFile.name)}`,
+                                    file: box.data.backgroundImageFile
                                 }]
                             });
                         }
 
                         //Uploading box files
-                        if (item.module && Array.isArray(item.files) && item.files.length) {
+                        if (box.module && Array.isArray(box.data.files) && box.data.files.length) {
 
-                            const newFiles = item.files.filter(fileObj => !!fileObj.file);
+                            const newFiles = box.data.files.filter(fileObj => !!fileObj.file);
 
                             this.uploadFiles({
-                                path: "/pages/page-" + response.pageId + "/box-" + response.items[i] + "/module/",
+                                path: "/pages/page-" + response.pageId + "/box-" + response.boxes[i] + "/module/",
                                 files: newFiles
                             });
                         }
@@ -265,123 +249,112 @@ class PagesController extends Component {
     }
 
     edit(params) {
-        return new Promise(async resolve => {
+        return new Promise(resolve => {
             try {
-                if (params.pageConfig.backgroundImageFile) {
-                    params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
-                    if (params.pageConfig.backgroundImageFile) {
-                        if (params.pageConfig.oldBackgroundImage) {
-                            await this.sendMessage({
-                                module: 'system',
-                                api: 'bucket',
-                                act: 'rm',
-                                payload: {
-                                    path: `/pages/page-${params.id}`,
-                                    selection: [params.pageConfig.oldBackgroundImage]
-                                }
-                            });
-                        }
-
+                (async () => {
+                    if (params.pageConfig.hasBackgroundImage && params.pageConfig.backgroundImageFile) {
+                        params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                         await this.uploadFiles({
                             path: "/pages/page-" + params.id + "/",
                             files: [{
                                 name: params.pageConfig.backgroundImage,
                                 file: params.pageConfig.backgroundImageFile
-                            }]
+                            }],
+                            progress: (evt) => {
+                                params.uploadProgress(evt);
+                            }
                         });
-
                     }
-                } else if (params.pageConfig.oldBackgroundImage && !params.pageConfig.backgroundImage.length) {
-                    this.sendMessage({
+
+                    const paramsClone = _.cloneDeep(params);
+
+                    if(paramsClone.pageConfig.backgroundImageFile.length || !paramsClone.pageConfig.hasBackgroundImage) {
+                        paramsClone.pageConfig.deleteOldBackground = true;
+                    }
+
+                    delete paramsClone.pageConfig.backgroundImageFile;
+
+                    //we will add new boxes to get the IDs
+                    paramsClone.boxes = paramsClone.boxes.map((box) => {
+                        if (box.data.backgroundImageFile) {
+                            box.data.backgroundImage = `background.${this.help.fileExtension(box.data.backgroundImageFile.name)}`;
+                        }
+
+                        delete box.data.backgroundImageFile;//for the DB we don't need to send binaries
+
+                        if (box.moduleOptions && box.moduleOptions && box.moduleOptions.files) {
+                            box.moduleOptions.files = box.moduleOptions.files.map(boxFile => {
+                                delete boxFile.file;
+                                return boxFile;
+                            });
+                        }
+                        return box;
+                    });
+
+                    const response = await this.sendMessage({
                         module: 'system',
-                        api: 'bucket',
-                        act: 'rm',
-                        payload: {
-                            path: `/pages/page-${params.id}`,
-                            selection: [params.pageConfig.oldBackgroundImage]
-                        }
+                        api: 'pages',
+                        act: 'edit',
+                        payload: paramsClone
                     });
-                }
 
-                const paramsClone = _.cloneDeep(params);
-
-                //we will add new boxes to get the IDs
-
-                paramsClone.items = paramsClone.items.map((item) => {
-                    if (item.backgroundImageFile) {
-                        item.backgroundImage = `background.${this.help.fileExtension(item.backgroundImageFile.name)}`;
-                    }
-                    item.backgroundImageFile = "";//for the DB we don't need to send binaries
-                    if (item.moduleOptions && item.moduleOptions && item.moduleOptions.files) {
-                        item.moduleOptions.files = item.moduleOptions.files.map(itemFile => {
-                            delete itemFile.file;
-                            return itemFile;
+                    params.boxes = params.boxes.map((box) => {
+                        response.boxes.map((dbBox) => {
+                            if (Number(box.data.i) === Number(dbBox.ref)) {
+                                box.id = dbBox.id;
+                            }
+                            return dbBox
                         });
-                    }
-                    return item;
-                });
-
-                const response = await this.sendMessage({
-                    module: 'system',
-                    api: 'pages',
-                    act: 'edit',
-                    payload: paramsClone
-                });
-
-                params.items = params.items.map((item) => {
-                    response.items.map((dbItem) => {
-                        if (Number(item.i) === Number(dbItem.ref)) {
-                            item.id = dbItem.id;
-                        }
-                        return dbItem
+                        return box;
                     });
-                    return item;
-                });
 
-                await Promise.all(params.items.map(async (item, i) => {
-                    if (item.backgroundImageFile) {
-                        item.backgroundImage = item.backgroundImageFile.name;
-                        await this.uploadFiles({
-                            path: "/pages/page-" + params.id + "/box-" + item.id,
-                            files: [{
-                                name: `background.${this.help.fileExtension(item.backgroundImageFile.name)}`,
-                                file: item.backgroundImageFile
-                            }]
-                        })
-                    } else if (item.backgroundImage.indexOf('__delete__') === 0) {
-                        await this.sendMessage({
-                            module: 'system',
-                            api: 'bucket',
-                            act: 'rm',
-                            payload: {
-                                path: `/pages/page-${params.id}/box-${item.id}/`,
-                                selection: [item.backgroundImage.replace('__delete__', '')]
-                            }
-                        });
-                    }
+                    await Promise.all(params.boxes.map(async (box) => {
+                        if (box.data.backgroundImageFile) {
+                            box.data.backgroundImage = box.data.backgroundImageFile.name;
+                            await this.uploadFiles({
+                                path: "/pages/page-" + params.id + "/box-" + box.id,
+                                files: [{
+                                    name: `background.${this.help.fileExtension(box.data.backgroundImageFile.name)}`,
+                                    file: box.data.backgroundImageFile
+                                }]
+                            })
+                        } /*else if (box.data.backgroundImage && box.data.backgroundImage.indexOf('__delete__') === 0) {
+                        //not working anymore//TODO implement delete button for box background image
+                            await this.sendMessage({
+                                module: 'system',
+                                api: 'bucket',
+                                act: 'rm',
+                                payload: {
+                                    path: `/pages/page-${params.id}/box-${box.id}/`,
+                                    selection: [box.data.backgroundImage.replace('__delete__', '')]
+                                }
+                            });
+                        }*/
 
-                    if (item.moduleOptions?.files && item.moduleOptions?.files.length) {
-                        const fileList = [];
-                        item.moduleOptions.files.forEach((fileData) => {
-                            if(fileData.file) {
-                                fileList.push({file: fileData.file, name: fileData.name})
-                            }
-                        });
+                        if (box.moduleOptions?.files && box.moduleOptions?.files.length) {
+                            const fileList = [];
+                            box.moduleOptions.files.forEach((fileData) => {
+                                if(fileData.file) {
+                                    fileList.push({file: fileData.file, name: fileData.name})
+                                }
+                            });
 
-                        await this.uploadFiles({
-                            path: "/pages/page-" + params.id + "/box-" + item.id + "/module",
-                            files: fileList
-                        });
+                            await this.uploadFiles({
+                                path: "/pages/page-" + params.id + "/box-" + box.id + "/module",
+                                files: fileList
+                            });
 
-                        item.moduleOptions.files.map((fileData) => {
-                            return {
-                                name: fileData.name
-                            }
-                        });
-                    }
+                            box.moduleOptions.files.map((fileData) => {
+                                return {
+                                    name: fileData.name
+                                }
+                            });
+                        }
 
-                }))
-                resolve(response)
+                    }));
+
+                    resolve(response);
+                })()
             } catch (err) {
                 resolve(null);
             }
@@ -406,25 +379,23 @@ class PagesController extends Component {
     }
 
     uploadFiles(params) {
-        return new Promise(resolve => {
-            var formData = new FormData();
+        var formData = new FormData();
 
-            formData.append('path', params.path || "pages/page/");
-            formData.append('replace', params.replace || true);
-            formData.append('totalFiles', params.files.length);
+        formData.append('path', params.path || "pages/page/");
+        formData.append('replace', params.replace || true);
+        formData.append('totalFiles', params.files.length);
 
-            //always place the files at the end
-            Array.from(params.files).forEach(fileData => {
-                formData.append(fileData.name || fileData.file.name, fileData.file, fileData.name || fileData.file.name);
-            });
-            axios.post("/bucket", formData, {
-                onUploadProgress: evt => {
-                    if (evt.loaded === evt.total) {
-                        resolve();
-                    }
-                    // params.progress(evt)
+        //always place the files at the end
+        Array.from(params.files).forEach(fileData => {
+            formData.append(fileData.name || fileData.file.name, fileData.file, fileData.name || fileData.file.name);
+        });
+
+        return axios.post("/bucket", formData, {
+            onUploadProgress: evt => {
+                if (evt.loaded === evt.total) {
                 }
-            });
+                params.progress && params.progress(evt)
+            }
         });
     }
 
@@ -461,4 +432,5 @@ export default PagesController;
 PagesController.propTypes = {
     services: PropTypes.object,
     history: PropTypes.object,
+    location: PropTypes.object
 };

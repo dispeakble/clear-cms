@@ -172,7 +172,7 @@ class Modal extends Component {
             <DialogContent className={classes.modalBody}>
                 {this.props.modalSize !== 'small' ?
                     <Scrollbars autoHide universal style={{ height: '100%' }}>
-                        <div style={{padding: '24px'}}>
+                        <div style={{padding: '24px', minHeight: '100%', display: 'flex', flexDirection: 'column'}}>
                             {this.props.content}
                         </div>
                     </Scrollbars> :

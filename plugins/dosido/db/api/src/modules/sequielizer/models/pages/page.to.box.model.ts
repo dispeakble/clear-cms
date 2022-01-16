@@ -1,4 +1,4 @@
-import {Column, ForeignKey, Index, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, ForeignKey, HasMany, Index, Model, Table} from "sequelize-typescript";
 import {DataTypes} from "sequelize";
 import {Page} from "./page.model";
 import {PageBox} from "./page.box.model";

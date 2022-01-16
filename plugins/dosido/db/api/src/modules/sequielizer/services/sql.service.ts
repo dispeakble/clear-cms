@@ -27,7 +27,7 @@ import {User} from "../models/general/user.model";
 
 @Injectable()
 export class SqlService {
-    private methods = ["list", "get", "add", "AddBulk", "set", "rem"];
+    private methods = ["list", "get", "add", "addBulk", "set", "rem"];
 
     constructor(
 
@@ -89,6 +89,10 @@ export class SqlService {
 
             result.model = model;
 
+            if(result['through']) {
+                result.through = this[`${incl.through}Model`];
+            }
+
             if(result.where) {
                 result.where = this.convertWhereOp(result.where);
             }
@@ -118,8 +122,8 @@ export class SqlService {
                 params[key] = this.convertWhereOp(params[key]);
             }
 
-            if(Op.hasOwnProperty(key.toLowerCase())) {
-                result[Op[key.toLowerCase()]] = params[key];
+            if(Op.hasOwnProperty(key)) {
+                result[Op[key]] = params[key];
             } else {
                 result[key] = params[key];
             }
@@ -170,10 +174,6 @@ export class SqlService {
                     payload.offset = params.data.limit[0];
                 }
 
-                if(params.data.include){
-                    payload.include = params.data.include;
-                }
-
                 if(params.data.include) {
                     payload.include = this.convertInclude(params.data.include);
                 }
@@ -190,6 +190,7 @@ export class SqlService {
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
+                    console.log(payload);
                     subscriber.error(err.message);
                     subscriber.complete();
                 }
@@ -231,15 +232,16 @@ export class SqlService {
                 }
 
                 if(params.data.include){
-                    payload.include = params.data.include;
+                    payload.include = this.convertInclude(params.data.include);
                 }
 
                 try {
                     const result = await model.findOne(payload);
-                    //will receive the requeste fields
+                    //will receive the requested fields
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
+                    console.log(payload);
                     subscriber.error(err.message);
                     subscriber.complete();
                 }
@@ -273,7 +275,7 @@ export class SqlService {
         });
     }
 
-    AddBulk(params: any) {
+    addBulk(params: any) {
         return new Observable(subscriber => {
             (async () => {
                 try {
@@ -288,10 +290,11 @@ export class SqlService {
                     const result = await model.bulkCreate(params.data.records, {
                         returning: params.data.returning || false,
                         validate: params.data.validate || false,
-                        fields: params.data.fields
+                        fields: params.data.fields,
+                        ignoreDuplicates: params.data.ignoreDuplicates || false
                     });
 
-                    subscriber.next(result.dataValues);
+                    subscriber.next(params.data.returning ? result.map(res => { return res.dataValues }) : true);
                     subscriber.complete();
                 } catch (err) {
                     subscriber.error(err.message);

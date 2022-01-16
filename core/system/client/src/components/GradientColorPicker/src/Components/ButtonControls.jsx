@@ -1,6 +1,6 @@
 import React from 'react'
 import DegreeInput from './DegreeInput'
-import {MdLibraryAdd, MdIndeterminateCheckBox} from 'react-icons/md'
+import PropTypes from "prop-types";
 
 const ButtonControls = ({store, gradient}) => {
     return (
@@ -31,3 +31,8 @@ const ButtonControls = ({store, gradient}) => {
 }
 
 export default ButtonControls
+
+ButtonControls.propTypes = {
+    store: PropTypes.object,
+    gradient: PropTypes.object,
+};

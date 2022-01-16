@@ -3,7 +3,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 
 @Injectable()
 export class SequelizeService {
-    private methods = ["list", "get", "add", "set", "rem"];
+    private methods = ["list", "get", "add", "addBulk", "set", "rem"];
 
     constructor(@Inject('SqlService') private sqlService) {
 
@@ -19,6 +19,10 @@ export class SequelizeService {
 
     add(params: any) {
         return this.sqlService.add(params);
+    }
+
+    addBulk(params: any) {
+        return this.sqlService.addBulk(params);
     }
 
     set(params: any) {

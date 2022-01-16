@@ -113,7 +113,7 @@ class HeaderModule extends Component {
 
     render() {
         return (
-            <div style={this.state.containerStyle} className={ this.state.isModuleSticky ? this.props.classes.itemWrapper : "" }>
+            <div style={this.state.containerStyle} className={ this.state.isModuleSticky ? this.props.classes.boxWrapper : "" }>
                 { this.state.enabledLogo ? <a {...this.state.logoLinkProps}><img alt={this.props.moduleOptions.logoTitle} {...this.state.logoImgProps} src={this.state.logo_src} /></a> : "" }
             </div>
         );

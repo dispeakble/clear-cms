@@ -60,13 +60,18 @@ class FrontendActivityModule extends Component {
                         //for every minute
                         mapped.map((key, index) => {
                             act_data[index] += data[hour][min][key];
-                        })
+                            return key;
+                        });
+
+                        return min;
 
                     })
 
                     hour_data = hour_data.concat(act_data);
 
                     payload.push(hour_data);
+
+                    return hour;
 
                 });
 

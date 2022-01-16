@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 
 class ProductModule extends Component {
     state = {
-        itemModuleEditId: "",
+        boxModuleEditId: "",
         showModuleOptionsModal: false,
         modalTitle: "Product Details content",
         productProperty: [],

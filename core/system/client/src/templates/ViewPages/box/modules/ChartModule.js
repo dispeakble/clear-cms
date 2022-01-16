@@ -72,7 +72,7 @@ class ChartModule extends Component {
 
     handleEdit = async (id) => {
         await this.setAsyncState({
-            itemModuleEditId: id,
+            boxModuleEditId: id,
             showModuleOptionsModal: true,
         });
     };

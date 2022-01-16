@@ -27,6 +27,7 @@ import WsService from "services/ws.service";
 import AuthGuardService from "./services/authGuard.service";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
+import {Redirect} from "react-router";
 
 class App extends Component {
   header = null
@@ -157,7 +158,7 @@ class App extends Component {
     this.state.services.ws = new WsService();
     this.state.services.ws.start().then((connected) => {
       if(!connected){
-        window.location.href = '/view-auth';
+        this.props.history.push("/view-auth");
         return;
       }
 
@@ -168,10 +169,8 @@ class App extends Component {
         }
       });
 
-      this.getTheme();
-
-      this.unlisten = this.props.history.listen((location, action) => {
-        if (!this.state.services.ws.isConnected && !['/view-auth', '/logout'].includes(window.location.pathname)) {
+      this.unlisten = this.props.history.listen((location) => {
+        if (!this.state.services.ws.isConnected && !['/view-auth', '/logout'].includes(location.pathname)) {
           this.props.history.push("/view-auth")
         }
       });
@@ -183,19 +182,21 @@ class App extends Component {
 
   componentDidMount() {
 
+    this.getTheme();
+
     const navPayload = this.state.moduleList.find((module) => {
       let foundItem = false;
       if(module.subitems && module.subitems.length) {
         module.subitems.forEach(item => {
-          if(window.location.href.indexOf(item.toLink) > -1) {
+          if(this.props.location.pathname.indexOf(item.toLink) > -1) {
             foundItem = true;
           }
         });
       } else {
         if(module.toLink && module.toLink.length) {
-          return window.location.href.indexOf(module.toLink) > -1;
+          return this.props.location.pathname.indexOf(module.toLink) > -1;
         } else {
-          if (window.location.href === "/") {
+          if (this.props.location.pathname === "/") {
             return true;
           }
         }
@@ -239,7 +240,9 @@ class App extends Component {
     const currentTheme = JSON.parse(localStorage.getItem("adminTheme"));
 
     if(currentTheme) {
-      this.setState({defaultPalette: currentTheme});
+      this.setState({
+        defaultPalette: currentTheme
+      });
       return;
     }
 
@@ -265,11 +268,6 @@ class App extends Component {
     return createTheme({
       palette: this.state.defaultPalette,
       overrides: {
-        MuiDialogActions: {
-          /*"& spacing:not(:first-child)": {
-            marginLeft: "5px"
-          }*/
-        },
         MuiToggleButton: {
           root: {
             textTransform: "none !important",
@@ -308,7 +306,50 @@ class App extends Component {
             color: "#000",
           },
         },
-        paperWidthSm: "100%"
+        paperWidthSm: "100%",
+        MuiSwitch: {
+          switchBase: {
+            color: "#000000"
+          }
+        }, MuiIconButton: {
+          root: {
+            color: "blue"
+          }
+        }, MuiSpeedDial: {
+          actionsClosed: {
+            height: "0", overflow: "hidden",
+          }
+        }, MuiInputBase: {
+          root: {
+            width: "100%", margin: "0 auto",
+          }
+        },
+        MuiAutocomplete: {
+          endAdornment: {
+            position: "absolute", top: "calc(50% - 14px)", right: "0px !important",
+          },
+          tag: {
+            height: 'auto',
+            margin: 0
+          },
+        },
+        MuiInputLabel: {
+          outlined: {
+            transform: 'translate(14px, 11px) scale(1)'
+          }
+        },
+        MuiChip: {
+          deleteIcon: {
+            margin: 0,
+          }
+        },
+        MuiOutlinedInput: {
+          root: {
+            "&&& $input": {
+              padding: "0"
+            }
+          }
+        },
       }
     });
   };
@@ -355,6 +396,9 @@ class App extends Component {
               }}
           />}
           <Switch>
+            <Route path="/files/:file">
+              <Redirect to={`http://127.0.0.1:9696/${this.props.location.pathname}`} />
+            </Route>
             <Route
               path="/view-auth"
               render={(props) => {
@@ -416,4 +460,6 @@ export default withRouter(withStyles(styles)(App));
 
 App.propTypes = {
   classes: PropTypes.object,
+  location: PropTypes.object,
+  history: PropTypes.object,
 }

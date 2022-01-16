@@ -163,7 +163,7 @@ export class ProductLocalityService {
                             channel: 'system',
                             data: {
                                 what: 'localities',
-                                how: 'OR',
+                                how: 'or',
                                 where: {
                                     id: params.id
                                 }

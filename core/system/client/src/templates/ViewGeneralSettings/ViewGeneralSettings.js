@@ -126,7 +126,7 @@ class ViewGeneralSettings extends Component {
 
     help = {
         between: (params) => {
-            return params.value > params.min && params.value < params.max;
+            return (params.value > params.min) && (params.value < params.max);
         }
     };
 
@@ -450,12 +450,12 @@ class ViewGeneralSettings extends Component {
                                     <p style={{width: "15px"}}></p>
 
                                     {
-                                        this.state.faviconName &&
+                                        this.state.faviconName ?
                                         <div style={{minHeight: "60px", marginTop: "40px"}}>
                                             <img src={this.state.defaultFavicon} alt={this.state.faviconName} style={{height: "30px", width:"30px"}} />
                                             <h5 style={{fontStyle: "italic", textDecoration:"underline", lineHeight: "0"}}>{this.state.faviconName}</h5>
                                         </div>
-                                        || <h5 style={{fontStyle: "italic"}}>no file selected.</h5>
+                                        : <h5 style={{fontStyle: "italic"}}>no file selected.</h5>
                                     }
 
                                     <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit" color="primary" size="lg" className={classes.button}>Save Settings</Button>

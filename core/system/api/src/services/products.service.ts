@@ -349,7 +349,7 @@ export class ProductsService {
                                     channel: 'system',
                                     data: {
                                         what: 'images_to_products',
-                                        how: 'OR',
+                                        how: 'or',
                                         where: {
                                             image_id: deletedImages.map(image => image.image_id)
                                         }
@@ -465,7 +465,7 @@ export class ProductsService {
                                 channel: 'system',
                                 data: {
                                     what: 'labels_to_products',
-                                    how: 'OR',
+                                    how: 'or',
                                     where: {
                                         id: deletedLabels.map(label => label.id)
                                     }
@@ -630,7 +630,7 @@ export class ProductsService {
                             channel: 'system',
                             data: {
                                 what: 'products',
-                                how: 'OR',
+                                how: 'or',
                                 where: {
                                     id: params.id
                                 }
@@ -648,7 +648,7 @@ export class ProductsService {
                             channel: 'system',
                             data: {
                                 what: 'products_to_categories',
-                                how: 'OR',
+                                how: 'or',
                                 where: {
                                     product_id: params.id,
                                 }
@@ -666,7 +666,7 @@ export class ProductsService {
                             channel: 'system',
                             data: {
                                 what: 'images_to_products',
-                                how: 'OR',
+                                how: 'or',
                                 where: {
                                     product_id: params.id,
                                 }

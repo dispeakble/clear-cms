@@ -379,7 +379,7 @@ class Users extends Component {
         this.state.multipleDeleteData.map((user) => ids.push(user.id));
         await this.props.control.rem({
             id: {
-                'OR': ids
+                'or': ids
             }
         });
         this.refresh();

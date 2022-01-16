@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import {withStyles, createTheme, MuiThemeProvider} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/dashboard/activity";
 
 import PropTypes from "prop-types";
@@ -32,7 +32,6 @@ class AdminActivityModule extends Component {
     };
 
     componentDidMount() {
-
         this.setState({
             columns: [
                 {type: 'string', role: 'domain'},
@@ -41,8 +40,6 @@ class AdminActivityModule extends Component {
         })
 
         this.startPolling();
-
-
     }
 
     startPolling() {
@@ -70,18 +67,21 @@ class AdminActivityModule extends Component {
                         //for every minute
                         mapped.map((key, index) => {
                             act_data[index] += data[hour][min][key];
+                            return key;
                         })
+                        return min;
                     });
 
                     hour_data = hour_data.concat(act_data);
 
                     payload.push(hour_data);
 
+                    return hour;
                 });
 
                 this.setState({
                     data: payload
-                })
+                });
 
             } catch (err) {
                 console.log(err);

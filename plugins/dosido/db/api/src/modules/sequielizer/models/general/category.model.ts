@@ -4,7 +4,6 @@ import {ProductToCategory} from "../products/product.to.category.model";
 import {Product} from "../products/product.model";
 import {Page} from "../pages/page.model";
 import {PageToCategory} from "../pages/page.to.category.model";
-import {PageBox} from "../pages/page.box.model";
 
 @Table
 export class Category extends Model {

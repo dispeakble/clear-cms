@@ -2,16 +2,15 @@ import React, {createRef} from "react";
 import PropTypes from "prop-types";
 import {Helmet} from "react-helmet";
 
-import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
 import Autocomplete, {createFilterOptions} from "@material-ui/lab/Autocomplete";
-import {FormControlLabel, FormGroup, MuiThemeProvider, TextField, Slider, Switch, FormLabel} from "@material-ui/core";
+import {FormControlLabel, FormGroup, TextField, Slider, Switch} from "@material-ui/core";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import {ToggleButtonGroup} from "@material-ui/lab";
 
 import clsx from "clsx";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-import {createTheme, withStyles} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 
 import GradientColorPicker from "../../components/GradientColorPicker/GradientColorPicker";
 import CustomInput from "../../components/CustomInput/CustomInput";
@@ -27,9 +26,14 @@ class ViewPageOptions extends React.PureComponent {
     state = {
         title: "",
         link: "",
-        description: "",
         isHome: false,
         active: false,
+        isTemplate: false,
+        templateId: 0,
+
+        seoTitle: "",
+        description: "",
+        useWebsiteTitle: false,
 
         hasBackgroundImage: false,
         hasBackgroundRepeat: false,
@@ -39,9 +43,24 @@ class ViewPageOptions extends React.PureComponent {
         hasBackgroundGradient: false,
         backgroundColor: "",
         backgroundGradient: "",
-        textColor: "",
+        backgroundImageFile: "",
+
+        textColor: "#000000",
         fontFamily: "Roboto",
+        fontUnit: "px",
         fontSize: 11,
+        categories: [],
+
+        layoutBoxSpacing: [10, 10],
+        layoutBoxPadding: {
+            lg: [0, 0],
+            md: [0, 0],
+            sm: [0, 0],
+            xs: [0, 0],
+            xxs: [0, 0],
+        },
+
+        //ignore from here down
 
         contentType: "general",
         dialogTitleError: false,
@@ -49,36 +68,27 @@ class ViewPageOptions extends React.PureComponent {
         flatCategories: [],
         showNewCategoryModal: false,
         uniqueCategory: false,
-        selectedCategories: [],
         newCategoryData: {
             title: "",
             description: ""
         },
 
         showTextColorPicker: false,
-        showItemTextColorPicker: false,
-        config: {
-            layoutBoxSpacing: [10, 10],
-            layoutBoxPadding: {
-                lg: [0, 0],
-                md: [0, 0],
-                sm: [0, 0],
-                xs: [0, 0],
-                xxs: [0, 0],
-            },
-        },
+        showBoxTextColorPicker: false,
+        showTemplateWarning: false,
+        showBoxesFromTemplate: false,
+        openNewCategory: false,
 
-        templates: []
-
+        templates: [],
     };
+
+
 
     imageUploader = null;
     textColorRef = null;
-    muiTheme = {};
     titleRef = createRef()
 
     async componentDidMount() {
-        this.muiTheme = this.createDefaultTheme();
 
         let tpl = this.props.control.listTemplates();
 
@@ -95,11 +105,25 @@ class ViewPageOptions extends React.PureComponent {
         this.setState({
             title: this.props.data.title,
             link: this.props.data.link,
+            seoTitle: this.props.data.seoTitle,
             description: this.props.data.description,
-            isHome: this.props.data.isHome,
+            isHome: !!this.props.data.isHome,
+            active: !!this.props.data.active,
+            hasBackgroundColor: !!this.props.data.hasBackgroundColor,
+            hasBackgroundGradient: !!this.props.data.hasBackgroundGradient,
+            hasBackgroundImage: !!this.props.data.hasBackgroundImage,
+            hasBackgroundRepeat: !!this.props.data.hasBackgroundRepeat,
+            hasBackgroundStretch: !!this.props.data.hasBackgroundStretch,
             backgroundColor: this.props.data.backgroundColor,
             textColor: this.props.data.textColor,
-            templates
+            fontFamily: this.props.data.fontFamily,
+            fontSize: this.props.data.fontSize,
+            isTemplate: !!this.props.data.isTemplate,
+            templateId: this.props.data.templateId,
+            layoutBoxPadding: this.props.data.layoutBoxPadding,
+            layoutBoxSpacing: this.props.data.layoutBoxSpacing,
+            templates,
+            categories: this.props.data.categories
         });
 
         this.getAllCategories();
@@ -180,16 +204,12 @@ class ViewPageOptions extends React.PureComponent {
 
         await this.getAllCategories();
 
-        const currentCategories = this.state.selectedCategories;
+        const currentCategories = this.state.categories;
 
         currentCategories.push(newCategory.id);
 
-        this.setState({
-            selectedCategories: currentCategories
-        });
-
-        this.props.onSave({
-            categories: this.state.categories
+        this.onUpdate({
+            categories: currentCategories
         });
 
         this.setState({
@@ -234,8 +254,8 @@ class ViewPageOptions extends React.PureComponent {
                 openNewCategory: true,
             })
         } else {
-            this.setState({
-                selectedCategories: categories.map(cat => cat.id)
+            this.onUpdate({
+                categories: categories.map(cat => cat.id)
             });
         }
     }
@@ -266,13 +286,18 @@ class ViewPageOptions extends React.PureComponent {
         this.props.onSave(data);
     }
 
+    onUpdateAsync(data) {
+        this.props.onSave(data, true);
+        this.setState(data);
+    }
+
     renderPageOptions() {
         return (
-            <MuiThemeProvider theme={this.muiTheme}>
+            <React.Fragment>
                 <Helmet>
                     <title>{this.props.editing ? "Edit " : "Add"} {this.state.title || " page"}</title>
                 </Helmet>
-                <FormGroup>
+                <FormGroup style={{flex: 1}}>
                     {"general" === this.state.contentType && <div>
                         <div style={{display: "flex"}}>
                             <div style={{paddingRight: "5px", flex: 1}}>
@@ -336,9 +361,10 @@ class ViewPageOptions extends React.PureComponent {
                                     <Autocomplete
                                         id="categoryDropdown"
                                         multiple
+                                        disableCloseOnSelect
                                         onChange={this.handleCategory.bind(this)}
                                         className={this.props.classes.option}
-                                        value={this.state.selectedCategories.map(catId => this.state.flatCategories.find(flatCat => catId === flatCat.id))}
+                                        value={this.state.categories.map(catId => this.state.flatCategories.find(flatCat => catId === flatCat.id))}
                                         filterOptions={this.handleCategoryFilter.bind(this)}
                                         options={this.state.flatCategories}
                                         autoHighlight
@@ -438,7 +464,7 @@ class ViewPageOptions extends React.PureComponent {
 
                                 <Typography variant="caption" style={{display: 'block', marginTop: '2rem'}}>Solid color for the page background</Typography>
                                 <div style={{display: "flex", alignItems: "center"}}>
-                                    {this.state.hasBackgroundColor && <div style={{marginRight: '10px'}}>
+                                    {this.state.hasBackgroundColor && <div>
                                         <ColorPicker
                                             color={this.state.backgroundColor}
                                             onChange={(color) => {
@@ -467,7 +493,7 @@ class ViewPageOptions extends React.PureComponent {
                                 <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Gradient composition for the page background</Typography>
                                 <div style={{display: "flex", alignItems: "center"}}>
                                     {this.state.hasBackgroundGradient &&
-                                        <div style={{marginRight: '10px'}}>
+                                        <div>
                                             <GradientColorPicker
                                                 color={this.state.backgroundGradient}
                                                 onChange={(color) => {
@@ -613,12 +639,17 @@ class ViewPageOptions extends React.PureComponent {
                                         onChange={this.handleFontSize}
                                         className={this.props.classes.option}
                                         options={this.props.fontSizes}
-                                        getOptionLabel={(option) => option.label}
+                                        getOptionLabel={(option) => {
+                                            if(option && option.label) {
+                                                return option.label;
+                                            } else {
+                                                return String(option);
+                                            }
+                                        }}
                                         freeSolo
                                         autoHighlight
-                                        value={this.getFontSizeItem(
-                                            this.state.fontSize
-                                        )}
+                                        disableClearable
+                                        defaultValue={this.state.fontSize}
                                         renderInput={(params) => (
                                             <TextField
                                                 className={this.props.classes.textfield}
@@ -637,7 +668,7 @@ class ViewPageOptions extends React.PureComponent {
                             <h4>Template</h4>
                             <div style={{marginTop: "15px"}}>
                                 <div>
-                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Save this page as a template and reuse it for pages</Typography>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Save this page as a template and reuse it for other pages</Typography>
                                     <div>
                                         <FormControlLabel
                                             control={<Switch
@@ -653,7 +684,7 @@ class ViewPageOptions extends React.PureComponent {
                                 </div>
                                 {!this.state.isTemplate && (
                                     <div>
-                                        <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Select a template for this page. Boxes from that template will be added to this page</Typography>
+                                        <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Select a template for this page. The selected template will replace the current boxes</Typography>
                                         <Autocomplete
                                             id="templateDropdown"
                                             onChange={this.handleTemplateChange}
@@ -661,7 +692,7 @@ class ViewPageOptions extends React.PureComponent {
                                             options={this.state.templates}
                                             autoHighlight
                                             getOptionLabel={(option) => option.label}
-                                            // value={this.state.template}
+                                            value={this.state.templateId}
                                             renderInput={(params) => (
                                                 <TextField
                                                     className={this.props.classes.textfield}
@@ -688,9 +719,9 @@ class ViewPageOptions extends React.PureComponent {
                                     <Slider
                                         className={this.props.classes.pageOptionsSlider}
                                         onChange={this.handleBoxSpacing}
-                                        value={this.state.config.layoutBoxSpacing[0]}
+                                        value={this.state.layoutBoxSpacing[0]}
                                         getAriaValueText={() =>
-                                            this.state.config.layoutBoxSpacing[0] + " pixels"
+                                            this.state.layoutBoxSpacing[0] + " pixels"
                                         }
                                         aria-labelledby="discrete-slider"
                                         valueLabelDisplay="auto"
@@ -708,56 +739,9 @@ class ViewPageOptions extends React.PureComponent {
                             this.props.classes.helper
                         )}>
                             <h4>SEO Settings (Search Engine Optimization)</h4>
-                            <div style={{marginTop: "25px"}}>
+                            <div style={{marginTop: "27px"}}>
                                 <div>
-                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page title. This will be used for the public and search engines</Typography>
-                                    <div>
-                                        <CustomInput
-                                            labelText="Page Title"
-                                            formControlProps={{
-                                                fullWidth: true,
-                                                onChange: (event) => {
-                                                    this.onUpdate({
-                                                        pageMetaTitle: event.target.value
-                                                    })
-                                                },
-                                            }}
-                                            inputProps={{
-                                                inputProps: {
-                                                    minLength: "1",
-                                                },
-                                                value: this.state.pageMetaTitle,
-                                                type: "text",
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page description</Typography>
-                                    <div>
-                                        <CustomInput
-                                            labelText="Page Description"
-                                            formControlProps={{
-                                                fullWidth: true,
-                                                onChange: (event) => {
-                                                    this.onUpdate({
-                                                        pageMetaDescription: event.target.value
-                                                    })
-                                                },
-                                            }}
-                                            inputProps={{
-                                                multiline: true,
-                                                inputProps: {
-                                                    minLength: "1",
-                                                },
-                                                value: this.state.pageMetaDescription,
-                                                type: "text",
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div>
-                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Add the website title before the page title (ex: My Website - Home Page)</Typography>
+                                    <Typography gutterBottom variant="caption" style={{display: 'block', marginTop: '1rem'}}>Add the website title before the page title (e.g. My Website - Home Page)</Typography>
                                     <div>
                                         <FormControlLabel
                                             control={<Switch
@@ -767,84 +751,62 @@ class ViewPageOptions extends React.PureComponent {
                                                         useWebsiteTitle: checked,
                                                     })
                                                 }}
-                                            />} label="Include Website Name in Title"/>
+                                            />} label="Include Website Name in the Title"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page title. This will be used for the public and search engines</Typography>
+                                    <div>
+                                        <CustomInput
+                                            labelText="Page Title"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => {
+                                                    this.onUpdate({
+                                                        seoTitle: event.target.value
+                                                    })
+                                                },
+                                            }}
+                                            inputProps={{
+                                                inputProps: {
+                                                    minLength: "1",
+                                                },
+                                                value: this.state.seoTitle,
+                                                type: "text",
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page description</Typography>
+                                    <div>
+                                        <CustomInput
+                                            labelText="Page Description"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => {
+                                                    this.onUpdate({
+                                                        description: event.target.value
+                                                    })
+                                                },
+                                            }}
+                                            inputProps={{
+                                                multiline: true,
+                                                inputProps: {
+                                                    minLength: "1",
+                                                },
+                                                value: this.state.description,
+                                                type: "text",
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     }
                 </FormGroup>
-            </MuiThemeProvider>
+            </React.Fragment>
         )
-    }
-
-    createDefaultTheme() {
-        return createTheme({
-            palette: this.props.defaultTheme,
-            overrides: {
-                MuiInputLabel: {
-                    outlined: {
-                        transform: 'translate(14px, 11px) scale(1)'
-                    }
-                },
-                MuiAutocomplete: {
-                    tag: {
-                        height: 'auto',
-                        margin: 0
-                    },
-                },
-                MuiChip: {
-                    deleteIcon: {
-                        margin: 0,
-                    }
-                },
-                MuiOutlinedInput: {
-                    root: {
-                        "&&& $input": {
-                            padding: "0"
-                        }
-                    }
-                },
-                MuiSwitch: {
-                    switchBase: {
-                        color: this.props.defaultTheme?.primary?.main
-                    }
-                },
-                MuiDropzoneArea: {
-                    root: {
-                        height: "auto",
-                        minHeight: "145px",
-                    },
-                    text: {
-                        fontSize: "1rem",
-                        margin: "0 !important",
-                    },
-                    textContainer: {
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between"
-                    }
-                },
-                MuiDropzonePreviewList: {
-                    removeButton: {
-                        display: "none"
-                    },
-                    root: {
-                        width: "100%",
-                        margin: "0 !important",
-                    },
-                    image: {
-                        height: "auto !important",
-                    },
-                    imageContainer: {
-                        maxWidth: "100%",
-                        flexBasis: "100%",
-                        padding: "0 !important",
-                        width: "100% !important",
-                    }
-                }
-            }
-        });
     }
 
     render() {
@@ -882,8 +844,8 @@ class ViewPageOptions extends React.PureComponent {
             resize: true,
             title: header,
             content: this.renderPageOptions(),
-            showModal: this.props.open,
-            modalSize: "large",
+            showModal: this.props.open || false,
+            modalSize: "normal",
             defaultTheme: this.props.defaultTheme,
             closeButton: {
                 callback: async (reason) => {
@@ -924,13 +886,13 @@ class ViewPageOptions extends React.PureComponent {
             this.props.fontFamilies.findIndex((font) => {
                 return font.family === name;
             })
-            ];
+        ];
     }
 
-    getFontSizeItem(name) {
+    getFontSizeItem(value) {
         return this.props.fontSizes[
             this.props.fontSizes.findIndex((font) => {
-                return font.value === name;
+                return font.value === value;
             })
         ];
     }
@@ -938,10 +900,10 @@ class ViewPageOptions extends React.PureComponent {
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "title":
-                this.setState({title: event.target.value});
+                this.onUpdate({title: event.target.value});
                 break;
             case "link":
-                this.setState({link: event.target.value});
+                this.onUpdate({link: event.target.value});
                 break;
             default:
                 break;
@@ -949,27 +911,26 @@ class ViewPageOptions extends React.PureComponent {
     };
 
     handleBoxSpacing = async (event, newValue) => {
-        if (this.state.config.layoutBoxSpacing[0] !== newValue) {
-            this.setState({
-                config: {
-                    "layoutBoxSpacing": [newValue, newValue],
-                    "layoutBoxPadding": {
-                        "lg": [0, 0],
-                        "md": [0, 0],
-                        "sm": [0, 0],
-                        "xs": [0, 0],
-                        "xxs": [0, 0]
-                    }
-                },
+        if (this.state.layoutBoxSpacing[0] !== newValue) {
+            this.onUpdate({
+                layoutBoxSpacing: [newValue, newValue],
+                layoutBoxPadding: {
+                    "lg": [0, 0],
+                    "md": [0, 0],
+                    "sm": [0, 0],
+                    "xs": [0, 0],
+                    "xxs": [0, 0]
+                }
             });
         }
     };
 
     handleBgImage = async (event) => {
-        let strings = await Promise.all(Array.from(event.target.files).map((file) => imageHelper.toBase64(file)));
+        const fileClone = new File([event.target.files[0]], event.target.files[0].name);
+        const imageBase64 = await imageHelper.toBase64(event.target.files[0]);
         this.onUpdate({
-            pageBase64Image: strings[0],
-            backgroundImageFile: event[0],
+            pageBase64Image: imageBase64,
+            backgroundImageFile: fileClone,
         });
     };
 
@@ -993,27 +954,33 @@ class ViewPageOptions extends React.PureComponent {
     };
 
     handleFontSize = (event, newValue) => {
-        this.setAsyncState({
-            fontSize: newValue.label,
-        });
+        if(typeof newValue === 'string') {
+            this.onUpdate({
+                fontSize: Number(newValue),
+            });
+        } else if(newValue && newValue.value) {
+            this.onUpdate({
+                fontSize: newValue.value,
+            });
+        }
     };
 
     handleFontFamily = async (event, newValue) => {
-        await this.setAsyncState({
+        await this.onUpdateAsync({
             fontFamily: newValue.family,
         });
-        this.setUsedGoogleFonts();
+        this.props.setUsedGoogleFonts();
     };
     handleTemplateChange = async (event, newValue) => {
-        this.setState({
+        this.onUpdate({
             template: newValue || {},
         });
         if (newValue) {
             await this.fetchAndSet(newValue?.id, true);
         } else {
-            this.setState({
-                items: [],
-                pageConfig: {},
+            this.onUpdate({
+                boxes: [],
+                //pageConfig: {},//TODO CHANGE THIS TO ACTUAL PROPS
             })
         }
     };
@@ -1030,8 +997,8 @@ ViewPageOptions.propTypes = {
     location: PropTypes.object,
     closePageOptionsModal: PropTypes.func,
     onSave: PropTypes.func,
-    handleTemplateChange: PropTypes.func,
     defaultTheme: PropTypes.object,
     fontFamilies: PropTypes.array,
+    setUsedGoogleFonts: PropTypes.func,
     fontSizes: PropTypes.array,
 };

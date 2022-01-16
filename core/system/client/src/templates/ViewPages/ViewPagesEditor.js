@@ -1,9 +1,7 @@
 import React, {Suspense} from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import {
-    createTheme, MuiThemeProvider, withStyles,
-} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import {
     AddCircle,
@@ -46,21 +44,46 @@ class ViewPagesEditor extends React.PureComponent {
 
     state = {
         pageId: 0,
-        items: [],
-        pageConfig: {
-            title: "", link: "", description: "", useDefaultMeta: false,
+        boxes: [],
 
-            isTemplate: false, templateId: 0, isHome: false, active: false,
+        title: "",
+        link: "",
+        isHome: false,
+        active: false,
+        isTemplate: false,
+        templateId: 0,
 
-            layoutBoxSpacing: [10, 10], layoutBoxPadding: {
-                lg: [0, 0], md: [0, 0], sm: [0, 0], xs: [0, 0], xxs: [0, 0],
-            },
+        seoTitle: "",
+        description: "",
+        useWebsiteTitle: false,
+
+        hasBackgroundImage: false,
+        hasBackgroundRepeat: false,
+        hasBackgroundStretch: false,
+
+        backgroundImageFile: "",
+        hasBackgroundColor: false,
+        hasBackgroundGradient: false,
+        backgroundColor: "",
+        backgroundGradient: "",
+        textColor: "#000000",
+        fontFamily: "Roboto",
+        fontUnit: "px",
+        fontSize: 11,
+        categories: [],
+
+        layoutBoxSpacing: [10, 10],
+        layoutBoxPadding: {
+            lg: [0, 0],
+            md: [0, 0],
+            sm: [0, 0],
+            xs: [0, 0],
+            xxs: [0, 0],
         },
+        layouts: {},
 
-        boxId: "",
-        boxEditorProps: {
-            item: {},
-        },
+        delBoxIndex: 0,
+        boxEditorProps: {},
 
         editing: this.props.location.pathname.indexOf("edit") > -1,
         livePreview: false,
@@ -77,7 +100,39 @@ class ViewPagesEditor extends React.PureComponent {
         errorMessage: "",
 
         googleFonts: [],
+
+        uploadingMessage: ""
     };
+
+    pageKeys = [
+        'pageId',
+        'title',
+        'link',
+        'isHome',
+        'active',
+        'isTemplate',
+        'templateId',
+    ];
+
+    pageConfigKeys = [
+        'seoTitle',
+        'useWebsiteTitle',
+        'description',
+        'hasBackgroundImage',
+        'hasBackgroundRepeat',
+        'hasBackgroundStretch',
+        'hasBackgroundColor',
+        'hasBackgroundGradient',
+        'backgroundImageFile',
+        'backgroundColor',
+        'backgroundGradient',
+        'textColor',
+        'fontFamily',
+        'fontSize',
+        'categories',
+        'layoutBoxSpacing',
+        'layoutBoxPadding',
+    ];
 
     fontSizes = [8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72, 96].map(n => {return {label: `${n}`, value: n}});
 
@@ -90,12 +145,12 @@ class ViewPagesEditor extends React.PureComponent {
             fonts.push({font: this.state.fontFamily});
         }
 
-        if (this.state.items && this.state.items.length) {
-            this.state.items.map((item) => {
-                if (item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
-                    fonts.push({font: item.fontFamily});
+        if (this.state.boxes && this.state.boxes.length) {
+            this.state.boxes.map((box) => {
+                if (box.fontFamily && !fonts.some(f => f.font ===box.fontFamily)) {
+                    fonts.push({font:box.fontFamily});
                 }
-                return item;
+                return box;
             });
         }
         this.setState({
@@ -103,31 +158,48 @@ class ViewPagesEditor extends React.PureComponent {
         })
     }
 
-    async updateBoxList(boxes) {
-        await this.setAsyncState({
+    updateBoxList(boxes) {
+        this.setState({
             newBoxList: boxes
         })
     }
 
     async getPageDetails(pageId, fromTemplate) {
         let currentPage = await this.props.control.get({id: parseInt(pageId)});
-        let {pageConfig, items, title, link, isHome, isTemplate, active} = currentPage;
+        let {pageConfig, boxes, title, link, isHome, active, isTemplate, templateId, categories} = currentPage;
 
-        pageConfig = {
-            ...pageConfig, title: title, link: link, isHome: !!isHome, isTemplate: !!isTemplate, active: !!active,
-        };
+        boxes = boxes.map((box, index) => {
+            return {
+                i: String(index),
+                id: box.id,
+                title: box.title,
+                module: box.module,
+                x: box.PageToBox.x,
+                y: box.PageToBox.y,
+                ...JSON.parse(box.data),//GOD please forgive me
+                moduleOptions: JSON.parse(box.moduleOptions),
+            }
+        })
 
         const statePayload = {
-            items: [], pageConfig: pageConfig
+            title: title,
+            link: link,
+            isHome: !!isHome,
+            active: !!active,
+            isTemplate: !!isTemplate,
+            templateId: templateId,
+            ...pageConfig,
+            categories,
+            boxes: boxes
         };
 
-        if (fromTemplate && items && items.length) {
-            items = items.map((item) => {
+        if (fromTemplate && boxes && boxes.length) {
+            boxes = boxes.map((box) => {
                 return {
-                    ...item, templateId: pageId, resizeHandles: []
+                    ...box, templateId: pageId, resizeHandles: []
                 }
             });
-            statePayload['items'] = items;
+            statePayload['boxes'] = boxes;
         }
 
         await this.setAsyncState(statePayload);
@@ -135,27 +207,27 @@ class ViewPagesEditor extends React.PureComponent {
         this.setUsedGoogleFonts();
     }
 
-    async componentDidMount() {
-        this.muiTheme = this.createDefaultTheme();
+    getPageOptions() {
+        return _.pick(this.state, [...this.pageKeys, ...this.pageConfigKeys])
+    }
 
+    async componentDidMount() {
         let editing = this.state.editing;
         let pageId = this.props.location.pathObject[2];
 
-
-
-        const pageConfig = this.state.pageConfig;
+        const pageConfig = this.state;
 
         if (editing) {
             await this.getPageDetails(pageId);
         } else {
             //TODO GET THE DEFAULT THEME CORRECTLY AND SET THE DEFAULT PAGE PROPS HERE
             if (this.props.location?.state?.templateMode) {
-                pageConfig['isTemplate'] = this.props.location.state.templateMode;
+                pageConfig.isTemplate = this.props.location.state.templateMode;
             }
         }
 
         this.setState({
-            pageConfig, editing, pageId
+            pageConfig, pageId
         });
     }
 
@@ -165,37 +237,40 @@ class ViewPagesEditor extends React.PureComponent {
         deleteBoxModal: {
             name: "deleteBoxModal",
             title: "Confirm Delete Box",
-            itemId: "",
             content: "Are you sure you want to delete this box?",
             modalSize: "small",
             closeButton: {
                 callback: () => {
                     this.setState({showDeleteBoxModal: false});
-                }, label: "Cancel",
+                },
+                label: "Cancel",
             },
             confirmButton: {
-                show: true, callback: () => {
+                show: true,
+                callback: () => {
                     this.setState({showDeleteBoxModal: false});
-                    this.onRemoveItem(this.state.deleteBoxModal.itemId);
-                }, label: "Delete",
+                    this.deleteBox(this.state.delBoxIndex);
+                },
+                label: "Delete",
             },
         },
         deleteTemplateBoxModal: {
             name: "deleteTemplateBoxModal",
             title: "Confirm Delete Template Box",
-            itemId: "",
             content: <div>This box is from a template. The original box will not be deleted. Are you sure you want to
                 delete it?</div>,
             closeButton: {
                 callback: () => {
                     this.setState({showDeleteTemplateBoxModal: false});
-                }, label: "Cancel",
+                },
+                label: "Cancel",
             },
             confirmButton: {
                 show: true, callback: () => {
                     this.setState({showDeleteTemplateBoxModal: false});
-                    this.onRemoveItem(this.state.deleteTemplateBoxModal.itemId);
-                }, label: "Delete Anyway",
+                    this.deleteBox(this.state.delBoxIndex);
+                },
+                label: "Delete Anyway",
             },
         },
         boxesFromTemplate: {
@@ -208,12 +283,13 @@ class ViewPagesEditor extends React.PureComponent {
                 }, label: "Cancel",
             },
             confirmButton: {
-                show: false, callback: async () => {
+                show: false,
+                callback: () => {
                     if (this.state.newBoxList && this.state.newBoxList.length > 0) {
                         this.setState({showBoxesFromTemplate: false});
-                        const items = [...this.state.items];
-                        await this.setAsyncState({
-                            items: [...items, ...this.state.newBoxList]
+                        const boxes = [...this.state.boxes];
+                        this.setState({
+                            boxes: [...boxes, ...this.state.newBoxList]
                         })
                     } else {
                         this.setState({
@@ -226,7 +302,8 @@ class ViewPagesEditor extends React.PureComponent {
                             })
                         }, 3000);
                     }
-                }, label: "Add",
+                },
+                label: "Add",
             },
         },
         templateWarningModal: {
@@ -251,122 +328,110 @@ class ViewPagesEditor extends React.PureComponent {
     createElement(el) {
         const i = el.i;
 
-        let itemStyle = {};
+        let boxStyle = {};
 
-        if (el.showScrollbars) {
-            itemStyle.showScrollbars = el.showScrollbars;
+        if (el.scrollbars) {
+            boxStyle.scrollbars = el.scrollbars;
         }
 
-        if (el.fontFamily) {
-            itemStyle.fontFamily = el.fontFamily;
+        if (el.hasFontFamily) {
+            boxStyle.fontFamily = el.fontFamily;
         }
 
-        if (el.textColor) {
-            itemStyle.color = el.textColor;
+        if (el.hasTextColor) {
+            boxStyle.color = el.textColor;
         }
 
-        if (el.backgroundImageString) {
-            itemStyle.backgroundImage = `url(${el.backgroundImageString})`;
-        } else {
-            itemStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+        if(el.hasBackgroundImage) {
+            if (el.backgroundImageString) {
+                boxStyle.backgroundImage = `url(${el.backgroundImageString})`;
+            } else {
+                boxStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+            }
+
+            if (el.backgroundImage && el.backgroundImage.indexOf("__delete__") === 0) {
+                el.backgroundImageString = "";
+                boxStyle.backgroundImage = "";
+            }
+
+            boxStyle.backgroundRepeat = el.hasBackgroundRepeat ? "repeat" : "no-repeat";
+
+            if (el.hasBackgroundStretch) {
+                boxStyle.backgroundSize = "cover";
+            } else {
+                boxStyle.backgroundSize = "auto";
+            }
+        }
+        
+        if (el.hasBackgroundGradient) {
+            boxStyle.backgroundImage = el.backgroundGradient;
         }
 
-        if (el.backgroundImage && el.backgroundImage.indexOf("__delete__") === 0) {
-            el.backgroundImageString = "";
-            itemStyle.backgroundImage = "";
+        if (el.hasBackgroundColor) {
+            boxStyle.backgroundColor = el.backgroundColor;
         }
 
-        itemStyle.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
-
-        if (el.backgroundStretch) {
-            itemStyle.backgroundSize = "cover";
-        } else {
-            itemStyle.backgroundSize = "auto";
-        }
-
-        if (el.backgroundGradient) {
-            itemStyle.backgroundImage = el.backgroundGradientColor;
-        }
-
-        if (el.backgroundColor) {
-            itemStyle.backgroundColor = el.backgroundColor;
-        }
-
-        if (el.borderColor) {
-            itemStyle.borderColor = el.borderColor;
-        }
-
-        if (el.borderStyle) {
-            itemStyle.borderStyle = el.borderStyle;
+        if (el.hasBorderColor) {
+            boxStyle.borderColor = el.borderColor;
         }
 
         if (Number(el.borderWidth)) {
-            itemStyle.borderWidth = el.borderWidth;
+            boxStyle.borderWidth = el.borderWidth;
         } else {
-            itemStyle.borderWidth = 1;
-            itemStyle.borderStyle = "dashed";
-            itemStyle.borderColor = "#CCC";
+            boxStyle.borderWidth = 1;
+            boxStyle.borderStyle = "dashed";
+            boxStyle.borderColor = "#CCC";
         }
 
         if (el.borderRadius) {
-            itemStyle.borderRadius = el.borderRadius;
+            boxStyle.borderRadius = el.borderRadius;
         }
 
         //adding default box styles
-        itemStyle.padding = "5px";
 
         const moduleStyle = {};
 
-        if (el.backgroundImage) {
-            moduleStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
-        }
-
-        moduleStyle.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
-
-        moduleStyle.backgroundSize = el.backgroundStretch ? "cover" : "auto";
-
-        if (el.backgroundGradient) {
-            moduleStyle.backgroundImage = el.backgroundGradientColor;
-        }
-
-        if (el.backgroundColor) {
+        if (el.hasBackgroundColor) {
             moduleStyle.backgroundColor = el.backgroundColor;
+        } else if (el.hasBackgroundImage) {
+            moduleStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+            moduleStyle.backgroundRepeat = el.hasBackgroundRepeat ? "repeat" : "no-repeat";
+            moduleStyle.backgroundSize = el.hasBackgroundStretch ? "cover" : "auto";
+        } else if (el.hasBackgroundGradient) {
+            moduleStyle.backgroundImage = el.backgroundGradient;
         }
 
-        if (el.borderColor) {
+        if (el.hasBorderColor && Number(el.borderWidth)) {
             moduleStyle.borderColor = el.borderColor;
-        }
-
-        if (el.borderWidth) {
             moduleStyle.borderStyle = "solid";
             moduleStyle.borderWidth = el.borderWidth + "px";
         }
 
-        if (el.borderRadius) {
+        if (Number(el.borderRadius)) {
             moduleStyle.borderRadius = el.borderRadius;
         }
 
-        if (Number(el.fontSize)) {
-            moduleStyle.fontSize = `${el.fontSize}${this.state.pageConfig.fontUnit}`;
-            moduleStyle.lineHeight = `${el.fontSize}${this.state.pageConfig.fontUnit}`;
-        } else if (this.state.pageConfig?.fontSize) {
-            moduleStyle.fontSize = `${this.state.pageConfig.fontSize}${this.state.pageConfig.fontUnit}`;
-            moduleStyle.lineHeight = `${this.state.pageConfig.fontSize}${this.state.pageConfig.fontUnit}`;
+        if (el.hasFontSize) {
+            moduleStyle.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+            moduleStyle.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+        } else if (this.state?.fontSize) {
+            moduleStyle.fontSize = `${this.state.fontSize}${this.state.fontUnit}`;
+            moduleStyle.lineHeight = `${this.state.fontSize}${this.state.fontUnit}`;
         }
 
-        if (el.fontFamily) {
+        if (el.hasFontFamily) {
             moduleStyle.fontFamily = el.fontFamily;
-        } else if (this.state.pageConfig?.fontFamily) {
-            moduleStyle.fontFamily = this.state.pageConfig.fontFamily;
+        } else if (this.state?.fontFamily) {
+            moduleStyle.fontFamily = this.state.fontFamily;
         }
 
-        if (el.textColor) {
+        if (el.hasTextColor) {
             moduleStyle.color = el.textColor;
-        } else if (this.state.pageConfig?.textColor) {
-            moduleStyle.textColor = this.state.pageConfig.textColor;
+        } else if (this.state?.textColor) {
+            moduleStyle.textColor = this.state.textColor;
         }
 
-        if (el.showScrollbars) {
+        if (el.scrollbars) {
             moduleStyle.overflow = "auto";
         } else {
             moduleStyle.overflow = "hidden";
@@ -384,7 +449,7 @@ class ViewPagesEditor extends React.PureComponent {
 
         const classes = this.props.classes;
         return (
-            <div key={i} data-grid={el} style={itemStyle}>
+            <div key={i} data-grid={el} style={boxStyle}>
                 <div className={classes.boxControls}>
                     <div style={{color: "black", verticalAlign: "middle"}}>
                         <Tooltip title="Drag Box">
@@ -396,17 +461,14 @@ class ViewPagesEditor extends React.PureComponent {
                             <h1>{el.title}</h1>
                         </div>
                     </div>
-                    <div className={classes.editorButtonWrapper}>
+                    <div>
                         <Tooltip title="Show box properties">
                             <IconButton onClick={() => {
                                 this.handleBoxOptions(i)
-                            }}>
-                                <Avatar style={{
+                            }}><Avatar style={{
                                     backgroundColor: this.props.defaultTheme.secondary.main,
                                     color: this.props.defaultTheme.secondary.contrastText
-                                }}>
-                                    <Edit/>
-                                </Avatar>
+                                }}><Edit/></Avatar>
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Make a copy of this box">
@@ -416,41 +478,15 @@ class ViewPagesEditor extends React.PureComponent {
                                 <Avatar style={{
                                     backgroundColor: this.props.defaultTheme?.primary?.main,
                                     color: this.props.defaultTheme?.primary?.contrastText
-                                }}>
-                                    <FileCopy/>
-                                </Avatar>
+                                }}><FileCopy/></Avatar>
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete this box">
-                            <IconButton onClick={async () => {
-                                if (el.templateId) {
-                                    this.setState((prevState) => {
-                                        return {
-                                            showDeleteTemplateBoxModal: true,
-                                            deleteTemplateBoxModal: {
-                                                ...prevState.deleteTemplateBoxModal,
-                                                itemId: el.i
-                                            }
-                                        }
-                                    })
-                                    return
-                                }
-                                this.setState((prevState) => {
-                                    return {
-                                        showDeleteBoxModal: true,
-                                        deleteBoxModal: {
-                                            ...prevState.deleteBoxModal,
-                                            itemId: el.i
-                                        }
-                                    }
-                                });
-                            }}>
+                            <IconButton onClick={() => { this.showDeleteBoxModal(el); }}>
                                 <Avatar style={{
                                     backgroundColor: this.props.defaultTheme.error.main,
                                     color: this.props.defaultTheme.error.contrastText
-                                }}>
-                                    <DeleteForever/>
-                                </Avatar>
+                                }}><DeleteForever/></Avatar>
                             </IconButton>
                         </Tooltip>
                     </div>
@@ -459,15 +495,13 @@ class ViewPagesEditor extends React.PureComponent {
                     {el.module && LazyModule ? (
                         <Suspense fallback={loadingFallback}>
                             <LazyModule
-                                key={`box-${el.id || el.i}`}
+                                key={`box-${el.i}`}
                                 boxId={el.cloneId ? el.cloneId : Number(el.id || 0)}
                                 pageId={this.state.pageId}
                                 moduleOptions={el.moduleOptions}
                                 style={{style: moduleStyle}}
                                 defaultTheme={this.props.defaultTheme}
-                                pageOptions={{
-                                    pageId: this.state.pageId
-                                }}
+                                pageOptions={{ pageId: this.state.pageId }}
                                 handleSave={async (id, data) => {
                                     await this.saveModuleOptions(id, data);
                                 }}
@@ -481,51 +515,53 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     saveModuleOptions = async (passedId, data) => {
-        let items = [...this.state.items];
+        let boxes = [...this.state.boxes];
 
-        let item = this.getItemById(passedId);
+        let box = this.getBoxById(passedId);
 
-        item.moduleOptions = {data: data};
+       box.moduleOptions = {data: data};
 
-        let itemIndex = items.findIndex((item) => Number(item.i) === Number(passedId));
+        let boxIndex = boxes.findIndex((box) => Number(box.i) === Number(passedId));
 
-        items[itemIndex] = item;
+        boxes[boxIndex] =box;
 
-        await this.setAsyncState({items});
+        await this.setAsyncState({boxes});
     };
 
     async onDuplicate(id) {
         try {
-            const existingItem = this.getItemById(id);
+            const existingBox = this.getBoxById(id);
 
             let newId = 0;
 
-            this.state.items.map((item) => {
-                newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
-                return item;
+            this.state.boxes.map((box) => {
+                newId = Number(box.i) > Number(newId) ? Number(box.i) : newId;
+                return box;
             });
 
             newId++;
-            let items = this.state.items;
+            let boxes = this.state.boxes;
 
-            const targetItem = Object.assign({}, existingItem);
-            targetItem.i = newId + "";
-            targetItem.cloneId = existingItem.id;
-            targetItem.files = existingItem.files;
-            targetItem.x = 0;
-            targetItem.y = Infinity;
+            const targetBox = Object.assign({}, existingBox);
+            targetBox.i = newId + "";
+            targetBox.cloneId = existingBox.id;
+            targetBox.files = existingBox.files;
+            targetBox.x = 0;
+            targetBox.y = Infinity;
 
-            if (!targetItem.backgroundImageFile && existingItem.backgroundImage) {
-                const bgResponse = await fetch(`/files/pages/page-${existingItem.templateId ? existingItem.templateId : this.state.pageId}/box-${id}/${existingItem.backgroundImage}`);
+
+            //TODO copy from the service
+            if (!targetBox.backgroundImageFile && existingBox.backgroundImage) {
+                const bgResponse = await fetch(`/files/pages/page-${existingBox.templateId ? existingBox.templateId : this.state.pageId}/box-${id}/${existingBox.backgroundImage}`);
                 const bgBlob = await bgResponse.blob();
-                targetItem.backgroundImageFile = new File([bgBlob], existingItem.backgroundImage);
-                targetItem.backgroundImageString = await Promise.all([imageHelper.toBase64(targetItem.backgroundImageFile)]);
+                targetBox.backgroundImageFile = new File([bgBlob], existingBox.backgroundImage);
+                targetBox.backgroundImageString = await Promise.all([imageHelper.toBase64(targetBox.backgroundImageFile)]);
             }
 
-            items.push(targetItem);
+            boxes.push(targetBox);
 
             this.setState({
-                items: items
+                boxes: boxes
             });
             window.scrollTo(0, document.body.scrollHeight);
         } catch (err) {
@@ -533,36 +569,20 @@ class ViewPagesEditor extends React.PureComponent {
         }
     }
 
-    async onAddItem() {
+    async onAddBox() {
         let newId = 0;
 
-        this.setState({
-            boxEditorProps: {}
-        });
-
         try {
-            this.state.items.map((item) => {
-                newId = Number(item.i) > Number(newId) ? Number(item.i) : newId;
-                return item;
+            this.state.boxes.map((box) => {
+                newId = Number(box.i) > Number(newId) ? Number(box.i) : newId;
+                return box;
             });
 
             newId++;
 
-            //let items = this.state.items;
-            const item = {
-                newItem: true,
+            const box = {
+                newBox: true,
                 title: "New Box",
-                showScrollbars: false,
-                module: "",
-                moduleOptions: {data: ""},
-                borderColor: "#959595",
-                borderStyle: "solid",
-                borderWidth: 0,
-                borderRadius: 0,
-                backgroundImage: "",
-                backgroundImageFile: "",
-                backgroundRepeat: false,
-                backgroundStretch: false,
                 i: String(newId),
                 x: 0,
                 y: Infinity, // puts it at the bottom
@@ -571,12 +591,7 @@ class ViewPagesEditor extends React.PureComponent {
             };
 
             await this.setAsyncState({
-                boxEditorProps: {
-                    item
-                }
-            });
-
-            await this.setAsyncState({
+                boxEditorProps: box,
                 showBoxOptions: true
             });
 
@@ -586,33 +601,47 @@ class ViewPagesEditor extends React.PureComponent {
         }
     }
 
-    getItemById = (passedId) => {
-        return this.state.items.find((item) => item.i === passedId);
+    showDeleteBoxModal(el) {
+        if (el.templateId) {
+            this.setState({
+                showDeleteTemplateBoxModal: true,
+                delBoxIndex: el.i
+            })
+            return
+        }
+        this.setState({
+            showDeleteBoxModal: true,
+            delBoxIndex: el.i
+        });
+    }
+
+    getBoxById = (id) => {
+        return this.state.boxes.find((box) => Number(box.id) === Number(id) || Number(box.i) === Number(id));
     };
 
     onLayoutChange = (layout, layouts) => {
         try {
-            let newItems = layout.map((item) => {
-                let oldItem = this.getItemById(item.i);
-                oldItem.x = item.x;
-                oldItem.y = item.y;
-                oldItem.w = item.w;
-                oldItem.h = item.h;
-                return oldItem;
+            let newBoxes = layout.map((box) => {
+                let oldBox = this.getBoxById(box.i);
+                oldBox.x =box.x;
+                oldBox.y =box.y;
+                oldBox.w =box.w;
+                oldBox.h =box.h;
+                return oldBox;
             });
 
-            const pageConfig = this.state.pageConfig;
+            const pageConfig = this.state;
             pageConfig.layouts = layouts;
 
-            this.setState({items: newItems, pageConfig});
+            this.setState({boxes: newBoxes, pageConfig});
         } catch (err) {
             console.log(err);
         }
     };
 
-    onRemoveItem(i) {
+    deleteBox(boxIndex) {
         this.setState({
-            items: _.reject(this.state.items, {i: i}),
+            boxes: _.reject(this.state.boxes, {i: boxIndex}),
         });
     }
 
@@ -629,24 +658,18 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     handleBoxOptions = async (id) => {
-        const item = this.getItemById(id);
-        await this.setAsyncState({
-            boxId: id, templateEditId: item.templateId
-        });
+        const box = this.getBoxById(id);
 
-        if (item.templateId) {
+        if (box.templateId) {
             this.setState({
+                templateEditId: box.templateId,
                 showTemplateWarning: true
             })
         } else {
-            await this.setAsyncState({
-                boxEditorProps: {
-                    ...item,
-                }
-            });
             this.setState({
-                showBoxOptions: true
-            })
+                showBoxOptions: true,
+                boxEditorProps: box
+            });
         }
     }
 
@@ -654,89 +677,84 @@ class ViewPagesEditor extends React.PureComponent {
         this.setState({showDiscardModal: true});
     };
 
-    createDefaultTheme = () => {
+    /*createDefaultTheme = () => {
         return createTheme({
-            palette: this.props.defaultTheme,
-            overrides: {
-                MuiSwitch: {
-                    switchBase: {
-                        color: this.props.defaultTheme?.primary?.main
-                    }
-                }, MuiIconButton: {
-                    root: {
-                        color: "blue"
-                    }
-                }, MuiSpeedDial: {
-                    actionsClosed: {
-                        height: "0", oveflow: "hidden",
-                    }
-                }, MuiInputBase: {
-                    root: {
-                        width: "100%", margin: "0 auto",
-                    }
-                }, MuiInputLabel: {
-                    formControl: {
-                        marginLeft: "1%",
-                    }
-                },
-                MuiFormLabel: {
-                    root: {
-                        marginLeft: "5%",
-                    }
-                },
-                MuiAutocomplete: {
-                    endAdornment: {
-                        position: "absolute", top: "calc(50% - 14px)", right: "0px !important",
-                    }
-                }, MuiOutlinedInput: {
-                    root: {
-                        borderRadius: "", width: "100%", margin: "0 auto", height: "50px",
-                    }
-                },
-                MuiDialog: {
-                    paper: {
-                        width: "100%",
-                    }, paperWidthSm: {
-                        maxWidth: "100vw",
-                    }
-                }
-            }
+            palette: this.props.defaultTheme
         });
-    };
+    };*/
 
     async saveBox(data) {
-        const items = this.state.items;
+        const boxes = this.state.boxes;
 
-        if (data.newItem) {
-            delete data.newItem;
-            items.push(data);
+        if (data.newBox) {
+            delete data.newBox;
+            boxes.push(data);
         } else {
-            const itemIndex = items.findIndex((item) => Number(data.i) === Number(item.i));
-            items[itemIndex] = data;
+            const boxIndex = boxes.findIndex((box) => Number(data.i) === Number(box.i));
+            boxes[boxIndex] = data;
         }
 
         await this.setAsyncState({
-            items,
+            boxes,
             showBoxOptions: false
         });
 
         this.setUsedGoogleFonts();
     }
 
+    async convertBoxes() {
+        if(this.state.boxes) {
+            const boxes = [...this.state.boxes];
+            return boxes.map((box, index) => {
+
+                return {
+                    id: box.id || 0,
+                    title: box.title,
+                    module: box.module,
+                    moduleOptions: box.moduleOptions,
+                    data: {
+
+                    },
+                };
+            });
+        } else {
+            return [];
+        }
+    }
+
     async savePage() {
-        const pageConfig = {...this.state.pageConfig};
+        const pageProps = _.pick(this.state, this.pageKeys);
+        const pageConfig = _.pick(this.state, this.pageConfigKeys);
+
+        const payload = {
+            pageProps,
+            pageConfig,
+            boxes: this.state.boxes.map(box => {
+                return {
+                    id: box.id || 0,
+                    title: box.title,
+                    module: box.module,
+                    moduleOptions: box.moduleOptions,
+                    data: _.omit(box, ['id', 'title', 'module', 'moduleOptions'])
+                }
+            }),
+            uploadProgress: (evt) => {
+                //TODO calculate all uploads from the controller
+                this.setState({
+                    showUploadingMessage: true,
+                    uploadingMessage: `Uploaded ${Math.floor((evt.loaded / evt.total) * 100)}%`
+                });
+            }
+        };
+
         if (this.state.editing) {
-            const payload = {
-                id: this.state.pageId,
-                title: pageConfig.title,
-                link: pageConfig.link,
-                description: pageConfig.description,
-                isHome: pageConfig.isHome,
-                active: pageConfig.active,
-                pageConfig: this.state.pageConfig,
-                items: this.state.items,
-            };
+
             await this.props.control.edit(payload);
+
+            this.setState({
+                uploadingMessage: '',
+                showUploadingMessage: false
+            });
 
             this.setState({
                 showSavedMessage: true
@@ -748,13 +766,10 @@ class ViewPagesEditor extends React.PureComponent {
                 })
             }, 3000);
         } else {
-            let newPage = {
-                pageConfig: pageConfig, items: this.state.items,
-            };
-            const pageData = await this.props.control.add(newPage);
+            const pageData = await this.props.control.add(payload);
             this.props.history.push(`/pages/edit/${pageData.pageId}`);
         }
-    };
+    }
 
     render() {
         const classes = this.props.classes;
@@ -762,30 +777,30 @@ class ViewPagesEditor extends React.PureComponent {
         const bodyWrapperStyle = {};
         let hasBgImage = false;
 
-        if (this.state.pageConfig.backgroundColor && this.state.pageConfig.hasBackgroundColor) {
-            bodyWrapperStyle.backgroundColor = this.state.pageConfig.backgroundColor;
+        if (this.state.backgroundColor && this.state.hasBackgroundColor) {
+            bodyWrapperStyle.backgroundColor = this.state.backgroundColor;
             bodyWrapperStyle.backgroundImage = 'none';
         }
 
-        if (this.state.pageConfig.hasBackgroundGradient && this.state.pageConfig.backgroundGradient) {
-            bodyWrapperStyle.backgroundImage = this.state.pageConfig.backgroundGradient;
+        if (this.state.hasBackgroundGradient && this.state.backgroundGradient) {
+            bodyWrapperStyle.backgroundImage = this.state.backgroundGradient;
             hasBgImage = true;
-        } else if(this.state.pageConfig.hasBackgroundImage) {
-            if (this.state.pageConfig.pageBase64Image || this.state.pageConfig.backgroundImage) {
-                bodyWrapperStyle.backgroundImage = `url(${this.state.pageConfig.pageBase64Image || `/files/pages/page-${this.state.pageId}/${this.state.pageConfig.backgroundImage})`}`;
+        } else if(this.state.hasBackgroundImage) {
+            if (this.state.pageBase64Image || this.state.backgroundImage) {
+                bodyWrapperStyle.backgroundImage = `url(${this.state.pageBase64Image || `/files/pages/page-${this.state.pageId}/${this.state.backgroundImage})`}`;
                 hasBgImage = true;
             }
         }
 
         if (hasBgImage) {
             bodyWrapperStyle.backgroundPosition = "center";
-            if (this.state.pageConfig.hasBackgroundRepeat) {
+            if (this.state.hasBackgroundRepeat) {
                 bodyWrapperStyle.backgroundRepeat = "repeat";
             } else {
                 bodyWrapperStyle.backgroundRepeat = "no-repeat";
             }
 
-            if (this.state.pageConfig.hasBackgroundStretch) {
+            if (this.state.hasBackgroundStretch) {
                 bodyWrapperStyle.backgroundSize = "cover"
             } else {
                 bodyWrapperStyle.backgroundSize = "auto"
@@ -799,182 +814,190 @@ class ViewPagesEditor extends React.PureComponent {
                     <title>{this.state.editing ? "Edit Page" : "Add Page"}</title>
                 </Helmet>
                 <div className={classes.bodyWrapper} style={{...bodyWrapperStyle}}>
-                    <MuiThemeProvider theme={this.muiTheme}>
-                        {this.state.showBoxOptions &&
+                    {this.state.showBoxOptions &&
                         <ViewBoxOptions
                             defaultTheme={this.props.defaultTheme}
                             onClose={() => {
                                 this.setState({ showBoxOptions: false })
                             }}
-                            onSave={(item) => {
-                                this.saveBox(item);
+                            onSave={(box) => {
+                                this.saveBox(box);
                             }}
                             pageOptions={{
                                 pageId: this.state.pageId
                             }}
                             fontFamilies={fontsList}
-                            item={this.state.boxEditorProps.item}
+                            fontSizes={this.fontSizes}
+                            box={this.state.boxEditorProps}
                             showModal={this.state.showBoxOptions}/>}
 
-                        <ViewPageOptions
-                            open={this.state.showPageOptionsModal}
-                            control={this.props.control}
-                            data={this.state.pageConfig}
-                            editing={this.state.editing}
-                            defaultTheme={this.props.defaultTheme}
-                            closePageOptionsModal={this.closePageOptionsModal.bind(this)}
-                            onSave={(data) => {
-                                const pageConfig = {...this.state.pageConfig, ...data};
-                                this.setState({pageConfig: pageConfig});
-                            }}
-                            fontFamilies={fontsList}
-                            fontSizes={this.fontSizes}
-                            handleFontSize={this.handleFontSize}
-                            handleFontFamily={this.handleFontFamily}
-                        />
+                    { this.state.showPageOptionsModal && <ViewPageOptions
+                        open={this.state.showPageOptionsModal}
+                        control={this.props.control}
+                        data={this.getPageOptions()}
+                        editing={this.state.editing}
+                        defaultTheme={this.props.defaultTheme}
+                        closePageOptionsModal={this.closePageOptionsModal.bind(this)}
+                        onSave={async (data, async) => {
+                            async ? await this.setAsyncState(data) : this.setState(data);
+                        }}
+                        fontFamilies={fontsList}
+                        fontSizes={this.fontSizes}
+                        setUsedGoogleFonts={() => this.setUsedGoogleFonts()}
+                    /> }
 
-                        {this.state.livePreview ? <ViewPagesPreview
-                            items={this.state.items}
-                            control={this.props.control}
-                            services={this.props.services}
-                            pageConfig={this.state.pageConfig}
-                            hideBackground={true}
-                            isLivePreview={true}
-                        /> : ""}
-                        {!this.state.livePreview ? <div className={classes.gridLayout}>
-                            <div style={{
-                                    flexGrow: 1,
-                                    fontFamily: this.state.fontFamily,
-                                    color: this.state.textColor,
-                                    paddingBottom: "55px",
-                                }}>
-                                {this.state.items.length ? <ResponsiveReactGridLayout
-                                    style={{
-                                        fontFamily: this.state.fontFamily, color: this.state.textColor,
-                                    }}
-                                    cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}
-                                    layouts={this.state.pageConfig.layouts}
-                                    margin={this.state.pageConfig.layoutBoxSpacing}
-                                    containerPadding={this.state.pageConfig.layoutBoxPadding}
-                                    draggableHandle=".MyDragHandleClassName"
-                                    onLayoutChange={(layout, layouts) => {
-                                        return this.onLayoutChange(layout, layouts);
-                                    }}
-                                    compactType="vertical"
-                                >
-                                    {_.map(this.state.items, (el) => this.createElement(el))}
-                                </ResponsiveReactGridLayout> : ""}
-                            </div>
-                        </div> : ""}
-                        <div className={classes.bottomPane} style={{
-                            backgroundColor: this.props.defaultTheme?.background?.paper
+                    {this.state.livePreview ? <ViewPagesPreview
+                        boxes={this.state.boxes}
+                        control={this.props.control}
+                        services={this.props.services}
+                        pageConfig={this.state}
+                        hideBackground={true}
+                        isLivePreview={true}
+                    /> : ""}
+                    {!this.state.livePreview ? <div className={classes.gridLayout}>
+                        <div style={{
+                            flexGrow: 1,
+                            fontFamily: this.state.fontFamily,
+                            color: this.state.textColor,
+                            paddingBottom: "55px",
                         }}>
-                            <div>
-                                <Tooltip title="Add a new box">
-                                    <IconButton onClick={this.onAddItem.bind(this)}>
-                                        <Avatar style={{
-                                            backgroundColor: this.props.defaultTheme?.primary?.main,
-                                            color: this.props.defaultTheme?.primary?.contrastText
-                                        }}>
-                                            <AddCircle/>
-                                        </Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Add a box from a template">
-                                    <IconButton onClick={() => {
-                                        this.setState({
-                                            showBoxesFromTemplate: true
-                                        })
-                                    }}>
-                                        <Avatar style={{
-                                            backgroundColor: this.props.defaultTheme?.primary?.main,
-                                            color: this.props.defaultTheme?.primary?.contrastText
-                                        }}>
-                                            <PostAdd/>
-                                        </Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip
-                                    title={this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode"}>
-                                    <IconButton onClick={async () => {
-                                        await this.setAsyncState(prevState => {
-                                            return {livePreview: !prevState.livePreview}
-                                        })
-                                    }}>
-                                        <Avatar style={{
-                                            backgroundColor: this.props.defaultTheme?.primary?.main,
-                                            color: this.props.defaultTheme?.primary?.contrastText
-                                        }}>
-                                            {this.state.livePreview ? <StopScreenShare/> : <ScreenShare/>}
-                                        </Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title={"Open the preview page"}>
-                                    <IconButton onClick={() => {
-                                        window.open(`/pages/preview/${this.state.pageId}`)
-                                    }}>
-                                        <Avatar style={{
-                                            backgroundColor: this.props?.defaultTheme?.primary?.main,
-                                            color: this.props?.defaultTheme?.primary?.contrastText
-                                        }}>
-                                            <Visibility/>
-                                        </Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title={this.state.isTemplate ? "Template Options" : "Page Options"}>
-                                    <IconButton onClick={this.openPageOptionsModal.bind(this)}>
-                                        <Avatar style={{
-                                            backgroundColor: this.props.defaultTheme?.primary?.main,
-                                            color: this.props.defaultTheme?.primary?.contrastText
-                                        }}>
-                                            <Settings/>
-                                        </Avatar>
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                            <div className={classes.bottomPaneButtons}>
-                                <Button color="primary" onClick={this.savePage.bind(this)}>Save</Button>
-                                <Button onClick={this.handleDiscard.bind(this)} color="danger">Discard</Button>
-                            </div>
+                            {this.state.boxes.length ? <ResponsiveReactGridLayout
+                                style={{
+                                    fontFamily: this.state.fontFamily, color: this.state.textColor,
+                                }}
+                                cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}
+                                layouts={this.state.layouts}
+                                rowHeight={1}
+                                margin={this.state.layoutBoxSpacing}
+                                containerPadding={this.state.layoutBoxPadding}
+                                draggableHandle=".MyDragHandleClassName"
+                                onLayoutChange={(layout, layouts) => {
+                                    return this.onLayoutChange(layout, layouts);
+                                }}
+                                compactType="vertical"
+                            >
+                                {_.map(this.state.boxes, (el) => this.createElement(el))}
+                            </ResponsiveReactGridLayout> : ""}
                         </div>
-                        <Modal
-                            showModal={this.state.showDiscardModal}
-                            name="discardModal"
-                            title={this.state.modalTitle}
-                            modalSize="small"
-                            content={<Typography>All changes will be lost. Are you sure you want to
-                                continue?</Typography>}
-                            confirmButton={{
-                                callback: () => this.props.history.push("/pages"), label: "Ok",
-                            }}
-                            closeButton={{callback: () => {
+                    </div> : ""}
+                    <div className={classes.bottomPane} style={{
+                        backgroundColor: this.props.defaultTheme?.background?.paper
+                    }}>
+                        <div>
+                            <Tooltip title="Add a new box">
+                                <IconButton onClick={this.onAddBox.bind(this)}>
+                                    <Avatar style={{
+                                        backgroundColor: this.props.defaultTheme?.primary?.main,
+                                        color: this.props.defaultTheme?.primary?.contrastText
+                                    }}>
+                                        <AddCircle/>
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Add a box from a template">
+                                <IconButton onClick={() => {
+                                    this.setState({
+                                        showBoxesFromTemplate: true
+                                    })
+                                }}>
+                                    <Avatar style={{
+                                        backgroundColor: this.props.defaultTheme?.primary?.main,
+                                        color: this.props.defaultTheme?.primary?.contrastText
+                                    }}>
+                                        <PostAdd/>
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip
+                                title={this.state.livePreview ? "Stop Live Preview Mode" : "Turn on Live Preview Mode"}>
+                                <IconButton onClick={async () => {
+                                    await this.setAsyncState(prevState => {
+                                        return {livePreview: !prevState.livePreview}
+                                    })
+                                }}>
+                                    <Avatar style={{
+                                        backgroundColor: this.props.defaultTheme?.primary?.main,
+                                        color: this.props.defaultTheme?.primary?.contrastText
+                                    }}>
+                                        {this.state.livePreview ? <StopScreenShare/> : <ScreenShare/>}
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title={"Open the preview page"}>
+                                <IconButton onClick={() => {
+                                    window.open(`/pages/preview/${this.state.pageId}`)
+                                }}>
+                                    <Avatar style={{
+                                        backgroundColor: this.props?.defaultTheme?.primary?.main,
+                                        color: this.props?.defaultTheme?.primary?.contrastText
+                                    }}>
+                                        <Visibility/>
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title={this.state.isTemplate ? "Template Options" : "Page Options"}>
+                                <IconButton onClick={this.openPageOptionsModal.bind(this)}>
+                                    <Avatar style={{
+                                        backgroundColor: this.props.defaultTheme?.primary?.main,
+                                        color: this.props.defaultTheme?.primary?.contrastText
+                                    }}>
+                                        <Settings/>
+                                    </Avatar>
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                        <div className={classes.bottomPaneButtons}>
+                            <Button color="primary" onClick={this.savePage.bind(this)}>Save</Button>
+                            <Button onClick={this.handleDiscard.bind(this)} color="danger">Discard</Button>
+                        </div>
+                    </div>
+                    <Modal
+                        showModal={this.state.showDiscardModal}
+                        name="discardModal"
+                        title={this.state.modalTitle}
+                        modalSize="small"
+                        content={<Typography>All changes will be lost. Are you sure you want to
+                            continue?</Typography>}
+                        confirmButton={{
+                            callback: () => this.props.history.push("/pages"), label: "Ok",
+                        }}
+                        closeButton={{callback: () => {
                                 this.closeDiscardModal()
-                                }, label: "Cancel",
-                            }}
-                        />
-                        <Modal
-                            showModal={this.state.showDeleteTemplateBoxModal}
-                            {...this.state.deleteTemplateBoxModal}
-                        />
-                        <Modal
-                            showModal={this.state.showDeleteBoxModal}
-                            {...this.state.deleteBoxModal}
-                        />
-                        <Snackbar
-                            open={this.state.showSavedMessage}
-                            place="tc"
-                            color="success"
-                            icon={InfoSharp}
-                            message="The page was updated successfully"
-                        />
-                        <Snackbar
-                            open={this.state.showErrorMessage}
-                            place="tc"
-                            color="danger"
-                            icon={ErrorSharp}
-                            message={this.state.errorMessage}
-                        />
-                    </MuiThemeProvider>
+                            }, label: "Cancel",
+                        }}
+                    />
+                    <Modal
+                        showModal={this.state.showDeleteTemplateBoxModal}
+                        {...this.modals.deleteTemplateBoxModal}
+                    />
+                    <Modal
+                        showModal={this.state.showDeleteBoxModal}
+                        {...this.modals.deleteBoxModal}
+                    />
+                    <Modal
+                        showModal={this.state.showBoxesFromTemplate}
+                        {...this.modals.boxesFromTemplate}
+                    />
+                    <Snackbar
+                        open={this.state.showSavedMessage}
+                        place="tc"
+                        color="success"
+                        icon={InfoSharp}
+                        message="The page was updated successfully"
+                    />
+                    <Snackbar
+                        open={this.state.showErrorMessage}
+                        place="tc"
+                        color="danger"
+                        icon={ErrorSharp}
+                        message={this.state.errorMessage}
+                    />
+                    <Snackbar
+                        open={this.state.showUploadingMessage}
+                        place="tc"
+                        color="info"
+                        message={this.state.uploadingMessage}
+                    />
                 </div>
             </React.Fragment>);
     }

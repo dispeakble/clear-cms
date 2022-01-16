@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 
-import {withStyles, createTheme} from "@material-ui/core/styles";
-import {MuiThemeProvider} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import {DropzoneDialog} from "material-ui-dropzone";
@@ -53,37 +52,6 @@ class BannerModule extends Component {
         }
     }
 
-    getTheme = () => {
-        return createTheme({
-            palette: this.props.defaultTheme,
-            overrides: {
-                MuiDialogTitle: {
-                    root: {
-                        padding: "16px 24px 0",
-                    },
-                },
-            },
-        });
-    };
-
-    createDefaultTheme = () => {
-        return createTheme({
-            palette: this.props.defaultTheme,
-
-            overrides: {
-                MuiDropzoneArea: {
-                    root: {
-                        height: "145px",
-                        minHeight: "145px",
-                    },
-                    text: {
-                        fontSize: "1rem",
-                    },
-                },
-            },
-        });
-    };
-
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
@@ -107,8 +75,8 @@ class BannerModule extends Component {
     };
 
     getBannerSizeLabel(index) {
-        const item = this.state.bannerSizes[index];
-        return item.label;
+        const box = this.state.bannerSizes[index];
+        return box.label;
     }
 
     getBannerSizeIndex(name) {
@@ -131,8 +99,8 @@ class BannerModule extends Component {
     };
 
     getLinkNavLabel(index) {
-        const item = this.state.linkNavs[index];
-        return item.label;
+        const box = this.state.linkNavs[index];
+        return box.label;
     }
 
     getLinkNavIndex(name) {
@@ -216,7 +184,7 @@ class BannerModule extends Component {
     render() {
         const classes = this.props.classes;
         return (
-            <MuiThemeProvider theme={this.createDefaultTheme}>
+            <React.Fragment>
                 <div style={{ textAlign: "center" }}>
                     <h4 className={classes.modalTitle}>
                         Edit Banner Module
@@ -306,7 +274,7 @@ class BannerModule extends Component {
                         maxFileSize={Math.pow(1024, 3)}
                     />
                 </div>
-            </MuiThemeProvider>
+            </React.Fragment>
         );
     }
 }
@@ -316,6 +284,5 @@ export default withStyles(styles)(BannerModule);
 BannerModule.propTypes = {
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
-    defaultTheme: PropTypes.object,
     onUpdate: PropTypes.func
 };

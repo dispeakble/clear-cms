@@ -3,7 +3,7 @@ import React, {Suspense} from "react";
 import {withStyles, createTheme} from "@material-ui/core/styles";
 import {ThemeProvider as MuiThemeProvider} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagePreview.js";
-import {WidthProvider, Responsive} from "react-grid-layout";
+
 import {withRouter} from "react-router-dom";
 
 import {Helmet} from "react-helmet";
@@ -11,6 +11,7 @@ import BoxModal from "../../components/BoxModal/BoxModal";
 import GoogleFontLoader from 'react-google-font-loader';
 import PropTypes from "prop-types";
 
+import {WidthProvider, Responsive} from "react-grid-layout";
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 class ViewPagesPreview extends React.Component {
@@ -22,7 +23,7 @@ class ViewPagesPreview extends React.Component {
 
     state = {
         title: "",
-        items: [],
+        boxes: [],
         pageConfig: {
             backgroundColor: "",
             fontSize: "",
@@ -33,35 +34,11 @@ class ViewPagesPreview extends React.Component {
         },
         modals: [],
         layouts: {},
-        fontUnit: "rem",
+        fontUnit: "px",
         page_id: 0,
         googleFonts: [],
-        modalItems: {}
+        modalBoxes: {}
     };
-
-    navigateToUrl() {
-        // const { pathname } = this.props.location;
-        // const pathnameId = Number(pathname.split("/")[2]);
-        //
-        // if (pathname === this.state.pathname) {
-        //   return true;
-        // }
-        //
-        // // const allPages = JSON.parse(localStorage.getItem("pages"));
-        // // let currentPage;
-        // // currentPage = allPages.find((el) => el.id === pathnameId);
-        // //
-        // // const items = currentPage ? currentPage.items : "";
-        // // const pageConfig = currentPage ? currentPage.pageConfig : "";
-        //
-        // const
-        //
-        // this.setState({
-        //   items: items,
-        //   pageConfig,
-        //   pathname,
-        // });
-    }
 
     componentDidMount() {
         this.loadPage();
@@ -72,7 +49,7 @@ class ViewPagesPreview extends React.Component {
         if (this.props.isLivePreview) {
             this.setState({
                 page_id: page_id,
-                items: this.props.items,
+                boxes: this.props.boxes,
                 pageConfig: this.props.pageConfig
             });
         } else {
@@ -81,12 +58,12 @@ class ViewPagesPreview extends React.Component {
             });
             this.setState({
                 page_id: page_id,
-                items: page.items,
+                boxes: page.boxes,
                 pageConfig: page.pageConfig
             });
-            let modalItems = {}
-            page.items.filter(item => item.displayOptions && item.displayOptions.displayAsModal).map(el => {
-                modalItems[el.title + el.i] = {
+            let modalBoxes = {}
+            page.boxes.filter(box =>box.displayOptions &&box.displayOptions.displayAsModal).map(el => {
+                modalBoxes[el.title + el.i] = {
                     name: el.title,
                     title: el.title,
                     show: this.fetchPopupState(el.title + el.i, el.displayOptions.neverShowAfterClosing),
@@ -122,21 +99,21 @@ class ViewPagesPreview extends React.Component {
                 return el;
             })
 
-            this.setUsedGoogleFonts();
-
-            this.setState({
-                modalItems: modalItems
+            await this.setAsyncState({
+                modalBoxes: modalBoxes
             })
+
+            this.setUsedGoogleFonts();
         }
     }
 
     switchBoxModalState = (el) => {
         this.setState(prevState => ({
             ...prevState,
-            modalItems: {
-                ...prevState.modalItems,
+            modalBoxes: {
+                ...prevState.modalBoxes,
                 [el.title + el.i]: {
-                    ...prevState.modalItems[el.title + el.i],
+                    ...prevState.modalBoxes[el.title + el.i],
                     show: false
                 }
             }
@@ -163,97 +140,135 @@ class ViewPagesPreview extends React.Component {
         const i = el.i;
         el.static = true;
 
-        let style = {};
+        let boxStyle = {};
 
-        if (el.backgroundImage) {
-            style.backgroundImage = `url(/files/pages/page-${el.templateUsed ? el.templateUsed : this.state.page_id}/box-${i}/${el.backgroundImage})`;
+        if (el.scrollbars) {
+            boxStyle.scrollbars = el.scrollbars;
         }
 
-        if (el.backgroundRepeat) {
-            style.backgroundRepeat = el.backgroundRepeat ? "repeat" : "no-repeat";
+        if (el.hasFontFamily) {
+            boxStyle.fontFamily = el.fontFamily;
         }
 
-        if (el.backgroundStretch) {
-            style.backgroundSize = el.backgroundStretch ? "cover" : "auto";
+        if (el.hasTextColor) {
+            boxStyle.color = el.textColor;
         }
 
-        if (el.backgroundGradient) {
-            style.backgroundImage = el.backgroundGradientColor;
+        if(el.hasBackgroundImage) {
+            if (el.backgroundImageString) {
+                boxStyle.backgroundImage = `url(${el.backgroundImageString})`;
+            } else {
+                boxStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+            }
+
+            if (el.backgroundImage && el.backgroundImage.indexOf("__delete__") === 0) {
+                el.backgroundImageString = "";
+                boxStyle.backgroundImage = "";
+            }
+
+            boxStyle.backgroundRepeat = el.hasBackgroundRepeat ? "repeat" : "no-repeat";
+
+            if (el.hasBackgroundStretch) {
+                boxStyle.backgroundSize = "cover";
+            } else {
+                boxStyle.backgroundSize = "auto";
+            }
         }
 
-        if (el.backgroundColor) {
-            style.backgroundColor = el.backgroundColor;
+        if (el.hasBackgroundGradient) {
+            boxStyle.backgroundImage = el.backgroundGradient;
         }
 
-        if (el.borderColor) {
-            style.borderColor = el.borderColor;
+        if (el.hasBackgroundColor) {
+            boxStyle.backgroundColor = el.backgroundColor;
         }
 
-        if (el.borderWidth) {
-            style.borderStyle = "solid";
-            style.borderWidth = el.borderWidth + "px";
+        if (el.hasBorderColor && Number(el.borderWidth)) {
+            boxStyle.borderColor = el.borderColor;
+            boxStyle.borderStyle = "solid";
+            boxStyle.borderWidth = el.borderWidth + "px";
         }
 
-        if (el.borderRadius) {
-            style.borderRadius = el.borderRadius;
+        if (Number(el.borderRadius)) {
+            boxStyle.borderRadius = el.borderRadius;
         }
 
-        if (Number(el.fontSize)) {
-            style.fontSize = `${el.fontSize}${this.state.fontUnit}`;
-            style.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
-        } else if (this.state.pageConfig.fontSize) {
-            style.fontSize = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
-            style.lineHeight = `${this.state.pageConfig.fontSize}${this.state.fontUnit}`;
+        const moduleStyle = {};
+
+        if (el.hasBackgroundColor) {
+            moduleStyle.backgroundColor = el.backgroundColor;
+        } else if (el.hasBackgroundImage) {
+            moduleStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+            moduleStyle.backgroundRepeat = el.hasBackgroundRepeat ? "repeat" : "no-repeat";
+            moduleStyle.backgroundSize = el.hasBackgroundStretch ? "cover" : "auto";
+        } else if (el.hasBackgroundGradient) {
+            moduleStyle.backgroundImage = el.backgroundGradient;
         }
 
-        if (el.fontFamily) {
-            style.fontFamily = el.fontFamily;
-        } else if (this.state.pageConfig.fontFamily) {
-            style.fontFamily = this.state.pageConfig.fontFamily;
+        if (Number(el.borderRadius)) {
+            moduleStyle.borderRadius = el.borderRadius;
         }
 
-        if (el.textColor) {
-            style.color = el.textColor;
-        } else if (this.state.pageConfig.textColor) {
-            style.textColor = this.state.pageConfig.textColor;
+        if (el.hasFontSize) {
+            moduleStyle.fontSize = `${el.fontSize}${this.state.fontUnit}`;
+            moduleStyle.lineHeight = `${el.fontSize}${this.state.fontUnit}`;
+        } else if (this.state?.fontSize) {
+            moduleStyle.fontSize = `${this.state.fontSize}${this.state.fontUnit}`;
+            moduleStyle.lineHeight = `${this.state.fontSize}${this.state.fontUnit}`;
         }
 
-        if (el.showScrollbars) {
-            style.overflow = "auto";
+        if (el.hasFontFamily) {
+            moduleStyle.fontFamily = el.fontFamily;
+        } else if (this.state?.fontFamily) {
+            moduleStyle.fontFamily = this.state.fontFamily;
+        }
+
+        if (el.hasTextColor) {
+            moduleStyle.color = el.textColor;
+        } else if (this.state?.textColor) {
+            moduleStyle.textColor = this.state.textColor;
+        }
+
+        if (el.scrollbars) {
+            moduleStyle.overflow = "auto";
         } else {
-            style.overflow = "hidden";
+            moduleStyle.overflow = "hidden";
         }
-
-        const loadingFallback = (() => {
-            return <span>Loading...</span>;
-        })();
 
         if (el.module) {
-            let LazyComponent = null;
-            let LazyComponentName = el.module.replace(" ", "");
+            const loadingFallback = (() => {
+                return <span>Loading...</span>;
+            })();
+
+            let moduleType = el.module.replaceAll(" ", "");
             if (el.module === "Header Module") {
-                style.position = el.moduleOptions.isModuleSticky
+                boxStyle.position = el.moduleOptions.isModuleSticky
                     ? "fixed !important"
                     : "";
-                style.top = "0";
+                boxStyle.top = "0";
             }
 
-            if (LazyComponentName) {
-              LazyComponent = React.lazy(() => {
-                return import(`./box/previews/${LazyComponentName}`)
-              });
-            }
+            const LazyModule = React.lazy(() => {
+                return import(`./box/previews/${moduleType}`)
+            });
 
             return (
-                <div key={`box-${el.i}`} data-grid={el} style={style}>
+                <div key={`box-${el.i}`} data-grid={el} style={boxStyle}>
                     <Suspense fallback={loadingFallback}>
-                        <LazyComponent control={this.props.control} services={this.props.services} i={i} element={el} boxId={el.id || -1} moduleOptions={el.moduleOptions}
-                                       pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}}/>
+                        <LazyModule
+                            control={this.props.control}
+                            services={this.props.services}
+                            i={i}
+                            element={el}
+                            boxId={el.id || -1}
+                            moduleOptions={el.moduleOptions}
+                            pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}}
+                        />
                     </Suspense>
                 </div>
             );
         } else {
-            return <div key={`box-${el.i}`} data-grid={el} style={style}></div>;
+            return <div key={`box-${el.i}`} data-grid={el} style={boxStyle}></div>;
         }
     }
 
@@ -313,12 +328,12 @@ class ViewPagesPreview extends React.Component {
             fonts.push({font: this.state.fontFamily});
         }
 
-        if (this.state.items && this.state.items.length) {
-            this.state.items.map((item) => {
-                if (item.fontFamily && !fonts.some(f => f.font === item.fontFamily)) {
-                    fonts.push({font: item.fontFamily});
+        if (this.state.boxes && this.state.boxes.length) {
+            this.state.boxes.map((box) => {
+                if (box.fontFamily && !fonts.some(f => f.font ===box.fontFamily)) {
+                    fonts.push({font:box.fontFamily});
                 }
-                return item;
+                return box;
             });
         }
         this.setState({
@@ -329,12 +344,12 @@ class ViewPagesPreview extends React.Component {
     render() {
         const classes = this.props.classes;
 
-        if (this.state.items === null || this.state.items.length === 0) {
+        if (this.state.boxes === null || this.state.boxes.length === 0) {
             return "";
         }
 
         const style = {
-            backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradientColor : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
+            backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradient : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
             backgroundRepeat: this.state.pageConfig.backgroundRepeat
                 ? "repeat"
                 : "no-repeat",
@@ -387,16 +402,16 @@ class ViewPagesPreview extends React.Component {
                                     cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}
                                     useCSSTransforms={true}
                                 >
-                                    {this.state.items.length
-                                        ? _.map(this.state.items.filter(item => !(item.displayOptions && item.displayOptions.displayAsModal)), (el) => this.createElement(el))
+                                    {this.state.boxes.length
+                                        ? _.map(this.state.boxes.filter(box => !(box.displayOptions &&box.displayOptions.displayAsModal)), (el) => this.createElement(el))
                                         : ""}
                                 </ResponsiveReactGridLayout>
                             </div>
                         </div>
                     </MuiThemeProvider>
-                    {Object.keys(this.state.modalItems).map(itemKey => <BoxModal key={itemKey}
-                        showModal={this.state.modalItems[itemKey].show}
-                        {...this.state.modalItems[itemKey]}
+                    {Object.keys(this.state.modalBoxes).map(boxKey => <BoxModal key={boxKey}
+                        showModal={this.state.modalBoxes[boxKey].show}
+                        {...this.state.modalBoxes[boxKey]}
                     />)}
                 </div>
             </React.Fragment>
@@ -412,8 +427,8 @@ ViewPagesPreview.propTypes = {
     services: PropTypes.object,
     history: PropTypes.object,
     location: PropTypes.object,
-    isLivePreview: PropTypes.object,
+    isLivePreview: PropTypes.bool,
     pageConfig: PropTypes.object,
-    items: PropTypes.array,
+    boxes: PropTypes.array,
     hideBackground: PropTypes.bool,
 };

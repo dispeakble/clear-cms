@@ -10,10 +10,12 @@ export class PageToConfig extends Model {
     @Column({primaryKey: true, autoIncrement: true, autoIncrementIdentity: true})
     id: number;
 
+    @ForeignKey(() => Page)
     @Index
     @Column
     pageId: number;
 
+    @ForeignKey(() => PageConfig)
     @Column
     configId: number;
 }

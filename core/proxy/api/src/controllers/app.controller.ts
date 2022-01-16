@@ -371,7 +371,7 @@ export class AppController {
 
         let csp = "img-src 'self' 'unsafe-inline' data: blob: https://cdn.tiny.cloud https://sp.tinymce.com;";
         csp += "default-src 'self';";
-        csp += "script-src 'self' https://cdn.tiny.cloud https://sp.tinymce.com;";
+        csp += "script-src 'self' 'unsafe-inline' https://cdn.tiny.cloud https://sp.tinymce.com https://www.gstatic.com/;";
         csp += "style-src 'unsafe-inline' 'self' https://fonts.googleapis.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com;";
         csp += "font-src 'self' data: https://fonts.gstatic.com *.fontawesome.com https://cdn.tiny.cloud https://sp.tinymce.com;";
 

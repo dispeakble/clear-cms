@@ -52,11 +52,11 @@ export class CategoriesService {
         return new Observable(subscriber => {
 
             const whereObj = {
-                'OR': []
+                'or': []
             };
 
             ["title", "description"].map(field => {
-                whereObj['OR'].push({[field]: {'LIKE': `%${params.search}%`}});
+                whereObj['or'].push({[field]: {'LIKE': `%${params.search}%`}});
             })
 
             const payload: payloadInterface = {

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { DateRangePicker } from "materialui-daterange-picker";
 import { withStyles, createTheme } from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
+import PropTypes from "prop-types";
 
 class CalendarModule extends Component {
   state = {
@@ -59,3 +60,10 @@ class CalendarModule extends Component {
 }
 
 export default withStyles(styles)(CalendarModule);
+
+CalendarModule.propTypes = {
+  defaultTheme: PropTypes.object,
+  classes: PropTypes.object,
+  moduleOptions: PropTypes.object,
+  onUpdate: PropTypes.func,
+};

@@ -2,6 +2,7 @@ import React, { Component, Suspense } from "react";
 import { Route } from "react-router-dom";
 import NotFound from "templates/ViewNotFound/ViewNotFound";
 import ClipLoader from "react-spinners/ClipLoader";
+import PropTypes from "prop-types";
 
 class MainController extends Component {
     state = {};
@@ -109,3 +110,10 @@ class MainController extends Component {
 }
 
 export default MainController;
+
+MainController.propTypes = {
+    moduleList: PropTypes.array,
+    services: PropTypes.object,
+    history: PropTypes.object,
+    location: PropTypes.object
+};

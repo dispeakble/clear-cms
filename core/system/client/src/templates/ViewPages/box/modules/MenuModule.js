@@ -43,7 +43,7 @@ import PropTypes from "prop-types";
 class MenuModule extends Component {
     state = {
         menuOptions: [],
-        itemModuleEditId: "",
+        boxModuleEditId: "",
         showModuleOptionsModal: false,
         modalTitle: "Menu Items",
         richFormattedText: false,
@@ -440,7 +440,7 @@ class MenuModule extends Component {
 
     handleEdit = async (id) => {
         await this.setAsyncState({
-            itemModuleEditId: id,
+            boxModuleEditId: id,
             showModuleOptionsModal: true,
         });
     };
