@@ -12,12 +12,14 @@ class PageContent{
 
 
         const pagePayload = context.isIndex ? {
-            publish: 1,
-            is_default: 1
+            active: 1,
+            isHome: 1
         } : {
-            publish: 1,
-            pageLink: context.req.params[0]
+            active: 1,
+            link: context.req.params[0]
         }
+
+        console.log("pagePayload", pagePayload)
 
 
         try {
@@ -43,6 +45,8 @@ class PageContent{
                 }
             });
             page = await pageObs.toPromise();
+
+            console.log("page", page)
 
 
             //fetch pages list

@@ -62,21 +62,30 @@ export class PagesService {
                             channel: 'frontend',
                             data: {
                                 what: 'page',
-                                fields: ['*']
+                                where: params.body.where,
+                                include: [
+                                    {
+                                        model: 'pageBox',
+                                        through: 'pageToBox',
+                                        required: false
+                                    },
+                                    {
+                                        model: 'category',
+                                        through: 'pageToCategory',
+                                        required: false
+                                    },
+                                    {
+                                        model: 'pageConfig',
+                                        through: 'pageToConfig',
+                                        required: false
+                                    }
+                                ]
                             }
                         }
                     };
 
-                    if(params.body.how) {
-                        pageReq.payload.data.how = params.body.how;
-                    }
-
-                    if(params.body.where) {
-                        pageReq.payload.data.where = params.body.where;
-                    }
-
-                    let page = await this.protocolService.sendMessage(pageReq).toPromise()
-                    page = page.data[0];
+                    const page = await this.protocolService.sendMessage(pageReq).toPromise()
+                    //page = page.data[0];
                     if(!page) {
                         subscriber.error({
                             message: "404 not found",
@@ -85,204 +94,50 @@ export class PagesService {
                         subscriber.complete();
                         return;
                     }
-                    /*
-                    const pagesToConfigReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            channel: 'frontend',
-                            data: {
-                                what: 'pageToConfig',
-                                fields: ["*"],//it's optional. defaults to *
-                                how: "OR",
-                                where: {
-                                    pageId: page.id
-                                }
-                            }
-                        }
-                    };
-                    const pagesToConfig = await this.protocolService.sendMessage(pagesToConfigReq).toPromise()
 
-                    const configReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            channel: 'frontend',
-                            data: {
-                                what: 'pageConfig',
-                                fields: ["*"],//it's optional. defaults to *
-                                how: "OR",
-                                where: {
-                                    id: pagesToConfig.data[0].config_id
-                                }
-                            }
-                        }
-                    };
-                    let config = await this.protocolService.sendMessage(configReq).toPromise()
-                    config = config.data[0]
-                    */
 
-                    const _configReq : payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            channel: "frontend",
-                            data: {
-                                what: 'pageToConfig',
-                                fields: ['data'],
-                                include:[
-                                    {
-                                        model: 'pageConfig',
-                                    },
-                                    {
-                                        model: 'page',
-                                        where:{
-                                            id: page.id
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-
-                    const pageConfig = await this.protocolService.sendMessage(_configReq).toPromise()
-
-                    /*
-                    const pagesToBoxReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'list',
-                        payload: {
-                            channel: 'frontend',
-                            data: {
-                                what: 'pageToBox',
-                                fields: ["*"],//it's optional. defaults to *
-                                how: "OR",
-                                where: {
-                                    pageId: page.id
-                                }
-                            }
-                        }
-                    };
-                    const pageToBoxes = await this.protocolService.sendMessage(pagesToBoxReq).toPromise()
-                    let boxes = {data: []}
-                    if (pageToBoxes.data?.length) {
-                        const boxReq: payloadInterface = {
-                            channel: 'db',
-                            api: 'sql',
-                            act: 'get',
-                            payload: {
-                                channel: 'frontend',
-                                data: {
-                                    what: 'pageBox',
-                                    fields: ["*"],//it's optional. defaults to *
-                                    how: "OR",
-                                    where: pageToBoxes.data.map(({boxId}) => {
-                                        return {
-                                            id: boxId,
-                                        }
-                                    })
-                                }
-                            }
-                        };
-                        boxes = await this.protocolService.sendMessage(boxReq).toPromise()
-                        boxes.data = boxes.data.map((box) => {
-                            const location = pageToBoxes.data.find((boxConfig) => boxConfig.box_id === box.id);
-                            return {
-                                ...box,
-                                x: location.x,
-                                y: location.y,
-                                template_used: location.template_used
-                            }
-                        })
-                    }
-                    */
-
-                    //TODO: retrieve page boxes using one request
-                    const _boxesReq : payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'list',
-                        payload: {
-                            channel: "frontend",
-                            data: {
-                                what: 'pageToBox',
-                                include:[
-                                    {
-                                        model: 'pageBox',
-                                    },
-                                    {
-                                        model: 'page',
-                                        where:{
-                                            id: page.id
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-
-                    const _boxesRes = await this.protocolService.sendMessage(_boxesReq).toPromise()
-                    let _boxesResults = null
-
-                    if(_boxesRes.hasOwnProperty('rows')){
-                        _boxesResults = _boxesRes.rows
-                    }
-
-                    const pagesToCategoriesReq: payloadInterface = {
-                        channel: 'db',
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            channel: 'frontend',
-                            data: {
-                                what: 'PageToCategory',
-                                fields: ["categoryId"],
-                                where: {
-                                    pageId: page.id
-                                }
-                            }
-                        }
-                    };
-
-                    const pagesToCategories = await this.protocolService.sendMessage(pagesToCategoriesReq).toPromise();
-                    const categoryId = pagesToCategories ? pagesToCategories.categoryId : 0;
-
-                    const {bgColor,
-                        bgImage,
-                        bgRepeat,
-                        bgStretch,
-                        bgGradient,
+                    const {seoTitle,
+                        useWebsiteTitle,
+                        backgroundColor,
+                        hasBackgroundGradient,
+                        hasBackgroundColor,
+                        hasBackgroundImage,
+                        hasBackgroundRepeat,
+                        hasBackgroundStretch,
+                        backgroundGradient,
+                        description,
                         fontFamily,
                         fontSize,
                         layoutBoxSpacing,
                         textColor,
-                        templateUsed} = JSON.parse(pageConfig.data)
+                        templateUsed} = JSON.parse(page.pageConfig[0]?.data)
 
                     const formattedPage = {
                         id: page.id,
                         pageConfig: {
-                            backgroundColor: bgColor,
-                            backgroundImage: bgImage,
-                            backgroundRepeat: !!bgRepeat,
-                            backgroundStretch: !!bgStretch,
-                            backgroundGradient: !!bgGradient,
+                            description:description,
+                            seoTitle: seoTitle,
+                            useWebsiteTitle: useWebsiteTitle,
+                            hasBackgroundColor: hasBackgroundColor,
+                            backgroundGradient: backgroundGradient,
+                            backgroundColor: backgroundColor,
+                            hasBackgroundImage: hasBackgroundImage,
+                            hasBackgroundRepeat: !!hasBackgroundRepeat,
+                            hasBackgroundStretch: !!hasBackgroundStretch,
+                            hasBackgroundGradient: !!hasBackgroundGradient,
                             defaultPage: !!page.isHome,
                             fontFamily: fontFamily,
                             fontSize: fontSize,
                             layoutBoxSpacing: layoutBoxSpacing,
                             pageLink: page.link,
-                            categoryId: categoryId,
+                            categoryId: page.category ? page.category[0].id : 0,
                             isTemplate: !!page.isTemplate,
                             pageTitle: page.title,
                             publish: !!page.active,
                             textColor: textColor,
                             templateUsed: templateUsed,
                         },
-                        items: _boxesResults.map((box) => {
+                        items: page.boxes.map((box) => {
                             return {
                                 ...(box.bgcolor !== null && {backgroundColor: box.bgcolor}),
                                 ...(box.bggradientcolor !== null && {backgroundGradientColor: box.bggradientcolor}),

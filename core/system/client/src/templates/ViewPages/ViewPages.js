@@ -107,8 +107,10 @@ class Pages extends Component {
                 return page;
             });
             this.setState({ pages, templates });
+
         }
 
+        console.log("retrieved pages", this.state.pages)
     }
 
     setAsyncState = (newState) =>
@@ -303,6 +305,8 @@ class Pages extends Component {
                 },
             },
         };
+
+        console.log("retrieved pages", this.state.pages)
         return (
             <React.Fragment>
                 <Helmet>
