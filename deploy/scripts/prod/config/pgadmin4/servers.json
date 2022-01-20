@@ -1,0 +1,14 @@
+"1": {
+"Name": "CMS Server",
+"Group": "CMS Server Group",
+"Host": "postgresql-ha-pgpool",
+"Port": 5432,
+"MaintenanceDB": "postgres",
+"Username": "cms",
+"Timeout": 10,
+"SSLMode": "prefer",
+"PassFile": "/var/lib/pgadmin/storage/pgadmin/file.pgpass",
+"UseSSHTunnel": 0,
+"TunnelPort": "22",
+"TunnelAuthentication": 0
+}

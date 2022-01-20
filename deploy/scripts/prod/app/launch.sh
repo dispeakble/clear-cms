@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CMS_NAME="cms-cluster"
-CMS_PATH="$HOME/cms_app"
+CMS_PATH="/home/dosidoweb/cms_app"
 
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"
@@ -32,7 +32,7 @@ source "${BASH_SOURCE%/*}/rancher-login.sh"
 function createCluster() {
     sleep 2
     echo "Creating the Cluster $1:"
-    rancher cluster create --network-provider flannel --rke-config "${BASH_SOURCE%/*}/config.yaml" $1
+    rancher cluster create --rke-config "${BASH_SOURCE%/*}/config.yaml" $1
     rancherLogin
     sleep 2
     rancher context switch
@@ -169,7 +169,6 @@ function launchLonghorn () {
 
   if [ -z "$(getApp longhorn)" ]; then
     rancher app install --no-prompt --namespace longhorn-system \
-    --version 1.1.2 \
     --helm-timeout 300 \
     --helm-wait \
     cattle-global-data:library-longhorn longhorn
@@ -246,11 +245,12 @@ function launchCmsApp() {
 
 function launchPostgreSQL() {
 
-  rancher kubectl create configmap dbconfig --from-file=setup1.sql="${BASH_SOURCE%/*}/../../pg.db/db.schema.sql"
+  rancher kubectl create configmap dbconfig --from-file=setup1.sql="${BASH_SOURCE%/*}/../pg.db/db.schema.sql"
 
   checkApp "postgresql-ha"
 
   rancher app install --no-prompt --namespace default \
+   --version 8.2.1 \
    --set postgresql.initdbScriptsCM=dbconfig \
    --set global.postgresql.username=$POSTGRES_USERNAME \
    --set global.postgresql.password=$POSTGRES_PASSWORD \
@@ -258,7 +258,6 @@ function launchPostgreSQL() {
    --set postgresql.repmgrPassword=$POSTGRES_PASSWORD \
    --set pgpool.adminPassword=$POSTGRES_PASSWORD \
    --set global.storageClass=longhorn \
-   --set persistence.size=2Gi \
    --helm-timeout 300 \
    --helm-wait \
    cattle-global-data:bitnami-postgresql-ha postgresql-ha
@@ -272,21 +271,12 @@ function launchPGAdmin() {
 
   checkApp "pgadmin4"
 
-  #   --set extraSecretMounts.name=pgpassfile \
-#   --set extraSecretMounts.secret=$(awk '{print $1}' "${BASH_SOURCE%/*}/../../pg.db/pgadmin_passfile.txt") \
-#   --set extraSecretMounts.mountPath="/var/lib/pgadmin/storage/pgadmin/file.pgpass" \
-#   --set extraSecretMounts.readOnly=true \
-#   --set serverDefinitions.enabled=true \
-##   --set serverDefinitions.servers='"1": { \
-##      "Name": "CMS Server", \
-##      "Group": "CMS Server Group", \
-##      "Port": 5432, \
-##      "Username": "cms", \
-##      "Passfile": "/var/lib/pgadmin/storage/pgadmin/file.pgpass", \
-##      "Host": "postgresql-ha-pgpool", \
-##      "SSLMode": "prefer", \
-##      "MaintenanceDB": "postgres" \
-##    }' \
+   --set extraSecretMounts.name=pgpassfile \
+   --set extraSecretMounts.secret=$(awk '{print $1}' "${BASH_SOURCE%/*}/../config/pgadmin4/pgpass.txt") \
+   --set extraSecretMounts.mountPath="/var/lib/pgadmin/storage/pgadmin/file.pgpass" \
+   --set extraSecretMounts.readOnly=true \
+   --set serverDefinitions.enabled=true \
+   --set serverDefinitions.servers=$(awk '{print $1}' "${BASH_SOURCE%/*}/../config/pgadmin4/servers.json") \
 
   rancher app install --no-prompt --namespace default \
    --set env.email=$PGADMIN_EMAIL \
@@ -339,27 +329,32 @@ function createConfig() {
   rancher kubectl apply -f "configMaps/$1"
 }
 
+function createTls() {
+  rancher kubectl -n default create secret tls dosidowebcom \
+    --cert=${BASH_SOURCE%/*}/../ssl/ssl.cert \
+    --key=${BASH_SOURCE%/*}/../ssl/ssl.key
+}
+
 sleep 10
 
 rancherForceLogin
 
-#clusterExists $CMS_NAME ||
 createCluster $CMS_NAME
 checkCluster $CMS_NAME
 
 sleep 2
 rancherLogin
 sleep 2
+createTls
+sleep 2
 launchLonghorn
 rancher context switch Default
 addCatalog "bitnami" "helm_v3" "https://charts.bitnami.com/bitnami"
-sleep 10
 
 #launchMetalLB # TODO LEAVE THIS COMMENTED FOR DEVELOPERS
 #launchTraefik # TODO LEAVE THIS COMMENTED FOR DEVELOPERS
 
 launchRedis
-
 launchPostgreSQL
 launchPGAdmin
 launchCmsApp

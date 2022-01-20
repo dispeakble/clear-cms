@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if ((EUID != 0)); then
-    echo "try sudo $0 $@"
+    echo "try  $0 $@"
     exit
 fi
 
@@ -18,15 +18,15 @@ installService() {
   fi
 }
 if [ -z "$(command -v curl)" ]; then
-  sudo apt-get -y install curl
+   apt-get -y install curl
 fi
 
 if [ -z "$(command -v jq)" ]; then
-  sudo apt-get -y install jq
+   apt-get -y install jq
 fi
 
 if [ -z "$(command -v bc)" ]; then
-  sudo apt-get -y install bc
+   apt-get -y install bc
 fi
 
 if [ -z "$(command -v docker)" ]; then
@@ -38,9 +38,6 @@ fi
 if [ -z "$(command -v kubectl)" ]; then
   installService "infrastructure/install-kubectl.sh"
 fi
-if [ -z "$(command -v node)" ]; then
-  installService "infrastructure/install-nodejs.sh"
-fi
 
 base_path=$(readlink -e ".")
 cd $base_path
@@ -48,7 +45,7 @@ cd $base_path
 DOCKERHUB_USERNAME="cmsbot"
 DOCKERHUB_PASS="uB8V7B6IR5ll"
 BITBUCKET_USERNAME="the_dispeakble_one"
-BITBUCKET_PASS='3!mV11JPhaxh'
+BITBUCKET_PASS='WrBr1Xh611f9'
 
 installService "infrastructure/run-rancher.sh"
 installService "infrastructure/install-rancher-cli.sh"
