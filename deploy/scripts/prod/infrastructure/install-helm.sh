@@ -15,7 +15,7 @@ if ! which "$APP_BINARY" >/dev/null || [ "$($APP_BINARY version --client | grep 
     echo "Installing $APP $APP_VERSION..."
     curl -fsSL https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get -o /tmp/hs-installer.sh
     chmod +x /tmp/hs-installer.sh
-    sudo /tmp/hs-installer.sh -v "$APP_VERSION"
+     /tmp/hs-installer.sh -v "$APP_VERSION"
     rm -f /tmp/hs-installer.sh
     source <(helm completion bash)
     echo "helm v3 installed"

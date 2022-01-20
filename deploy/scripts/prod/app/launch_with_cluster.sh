@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CMS_NAME="cms-cluster"
-CMS_PATH="$HOME/cms_app"
+CMS_PATH="/home/dosidoweb/cms_app"
 
 #TODO these could be added to a secrets
 REDIS_PASSWORD="1gzHwbgfwR"

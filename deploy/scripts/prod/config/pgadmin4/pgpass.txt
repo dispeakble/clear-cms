@@ -1,0 +1,2 @@
+#hostname:port:database:username:password
+postgresql-ha-pgpool:5432:cms:cms:0MG9DtWxT@t89*6

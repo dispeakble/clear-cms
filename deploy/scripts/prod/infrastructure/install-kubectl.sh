@@ -21,14 +21,14 @@ if ! which "$APP_BIN" >/dev/null; then
     fi
 
     if [[ $OS == "Ubuntu" ]]; then
-        sudo apt-get update &&
-            sudo apt-get install -y apt-transport-https
-        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-        sudo apt-get update
-        sudo apt-get install -y kubectl
+         apt-get update &&
+             apt-get install -y apt-transport-https
+        curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg |  apt-key add -
+        echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" |  tee -a /etc/apt/sources.list.d/kubernetes.list
+         apt-get update
+         apt-get install -y kubectl
     elif [[ $OS == "RHEL" ]]; then
-        sudo tee -a /etc/yum.repos.d/kubernetes.repo <<EOF
+         tee -a /etc/yum.repos.d/kubernetes.repo <<EOF
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
@@ -37,7 +37,7 @@ gpgcheck=1
 repo_gpgcheck=1
 gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
-        sudo yum install -y kubectl
+         yum install -y kubectl
     fi
 
     source <(kubectl completion bash)

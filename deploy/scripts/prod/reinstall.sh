@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo /bin/bash ./maintenance/clean-rancher.sh
-sudo /bin/bash ./install.sh
+ /bin/bash ./maintenance/clean-rancher.sh
+ /bin/bash ./install.sh

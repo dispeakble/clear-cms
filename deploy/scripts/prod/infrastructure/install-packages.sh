@@ -11,7 +11,7 @@ installNpmPackages() {
 installYarnPackages() {
 
   if [ ! -d "$1/node_modules" ]; then
-    sudo npm i -g yarn
+     npm i -g yarn
     cd $1 && yarn install
   fi
 
