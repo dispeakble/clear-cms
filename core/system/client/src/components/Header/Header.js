@@ -8,7 +8,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Drawer from "@material-ui/core/Drawer";
 import Modal from "components/Modal/Modal";
-import { withRouter } from "react-router-dom";
 
 import Menu from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -238,7 +237,7 @@ class Header extends Component {
   }
 }
 
-export default withRouter(withTheme(withStyles(styles)(Header)));
+export default withTheme(withStyles(styles)(Header));
 
 Header.defaultProp = {
   color: "rgba(0,0,0,.87)"

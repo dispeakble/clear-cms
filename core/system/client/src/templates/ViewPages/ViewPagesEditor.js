@@ -170,27 +170,28 @@ class ViewPagesEditor extends React.PureComponent {
 
         boxes = boxes.map((box, index) => {
             return {
+                ...JSON.parse(box.data),//GOD please forgive me
                 i: String(index),
                 id: box.id,
                 title: box.title,
                 module: box.module,
                 x: box.PageToBox.x,
                 y: box.PageToBox.y,
-                ...JSON.parse(box.data),//GOD please forgive me
                 moduleOptions: JSON.parse(box.moduleOptions),
             }
         })
 
         const statePayload = {
+            ...pageConfig,//GOD please forgive me
+            pageId: pageId,
             title: title,
             link: link,
             isHome: !!isHome,
             active: !!active,
             isTemplate: !!isTemplate,
-            templateId: templateId,
-            ...pageConfig,
+            templateId,
             categories,
-            boxes: boxes
+            boxes
         };
 
         if (fromTemplate && boxes && boxes.length) {
@@ -212,23 +213,18 @@ class ViewPagesEditor extends React.PureComponent {
     }
 
     async componentDidMount() {
-        let editing = this.state.editing;
-        let pageId = this.props.location.pathObject[2];
-
-        const pageConfig = this.state;
+        const editing = this.state.editing;
 
         if (editing) {
+            const pageId = Number(this.props.location.pathObject[2]);
             await this.getPageDetails(pageId);
         } else {
-            //TODO GET THE DEFAULT THEME CORRECTLY AND SET THE DEFAULT PAGE PROPS HERE
             if (this.props.location?.state?.templateMode) {
-                pageConfig.isTemplate = this.props.location.state.templateMode;
+                this.setState({
+                    isTemplate: this.props.location.state.templateMode
+                });
             }
         }
-
-        this.setState({
-            pageConfig, pageId
-        });
     }
 
     setAsyncState = (newState) => new Promise((resolve) => this.setState(newState, resolve));
@@ -587,7 +583,7 @@ class ViewPagesEditor extends React.PureComponent {
                 x: 0,
                 y: Infinity, // puts it at the bottom
                 w: 12,
-                h: 20,
+                h: 200 / (this.state.layoutBoxSpacing[0] || 1),
             };
 
             await this.setAsyncState({
@@ -824,7 +820,8 @@ class ViewPagesEditor extends React.PureComponent {
                                 this.saveBox(box);
                             }}
                             pageOptions={{
-                                pageId: this.state.pageId
+                                pageId: this.state.pageId,
+                                layoutBoxSpacing: this.state.layoutBoxSpacing
                             }}
                             fontFamilies={fontsList}
                             fontSizes={this.fontSizes}

@@ -215,7 +215,7 @@ class GalleryModule extends Component {
     }
 
     handleImageUpload(event) {
-        const newFiles = Array.from(event.target.files).map((file, index) => {
+        const newFiles = Array.from(event.target.files).map((file) => {
 
             return {
                 file: file,

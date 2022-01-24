@@ -29,13 +29,13 @@ class ViewPagesPreview extends React.Component {
             fontSize: "",
             fontFamily: "",
             textColor: "",
-            layoutBoxSpacing: "",
+            layoutBoxSpacing: [],
             title: "",
         },
         modals: [],
         layouts: {},
         fontUnit: "px",
-        page_id: 0,
+        pageId: 0,
         googleFonts: [],
         modalBoxes: {}
     };
@@ -45,24 +45,40 @@ class ViewPagesPreview extends React.Component {
     }
 
     async loadPage() {
-        const page_id = Number(this.props.location.pathObject[2]);
+        const pageId = Number(this.props.location.pathObject[2]);
         if (this.props.isLivePreview) {
             this.setState({
-                page_id: page_id,
+                pageId: pageId,
                 boxes: this.props.boxes,
                 pageConfig: this.props.pageConfig
             });
         } else {
             const page = await this.props.control.get({
-                id: page_id
+                id: pageId
             });
+
+            const boxes = page.boxes && page.boxes.length && page.boxes.map((box, index) => {
+                box.data = JSON.parse(box.data);
+                return {
+                    i: String(index),
+                    id: box.PageToBox.boxId,
+                    static: true,
+                    x: box.PageToBox.x,
+                    y: box.PageToBox.y,
+                    w: box.data.w,
+                    h: box.data.h,
+                    module: box.module,
+                    moduleOptions: JSON.parse(box.moduleOptions)
+                }
+            });
+
             this.setState({
-                page_id: page_id,
-                boxes: page.boxes,
+                pageId: pageId,
+                boxes: boxes,
                 pageConfig: page.pageConfig
             });
             let modalBoxes = {}
-            page.boxes.filter(box =>box.displayOptions &&box.displayOptions.displayAsModal).map(el => {
+            page.boxes.filter(box =>box.displayOptions &&box.displayOptions.displayAsModal).map((el, index) => {
                 modalBoxes[el.title + el.i] = {
                     name: el.title,
                     title: el.title,
@@ -99,7 +115,7 @@ class ViewPagesPreview extends React.Component {
                 return el;
             })
 
-            await this.setAsyncState({
+            this.setState({
                 modalBoxes: modalBoxes
             })
 
@@ -137,7 +153,6 @@ class ViewPagesPreview extends React.Component {
     }
 
     createElement(el) {
-        const i = el.i;
         el.static = true;
 
         let boxStyle = {};
@@ -158,7 +173,7 @@ class ViewPagesPreview extends React.Component {
             if (el.backgroundImageString) {
                 boxStyle.backgroundImage = `url(${el.backgroundImageString})`;
             } else {
-                boxStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+                boxStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${el.id}/${el.backgroundImage})`;
             }
 
             if (el.backgroundImage && el.backgroundImage.indexOf("__delete__") === 0) {
@@ -198,7 +213,7 @@ class ViewPagesPreview extends React.Component {
         if (el.hasBackgroundColor) {
             moduleStyle.backgroundColor = el.backgroundColor;
         } else if (el.hasBackgroundImage) {
-            moduleStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${i}/${el.backgroundImage})`;
+            moduleStyle.backgroundImage = `url(/files/pages/page-${el.templateId ? el.templateId : this.state.pageId}/box-${el.id}/${el.backgroundImage})`;
             moduleStyle.backgroundRepeat = el.hasBackgroundRepeat ? "repeat" : "no-repeat";
             moduleStyle.backgroundSize = el.hasBackgroundStretch ? "cover" : "auto";
         } else if (el.hasBackgroundGradient) {
@@ -258,11 +273,11 @@ class ViewPagesPreview extends React.Component {
                         <LazyModule
                             control={this.props.control}
                             services={this.props.services}
-                            i={i}
+                            i={el.i}
                             element={el}
                             boxId={el.id || -1}
                             moduleOptions={el.moduleOptions}
-                            pageOptions={{page_id: el.templateUsed ? el.templateUsed : this.state.page_id}}
+                            pageOptions={{pageId: el.templateUsed ? el.templateUsed : this.state.pageId}}
                         />
                     </Suspense>
                 </div>
@@ -349,7 +364,7 @@ class ViewPagesPreview extends React.Component {
         }
 
         const style = {
-            backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradient : `url(/files/pages/page-${this.state.page_id}/${this.state.pageConfig.backgroundImage})`,
+            backgroundImage: this.state.pageConfig.backgroundGradient ? this.state.pageConfig.backgroundGradient : `url(/files/pages/page-${this.state.pageId}/${this.state.pageConfig.backgroundImage})`,
             backgroundRepeat: this.state.pageConfig.backgroundRepeat
                 ? "repeat"
                 : "no-repeat",
@@ -372,7 +387,7 @@ class ViewPagesPreview extends React.Component {
         return (
             <React.Fragment>
                 <Helmet>
-                    <title>{this.state.pageConfig.title} </title>
+                    <title>{this.state.title}</title>
                 </Helmet>
                 {this.state.googleFonts.length ? <GoogleFontLoader
                     fonts={this.state.googleFonts}
@@ -403,7 +418,7 @@ class ViewPagesPreview extends React.Component {
                                     useCSSTransforms={true}
                                 >
                                     {this.state.boxes.length
-                                        ? _.map(this.state.boxes.filter(box => !(box.displayOptions &&box.displayOptions.displayAsModal)), (el) => this.createElement(el))
+                                        ? _.map(this.state.boxes.filter(box => !(box.displayOptions &&box.displayOptions.displayAsModal)), (el, index) => this.createElement(el))
                                         : ""}
                                 </ResponsiveReactGridLayout>
                             </div>

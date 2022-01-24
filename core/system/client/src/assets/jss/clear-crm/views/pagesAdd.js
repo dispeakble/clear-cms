@@ -7,7 +7,7 @@ const javascriptStyles = {
   gridLayout: {
     display: "flex",
     flexDirection: "column",
-    margin: "0 15px 0",
+    margin: 0,
     "& .react-grid-item": {
       boxSizing: "border-box",
       "&:hover > $boxControls" : {
@@ -19,7 +19,7 @@ const javascriptStyles = {
     },
     "& .react-grid-placeholder": {},
     "& .react-grid-layout ": {
-      marginTop: "10px",
+
     },
     "& .layoutJSON": {
       background: "#ddd",
@@ -392,32 +392,6 @@ linear-gradient(45deg, #CCC 25%, transparent 25%, transparent 75%, #CCC 75%, #CC
       marginRight: "5px"
     }
   },
-  buttonsPosition: {
-    display: "grid",
-    gridGap: "0",
-    gridTemplateColumns:"repeat(3, 1fr)",
-    "& > button": {
-      border: "1px solid rgba(0,0,0,0.3)",
-      lineHeight: "50px",
-      cursor: "pointer",
-      "&.selected": {
-        background: "rgba(0,0,0,0.3)",
-        color: "white"
-      }
-    },
-    "& *:nth-child(1)": {
-      borderRadius: "5px 0 0"
-    },
-    "& *:nth-child(3)": {
-      borderRadius: "0 5px 0 0"
-    },
-    "& *:nth-child(7)": {
-      borderRadius: "0 0 0 5px"
-    },
-    "& *:nth-child(9)": {
-      borderRadius: "0 0 5px "
-    }
-  }
 };
 
 export default javascriptStyles;

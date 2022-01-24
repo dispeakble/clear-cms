@@ -105,8 +105,7 @@ class ViewPageOptions extends React.PureComponent {
         this.setState({
             title: this.props.data.title,
             link: this.props.data.link,
-            seoTitle: this.props.data.seoTitle,
-            description: this.props.data.description,
+
             isHome: !!this.props.data.isHome,
             active: !!this.props.data.active,
             hasBackgroundColor: !!this.props.data.hasBackgroundColor,
@@ -123,7 +122,11 @@ class ViewPageOptions extends React.PureComponent {
             layoutBoxPadding: this.props.data.layoutBoxPadding,
             layoutBoxSpacing: this.props.data.layoutBoxSpacing,
             templates,
-            categories: this.props.data.categories
+            categories: this.props.data.categories,
+
+            seoTitle: this.props.data.seoTitle,
+            description: this.props.data.description,
+            useWebsiteTitle: !!this.props.data.useWebsiteTitle
         });
 
         this.getAllCategories();
@@ -768,9 +771,6 @@ class ViewPageOptions extends React.PureComponent {
                                                 },
                                             }}
                                             inputProps={{
-                                                inputProps: {
-                                                    minLength: "1",
-                                                },
                                                 value: this.state.seoTitle,
                                                 type: "text",
                                             }}
@@ -778,7 +778,7 @@ class ViewPageOptions extends React.PureComponent {
                                     </div>
                                 </div>
                                 <div>
-                                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page description</Typography>
+                                    <Typography variant="caption" style={{display: 'block', marginTop: '1rem'}}>Type in the SEO page description. The description is highly recommended for Search Engine Optimization.</Typography>
                                     <div>
                                         <CustomInput
                                             labelText="Page Description"
@@ -792,9 +792,6 @@ class ViewPageOptions extends React.PureComponent {
                                             }}
                                             inputProps={{
                                                 multiline: true,
-                                                inputProps: {
-                                                    minLength: "1",
-                                                },
                                                 value: this.state.description,
                                                 type: "text",
                                             }}
@@ -911,18 +908,16 @@ class ViewPageOptions extends React.PureComponent {
     };
 
     handleBoxSpacing = async (event, newValue) => {
-        if (this.state.layoutBoxSpacing[0] !== newValue) {
-            this.onUpdate({
-                layoutBoxSpacing: [newValue, newValue],
-                layoutBoxPadding: {
-                    "lg": [0, 0],
-                    "md": [0, 0],
-                    "sm": [0, 0],
-                    "xs": [0, 0],
-                    "xxs": [0, 0]
-                }
-            });
-        }
+        this.onUpdate({
+            layoutBoxSpacing: [newValue, newValue],
+            layoutBoxPadding: {
+                "lg": [0, 0],
+                "md": [0, 0],
+                "sm": [0, 0],
+                "xs": [0, 0],
+                "xxs": [0, 0]
+            }
+        });
     };
 
     handleBgImage = async (event) => {

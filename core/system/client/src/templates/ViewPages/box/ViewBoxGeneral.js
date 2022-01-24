@@ -164,7 +164,9 @@ class ViewBoxGeneral extends React.PureComponent {
                                     onEndEditingModule={() => this.onEndEditingModule()}
                                     boxId={box.id || 0}
                                     moduleOptions={this.box.moduleOptions}
-                                    pageId={this.props.page_id}
+                                    box={this.box}
+                                    layoutBoxSpacing={this.props.layoutBoxSpacing}
+                                    pageId={this.props.pageId}
                                     onSave={(data) => {
                                         this.box.moduleOptions = data;
                                     }}
@@ -183,8 +185,9 @@ class ViewBoxGeneral extends React.PureComponent {
 export default withStyles(styles)(ViewBoxGeneral);
 
 ViewBoxGeneral.propTypes = {
-    page_id: PropTypes.number,
+    pageId: PropTypes.number,
     box: PropTypes.object,
+    layoutBoxSpacing: PropTypes.number,
     classes: PropTypes.object,
     control: PropTypes.object,
     showModal: PropTypes.bool,
