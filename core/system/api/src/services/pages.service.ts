@@ -354,6 +354,9 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try {
+                    
+                    const pageId = Number(params.pageProps.pageId);
+                    
                     /*
                     * 1. update the page
                     * */
@@ -369,7 +372,7 @@ export class PagesService {
                             data: {
                                 what: 'page',
                                 where: {
-                                    id: params.id
+                                    id: pageId
                                 },
                                 data: {
                                     title: pageProps.title,
@@ -399,7 +402,7 @@ export class PagesService {
                                 what: 'pageToCategory',
                                 where: {
                                     'and': {
-                                        pageId: params.id,
+                                        pageId: pageId,
                                         categoryId: {
                                             'notIn': pageConfig.categories || []
                                         }
@@ -421,7 +424,7 @@ export class PagesService {
                                 data: {
                                     what: 'pageToCategory',
                                     records: pageConfig.categories.map(catId => {
-                                        return {categoryId: catId, pageId: params.id}
+                                        return {categoryId: catId, pageId: pageId}
                                     }),
                                     ignoreDuplicates: true
                                 }
@@ -442,7 +445,7 @@ export class PagesService {
                             data: {
                                 what: 'pageToConfig',
                                 where: {
-                                    pageId: params.id
+                                    pageId: pageId
                                 }
                             }
                         }
@@ -483,7 +486,7 @@ export class PagesService {
                                         act: 'rm',
                                         payload: {
                                             channel: 'system',
-                                            selection: [`/pages/page-${Number(params.id)}/${oldConfigData.backgroundImage}`]
+                                            selection: [`/pages/page-${pageId}/${oldConfigData.backgroundImage}`]
                                         }
                                     }).toPromise();
                                 }
@@ -530,7 +533,7 @@ export class PagesService {
                             data: {
                                 what: 'pageToBox',
                                 where: {
-                                    pageId: params.id,
+                                    pageId: pageId,
                                 }
                             }
                         }
@@ -565,7 +568,7 @@ export class PagesService {
                                             what: 'pageToBox',
                                             where: {
                                                 boxId: boxId,
-                                                pageId: params.id
+                                                pageId: pageId
                                             }
                                         }
                                     }
@@ -593,7 +596,7 @@ export class PagesService {
                                         act: 'rm',
                                         payload: {
                                             channel: 'system',
-                                            selection: [`/pages/page-${Number(params.id)}/box-${boxId}`]
+                                            selection: [`/pages/page-${pageId}/box-${boxId}`]
                                         }
                                     }).toPromise();
                                 }
@@ -651,10 +654,10 @@ export class PagesService {
                                     what: 'pageToBox',
                                     records: newAddedBoxes.map((newBox, index) => {
                                         return {
-                                            pageId: params.id,
+                                            pageId: Number(params.pageProps.pageId),
                                             boxId: newBox.id,
-                                            x: newBoxesMeta[index].data.x,
-                                            y: newBoxesMeta[index].data.y,
+                                            x: newBoxesMeta[index].x,
+                                            y: newBoxesMeta[index].y,
                                             templateUsed: 0
                                         }
                                     }),
@@ -667,7 +670,7 @@ export class PagesService {
                             newBox.ref = newBoxesMeta[index].i;
                             newBoxesDetails.push({
                                 id: newBox.id,
-                                ref: newBoxesMeta[index].data.i
+                                ref: newBoxesMeta[index].i
                             })
                             return newBox;
                         });
@@ -718,7 +721,7 @@ export class PagesService {
                                         y: box.data.y
                                     },
                                     where: {
-                                        pageId: params.id,
+                                        pageId: pageId,
                                         boxId: box.id
                                     }
                                 }
@@ -758,7 +761,7 @@ export class PagesService {
                                             y: box.data.y
                                         },
                                         where: {
-                                            pageId: params.id,
+                                            pageId: pageId,
                                             boxId: box.id
                                         }
                                     }
@@ -789,7 +792,7 @@ export class PagesService {
                                             x: box.data.x,
                                             y: box.data.y,
                                             templateUsed: box.data.templateUsed,
-                                            pageId: params.id,
+                                            pageId: pageId,
                                             boxId: box.id
                                         }
                                     }
@@ -815,7 +818,7 @@ export class PagesService {
                     subscriber.next({
                         success: "The page was saved",
                         data: {
-                            pageId: params.id,
+                            pageId: pageId,
                             boxes: boxesIds
                         }
                     })

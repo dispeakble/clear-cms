@@ -255,7 +255,7 @@ class PagesController extends Component {
                     if (params.pageConfig.hasBackgroundImage && params.pageConfig.backgroundImageFile) {
                         params.pageConfig.backgroundImage = `background.${this.help.fileExtension(params.pageConfig.backgroundImageFile.name)}`;
                         await this.uploadFiles({
-                            path: "/pages/page-" + params.id + "/",
+                            path: "/pages/page-" + params.pageProps.pageId + "/",
                             files: [{
                                 name: params.pageConfig.backgroundImage,
                                 file: params.pageConfig.backgroundImageFile
@@ -284,6 +284,8 @@ class PagesController extends Component {
 
                         if (box.moduleOptions && box.moduleOptions && box.moduleOptions.files) {
                             box.moduleOptions.files = box.moduleOptions.files.map(boxFile => {
+                                boxFile.name = boxFile.file?.name || boxFile.name;
+                                delete boxFile.string;
                                 delete boxFile.file;
                                 return boxFile;
                             });
@@ -312,24 +314,16 @@ class PagesController extends Component {
                         if (box.data.backgroundImageFile) {
                             box.data.backgroundImage = box.data.backgroundImageFile.name;
                             await this.uploadFiles({
-                                path: "/pages/page-" + params.id + "/box-" + box.id,
+                                path: "/pages/page-" + params.pageProps.pageId + "/box-" + box.id,
                                 files: [{
                                     name: `background.${this.help.fileExtension(box.data.backgroundImageFile.name)}`,
                                     file: box.data.backgroundImageFile
-                                }]
-                            })
-                        } /*else if (box.data.backgroundImage && box.data.backgroundImage.indexOf('__delete__') === 0) {
-                        //not working anymore//TODO implement delete button for box background image
-                            await this.sendMessage({
-                                module: 'system',
-                                api: 'bucket',
-                                act: 'rm',
-                                payload: {
-                                    path: `/pages/page-${params.id}/box-${box.id}/`,
-                                    selection: [box.data.backgroundImage.replace('__delete__', '')]
+                                }],
+                                progress: (evt) => {
+                                    params.uploadProgress(evt);
                                 }
-                            });
-                        }*/
+                            })
+                        }
 
                         if (box.moduleOptions?.files && box.moduleOptions?.files.length) {
                             const fileList = [];
@@ -340,13 +334,10 @@ class PagesController extends Component {
                             });
 
                             await this.uploadFiles({
-                                path: "/pages/page-" + params.id + "/box-" + box.id + "/module",
-                                files: fileList
-                            });
-
-                            box.moduleOptions.files.map((fileData) => {
-                                return {
-                                    name: fileData.name
+                                path: "/pages/page-" + params.pageProps.pageId + "/box-" + box.id + "/module",
+                                files: fileList,
+                                progress: (evt) => {
+                                    params.uploadProgress(evt);
                                 }
                             });
                         }

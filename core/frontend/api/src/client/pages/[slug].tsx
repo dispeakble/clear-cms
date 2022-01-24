@@ -50,9 +50,9 @@ export async function getStaticProps({ params }: {params: any}) {
 
     if(!pageLink.length) {
         condition = {
-            is_default: 1,
+            active: 1,
             istemplate: 0,
-            publish: 1
+            isHome: 1
         }
     }
 

@@ -15,23 +15,23 @@ class HeaderModule extends Component {
         let style = {
                 height: '100%'
             },
-            logo_name = null;
+            logo = null;
 
         if (this.props.element.moduleOptions.files) {
-            const bg_name = this.pickByKey({
+            const bg = this.pickByKey({
                 data: this.props.element.moduleOptions.files,
                 what: 'sel',
                 where: 'bg'
             });
 
-            logo_name = this.pickByKey({
+            logo = this.pickByKey({
                 data: this.props.element.moduleOptions.files,
                 what: 'sel',
                 where: 'logo'
             });
 
-            if (bg_name && bg_name.name) {
-                style.backgroundImage = `url(/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${bg_name.name})`;
+            if (bg && bg.name) {
+                style.backgroundImage = `url(/files/pages/page-${this.props.pageOptions.pageId}/box-${this.props.element.id}/module/${bg.name})`;
                 style.backgroundRepeat = this.props.element.moduleOptions
                     .backgroundRepeat
                     ? "repeat"
@@ -53,9 +53,7 @@ class HeaderModule extends Component {
                 style.width = "inherit";
                 style.height = "inherit";
                 style.overflow = "inherit";
-                
             }
-            
         }
 
         return (
@@ -69,11 +67,15 @@ class HeaderModule extends Component {
                 }
             >
                 {
-                    (logo_name && logo_name.name) && <div className={classes.logoImage}>
+                    (logo && logo.name) && <div className={classes.logoImage}>
                         <Link href={`/${this.props.element.moduleOptions.logoLink}`}>
-                            <a><img
-                                style={{width: '100%'}}
-                                src={!logo_name ? "" : `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.i}/module/${logo_name.name}`}
+                            <a style={{
+                                position: "absolute",
+                                left: this.props.element.moduleOptions.logoPosition[0],
+                                top: this.props.element.moduleOptions.logoPosition[1],
+                            }}><img
+                                style={{width: this.props.element.moduleOptions.logoWidth, height: this.props.element.moduleOptions.logoHeight}}
+                                src={!logo ? "" : `/files/pages/page-${this.props.pageOptions.pageId}/box-${this.props.element.id}/module/${logo.name}`}
                                 alt={this.props.element.moduleOptions.logoTitle}/></a></Link>
                     </div>
                 }

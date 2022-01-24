@@ -12,7 +12,7 @@ const PageComponent: NextPage = (props) => {
 
 
 export async function getServerSideProps(context: any) {
-    context.isIndex = true;
+    context.isHome = true;
     return PageContent.getServerSideProps(context);
 }
 
@@ -26,9 +26,9 @@ export async function getServerSideProps(context: any) {
         api: 'pages',
         act: 'get',
         where: {
-            is_default: 1,
+            active: 1,
             istemplate: 0,
-            publish: 1
+            isHome: 1
         }
     };
 

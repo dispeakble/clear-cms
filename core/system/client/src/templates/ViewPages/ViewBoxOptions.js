@@ -93,7 +93,8 @@ class ViewBoxOptions extends React.Component {
             box: this.box,
             fontFamilies: this.props.fontFamilies,
             fontSizes: this.props.fontSizes,
-            page_id: this.props.pageOptions.page_id,
+            pageId: this.props.pageOptions.pageId,
+            layoutBoxSpacing: this.props.pageOptions.layoutBoxSpacing[0]
         };
 
         content['general'] = <ViewBoxGeneral {...payload} />;

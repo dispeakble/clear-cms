@@ -1,35 +1,23 @@
 import React from 'react';
 import Head from 'next/head'
-import ViewPagesPreview from "../src/templates/ViewPages/ViewPagesPreview";
-
+import ViewPage from "../src/templates/ViewPages/ViewPage";
 
 class PageContent{
 
     static async getServerSideProps(context: any) {
         let page: any = null;
-        let pages: any = null;
-        let categories: any = null;
 
-
-        const pagePayload = context.isIndex ? {
-            publish: 1,
-            is_default: 1
+        const pagePayload = context.isHome ? {
+            active: 1,
+            isHome: 1,
+            isTemplate: 0
         } : {
-            publish: 1,
-            pageLink: context.req.params[0]
+            active: 1,
+            isTemplate: 0,
+            link: {'like': `%${context.req.params[0]}`}
         }
 
-
         try {
-
-            //TODO based on the config from the DB
-            //get the url for product details
-            //get the url for categories list
-            //get the url for product list
-            //get the url for product search (can be the same as above but with filters)
-            //get the url for checkout
-
-
             const pageObs = await context.req.apiHub({
                 protocolMethod: 'sendMessage',
                 channel: 'frontendapi',
@@ -37,44 +25,11 @@ class PageContent{
                 act: 'get',
                 payload: {
                     body: {
-                        how: "AND",
                         where: pagePayload
                     }
                 }
             });
             page = await pageObs.toPromise();
-
-
-            //fetch pages list
-
-            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('pagelist' || 'search'))) {
-                const pagesObs = await context.req.apiHub({
-                    protocolMethod: 'sendMessage',
-                    channel: 'frontendapi',
-                    api: 'pages',
-                    act: 'list',
-                    payload: {
-                        body: {
-                            where: {
-                                publish: 1,
-                            }
-                        }
-                    }
-                });
-                pages = await pagesObs.toPromise();
-            }
-
-            //fetch categories list
-
-            if(page.data?.items?.filter((item : any) => item.module.toLowerCase().includes('categories' || 'search'))) {
-                const categoriesObs = await context.req.apiHub({
-                    protocolMethod: 'sendMessage',
-                    channel: 'frontendapi',
-                    api: 'categories',
-                    act: 'list',
-                });
-                categories = await categoriesObs.toPromise();
-            }
 
         } catch (err) {
             return {
@@ -84,42 +39,40 @@ class PageContent{
         return {
             props: {
                 pageData: page.data,
-                pagesData: pages?.data,
-                categoriesData: categories?.data,
-                isIndex: context.isIndex || false,
+                isHome: context.isHome || false,
             },
         }
     }
 
     static renderContent(props: any) {
 
-        const {pageMetaTitle, pageMetaDescription, useWebsiteTitle, websiteInfo} = JSON.parse(props.pageData.pageConfig.data) ||
-            { pageMetaTitle: null, pageMetaDescription: null, pageFavicon: null, useWebsiteTitle: false, websiteInfo: null}
+        let { seoTitle, description, websiteInfo } = props.pageData.pageConfig ||
+            { seoTitle: props.pageData.title, description: ""}
 
-        //check
-        const metas = {
-            _pageMetaTitle : pageMetaTitle ? pageMetaTitle : websiteInfo.defaultMetaTitle,
-            _pageMetaDescription : pageMetaDescription ? pageMetaDescription : websiteInfo.defaultMetaDescription,
-            _websiteFavicon: websiteInfo.defaultFavicon
+        const { websiteName } = props.pageData.settings;
+
+        if(!seoTitle || !seoTitle.length) {
+            seoTitle = props.pageData.title;
         }
 
-
-        const pageTitle = useWebsiteTitle ?  websiteInfo.websiteName + ' - ' + metas._pageMetaTitle : metas._pageMetaTitle
+        if(props.pageData.pageConfig.useWebsiteTitle) {
+            seoTitle = `${websiteName} :: ${seoTitle}`;
+        }
 
         return(
             <>
                 <Head>
-                    <title>{`${pageTitle}`}</title>
-                    <meta name="description" content={`${metas._pageMetaDescription}`} />
-                    <meta property="og:title" content={`${pageTitle}`} />
-                    <meta property="og:description" content={`${metas._pageMetaDescription}`} />
+                    <title>{`${seoTitle}`}</title>
+                    <meta name="description" content={`${description}`} />
+                    <meta property="og:title" content={`${seoTitle}`} />
+                    <meta property="og:description" content={`${description}`} />
                     <meta property="og:url" content={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     <meta property="og:type" content="website" />
-                    <meta property="og:image" content={`${metas._websiteFavicon}`} />
+                    <meta property="og:image" content={`${websiteInfo?.defaultFavicon}`} />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    <link rel="icon" type="image/*" href={`${metas._websiteFavicon}`} />
+                    <link rel="icon" type="image/*" href={`${websiteInfo?.defaultFavicon}`} />
                     {
-                        !props.isIndex &&
+                        !props.isHome &&
                         <link rel="canonical" href={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     }
                     <meta charSet="UTF-8" />
@@ -129,8 +82,7 @@ class PageContent{
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
                 </Head>
-
-                <ViewPagesPreview {...props} />
+                <ViewPage {...props} isDev={process.env.NODE_ENV === 'development'} />
             </>
         )
     }
