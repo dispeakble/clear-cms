@@ -1,17 +1,9 @@
 import React, {Component} from "react";
-import Button from "components/CustomButtons/Button.js";
-import {withRouter} from "react-router-dom";
-
+import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 // for the modal
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 
 import {withStyles, createTheme} from "@material-ui/core/styles";
-import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
@@ -28,54 +20,71 @@ import {
 import * as Icons from "@material-ui/icons";
 
 // for the dropdown
-import {Accordion, AccordionDetails, AccordionSummary, Divider, Slider, TextField} from "@material-ui/core";
+import {
+    Divider,
+    FormControlLabel,
+    Slider,
+    TextField
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-
-// for the new color picker
-import {SketchPicker} from "react-color";
-import reactCSS from "reactcss";
 
 // for Font Awesome
 import Icon from "@material-ui/core/Icon";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PropTypes from "prop-types";
+import Modal from "components/Modal/Modal";
+import ColorPicker from "components/ColorPicker/ColorPicker";
 
 class MenuModule extends Component {
     state = {
-        menuOptions: [],
-        boxModuleEditId: "",
-        showModuleOptionsModal: false,
-        modalTitle: "Menu Items",
-        richFormattedText: false,
-        showMultipleDeleteModal: false,
-        tableRef: React.createRef(),
+        menuItems: [],
         isMenuVertical: false,
         showAsAccordion: false,
-        flatLinks: [],
         stretchToFit: false,
-        displayBgColorPicker: false,
-        bgColor: {
-            r:"",
-            g:"",
-            b:"",
-            a:""
-        },
-        icons: [],
+        backgroundColor: "",
         icon: "",
-        noLinksFound: false,
         horizontallyCentered: false,
         verticallyCentered: false,
         menuIconSpace: 0,
-        muiTheme: {}
+
+        /* ignore from here down */
+        backgroundColorOpen: false,
+        tableRef: React.createRef(),
+        flatLinks: [],
+        icons: [],
+        boxModuleEditId: "",
+        showModuleOptionsModal: false,
+        showDeleteBoxModal: false,
     };
 
-    componentDidMount() {
-        if (Object.keys(this.props.moduleOptions).length !== 0) {
+    modals = {
+        deleteBoxModal: {
+            name: "deleteBoxModal",
+            title: "Confirm Delete Box",
+            content: "Are you sure you want to delete the menu items?",
+            modalSize: "small",
+            closeButton: {
+                callback: () => {
+                    this.setState({showDeleteBoxModal: false});
+                },
+                label: "Cancel",
+            },
+            confirmButton: {
+                show: true,
+                callback: () => {
+                    this.multipleDeleteCallback();
+                },
+                label: "Delete",
+            },
+        }
+    }
+
+    async componentDidMount() {
+        if (Object.keys(this.props.moduleOptions || {}).length !== 0) {
             const statePayload = {
-                menuOptions: this.props.moduleOptions.menuOptions,
+                menuItems: this.props.moduleOptions.menuItems,
                 isMenuVertical: this.props.moduleOptions.isMenuVertical,
                 stretchToFit: this.props.moduleOptions.stretchToFit,
-                bgColor: this.props.moduleOptions.bgColor,
+                backgroundColor: this.props.moduleOptions.backgroundColor,
                 horizontallyCentered: this.props.moduleOptions.horizontallyCentered,
                 verticallyCentered: this.props.moduleOptions.verticallyCentered,
                 menuIconSpace: this.props.moduleOptions.menuIconSpace,
@@ -86,21 +95,18 @@ class MenuModule extends Component {
                 statePayload.showAsAccordion = this.props.moduleOptions.showAsAccordion
             }
 
-            this.setState(statePayload);
+            await this.setAsyncState(statePayload);
             this.getAllLinks();
         }
 
         let icons = Object.keys(Icons).filter((key) => {
             let show = true;
-            if (key.includes("Outlined")) {
-                show = false;
-            } else if (key.includes("Rounded")) {
-                show = false;
-            } else if (key.includes("Sharp")) {
-                show = false;
-            } else if (key.includes("New")) {
-                show = false;
-            } else if (key.includes("TwoTone")) {
+            if (key.includes("Outlined")
+                || key.includes("Rounded")
+                || key.includes("Sharp")
+                || key.includes("New")
+                || key.includes("TwoTone")
+            ) {
                 show = false;
             }
 
@@ -114,82 +120,38 @@ class MenuModule extends Component {
             };
         });
 
-        this.setState({icons, muiTheme: this.getTheme()});
-    }
-
-    getTheme = () => {
-        return createTheme({
-            palette: this.props.defaultTheme,
-            overrides: {
-                MuiAccordionDetails: {
-                    root: {
-                        display: "block"
-                    }
-                }
-            },
+        this.setState({
+            icons
         });
-    };
+    }
 
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
-    sendStyles = (targetedColor) => {
-        let {r, g, b, a} = targetedColor;
-        return reactCSS({
-            default: {
-                color: {
-                    width: "36px",
-                    height: "14px",
-                    borderRadius: "2px",
-                    background: `rgba(${r}, ${g}, ${b}, ${a})`,
-                },
-                swatch: {
-                    padding: "5px",
-                    background: "#fff",
-                    borderRadius: "1px",
-                    border: "1px solid rgba(0, 0, 0, 0.23)",
-                    display: "inline-block",
-                    cursor: "pointer",
-                },
-                popover: {
-                    position: "absolute",
-                    zIndex: 99999,
-                },
-                cover: {
-                    position: "fixed",
-                    top: "0px",
-                    right: "0px",
-                    bottom: "0px",
-                    left: "0px",
-                },
-            },
-        });
+    showDeleteBoxModal = (evt, data) => {
+        this.setState({multipleDeleteData: data, showDeleteBoxModal: true});
     };
 
-    showMultipleDeleteModal = (evt, data) => {
-        this.setState({multipleDeleteData: data, showMultipleDeleteModal: true});
-    };
-
-    closeMultipleDeleteModal = () => {
-        this.setState({showMultipleDeleteModal: false});
+    closeDeleteModal = () => {
+        this.setState({showDeleteBoxModal: false});
     };
 
     multipleDeleteCallback = async () => {
-        let menuOptions = [...this.state.menuOptions];
+        let menuItems = [...this.state.menuItems];
         let menuIds = [];
         let multipleDeleteData = this.state.multipleDeleteData;
         multipleDeleteData.map((option) => menuIds.push(option.id));
-        menuOptions = menuOptions.filter((option) => {
+        menuItems = menuItems.filter((option) => {
             return !menuIds.includes(option.id);
         });
-        await this.setAsyncState({menuOptions});
+        await this.setAsyncState({menuItems});
         this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
 
-        this.closeMultipleDeleteModal();
+        this.closeDeleteModal();
     };
 
     getLinksNested(id) {
-        let link = this.state.menuOptions.find((el) => el.id === id);
+        let link = this.state.menuItems.find((el) => el.id === id);
         let result = link.text;
         if (link && link.parentId) {
             result = this.getLinksNested(link.parentId) + "/" + result;
@@ -200,8 +162,9 @@ class MenuModule extends Component {
     getAllLinks = async () => {
         let result = [];
 
-        if (this.state.menuOptions && this.state.menuOptions.length) {
-            let links = this.state.menuOptions;
+        if (this.state.menuItems && this.state.menuItems.length) {
+
+            let links = this.state.menuItems;
             links.map((el) => {
                 let linkName = el.text;
                 if (el.parentId) {
@@ -214,7 +177,7 @@ class MenuModule extends Component {
                 return el;
             });
 
-            await this.setAsyncState({
+            this.setState({
                 flatLinks: result,
             });
         }
@@ -251,7 +214,7 @@ class MenuModule extends Component {
                         let payload = {
                             totalCount: 100,
                             page: 1,
-                            data: this.state.menuOptions,
+                            data: this.state.menuItems,
                         };
                         resolve(payload);
                     }, 300);
@@ -262,11 +225,11 @@ class MenuModule extends Component {
                     new Promise((resolve) => {
                         setTimeout(async () => {
                             delete newData.tableData;
-                            let menuOptions = typeof this.state.menuOptions === typeof [] ? [...this.state.menuOptions] : [];
-                            newData.id = menuOptions.length + 1;
-                            let newMenuOptions = menuOptions.concat(newData);
-                            await this.setAsyncState({menuOptions: newMenuOptions});
-                            this.props.onUpdate(this.state);
+                            let menuItems = typeof this.state.menuItems === typeof [] ? [...this.state.menuItems] : [];
+                            newData.id = menuItems.length + 1;
+                            let newmenuItems = menuItems.concat(newData);
+                            await this.setAsyncState({menuItems: newmenuItems});
+                            this.onUpdate(this.state);
                             this.getAllLinks();
                             resolve();
                         }, 100);
@@ -275,11 +238,11 @@ class MenuModule extends Component {
                     new Promise((resolve) => {
                         setTimeout(async () => {
                             delete newData.tableData;
-                            const dataUpdate = [...this.state.menuOptions];
+                            const dataUpdate = [...this.state.menuItems];
                             const index = oldData.tableData.id;
                             dataUpdate[index] = newData;
-                            await this.setAsyncState({menuOptions: dataUpdate});
-                            this.props.onUpdate(this.state);
+                            await this.setAsyncState({menuItems: dataUpdate});
+                            this.onUpdate(this.state);
                             this.getAllLinks();
                             resolve();
                         }, 100);
@@ -287,11 +250,11 @@ class MenuModule extends Component {
                 onRowDelete: (oldData) =>
                     new Promise((resolve) => {
                         setTimeout(async () => {
-                            const dataDelete = [...this.state.menuOptions];
+                            const dataDelete = [...this.state.menuItems];
                             const index = oldData.tableData.id;
                             dataDelete.splice(index, 1);
-                            await this.setAsyncState({menuOptions: dataDelete});
-                            this.props.onUpdate(this.state);
+                            await this.setAsyncState({menuItems: dataDelete});
+                            this.onUpdate(this.state);
                             resolve();
                         }, 100);
                     }),
@@ -304,13 +267,17 @@ class MenuModule extends Component {
                             <DeleteForever color="error"/>{" "}
                         </IconButton>
                     ),
-                    onClick: async (evt, data) => this.showMultipleDeleteModal(evt, data),
+                    onClick: () => {
+                        this.setState({
+                            showDeleteBoxModal: true
+                        })
+                    },
                 },
             ],
         },
         props: {
             icons: {
-                Add: () => <AddCircle className={this.props.classes.addIcon}/>,
+                Add: () => <AddCircle/>,
                 Check: () => <Check color="primary"/>,
                 Clear: () => <Clear color="error"/>,
                 Edit: () => (
@@ -426,14 +393,6 @@ class MenuModule extends Component {
         },
     };
 
-    handleClick = () => {
-        this.setState({displayBgColorPicker: !this.state.displayBgColorPicker});
-    };
-
-    handleColorPickerClose = () => {
-        this.setState({displayBgColorPicker: false});
-    };
-
     closeModuleOptionsModal() {
         this.setState({showModuleOptionsModal: false});
     }
@@ -445,177 +404,146 @@ class MenuModule extends Component {
         });
     };
     handleSlider = async (e, newValue) => {
-        await this.setAsyncState({
+        this.onUpdate({
             menuIconSpace: newValue
         });
-        this.props.onUpdate(this.state);
+    }
+
+    onUpdate(params) {
+        this.props.onUpdate(Object.assign({}, {
+            menuItems: this.state.menuItems,
+            isMenuVertical: this.state.isMenuVertical,
+            showAsAccordion: this.state.showAsAccordion,
+            stretchToFit: this.state.stretchToFit,
+            backgroundColor: this.state.backgroundColor,
+            icon: this.state.icon,
+            horizontallyCentered: this.state.horizontallyCentered,
+            verticallyCentered: this.state.verticallyCentered,
+            menuIconSpace: this.state.menuIconSpace
+        }, params))
+        this.setState(params)
     }
 
     render() {
-
-        if(undefined === this.state.bgColor) {
-            return <></> ;
-        }
-
-        const classes = this.props.classes;
-        const bgColorStyles = this.sendStyles(this.state.bgColor || {r:0,b:0,g:0,a:1});
-
         return (
             <React.Fragment>
-                <Accordion>
-                    <AccordionSummary
-                        classes={{
-                            root: this.props.classes.accordionSummaryRoot,
-                            expanded: this.props.classes.accordionSummaryExpanded,
-                            content: this.props.classes.accordionSummaryContent,
-                        }}
-                        expandIcon={<ExpandMoreIcon/>}
-                        aria-controls="panel1c-content"
-                    >
-                        <Typography className={this.props.classes.typography}>
-                            Display Options
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails style={{
-                        justifyContent: "space-between"
-                    }}>
-                        <div style={{flex: 1}}>
-
-                            <div>
-                                <Typography gutterBottom style={{display: "flex", alignItems: "center"}}>
-                                    <span
-                                        style={bgColorStyles.swatch}
-                                        onClick={() => this.handleClick("displayBgColorPicker")}
-                                    >
-                                        <span style={bgColorStyles.color}/>
-                                    </span>
-                                    <span style={{display: "inline", marginLeft: "10px"}}>Background Color</span>
-                                </Typography>
-
-                                {this.state.displayBgColorPicker ? (
-                                    <div style={bgColorStyles.popover}>
-                                        <div
-                                            style={bgColorStyles.cover}
-                                            onClick={() =>
-                                                this.handleColorPickerClose("displayBgColorPicker")
-                                            }
-                                        />
-                                        <SketchPicker
-                                            color={this.state.bgColor}
-                                            onChange={async (color) => {
-
-                                                await this.setAsyncState({
-                                                    bgColor: color.rgb,
-                                                });
-
-                                                this.props.onUpdate(this.state);
-                                            }}
-                                        />
-                                    </div>
-                                ) : null}
-                            </div>
-                            <div>
-                                <Typography id="discrete-slider" gutterBottom>
-                                    <Tooltip title="The menu will have collapsible sections for the submenus">
-                                        <Switch
-                                            checked={this.state.showAsAccordion}
-                                            onChange={async () => {
-                                                await this.setAsyncState({
-                                                    showAsAccordion: !this.state.showAsAccordion,
-                                                });
-                                                this.props.onUpdate(this.state);
-                                            }}
-                                            value={this.state.showAsAccordion}
-                                        />
-                                    </Tooltip>
-                                    Show as Accordion{" "}
-                                </Typography>
-                            </div>
-                            <div>
-                                <Typography id="discrete-slider" gutterBottom>
-                                    <Tooltip title="Show the menu links in vertical order">
-                                        <Switch
-                                            checked={this.state.isMenuVertical}
-                                            onChange={async () => {
-                                                await this.setAsyncState({
-                                                    isMenuVertical: !this.state.isMenuVertical,
-                                                });
-                                                this.props.onUpdate(this.state);
-                                            }}
-                                            value={this.state.isMenuVertical}
-                                        />
-                                    </Tooltip>
-                                    Vertical Menu
-                                </Typography>
-                            </div>
-                            <div>
-                                <Typography id="discrete-slider" gutterBottom>
-                                    <Tooltip title="Stretches the menu horizontally and vertically">
-                                        <Switch
-                                            checked={this.state.stretchToFit}
-                                            onChange={async () => {
-                                                await this.setAsyncState({
-                                                    stretchToFit: !this.state.stretchToFit,
-                                                });
-                                                this.props.onUpdate(this.state);
-                                            }}
-                                            value={this.state.stretchToFit}
-                                        />
-                                    </Tooltip>
-                                    Stretch to Fit
-                                </Typography>
-                            </div>
-
-                        </div>
-                        <div style={{flex: 1}}>
-                            <Typography id="discrete-slider" gutterBottom>
-                                <Tooltip title="The text will be aligned horizontally">
-                                    <Switch
+                <div style={{flex: 1, display: "flex"}}>
+                    <div style={{flex: 1}}>
+                        <h4>Style Options</h4>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                The text inside the menu items will be centered horizontally
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                <FormControlLabel
+                                    control={<Switch
                                         checked={this.state.horizontallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                horizontallyCentered: !this.state.horizontallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
-                                        }}
-                                        value={this.state.horizontallyCentered}
-                                    />
-                                </Tooltip>
-                                Text to Center Horizontally
-                            </Typography>
-                            <Typography id="discrete-slider" gutterBottom>
-                                <Tooltip title="The text will be aligned vertically">
-                                    <Switch
-                                        checked={this.state.verticallyCentered}
-                                        onChange={async () => {
-                                            await this.setAsyncState({
-                                                verticallyCentered: !this.state.verticallyCentered,
-                                            });
-                                            this.props.onUpdate(this.state);
-                                        }}
-                                        value={this.state.verticallyCentered}
-                                    />
-                                </Tooltip>
-                                Text to Center Vertically
-                            </Typography>
-                            <Typography id="discrete-slider" gutterBottom>
-                                Spacing Between Icon and Menu
-                                <Tooltip title="The amount of space between the icons and the text">
-                                    <Slider
-                                        aria-label="Temperature"
-                                        defaultValue={this.props.moduleOptions.menuIconSpace || this.state.menuIconSpace}
-                                        valueLabelDisplay="auto"
-                                        step={0.5}
-                                        marks
-                                        min={0}
-                                        max={5}
-                                        onChange={this.handleSlider}
-                                    />
-                                </Tooltip>
-                            </Typography>
+                                        onChange={() => this.onUpdate({
+                                            horizontallyCentered: !this.state.horizontallyCentered
+                                        })}
+                                    />}
+                                    label="Center text horizontally"/>
+                            </div>
                         </div>
-                    </AccordionDetails>
-                </Accordion>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                The text inside the menu items will be centered vertically
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.verticallyCentered}
+                                        onChange={() => this.onUpdate({
+                                            verticallyCentered: !this.state.verticallyCentered
+                                        })}
+                                    />}
+                                    label="Center text vertically"/>
+                            </div>
+                        </div>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                Select a background color for the menu items
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem', alignItems: 'center'}}>
+                                <ColorPicker
+                                    isOpen={this.state.backgroundColorOpen}
+                                    color={this.state.backgroundColor}
+                                    label="Background color"
+                                    onChange={(color) => {
+                                        this.onUpdate({
+                                            backgroundColor: color
+                                        })
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div style={{flex: 1}}>
+                        <h4>Menu mode</h4>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                The menu will be displayed as an accordion
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.showAsAccordion}
+                                        onChange={() => this.onUpdate({
+                                            showAsAccordion: !this.state.showAsAccordion
+                                        })}
+                                    />}
+                                    label="Display as Accordion"/>
+                            </div>
+                        </div>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                The menu will be displayed vertically
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.isMenuVertical}
+                                        onChange={() => this.onUpdate({
+                                            isMenuVertical: !this.state.isMenuVertical
+                                        })}
+                                    />}
+                                    label="Vertical menu"/>
+                            </div>
+                        </div>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                The menu will be stretched to the box dimensions
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.stretchToFit}
+                                        onChange={() => this.onUpdate({
+                                            stretchToFit: !this.state.stretchToFit
+                                        })}
+                                    />}
+                                    label="Stretch to Fit"/>
+                            </div>
+                        </div>
+                        <h4>Spacing options</h4>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                Adjust the space between the icons and the text
+                            </Typography>
+                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                <Slider
+                                    aria-label="Temperature"
+                                    value={this.state.menuIconSpace}
+                                    valueLabelDisplay="auto"
+                                    min={0}
+                                    max={100}
+                                    onChange={this.handleSlider}
+                                    onChangeCommitted={this.handleSlider}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <Divider style={{ margin: "10px 0" }} />
                 <MaterialTable
                     style={{width: "100%"}}
@@ -630,58 +558,16 @@ class MenuModule extends Component {
                     actions={this.tableOptions.actions.customActions}
                 />
 
-                <Dialog
-                    classes={{
-                        root: classes.center,
-                        paper: classes.modal,
-                    }}
-                    open={this.state.showMultipleDeleteModal}
-                    TransitionComponent={this.transition}
-                    keepMounted
-                    onClose={() => this.closeMultipleDeleteModal()}
-                    aria-labelledby="classic-modal-slide-title"
-                    aria-describedby="classic-modal-slide-description"
-                >
-                    <DialogTitle
-                        id="classic-modal-slide-title"
-                        disableTypography
-                        className={classes.modalHeader}
-                    >
-                        <h4 className={classes.modalTitle}>{this.state.modalTitle}</h4>
-                    </DialogTitle>
-                    <DialogContent
-                        id="classic-modal-slide-description"
-                        className={classes.modalBody}
-                    >
-                        <div>Are you sure you want to proceed ?</div>
-                    </DialogContent>
-
-                    <DialogActions className={classes.modalFooter}>
-                        <Button
-                            disabled={this.state.isBtnDisabled}
-                            color="transparent"
-                            simple
-                            onClick={() => this.multipleDeleteCallback()}
-                        >
-                            <div>Proceed</div>
-                        </Button>
-                        <Button
-                            color="danger"
-                            simple
-                            onClick={() => {
-                                this.closeMultipleDeleteModal();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                <Modal
+                    showModal={this.state.showDeleteBoxModal}
+                    {...this.modals.deleteBoxModal}
+                />
             </React.Fragment>
         );
     }
 }
 
-export default withRouter(withStyles(styles)(MenuModule));
+export default withStyles(styles)(MenuModule);
 
 MenuModule.propTypes = {
     classes: PropTypes.object,

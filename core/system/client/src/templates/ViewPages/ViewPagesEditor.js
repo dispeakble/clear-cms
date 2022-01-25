@@ -38,7 +38,7 @@ import ViewPageOptions from "./ViewPageOptions";
 import ViewBoxOptions from "./ViewBoxOptions";
 
 import {Responsive, WidthProvider} from "react-grid-layout";
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
+const ResponsiveReactGridLayout = WidthProvider(Responsive, {measureBeforeMount: true});
 
 class ViewPagesEditor extends React.PureComponent {
 
@@ -586,12 +586,12 @@ class ViewPagesEditor extends React.PureComponent {
                 h: 200 / (this.state.layoutBoxSpacing[0] || 1),
             };
 
-            await this.setAsyncState({
+            this.setState({
                 boxEditorProps: box,
                 showBoxOptions: true
             });
 
-            window.scrollTo(0, document.body.scrollHeight);
+            window.scrollTo(0, document.querySelector('.bodyWrapper').scrollHeight);
         } catch (err) {
             console.log(err);
         }

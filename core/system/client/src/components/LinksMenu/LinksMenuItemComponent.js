@@ -27,7 +27,6 @@ const LinksMenuItemComponent = (props) => {
     <ListItem
       button
       style={{
-        backgroundColor: props.bgColor,
         color: "inherit",
         fontSize: "inherit",
         fontFamily: "inherit",
