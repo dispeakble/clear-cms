@@ -243,7 +243,7 @@ class AccordionModule extends Component {
         },
         props: {
             icons: {
-                Add: () => <AddCircle className={this.props.classes.addIcon}/>,
+                Add: () => <AddCircle color="primary"/>,
                 Check: () => (
                     <Check color="primary"/>
                 ),
@@ -336,6 +336,11 @@ class AccordionModule extends Component {
                                 </Accordion>
                             );
                         })}
+
+                        {!this.state.sections.length && <div style={{
+                            fontSize: "24px",
+                            paddingTop: "14px"
+                        }}>&lt;- Click the plus sign to add a new section</div>}
                     </div>
                 </div>
                 <Modal

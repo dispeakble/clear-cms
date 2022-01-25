@@ -85,7 +85,6 @@ class ViewPageOptions extends React.PureComponent {
 
 
     imageUploader = null;
-    textColorRef = null;
     titleRef = createRef()
 
     async componentDidMount() {
@@ -593,24 +592,18 @@ class ViewPageOptions extends React.PureComponent {
                             </div>
                             <div style={{flex: 1}}>
                                 <h4>Text Options</h4>
-
                                 <div>
                                     <Typography variant="caption" style={{display: 'block', marginTop: '2rem'}}>Select a text color</Typography>
                                     <div style={{display: 'flex', marginBottom: '0.35rem'}}>
                                         <ColorPicker
                                             color={this.state.textColor}
-                                            customRef={(ref) => this.textColorRef = ref}
+                                            label="Text Color"
                                             onChange={(color) => {
                                                 this.setState({
                                                     textColor: color
                                                 })
                                             }}
                                         />
-                                        <div style={{cursor: 'pointer', display: 'flex', alignItems: 'center'}} onClick={() => {
-                                            this.textColorRef.click()
-                                        }}>
-                                            <Typography>Text Color</Typography>
-                                        </div>
                                     </div>
                                 </div>
                                 <div>
