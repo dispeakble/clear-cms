@@ -112,7 +112,6 @@ const javascriptStyles = {
         position: "relative",
         left: 0,
         background: "#525789",
-        fontFamily: "cambria",
         transform: "translate(0%)",
       },
     },

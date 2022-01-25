@@ -11,7 +11,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 class ViewBoxGeneral extends React.PureComponent {
 
     state = {
-        title: "",
+        title: this.props.box.title,
         selectedModule: -1,
         modulesList: [//TODO GET THESE VALUES FROM A LIST IN DB
             {label: "Accordion Module"},
@@ -37,8 +37,6 @@ class ViewBoxGeneral extends React.PureComponent {
 
     componentDidMount() {
         this.box = this.props.box;
-        this.box.title = this.props.box.title;
-
         this.setState({
             selectedModule: this.getModuleIndex(this.props.box.module)
         });
@@ -125,12 +123,12 @@ class ViewBoxGeneral extends React.PureComponent {
                                     onChange: (event) => {
                                         this.onUpdate({
                                             title: event.target.value
-                                        })
+                                        });
                                     },
                                 }}
                                 inputProps={{
                                     autoFocus: true,
-                                    defaultValue: this.box.title,
+                                    defaultValue: this.state.title,
                                     type: "text",
                                 }}
                             />

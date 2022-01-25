@@ -3,7 +3,6 @@ import LinksMenu from "components/LinksMenu/LinksMenu";
 import styles from "assets/jss/clear-crm/views/menuModule.js";
 import { withStyles } from "@material-ui/core/styles";
 
-// for accordion menu
 import List from "@material-ui/core/List";
 import Icon from "@material-ui/core/Icon";
 import PropTypes from "prop-types";
@@ -12,24 +11,33 @@ class MenuModule extends Component {
 
     createMenu(params, options) {
         const createLink = (elm) => {
+
+            const spanStyle = {
+                paddingRight: `${options.menuIconSpace}px`,
+                color: options.style.color,fontSize: options.style.fontSize,
+            };
+
+            if(options.verticallyCentered) {
+                spanStyle.alignItems = "center";
+            }
+
             return (
-                <li key={`menu-box-${elm.id}`} style={options.style}>
+                <li key={`menu-box-${elm.id}`}>
                     <a
                         style={options.style}
                         href={elm.href}
                         title={elm.title}
                         target={elm.target}
                     >
-                        <Icon
-                            style={{
-                                color: options.style.color,
-                                fontSize: options.style.fontSize,
-                                verticalAlign: "middle",
-                                marginRight: `${options.menuIconSpace}em`
-                            }}
-                        >
-                            {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
-                        </Icon>
+                        <span style={spanStyle}>
+                            <Icon
+                                style={{
+                                    verticalAlign: "middle",
+                                }}
+                            >
+                                {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
+                            </Icon>
+                        </span>
                         {elm.text}
                     </a>
 
@@ -40,26 +48,16 @@ class MenuModule extends Component {
             );
         };
 
-        let style = {
-            display:
-                options.stretchToFit && options.isTopLevel && !options.isVertical
-                    ? "flex"
-                    : "",
-            backgroundColor: this.props.moduleOptions.bgColor || "",
-            color: options.style.color,
-            fontSize: options.style.fontSize,
-            fontFamily: options.style.fontFamily,
-        };
-
-        let accordionStyle = {
-            backgroundColor: "",
-            color: options.style.color,
-            fontSize: options.style.fontSize,
-            fontFamily: options.style.fontFamily,
-            border: "1px solid rgba(0,0,0,0.3)",
-        };
-
         if (options.showAsAccordion) {
+            const accordionStyle = {
+                bgColor: this.props.moduleOptions.bgColor || "" || "",
+                color: options.style.color,
+                fontSize: options.style.fontSize,
+                fontFamily: options.style.fontFamily,
+                border: "1px solid rgba(0,0,0,0.3)",
+                menuIconSpace: options.menuIconSpace
+            };
+
             if (options.stretchToFit && options.isTopLevel) {
                 accordionStyle.width = "100%";
             }
@@ -73,14 +71,24 @@ class MenuModule extends Component {
                 </List>
             );
         } else {
+            const style = {
+                display:
+                    options.stretchToFit && options.isTopLevel && !options.isVertical
+                        ? "flex"
+                        : "",
+                backgroundColor: this.props.moduleOptions.bgColor || "" || "",
+                color: options.style.color,
+                fontSize: options.style.fontSize,
+                fontFamily: options.style.fontFamily,
+            };
             if (options.isVertical && options.stretchToFit && options.isTopLevel) {
                 style.width = "100%";
                 style.display = "flex";
                 style.flexDirection = "column";
                 style.justifyContent = "space-around";
-                style.alignItems = "stretch"
+                style.alignItems = "center"
             }
-            if(!options.isVertical && options.verticallyCentered){
+            if(options.verticallyCentered){
                 style.alignItems = "center";
                 style.height = '100%';
             }
@@ -115,8 +123,8 @@ class MenuModule extends Component {
         };
 
         let linksList;
-        if(this.props.moduleOptions.menuOptions){
-            linksList = this.props.moduleOptions.menuOptions.filter(
+        if(this.props.moduleOptions.menuItems){
+            linksList = this.props.moduleOptions.menuItems.filter(
                 (link) => !link.parentId
             );
         }else {
@@ -150,10 +158,8 @@ class MenuModule extends Component {
             children: this.populateChildrenLinks(link.tableData.childRows),
         }));
         let gridStyle={}
-        if(this.props.moduleOptions.bgColor){
-            const {r, g, b, a} = this.props.moduleOptions.bgColor;
-            const bgColor = `rgba(${r},${g},${b},${a})`;
-            gridStyle.backgroundColor = bgColor;
+        if(this.props.moduleOptions.backgroundColor){
+            gridStyle.backgroundColor = this.props.moduleOptions.backgroundColor;
         }
         if(!isVertical && stretchToFit){
             gridStyle.width = "100%";
@@ -173,9 +179,8 @@ class MenuModule extends Component {
                 className={
                     isVertical ? classes.verticalLinksMenu : classes.horizontalLinksMenu
                 }
-                key={this.props.i}
                 data-grid={this.props.moduleOptions}
-                style={{...gridStyle, paddingTop: 30}}
+                style={{...gridStyle}}
             >
                 {(() => {
                     return this.createMenu(menuData, {
@@ -197,7 +202,7 @@ MenuModule.propTypes = {
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
     onUpdate: PropTypes.func,
-    menuOptions: PropTypes.array,
+    menuItems: PropTypes.array,
     style: PropTypes.object,
 };
 
