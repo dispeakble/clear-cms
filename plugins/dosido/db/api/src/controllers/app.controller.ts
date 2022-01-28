@@ -31,15 +31,16 @@ export class AppController {
     constructor(
       @Inject('ProtocolService') private protocolService,
       @Inject('SystemService') private systemService,
-      @Inject('DbService') private dbService,
+      @Inject('TestService') private testService,
+      //@Inject('DbService') private dbService,
       @Inject('SequelizeService') private sqlService,
     ) {
 
     }
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        await this.dbService.waitForDb();
-        if(!this.dbService.getState()) {
+        await this.testService.waitForDb();
+        if(!this.testService.isReady()) {
             throw 'Db not ready yet';
         }
 

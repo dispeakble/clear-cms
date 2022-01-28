@@ -1,6 +1,6 @@
 import {Module} from '@nestjs/common';
 import {AppController} from './controllers/app.controller';
-import {DbService} from './services/db.service';
+//import {DbService} from './services/db.service';
 import {
     ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -11,6 +11,7 @@ import {SequelizeModule} from '@nestjs/sequelize';
 import {SqlModule} from "./modules/sequielizer/sql.module";
 import {SequelizeModuleOptions} from "@nestjs/sequelize/dist/interfaces/sequelize-options.interface";
 import {SequelizeService} from "./services/sequelize.service";
+import {TestService} from "./services/test.service";
 
 const dev = "true" === process.env.dev || false;
 
@@ -62,10 +63,12 @@ if (dev) {
         ])
     ],
     controllers: [AppController],
-    providers: [DbService,
+    providers: [
+        //DbService,
         SequelizeService,
         ProtocolService,
         SystemService,
+        TestService,
         {useValue: PgPool, provide: 'PgPool'}
     ]
 })
