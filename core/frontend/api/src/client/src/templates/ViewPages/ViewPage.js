@@ -248,6 +248,10 @@ class ViewPage extends React.Component {
                 boxStyle.top = "0";
             }
 
+            if(el.module === "Menu Module") {
+                boxStyle.zIndex = 9999;
+            }
+
             const LazyComponent = modules[el.module.replace(" ", "")] || <div/>;
 
             return (

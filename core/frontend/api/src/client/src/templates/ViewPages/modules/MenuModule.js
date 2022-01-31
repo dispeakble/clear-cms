@@ -3,34 +3,30 @@ import LinksMenu from "../../../components/LinksMenu/LinksMenu";
 import styles from "../../../assets/jss/clear-crm/views/menuModule.js";
 import { withStyles } from "@material-ui/core/styles";
 
-// for accordion menu
 import List from "@material-ui/core/List";
 import Icon from "@material-ui/core/Icon";
+import PropTypes from "prop-types";
 
 class MenuModule extends Component {
+
     createMenu(params, options) {
         const createLink = (elm) => {
+
+            const spanStyle = {
+                paddingRight: `${options.menuIconSpace}px`,
+                color: options.style.color,fontSize: options.style.fontSize,
+            };
+
             return (
-                <li key={`menu-item-${elm.id}`} style={options.style}>
-                    <a
-                        style={options.style}
-                        href={elm.href}
-                        title={elm.title}
-                        target={elm.target}
-                    >
-                        <Icon
-                            style={{
-                                color: options.style.color,
-                                fontSize: options.style.fontSize,
-                                verticalAlign: "middle",
-                                marginRight: `${options.menuIconSpace}em`
-                            }}
-                        >
-                            {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
-                        </Icon>
+                <li key={`menu-box-${elm.id}`}>
+                    <a style={options.style} href={elm.href} title={elm.title} target={elm.target} >
+                        <span style={spanStyle}>
+                            <Icon style={{ verticalAlign: "middle" }}>
+                                {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
+                            </Icon>
+                        </span>
                         {elm.text}
                     </a>
-
                     {elm.children && elm.children.length
                         ? this.createMenu(elm.children, { ...options, isTopLevel: false })
                         : ""}
@@ -38,29 +34,16 @@ class MenuModule extends Component {
             );
         };
 
-        let style = {
-            display:
-                options.stretchToFit && options.isTopLevel && !options.isVertical
-                    ? "flex"
-                    : "",
-            backgroundColor: "",
-            color: options.style.color,
-            fontSize: options.style.fontSize,
-            fontFamily: options.style.fontFamily,
-        };
-
-        let accordionStyle = {
-            backgroundColor: "",
-            color: options.style.color,
-            fontSize: options.style.fontSize,
-            fontFamily: options.style.fontFamily,
-            border: "1px solid rgba(0,0,0,0.3)",
-        };
-
         if (options.showAsAccordion) {
-            if (options.stretchToFit && options.isTopLevel) {
-                accordionStyle.width = "100%";
-            }
+            const accordionStyle = {
+                bgColor: this.props.element.moduleOptions.bgColor || "",
+                color: options.style.color,
+                fontSize: options.style.fontSize,
+                fontFamily: options.style.fontFamily,
+                border: "1px solid rgba(0,0,0,0.3)",
+                menuIconSpace: options.menuIconSpace
+            };
+
             return (
                 <List component="nav" disablePadding>
                     <LinksMenu
@@ -71,27 +54,19 @@ class MenuModule extends Component {
                 </List>
             );
         } else {
-            if (options.isVertical && options.stretchToFit && options.isTopLevel) {
-                style.width = "100%";
-                style.display = "flex";
-                style.flexDirection = "column";
-                style.justifyContent = "space-around";
-                style.alignItems = "stretch"
-            }
-            if(!options.isVertical && options.verticallyCentered){
-                style.alignItems = "center";
-                style.height = '100%';
-            }
-            if (options.stretchToFit && options.isTopLevel) {
-                style.height = "100%";
-            }
+            const style = {
+                backgroundColor: this.props.element.moduleOptions.bgColor || "",
+                color: options.style.color,
+                fontSize: options.style.fontSize,
+                fontFamily: options.style.fontFamily,
+            };
+
             return <ul style={style}>{params.map((elm) => createLink(elm))}</ul>;
         }
     }
 
     populateChildrenLinks = (childRows) => {
-        return childRows
-            ? childRows.map((childLink) => ({
+        return childRows ? childRows.map((childLink) => ({
                 id: childLink.id,
                 title: childLink.title,
                 text: childLink.text,
@@ -106,37 +81,59 @@ class MenuModule extends Component {
     render() {
         const classes = this.props.classes;
         const style = {
-            color: this.props.style.color || "inherit",
+            color: this.props.style?.color || "inherit",
             backgroundColor: this.props.element.moduleOptions.backgroundColor || "inherit",
-            fontSize: this.props.style.fontSize || "inherit",
-            fontFamily: this.props.style.fontFamily || "inherit",
+            fontSize: this.props.style?.fontSize || "inherit",
+            fontFamily: this.props.style?.fontFamily || "inherit",
         };
 
-        const links = this.props.element.moduleOptions.links;
-
-        if(!links || !links.length) {
-            return "";
+        let linksList;
+        if(this.props.element.moduleOptions.menuItems){
+            linksList = this.props.element.moduleOptions.menuItems.filter(
+                link => !link.parentId
+            );
+        }else {
+            linksList = []
         }
 
-        let linksList = this.props.element.moduleOptions.links.filter(
-            (link) => !link.parentId
-        );
-        let isVertical = this.props.element.moduleOptions.isVertical;
-        let showAsAccordion = this.props.element.moduleOptions.showAsAccordion;
-        let stretchToFit = this.props.element.moduleOptions.stretchToFit;
-        let horizontallyCentered = this.props.element.moduleOptions.horizontallyCentered;
-        let verticallyCentered = this.props.element.moduleOptions.verticallyCentered;
-        let menuIconSpace = this.props.element.moduleOptions.menuIconSpace;
-        if (verticallyCentered && isVertical) {
-            style.display = "flex";
-            style.alignContent = "stretch"
-            style.alignItems = "center";
-            style.width = "100%";
-            style.justifyItems = "stretch"
-            if(horizontallyCentered){
-                style.justifyContent="center"
-            }
+        const {
+            isMenuVertical,
+            showAsAccordion,
+            stretchToFit,
+            horizontallyCentered,
+            verticallyCentered,
+            menuIconSpace
+        } = this.props.element.moduleOptions;
+
+
+        let menuClass = isMenuVertical ? classes.verticalLinksMenu : classes.horizontalLinksMenu;
+        let verticalClass = "vertical";
+        let accordionClass = "accordion";
+        let stretchClass = "stretch";
+        let horizontallyCenteredClass = "centerHorizontally";
+        let verticallyCenteredClass = "centerVertically";
+
+        if(isMenuVertical) {
+            menuClass +=  " " + verticalClass;
         }
+
+        if(showAsAccordion) {
+            menuClass +=  " " + accordionClass;
+        }
+
+        if(stretchToFit) {
+            menuClass +=  " " + stretchClass;
+        }
+
+        if(horizontallyCentered) {
+            menuClass +=  " " + horizontallyCenteredClass;
+        }
+
+        if(verticallyCentered) {
+            menuClass +=  " " + verticallyCenteredClass;
+        }
+
+
         let menuData = linksList.map((link) => ({
             moduleOptions: this.props.element.moduleOptions,
             id: link.id,
@@ -147,35 +144,24 @@ class MenuModule extends Component {
             icon: link.icon,
             children: this.populateChildrenLinks(link.tableData.childRows),
         }));
-        var gridStyle={}
-        if(!isVertical && stretchToFit){
-            gridStyle.width = "100%";
-            if(verticallyCentered){
-                gridStyle.height = "100%";
-            }
-        }
-        if(isVertical && stretchToFit) {
-            gridStyle.height = "100%"
-        }
-        if(horizontallyCentered){
-            gridStyle.textAlign= "center"
+
+        let gridStyle={}
+
+        if(this.props.element.moduleOptions.backgroundColor){
+            gridStyle.backgroundColor = this.props.element.moduleOptions.backgroundColor;
         }
 
         return (
-            <div
-                className={
-                    isVertical ? classes.verticalLinksMenu : classes.horizontalLinksMenu
-                }
-                key={this.props.i}
-                style={gridStyle}
-            >
+            <div className={ menuClass }
+                 data-grid={this.props.element.moduleOptions}
+                 style={gridStyle} >
                 {(() => {
                     return this.createMenu(menuData, {
                         showAsAccordion,
                         stretchToFit,
                         style,
                         isTopLevel: true,
-                        isVertical,
+                        isMenuVertical,
                         menuIconSpace,
                         verticallyCentered
                     });
@@ -186,3 +172,9 @@ class MenuModule extends Component {
 }
 
 export default withStyles(styles)(MenuModule);
+
+MenuModule.propTypes = {
+    classes: PropTypes.object,
+    element: PropTypes.object,
+    style: PropTypes.object,
+};

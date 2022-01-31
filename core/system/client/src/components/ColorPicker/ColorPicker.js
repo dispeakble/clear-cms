@@ -1,8 +1,6 @@
 import React, {useState} from "react";
-// nodejs library to set properties for components
 import PropTypes from "prop-types";
 
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 
 import styles from "assets/jss/clear-crm/components/colorPicker.js";
@@ -11,11 +9,11 @@ import {FormControlLabel} from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
-export default function ColorPicker(props) {
+const ColorPicker = (props) => {
     const classes = useStyles();
-    const [popoverVisible, setPopoverVisible] = useState(props.isOpen || false);
-    const { color, onChange, label } = props;
-    const [ selectedColor, setSelectedColor ] = useState(color);
+    const { color, isOpen, onChange, label } = props;
+    let [popoverVisible, setPopoverVisible] = useState(isOpen || false);
+    let [selectedColor, setSelectedColor] = useState(color || "#FFFFFF");
 
     const colorPickerButton = <button
         ref={(btnRef) => {
@@ -41,11 +39,11 @@ export default function ColorPicker(props) {
             {label && label.length ? <FormControlLabel
                 control={colorPickerButton}
                 label={label}/> : colorPickerButton}
-
-
         </>
     );
 }
+
+export default ColorPicker;
 
 ColorPicker.defaultProps = {
     color: "#FFFFFF"

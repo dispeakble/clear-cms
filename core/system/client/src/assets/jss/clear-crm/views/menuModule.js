@@ -14,7 +14,6 @@ const javascriptStyles = {
                 background: "#525789",
             },
         },
-        "& > ul ul": {},
         "& ul": {
             display: "inline-block",
             margin: 0,
@@ -64,6 +63,34 @@ const javascriptStyles = {
                 clear: "both",
             },
         },
+        "&.centerVertically": {
+            "& ul li a": {
+                display: "flex",
+                alignItems: "center"
+            }
+        },
+        "&.stretch": {
+            display: "flex",
+            height: "100%",
+            "& > ul": {
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                "& li": {
+                    flex: 1,
+                    display: "flex",
+                    "&:hover": {
+                        cursor: "pointer",
+                        "& > ul": {
+                            height: "100%"
+                        }
+                    },
+                    "& a": {
+                        flex: 1
+                    }
+                }
+            }
+        }
     },
     horizontalLinksMenu: {
         display: "inline-block",
@@ -74,6 +101,7 @@ const javascriptStyles = {
             "& li": {
                 flex: 1,
                 display: "inline-block",
+                height: "100%",
                 "& ul": {display: "none"},
                 "& a": {
                     display: "flex",
@@ -81,7 +109,6 @@ const javascriptStyles = {
                     textDecoration: "none",
                     whiteSpace: "nowrap",
                     transition: "0.3s",
-                    height: "100%",
                     "&:hover": {
                         background: "#8497AF",
                     },
@@ -89,8 +116,7 @@ const javascriptStyles = {
                 "&:hover": {
                     cursor: "pointer",
                     "& > ul": {
-                        flex: 1,
-                        display: "inline-block",
+                        display: "block",
                         position: "absolute",
                         opacity: 0.9,
                     }
@@ -113,6 +139,39 @@ const javascriptStyles = {
                 },
             },
         },
+        "&.centerVertically": {
+            "& ul li a": {
+                alignItems: "center"
+            },
+        },
+        "&.centerHorizontally": {
+            "& ul li a": {
+                justifyContent: "center"
+            },
+        },
+        "&.stretch": {
+            display: "flex",
+            height: "100%",
+            "& > ul": {
+                height: "100%",
+                width: "100%",
+                display: "flex",
+                "& li": {
+                    flex: 1,
+                    display: "block",
+                    "&:hover": {
+                        cursor: "pointer",
+                        "& > ul": {
+
+                        }
+                    },
+                    "& a": {
+                        flex: 1,
+                        height: "100%"
+                    }
+                }
+            }
+        }
     },
 };
 
