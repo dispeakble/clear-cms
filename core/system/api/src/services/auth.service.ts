@@ -16,7 +16,6 @@ export class AuthService {
 
     constructor(@Inject('ProtocolService') private protocolService) {
 
-
     }
 
     public ping() {

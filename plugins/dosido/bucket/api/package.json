@@ -36,7 +36,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.0",
-    "ts-deferred": "^1.0.4"
+    "ts-deferred": "^1.0.4",
+    "mime": "^2.4.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
@@ -54,7 +55,6 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "jest": "26.0.1",
-    "mime": "^2.4.7",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "26.1.0",
