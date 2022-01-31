@@ -17,33 +17,23 @@ class MenuModule extends Component {
                 color: options.style.color,fontSize: options.style.fontSize,
             };
 
-            if(options.verticallyCentered) {
+            /*if(options.verticallyCentered) {
                 spanStyle.alignItems = "center";
-            }
+            }*/
 
             return (
                 <li key={`menu-box-${elm.id}`}>
-                    <a
-                        style={options.style}
-                        href={elm.href}
-                        title={elm.title}
-                        target={elm.target}
-                    >
+                    <a style={options.style} href={elm.href} title={elm.title} target={elm.target} >
                         <span style={spanStyle}>
-                            <Icon
-                                style={{
-                                    verticalAlign: "middle",
-                                }}
-                            >
+                            <Icon style={{ verticalAlign: "middle" }}>
                                 {elm.icon ? elm.icon.replace(" ", "_").toLowerCase() : ""}
                             </Icon>
                         </span>
                         {elm.text}
                     </a>
-
                     {elm.children && elm.children.length
-                        ? this.createMenu(elm.children, { ...options, isTopLevel: false })
-                        : ""}
+                    ? this.createMenu(elm.children, { ...options, isTopLevel: false })
+                    : ""}
                 </li>
             );
         };
@@ -58,9 +48,6 @@ class MenuModule extends Component {
                 menuIconSpace: options.menuIconSpace
             };
 
-            if (options.stretchToFit && options.isTopLevel) {
-                accordionStyle.width = "100%";
-            }
             return (
                 <List component="nav" disablePadding>
                     <LinksMenu
@@ -72,45 +59,27 @@ class MenuModule extends Component {
             );
         } else {
             const style = {
-                display:
-                    options.stretchToFit && options.isTopLevel && !options.isVertical
-                        ? "flex"
-                        : "",
                 backgroundColor: this.props.moduleOptions.bgColor || "" || "",
                 color: options.style.color,
                 fontSize: options.style.fontSize,
                 fontFamily: options.style.fontFamily,
             };
-            if (options.isVertical && options.stretchToFit && options.isTopLevel) {
-                style.width = "100%";
-                style.display = "flex";
-                style.flexDirection = "column";
-                style.justifyContent = "space-around";
-                style.alignItems = "center"
-            }
-            if(options.verticallyCentered){
-                style.alignItems = "center";
-                style.height = '100%';
-            }
-            if (options.stretchToFit && options.isTopLevel) {
-                style.height = "100%";
-            }
+
             return <ul style={style}>{params.map((elm) => createLink(elm))}</ul>;
         }
     }
 
     populateChildrenLinks = (childRows) => {
-        return childRows
-            ? childRows.map((childLink) => ({
-                id: childLink.id,
-                title: childLink.title,
-                text: childLink.text,
-                href: childLink.link,
-                target: childLink.targetLink,
-                icon: childLink.icon,
-                children: this.populateChildrenLinks(childLink.tableData.childRows),
-            }))
-            : "";
+        return childRows ? childRows.map((childLink) => ({
+            id: childLink.id,
+            title: childLink.title,
+            text: childLink.text,
+            href: childLink.link,
+            target: childLink.targetLink,
+            icon: childLink.icon,
+            children: this.populateChildrenLinks(childLink.tableData.childRows),
+        }))
+        : "";
     };
 
     render() {
@@ -125,28 +94,50 @@ class MenuModule extends Component {
         let linksList;
         if(this.props.moduleOptions.menuItems){
             linksList = this.props.moduleOptions.menuItems.filter(
-                (link) => !link.parentId
+                link => !link.parentId
             );
         }else {
             linksList = []
         }
 
-        let isVertical = this.props.moduleOptions.isVertical;
-        let showAsAccordion = this.props.moduleOptions.showAsAccordion;
-        let stretchToFit = this.props.moduleOptions.stretchToFit;
-        let horizontallyCentered = this.props.moduleOptions.horizontallyCentered;
-        let verticallyCentered = this.props.moduleOptions.verticallyCentered;
-        let menuIconSpace = this.props.moduleOptions.menuIconSpace;
-        if (verticallyCentered && isVertical) {
-            style.display = "flex";
-            style.alignContent = "stretch"
-            style.alignItems = "center";
-            style.width = "100%";
-            style.justifyItems = "stretch"
-            if(horizontallyCentered){
-                style.justifyContent="center"
-            }
+        const {
+            isMenuVertical,
+            showAsAccordion,
+            stretchToFit,
+            horizontallyCentered,
+            verticallyCentered,
+            menuIconSpace
+        } = this.props.moduleOptions;
+
+
+        let menuClass = isMenuVertical ? classes.verticalLinksMenu : classes.horizontalLinksMenu;
+        let verticalClass = "vertical";
+        let accordionClass = "accordion";
+        let stretchClass = "stretch";
+        let horizontallyCenteredClass = "centerHorizontally";
+        let verticallyCenteredClass = "centerVertically";
+
+        if(isMenuVertical) {
+            menuClass +=  " " + verticalClass;
         }
+
+        if(showAsAccordion) {
+            menuClass +=  " " + accordionClass;
+        }
+
+        if(stretchToFit) {
+            menuClass +=  " " + stretchClass;
+        }
+
+        if(horizontallyCentered) {
+            menuClass +=  " " + horizontallyCenteredClass;
+        }
+
+        if(verticallyCentered) {
+            menuClass +=  " " + verticallyCenteredClass;
+        }
+
+
         let menuData = linksList.map((link) => ({
             moduleOptions: this.props.moduleOptions,
             id: link.id,
@@ -157,38 +148,24 @@ class MenuModule extends Component {
             icon: link.icon,
             children: this.populateChildrenLinks(link.tableData.childRows),
         }));
+
         let gridStyle={}
+
         if(this.props.moduleOptions.backgroundColor){
             gridStyle.backgroundColor = this.props.moduleOptions.backgroundColor;
         }
-        if(!isVertical && stretchToFit){
-            gridStyle.width = "100%";
-            if(verticallyCentered){
-                gridStyle.height = "100%";
-            }
-        }
-        if(isVertical && stretchToFit) {
-            gridStyle.height = "100%"
-        }
-        if(horizontallyCentered){
-            gridStyle.textAlign= "center"
-        }
 
         return (
-            <div
-                className={
-                    isVertical ? classes.verticalLinksMenu : classes.horizontalLinksMenu
-                }
+            <div className={ menuClass }
                 data-grid={this.props.moduleOptions}
-                style={{...gridStyle}}
-            >
+                style={gridStyle} >
                 {(() => {
                     return this.createMenu(menuData, {
                         showAsAccordion,
                         stretchToFit,
                         style,
                         isTopLevel: true,
-                        isVertical,
+                        isMenuVertical,
                         menuIconSpace,
                         verticallyCentered
                     });
@@ -198,6 +175,8 @@ class MenuModule extends Component {
     }
 }
 
+export default withStyles(styles)(MenuModule);
+
 MenuModule.propTypes = {
     classes: PropTypes.object,
     moduleOptions: PropTypes.object,
@@ -205,5 +184,3 @@ MenuModule.propTypes = {
     menuItems: PropTypes.array,
     style: PropTypes.object,
 };
-
-export default withStyles(styles)(MenuModule);

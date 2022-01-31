@@ -40,7 +40,7 @@ class MenuModule extends Component {
         isMenuVertical: false,
         showAsAccordion: false,
         stretchToFit: false,
-        backgroundColor: "",
+        backgroundColor: this.props.moduleOptions.backgroundColor || "#FFFFFF",
         icon: "",
         horizontallyCentered: false,
         verticallyCentered: false,

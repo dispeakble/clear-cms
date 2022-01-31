@@ -12,10 +12,8 @@ const javascriptStyles = {
         position: "relative",
         left: 0,
         background: "#525789",
-        fontFamily: "cambria",
       },
     },
-    "& > ul ul": {},
     "& ul": {
       display: "inline-block",
       margin: 0,
@@ -26,8 +24,7 @@ const javascriptStyles = {
         display: "block",
         position: "relative",
         background: "#525789",
-        fontFamily: "cambria",
-        "& ul": { display: "none", margin: 0 },
+        "& ul": {display: "none", margin: 0},
         "& a": {
           margin: 0,
           display: "block",
@@ -66,6 +63,34 @@ const javascriptStyles = {
         clear: "both",
       },
     },
+    "&.centerVertically": {
+      "& ul li a": {
+        display: "flex",
+        alignItems: "center"
+      }
+    },
+    "&.stretch": {
+      display: "flex",
+      height: "100%",
+      "& > ul": {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        "& li": {
+          flex: 1,
+          display: "flex",
+          "&:hover": {
+            cursor: "pointer",
+            "& > ul": {
+              height: "100%"
+            }
+          },
+          "& a": {
+            flex: 1
+          }
+        }
+      }
+    }
   },
   horizontalLinksMenu: {
     display: "inline-block",
@@ -76,10 +101,10 @@ const javascriptStyles = {
       "& li": {
         flex: 1,
         display: "inline-block",
-        fontFamily: "cambria",
-        "& ul": { display: "none" },
+        height: "100%",
+        "& ul": {display: "none"},
         "& a": {
-          display: "block",
+          display: "flex",
           padding: "0.4em 1em",
           textDecoration: "none",
           whiteSpace: "nowrap",
@@ -91,17 +116,10 @@ const javascriptStyles = {
         "&:hover": {
           cursor: "pointer",
           "& > ul": {
-            flex: 1,
-            display: "inline-block",
+            display: "block",
             position: "absolute",
             opacity: 0.9,
-          },
-          "& li": {
-            display: "block",
-          },
-          "& a": {
-            display: "block",
-          },
+          }
         },
       },
       "&:before": {
@@ -121,6 +139,39 @@ const javascriptStyles = {
         },
       },
     },
+    "&.centerVertically": {
+      "& ul li a": {
+        alignItems: "center"
+      },
+    },
+    "&.centerHorizontally": {
+      "& ul li a": {
+        justifyContent: "center"
+      },
+    },
+    "&.stretch": {
+      display: "flex",
+      height: "100%",
+      "& > ul": {
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        "& li": {
+          flex: 1,
+          display: "block",
+          "&:hover": {
+            cursor: "pointer",
+            "& > ul": {
+
+            }
+          },
+          "& a": {
+            flex: 1,
+            height: "100%"
+          }
+        }
+      }
+    }
   },
 };
 

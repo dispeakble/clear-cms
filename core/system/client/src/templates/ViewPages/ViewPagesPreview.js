@@ -49,8 +49,8 @@ class ViewPagesPreview extends React.Component {
         if (this.props.isLivePreview) {
             this.setState({
                 pageId: pageId,
-                boxes: this.props.boxes,
-                pageConfig: this.props.pageConfig
+                boxes: _.cloneDeep(this.props.boxes),
+                pageConfig: _.cloneDeep(this.props.pageConfig)
             });
         } else {
             const page = await this.props.control.get({
@@ -261,6 +261,10 @@ class ViewPagesPreview extends React.Component {
                     ? "fixed !important"
                     : "";
                 boxStyle.top = "0";
+            }
+
+            if(el.module === "Menu Module") {
+                boxStyle.zIndex = 99;
             }
 
             const LazyModule = React.lazy(() => {
