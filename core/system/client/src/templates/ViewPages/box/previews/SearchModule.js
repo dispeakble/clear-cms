@@ -12,9 +12,6 @@ class SearchModule extends Component {
         showStartDate: false,
         showEndDate: false,
         _search: "",
-        pageList: [],
-        categoryList: [],
-        productList: [],
         _searchSuggestions: [],
     };
 
@@ -32,46 +29,29 @@ class SearchModule extends Component {
                 showEndDate,
             });
         }
-
-
-
-        await this.setState({
-            pageList: await this.props.control.list(),
-            categoryList: await this.props.control.listCategories()
-        });
     }
 
     onChangeHandler = (e) => {
-        let matches = [];
 
         this.setState({
             _search: e.target.value
         })
 
-        if(this.state._search.length > 0){
-            matches = [...this.state.pageList].concat(this.state.categoryList).filter(
-                (object) => {
-                    if(object.pageConfig && object.pageConfig.publish){
-                        const regex = new RegExp(`${this.state._search}`, "gi");
-                        return object.pageConfig.title.match(regex)
-                    }
-                    else {
-                        const regex = new RegExp(`${this.state._search}`, "gi");
-                        if(this.state.title && this.state.description) return object.description.match(regex) || object.title.match(regex)
-                        return this.state.description ? object.description.match(regex) : object.title.match(regex)
-                    }
-                }
-            )
-        }
-
-        this.setState({
+        /*if(this.state._search.length > 0) {
+            this.setState({
+                _search: e.target.value
+            })
+            //TODO call an API for autocomplete
+            this.setState({
             _searchSuggestions: matches
         })
+        }*/
 
-
-        if(this.state._search.length > 0)
+        if(e.target.value.length > 0) {
             this.clearSearchBtn.current.classList.add('show-clear');
-        else this.clearSearchBtn.current.classList.remove('show-clear');
+        } else  {
+            this.clearSearchBtn.current.classList.remove('show-clear');
+        }
     }
 
     clearSearch = () => {
@@ -83,7 +63,7 @@ class SearchModule extends Component {
     }
 
     onKeyDownHandler = (e) => {
-        if(e.keyCode === 8 && this.state._search.length < 2){
+        if(e.keyCode === 8) {
             this.setState({
                 _search: "",
                 _searchSuggestions: []
@@ -92,15 +72,14 @@ class SearchModule extends Component {
         }
     }
 
+    onSubmit(evt) {
+        const searchValue = new URLSearchParams({value: evt.currentTarget[0].value});
+        window.location.href="/search?" + searchValue.get('value');
+    }
+
     render() {
-        //let richText = this.props.element.moduleOptions;
-
-
         return (
-            <div
-                key={this.props.i}
-                style={this.props.style}
-            >
+            <div key={this.props.i} style={this.props.style}>
                 <div style={{position: "relative"}}>
                     <div className="clear-crm_search-bar">
                         <div className="clear-crm_search-bar--search">
@@ -108,7 +87,11 @@ class SearchModule extends Component {
                                 <SearchIcon />
                             </div>
                             <div className="search-input">
-                                <form style={{height: '100%'}}>
+                                <form onSubmit={(evt) => {
+                                    evt.preventDefault();
+                                    evt.stopPropagation();
+                                    this.onSubmit(evt);
+                                }} style={{height: '100%'}}>
                                     <input
                                         type="text"
                                         placeholder="Search..."
@@ -129,7 +112,6 @@ class SearchModule extends Component {
                                         }}
                                     />
                                 </form>
-
                             </div>
                             <div className="search-clear" ref={this.clearSearchBtn} onClick={this.clearSearch}>
                                 <ClearIcon />
@@ -137,7 +119,9 @@ class SearchModule extends Component {
                         </div>
                     </div>
 
-                    <div ref={this.suggestionsRef} className={(this.state._searchSuggestions.length && this.state.showSuggestions) ? "search-suggestions" : "hide-suggestions"}>
+                    {/*<div className={(this.state.showSuggestions) ? "search-suggestions" : "hide-suggestions"}
+                         ref={this.suggestionsRef}
+                    >
                         <ul>
                         {(this.state._searchSuggestions && this.state.showSuggestions) &&
                             this.state._searchSuggestions.map((suggestion, index) =>
@@ -158,7 +142,7 @@ class SearchModule extends Component {
                                 }
                             )}
                         </ul>
-                    </div>
+                    </div>*/}
                 </div>
             </div>
         );

@@ -1,26 +1,20 @@
 import React, { Component, createRef } from "react";
-import Link from "next/link"
-
-//import parse from "html-react-parser";
-
 import SearchIcon from "../../../assets/icons/search.svg"
-import ClearIcon from "../../../assets/icons/clear.svg"
-
+import ClearIcon from "../../../assets/icons/clear.svg";
 
 class SearchModule extends Component {
+
+
     constructor(props) {
         super(props);
 
         this.state = {
-            title: false,
+            title: "",
             description: false,
             showSuggestions: false,
             showStartDate: false,
             showEndDate: false,
-            _search : "",
-            pageList: [],
-            categoryList: [],
-            productList: [],
+            _search: "",
             _searchSuggestions: [],
         };
 
@@ -28,10 +22,12 @@ class SearchModule extends Component {
         this.suggestionsRef = createRef();
     }
 
-    async componentDidMount() {
+    clearSearchBtn = createRef();
+    suggestionsRef = createRef();
 
-        if(this.props.element.moduleOptions) {
-            const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.element.moduleOptions;
+    async componentDidMount() {
+        if(this.props.moduleOptions) {
+            const {title, description, showSuggestions, showStartDate, showEndDate} = this.props.moduleOptions;
             this.setState({
                 title,
                 description,
@@ -40,47 +36,29 @@ class SearchModule extends Component {
                 showEndDate,
             });
         }
-
-        await this.setState({
-            pageList: await this.props.control.pageList,
-            categoryList: await this.props.control.categoryList
-        });
-
-
     }
 
-
-
     onChangeHandler = (e) => {
-        let matches = [];
 
         this.setState({
             _search: e.target.value
         })
 
-        if(this.state._search.length > 0){
-            matches = [...this.state.pageList].concat(this.state.categoryList).filter(
-                (object) => {
-                    const regex = new RegExp(`${this.state._search}`, "gi");
-                    if(object?.pageConfig && object?.pageConfig.publish){
-                        return object?.pageConfig?.pageTitle.match(regex)
-                    }
-                    else {
-                        if(this.state.title && this.state.description) return object.description.match(regex) || object.title.match(regex)
-                        return this.state.description ? object.description.match(regex) : object.title.match(regex)
-                    }
-                }
-            )
-        }
-
-        this.setState({
+        /*if(this.state._search.length > 0) {
+            this.setState({
+                _search: e.target.value
+            })
+            //TODO call an API for autocomplete
+            this.setState({
             _searchSuggestions: matches
         })
+        }*/
 
-
-        if(this.state._search.length > 0)
+        if(e.target.value.length > 0) {
             this.clearSearchBtn.current.classList.add('show-clear');
-        else this.clearSearchBtn.current.classList.remove('show-clear');
+        } else  {
+            this.clearSearchBtn.current.classList.remove('show-clear');
+        }
     }
 
     clearSearch = () => {
@@ -92,26 +70,23 @@ class SearchModule extends Component {
     }
 
     onKeyDownHandler = (e) => {
-        if(e.keyCode == 8 && (this.state._search.length < 2 || (window.getSelection() && window.getSelection().toString().length === this.state._search.length))
-            || (window.getSelection() && window.getSelection().toString().length === this.state._search.length) ){
+        /*if(e.keyCode === 8) {
             this.setState({
                 _search: "",
                 _searchSuggestions: []
             })
             this.clearSearchBtn.current.classList.remove('show-clear');
-        }
+        }*/
+    }
+
+    onSubmit(evt) {
+        const searchValue = new URLSearchParams({value: evt.currentTarget[0].value});
+        window.location.href="/search?value=" + searchValue.get('value');
     }
 
     render() {
-        //let richText = this.props.element.moduleOptions;
-
-
         return (
-            <div
-                key={this.props.i}
-                style={this.props.style}
-
-            >
+            <div key={this.props.i} style={this.props.style}>
                 <div style={{position: "relative"}}>
                     <div className="clear-crm_search-bar">
                         <div className="clear-crm_search-bar--search">
@@ -119,7 +94,11 @@ class SearchModule extends Component {
                                 <SearchIcon />
                             </div>
                             <div className="search-input">
-                                <form style={{height: '100%'}}>
+                                <form onSubmit={(evt) => {
+                                    evt.preventDefault();
+                                    evt.stopPropagation();
+                                    this.onSubmit(evt);
+                                }} style={{height: '100%'}}>
                                     <input
                                         type="text"
                                         placeholder="Search..."
@@ -128,51 +107,49 @@ class SearchModule extends Component {
                                         onKeyDown={this.onKeyDownHandler}
                                         onBlur={() =>{
                                             setTimeout(() => {
-                                                this.suggestionsRef?.current?.classList?.add("hide-suggestions")
+                                                return this.suggestionsRef?.current?.classList.add("hide-suggestions");
                                             },100)
                                         }}
                                         onFocus={() => {
                                             setTimeout(() => {
                                                 if(this.state._searchSuggestions.length){
-                                                    this.suggestionsRef?.current?.classList?.remove("hide-suggestions")
+                                                    return this.suggestionsRef?.current?.classList.remove("hide-suggestions");
                                                 }
                                             }, 100)
                                         }}
                                     />
                                 </form>
-
                             </div>
                             <div className="search-clear" ref={this.clearSearchBtn} onClick={this.clearSearch}>
                                 <ClearIcon />
                             </div>
                         </div>
                     </div>
-                    <div ref={this.suggestionsRef} className={(this.state._searchSuggestions.length && this.state.showSuggestions) ? "search-suggestions" : "hide-suggestions"}>
+
+                    {/*<div className={(this.state.showSuggestions) ? "search-suggestions" : "hide-suggestions"}
+                         ref={this.suggestionsRef}
+                    >
                         <ul>
-                            {(this.state._searchSuggestions && this.state.showSuggestions) &&
-                                this.state._searchSuggestions.map((suggestion, index) =>
-                                    {
-                                        if(suggestion.pageConfig){
-                                            return(
-                                                <li key={index}>
-                                                    <Link
-                                                        as={`/${suggestion.pageConfig.pageLink}`}
-                                                        href={{
-                                                            pathname: `/${suggestion.pageConfig.pageLink}`,
-                                                            query: {
-                                                                slug: suggestion.pageConfig.pageLink
-                                                            }
-                                                        }}
-                                                    >
-                                                        <a>{suggestion.pageConfig.pageTitle} <span>page</span></a>
-                                                    </Link>
-                                                </li>
-                                            )
-                                        } else return <li key={index}>{suggestion.title} <span>category</span></li>
-                                    }
-                                )}
+                        {(this.state._searchSuggestions && this.state.showSuggestions) &&
+                            this.state._searchSuggestions.map((suggestion, index) =>
+                                {
+                                    if(suggestion.pageConfig){
+                                        return(
+                                            <li key={index}>
+                                                <Link
+                                                    to={{
+                                                        pathname: `/pages/preview/${suggestion.id}`
+                                                    }}
+                                                >
+                                                    {suggestion.pageConfig.title} <span>page</span>
+                                                </Link>
+                                            </li>
+                                        )
+                                    } else return <li key={index}>{suggestion.title} <span>category</span></li>
+                                }
+                            )}
                         </ul>
-                    </div>
+                    </div>*/}
                 </div>
             </div>
         );

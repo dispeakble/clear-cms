@@ -272,7 +272,7 @@ class ViewPagesPreview extends React.Component {
             });
 
             return (
-                <div key={`box-${el.i}`} data-grid={el} style={boxStyle}>
+                <div key={`box-${el.i}`} data-grid={Object.assign({}, el, {static: true})} style={boxStyle}>
                     <Suspense fallback={loadingFallback}>
                         <LazyModule
                             control={this.props.control}
