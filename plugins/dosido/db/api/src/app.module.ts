@@ -1,6 +1,5 @@
 import {Module} from '@nestjs/common';
 import {AppController} from './controllers/app.controller';
-//import {DbService} from './services/db.service';
 import {
     ClientsModule, Transport,
 } from '@nestjs/microservices';
@@ -64,7 +63,6 @@ if (dev) {
     ],
     controllers: [AppController],
     providers: [
-        //DbService,
         SequelizeService,
         ProtocolService,
         SystemService,
