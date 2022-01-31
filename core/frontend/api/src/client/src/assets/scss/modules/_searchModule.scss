@@ -1,13 +1,11 @@
-.clear-crm_search-bar{
+.clear-crm_search-bar {
   height: 100%;
-  width: calc(100% - 20px);
-
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 6;
+  z-index: 88;
 
-  &--search{
+  &--search {
     height: 40px;
     width: 100%;
     position: relative;
@@ -15,63 +13,58 @@
     //box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border: 1px #dcdcdc solid;
     background: white;
-    z-index: 6;
+    display: flex;
 
     //border-radius: 50px;
 
-    .search-icon{
-      position: absolute;
-      left: 0;
-      top: 0;
+    .search-icon {
       height: 100%;
       width: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      svg{
+
+      svg {
         max-height: 20px;
       }
     }
 
-    .search-input{
+    .search-input {
       height: 100%;
-      width: 100%;
-      position: absolute;
+      flex: 1;
       left: 45px;
-      input[type="text"]{
-        height: 100%;
-        width: 100%;
+
+      form {
+        display: flex;
+      }
+
+      input[type="text"] {
+        flex: 1;
         border: none;
       }
-      z-index: 5;
-
-
     }
 
-    .search-clear{
+    .search-clear {
       height: 100%;
       width: 20px;
-      top: 0;
-      right: 8px;
-      position: absolute;
-      z-index: 6;
       display: none;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      svg{
+
+      svg {
         stroke: #666;
         height: 16px;
       }
     }
 
-    .show-clear{
+    .show-clear {
       display: flex;
     }
   }
 }
 
-.search-suggestions{
+.search-suggestions {
   background: white;
   display: block !important;
   overflow: hidden;
@@ -80,9 +73,9 @@
   left: 0;
   width: calc(100% - 20px);
   position: absolute;
-  z-index: 4;
   min-height: 0;
-  ul{
+
+  ul {
     overflow: hidden;
     padding-left: 50px;
     list-style: none;
@@ -91,12 +84,14 @@
     flex-direction: column;
     gap: 20px;
     width: 100%;
-    li{
+
+    li {
       width: 100%;
       cursor: pointer;
       gap: 30px;
       font-size: 20px;
-      span{
+
+      span {
         font-size: 10px;
         color: #8e8e8e;
       }
@@ -104,6 +99,6 @@
   }
 }
 
-.hide-suggestions{
+.hide-suggestions {
   display: none !important;
 }
