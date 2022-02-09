@@ -147,7 +147,7 @@ export class AppController {
             try {
                 switch (data.type) {
                     case "meta":
-                        this.respond({res, file: data, fileStats});
+                        this.filesResponse({res, file: data, fileStats});
 
                         file_meta.content_type = data.content_type;
                         file_meta.content_length = data.content_length;
@@ -170,6 +170,11 @@ export class AppController {
         });
     }
 
+    @Get('api/*')
+    public async api(@Req() req: Request, @Res() res: Response) {
+        const url = parse(req.url, true);
+    }
+
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
         const url = parse(req.url, true);
@@ -183,7 +188,7 @@ export class AppController {
         await this.viewService.handler(mockRequest, res, url);
     }
 
-    private respond(params) {
+    private filesResponse(params) {
         const { res, file, fileStats } = params;
         res.set("Content-Type", file.content_type);
         res.set("Content-Length", file.content_length);
@@ -196,6 +201,25 @@ export class AppController {
         res.status(HttpStatus.OK);
         if(params.finish) {
             res.write(Buffer.from(file.data.data));
+            res.end();
+        }
+    }
+
+    private apiResponse(params) {
+        const { res, data } = params;
+        res.set("Content-Type", "application/json");
+        res.set("Content-Length", params.data.length);
+        res.set('Content-Security-Policy', "img-src 'self'; default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'");
+        res.set('X-Frame-Options', 'SAMEORIGIN');
+        res.set('X-Content-Type-Options', 'nosniff');
+        res.set('Strict-Transport-Security', 'max-age=0; includeSubDomains; preload');
+        res.set('Cache-Control', 'no-cache, private, must-revalidate, max-stale=0, post-check=0, pre-check=0 no-store');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+
+        res.status(HttpStatus.OK);
+        if(params.finish) {
+            res.write(Buffer.from(data));
             res.end();
         }
     }

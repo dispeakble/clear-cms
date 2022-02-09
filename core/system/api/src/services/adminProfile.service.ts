@@ -66,7 +66,7 @@ export class AdminProfileService {
                         id: params.client.id,
                         active: 1
                     },
-                    fields: params.payload
+                    data: params.payload
                 }
             }
         };
@@ -102,18 +102,18 @@ export class AdminProfileService {
             const response = await this.protocolService.sendMessage(checkPasswordRequest).toPromise();
 
             if (response && response.password === md5.default(params.payload.password)) {
-                request.payload.data.fields.password = md5.default(request.payload.data.fields.confirmPassword);
+                request.payload.data.data.password = md5.default(request.payload.data.data.confirmPassword);
 
             } else {
                 return {error: "Please type the correct current password and try again."};
             }
 
         } else {
-            delete request.payload.data.fields.password;
+            delete request.payload.data.data.password;
         }
 
-        delete request.payload.data.fields.newPassword;
-        delete request.payload.data.fields.confirmPassword;
+        delete request.payload.data.data.newPassword;
+        delete request.payload.data.data.confirmPassword;
 
         await this.protocolService.sendMessage(request).toPromise();
 

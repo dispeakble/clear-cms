@@ -92,7 +92,7 @@ class CategoriesController extends Component {
 
                 if(params.backgroundImage){
                     await this.uploadImages({
-                        path: "/categories/category-" + response.categoryId + "/",
+                        path: "/categories/" + response.categoryId + "/",
                         files: [{name: fileName, file: params.backgroundImage}]
                     })
                 }
@@ -139,10 +139,9 @@ class CategoriesController extends Component {
         return new Promise(async resolve => {
             try {
                 let fileName = params.backgroundImage
-                if(params.backgroundImage && params.backgroundImage.name){
+                if(params.backgroundImage && params.backgroundImage.name) {
                     fileName = `background.${this.help.fileExtension(params.backgroundImage.name)}`
                 }
-                console.log({...params})
                 const response = await this.sendMessage({
                     module: 'system',
                     api: 'categories',
@@ -162,17 +161,16 @@ class CategoriesController extends Component {
                         act: 'rm',
                         payload: {
                             path: `/categories/`,
-                            selection: [`category-${params.id}`]
+                            selection: [params.id]
                         }
                     });
                 }
                 if(params.backgroundImage.name){
                     await this.uploadImages({
-                        path: "/categories/category-" + params.id + "/",
+                        path: "/categories/" + params.id + "/",
                         files: [{name: fileName, file: params.backgroundImage}]
                     })
                 }
-
 
                 resolve(response)
             } catch (err) {

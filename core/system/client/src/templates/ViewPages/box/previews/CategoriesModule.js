@@ -15,7 +15,8 @@ class CategoriesModule extends Component {
         displayType: "background",
         categoriesPerPage: 10,
         categories:[],
-        currentPage: 1
+        currentPage: 1,
+        totalCategories: 0
     };
 
     async componentDidMount() {
@@ -31,7 +32,7 @@ class CategoriesModule extends Component {
             }
         });
 
-        await this.updateCategoryPage(this.state.currentPage - 1);
+        await this.getCategories(this.state.currentPage - 1);
     }
 
     setAsyncState = (newState) =>
@@ -43,7 +44,6 @@ class CategoriesModule extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in Categories module', params);
     }
 
     sendMessage(params) {
@@ -61,99 +61,71 @@ class CategoriesModule extends Component {
         });
     }
 
-    async updateCategoryPage(pageNumber) {
-        await this.getTotalCategories(pageNumber);
-        const categoriesInfo = await this.getCategories({
-            where: {
-                parentId: 0
-            },
-            limit: [pageNumber, this.state.categoriesPerPage || 10]
-        });
-
-        await this.setAsyncState({
-            categories: categoriesInfo.data
-        });
-    }
-
-    async getCategories(params) {
+    async getCategories(pageNumber) {
         const response = await this.sendMessage({
             module: "system",
             api: "categories",
             act: "list",
-            payload: params
-        });
-        if (response) {
-            return response;
-        }
-        return null;
-    }
-
-    async getTotalCategories() {
-        const response = await this.sendMessage({
-            module: "system",
-            api: "categories",
-            act: "total",
             payload: {
                 where: {
                     parentId: 0
+                },
+                limit: [pageNumber, this.state.categoriesPerPage],
+                order: {
+                    title: 'asc'
                 }
             }
         });
-        if (response) {
-            await this.setAsyncState({
-                totalCategories: response.data.total
-            })
-        }
+
+        await this.setAsyncState({
+            totalCategories: response.data.count,
+            categories: response.data.rows
+        });
     }
 
     render() {
         const classes = this.props.classes;
         return (
-            <div
-                key={this.props.i}
-                style={this.props.style}
-            >
+            <div style={this.props.style}>
                 <div>
-                    {this.state.displayType === "background" && <div className={classes.backgroundView}>
+                    {this.state.displayType === "card" && <div className={classes.backgroundView}>
                         {this.state.categories && this.state.categories.map((category, index) => {
-                            return <Card
-                                key={index}
-                                style={{color: 'inherit', width: '100%', display: "block", background: `url(${"/files/categories/category-" + category.id + "/" + category.backgroundimage})`}}
-                            >
+                            return <Card key={index}
+                                style={{
+                                    background: `center / cover no-repeat url(${"/files/categories/" + category.id + "/" + category.backgroundImage})`
+                            }}>
                                 <CardContent>
-                                    <h3>{category.title}</h3>
-                                    <Typography className={classes.description}>{category.description}</Typography>
+                                    <a href="/">
+                                        <h3>{category.title}</h3>
+                                        <Typography className={classes.description}>{category.description}</Typography>
+                                    </a>
                                 </CardContent>
-                             </Card>
+                            </Card>
                         })}
                     </div>}
-                    {this.state.displayType === "thumbnail" && <div className={classes.thumbnailView}>
+                    {this.state.displayType === "list" && <div className={classes.thumbnailView}>
                         {this.state.categories && this.state.categories.map((category, index) => {
-                            return <Card
-                                style={{color: 'inherit', width: '100%', display: "block"}}
-                                key={index}
-                            >
+                            return <Card key={index}>
                                 <CardContent classes={{ root: classes.cardWrapper }}>
-                                    <div className={classes.cardContent}>
-                                        <img alt={category.title} className={classes.thumbnailImg} src={"/files/categories/category-" + category.id + "/" + category.backgroundimage} />
-
-                                        <div style={{flexGrow: 1, paddingLeft: 10, width: 1}}>
-                                            <h3 style={{marginTop: 0}}>{category.title}</h3>
-                                            <Typography className={classes.description}>{category.description}</Typography>
-                                        </div>
-                                    </div>
+                                    <a href="/">
+                                        <img alt={category.title} className={classes.thumbnailImg} src={"/files/categories/" + category.id + "/" + category.backgroundImage} />
+                                        <span style={{display: "block", flexGrow: 1, paddingLeft: 10, width: 1}}>
+                                                <h3 style={{marginTop: 0}}>{category.title}</h3>
+                                                <Typography className={classes.description}>{category.description}</Typography>
+                                            </span>
+                                    </a>
                                 </CardContent>
                             </Card>
                         })}
                     </div>}
                     <Pagination
-                        count={Math.ceil(this.state.totalCategories / parseInt(this.state.categoriesPerPage))}
+                        count={Math.floor(this.state.totalCategories / this.state.categoriesPerPage)}
                         page={this.state.currentPage}
                         onChange={async (event, value) => {
-                            await this.setAsyncState({
+                            this.getCategories(value - 1);
+                            this.setState({
                                 currentPage: value
                             })
-                            await this.updateCategoryPage(value - 1);
                         }}
                     />
                 </div>

@@ -498,9 +498,6 @@ class ViewPagesEditor extends React.PureComponent {
                                 style={{style: moduleStyle}}
                                 defaultTheme={this.props.defaultTheme}
                                 pageOptions={{ pageId: this.state.pageId }}
-                                handleSave={async (id, data) => {
-                                    await this.saveModuleOptions(id, data);
-                                }}
                                 control={this.props.control}
                                 services={this.props.services}
                             />
@@ -826,7 +823,10 @@ class ViewPagesEditor extends React.PureComponent {
                             fontFamilies={fontsList}
                             fontSizes={this.fontSizes}
                             box={this.state.boxEditorProps}
-                            showModal={this.state.showBoxOptions}/>}
+                            showModal={this.state.showBoxOptions}
+                            services={this.props.services}
+                        />
+                    }
 
                     { this.state.showPageOptionsModal && <ViewPageOptions
                         open={this.state.showPageOptionsModal}
@@ -862,7 +862,7 @@ class ViewPagesEditor extends React.PureComponent {
                                 style={{
                                     fontFamily: this.state.fontFamily, color: this.state.textColor,
                                 }}
-                                cols={{lg: 12, md: 10, sm: 6, xs: 4, xxs: 2}}
+                                cols={{lg: 12, md: 12, sm: 12, xs: 12, xxs: 12}}
                                 layouts={this.state.layouts}
                                 rowHeight={1}
                                 margin={this.state.layoutBoxSpacing}

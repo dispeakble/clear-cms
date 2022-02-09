@@ -1,24 +1,25 @@
 import React from 'react';
-import Head from 'next/head'
-import ViewPage from "../src/templates/ViewPages/ViewPage";
+import Head from 'next/head';
+import PageController from '../src/templates/Controllers/Page.controller';
+import DataController from './Controllers/Data.controller';
 
-class PageContent{
+class PageContent {
 
     static async getServerSideProps(context: any) {
-        let page: any = null;
-
-        const pagePayload = context.isHome ? {
-            active: 1,
-            isHome: 1,
-            isTemplate: 0
-        } : {
-            active: 1,
-            isTemplate: 0,
-            link: {'like': `%${context.req.params[0]}`}
-        }
-
         try {
-            const pageObs = await context.req.apiHub({
+            let dependencies: any = null;
+
+            const pagePayload = context.isHome ? {
+                active: 1,
+                isHome: 1,
+                isTemplate: 0
+            } : {
+                active: 1,
+                isTemplate: 0,
+                link: {'like': `%${context.req.params[0]}`}
+            };
+
+            const page = await context.req.apiHub({
                 protocolMethod: 'sendMessage',
                 channel: 'frontendapi',
                 api: 'pages',
@@ -29,19 +30,25 @@ class PageContent{
                     }
                 }
             });
-            page = await pageObs.toPromise();
+
+            const dataController = new DataController(context);
+
+            dependencies = await dataController.GetDependencies({...page.data});
+
+            return {
+                props: {
+                    dependencies: dependencies,
+                    pageData: page?.data,
+                    isHome: context.isHome || false,
+                },
+            }
 
         } catch (err) {
             return {
                 notFound: true,
             };
         }
-        return {
-            props: {
-                pageData: page.data,
-                isHome: context.isHome || false,
-            },
-        }
+
     }
 
     static renderContent(props: any) {
@@ -82,7 +89,7 @@ class PageContent{
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
                 </Head>
-                <ViewPage {...props} isDev={process.env.NODE_ENV === 'development'} />
+                <PageController {...props} />
             </>
         )
     }

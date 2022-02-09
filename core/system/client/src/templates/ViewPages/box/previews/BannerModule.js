@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -42,24 +41,25 @@ class BannerModule extends Component {
         }
 
 
-        const banner_size = this.props.moduleOptions.bannerSize;
+        const bannerSize = this.props.moduleOptions.bannerSize;
 
-        if (banner_size) {
-            height = this.state.bannerSizes[banner_size]?.height;
-            width = this.state.bannerSizes[banner_size]?.width;
+        if (bannerSize) {
+            height = this.state.bannerSizes[bannerSize]?.height;
+            width = this.state.bannerSizes[bannerSize]?.width;
         }
 
         return (
-            <Tooltip title={this.state.title}>
+            <div>
                 {this.state.target === "On Page" ? (
                     <a href={this.state.link}>
+
                         <img
                             style={{
                                 width: `${width}px`,
                                 height: `${height}px`,
                             }}
 
-                            src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.id}/module/${banner.name}`}
+                            src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.pageId}/box-${this.props.boxId}/module/${banner.name}`}
                             alt={this.state.title}
                         />
                     </a>
@@ -70,12 +70,12 @@ class BannerModule extends Component {
                                 width: `${width}px`,
                                 height: `${height}px`,
                             }}
-                            src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.element.id}/module/${banner.name}`}
+                            src={!banner?.name? '': `/files/pages/page-${this.props.pageOptions.pageId}/box-${this.props.boxId}/module/${banner.name}`}
                             alt={this.state.title}
                         />
                     </Link>
                 )}
-            </Tooltip>
+            </div>
         );
     }
 }
@@ -83,7 +83,7 @@ class BannerModule extends Component {
 export default withRouter(BannerModule);
 
 BannerModule.propTypes = {
-    element: PropTypes.object,
+    moduleOptions: PropTypes.object,
     pageOptions: PropTypes.object,
-    defaultTheme: PropTypes.object
+    boxId: PropTypes.number,
 };

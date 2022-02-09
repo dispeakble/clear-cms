@@ -26,11 +26,11 @@ export class ViewService implements OnModuleInit {
     }
   }
 
-  apiHub(params) {
-    return this.appService.perform({
+  async apiHub(params) {
+    return (await this.appService.perform({
       act: 'protocolCall',
       payload: params
-    });
+    })).toPromise();
   }
 
   handler(req: any, res: any, url?: UrlWithParsedQuery) {

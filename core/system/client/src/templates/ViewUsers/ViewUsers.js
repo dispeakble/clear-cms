@@ -185,7 +185,7 @@ class Users extends Component {
                 onRowUpdate: (newData, oldData) =>
                     new Promise(async (resolve) => {
                         await this.props.control.set({
-                            fields: {
+                            data: {
                                 fname: newData.fname,
                                 lname: newData.lname,
                                 email: newData.email,
