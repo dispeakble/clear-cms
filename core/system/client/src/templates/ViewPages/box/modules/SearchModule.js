@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 import PropTypes from "prop-types";
+import {FormControlLabel} from "@material-ui/core";
 
 class SitemapModule extends Component {
     state = {
@@ -68,91 +69,104 @@ class SitemapModule extends Component {
 
     render() {
         return (
-            <div
-                style={{
-                    textAlign: "center",
-                }}
-            >
+            <div style={{
+                width: '100%',
+                display: 'flex'
+            }}>
+                <div style={{flex: 1}}>
+                    <div>
+                        <div>
+                            <Typography variant={"caption"} gutterBottom>Search in the title of pages and products</Typography>
+                        </div>
+                        <FormControlLabel
+                            control={<Switch
+                                value={this.state.title}
+                                checked={this.state.title}
+                                onChange={async () => {
+                                    await this.setAsyncState({
+                                        title: !this.state
+                                            .title,
+                                    });
+                                    this.props.onUpdate(this.state);
+                                }}
+                            />}
+                            label="Title search"/>
+                    </div>
+                    <div>
+                        <div style={{marginTop: 24}}>
+                            <Typography variant={"caption"} gutterBottom>Search in the description of pages and products</Typography>
+                        </div>
+                        <FormControlLabel
+                            control={<Switch
+                                value={this.state.description}
+                                checked={this.state.description}
+                                onChange={async () => {
+                                    await this.setAsyncState({
+                                        description: !this.state
+                                            .description,
+                                    });
+                                    this.props.onUpdate(this.state);
+                                }}
+                            />}
+                            label="Description search"/>
+                    </div>
+                    <div>
+                        <div style={{marginTop: 24}}>
+                            <Typography variant={"caption"} gutterBottom>Show a list of suggestions which can be clicked</Typography>
+                        </div>
+                        <FormControlLabel
+                            control={<Switch
+                                value={this.state.showSuggestions}
+                                checked={this.state.showSuggestions}
+                                onChange={async () => {
+                                    await this.setAsyncState({
+                                        showSuggestions: !this.state
+                                            .showSuggestions,
+                                    });
+                                    this.props.onUpdate(this.state);
+                                }}
+                            />}
+                            label="Show suggestions"/>
+                    </div>
 
-                <div>
-                    <Typography>Title</Typography>
-                    <Tooltip title="Enable Title">
-                        <Switch
-                            value={this.state.title}
-                            checked={this.state.title}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    title: !this.state
-                                        .title,
-                                });
-                                this.props.onUpdate(this.state);
-                            }}
-                        />
-                    </Tooltip>
                 </div>
-                <div>
-                    <Typography>Description</Typography>
-                    <Tooltip title="Enable Description">
-                        <Switch
-                            value={this.state.description}
-                            checked={this.state.description}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    description: !this.state
-                                        .description,
-                                });
-                                this.props.onUpdate(this.state);
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-                <div>
-                    <Typography>Show Suggestions</Typography>
-                    <Tooltip title="Enable Suggestions">
-                        <Switch
-                            value={this.state.showSuggestions}
-                            checked={this.state.showSuggestions}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showSuggestions: !this.state
-                                        .showSuggestions,
-                                });
-                                this.props.onUpdate(this.state);
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-                <div>
-                    <Typography>Show Start Date</Typography>
-                    <Tooltip title="Show Start Date">
-                        <Switch
-                            value={this.state.showStartDate}
-                            checked={this.state.showStartDate}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showStartDate: !this.state
-                                        .showStartDate,
-                                });
-                                this.props.onUpdate(this.state);
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-                <div>
-                    <Typography>Show End Date</Typography>
-                    <Tooltip title="Show End Date">
-                        <Switch
-                            value={this.state.showEndDate}
-                            checked={this.state.showEndDate}
-                            onChange={async () => {
-                                await this.setState({
-                                    showEndDate: !this.state
-                                        .showEndDate,
-                                });
-                                this.props.onUpdate(this.state);
-                            }}
-                        />
-                    </Tooltip>
+                <div style={{flex: 1}}>
+                    <div>
+                        <div>
+                            <Typography variant={"caption"} gutterBottom>Allow the user to select a start date</Typography>
+                        </div>
+                        <FormControlLabel
+                            control={<Switch
+                                value={this.state.showStartDate}
+                                checked={this.state.showStartDate}
+                                onChange={async () => {
+                                    await this.setAsyncState({
+                                        showStartDate: !this.state
+                                            .showStartDate,
+                                    });
+                                    this.props.onUpdate(this.state);
+                                }}
+                            />}
+                            label="Show Start Date"/>
+                    </div>
+                    <div>
+                        <div style={{marginTop: 24}}>
+                            <Typography variant={"caption"} gutterBottom>Allow the user to select a end date</Typography>
+                        </div>
+                        <FormControlLabel
+                            control={<Switch
+                                value={this.state.showEndDate}
+                                checked={this.state.showEndDate}
+                                onChange={async () => {
+                                    await this.setState({
+                                        showEndDate: !this.state
+                                            .showEndDate,
+                                    });
+                                    this.props.onUpdate(this.state);
+                                }}
+                            />}
+                            label="Show End Date"/>
+                    </div>
                 </div>
             </div>
         );
