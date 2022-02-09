@@ -25,7 +25,7 @@ class GalleryModule extends Component {
     componentDidMount() {
 
         const mo = this.props.element.moduleOptions;
-        const pageId = this.props.pageOptions.page_id;
+        const pageId = this.props.pageOptions.pageId;
         const boxId = this.props.element.id;
 
         if (mo) {

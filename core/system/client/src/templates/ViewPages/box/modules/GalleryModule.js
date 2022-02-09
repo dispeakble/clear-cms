@@ -220,7 +220,7 @@ class GalleryModule extends Component {
             return {
                 file: file,
                 name: '',
-                sel: 0,
+                sel: '',
                 title: file.name,
                 description: file.name,
                 link: "",
@@ -275,23 +275,23 @@ class GalleryModule extends Component {
             files = files.map((el, index) => {
                 let ext = "";
 
-                let name = "";
+                /*let name = "";
 
                 if (el.file) {
                     ext = el.file.name.split('.').pop();
                     name = `${index + 1}.${ext}`;
                 } else {
                     name = el.name;
-                }
+                }*/
 
                 return {
                     file: el.file,
                     title: el.title,
                     description: el.description,
                     link: el.link,
-                    name: name,
-                    original: el.file ? `${index + 1}.${ext}` : el.original,
-                    sel: index + 1,
+                    name: el.name,
+                    original: el.file ? el.name : el.original,
+                    sel: el.name,
                     position: index + 1
                 }
             })
@@ -384,49 +384,14 @@ class GalleryModule extends Component {
                                     Advanced gallery settings
                                 </Typography>
                             </AccordionSummary>
-                            <AccordionDetails>
-                                <div style={{
-                                    display: 'grid',
-                                    columnGap: '24px',
-                                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
-                                }}>
-                                    <div>
-                                        <Typography>Seconds between slides</Typography>
-                                        <Slider
-                                            defaultValue={this.state.slideInterval}
-                                            onChangeCommitted={this.handleSlideInterval.bind(this)}
-                                            aria-labelledby="discrete-slider"
-                                            valueLabelDisplay="auto"
-                                            ValueLabelComponent={this.ValueLabelComponent.bind(this)}
-                                            valueLabelFormat={this.ValueLabelSeconds.bind(this)}
-                                            min={100}
-                                            max={10000}
-                                            step={100}
-                                        />
-                                    </div>
-                                    <div>
-                                        <Typography>Seconds to animate one slide</Typography>
-                                        <Slider
-                                            defaultValue={this.state.slideDuration}
-                                            onChangeCommitted={this.handleSlideDuration.bind(this)}
-                                            aria-labelledby="discrete-slider"
-                                            ValueLabelComponent={this.ValueLabelComponent.bind(this)}
-                                            valueLabelFormat={this.ValueLabelSeconds.bind(this)}
-                                            valueLabelDisplay="auto"
-                                            min={100}
-                                            max={10000}
-                                            step={100}
-                                        />
-                                    </div>
-                                </div>
-                                <div style={{
-                                    display: 'grid',
-                                    columnGap: '10px',
-                                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
-                                }}>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Allow Infinite Sliding">
+                            <AccordionDetails style={{padding: 0}}>
+                                <div style={{ display: 'flex', width: '100%' }}>
+                                    <div style={{flex: 1, paddingRight: 6}}>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Check this option to repeat the list of slides</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.infiniteSliding}
@@ -438,13 +403,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Infinite Sliding"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip
-                                                title="Continue sliding images even if the mouse cursor is over the thumbnails">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Continue sliding images regardless of user interaction</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.tbnSliding}
@@ -456,18 +421,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Uninterrupted sliding"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                </div>
-                                <div style={{
-                                    display: 'grid',
-                                    columnGap: '10px',
-                                    gridTemplateColumns: 'repeat(2, 1fr [col-start])'
-                                }}>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="The gallery will slide the photos automatically">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>The gallery will slide the photos automatically</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.autoPlay}
@@ -479,12 +439,49 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Auto Play"/>
-                                            </Tooltip>
-                                        </Typography>
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Adjust the number of seconds to wait until the next image</Typography>
+                                            </div>
+                                            <Typography>Seconds between slides</Typography>
+                                            <Slider
+                                                defaultValue={this.state.slideInterval}
+                                                onChangeCommitted={this.handleSlideInterval.bind(this)}
+                                                aria-labelledby="discrete-slider"
+                                                valueLabelDisplay="auto"
+                                                ValueLabelComponent={this.ValueLabelComponent.bind(this)}
+                                                valueLabelFormat={this.ValueLabelSeconds.bind(this)}
+                                                min={100}
+                                                max={10000}
+                                                step={100}
+                                            />
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Adjust the number of seconds for the speed of the slide</Typography>
+                                            </div>
+                                            <Typography>Seconds to animate one slide</Typography>
+                                            <Slider
+                                                defaultValue={this.state.slideDuration}
+                                                onChangeCommitted={this.handleSlideDuration.bind(this)}
+                                                aria-labelledby="discrete-slider"
+                                                ValueLabelComponent={this.ValueLabelComponent.bind(this)}
+                                                valueLabelFormat={this.ValueLabelSeconds.bind(this)}
+                                                valueLabelDisplay="auto"
+                                                min={100}
+                                                max={10000}
+                                                step={100}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show Play Button">
+                                    <div style={{flex: 1, paddingLeft: 6}}>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Display the play button in the controls section</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.playButton}
@@ -496,12 +493,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Play Button"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show Fullscreen Button">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Display the full-screen button in the controls section</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.fullscreenButton}
@@ -513,12 +511,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Fullscreen Button"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show a bigger preview">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>A small portion of the screen will act like a lens</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.zoom}
@@ -530,12 +529,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Zoom"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show Bullets">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Add navigation bullets to the bottom of the gallery</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.bullets}
@@ -547,12 +547,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Bullets"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show Thumbnails">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Display a list of small previews</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.thumbnails}
@@ -564,12 +565,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Thumbnails"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show Navigation">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Display the arrow buttons at the sides</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.navigation}
@@ -581,12 +583,13 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Navigation"/>
-                                            </Tooltip>
-                                        </Typography>
-                                    </div>
-                                    <div>
-                                        <Typography gutterBottom>
-                                            <Tooltip title="Show Index">
+                                            </Typography>
+                                        </div>
+                                        <div>
+                                            <div style={{marginTop: 24}}>
+                                                <Typography variant={"caption"} gutterBottom>Add the index number for each thumbnail</Typography>
+                                            </div>
+                                            <Typography gutterBottom>
                                                 <FormControlLabel
                                                     control={<Switch
                                                         checked={this.state.index}
@@ -598,8 +601,8 @@ class GalleryModule extends Component {
                                                         inputProps={{'aria-label': 'controlled'}}
                                                     />}
                                                     label="Index"/>
-                                            </Tooltip>
-                                        </Typography>
+                                            </Typography>
+                                        </div>
                                     </div>
                                 </div>
                             </AccordionDetails>

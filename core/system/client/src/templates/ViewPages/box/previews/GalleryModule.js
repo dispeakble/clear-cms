@@ -55,14 +55,13 @@ class GalleryModule extends Component {
                     const imgObject = {
                         title:  img?.title || "",
                         description: img?.description || "",
-                        original: `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.boxId}/module/${img?.name}`,
-                        thumbnail: `/files/pages/page-${this.props.pageOptions.page_id}/box-${this.props.boxId}/module/${img?.name}`,
+                        original: `/files/pages/page-${this.props.pageOptions.pageId}/box-${this.props.boxId}/module/${img?.name}`,
+                        thumbnail: `/files/pages/page-${this.props.pageOptions.pageId}/box-${this.props.boxId}/module/${img?.name}`,
                         link: img?.link,
                     };
 
                     if(img.file) {
                         const imgString = await imageHelper.toBase64(img.file);
-
                         imgObject.original = imgString;
                         imgObject.thumbnail = imgString;
                     }
@@ -87,7 +86,7 @@ class GalleryModule extends Component {
 
             this.setState({
                 gallery,
-                images: images
+                images
             })
         }
     }
@@ -144,7 +143,7 @@ class GalleryModule extends Component {
             slideOnThumbnailOver: this.state.gallery.slideOnThumbnailOver,
             slideInterval: this.state.gallery.slideInterval,
             slideDuration: this.state.gallery.slideDuration,
-            boxes: this.state.images,
+            items: this.state.images,
         };
 
         if(this.state.gallery.zoom) {
@@ -155,9 +154,9 @@ class GalleryModule extends Component {
 
         return (
             <React.Fragment>
-                <ImageGallery
+                {galleryProps.items && galleryProps.items.length > 0 && <ImageGallery
                     {...galleryProps}
-                />
+                />}
                 { this.state.gallery.zoom && <div id={`${this.props.boxId}-enlargeImage`} /> }
             </React.Fragment>
         );
