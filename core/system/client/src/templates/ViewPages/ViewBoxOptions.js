@@ -94,7 +94,8 @@ class ViewBoxOptions extends React.Component {
             fontFamilies: this.props.fontFamilies,
             fontSizes: this.props.fontSizes,
             pageId: this.props.pageOptions.pageId,
-            layoutBoxSpacing: this.props.pageOptions.layoutBoxSpacing[0]
+            layoutBoxSpacing: this.props.pageOptions.layoutBoxSpacing[0],
+            services: this.props.services
         };
 
         content['general'] = <ViewBoxGeneral {...payload} />;
@@ -146,5 +147,6 @@ ViewBoxOptions.propTypes = {
     showModal: PropTypes.bool,
     onClose: PropTypes.func,
     onSave: PropTypes.func,
-    defaultTheme: PropTypes.object
+    defaultTheme: PropTypes.object,
+    services: PropTypes.object
 };

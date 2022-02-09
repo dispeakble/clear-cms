@@ -181,7 +181,7 @@ export class AppController {
             const start_date = new Date().getTime();
             const channel = this.portChannel();
 
-            if(typeof channel !== "string" || !channel) {
+            if(!totalFiles && (typeof channel !== "string" || !channel)) {
                 res.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 res.end(`Port ${channel} not mapped`);
                 return;

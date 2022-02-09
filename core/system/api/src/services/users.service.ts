@@ -103,7 +103,7 @@ export class UsersService {
                     channel: 'system',
                     data: {
                         what: 'user',
-                        fields: params.fields,
+                        data: params.data,
                         where: params.where
                     }
                 }

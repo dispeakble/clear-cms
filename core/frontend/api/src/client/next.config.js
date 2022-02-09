@@ -34,10 +34,6 @@ module.exports = {
       {
         source: '/files/:path*',
         destination: `${serverUrl}/files/:path*` // Proxy to static files
-      },
-      {
-        source: '/api/:path*',
-        destination: `${serverUrl}/:path*` // Proxy to Backend
       }
     ]
   }

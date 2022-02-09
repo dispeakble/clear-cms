@@ -84,7 +84,7 @@ export class AdminThemesService {
                         where: {
                             isDefault: 1
                         },
-                        fields: {
+                        data: {
                             isDefault: 0
                         }
                     }

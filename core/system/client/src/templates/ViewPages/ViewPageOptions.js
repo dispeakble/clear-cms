@@ -171,7 +171,7 @@ class ViewPageOptions extends React.PureComponent {
             categories.map((el) => {
                 let catName = el.label;
                 if (el.parentId) {
-                    catName = this.getNestedCategories(el.parentId) + "/" + el.label;
+                    catName = this.getNestedCategories(categories, el.parentId) + "/" + el.label;
                 }
                 result.push({
                     id: el.id,
@@ -186,8 +186,8 @@ class ViewPageOptions extends React.PureComponent {
         }
     }
 
-    getNestedCategories(id) {
-        let link = this.state.categories.find((el) => el.id === id);
+    getNestedCategories(categories, id) {
+        let link = categories.find((el) => el.id === id);
         let result = link.label || "";
         if (link && link.parentId) {
             result = this.getNestedCategories(link.parentId) + "/" + result;
@@ -614,6 +614,10 @@ class ViewPageOptions extends React.PureComponent {
                                         className={this.props.classes.option}
                                         options={this.props.fontFamilies}
                                         autoHighlight
+                                        disableCloseOnSelect
+                                        renderOption={(option) => {
+                                            return <span style={{fontFamily: `${option.family}`}}>{option.family}</span>
+                                        }}
                                         getOptionLabel={(option) => option.family}
                                         value={this.getFontFamilyItem(
                                             this.state.fontFamily

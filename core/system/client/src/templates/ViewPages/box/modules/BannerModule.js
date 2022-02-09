@@ -1,17 +1,15 @@
 import React, {Component} from "react";
-
 import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-
 import {DropzoneDialog} from "material-ui-dropzone";
-
-import Typography from "@material-ui/core/Typography";
 import CustomInput from "components/CustomInput/CustomInput.js";
-
 import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
 import Button from "components/CustomButtons/Button";
+import help from "../../../../helpers/image.helper";
+import imageHelper from "../../../../helpers/image.helper";
+import {Publish} from "@material-ui/icons";
 
 class BannerModule extends Component {
     state = {
@@ -37,6 +35,8 @@ class BannerModule extends Component {
         bannerBinary: "",
         showFileUploader: false,
     };
+
+    imageUploader = null;
 
     componentDidMount() {
         if (this.props.moduleOptions) {
@@ -122,18 +122,9 @@ class BannerModule extends Component {
         this.handleUpdate();
     };
 
-    toBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-    }
-
     async handleFile(event) {
         if (event.length) {
-            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
+            let strings = await Promise.all(event.map((file) => help.toBase64(file)));
             await this.setAsyncState({
                 banner: strings[0],
                 bannerBinary: event[0]
@@ -175,104 +166,123 @@ class BannerModule extends Component {
             files: this.state.files
         })
     }
-    
+
     fileExtension = (string) => {
         const p = string.split('.');
         return p[p.length - 1];
+    }
+
+    async handleImageUpload(event) {
+
+        if(!event.target.files || !event.target.files.length) {
+            return;
+        }
+
+        const fileClone = new File([event.target.files[0]], event.target.files[0].name);
+        const imageBase64 = await imageHelper.toBase64(event.target.files[0]);
+
+        const files = [{
+            sel: 'bg',
+            name: `banner.${this.fileExtension(fileClone.name)}`,
+            file: fileClone,
+            string: imageBase64
+        }];
+
+        this.onUpdate({
+            files: files
+        });
+    }
+
+    onUpdate(params) {
+        this.props.onUpdate({...this.state, ...params})
+        this.setState(params)
     }
 
     render() {
         const classes = this.props.classes;
         return (
             <React.Fragment>
-                <div style={{ textAlign: "center" }}>
-                    <h4 className={classes.modalTitle}>
-                        Edit Banner Module
-                    </h4>
-                    <CustomInput
-                        labelText="Title"
-                        id="bannerTitle"
-                        required="required"
-                        formControlProps={{
-                            fullWidth: true,
-                            onChange: this.handleInputChange.bind(this),
-                        }}
-                        inputProps={{
-                            value: this.state.bannerTitle,
-                            type: "text",
-                        }}
-                    />
-                    <Autocomplete
-                        style={{margin: "5% 0"}}
-                        id="moduleDropdown"
-                        onChange={this.handleBannerSize}
-                        className={classes.option}
-                        autoHighlight
-                        getOptionLabel={(option) => option.label}
-                        value={this.state.bannerSizes[this.state.bannerSize] || null}
-                        options={this.state.bannerSizes}
-                        renderInput={(params) => (
-                            <TextField
-                                className={classes.textfield}
-                                {...params}
-                                label="Size"
-                                variant="outlined"
-                            />
-                        )}
-                    />{" "}
-                    <CustomInput
-                        labelText="Link"
-                        id="bannerLink"
-                        required="required"
-                        formControlProps={{
-                            fullWidth: true,
-                            onChange: (event) => this.handleInputChange(event),
-                        }}
-                        inputProps={{
-                            value: this.state.bannerLink,
-                            type: "text",
-                        }}
-                    />
-                    <Autocomplete
-                        style={{margin: "5% 0"}}
-                        id="moduleDropdown"
-                        onChange={this.handleLinkNav}
-                        className={classes.option}
-                        autoHighlight
-                        getOptionLabel={(option) => option.label}
-                        value={this.state.linkNavs[this.state.linkNav] || null}
-                        options={this.state.linkNavs}
-                        renderInput={(params) => (
-                            <TextField
-                                className={classes.textfield}
-                                {...params}
-                                label="Link Navigation"
-                                variant="outlined"
-                            />
-                        )}
-                    />{" "}
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "space-between"
-                    }}>
-                        <div>
-                            <Typography id="discrete-slider" gutterBottom>
-                                <span>Image</span>
-                            </Typography>
-                        </div>
+                <div style={{display: "flex", marginTop: 12}}>
+                    <div style={{flex: 1, marginRight: 12}}>
+                        <CustomInput
+                            labelText="Title"
+                            id="bannerTitle"
+                            required="required"
+                            formControlProps={{
+                                fullWidth: true,
+                                onChange: this.handleInputChange.bind(this),
+                            }}
+                            inputProps={{
+                                value: this.state.bannerTitle,
+                                type: "text",
+                            }}
+                        />
+                        <Autocomplete
+                            style={{margin: "5% 0"}}
+                            id="moduleDropdown"
+                            onChange={this.handleBannerSize}
+                            className={classes.option}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            value={this.state.bannerSizes[this.state.bannerSize] || null}
+                            options={this.state.bannerSizes}
+                            renderInput={(params) => (
+                                <TextField
+                                    className={classes.textfield}
+                                    {...params}
+                                    label="Size"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
                     </div>
-                    <Button onClick={() => {
-                        this.setState({
-                            showFileUploader: true
-                        });
-                    }} color="primary">Upload Banner Image</Button>
-                    <DropzoneDialog
-                        open={this.state.showFileUploader}
-                        onSave={this.handleFile.bind(this)}
-                        onClose={this.closeFileUploader.bind(this)}
-                        filesLimit={1}
-                        maxFileSize={Math.pow(1024, 3)}
-                    />
+                    <div style={{flex: 1, marginLeft: 12}}>
+                        <CustomInput
+                            labelText="Link"
+                            id="bannerLink"
+                            required="required"
+                            formControlProps={{
+                                fullWidth: true,
+                                onChange: (event) => this.handleInputChange(event),
+                            }}
+                            inputProps={{
+                                value: this.state.bannerLink,
+                                type: "text",
+                            }}
+                        />
+                        <Autocomplete
+                            style={{margin: "5% 0"}}
+                            id="moduleDropdown"
+                            onChange={this.handleLinkNav}
+                            className={classes.option}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            value={this.state.linkNavs[this.state.linkNav] || null}
+                            options={this.state.linkNavs}
+                            renderInput={(params) => (
+                                <TextField
+                                    className={classes.textfield}
+                                    {...params}
+                                    label="Link Navigation"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
+                    </div>
+                </div>
+                <div style={{display: "flex"}}>
+                    <div style={{flex: 1}}>
+                        <Button color={"primary"} onClick={() => {
+                            this.imageUploader.click();
+                        }}><Publish /> Upload Banner Image</Button>
+                        <input
+                            type="file"
+                            multiple={true}
+                            ref={(ref) => this.imageUploader = ref}
+                            style={{display: 'none'}}
+                            onChange={(event) => this.handleImageUpload(event)}
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         );

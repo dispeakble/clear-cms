@@ -115,12 +115,12 @@ class UsersController extends Component {
                     api: 'users',
                     act: 'set',
                     payload: {
-                        fields: params.fields,
+                        data: params.data,
                         where: params.where
                     }
                 };
                 if(params.password && params.password.length) {
-                    payload.fields.payload.password = params.password;
+                    payload.data.payload.password = params.password;
                 }
                 const response = await this.sendMessage(payload);
 

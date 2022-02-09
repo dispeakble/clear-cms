@@ -36,11 +36,6 @@ const modules = {
 
 class ViewPage extends React.Component {
 
-    control = {
-        //pageList: this.props.pagesData,
-        //categoryList: this.props.categoriesData
-    }
-
     constructor(props) {
         super(props);
 
@@ -57,7 +52,7 @@ class ViewPage extends React.Component {
                     content: (
                         <div data-grid={box} key={`box-${index}`} style={boxStyle}>
                             <LazyComponent
-                                control={this.control}
+                                control={this.props.control}
                                 id={index}
                                 element={box}
                                 style={moduleStyle}
@@ -110,7 +105,6 @@ class ViewPage extends React.Component {
 
             activityService.start();//TODO ONLY FOR DEV
         }
-
     }
 
     switchBoxModalState = (el) => {
@@ -124,6 +118,7 @@ class ViewPage extends React.Component {
                 }
             }
         }));
+
         if (el.displayOptions.neverShowAfterClosing) {
             localStorage.setItem(el.title + el.i, el.title);
         }
@@ -138,6 +133,7 @@ class ViewPage extends React.Component {
         } else {
             localStorage.removeItem(key);
         }
+
         return true;
     }
 
@@ -164,13 +160,13 @@ class ViewPage extends React.Component {
                 }
             });
         }
+
         return fonts;
     }
 
     createBox(el, index) {
         el.static = true;
         const pageId = el.templateUsed || this.props.pageData.id;
-
 
         const box = {
             i: String(index),
@@ -252,12 +248,12 @@ class ViewPage extends React.Component {
                 boxStyle.zIndex = 9999;
             }
 
-            const LazyComponent = modules[el.module.replace(" ", "")] || <div/>;
+            const BoxComponent = modules[el.module.replace(" ", "")] || <div/>;
 
             return (
                 <div data-grid={box} key={`box-${index}`} style={boxStyle}>
-                    <LazyComponent
-                        control={this.control}
+                    <BoxComponent
+                        control={this.props.control}
                         id={index}
                         element={box}
                         style={moduleStyle}
@@ -367,20 +363,6 @@ class ViewPage extends React.Component {
     }
 }
 
-/*const mapStateToProps = state => {
-  return {
-    items: state.page.items,
-    pageConfig: state.page.pageConfig,
-    pageId: state.page.pageId
-  };
-};*/
-
 let Component = withStyles(styles)(ViewPage);
 
-/*if (publicRuntimeConfig?.wsEnabled) {
-  Component = withRouter(withStyles(styles)(connect(
-    mapStateToProps,
-    null
-  )(ViewPagesPreview)));
-}*/
 export default Component;

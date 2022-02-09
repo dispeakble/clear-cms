@@ -133,7 +133,7 @@ export class DashboardBoxService {
                         where: {
                             id: params.id
                         },
-                        fields: this.help.giveBoxValues(params)
+                        data: this.help.giveBoxValues(params)
                     }
                 }
             };

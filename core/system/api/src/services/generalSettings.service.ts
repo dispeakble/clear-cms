@@ -67,7 +67,7 @@ export class GeneralSettingsService {
                             where: {
                                 isDefault: 1
                             },
-                            fields: {
+                            data: {
                                 data: params.payload.data
                             },
                         }

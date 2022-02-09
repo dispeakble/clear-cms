@@ -35,7 +35,7 @@ class AccordionModule extends Component {
                     const id = `panel${idx}a-content`;
                     return (
                         <Accordion
-                            key={idx}
+                            key={id}
                             expanded={this.state.expanded === id}
                             onChange={() => this.handleChange(id)}
                         >

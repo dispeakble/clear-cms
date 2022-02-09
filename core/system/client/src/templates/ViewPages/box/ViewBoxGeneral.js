@@ -168,6 +168,7 @@ class ViewBoxGeneral extends React.PureComponent {
                                     onSave={(data) => {
                                         this.box.moduleOptions = data;
                                     }}
+                                    services={this.props.services}
                                 />
                             </Suspense>
                         </div>
@@ -191,5 +192,6 @@ ViewBoxGeneral.propTypes = {
     showModal: PropTypes.bool,
     onClose: PropTypes.func,
     onUpdate: PropTypes.func,
-    defaultTheme: PropTypes.object
+    defaultTheme: PropTypes.object,
+    services: PropTypes.object
 };

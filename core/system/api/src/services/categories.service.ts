@@ -143,7 +143,7 @@ export class CategoriesService {
                         where: {
                             id: params.id
                         },
-                        fields: {
+                        data: {
                             title: params.title,
                             description: params.description,
                             backgroundImage: params.backgroundImage,
