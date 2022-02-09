@@ -101,7 +101,7 @@ export class AppController {
                         totalFiles = Number(req.body.totalFiles);
                         multerFinish = true;
                         //we will start a REDIS handshake with the consumer
-                        let handshake = this.protocolService.startHandshake({
+                        const handshake = this.protocolService.startHandshake({
                             channel: this.portChannel(),
                             indication: {
                                 api: 'bucket',
@@ -163,9 +163,6 @@ export class AppController {
                                     res.end(JSON.stringify({message: 'upload error'}));
                                 });
                             }, 1000);
-
-
-
                         });
                     },
                     _removeFile: (req, file, cb) => {

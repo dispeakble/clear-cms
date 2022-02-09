@@ -79,7 +79,7 @@ export class ProtocolController {
 
             const data = await this.systemService.registerModule(this.moduleConfig);
             if(!data) {
-                console.log('Cannot regiter system microservice');
+                console.log('Cannot register system microservice');
                 process.exit(1);
             }
 

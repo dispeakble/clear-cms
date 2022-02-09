@@ -10,19 +10,20 @@ class BannerModule extends Component {
     link: "",
     target: "",
     background: "",
-    bannerSizes: [
-      { width: "250", height: "250"},
-      { width: "200", height: "200"},
-      { width: "468", height: "60"},
-      { width: "728", height: "90"},
-      { width: "300", height: "250"},
-      { width: "336", height: "280"},
-      { width: "120", height: "600"},
-      { width: "160", height: "600"},
-      { width: "300", height: "600"},
-      { width: "970", height: "90"},
-    ],
   };
+
+  bannerSizes = [
+    {label: "120 x 600"},
+    {label: "160 x 600"},
+    {label: "200 x 200"},
+    {label: "250 x 250"},
+    {label: "300 x 250"},
+    {label: "300 x 600"},
+    {label: "336 x 280"},
+    {label: "468 x 60"},
+    {label: "728 x 90"},
+    {label: "970 x 90"},
+  ];
 
   pickByKey(params) {
     return params.data.find(el => el[params.what] === params.where)
@@ -42,8 +43,8 @@ class BannerModule extends Component {
     const bannerSize = this.props.element.moduleOptions.bannerSize;
 
     if (bannerSize) {
-      height = this.state.bannerSizes[bannerSize]?.height;
-      width = this.state.bannerSizes[bannerSize]?.width;
+      height = this.bannerSizes[bannerSize]?.height;
+      width = this.bannerSizes[bannerSize]?.width;
     }
 
     return (

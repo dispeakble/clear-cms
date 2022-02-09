@@ -1,40 +1,41 @@
 import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles";
 import styles from "assets/jss/clear-crm/views/pagesAdd.js";
-import {DropzoneDialog} from "material-ui-dropzone";
 import CustomInput from "components/CustomInput/CustomInput.js";
 import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
 import Button from "components/CustomButtons/Button";
-import help from "../../../../helpers/image.helper";
 import imageHelper from "../../../../helpers/image.helper";
 import {Publish} from "@material-ui/icons";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 class BannerModule extends Component {
     state = {
         bannerTitle: "",
         bannerLink: "",
-        bannerSizes: [
-            {label: "250 x 250"},
-            {label: "200 x 200"},
-            {label: "468 x 60"},
-            {label: "728 x 90"},
-            {label: "300 x 250"},
-            {label: "336 x 280"},
-            {label: "120 x 600"},
-            {label: "160 x 600"},
-            {label: "300 x 600"},
-            {label: "970 x 90"},
-        ],
         bannerSize: 0,
         linkNav: 0,
-        linkNavs: [{label: "On Page"}, {label: "New Tab"}],
+        linkNavs: [{label: "Same Tab"}, {label: "New Tab"}],
         files: [],
         banner: "",
         bannerBinary: "",
         showFileUploader: false,
     };
+
+    bannerSizes = [
+        {label: "120 x 600"},
+        {label: "160 x 600"},
+        {label: "200 x 200"},
+        {label: "250 x 250"},
+        {label: "300 x 250"},
+        {label: "300 x 600"},
+        {label: "336 x 280"},
+        {label: "468 x 60"},
+        {label: "728 x 90"},
+        {label: "970 x 90"},
+    ];
 
     imageUploader = null;
 
@@ -75,13 +76,13 @@ class BannerModule extends Component {
     };
 
     getBannerSizeLabel(index) {
-        const box = this.state.bannerSizes[index];
+        const box = this.bannerSizes[index];
         return box.label;
     }
 
     getBannerSizeIndex(name) {
         return Number(
-            this.state.bannerSizes.findIndex((type) => {
+            this.bannerSizes.findIndex((type) => {
                 return type.label === name;
             })
         );
@@ -122,35 +123,6 @@ class BannerModule extends Component {
         this.handleUpdate();
     };
 
-    async handleFile(event) {
-        if (event.length) {
-            let strings = await Promise.all(event.map((file) => help.toBase64(file)));
-            await this.setAsyncState({
-                banner: strings[0],
-                bannerBinary: event[0]
-            });
-            await this.setAsyncState({
-                showFileUploader: false
-            })
-        }
-
-        let files = [];
-        if (this.state.bannerBinary) {
-            files.push({
-                sel: 'banner',
-                name: `banner.${this.fileExtension(this.state.bannerBinary.name)}`,
-                file: this.state.bannerBinary
-            });
-        }
-
-        await this.setAsyncState({
-            files
-        });
-
-        this.handleUpdate()
-
-    }
-
     closeFileUploader() {
         this.setState({
             showFileUploader: false
@@ -182,8 +154,8 @@ class BannerModule extends Component {
         const imageBase64 = await imageHelper.toBase64(event.target.files[0]);
 
         const files = [{
-            sel: 'bg',
-            name: `banner.${this.fileExtension(fileClone.name)}`,
+            sel: 'banner',
+            name: fileClone.name,
             file: fileClone,
             string: imageBase64
         }];
@@ -204,6 +176,9 @@ class BannerModule extends Component {
             <React.Fragment>
                 <div style={{display: "flex", marginTop: 12}}>
                     <div style={{flex: 1, marginRight: 12}}>
+                        <Typography gutterBottom variant="caption">
+                            Type in title of this banner for SEO reasons
+                        </Typography>
                         <CustomInput
                             labelText="Title"
                             id="bannerTitle"
@@ -217,6 +192,10 @@ class BannerModule extends Component {
                                 type: "text",
                             }}
                         />
+                        <Divider style={{marginTop: 24, background: 'none'}}/>
+                        <Typography gutterBottom variant="caption">
+                            Use the banner size to stretch your image automatically
+                        </Typography>
                         <Autocomplete
                             style={{margin: "5% 0"}}
                             id="moduleDropdown"
@@ -224,8 +203,8 @@ class BannerModule extends Component {
                             className={classes.option}
                             autoHighlight
                             getOptionLabel={(option) => option.label}
-                            value={this.state.bannerSizes[this.state.bannerSize] || null}
-                            options={this.state.bannerSizes}
+                            value={this.bannerSizes[this.state.bannerSize] || null}
+                            options={this.bannerSizes}
                             renderInput={(params) => (
                                 <TextField
                                     className={classes.textfield}
@@ -237,6 +216,9 @@ class BannerModule extends Component {
                         />
                     </div>
                     <div style={{flex: 1, marginLeft: 12}}>
+                        <Typography gutterBottom variant="caption">
+                            Type in the banner link
+                        </Typography>
                         <CustomInput
                             labelText="Link"
                             id="bannerLink"
@@ -250,6 +232,10 @@ class BannerModule extends Component {
                                 type: "text",
                             }}
                         />
+                        <Divider style={{marginTop: 24, background: 'none'}}/>
+                        <Typography gutterBottom variant="caption">
+                            Point the user to a new tab or navigate in the same tab
+                        </Typography>
                         <Autocomplete
                             style={{margin: "5% 0"}}
                             id="moduleDropdown"
@@ -270,19 +256,22 @@ class BannerModule extends Component {
                         />
                     </div>
                 </div>
-                <div style={{display: "flex"}}>
-                    <div style={{flex: 1}}>
-                        <Button color={"primary"} onClick={() => {
-                            this.imageUploader.click();
-                        }}><Publish /> Upload Banner Image</Button>
-                        <input
-                            type="file"
-                            multiple={true}
-                            ref={(ref) => this.imageUploader = ref}
-                            style={{display: 'none'}}
-                            onChange={(event) => this.handleImageUpload(event)}
-                        />
+                <div>
+                    <div>
+                        <Typography gutterBottom variant="caption">
+                            Select your banner image
+                        </Typography>
                     </div>
+                    <Button color={"primary"} onClick={() => {
+                        this.imageUploader.click();
+                    }}><Publish /> Upload Banner Image</Button>
+                    <input
+                        type="file"
+                        multiple={true}
+                        ref={(ref) => this.imageUploader = ref}
+                        style={{display: 'none'}}
+                        onChange={(event) => this.handleImageUpload(event)}
+                    />
                 </div>
             </React.Fragment>
         );
