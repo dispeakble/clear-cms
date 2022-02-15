@@ -28,7 +28,6 @@ class HeaderModule extends Component {
         logoWidth: 120,
         logoHeight: 90,
         backgroundPosition: 'center center',
-        temporaryDeleted: [],
         files: []
     };
 
@@ -40,10 +39,10 @@ class HeaderModule extends Component {
     setAsyncState = (newState) =>
         new Promise((resolve) => this.setState(newState, resolve));
 
-    componentDidMount() {
+    async componentDidMount() {
         if (this.props.moduleOptions) {
             let {moduleOptions} = this.props;
-            this.setState({
+            await this.setAsyncState({
                 isModuleSticky: !!moduleOptions.isModuleSticky,
                 backgroundRepeat: !!moduleOptions.backgroundRepeat,
                 backgroundStretch: !!moduleOptions.backgroundStretch,
@@ -55,6 +54,8 @@ class HeaderModule extends Component {
                 logoWidth: moduleOptions.logoWidth || 120,
                 logoHeight: moduleOptions.logoHeight || 90,
             });
+
+            this.onUpdate({});
 
             this.logoPosition = moduleOptions.logoPosition || [10, 10];
         }
@@ -193,53 +194,15 @@ class HeaderModule extends Component {
         let logoSrc = "";
 
         if(string && string.length) {
-            logoSrc = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${name}`;
-        } else {
+            logoSrc = string;
+        } else if(name) {
             logoSrc = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${name}`;
         }
 
         return (
             <div>
                 <FormGroup column="true">
-                    <div id="preview" style={{
-                        width: "100%",
-                        height: (this.props.box.h * (this.props.layoutBoxSpacing || 1)) || 250,
-                        position: "relative",
-                        backgroundColor: "#FFFFFF",
-                        userSelect: "none",
-                        backgroundImage: `url(${foundBg})`,
-                        backgroundPosition: this.state.backgroundPosition,
-                        backgroundSize: this.state.backgroundStretch ? "cover" : "auto",
-                        backgroundRepeat: this.state.backgroundRepeat ? "repeat" : "no-repeat"
-                    }}>
-                        <Rnd style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            border: "solid 1px #CCC",
-                            background: "none"
-                        }}
-                        bounds="parent"
-                        default={{
-                            width: logoWidth,
-                            height: logoHeight
-                        }}
-                        position={{
-                            x: this.logoPosition[0],
-                            y: this.logoPosition[1],
-                        }}
-                        onDrag={(evt) => {
-                            this.handleLogoDrag(evt);
-                        }}
-                        onDragStop={() => {
-                            this.handleLogoDragStop()
-                        }}><img src={logoSrc} style={{
-                            userSelect: "none",
-                            width: '100%',
-                            height: '100%',
-                            WebkitUserDrag: 'none'
-                        }} /></Rnd>
-                    </div>
+
                     <div style={{
                         display: "flex"
                     }}>
@@ -258,7 +221,7 @@ class HeaderModule extends Component {
                                 />
                             </div>
                             <div style={{marginTop: 24}}>
-                                <Typography variant={"caption"} gutterBottom>Stretch the background or repeat to fit the header</Typography>
+                                <Typography variant={"caption"} gutterBottom>Fit the background image or repeat to fit the header</Typography>
                             </div>
                             <div style={{display: "flex", marginTop: 12}}>
                                 <div style={{flex: 1, marginRight: 12}}>
@@ -272,7 +235,7 @@ class HeaderModule extends Component {
                                             }}
                                             inputProps={{'aria-label': 'controlled'}}
                                         />}
-                                        label="Repeat Image"/>
+                                        label="Repeat"/>
                                 </div>
                                 <div style={{flex: 1, marginLeft: 12}}>
                                     <FormControlLabel
@@ -286,7 +249,7 @@ class HeaderModule extends Component {
                                                 }}
                                                 inputProps={{'aria-label': 'controlled'}}
                                             />}
-                                        label="Stretch Image"/>
+                                        label="Fit"/>
                                 </div>
                             </div>
                             <div style={{marginTop: 12}}>
@@ -318,48 +281,46 @@ class HeaderModule extends Component {
                                 />
                             </div>
                             <div style={{marginTop: 24}}>
-                                <Typography variant={"caption"} gutterBottom>Give the logo a title and a link (e.g. / for home)</Typography>
+                                <Typography variant={"caption"} gutterBottom>Give the logo a title</Typography>
                             </div>
-                            <div style={{display: "flex"}}>
-                                <div style={{flex: 1, marginRight: 12}}>
-                                    <CustomInput
-                                        labelText="Logo Title"
-                                        id="logoTitle"
-                                        required="required"
-                                        formControlProps={{
-                                            fullWidth: true,
-                                            onChange: (event) => {
-                                                this.onUpdate({
-                                                    logoTitle: event.target.value
-                                                })
-                                            },
-                                        }}
-                                        inputProps={{
-                                            value: this.state.logoTitle,
-                                            type: "text",
-                                        }}
-                                    />
-                                </div>
-                                <div style={{flex: 1, marginLeft: 12}}>
-                                    <CustomInput
-                                        labelText="Logo Link"
-                                        id="logoLink"
-                                        required="required"
-                                        formControlProps={{
-                                            fullWidth: true,
-                                            onChange: (event) => {
-                                                this.onUpdate({
-                                                    logoLink: event.target.value
-                                                })
-                                            },
-                                        }}
-                                        inputProps={{
-                                            value: this.state.logoLink,
-                                            type: "text",
-                                        }}
-                                    />
-                                </div>
+                            <CustomInput
+                                labelText="Logo Title"
+                                id="logoTitle"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => {
+                                        this.onUpdate({
+                                            logoTitle: event.target.value
+                                        })
+                                    },
+                                }}
+                                inputProps={{
+                                    value: this.state.logoTitle,
+                                    type: "text",
+                                }}
+                            />
+
+                            <div style={{marginTop: 24}}>
+                                <Typography variant={"caption"} gutterBottom>Give the logo a link (e.g. / for home)</Typography>
                             </div>
+                            <CustomInput
+                                labelText="Logo Link"
+                                id="logoLink"
+                                required="required"
+                                formControlProps={{
+                                    fullWidth: true,
+                                    onChange: (event) => {
+                                        this.onUpdate({
+                                            logoLink: event.target.value
+                                        })
+                                    },
+                                }}
+                                inputProps={{
+                                    value: this.state.logoLink,
+                                    type: "text",
+                                }}
+                            />
                             <div style={{marginTop: 12}}>
                                 <Typography variant={"caption"} gutterBottom>The header will stick to the top of the page permanently</Typography>
                                 <FormControlLabel
@@ -376,6 +337,49 @@ class HeaderModule extends Component {
                             </div>
                         </div>
                     </div>
+                    <div style={{flex: 1, marginRight: 12, marginTop: 12}}>
+                        <h4>Header preview</h4>
+                        <div id="preview" style={{
+                            width: "100%",
+                            height: (this.props.box.h * (this.props.layoutBoxSpacing || 1)) || 250,
+                            position: "relative",
+                            backgroundColor: "#FFFFFF",
+                            userSelect: "none",
+                            backgroundImage: `url(${foundBg})`,
+                            backgroundPosition: this.state.backgroundPosition,
+                            backgroundSize: this.state.backgroundStretch ? "cover" : "auto",
+                            backgroundRepeat: this.state.backgroundRepeat ? "repeat" : "no-repeat"
+                        }}>
+                            {logoSrc && <Rnd style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                border: "solid 1px #CCC",
+                                background: "none"
+                            }}
+                                             bounds="parent"
+                                             default={{
+                                                 width: logoWidth,
+                                                 height: logoHeight
+                                             }}
+                                             position={{
+                                                 x: this.logoPosition[0],
+                                                 y: this.logoPosition[1],
+                                             }}
+                                             onDrag={(evt) => {
+                                                 this.handleLogoDrag(evt);
+                                             }}
+                                             onDragStop={() => {
+                                                 this.handleLogoDragStop()
+                                             }}><img src={logoSrc} style={{
+                                userSelect: "none",
+                                width: '100%',
+                                height: '100%',
+                                WebkitUserDrag: 'none'
+                            }} /></Rnd> }
+                        </div>
+                    </div>
+
                 </FormGroup>
             </div>
         );
