@@ -1,8 +1,6 @@
-import { container, title } from "assets/jss/clear-crm.js";
+import { container, title } from "../clear-crm.js";
 
-import modalStyle from "assets/jss/clear-crm/modalStyle.js";
-import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
-import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
+import modalStyle from "./modalStyle.js";
 
 const javascriptStyles = {
     section: {
@@ -32,8 +30,6 @@ const javascriptStyles = {
         paddingLeft: "0",
         letterSpacing: "normal",
     },
-    ...tooltipsStyle,
-    ...popoverStyles,
     categoriesPanel: {
         textAlign: "center",
         marginTop: "60px",

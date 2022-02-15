@@ -239,7 +239,7 @@ class ViewThemes extends Component {
             return (
                 <React.Fragment key={theme.id}>
                     <Card
-                        className={this.props.classes.root}
+                        className={this.props.classes.ThemeCard}
                     >
                         <CardActionArea>
                             <CardMedia
@@ -1037,7 +1037,7 @@ class ViewThemes extends Component {
                         }} {...a11yProps(1)} />
                     </Tabs>
                 </AppBar>
-                <div style={{display: "flex", "& > :lastChild": {marginRight: "0px"}}}>
+                <div>
                     {this.adminThemeList()}
                 </div>
                 <div

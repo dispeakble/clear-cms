@@ -257,7 +257,6 @@ class PagelistModule extends Component {
             },
             editable: {
                 onRowAdd: async (newData) => {
-                    console.log("rowData", newData);
                     await this.setAsyncState(prevState => {
                         return {
                             ...prevState,

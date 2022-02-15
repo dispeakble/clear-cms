@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import  { Redirect } from 'react-router-dom';
+import React, {Component} from "react";
+import {Redirect} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
-class AuthGuardService extends Component{
+class AuthGuardService extends Component {
 
     services;
     methods = [""];
     state = {
-        renderState:""
+        renderState: ""
     }
 
     static get propTypes() {
@@ -29,25 +29,23 @@ class AuthGuardService extends Component{
 
     onMessage(params) {
         try {
-            if(params && params['method'] && this[params['method']]){
+            if (params && params['method'] && this[params['method']]) {
                 this[params['method']](params.data);
             }
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in auth service', params);
     }
 
-    redirect(data){
-        if(data && data.location){
+    redirect(data) {
+        if (data && data.location) {
             this.setState({
-                renderState: <Redirect to={data.location}  />
+                renderState: <Redirect to={data.location}/>
             })
         }
     }
 
-    render(){
-
+    render() {
         return this.state.renderState;
     }
 

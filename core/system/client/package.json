@@ -38,6 +38,7 @@
     "moment-timezone": "^0.5.33",
     "mst-react-router": "^2.3.1",
     "nouislider": "14.5.0",
+    "papaparse": "^5.3.1",
     "password-generator": "^2.3.2",
     "prop-types": "15.7.2",
     "react": "16.13.1",
