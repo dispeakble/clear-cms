@@ -16,7 +16,6 @@ class AuthController extends Component {
     };
 
     async componentDidMount() {
-
         this.services = this.props.services;
 
         this.services.ws.subscribe({
@@ -30,11 +29,10 @@ class AuthController extends Component {
             module: 'system',
             api: 'auth',
             act: 'ping',
-            payload: 'hi there'
+            payload: 'ping'
         }).then((response) => {
             console.log(response);
-        })
-
+        });
     }
 
      login(params) {
@@ -52,8 +50,6 @@ class AuthController extends Component {
                         this.props.history.push('/');
                     }
                     return resolve(response);
-
-
                 }
 
                 resolve(false);
@@ -67,8 +63,7 @@ class AuthController extends Component {
             module: 'system',
             api: 'auth',
             act: 'doLogout'
-        }
-        )
+        });
     }
 
     recover(params) {

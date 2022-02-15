@@ -1,4 +1,5 @@
 import { container } from "assets/jss/clear-crm.js";
+import bgImage from "../../../img/view-auth-bg.jpg";
 
 const signupPageStyle = {
   container: {
@@ -14,6 +15,10 @@ const signupPageStyle = {
     transform: "translate3d(0, -60px, 0)",
   },
   pageHeader: {
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    backgroundRepeat: "no-repeat",
     minHeight: "100vh",
     height: "auto",
     display: "inherit",
@@ -78,10 +83,8 @@ const signupPageStyle = {
     borderRadius: "6px",
     justifyContent: "center !important",
   },
-  socialLine: {
-    marginTop: "1rem",
-    textAlign: "center",
-    padding: "0",
+  inputContainer: {
+    marginBottom: 12,
   },
   inputIconsColor: {
     color: "#495057",

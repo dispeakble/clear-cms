@@ -97,11 +97,10 @@ class DashboardController extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in dashboard controller', params);
     }
 
     sendMessage(params) {
-        return new Promise((resolve_send, reject_send) => {
+        return new Promise((resolve_send) => {
             const uniqueId = shortId.generate();
             this.messageCallbacks[uniqueId] = resolve_send;
             this.services.ws.emit({

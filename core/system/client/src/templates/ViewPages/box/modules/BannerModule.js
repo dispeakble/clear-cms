@@ -198,7 +198,6 @@ class BannerModule extends Component {
                         </Typography>
                         <Autocomplete
                             style={{margin: "5% 0"}}
-                            id="moduleDropdown"
                             onChange={this.handleBannerSize}
                             className={classes.option}
                             autoHighlight

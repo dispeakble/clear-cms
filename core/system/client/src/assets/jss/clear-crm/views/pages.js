@@ -12,13 +12,7 @@ const javascriptStyles = {
     paddingTop: "60px",
   },
   pagesWrapper: {
-    margin: "0 auto",
-    width: "80%",
-    height: "auto",
-    minWidth: "10rem",
-    "@media (max-width: 500px)" : {
-      width: "100%",
-    }
+    margin: "0 24px 0"
   },
   ...modalStyle,
   tableCells: {
@@ -28,9 +22,6 @@ const javascriptStyles = {
     width: 40,
   },
   tableHeader: {
-    backgroundColor: "#B2ACAB",
-    color: "white",
-    fontSize: "100%",
   },
   speedDialIcon: {
     cursor: "pointer",

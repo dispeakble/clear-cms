@@ -103,15 +103,7 @@ class Users extends Component {
             return createTheme({
                 palette: this.props.defaultTheme,
                 overrides: {
-                    MuiAutocomplete: {
-                        input: {
-                            padding: "0 !important"
-                        }
-                    },
                     MuiTableCell: {
-                        root:{
-                            padding: "1px 5px"
-                        },
                         head: {
                             "&:last-child": {
                                 width: "1px !important",

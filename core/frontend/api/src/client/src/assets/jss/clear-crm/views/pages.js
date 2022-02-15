@@ -2,19 +2,12 @@
 
 import modalStyle from "assets/jss/clear-crm/modalStyle.js";
 import tooltipsStyle from "assets/jss/clear-crm/tooltipsStyle.js";
-import popoverStyles from "assets/jss/clear-crm/popoverStyles.js";
 import { GpsFixed } from "@material-ui/icons";*/
 
 const javascriptStyles = {
   pagesPanel: {
     textAlign: "center",
     marginTop: "60px",
-  },
-  pagesWrapper: {
-    margin: "0 auto",
-    width: "80%",
-    height: "auto",
-    minWidth: "10rem",
   },
   tableCells: {
     fontSize: "90%",

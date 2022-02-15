@@ -13,12 +13,10 @@ import {
     Clear,
 } from "@material-ui/icons";
 
-// from material-table
 import MaterialTable from "material-table";
 
 import Modal from "../../components/Modal/Modal";
 
-// for the dropdown
 import {TextField} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Checkbox from "@material-ui/core/Checkbox";

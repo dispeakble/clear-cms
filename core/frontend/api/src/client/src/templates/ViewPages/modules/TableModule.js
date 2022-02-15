@@ -1,28 +1,26 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import MaterialTable from "material-table";
-//import { withStyles, createTheme } from "@material-ui/core/styles";
-//import styles from "assets/jss/clear-crm/views/pagesAdd.js";
 import Icon from "@material-ui/core/Icon";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
 class TableModule extends Component {
   state = {
-    columns: [],
-    previewData: [
-
-    ],
-    tableConfig: {},
+    columns: this.props.element.moduleOptions.columns || this.props.element.moduleOptions.columns || [],
+    previewData: this.props.element.moduleOptions.previewData || [],
+    remoteData: this.props.element.moduleOptions.remoteData || false,
+    dataUrl: this.props.element.moduleOptions.dataUrl || "",
+    editable: this.props.element.moduleOptions.editable || false,
+    search: this.props.element.moduleOptions.search || false,
+    sortable: this.props.element.moduleOptions.sortable || false,
+    columnDrag: this.props.element.moduleOptions.columnDrag || false,
+    export: this.props.element.moduleOptions.export || false,
+    filter: this.props.element.moduleOptions.filter || false,
+    leftNumber: this.props.element.moduleOptions.leftNumber || 0,
+    rightNumber: this.props.element.moduleOptions.rightNumber || 0,
+    rowsOnPage: this.props.element.moduleOptions.rowsOnPage || 0,
+    pagination: this.props.element.moduleOptions.pagination || false,
   };
-
-  componentDidMount() {
-    if (this.props.element.moduleOptions.previewData) {
-      this.setState({
-        previewData: this.props.element.moduleOptions.previewData,
-        columns: this.props.element.moduleOptions.columns,
-        tableConfig: this.props.element.moduleOptions.tableConfig,
-      });
-    }
-  }
-
   dataTableOptions = {
     actions: {
       getColumns: () => {
@@ -33,15 +31,15 @@ class TableModule extends Component {
               title: col.columnTitle,
               field: col.fieldName,
               render: (rowData) => (
-                <img
-                  alt={col.columnTitle}
-                  style={{
-                    maxHeight: "100%",
-                    maxWidth: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={rowData[col.fieldName]}
-                />
+                  <img
+                      alt={col.columnTitle}
+                      style={{
+                        maxHeight: "100%",
+                        maxWidth: "100%",
+                        objectFit: "contain",
+                      }}
+                      src={rowData[col.fieldName]}
+                  />
               ),
             });
           } else if (col.dataType === "icon") {
@@ -55,9 +53,9 @@ class TableModule extends Component {
               title: col.columnTitle,
               field: col.fieldName,
               render: (rowData) => (
-                <a href={rowData[col.fieldName].href} target="_blank" rel="noopener noreferrer">
-                  {rowData[col.fieldName].name}
-                </a>
+                  <a href={rowData[col.fieldName].href} target="_blank" rel="noopener noreferrer">
+                    {rowData[col.fieldName].name}
+                  </a>
               ),
             });
           } else {
@@ -72,7 +70,6 @@ class TableModule extends Component {
         return tableCols;
       },
       getPreviewData: () => {
-        console.log(this.state.previewData);
         return new Promise((resolve) => {
           //TODO ADD NEW STATE FOR TABLE DATA/VALUES
           setTimeout(() => {
@@ -85,67 +82,67 @@ class TableModule extends Component {
           }, 300);
         });
       },
-      editable: this.state.tableConfig.editable
-        ? {
+      editable: this.state.editable
+          ? {
             onRowAdd: (newData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(async () => {
-                  delete newData.tableData;
-                  let previewData = [...this.state.previewData];
-                  newData.id = this.state.previewData.length + 1;
-                  let newPreviewData = previewData.concat(newData);
-                  await this.setAsyncState({ previewData: newPreviewData });
-                  // localStorage.setItem(
-                  //   "previewData",
-                  //   JSON.stringify(newPreviewData)
-                  // );
-                  resolve();
-                }, 100);
-              }),
+                new Promise((resolve) => {
+                  setTimeout(async () => {
+                    delete newData.tableData;
+                    let previewData = [...this.state.previewData];
+                    newData.id = this.state.previewData.length + 1;
+                    let newPreviewData = previewData.concat(newData);
+                    await this.setAsyncState({previewData: newPreviewData});
+                    // localStorage.setItem(
+                    //   "previewData",
+                    //   JSON.stringify(newPreviewData)
+                    // );
+                    resolve();
+                  }, 100);
+                }),
             onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(async () => {
-                  delete newData.tableData;
-                  const dataUpdate = [...this.state.previewData];
-                  const index = oldData.tableData.id;
-                  dataUpdate[index] = newData;
-                  await this.setAsyncState({ previewData: dataUpdate });
-                  resolve();
-                }, 100);
-              }),
+                new Promise((resolve) => {
+                  setTimeout(async () => {
+                    delete newData.tableData;
+                    const dataUpdate = [...this.state.previewData];
+                    const index = oldData.tableData.id;
+                    dataUpdate[index] = newData;
+                    await this.setAsyncState({previewData: dataUpdate});
+                    resolve();
+                  }, 100);
+                }),
             onRowDelete: (oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const dataDelete = [...this.state.previewData];
-                  const index = oldData.tableData.id;
-                  dataDelete.splice(index, 1);
-                  this.setState({ previewData: dataDelete });
-                  // // localStorage.setItem(
-                  // //   "previewData",
-                  // //   JSON.stringify(dataDelete)
-                  // // );
-                  resolve();
-                }, 100);
-              }),
+                new Promise((resolve) => {
+                  setTimeout(() => {
+                    const dataDelete = [...this.state.previewData];
+                    const index = oldData.tableData.id;
+                    dataDelete.splice(index, 1);
+                    this.setState({previewData: dataDelete});
+                    // // localStorage.setItem(
+                    // //   "previewData",
+                    // //   JSON.stringify(dataDelete)
+                    // // );
+                    resolve();
+                  }, 100);
+                }),
           }
-        : {},
+          : {},
     },
     props: {
       options: {
         overflowY: "auto",
-        search: this.state.tableConfig.search,
-        sorting: this.state.tableConfig.sortable,
-        draggable: this.state.tableConfig.columnDrag,
-        exportButton: this.state.tableConfig.export,
-        filtering: this.state.tableConfig.filter,
+        search: this.props.element.moduleOptions.search,
+        sorting: this.props.element.moduleOptions.sortable,
+        draggable: this.props.element.moduleOptions.columnDrag,
+        exportButton: this.props.element.moduleOptions.export,
+        filtering: this.props.element.moduleOptions.filter,
         fixedColumns: {
-          left: this.state.tableConfig.leftNumber,
-          right: this.state.tableConfig.rightNumber,
+          left: this.props.element.moduleOptions.leftNumber,
+          right: this.props.element.moduleOptions.rightNumber,
         },
-        pageSize: this.state.tableConfig.rowsOnPage,
-        paging: this.state.tableConfig.pagination,
-
-        selection: this.state.tableConfig.editable,
+        paging: this.props.element.moduleOptions.pagination,
+        pageSize: this.props.element.moduleOptions.rowsOnPage,
+        pageSizeOptions: [...Array(10)].map((n, index) => (index+1)),
+        selection: this.props.element.moduleOptions.editable,
         actionsColumnIndex: -1,
         actionsCellStyle: {
           width: "auto",
@@ -154,20 +151,92 @@ class TableModule extends Component {
     },
   };
 
+  async getData(query) {
+    if(this.state.remoteData) {
+      return this.getRemoteData(query);
+    } else {
+      return this.getLocalData(query)
+    }
+  }
+
+  getRemoteData(query) {
+    return new Promise(_.throttle(async (resolve) => {
+      if (query.orderBy) {
+        const orderBy = {};
+
+        orderBy[query.orderBy.field] = query.orderDirection;
+      }
+
+      const urlQuery = new URLSearchParams({
+        page: query.page + 1,
+        per_page: query.pageSize,
+        "search": query.search
+      });
+
+      try {
+        const response = await fetch('https://reqres.in/api/users?' + urlQuery.toString());
+
+        const result = await response.json();
+
+        if (result && result.data.length) {
+          resolve({
+            data: result.data,
+            page: query.page,
+            totalCount: result.total,
+          })
+        }
+      } catch (err) {
+      }
+    }, 1000, {
+      trailing: true
+    }));
+  }
+
+  getLocalData(query) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({
+          data: this.state.previewData.filter(data => {
+            if(!query.search.length) {
+              return data;
+            }
+
+            return Object.keys(data).some(key => {
+              return String(data[key]).indexOf(String(query.search)) > -1;
+            })
+          }),
+          page: query.page,
+          totalCount: this.state.previewData.length,
+        })
+      }, 0)
+    })
+  }
+
   render() {
     return (
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        <MaterialTable
-          title="Table data"
-          columns={this.dataTableOptions.actions.getColumns()}
-          data={() => this.dataTableOptions.actions.getPreviewData()}
-          options={this.dataTableOptions.props.options}
-          icons={this.dataTableOptions.props.icons}
-          editable={this.dataTableOptions.actions.editable}
-        />
-      </div>
+        <div style={{display: "grid", width: "100%", height: "100%", overflow: "auto"}}>
+          <MaterialTable
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gridTemplateRows: "auto 1fr auto",
+                height: "100%"
+              }}
+              title="Table data"
+              columns={this.dataTableOptions.actions.getColumns()}
+              data={this.getData.bind(this)}
+              options={this.dataTableOptions.props.options}
+              icons={this.dataTableOptions.props.icons}
+              editable={this.dataTableOptions.actions.editable}
+          />
+        </div>
     );
   }
 }
 
 export default TableModule;
+
+TableModule.propTypes = {
+  classes: PropTypes.object,
+  moduleOptions: PropTypes.object
+}

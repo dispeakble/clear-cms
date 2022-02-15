@@ -15,19 +15,20 @@ class WsService {
         return new Promise((resolve_start) => {
             this.url = Number(window.location.port) === 3000 ? 'ws://localhost:9696/ws' : this.url;
             this.client = io(this.url, this.options);
-            this.client.on('disconnect', (e) => this.ondisconnect(e))
+            this.client.on('disconnect', (e) => this.onDisconnect(e))
             this.client.on('connect', () => {
                 this.isConnected = true;
+                clearTimeout(timeout);
                 resolve_start(true);
             });
 
-            setTimeout(() => {
-                resolve_start(true);
-            }, 3000)
+            const timeout = setTimeout(() => {
+                resolve_start(false);
+            }, 10000)
         });
     }
 
-    onmessage(params) {
+    onMessage(params) {
         try {
             if(params && params.channel){
                 if(this.callbacks.message.hasOwnProperty(params.channel)){
@@ -42,9 +43,8 @@ class WsService {
         }
     }
 
-    ondisconnect(params) {
+    onDisconnect() {
         this.isConnected = false;
-        console.log(params);
     }
 
     emit(params){
@@ -69,7 +69,7 @@ class WsService {
         this.client.off(params.channel);
         this.client.on(params.channel, (e) =>
         {
-            return this.onmessage({channel:params.channel, data: e})
+            return this.onMessage({channel:params.channel, data: e})
         })//tricky...
     }
 

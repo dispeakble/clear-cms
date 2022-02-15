@@ -83,11 +83,6 @@ const javascriptStyles = {
   tableCells: {
     fontSize: "90%",
   },
-  tableHeader: {
-    backgroundColor: "#B2ACAB",
-    color: "white",
-    fontSize: "100%",
-  },
   removeSelectedIcon: {
     color: "#FF6461",
     position: "fixed",

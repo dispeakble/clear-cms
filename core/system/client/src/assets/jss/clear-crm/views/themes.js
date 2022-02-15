@@ -12,9 +12,11 @@ const javascriptStyles = {
   },
   ...modalStyle,
   themesWrapper: {
-    display: "flex",
-    flexWrap: "wrap",
     width: "100%",
+    display: "grid",
+    gridGap: "12px",
+    gridTemplateColumns: "repeat( auto-fit, minmax(200px, 1fr) )",
+    margin: "12px",
   },
   column: {
     flexBasis: "49%",
@@ -44,42 +46,25 @@ const javascriptStyles = {
   },
   pageOptionsSlider: {
   },
-
   previewHead: {
     textAlign: "center",
   },
-
   previewBodyWrapper: {
     display: "flex",
   },
-
   previewWrapper: {
     width: "700px",
     height: "700px",
     margin: "0 auto",
     padding: "10px",
   },
-
   previewList: { width: "25%" },
-
   previewText: {width: "75%", paddingTop: "15px", textAlign: "justify"},
-
   previewMenu: {
     "& span": {
       fontSize: "inherit !important",
       fontFamily: "inherit !important"
     }
-
-  },
-
-  root: {
-    '@media (min-width: 240px)': {
-      flex: "1 0 50%"
-    },
-    '@media (min-width: 1024px)': {
-      flex: "1 0 25%"
-    },
-    margin:"0 5px 5px 0"
   },
   media: {
     height: 205,

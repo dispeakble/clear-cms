@@ -20,7 +20,6 @@ import {Helmet} from "react-helmet";
 
 import styles from "assets/jss/clear-crm/views/viewAuth.js";
 
-import image from "assets/img/view-auth-bg.jpg";
 import PropTypes from "prop-types";
 
 class ViewAuth extends Component {
@@ -200,18 +199,11 @@ class ViewAuth extends Component {
                         {this.state.loginTitle}
                     </title>
                 </Helmet>
-                <div
-                    className={classes.pageHeader}
-                    style={{
-                        backgroundImage: "url(" + image + ")",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center center",
-                    }}
-                >
+                <div className={classes.pageHeader}>
                     {this.state.credentialsErrorMessage}
                     {this.state.resetSuccessMessage}
                     <div className={classes.container}>
-                        <GridContainer justify="center">
+                        <GridContainer justifyContent="center">
                             <GridItem lg={3} md={4} sm={6} xs={10} xxs={12}>
                                 <Card>
                                     <form onSubmit={this.onSubmit} className={classes.form}>
@@ -220,59 +212,63 @@ class ViewAuth extends Component {
                                         </CardHeader>
                                         <p className={classes.divider}>{this.state.loginText}</p>
                                         <CardBody>
-                                            <CustomInput
-                                                name="email"
-                                                labelText="Email"
-                                                id="email"
-                                                formControlProps={{
-                                                    fullWidth: true,
-                                                    onChange: (event) => this.handleInputChange(event),
-                                                }}
-                                                inputProps={{
-                                                    type: "email",
-                                                    endAdornment: (
-                                                        <InputAdornment position="end">
-                                                            <Icon className={classes.inputIconsColor}>
-                                                                account_circle
-                                                            </Icon>
-                                                        </InputAdornment>
-                                                    ),
-                                                }}
-                                            />
-                                            {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (
-                                                <React.Fragment>
-                                                    <CustomInput
-                                                        labelText="Password"
-                                                        id="password"
-                                                        formControlProps={{
-                                                            fullWidth: true,
-                                                            onChange: (event) => this.handleInputChange(event),
-                                                        }}
-                                                        inputProps={{
-                                                            type: "password",
-                                                            endAdornment: (
-                                                                <InputAdornment position="end">
-                                                                    <Icon className={classes.inputIconsColor}>
-                                                                        lock_outline
-                                                                    </Icon>
-                                                                </InputAdornment>
-                                                            ),
-                                                            autoComplete: "off",
-                                                        }}
-                                                    />
-                                                    <Link className={classes.recoverPassword} to="/recover-password">
+                                            <div className={classes.inputContainer}>
+                                                <CustomInput
+                                                    name="email"
+                                                    labelText="Email"
+                                                    id="email"
+                                                    formControlProps={{
+                                                        fullWidth: true,
+                                                        onChange: (event) => this.handleInputChange(event),
+                                                    }}
+                                                    inputProps={{
+                                                        type: "email",
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <Icon className={classes.inputIconsColor}>
+                                                                    account_circle
+                                                                </Icon>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className={classes.inputContainer}>
+                                                {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (
+                                                    <React.Fragment>
+                                                        <CustomInput
+                                                            labelText="Password"
+                                                            id="password"
+                                                            formControlProps={{
+                                                                fullWidth: true,
+                                                                onChange: (event) => this.handleInputChange(event),
+                                                            }}
+                                                            inputProps={{
+                                                                type: "password",
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <Icon className={classes.inputIconsColor}>
+                                                                            lock_outline
+                                                                        </Icon>
+                                                                    </InputAdornment>
+                                                                ),
+                                                                autoComplete: "off",
+                                                            }}
+                                                        />
+                                                        <Link className={classes.recoverPassword} to="/recover-password">
+                                                            <p onClick={() => setTimeout(() => this.changeTexts(), 30)}>
+                                                                I forgot my password
+                                                            </p>
+                                                        </Link>
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <Link className={classes.recoverPassword} to="/view-auth">
                                                         <p onClick={() => setTimeout(() => this.changeTexts(), 30)}>
-                                                            I forgot my password
+                                                            Back to login
                                                         </p>
                                                     </Link>
-                                                </React.Fragment>
-                                            ) : (
-                                                <Link className={classes.recoverPassword} to="/view-auth">
-                                                    <p onClick={() => setTimeout(() => this.changeTexts(), 30)}>
-                                                        Back to login
-                                                    </p>
-                                                </Link>
-                                            )}
+                                                )}
+                                            </div>
                                         </CardBody>
                                         <CardFooter className={classes.cardFooter}>
                                             <Button onClick={this.onSubmit} type="submit" color="primary" size="lg"
@@ -296,5 +292,6 @@ export default withStyles(styles)(ViewAuth);
 ViewAuth.propTypes = {
     location: PropTypes.object,
     history: PropTypes.object,
-    control: PropTypes.object
+    control: PropTypes.object,
+    classes: PropTypes.object
 };
