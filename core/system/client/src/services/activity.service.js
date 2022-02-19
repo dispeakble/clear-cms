@@ -68,8 +68,11 @@ class ActivityService {
             hourData[`${String(minute)}`] = Object.fromEntries(mapped);
 
             payload[hour] = hourData;
+            try {
+                localStorage.setItem(`${this.ls_key}_${date_m}_${date_d}`, JSON.stringify(payload));
+            } catch (err) {
 
-            localStorage.setItem(`${this.ls_key}_${date_m}_${date_d}`, JSON.stringify(payload));
+            }
 
             this.resetStates();
         }, this.intervalMs);
