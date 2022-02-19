@@ -190,7 +190,7 @@ class ViewPageOptions extends React.PureComponent {
         let link = categories.find((el) => el.id === id);
         let result = link.label || "";
         if (link && link.parentId) {
-            result = this.getNestedCategories(link.parentId) + "/" + result;
+            result = this.getNestedCategories(categories, link.parentId) + "/" + result;
         }
         return result;
     }

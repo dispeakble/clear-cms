@@ -21,6 +21,8 @@ import * as Icons from "@material-ui/icons";
 
 // for the dropdown
 import {
+    Accordion, AccordionDetails,
+    AccordionSummary,
     Divider,
     FormControlLabel,
     Slider,
@@ -33,6 +35,7 @@ import Icon from "@material-ui/core/Icon";
 import PropTypes from "prop-types";
 import Modal from "components/Modal/Modal";
 import ColorPicker from "components/ColorPicker/ColorPicker";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 class MenuModule extends Component {
     state = {
@@ -429,139 +432,159 @@ class MenuModule extends Component {
             <React.Fragment>
                 <div style={{flex: 1, display: "flex"}}>
                     <div style={{flex: 1}}>
-                        <h4>Style Options</h4>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                The text inside the menu items will be centered horizontally
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.horizontallyCentered}
-                                        onChange={() => this.onUpdate({
-                                            horizontallyCentered: !this.state.horizontallyCentered
-                                        })}
-                                    />}
-                                    label="Center text horizontally"/>
-                            </div>
-                        </div>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                The text inside the menu items will be centered vertically
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.verticallyCentered}
-                                        onChange={() => this.onUpdate({
-                                            verticallyCentered: !this.state.verticallyCentered
-                                        })}
-                                    />}
-                                    label="Center text vertically"/>
-                            </div>
-                        </div>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                Select a background color for the menu items
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem', alignItems: 'center'}}>
-                                <ColorPicker
-                                    isOpen={this.state.backgroundColorOpen}
-                                    color={this.state.backgroundColor}
-                                    label="Background color"
-                                    onChange={(color) => {
-                                        this.onUpdate({
-                                            backgroundColor: color
-                                        })
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div style={{flex: 1}}>
-                        <h4>Menu mode</h4>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                The menu will be displayed as an accordion
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.showAsAccordion}
-                                        onChange={() => this.onUpdate({
-                                            showAsAccordion: !this.state.showAsAccordion
-                                        })}
-                                    />}
-                                    label="Display as Accordion"/>
-                            </div>
-                        </div>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                The menu will be displayed vertically
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.isMenuVertical}
-                                        onChange={() => this.onUpdate({
-                                            isMenuVertical: !this.state.isMenuVertical
-                                        })}
-                                    />}
-                                    label="Vertical menu"/>
-                            </div>
-                        </div>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                The menu will be stretched to the box dimensions
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
-                                <FormControlLabel
-                                    control={<Switch
-                                        checked={this.state.stretchToFit}
-                                        onChange={() => this.onUpdate({
-                                            stretchToFit: !this.state.stretchToFit
-                                        })}
-                                    />}
-                                    label="Stretch to Fit"/>
-                            </div>
-                        </div>
-                        <h4>Spacing options</h4>
-                        <div>
-                            <Typography gutterBottom variant="caption">
-                                Adjust the space between the icons and the text
-                            </Typography>
-                            <div style={{display: 'flex', marginBottom: '0.35rem'}}>
-                                <Slider
-                                    aria-label="Temperature"
-                                    value={this.state.menuIconSpace}
-                                    valueLabelDisplay="auto"
-                                    min={0}
-                                    max={100}
-                                    onChange={this.handleSlider}
-                                    onChangeCommitted={this.handleSlider}
-                                />
-                            </div>
-                        </div>
+                        <Accordion classes={{root: this.props.classes.accordion}}>
+                            <AccordionSummary
+                                classes={{
+                                    root: this.props.classes.accordionSummaryRoot,
+                                    expanded: this.props.classes.accordionSummaryExpanded,
+                                    content: this.props.classes.accordionSummaryContent,
+                                }}
+                                expandIcon={<ExpandMoreIcon/>}
+                                aria-controls="panel1c-content"
+                            >
+                                <Typography className={this.props.classes.typography}>
+                                    Menu module settings
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails style={{padding: 0}}>
+                                <div style={{flex: 1}}>
+                                    <h4>Style Options</h4>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            The text inside the menu items will be centered horizontally
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.horizontallyCentered}
+                                                    onChange={() => this.onUpdate({
+                                                        horizontallyCentered: !this.state.horizontallyCentered
+                                                    })}
+                                                />}
+                                                label="Center text horizontally"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            The text inside the menu items will be centered vertically
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.verticallyCentered}
+                                                    onChange={() => this.onUpdate({
+                                                        verticallyCentered: !this.state.verticallyCentered
+                                                    })}
+                                                />}
+                                                label="Center text vertically"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            Select a background color for the menu items
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem', alignItems: 'center'}}>
+                                            <ColorPicker
+                                                isOpen={this.state.backgroundColorOpen}
+                                                color={this.state.backgroundColor}
+                                                label="Background color"
+                                                onChange={(color) => {
+                                                    this.onUpdate({
+                                                        backgroundColor: color
+                                                    })
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{flex: 1}}>
+                                    <h4>Menu mode</h4>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            The menu will be displayed as an accordion
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.showAsAccordion}
+                                                    onChange={() => this.onUpdate({
+                                                        showAsAccordion: !this.state.showAsAccordion
+                                                    })}
+                                                />}
+                                                label="Display as Accordion"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            The menu will be displayed vertically
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.isMenuVertical}
+                                                    onChange={() => this.onUpdate({
+                                                        isMenuVertical: !this.state.isMenuVertical
+                                                    })}
+                                                />}
+                                                label="Vertical menu"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            The menu will be stretched to the box dimensions
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                            <FormControlLabel
+                                                control={<Switch
+                                                    checked={this.state.stretchToFit}
+                                                    onChange={() => this.onUpdate({
+                                                        stretchToFit: !this.state.stretchToFit
+                                                    })}
+                                                />}
+                                                label="Stretch to Fit"/>
+                                        </div>
+                                    </div>
+                                    <h4>Spacing options</h4>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            Adjust the space between the icons and the text
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                            <Slider
+                                                aria-label="Temperature"
+                                                value={this.state.menuIconSpace}
+                                                valueLabelDisplay="auto"
+                                                min={0}
+                                                max={100}
+                                                onChange={this.handleSlider}
+                                                onChangeCommitted={this.handleSlider}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </AccordionDetails>
+                        </Accordion>
+                        <Divider style={{margin: "10px 0"}}/>
+                        <MaterialTable
+                            style={{width: "100%"}}
+                            title="Menu Links"
+                            tableRef={this.state.tableRef}
+                            columns={this.tableOptions.props.columns}
+                            parentChildData={this.tableOptions.props.parentChildData}
+                            data={() => this.tableOptions.actions.getData()}
+                            icons={this.tableOptions.props.icons}
+                            options={this.tableOptions.props.options}
+                            editable={this.tableOptions.actions.editable}
+                            actions={this.tableOptions.actions.customActions}
+                        />
+
+                        <Modal
+                            showModal={this.state.showDeleteBoxModal}
+                            {...this.modals.deleteBoxModal}
+                        />
                     </div>
                 </div>
-                <Divider style={{ margin: "10px 0" }} />
-                <MaterialTable
-                    style={{width: "100%"}}
-                    title="Menu Links"
-                    tableRef={this.state.tableRef}
-                    columns={this.tableOptions.props.columns}
-                    parentChildData={this.tableOptions.props.parentChildData}
-                    data={() => this.tableOptions.actions.getData()}
-                    icons={this.tableOptions.props.icons}
-                    options={this.tableOptions.props.options}
-                    editable={this.tableOptions.actions.editable}
-                    actions={this.tableOptions.actions.customActions}
-                />
-
-                <Modal
-                    showModal={this.state.showDeleteBoxModal}
-                    {...this.modals.deleteBoxModal}
-                />
             </React.Fragment>
         );
     }
