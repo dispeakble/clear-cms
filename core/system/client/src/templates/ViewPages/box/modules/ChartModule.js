@@ -128,6 +128,9 @@ class ChartModule extends Component {
     render() {
         return (
             <React.Fragment>
+                <Typography className={this.props.classes.typography}>
+                    Chart module settings
+                </Typography>
                 <CustomInput
                     labelText="Title"
                     id="chartTitle"

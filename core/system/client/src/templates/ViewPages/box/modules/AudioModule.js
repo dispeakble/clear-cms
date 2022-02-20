@@ -17,24 +17,26 @@ import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import Switch from "@material-ui/core/Switch";
 
-import {DropzoneDialog} from 'material-ui-dropzone';
 import Button from "../../../../components/CustomButtons/Button";
+import {Publish} from "@material-ui/icons";
+import imageHelper from "../../../../helpers/image.helper";
+import Divider from "@material-ui/core/Divider";
 
 class AudioModule extends Component {
-    sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Uplode"}];
+    sourceTypes = [{label: "Exact URL"}, {label: "Query String Variable"}, {label: "Upload audio file"}];
     state = {
         url: "",
         sourceType: 0,
         volume: 0.1,
         sliderVolume: 0,
         autoplay: false,
-        enabled: false,
-        showDropZone: false ,
+        isPreviewEnabled: false,
         files: [],
-        index:'',
+        index: '',
         audio: '',
-        audioFile: {},
+        audioFile: {}
     };
+    audioUploader = null;
     getTheme = () => {
         return createTheme({
             palette: this.props.defaultTheme,
@@ -48,27 +50,45 @@ class AudioModule extends Component {
         });
     };
 
-    setAsyncState = (newState) =>
-        new Promise((resolve) => this.setState(newState, resolve));
-
     componentDidMount() {
-        const newState = {
-            autoplay: this.props.moduleOptions.autoplay,
-            sourceType: this.props.moduleOptions.sourceType,
-            url: this.props.moduleOptions.url,
-            variableName: this.props.moduleOptions.variableName || "",
-            sliderVolume: this.props.moduleOptions.volume * 100,
-            volume: this.props.moduleOptions.volume,
-            enabled: true,
-            audio:  this.props.moduleOptions.audio || '' ,
-            audioFile: this.props.moduleOptions.audioFile || {},
-            files: this.props.moduleOptions.files || []
-        }
 
-        if(newState.files?.length > 0){
-            newState.url = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0]?.name}`;
+        let {
+            autoplay,
+            sourceType,
+            url,
+            variableName,
+            sliderVolume,
+            volume,
+            audio,
+            audioFile,
+            files
+        } = this.props.moduleOptions;
+
+        autoplay = !!autoplay; //if 0 !! === false; if 1 !! === true; !0 === true; !1 === false
+        sourceType = sourceType || '';
+        url = url || '';
+        variableName = variableName || '';
+        sliderVolume = (undefined === sliderVolume ? 1 : sliderVolume) * 100;
+        volume = undefined === volume ? 1 : volume;
+        audio = audio || '';
+        audioFile = audioFile || {};
+        files = files || [];
+
+        if (files?.length > 0) {
+            url = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${files[0]?.name}`;
         }
-        this.setState(newState);
+        this.setState({
+            autoplay,
+            sourceType,
+            url,
+            variableName,
+            sliderVolume,
+            volume,
+            audio,
+            audioFile,
+            files,
+            isPreviewEnabled: true
+        });
     }
 
     getIndex(name) {
@@ -83,45 +103,30 @@ class AudioModule extends Component {
         if (!newValue || !newValue.label) {
             return;
         }
-        await this.setAsyncState({
+        this.onUpdate({
             sourceType: this.getIndex(newValue.label),
-        });
-        this.props.onUpdate(this.state);
+        })
     };
 
     handleVolume = async (newValue) => {
-        await this.setAsyncState({
+        this.onUpdate({
             sliderVolume: newValue * 100,
             volume: newValue
         });
-
-        this.props.onUpdate(this.state);
     };
-
-
-    showLogoUploader() {
-        this.setState({
-            showDropZone: true,
-            enabled:true,
-
-        });
-    }
-    closeLogoUploader() {
-        this.setState({
-            showDropZone: false
-        });
-    }
 
     handleInputChange = async (event) => {
         switch (event.target.id) {
             case "url":
-                await this.setAsyncState({url: event.target.value});
-                this.props.onUpdate(this.state);
+                this.onUpdate({
+                    url: event.target.value
+                })
                 break;
 
             case "variableName":
-                await this.setAsyncState({variableName: event.target.value});
-                this.props.onUpdate(this.state);
+                this.onUpdate({
+                    variableName: event.target.value
+                })
                 break;
             default:
                 break;
@@ -139,42 +144,42 @@ class AudioModule extends Component {
     }
 
     async handleAudio(event) {
-        if (event.length) {
-            let strings = await Promise.all(event.map((file) => this.toBase64(file)));
-            await this.setAsyncState({
-                audio: strings[0],
-                audioFile: event[0]
-            });
-
-            this.setState({
-                showDropZone: false
-            });
-
-            let files = this.state.files;
-            const audioFile = !!files[0];
-            
-            if (this.state.audioFile) {
-                const audioPayload = {
-                    sel: 'audio',
-                    name: `audio.${this.fileExtension(this.state.audioFile.name)}`,
-                    file: this.state.audioFile
-                };
-
-                if(audioFile) {
-                    files[0] = audioPayload;
-                } else {
-                    files.push(audioPayload);
-                }
-                await this.setAsyncState({files: files, url: `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${files[0].name}`});
-                this.props.onUpdate(this.state);
-            }
-
+        if (!event.target.files || !event.target.files.length) {
+            return;
         }
+
+        const fileClone = new File([event.target.files[0]], event.target.files[0].name);
+        const audioBase64 = await imageHelper.toBase64(event.target.files[0]);
+
+        const files = this.state.files;
+
+        let bgIndex = files.findIndex(file => file.sel === 'audio');
+
+        bgIndex = bgIndex > -1 ? bgIndex : (files.length ? files.length : 0);
+
+        files[bgIndex] = {
+            sel: 'audio',
+            file: fileClone,
+            string: audioBase64
+        }
+        this.setState({
+            audio: audioBase64
+        })
+
+        this.onUpdate({
+            files: files
+        });
+
     }
 
     fileExtension = (string) => {
         const p = string.split('.');
         return p[p.length - 1];
+    }
+
+    onUpdate(params) {
+        this.props.onUpdate({...this.state, ...params})
+        this.setState(params)
     }
 
     render() {
@@ -188,114 +193,147 @@ class AudioModule extends Component {
         }
 
         return (
-            <div>
-                <div style={{ height: "78px", margin: "5% 0 10% 0" }}>
-                    { this.state.enabled && <AudioPlayer {...audioProps} /> }
-                </div>
-                <div>
-                    <div>
-
-                        <DropzoneDialog
-                            open={this.state.showDropZone}
-                            onSave={this.handleAudio.bind(this)}
-                            onClose={this.closeLogoUploader.bind(this)}
-                            filesLimit={1}
-                            acceptedFiles={['audio/*']}
-                            maxFileSize={Math.pow(1024, 3)}
-                        />
-                    </div>
-                    <FormControlLabel
-                        control={<Switch
-                            checked={this.state.autoplay}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    autoplay: !this.state.autoplay,
-                                });
-                                this.props.onUpdate(this.state)
-                            }}
-                            inputProps={{'aria-label': 'controlled'}}
-                        />}
-                        label="Autoplay"/>
-                </div>
-                <div>
-                    <Typography id="discrete-slider" gutterBottom>
-                        Default Volume
-                        <Slider
-                            value={this.state.sliderVolume}
-                            onChange={(evt, newValue) => {
-                                this.handleVolume(newValue / 100);
-                            }}
-                            aria-labelledby="discrete-slider"
-                            valueLabelFormat={(value) => `${value}%`}
-                            valueLabelDisplay="auto"
-                            min={0}
-                            max={100}
-                        />
-                    </Typography>
-                </div>
-                <Autocomplete
-                    id="moduleDropdown"
-                    onChange={this.handleSourceType.bind(this)}
-                    className={this.props.classes.option}
-                    autoHighlight
-                    getOptionLabel={(option) => option.label}
-                    value={this.sourceTypes[this.state.sourceType]}
-                    options={this.sourceTypes}
-                    renderInput={(params) => (
-                        <TextField
-                            className={this.props.classes.textfield}
-                            {...params}
-                            label="Source Type"
-                            variant="outlined"
-                        />
-                    )}
-                />{" "}
-                {
-                    this.state.sourceType === 2 ?(
-                        <Button onClick={() => {
-                            this.showLogoUploader()
-                        }} color="primary">Upload Logo Image</Button>
-
-                    ):(
-                        <>
-                            <CustomInput
-                                labelText="URL"
-                                id="url"
-                                required="required"
-                                formControlProps={{
-                                    fullWidth: true,
-                                    onChange: (event) => this.handleInputChange(event),
-                                }}
-                                inputProps={{
-                                    value: this.state.url,
-                                    type: "text",
-                                }}
-                            />
-
-                            {this.state.sourceType === 1 && <React.Fragment>
-                                <CustomInput
-                                    labelText="Variable name"
-                                    id="variableName"
-                                    required="required"
-                                    formControlProps={{
-                                        fullWidth: true,
-                                        onChange: (event) => this.handleInputChange(event),
+            <React.Fragment>
+                <div style={{flex: 1, display: "flex"}}>
+                    <div style={{flex: 1, paddingRight: '6px'}}>
+                        <div>
+                            <h4>Audio settings</h4>
+                            <div style={{marginTop: 12}}>
+                                <Typography gutterBottom variant="caption">
+                                    Enable autoplay
+                                </Typography>
+                            </div>
+                            <div>
+                                <FormControlLabel
+                                    control={<Switch
+                                        checked={this.state.autoplay}
+                                        onChange={async () => {
+                                            this.onUpdate({
+                                                autoplay: !this.state.autoplay,
+                                            })
+                                        }}
+                                        inputProps={{'aria-label': 'controlled'}}
+                                    />}
+                                    label="Autoplay"/>
+                            </div>
+                        </div>
+                        <div>
+                            <Typography gutterBottom variant="caption">
+                                Adjust the volume settings
+                            </Typography>
+                            <div>
+                                <Slider
+                                    value={this.state.sliderVolume}
+                                    onChange={(evt, newValue) => {
+                                        this.handleVolume(newValue / 100);
                                     }}
-                                    inputProps={{
-                                        value: this.state.variableName,
-                                        type: "text",
-                                    }}
+                                    aria-labelledby="discrete-slider"
+                                    valueLabelFormat={(value) => `${value}%`}
+                                    valueLabelDisplay="auto"
+                                    min={0}
+                                    max={100}
                                 />
+                            </div>
+                        </div>
 
+                    </div>
+                    <div style={{flex: 1, paddingLeft: '6px'}}>
+                        <h4>Audio source file settings</h4>
+                        <div style={{margin: '12px 0'}}>
+                            <Typography gutterBottom variant="caption">
+                                Insert source of the file
+                            </Typography>
+                        </div>
+                        <Autocomplete
+                            id="moduleDropdown"
+                            onChange={this.handleSourceType.bind(this)}
+                            className={this.props.classes.option}
+                            autoHighlight
+                            getOptionLabel={(option) => option.label}
+                            value={this.sourceTypes[this.state.sourceType]}
+                            options={this.sourceTypes}
+                            renderInput={(params) => (
+                                <TextField
+                                    className={this.props.classes.textfield}
+                                    {...params}
+                                    label="Source Type"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
+                        {
+                            this.state.sourceType === 2 ? (
+                                <div style={{marginTop: 12}}>
+                                    <Button color={"primary"} onClick={() => {
+                                        this.audioUploader.click();
+                                    }}><Publish/> Upload Audio File</Button>
+                                    <input
+                                        type="file"
+                                        multiple={true}
+                                        ref={(ref) => this.audioUploader = ref}
+                                        style={{display: 'none'}}
+                                        onChange={(event) => this.handleAudio(event)}
+                                    />
+                                </div>
+                            ) : (
+                                <div style={{marginTop: 12}}>
+                                    <div>
+                                        <Typography gutterBottom variant="caption">
+                                            Insert the URL source of the file
+                                        </Typography>
+                                        <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                                        </div>
+                                    </div>
+                                    <CustomInput
+                                        labelText="URL"
+                                        id="url"
+                                        required="required"
+                                        formControlProps={{
+                                            fullWidth: true,
+                                            onChange: (event) => this.handleInputChange(event),
+                                        }}
+                                        inputProps={{
+                                            value: this.state.url,
+                                            type: "text",
+                                        }}
+                                    />
 
+                                    {this.state.sourceType === 1 && (<div style={{marginTop: 12}}>
+                                            <Typography gutterBottom variant="caption">
+                                                Insert the query string variable for the audio file
+                                            </Typography>
+                                        <CustomInput
+                                            labelText="Variable name"
+                                            id="variableName"
+                                            required="required"
+                                            formControlProps={{
+                                                fullWidth: true,
+                                                onChange: (event) => this.handleInputChange(event),
+                                            }}
+                                            inputProps={{
+                                                value: this.state.variableName,
+                                                type: "text",
+                                            }}
+                                        />
+                                        </div>)
 
-                            </React.Fragment>}
-                        </>
-                    )
-                }
-
-            </div>
-        );
+                                    }
+                                </div>
+                            )
+                        }
+                        <Divider style={{marginTop: 24, background: 'none'}}/>
+                    </div>
+                </div>
+                <div>
+                    <Typography gutterBottom variant="caption">
+                        Use the preview to listen to the selected file
+                    </Typography>
+                    <div style={{display: 'flex', marginBottom: '0.35rem'}}>
+                    </div>
+                </div>
+                {this.state.isPreviewEnabled && <AudioPlayer {...audioProps} />}
+            </React.Fragment>
+        )
     }
 }
 
@@ -306,5 +344,7 @@ AudioModule.propTypes = {
     onUpdate: PropTypes.func,
     moduleOptions: PropTypes.object,
     defaultTheme: PropTypes.object,
-    pageOptions:PropTypes.object,
+    pageOptions: PropTypes.object,
+    boxId: PropTypes.number,
+    pageId: PropTypes.number,
 };
