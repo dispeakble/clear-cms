@@ -471,134 +471,299 @@ class PagelistModule extends Component {
     render() {
         const classes = this.props.classes;
         return (
-            <div
-                style={{
-                    textAlign: "center",
-                }}
-            >
-
-
-                <div>
-                    <Typography>Number of Pages to Display At Once </Typography>
-                    <TextField
-                        labelText="Number of Pages to Display At Once"
-                        id="numnberOfPagesToDisplayAtOnce"
-                        onChange={async (e) => {
-                            await this.setAsyncState({
-                                numberOfPagesToDisplayAtOnce: e.target.value
-                            })
-                            this.props.onUpdate(this.state)
-                        }}
-                        InputProps={{
-                            inputProps: {
-                                value: this.state.numberOfPagesToDisplayAtOnce,
-                                type: "number",
-                                min: 5,
-                                max: 20,
-                            }
-                        }}
-                    />
-                </div>
-                <div>
-                    <Typography>Show Title</Typography>
-                    <Tooltip title="Show Title">
-                        <Switch
-                            value={this.state.showTitle}
-                            checked={this.state.showTitle}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showTitle: !this.state.showTitle
-                                })
-                                this.props.onUpdate(this.state)
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-                <div>
-                    <Typography>Show Description</Typography>
-                    <Tooltip title="Show Description">
-                        <Switch
-                            value={this.state.showDescription}
-                            checked={this.state.showDescription}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showDescription: !this.state.showDescription
-                                })
-                                this.props.onUpdate(this.state)
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-                <div>
-                    <Typography>Truncate Description</Typography>
-                    <Tooltip title="Truncate Description">
-                        <Switch
-                            value={this.state.truncateDescription}
-                            checked={this.state.truncateDescription}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    truncateDescription: !this.state.truncateDescription
-                                })
-                                this.props.onUpdate(this.state)
-                            }}
-                        />
-                    </Tooltip>
-                    {this.state.truncateDescription &&
-                        <div className={classes.numberPicker}>
+            <div>
+                <div style={{flex: 1, display: "flex"}}>
+                    <div style={{flex: 1}}>
+                        <div>
+                            <Typography>Number of Pages to Display At Once </Typography>
                             <TextField
-                                label="Show Max Words"
-                                id="showMaxWords"
-
+                                labelText="Number of Pages to Display At Once"
+                                id="numnberOfPagesToDisplayAtOnce"
                                 onChange={async (e) => {
                                     await this.setAsyncState({
-                                        showMaxWords: e.target.value
+                                        numberOfPagesToDisplayAtOnce: e.target.value
+                                    })
+                                    this.props.onUpdate(this.state)
+                                }}
+                                InputProps={{
+                                    inputProps: {
+                                        value: this.state.numberOfPagesToDisplayAtOnce,
+                                        type: "number",
+                                        min: 5,
+                                        max: 20,
+                                    }
+                                }}
+                            />
+                        </div>
+                        <div>
+                            <Typography>Show Title</Typography>
+                            <Tooltip title="Show Title">
+                                <Switch
+                                    value={this.state.showTitle}
+                                    checked={this.state.showTitle}
+
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            showTitle: !this.state.showTitle
+                                        })
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                />
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Typography>Show Description</Typography>
+                            <Tooltip title="Show Description">
+                                <Switch
+                                    value={this.state.showDescription}
+                                    checked={this.state.showDescription}
+
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            showDescription: !this.state.showDescription
+                                        })
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                />
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Typography>Truncate Description</Typography>
+                            <Tooltip title="Truncate Description">
+                                <Switch
+                                    value={this.state.truncateDescription}
+                                    checked={this.state.truncateDescription}
+
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            truncateDescription: !this.state.truncateDescription
+                                        })
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                />
+                            </Tooltip>
+                            {this.state.truncateDescription &&
+                                <div className={classes.numberPicker}>
+                                    <TextField
+                                        label="Show Max Words"
+                                        id="showMaxWords"
+
+                                        onChange={async (e) => {
+                                            await this.setAsyncState({
+                                                showMaxWords: e.target.value
+                                            })
+                                            this.props.onUpdate(this.state)
+                                        }}
+                                        inputProps={{
+                                            value: this.state.showMaxWords,
+                                            type: "number",
+                                            min: 120,
+                                            max: 240,
+                                        }}
+                                        variant={"outlined"}
+                                        size={"small"}
+                                    />
+                                </div>
+                            }
+                        </div>
+                        <div>
+                            <Typography>Show Thumbnail</Typography>
+                            <Tooltip title="Show Thumbnail">
+                                <Switch
+                                    value={this.state.showThumbnail}
+                                    checked={this.state.showThumbnail}
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            showThumbnail: !this.state.showThumbnail
+                                        })
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                />
+                            </Tooltip>
+                        </div>
+                        <div>
+                            <Typography>Show Modified Date</Typography>
+                            <Tooltip title="Show Modified Date">
+                                <Switch
+                                    value={this.state.showModifiedDate}
+                                    checked={this.state.showModifiedDate}
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            showModifiedDate: !this.state.showModifiedDate
+                                        })
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                />
+                            </Tooltip>
+                        </div>
+                    </div>
+                    <div style={{flex: 1}}>
+                        <div>
+                            <Typography>
+                                <span>Border Color </span>
+                            </Typography>
+                            {this.createColorPicker(
+                                "borderColorStyles",
+                                "displayBorderColorPicker",
+                                "borderColor"
+                            )}
+
+                        </div>
+                        <div>
+                            <Typography><span>Border Width</span></Typography>
+                            <Slider
+                                value={this.state.borderWidth}
+                                className={this.props.classes.sideMenuSlider}
+                                onChange={this.handleBorderWidth.bind(this)}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                min={0}
+                                max={10}
+                            />
+                        </div>
+                        <div>
+                            <Typography>Border Radius</Typography>
+                            <Slider
+                                value={this.state.borderRadius}
+                                className={this.props.classes.sideMenuSlider}
+                                onChange={this.handleBorderRadius.bind(this)}
+                                aria-labelledby="discrete-slider"
+                                valueLabelDisplay="auto"
+                                min={0}
+                                max={30}
+                            />
+                        </div>
+                        <div>
+                            <Typography>Shadow</Typography>
+                            <Tooltip title="Enable Shadow">
+                                <Switch
+                                    value={this.state.showShadow}
+                                    checked={this.state.showShadow}
+
+                                    onChange={async () => {
+                                        await this.setAsyncState({
+                                            showShadow: !this.state.showShadow
+                                        })
+                                        this.props.onUpdate(this.state)
+                                    }}
+                                />
+                            </Tooltip>
+                            {this.state.showShadow &&
+                                <>
+                                    <div>
+                                        <Typography>
+                                            <span>Shadow Color </span>
+                                        </Typography>
+                                        {this.createColorPicker(
+                                            "shadowColorStyles",
+                                            "displayShadowColorPicker",
+                                            "shadowColor"
+                                        )}
+                                    </div>
+                                    <div className={classes.numberPicker}>
+                                        <TextField
+                                            label="Shadow Spread"
+                                            id="spread"
+                                            onChange={async (e) => {
+                                                await this.setAsyncState({
+                                                    shadowSpread: e.target.value
+                                                })
+                                                this.props.onUpdate(this.state)
+                                            }}
+                                            inputProps={{
+                                                value: this.state.shadowSpread,
+                                                type: "number",
+                                                min: 5,
+                                                max: 20,
+                                            }}
+                                            variant={"outlined"}
+                                            size={"small"}
+                                        />
+                                    </div>
+                                    <div className={classes.numberPicker}>
+                                        <TextField
+                                            label="Top Shadow"
+                                            id="topShadow"
+                                            onChange={async (e) => {
+                                                await this.setAsyncState({
+                                                    shadowTop: e.target.value
+                                                })
+                                                this.props.onUpdate(this.state)
+                                            }}
+                                            inputProps={{
+                                                value: this.state.shadowTop,
+                                                type: "number",
+                                                min: 5,
+                                                max: 20,
+                                            }}
+                                            variant={"outlined"}
+                                            size={"small"}
+                                        />
+                                    </div>
+                                    <div className={classes.numberPicker}>
+                                        <TextField
+                                            label="Left Shadow"
+                                            id="leftShadow"
+                                            onChange={async (e) => {
+                                                await this.setAsyncState({
+                                                    shadowLeft: e.target.value
+                                                })
+                                                this.props.onUpdate(this.state)
+                                            }}
+                                            inputProps={{
+                                                value: this.state.shadowLeft,
+                                                type: "number",
+                                                min: 5,
+                                                max: 20,
+                                            }}
+                                            variant={"outlined"}
+                                            size={"small"}
+                                        />
+                                    </div>
+                                </>
+                            }
+                        </div>
+                        <div className={classes.numberPicker}>
+                            <TextField
+                                label="Padding"
+                                id="padding"
+                                onChange={async (e) => {
+                                    await this.setAsyncState({
+                                        padding: e.target.value
                                     })
                                     this.props.onUpdate(this.state)
                                 }}
                                 inputProps={{
-                                    value: this.state.showMaxWords,
+                                    value: this.state.padding,
                                     type: "number",
-                                    min: 120,
-                                    max: 240,
+                                    min: 0,
+                                    max: 20,
                                 }}
                                 variant={"outlined"}
                                 size={"small"}
                             />
                         </div>
-                    }
-                </div>
-                <div>
-                    <Typography>Show Thumbnail</Typography>
-                    <Tooltip title="Show Thumbnail">
-                        <Switch
-                            value={this.state.showThumbnail}
-                            checked={this.state.showThumbnail}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showThumbnail: !this.state.showThumbnail
-                                })
-                                this.props.onUpdate(this.state)
-                            }}
-                        />
-                    </Tooltip>
-                </div>
-                <div>
-                    <Typography>Show Modified Date</Typography>
-                    <Tooltip title="Show Modified Date">
-                        <Switch
-                            value={this.state.showModifiedDate}
-                            checked={this.state.showModifiedDate}
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showModifiedDate: !this.state.showModifiedDate
-                                })
-                                this.props.onUpdate(this.state)
-                            }}
-                        />
-                    </Tooltip>
+                        <div className={classes.numberPicker}>
+                            <TextField
+                                label="Margin"
+                                id="margin"
+                                onChange={async (e) => {
+                                    await this.setAsyncState({
+                                        margin: e.target.value
+                                    })
+                                    this.props.onUpdate(this.state)
+                                }}
+                                inputProps={{
+                                    value: this.state.margin,
+                                    type: "number",
+                                    min: 0,
+                                    max: 20,
+                                }}
+                                variant={"outlined"}
+                                size={"small"}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <Typography>Dynamic Buttons</Typography>
@@ -613,196 +778,32 @@ class PagelistModule extends Component {
                                 })
                                 this.props.onUpdate(this.state)
                             }}
-
                         />
                     </Tooltip>
-                    {this.state.dynamicButtons &&
-                        <MuiThemeProvider theme={this.tableOptions.getTheme()}>
-                            <MaterialTable
-                                title="Dynamic Buttons"
-                                tableRef={this.state.tableRef}
-                                columns={this.tableOptions.props.columns}
-                                data={() => this.tableOptions.actions.getData()}
-                                icons={this.tableOptions.props.icons}
-                                options={this.tableOptions.props.options}
-                                editable={this.tableOptions.actions.editable}
-                                actions={this.tableOptions.actions.customActions}
-                                localization={this.tableOptions.props.localization}
-                            />
-                        </MuiThemeProvider>
-                    }
                 </div>
-                <div>
-                    <Typography>
-                        <span>Border Color </span>
-                    </Typography>
-                    {this.createColorPicker(
-                        "borderColorStyles",
-                        "displayBorderColorPicker",
-                        "borderColor"
-                    )}
-
-                </div>
-                <div>
-                    <Typography><span>Border Width</span></Typography>
-                    <Slider
-                        value={this.state.borderWidth}
-                        className={this.props.classes.sideMenuSlider}
-                        onChange={this.handleBorderWidth.bind(this)}
-                        aria-labelledby="discrete-slider"
-                        valueLabelDisplay="auto"
-                        min={0}
-                        max={10}
-                    />
-                </div>
-                <div>
-                    <Typography>Border Radius</Typography>
-                    <Slider
-                        value={this.state.borderRadius}
-                        className={this.props.classes.sideMenuSlider}
-                        onChange={this.handleBorderRadius.bind(this)}
-                        aria-labelledby="discrete-slider"
-                        valueLabelDisplay="auto"
-                        min={0}
-                        max={30}
-                    />
-                </div>
-                <div>
-                    <Typography>Shadow</Typography>
-                    <Tooltip title="Enable Shadow">
-                        <Switch
-                            value={this.state.showShadow}
-                            checked={this.state.showShadow}
-
-                            onChange={async () => {
-                                await this.setAsyncState({
-                                    showShadow: !this.state.showShadow
-                                })
-                                this.props.onUpdate(this.state)
-                            }}
+                {this.state.dynamicButtons &&
+                    <MuiThemeProvider theme={this.tableOptions.getTheme()}>
+                        <MaterialTable
+                            title="Dynamic Buttons"
+                            tableRef={this.state.tableRef}
+                            columns={this.tableOptions.props.columns}
+                            data={() => this.tableOptions.actions.getData()}
+                            icons={this.tableOptions.props.icons}
+                            options={this.tableOptions.props.options}
+                            editable={this.tableOptions.actions.editable}
+                            actions={this.tableOptions.actions.customActions}
+                            localization={this.tableOptions.props.localization}
                         />
-                    </Tooltip>
-                    {this.state.showShadow &&
-                        <>
-                            <div>
-                                <Typography>
-                                    <span>Shadow Color </span>
-                                </Typography>
-                                {this.createColorPicker(
-                                    "shadowColorStyles",
-                                    "displayShadowColorPicker",
-                                    "shadowColor"
-                                )}
-                            </div>
-                            <div className={classes.numberPicker}>
-                                <TextField
-                                    label="Shadow Spread"
-                                    id="spread"
-                                    onChange={async (e) => {
-                                        await this.setAsyncState({
-                                            shadowSpread: e.target.value
-                                        })
-                                        this.props.onUpdate(this.state)
-                                    }}
-                                    inputProps={{
-                                        value: this.state.shadowSpread,
-                                        type: "number",
-                                        min: 5,
-                                        max: 20,
-                                    }}
-                                    variant={"outlined"}
-                                    size={"small"}
-                                />
-                            </div>
-                            <div className={classes.numberPicker}>
-                                <TextField
-                                    label="Top Shadow"
-                                    id="topShadow"
-                                    onChange={async (e) => {
-                                        await this.setAsyncState({
-                                            shadowTop: e.target.value
-                                        })
-                                        this.props.onUpdate(this.state)
-                                    }}
-                                    inputProps={{
-                                        value: this.state.shadowTop,
-                                        type: "number",
-                                        min: 5,
-                                        max: 20,
-                                    }}
-                                    variant={"outlined"}
-                                    size={"small"}
-                                />
-                            </div>
-                            <div className={classes.numberPicker}>
-                                <TextField
-                                    label="Left Shadow"
-                                    id="leftShadow"
-                                    onChange={async (e) => {
-                                        await this.setAsyncState({
-                                            shadowLeft: e.target.value
-                                        })
-                                        this.props.onUpdate(this.state)
-                                    }}
-                                    inputProps={{
-                                        value: this.state.shadowLeft,
-                                        type: "number",
-                                        min: 5,
-                                        max: 20,
-                                    }}
-                                    variant={"outlined"}
-                                    size={"small"}
-                                />
-                            </div>
-                        </>
-                    }
-                </div>
-                <div className={classes.numberPicker}>
-                    <TextField
-                        label="Padding"
-                        id="padding"
-                        onChange={async (e) => {
-                            await this.setAsyncState({
-                                padding: e.target.value
-                            })
-                            this.props.onUpdate(this.state)
-                        }}
-                        inputProps={{
-                            value: this.state.padding,
-                            type: "number",
-                            min: 0,
-                            max: 20,
-                        }}
-                        variant={"outlined"}
-                        size={"small"}
-                    />
-                </div>
-                <div className={classes.numberPicker}>
-                    <TextField
-                        label="Margin"
-                        id="margin"
-                        onChange={async (e) => {
-                            await this.setAsyncState({
-                                margin: e.target.value
-                            })
-                            this.props.onUpdate(this.state)
-                        }}
-                        inputProps={{
-                            value: this.state.margin,
-                            type: "number",
-                            min: 0,
-                            max: 20,
-                        }}
-                        variant={"outlined"}
-                        size={"small"}
-                    />
-                </div>
+                    </MuiThemeProvider>
+                }
             </div>
-        );
+        )
+            ;
     }
 }
 
 PagelistModule.propTypes = {
+    classes: PropTypes.object,
     onUpdate: PropTypes.func,
     moduleOptions: PropTypes.object,
     defaultTheme: PropTypes.object,

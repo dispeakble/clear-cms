@@ -52,16 +52,18 @@ class VideoModule extends Component {
         new Promise((resolve) => this.setState(newState, resolve));
 
     componentDidMount() {
+        console.log(this.props)
         const {moduleOptions} = this.props;
+
         const newState = {
-            url: moduleOptions.url,
-            mute: moduleOptions.mute,
-            controls: moduleOptions.controls,
-            loop: moduleOptions.loop,
-            volume: moduleOptions.volume,
+            url: moduleOptions.url || "",
+            mute: moduleOptions.mute || false,
+            controls: moduleOptions.controls || false,
+            loop: moduleOptions.loop || false,
+            volume: moduleOptions.volume || 1,
             files: moduleOptions.files || [],
-            videoURL: moduleOptions.videoURL,
-            videoFile: moduleOptions.files[0]?.file || {},
+            videoURL: moduleOptions.videoURL || "",
+            videoFile: moduleOptions.files?[0]?.file || {},
         }
         if (newState.files?.length > 0) {
             newState.url = `/files/pages/page-${this.props.pageId}/box-${this.props.boxId}/module/${newState.files[0].name}`;
