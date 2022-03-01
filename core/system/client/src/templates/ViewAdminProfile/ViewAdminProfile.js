@@ -19,6 +19,7 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 import styles from "assets/jss/clear-crm/views/profilePage.js";
 
 import {Divider} from "@material-ui/core";
+import PropTypes from "prop-types";
 
 class ViewAdminProfile extends Component {
     state = {
@@ -237,12 +238,14 @@ class ViewAdminProfile extends Component {
             confirmPassword: this.state.confirmPassword
         });
         if (result) {
+            // eslint-disable-next-line no-prototype-builtins
             if (result.hasOwnProperty('success')) {
                 this.openNotification({
                     open: true,
                     color: "success",
                     message: result.success
                 });
+                // eslint-disable-next-line no-prototype-builtins
             } else if (result.hasOwnProperty('error')) {
                 this.openNotification({
                     open: true,
@@ -269,25 +272,25 @@ class ViewAdminProfile extends Component {
         let newPasswordStrengthTitle = "";
         let confirmPasswordStrengthTitle = "";
 
-        let newPasswordStrength = strengthColors.map((i) => {
+        let newPasswordStrength = strengthColors.map(() => {
             return "transparent";
         });
 
         if (this.state.newPassStrength > -1) {
             newPasswordStrengthTitle = "";
-            for (var i = 0; i <= this.state.newPassStrength; i++) {
+            for (let i = 0; i <= this.state.newPassStrength; i++) {
                 newPasswordStrength[i] = strengthColors[i];
                 newPasswordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
             }
         }
 
-        let confirmPasswordStrength = strengthColors.map((index) => {
+        let confirmPasswordStrength = strengthColors.map(() => {
             return "transparent";
         });
 
         if (this.state.confirmPassStrength > -1) {
             newPasswordStrengthTitle = "";
-            for (var x = 0; x <= this.state.confirmPassStrength; x++) {
+            for (let x = 0; x <= this.state.confirmPassStrength; x++) {
                 confirmPasswordStrength[x] = strengthColors[x];
                 confirmPasswordStrengthTitle = strengthTitle[x].replace('-', ' ') + ' password';
             }
@@ -299,7 +302,7 @@ class ViewAdminProfile extends Component {
                     <title>Profile Page</title>
                 </Helmet>
                 <GridContainer className={classes.grid} justify="center">
-                    <GridItem lg={6} md={8} sm={10} xs={12} className={classes.gridItem}>
+                    <GridItem lg={4} md={6} sm={8} xs={12} className={classes.gridItem}>
                         <div className={classNames(classes.main, classes.mainRaised)}>
                             {this.state.notification}
                             {this.state.errors.length ? <Snackbar closeNotification={() => {
@@ -316,7 +319,7 @@ class ViewAdminProfile extends Component {
 
                                 <div className={classes.profile}>
                                     <div className={classes.name}>
-                                        <form onSubmit={this.validateForm} autocomplete={"off"}>
+                                        <form onSubmit={this.validateForm} autoComplete={"off"}>
                                             <div style={{display: "flex"}}>
                                                 <CustomInput
                                                     className={classes.column} labelText="First Name" id="fname" required="required"
@@ -394,7 +397,7 @@ class ViewAdminProfile extends Component {
                                                         <Tooltip placement={"top"} arrow={true} open={true} title={newPasswordStrengthTitle}>
                                                             <div className={classes.passwordStrength} style={{
                                                                 background: `conic-gradient(${newPasswordStrength.join(', ')} )`
-                                                            }}></div>
+                                                            }}/>
                                                         </Tooltip>
 
                                                         <Icon className={classes.inputIconsColor}> lock_outline </Icon>
@@ -412,7 +415,7 @@ class ViewAdminProfile extends Component {
                                                         <Tooltip placement={"top"} arrow={true} open={true} title={confirmPasswordStrengthTitle}>
                                                             <div className={classes.passwordStrength} style={{
                                                                 background: `conic-gradient(${confirmPasswordStrength.join(', ')} )`
-                                                            }}></div>
+                                                            }}/>
                                                         </Tooltip>
                                                         <Icon className={classes.inputIconsColor}> lock_outline </Icon>
                                                     </InputAdornment>
@@ -423,28 +426,7 @@ class ViewAdminProfile extends Component {
                                             <p style={{height: "15px", margin: 0}}>&nbsp;</p>
                                         </form>
                                     </div>
-                                    {/*<div className={classes.syncToAccountWrapper}>
-                                        <Tooltip title={"Link Twitter Account"} placement={"top"} arrow={true}>
-                                            <Button link>
-                                                <i className={"fab fa-twitter"}/>
-                                                <div className={classes.syncAccountText}>Twitter</div>
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip title={"Link Facebook Account"} placement={"top"} arrow={true}>
-                                            <Button link>
-                                                <i className={"fab fa-facebook"}/>
-                                                <div className={classes.syncAccountText}>Facebook</div>
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip title={"Link Google Account"} placement={"top"} arrow={true}>
-                                            <Button link>
-                                                <i className={"fab fa-google"}/>
-                                                <div className={classes.syncAccountText}>Google</div>
-                                            </Button>
-                                        </Tooltip>
-                                    </div>*/}
                                 </div>
-
                             </div>
                         </div>
                     </GridItem>
@@ -455,3 +437,10 @@ class ViewAdminProfile extends Component {
 }
 
 export default withStyles(styles)(ViewAdminProfile);
+
+ViewAdminProfile.propTypes = {
+    location: PropTypes.object,
+    history: PropTypes.object,
+    control: PropTypes.object,
+    classes: PropTypes.object
+};

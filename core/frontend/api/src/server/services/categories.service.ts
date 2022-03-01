@@ -22,6 +22,7 @@ export class CategoriesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'frontend',
                             data: {
                                 what: 'category',

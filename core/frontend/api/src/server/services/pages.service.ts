@@ -21,6 +21,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'frontend',
                             data: {
                                 what: 'page',
@@ -61,6 +62,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'frontend',
                             data: {
                                 what: 'page',
@@ -101,6 +103,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'frontend',
                             data: {
                                 what: 'setting'

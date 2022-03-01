@@ -20,6 +20,7 @@ export class SitemapService {
                         api: 'db',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pages',
@@ -60,6 +61,7 @@ export class SitemapService {
                         api: 'db',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'categories',
@@ -90,6 +92,7 @@ export class SitemapService {
                         api: 'db',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pages_to_categories',
@@ -113,6 +116,7 @@ export class SitemapService {
                         api: 'db',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pages',

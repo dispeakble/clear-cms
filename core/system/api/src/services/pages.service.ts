@@ -33,6 +33,7 @@ export class PagesService {
                 api: 'sql',
                 act: 'list',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'page',
@@ -64,6 +65,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'page',
@@ -127,6 +129,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'page',
@@ -149,6 +152,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageToCategory',
@@ -173,6 +177,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageConfig',
@@ -189,6 +194,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToConfig',
@@ -212,6 +218,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'addBulk',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'pageBox',
@@ -238,6 +245,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'addBulk',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
@@ -268,6 +276,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'addBulk',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
@@ -295,6 +304,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'get',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'page',
@@ -314,6 +324,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'add',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
@@ -368,6 +379,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'set',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'page',
@@ -397,6 +409,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'rem',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToCategory',
@@ -420,6 +433,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageToCategory',
@@ -441,6 +455,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToConfig',
@@ -463,6 +478,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'get',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageConfig',
@@ -505,6 +521,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'set',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageConfig',
@@ -529,6 +546,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToBox',
@@ -563,6 +581,7 @@ export class PagesService {
                                     api: 'sql',
                                     act: 'rem',
                                     payload: {
+                                        db: 'main',
                                         channel: 'system',
                                         data: {
                                             what: 'pageToBox',
@@ -580,6 +599,7 @@ export class PagesService {
                                         api: 'sql',
                                         act: 'rem',
                                         payload: {
+                                            db: 'main',
                                             channel: 'system',
                                             data: {
                                                 what: 'pageBox',
@@ -634,6 +654,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageBox',
@@ -649,6 +670,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageToBox',
@@ -690,6 +712,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'set',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageBox',
@@ -713,6 +736,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'set',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageToBox',
@@ -753,6 +777,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'set',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
@@ -785,6 +810,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'add',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     data: {
                                         what: 'pageToBox',
@@ -849,6 +875,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToBox',
@@ -868,6 +895,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'rem',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToBox',
@@ -887,6 +915,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'rem',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageBox',
@@ -909,6 +938,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToConfig',
@@ -927,6 +957,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'rem',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToConfig',
@@ -946,6 +977,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'rem',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageConfig',
@@ -966,6 +998,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'rem',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToCategory',
@@ -984,6 +1017,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'rem',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'page',
@@ -1024,6 +1058,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'page',
@@ -1054,6 +1089,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'page',
@@ -1071,6 +1107,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageConfig',
@@ -1084,6 +1121,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToConfig',
@@ -1104,6 +1142,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToCategory',
@@ -1120,6 +1159,7 @@ export class PagesService {
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
+                                db: 'main',
                                 channel: 'system',
                                 data: {
                                     what: 'pageToCategory',
@@ -1137,6 +1177,7 @@ export class PagesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'pageToBox',
@@ -1170,6 +1211,7 @@ export class PagesService {
                                     api: 'sql',
                                     act: 'get',
                                     payload: {
+                                        db: 'main',
                                         channel: 'system',
                                         what: 'pageBox',
                                         where: {
@@ -1183,6 +1225,7 @@ export class PagesService {
                                     api: 'sql',
                                     act: 'add',
                                     payload: {
+                                        db: 'main',
                                         channel: 'system',
                                         what: 'pageBox',
                                         data: omit(old_box, 'id')
@@ -1208,6 +1251,7 @@ export class PagesService {
                                 api: 'sql',
                                 act: 'add',
                                 payload: {
+                                    db: 'main',
                                     channel: 'system',
                                     what: 'pageToBox',
                                     data: {

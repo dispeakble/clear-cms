@@ -51,11 +51,6 @@ export class ProtocolController {
         @Inject('GeneralSettingsService') private generalSettingsService,
         @Inject('DashboardBoxService') private dashboardBoxService,
         @Inject('SitemapService') private sitemapService,
-        @Inject('ProductsService') private productsService,
-        @Inject('ProductLabelsService') private productLabelsService,
-        @Inject('ProductLocalityService') private productLocalityService,
-        @Inject('ProductPricesService') private productPricesService,
-        @Inject('EcommerceTemplatesService') private ecommerceTemplatesService,
         @Inject('ResourcesService') private resourcesService,
     ){
 

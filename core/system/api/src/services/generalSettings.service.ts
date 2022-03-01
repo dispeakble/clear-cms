@@ -21,6 +21,7 @@ export class GeneralSettingsService {
                     api: 'sql',
                     act: 'get',
                     payload: {
+                        db: 'main',
                         channel: 'system',
                         data: {
                             what: 'setting',
@@ -61,6 +62,7 @@ export class GeneralSettingsService {
                     api: 'sql',
                     act: 'set',
                     payload: {
+                        db: 'main',
                         channel: 'system',
                         data: {
                             what: 'setting',

@@ -1,2 +1,2 @@
 #hostname:port:database:username:password
-172.28.1.2:5432:cms:cms:1qaz
+172.28.1.2:5432:main:cms:1qaz

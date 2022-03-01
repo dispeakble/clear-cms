@@ -65,6 +65,7 @@ export class AuthService {
                 api: 'sql',
                 act: 'get',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: this.config.admin_table,
@@ -101,7 +102,12 @@ export class AuthService {
                 }
                 observer.complete();
             }, err => {
-                console.log(err)
+                observer.next({
+                    type:'String',
+                    data: {error: "Internal server error"},
+                    mime: 'application/json'
+                });
+                observer.complete();
             }, () => {
                 observer.complete();
             });

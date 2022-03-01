@@ -25,6 +25,7 @@ export class AdminProfileService {
                     api: 'sql',
                     act: 'get',
                     payload: {
+                        db: 'main',
                         channel: 'system',
                         data: {
                             what: 'auth',
@@ -59,6 +60,7 @@ export class AdminProfileService {
             api: 'sql',
             act: 'set',
             payload: {
+                db: 'main',
                 channel: 'system',
                 data: {
                     what: 'auth',
@@ -85,6 +87,7 @@ export class AdminProfileService {
                 api: 'sql',
                 act: 'get',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'auth',

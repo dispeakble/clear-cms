@@ -27,7 +27,6 @@ import WsService from "services/ws.service";
 import AuthGuardService from "./services/authGuard.service";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
-import {Redirect} from "react-router";
 
 class App extends Component {
     header = null
@@ -90,53 +89,40 @@ class App extends Component {
             },
             {
                 id: 2,
-                name: "E-Commerce",
+                name: "Tourism Agency",
                 icon: "apps",
                 subitems: [
-                    {
-                        toLink: "/products",
-                        name: "Products",
-                        controller: "products",
-                        icon: "web",
-                        active: false
-                    },
-                    {
-                        toLink: "/ecommerce-templates",
-                        name: "Templates",
-                        controller: "ecommerce-templates",
-                        icon: "document_scanner",
-                        active: false
-                    },
+
                     {
                         toLink: "/labels",
                         name: "Labels",
                         controller: "labels",
                         icon: "subject",
                         active: false,
-                    },
-                    {
-                        toLink: "/prices",
-                        icon: "monetization_on",
-                        controller: "prices",
-                        name: "Prices",
-                        active: false,
-                    },
-                    {
-                        toLink: "/locality",
-                        name: "Locality",
-                        controller: "locality",
-                        icon: "location_on",
-                        active: false,
                     }
                 ],
             },
             {
                 id: 3,
+                name: "E-Commerce",
+                icon: "apps",
+                subitems: [
+
+                    {
+                        toLink: "/labels",
+                        name: "Labels",
+                        controller: "labels",
+                        icon: "subject",
+                        active: false,
+                    }
+                ],
+            },
+            {
+                id: 4,
                 name: "Settings",
                 icon: "settings",
                 subitems: [
                     {
-                        //TODO get this from hub module list
                         toLink: "/general-settings",
                         name: "General Settings",
                         controller: "settings",
@@ -433,7 +419,6 @@ class App extends Component {
                         />
                         <Route
                             render={(props) => {
-                                props.host = 'http://localhost:9696';
                                 return (
                                     <Scrollbars style={{
                                         height: '100%'

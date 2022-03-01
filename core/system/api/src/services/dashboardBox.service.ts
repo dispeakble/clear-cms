@@ -41,6 +41,7 @@ export class DashboardBoxService {
                 api: 'sql',
                 act: 'list',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'dashboardBox',
@@ -96,6 +97,7 @@ export class DashboardBoxService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'dashboardBox',
@@ -127,6 +129,7 @@ export class DashboardBoxService {
                 api: 'sql',
                 act: 'set',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'dashboardBox',
@@ -158,6 +161,7 @@ export class DashboardBoxService {
                 api: 'sql',
                 act: 'rem',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'dashboardBox',

@@ -11,11 +11,12 @@
       <env name="pg_host" value="localhost" />
       <env name="pg_user" value="cms" />
       <env name="pg_password" value="1qaz" />
-      <env name="pg_db" value="cms" />
+      <env name="pg_db" value="main" />
       <env name="redis_port" value="6379" />
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="pg_port" value="5432" />
       <env name="dev" value="true" />
+      <env name="pg_connections" value="main,agency" />
     </envs>
     <method v="2" />
   </configuration>

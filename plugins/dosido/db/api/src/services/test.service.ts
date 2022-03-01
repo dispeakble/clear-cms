@@ -36,10 +36,14 @@ export class TestService {
 
     private async testDb() {
         return new Promise(resolve => {
-            this.sequelizeService.get({
-                data: {
-                    what: 'auth',
-                    limit: [0, 1],
+            this.sequelizeService.perform({
+                act: 'get',
+                payload: {
+                    db: 'main',
+                    data: {
+                        what: 'auth',
+                        limit: [0, 1],
+                    },
                 },
             }).subscribe(data => {
                 resolve(data);

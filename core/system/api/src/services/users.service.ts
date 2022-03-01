@@ -27,6 +27,7 @@ export class UsersService {
                 api: 'sql',
                 act: 'list',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'user',
@@ -62,6 +63,7 @@ export class UsersService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'user',
@@ -100,6 +102,7 @@ export class UsersService {
                 api: 'sql',
                 act: 'set',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'user',
@@ -129,6 +132,7 @@ export class UsersService {
                 api: 'sql',
                 act: 'rem',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'user',
