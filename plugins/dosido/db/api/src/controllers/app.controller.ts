@@ -32,7 +32,6 @@ export class AppController {
       @Inject('ProtocolService') private protocolService,
       @Inject('SystemService') private systemService,
       @Inject('TestService') private testService,
-      //@Inject('DbService') private dbService,
       @Inject('SequelizeService') private sqlService,
     ) {
 

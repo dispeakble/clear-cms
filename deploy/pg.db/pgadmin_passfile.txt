@@ -1,1 +1,1 @@
-postgresql-ha-pgpool:5432:cms:cms:0MG9DtWxT@t89*6
+postgresql-ha-pgpool:5432:main:cms:0MG9DtWxT@t89*6

@@ -7,10 +7,12 @@ import {ProtocolService} from "./services/protocol.service";
 import {SystemService} from "./services/system.service";
 import {Pool as PgPool} from "pg";
 import {SequelizeModule} from '@nestjs/sequelize';
-import {SqlModule} from "./modules/sequielizer/sql.module";
+import {MainModule} from "./modules/main/main.module";
+import {AgencyModule} from "./modules/agency/agency.module";
 import {SequelizeModuleOptions} from "@nestjs/sequelize/dist/interfaces/sequelize-options.interface";
 import {SequelizeService} from "./services/sequelize.service";
 import {TestService} from "./services/test.service";
+import {QueryService} from "./services/query.service";
 
 const dev = "true" === process.env.dev || false;
 
@@ -20,7 +22,6 @@ const sequelize_options: SequelizeModuleOptions = {
     port: Number(process.env.pg_port),
     username: process.env.pg_user,
     password: process.env.pg_password,
-    database: process.env.pg_db,
     autoLoadModels: true,
     pool: {
         idle: 5 * 60 * 1000,
@@ -38,10 +39,32 @@ if (dev) {
     };
 }
 
+const getConnections = () => {
+    const connectionsArg = process.env.pg_connections || "";
+    return connectionsArg.trim().split(',').map(c => {
+        return SequelizeModule.forRootAsync({
+            name: c,
+            useFactory: () => ({...sequelize_options, database: c})
+        });
+    });
+}
+
+const getModels = () => {
+    const connectionsArg = process.env.pg_connections || "";
+    return connectionsArg.trim().split(',').map(c => {
+        switch(c) {
+            case 'main':
+                return MainModule;
+            case 'agency':
+                return AgencyModule;
+        }
+    });
+}
+
 @Module({
     imports: [
-        SequelizeModule.forRoot(sequelize_options),
-        SqlModule,
+        ...getConnections(),
+        ...getModels(),
         ClientsModule.register([
             {
                 name: 'REDIS_SERVICE',
@@ -59,7 +82,8 @@ if (dev) {
                     retry_strategy: 1000
                 }
             },
-        ])
+        ]),
+        QueryService
     ],
     controllers: [AppController],
     providers: [
@@ -68,7 +92,8 @@ if (dev) {
         SystemService,
         TestService,
         {useValue: PgPool, provide: 'PgPool'}
-    ]
+    ],
+    exports: [QueryService]
 })
 
 export class AppModule {

@@ -25,6 +25,7 @@ export class PublicThemesService {
                         api: 'sql',
                         act: 'list',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'publicTheme',
@@ -70,6 +71,7 @@ export class PublicThemesService {
                         api: 'sql',
                         act: 'get',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'publicTheme',
@@ -147,6 +149,7 @@ export class PublicThemesService {
                         api: 'sql',
                         act: 'set',
                         payload: {
+                            db: 'main',
                             channel: 'frontend',
                             data: {
                                 what: 'publicTheme',
@@ -206,6 +209,7 @@ export class PublicThemesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'frontend',
                             data: {
                                 what: 'publicTheme',
@@ -240,6 +244,7 @@ export class PublicThemesService {
                        api: 'sql',
                        act: 'rem',
                        payload: {
+                           db: 'main',
                            channel: 'system',
                            data: {
                                what: 'publicTheme',

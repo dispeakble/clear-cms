@@ -23,6 +23,7 @@ export class CategoriesService {
                 api: 'sql',
                 act: 'get',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'categories',
@@ -64,6 +65,7 @@ export class CategoriesService {
                 api: 'sql',
                 act: 'list',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'category',
@@ -101,6 +103,7 @@ export class CategoriesService {
                         api: 'sql',
                         act: 'add',
                         payload: {
+                            db: 'main',
                             channel: 'system',
                             data: {
                                 what: 'category',
@@ -137,6 +140,7 @@ export class CategoriesService {
                 api: 'sql',
                 act: 'set',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'category',
@@ -173,6 +177,7 @@ export class CategoriesService {
                 api: 'sql',
                 act: 'rem',
                 payload: {
+                    db: 'main',
                     channel: 'system',
                     data: {
                         what: 'category',
