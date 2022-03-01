@@ -286,9 +286,6 @@ class AudioModule extends Component {
                                         type: "text",
                                     }}
                                 />
-
-
-
                             </React.Fragment>}
                         </>
                     )
@@ -307,4 +304,6 @@ AudioModule.propTypes = {
     moduleOptions: PropTypes.object,
     defaultTheme: PropTypes.object,
     pageOptions:PropTypes.object,
+    pageId:PropTypes.object,
+    boxId:PropTypes.object
 };

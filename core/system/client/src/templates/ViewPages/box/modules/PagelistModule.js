@@ -473,12 +473,17 @@ class PagelistModule extends Component {
         return (
             <div>
                 <div style={{flex: 1, display: "flex"}}>
-                    <div style={{flex: 1}}>
+                    <div style={{flex: 1, paddingRight: "12px"}}>
                         <div>
-                            <Typography>Number of Pages to Display At Once </Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Number of Pages to Display At Once
+                                </Typography>
+                            </div>
                             <TextField
                                 labelText="Number of Pages to Display At Once"
-                                id="numnberOfPagesToDisplayAtOnce"
+                                id="numberOfPagesToDisplayAtOnce"
+                                fullWidth
                                 onChange={async (e) => {
                                     await this.setAsyncState({
                                         numberOfPagesToDisplayAtOnce: e.target.value
@@ -496,7 +501,11 @@ class PagelistModule extends Component {
                             />
                         </div>
                         <div>
-                            <Typography>Show Title</Typography>
+                            <div style={{paddingTop: 12}}>
+                                <Typography gutterBottom variant="caption">
+                                    Show Title
+                                </Typography>
+                            </div>
                             <Tooltip title="Show Title">
                                 <Switch
                                     value={this.state.showTitle}
@@ -512,12 +521,15 @@ class PagelistModule extends Component {
                             </Tooltip>
                         </div>
                         <div>
-                            <Typography>Show Description</Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Show Description
+                                </Typography>
+                            </div>
                             <Tooltip title="Show Description">
                                 <Switch
                                     value={this.state.showDescription}
                                     checked={this.state.showDescription}
-
                                     onChange={async () => {
                                         await this.setAsyncState({
                                             showDescription: !this.state.showDescription
@@ -528,7 +540,11 @@ class PagelistModule extends Component {
                             </Tooltip>
                         </div>
                         <div>
-                            <Typography>Truncate Description</Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Truncate Description
+                                </Typography>
+                            </div>
                             <Tooltip title="Truncate Description">
                                 <Switch
                                     value={this.state.truncateDescription}
@@ -567,7 +583,11 @@ class PagelistModule extends Component {
                             }
                         </div>
                         <div>
-                            <Typography>Show Thumbnail</Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Show Thumbnail
+                                </Typography>
+                            </div>
                             <Tooltip title="Show Thumbnail">
                                 <Switch
                                     value={this.state.showThumbnail}
@@ -582,7 +602,11 @@ class PagelistModule extends Component {
                             </Tooltip>
                         </div>
                         <div>
-                            <Typography>Show Modified Date</Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Show Modified Date
+                                </Typography>
+                            </div>
                             <Tooltip title="Show Modified Date">
                                 <Switch
                                     value={this.state.showModifiedDate}
@@ -599,18 +623,23 @@ class PagelistModule extends Component {
                     </div>
                     <div style={{flex: 1}}>
                         <div>
-                            <Typography>
-                                <span>Border Color </span>
-                            </Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Border Color
+                                </Typography>
+                            </div>
                             {this.createColorPicker(
                                 "borderColorStyles",
                                 "displayBorderColorPicker",
                                 "borderColor"
                             )}
-
                         </div>
                         <div>
-                            <Typography><span>Border Width</span></Typography>
+                            <div style={{paddingTop: 12}}>
+                                <Typography gutterBottom variant="caption">
+                                    Border Width
+                                </Typography>
+                            </div>
                             <Slider
                                 value={this.state.borderWidth}
                                 className={this.props.classes.sideMenuSlider}
@@ -622,7 +651,11 @@ class PagelistModule extends Component {
                             />
                         </div>
                         <div>
-                            <Typography>Border Radius</Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Border Radius
+                                </Typography>
+                            </div>
                             <Slider
                                 value={this.state.borderRadius}
                                 className={this.props.classes.sideMenuSlider}
@@ -634,7 +667,11 @@ class PagelistModule extends Component {
                             />
                         </div>
                         <div>
-                            <Typography>Shadow</Typography>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Enable Shadow
+                                </Typography>
+                            </div>
                             <Tooltip title="Enable Shadow">
                                 <Switch
                                     value={this.state.showShadow}
@@ -651,9 +688,11 @@ class PagelistModule extends Component {
                             {this.state.showShadow &&
                                 <>
                                     <div>
-                                        <Typography>
-                                            <span>Shadow Color </span>
-                                        </Typography>
+                                        <div>
+                                            <Typography gutterBottom variant="caption">
+                                                Shadow Color
+                                            </Typography>
+                                        </div>
                                         {this.createColorPicker(
                                             "shadowColorStyles",
                                             "displayShadowColorPicker",
@@ -661,9 +700,15 @@ class PagelistModule extends Component {
                                         )}
                                     </div>
                                     <div className={classes.numberPicker}>
+                                        <div>
+                                            <Typography gutterBottom variant="caption">
+                                                Shadow Spread Value
+                                            </Typography>
+                                        </div>
                                         <TextField
                                             label="Shadow Spread"
                                             id="spread"
+                                            fullWidth
                                             onChange={async (e) => {
                                                 await this.setAsyncState({
                                                     shadowSpread: e.target.value
@@ -681,9 +726,15 @@ class PagelistModule extends Component {
                                         />
                                     </div>
                                     <div className={classes.numberPicker}>
+                                        <div>
+                                            <Typography gutterBottom variant="caption">
+                                                Top Shadow Value
+                                            </Typography>
+                                        </div>
                                         <TextField
                                             label="Top Shadow"
                                             id="topShadow"
+                                            fullWidth
                                             onChange={async (e) => {
                                                 await this.setAsyncState({
                                                     shadowTop: e.target.value
@@ -701,9 +752,15 @@ class PagelistModule extends Component {
                                         />
                                     </div>
                                     <div className={classes.numberPicker}>
+                                        <div>
+                                            <Typography gutterBottom variant="caption">
+                                                Left Shadow Value
+                                            </Typography>
+                                        </div>
                                         <TextField
                                             label="Left Shadow"
                                             id="leftShadow"
+                                            fullWidth
                                             onChange={async (e) => {
                                                 await this.setAsyncState({
                                                     shadowLeft: e.target.value
@@ -724,9 +781,15 @@ class PagelistModule extends Component {
                             }
                         </div>
                         <div className={classes.numberPicker}>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Padding Value
+                                </Typography>
+                            </div>
                             <TextField
                                 label="Padding"
                                 id="padding"
+                                fullWidth
                                 onChange={async (e) => {
                                     await this.setAsyncState({
                                         padding: e.target.value
@@ -744,9 +807,15 @@ class PagelistModule extends Component {
                             />
                         </div>
                         <div className={classes.numberPicker}>
+                            <div>
+                                <Typography gutterBottom variant="caption">
+                                    Margin Value
+                                </Typography>
+                            </div>
                             <TextField
                                 label="Margin"
                                 id="margin"
+                                fullWidth
                                 onChange={async (e) => {
                                     await this.setAsyncState({
                                         margin: e.target.value
@@ -766,7 +835,11 @@ class PagelistModule extends Component {
                     </div>
                 </div>
                 <div>
-                    <Typography>Dynamic Buttons</Typography>
+                    <div>
+                        <Typography gutterBottom variant="caption">
+                            Dynamic Buttons
+                        </Typography>
+                    </div>
                     <Tooltip title="Allow Dynamic Buttons">
                         <Switch
                             value={this.state.dynamicButtons}
@@ -802,6 +875,7 @@ class PagelistModule extends Component {
     }
 }
 
+export default withStyles(styles)(PagelistModule);
 PagelistModule.propTypes = {
     classes: PropTypes.object,
     onUpdate: PropTypes.func,
@@ -810,4 +884,3 @@ PagelistModule.propTypes = {
 }
 
 
-export default withStyles(styles)(PagelistModule);
