@@ -46,6 +46,7 @@ export class AppController {
         @Inject('CategoriesService') private categoriesService,
         @Inject('PagesService') private pagesService,
         @Inject('BucketService') private bucketService,
+        @Inject('AgencyService') private agencyService,
 
         private viewService: ViewService
     ) {

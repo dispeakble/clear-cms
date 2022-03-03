@@ -6,6 +6,7 @@ import {PublicThemesService} from "./services/publicThemes.service";
 import {CategoriesService} from "./services/categories.service";
 import {PagesService} from "./services/pages.service";
 import {BucketService} from "./services/bucket.service";
+import {AgencyService} from './services/agency.service'
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import * as redisStore from 'cache-manager-redis-store';
 import { GotModule, GotModuleOptions } from '@t00nday/nestjs-got';
@@ -61,7 +62,8 @@ import {AppService} from "./services/app.service";
     BucketService,
     AppService,
     ViewService,
-    ConfigService
+    ConfigService,
+    AgencyService
   ]
 })
 
