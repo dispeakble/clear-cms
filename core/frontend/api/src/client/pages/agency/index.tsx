@@ -49,5 +49,5 @@ export async function getServerSideProps(context: any) {
         }
     }
 }
-
+  
 export default withRouter(PageComponent);
