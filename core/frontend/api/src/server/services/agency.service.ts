@@ -2,9 +2,9 @@ import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 
 
+
 @Injectable()
 export class AgencyService {
-
     private methods = ["get"];
  //TODO: implement agency services
     async get(): Promise<any> {
