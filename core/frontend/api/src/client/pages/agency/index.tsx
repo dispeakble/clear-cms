@@ -18,10 +18,10 @@ const PageComponent: NextPage = (props) => {
                 (data: any, i: any) =>
                     setTimeout(() => {
                         return setCards(data)
-                    }, i * 10000
+                    }, i * 20000
                     )
             )
-            setTimeout(content,props.data.length * 10000);
+            setTimeout(content,props.data.length * 20000);
         })()
     }, [])
 
