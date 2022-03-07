@@ -176,6 +176,7 @@ export class AppController {
         const url = parse(req.url, true);
     }
 
+
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
         const url = parse(req.url, true);
@@ -189,8 +190,8 @@ export class AppController {
         await this.viewService.handler(mockRequest, res, url);
     }
 
-    @Post('results_data')
-    public async test(@Res() res: Response, @Body() body){
+    @Post('results-data')
+    public async resultsData(@Res() res: Response, @Body() body){
         const {page} = body
         const dummy = [[
             {

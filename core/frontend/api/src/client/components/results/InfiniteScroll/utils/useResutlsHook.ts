@@ -14,7 +14,7 @@ export default function useResutlsHook(page: number){
 
         axios({
             method: "POST",
-            url:`http://localhost:9898/results_data`,
+            url:`http://localhost:9898/results-data`,
             data: {page: page}
         }).then(res => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
