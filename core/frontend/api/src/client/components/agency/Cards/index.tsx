@@ -7,10 +7,7 @@ const Cards = (props: any) => {
         <CardWrapper>
             {
                 props.cards.map((card: any, i: number) =>
-                    <Card key={i}>
-                        <CardTitle>{card.title}</CardTitle>
-                        <CardDescription>{card.description}</CardDescription>
-                    </Card>
+                    <Card key={i} cardTitle={card.title} cardDescription={card.description}/>
                 )
             }
         </CardWrapper>

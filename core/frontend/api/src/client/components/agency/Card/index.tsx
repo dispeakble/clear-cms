@@ -1,9 +1,11 @@
 import {Item} from "./styled";
+import {CardDescription, CardTitle} from "../Cards/styled";
 
-const Card = ({children}: any) => {
+const Card = ({cardTitle, cardDescription}: any) => {
     return(
         <Item>
-            {children}
+            <CardTitle>{cardTitle}</CardTitle>
+            <CardDescription>{cardDescription}</CardDescription>
         </Item>
     )
 }
