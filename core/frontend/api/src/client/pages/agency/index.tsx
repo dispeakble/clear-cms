@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import {Wrapper} from './styled'
 import bg from "./assets/background.jpg"
 import Cards from '../../components/agency/Cards'
-import Hero from "../../components/agency/Hero";
+import ImageComponent from "../../components/agency/ImageComponent";
 
 import { withRouter } from 'next/router';
 
@@ -27,7 +27,7 @@ const PageComponent: NextPage = (props) => {
 
     return (
         <Wrapper>
-            <Hero img={bg} />
+            <ImageComponent img={bg} />
             <Cards cards={cards} />
         </Wrapper>
 

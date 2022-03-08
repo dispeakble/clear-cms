@@ -9,11 +9,9 @@ import InfiniteScroll from "../../../components/results/InfiniteScroll";
 
 const PageComponent: NextPage = () => {
 
-    const [page, setPage] = useState<number>(1)
-
     return (
         <Wrapper>
-            <InfiniteScroll page={page} setPage={setPage}/>
+            <InfiniteScroll />
         </Wrapper>
 
     )

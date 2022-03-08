@@ -1,11 +1,10 @@
-import {Item} from "./styled";
-import {CardDescription, CardTitle} from "../Cards/styled";
+import {Item, CardDescription, CardTitle} from "./styled";
 
 const Card = ({cardTitle, cardDescription}: any) => {
     return(
-        <Item>
-            <CardTitle>{cardTitle}</CardTitle>
-            <CardDescription>{cardDescription}</CardDescription>
+        <Item data-testid="card-item">
+            <CardTitle data-testid="card-title">{cardTitle}</CardTitle>
+            <CardDescription data-testid="card-description">{cardDescription}</CardDescription>
         </Item>
     )
 }
