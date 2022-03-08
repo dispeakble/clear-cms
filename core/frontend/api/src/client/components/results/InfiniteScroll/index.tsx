@@ -1,4 +1,5 @@
 import React, {useCallback, useRef, useState} from "react";
+
 import useResutlsHook from "./utils/useResutlsHook";
 import Item from "../Item"
 
@@ -7,6 +8,7 @@ import Item from "../Item"
 const InfiniteScroll =  () => {
 
     const [page, setPage] = useState<number>(1)
+
     const {loading, results, failed, hasMore} = useResutlsHook(page)
 
     const observer = useRef();

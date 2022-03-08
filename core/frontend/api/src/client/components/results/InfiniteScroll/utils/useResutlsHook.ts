@@ -11,7 +11,6 @@ export default function useResutlsHook(page: number){
     useEffect(() => {
         setLoading(true)
         setFailed(false)
-
         axios.post(`/results-data`,
             {page: page}
         ).then(res => {
