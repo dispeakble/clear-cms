@@ -11,7 +11,7 @@ export default function useResutlsHook(page: number){
     useEffect(() => {
         setLoading(true)
         setFailed(false)
-
+      
         axios.post(`http://localhost:98988/results-data`,
             {page: page}
         ).then(res => {
