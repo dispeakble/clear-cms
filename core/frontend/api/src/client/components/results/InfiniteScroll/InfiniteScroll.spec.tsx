@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react'
+import {render, screen, act, waitFor, cleanup} from '@testing-library/react'
 import InfiniteScroll from './index'
 import '@testing-library/jest-dom'
 
@@ -7,7 +7,7 @@ import {setupServer} from "msw/node"
 
 
 const server = setupServer(
-    rest.post("http://localhost:9898/results-data",
+    rest.post("/results-data",
         (req, res, ctx) => {
 
             const dummy = [[
@@ -39,45 +39,58 @@ const server = setupServer(
 
             return res(
                 ctx.status(200),
-                ctx.json(ret)
+                ctx.json({ret})
             )
-    }
-    ),
-    rest.post("*", (req, res,ctw) => {
-        console.error("dkhelti hna")
-    })
+        }
+    )
 )
 
 beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-beforeAll(() => server.close())
+afterEach(() => {
+    cleanup()
+    server.resetHandlers()
+})
+afterAll(() => server.close())
 
 test("display infinite scroll component",async () => {
 
-    const {getByTestId} = await render(<InfiniteScroll />)
+    await act(async () =>  {
+        render(<InfiniteScroll/>)
 
-    expect(getByTestId(/infinite-scroll-container/)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByTestId(/infinite-scroll-container/)).toBeInTheDocument()
+        })
+    })
 })
 
 test("display Loading state", async () => {
 
-    const {getByTestId, getByText} = await render(<InfiniteScroll />)
+    await act(async () =>  {
+        render(<InfiniteScroll/>)
 
-
-    expect(getByTestId(/infinite-scroll-container/)).toBeInTheDocument()
-    expect(getByText("Loading...")).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByTestId(/infinite-scroll-container/)).toBeInTheDocument()
+            expect(screen.getByText(/Loading.../)).toBeInTheDocument()
+        })
+    })
 })
 
 test("display failed state", async () => {
-    server.use(
-        rest.post("http://localhost:9898/results-data", (req, res, ctx) => {
+
+    await server.use(
+        rest.post("/results-data", (req, res, ctx) => {
             return res(ctx.status(404))
         })
     )
 
-    const {getByTestId, getByText} = await render(<InfiniteScroll />)
+    await act(async () =>  {
 
+        render(<InfiniteScroll/>)
 
-    expect(getByTestId(/infinite-scroll-container/)).toBeInTheDocument()
-    expect(getByText("error")).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByTestId(/infinite-scroll-container/)).toBeInTheDocument()
+            expect(screen.getByTestId(/error-test-message/)).toBeInTheDocument()
+        });
+    })
+
 })

@@ -38,7 +38,7 @@ const InfiniteScroll =  () => {
                 return <Item key={index} {...item} ref={null}/>
             })}
             {loading && <div>Loading...</div>}
-            {failed && <div>An error has occurred...</div>}
+            {failed && <div data-testid="error-test-message">An error has occurred...</div>}
         </div>
     )
 }

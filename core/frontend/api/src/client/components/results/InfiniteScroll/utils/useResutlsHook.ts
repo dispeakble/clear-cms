@@ -12,18 +12,24 @@ export default function useResutlsHook(page: number){
         setLoading(true)
         setFailed(false)
 
-        axios.post(`http://localhost:98988/results-data`,
+        axios.post(`/results-data`,
             {page: page}
         ).then(res => {
+
+            setLoading(false)
+            setFailed(false)
+            setHasMore(res.data.hasMore)
+
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             setResults(prev => {
                 return [...prev, ...res.data.results[0]]
             })
+
+        }).catch(() => {
             setLoading(false)
-            setFailed(false)
-            setHasMore(res.data.hasMore)
-        }).catch(() => setFailed(true))
+            setFailed(true)
+        })
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         return () => { }
