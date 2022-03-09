@@ -6,31 +6,30 @@ import Cards from '../../components/agency/Cards'
 import ImageComponent from "../../components/agency/ImageComponent";
 
 import { withRouter } from 'next/router';
-
-
+import Header from '../../components/agency/Header'
+import Footer from '../../components/agency/Footer'
 const PageComponent: NextPage = (props) => {
-
     const [cards, setCards] = useState<[]>([])
-
     useEffect(() => {
-        (function content() {
-            props.data.map(
-                (data: any, i: any) =>
-                    setTimeout(() => {
-                        return setCards(data)
-                    }, i * 20000
-                    )
-            )
-            setTimeout(content,props.data.length * 20000);
-        })()
-    }, [])
+       const fetchHotels = async () => {
+           const response = await fetch('http://localhost:9898/api/agency/hotel');
+           const data = await response.json();
+           setCards(data)
+        }
+        fetchHotels()
+    },[props])
 
+    //TDO change here to add a new template. add header, menu, content and footer. whatever you want . dummy text
+    //TODO very important. make reusable components
     return (
+        <>
+            <Header />
         <Wrapper>
             <ImageComponent img={bg} />
             <Cards cards={cards} />
         </Wrapper>
-
+            <Footer />
+            </>
     )
 };
 
@@ -46,8 +45,11 @@ export async function getServerSideProps(context: any) {
     return {
         props:{
             data: data
+
         }
     }
 }
+
+
   
 export default withRouter(PageComponent);

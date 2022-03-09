@@ -171,10 +171,38 @@ export class AppController {
         });
     }
 
+    @Get('api/agency/hotel')
+    public async hotels(@Req() req: Request, @Res() res: Response) {
+        try{
+
+            const data = await this.agencyService.getHotels()
+            return res.json(data)
+        }catch(err){
+            console.log(err)
+        }
+    }
+
     @Get('api/*')
     public async api(@Req() req: Request, @Res() res: Response) {
-        const url = parse(req.url, true);
+        const parts = req.url.split('/');
+        const response = await this.perform({ //TODO get from the first portion of URL eg: /api/agency/
+            channel: 'db',
+            api: 'sql',
+            act: 'get',
+            payload: {
+                db: parts[2],
+                channel: 'frontend',
+                data: {
+                    what: parts[3],
+                }
+            }
+        }).toPromise();
+
+        return response;
     }
+
+
+
 
 
     @Get('*')
@@ -315,8 +343,10 @@ export class AppController {
             const callback = (response) => {
                 return this.perform(response)
             }
+
             params.payload = Object.assign({}, params.payload, {perform: callback})
             return this[params.api + 'Service'].perform(params, this.moduleConfig);
+
         } catch (ex) {
             return {
                 error: 'Could not find ' + params.api + ':' + params.act

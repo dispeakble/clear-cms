@@ -166,7 +166,6 @@ export class QueryService {
                     Object.keys(params.data.order).map(key => {
                         orderArray.push([key, params.data.order[key]]);
                     });
-
                     payload.order = orderArray;
                 }
 
@@ -179,7 +178,7 @@ export class QueryService {
                 }
 
                 try {
-                    const result = await model.findOne(payload);
+                    const result = await model.findAll(payload);
                     //will receive the requested fields
                     subscriber.next(result);
                     subscriber.complete();
