@@ -9,8 +9,6 @@ import {payloadInterface} from "../interfaces/payload.interface";
 @Injectable()
 export class AgencyService {
     private methods = ["get"];
-    constructor(@Inject('ProtocolService') private protocolService) {
-    }
 
     public get(params) {
         return new Observable((subscriber) => {
@@ -47,7 +45,7 @@ export class AgencyService {
             const payload: payloadInterface = {
                 channel: 'db',
                 api: 'sql',
-                act: 'get',
+                act: 'list',
                 payload: {
                     db: 'agency',
                     channel: 'frontend',

@@ -178,7 +178,7 @@ export class QueryService {
                 }
 
                 try {
-                    const result = await model.findAll(payload);
+                    const result = await model.findOne(payload);
                     //will receive the requested fields
                     subscriber.next(result);
                     subscriber.complete();

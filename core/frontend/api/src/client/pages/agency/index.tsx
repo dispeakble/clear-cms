@@ -14,7 +14,7 @@ const PageComponent: NextPage = (props) => {
        const fetchHotels = async () => {
            const response = await fetch('http://localhost:9898/api/agency/hotel');
            const data = await response.json();
-           setCards(data)
+            setCards(data.rows)
         }
         fetchHotels()
     },[props])
@@ -45,7 +45,6 @@ export async function getServerSideProps(context: any) {
     return {
         props:{
             data: data
-
         }
     }
 }
