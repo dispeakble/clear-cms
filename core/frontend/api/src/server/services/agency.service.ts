@@ -1,14 +1,12 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
-import {GotService} from "@t00nday/nestjs-got";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
-
-
 
 @Injectable()
 export class AgencyService {
     private methods = ["get"];
+
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
@@ -33,7 +31,7 @@ export class AgencyService {
                     subscriber.next({type: 'Theme received', data: res});
                     subscriber.complete();
                     return res;
-                } catch(err){
+                } catch (err) {
                     subscriber.error(err);
                     subscriber.complete();
                 }
@@ -60,79 +58,10 @@ export class AgencyService {
             const res = await this.protocolService.sendMessage(payload).toPromise();
 
             return res;
-        } catch(err){
+        } catch (err) {
             return err
         }
     }
-
-
-    /*async get(): Promise<any> {
-
-
-
-        //TODO get from DB
-
-
-
-
-        /!*const data = [
-            [
-                {
-                    title: "Tours",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Hikking",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Travel",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Support",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-            ],
-            [
-                {
-                    title: "Support",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Tours",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Travel",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Hikking",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-            ],
-            [
-                {
-                    title: "Hikking",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Tours",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Support",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-                {
-                    title: "Travel",
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                },
-            ],
-        ]*!/
-        return data;
-    }*/
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
