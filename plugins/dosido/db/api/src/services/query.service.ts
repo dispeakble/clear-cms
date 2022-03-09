@@ -166,7 +166,6 @@ export class QueryService {
                     Object.keys(params.data.order).map(key => {
                         orderArray.push([key, params.data.order[key]]);
                     });
-
                     payload.order = orderArray;
                 }
 
