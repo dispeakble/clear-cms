@@ -11,25 +11,27 @@ export default function useResutlsHook(page: number){
     useEffect(() => {
         setLoading(true)
         setFailed(false)
+        axios.post(`/results-data`,
+            {page: page}
+        ).then(res => {
 
-        axios({
-            method: "POST",
-            url:`http://localhost:9898/results_data`,
-            data: {page: page}
-        }).then(res => {
+            setLoading(false)
+            setFailed(false)
+            setHasMore(res.data.hasMore)
+
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             setResults(prev => {
                 return [...prev, ...res.data.results[0]]
             })
+
+        }).catch(() => {
             setLoading(false)
-            setFailed(false)
-            setHasMore(res.data.hasMore)
-        }).catch((err) => {
             setFailed(true)
-            console.error(err)
         })
 
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        return () => { }
     }, [page])
 
     return {loading, results, failed, hasMore}

@@ -176,6 +176,7 @@ export class AppController {
         const url = parse(req.url, true);
     }
 
+
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
         const url = parse(req.url, true);
@@ -189,12 +190,12 @@ export class AppController {
         await this.viewService.handler(mockRequest, res, url);
     }
 
-    @Post('results_data')
-    public async test(@Res() res: Response, @Body() body){
+    @Post('results-data')
+    public async resultsData(@Res() res: Response, @Body() body){
         const {page} = body
         const dummy = [[
             {
-            itemTitle: "Lorem ipsum",
+            itemTitle: "Lorem ipsum - page1",
             itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
             },
             {
@@ -213,8 +214,9 @@ export class AppController {
                 itemTitle: "Lorem ipsum",
                 itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
             }],
-        [{
-            itemTitle: "Lorem ipsum",
+        [
+            {
+            itemTitle: "Lorem ipsum - page2",
             itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
         },
         {
@@ -233,8 +235,9 @@ export class AppController {
             itemTitle: "Lorem ipsum",
             itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
         }],
-        [{
-            itemTitle: "Lorem ipsum",
+        [
+            {
+            itemTitle: "Lorem ipsum - page 3",
             itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
         },
         {

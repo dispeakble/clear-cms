@@ -1,13 +1,13 @@
 import Image from "next/image"
 import {HeroContainer, ImageContainer, InfoContainer} from './styled';
 
-const Hero = ({img}: any) => {
+const ImageComponent = ({img}: any) => {
     return (
-        <HeroContainer>
+        <HeroContainer data-testid="image-component">
             <ImageContainer>
-                <Image src={img} alt={"background-img"} objectFit="contain" />
+                <Image src={img} alt={"background-img"} objectFit="contain" data-testid="image-item" />
             </ImageContainer>
-            <InfoContainer>
+            <InfoContainer data-testid="info-container">
                 <h2>Adventure</h2>
                 <h3>Holidays and tours</h3>
                 <p>Image from <a href="https://unsplash.com/" target="_blank">Unsplash</a></p>
@@ -16,4 +16,4 @@ const Hero = ({img}: any) => {
     )
 }
 
-export default Hero
+export default ImageComponent
