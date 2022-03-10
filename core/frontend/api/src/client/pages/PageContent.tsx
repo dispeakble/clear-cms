@@ -53,8 +53,10 @@ class PageContent {
 
     static renderContent(props: any) {
 
-        let { seoTitle, description, websiteInfo } = props.pageData.pageConfig ||
+        let seoTitle = props.pageData.pageConfig.seoTitle ||
             { seoTitle: props.pageData.title, description: ""}
+
+        const {description, websiteInfo} = props.pageData.pageConfig || {description: ""}
 
         const { websiteName } = props.pageData.settings;
 
