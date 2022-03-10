@@ -4,7 +4,6 @@ import SkeletonCard from "../SkeletonCard";
 
 const Cards = (props: any) => {
     const {cards} = props;
-    console.log({cards})
     return(
         <CardWrapper data-testid="cards-wrapper">
             {

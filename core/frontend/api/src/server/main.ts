@@ -29,8 +29,8 @@ async function bootstrap() {
     await app.startAllMicroservices();
 
     await app.listen(Number(process.env.backend_port), '0.0.0.0');
-    console.log(`listening on port ${process.env.backend_port}`)
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err);
     process.exit(1);
   }

@@ -129,6 +129,7 @@ export class PagesService {
                     subscriber.next({type: 'CompletePage', data: formattedPage});
                     subscriber.complete();
                 } catch (err) {
+                    // eslint-disable-next-line no-console
                     console.log('err', err)
                     subscriber.error(err);
                     subscriber.complete();
@@ -142,6 +143,7 @@ export class PagesService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.pagesService." + data.act + " not found");
         }
         return null;

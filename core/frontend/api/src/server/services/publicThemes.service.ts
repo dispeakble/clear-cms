@@ -13,6 +13,7 @@ export class PublicThemesService {
     }
 
     onApplicationBootstrap() {
+        // do nothing
     }
 
     public async list() {
@@ -265,6 +266,7 @@ export class PublicThemesService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.publicThemes." + data.act + " not found");
         }
         return null;

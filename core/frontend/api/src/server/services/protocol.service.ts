@@ -136,6 +136,7 @@ export class ProtocolService {
                     thePusher: subscriber
                 });
             } catch (err) {
+                // eslint-disable-next-line no-console
                 console.log(err.message)
             }
         });
@@ -166,6 +167,7 @@ export class ProtocolService {
         if (this.methods.includes(params.act)) {
             return this[params.act](params.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.httpService." + params.act + " not found");
         }
 
