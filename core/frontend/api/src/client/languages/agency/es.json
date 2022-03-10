@@ -1,0 +1,13 @@
+{
+  "global": {
+    "home" : "Home",
+    "about-us" : "Sobre Nosotros",
+    "services" : "Servicios",
+    "contact-us" : "Contacta"
+  },
+  "home" : {
+    "info-box-title" : "Aventuras",
+    "info-box-description" : "Vacaciones y excursiones",
+    "img-source" : "Imagen de"
+  }
+}

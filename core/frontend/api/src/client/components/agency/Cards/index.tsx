@@ -8,7 +8,7 @@ const Cards = (props: any) => {
     return(
         <CardWrapper data-testid="cards-wrapper">
             {
-                props.cards.length > 0 ? props.cards.map((card: any, i: number) =>
+                cards.length > 0 ? cards.map((card: any, i: number) =>
                     <Card key={i} cardTitle={card.Name} cardDescription={card.Description}/>
                 ) : (
                     <SkeletonCard />

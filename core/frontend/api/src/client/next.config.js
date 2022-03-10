@@ -21,6 +21,10 @@ module.exports = {
     // Will only be available on the server side
     enabled: true
   },
+  i18n: {
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
+  },
 
   publicRuntimeConfig: {
     // Will be available on both server and client
