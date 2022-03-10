@@ -1375,42 +1375,11 @@
     "@formatjs/ecma402-abstract" "1.11.3"
     tslib "^2.1.0"
 
-"@formatjs/intl-displaynames@5.4.2":
-  version "5.4.2"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-displaynames/-/intl-displaynames-5.4.2.tgz#feb6b41087a88286d178032490a8ca78bafd4c56"
-  integrity sha512-SLesCDan9NCMqBbHPXMEwqAcPn3tnbQw0sv0rssH1JQDLDUQYwKXL93kz30X3yskTyQS7N+pd47bhoIe3kbXyw==
-  dependencies:
-    "@formatjs/ecma402-abstract" "1.11.3"
-    "@formatjs/intl-localematcher" "0.2.24"
-    tslib "^2.1.0"
-
-"@formatjs/intl-listformat@6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl-listformat/-/intl-listformat-6.5.2.tgz#7fbc310db89e866250e34084e914894c67e09254"
-  integrity sha512-/IYagQJkzTvpBlhhaysGYNgM3o72WBg1ZWZcpookkgXEJbINwLP5kVagHxmgxffYKs1CDzQ8rmKHghu2qR/7zw==
-  dependencies:
-    "@formatjs/ecma402-abstract" "1.11.3"
-    "@formatjs/intl-localematcher" "0.2.24"
-    tslib "^2.1.0"
-
 "@formatjs/intl-localematcher@0.2.24":
   version "0.2.24"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.2.24.tgz#b49fd753c0f54421f26a3c1d0e9cf98a3966e78f"
   integrity sha512-K/HRGo6EMnCbhpth/y3u4rW4aXkmQNqRe1L2G+Y5jNr3v0gYhvaucV8WixNju/INAMbPBlbsRBRo/nfjnoOnxQ==
   dependencies:
-    tslib "^2.1.0"
-
-"@formatjs/intl@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@formatjs/intl/-/intl-2.0.0.tgz#d003f7c5bdb84c0cbeb86d50695a7a87da6bf272"
-  integrity sha512-EVVIhDeFVBxy7ej3IZFM/PNknM5QkGPUjMbl9PZvoB5q1/zmPQzTcDSqYxCEK+XfkrfT6XB1gHvfum+O8ASI1Q==
-  dependencies:
-    "@formatjs/ecma402-abstract" "1.11.3"
-    "@formatjs/fast-memoize" "1.2.1"
-    "@formatjs/icu-messageformat-parser" "2.0.18"
-    "@formatjs/intl-displaynames" "5.4.2"
-    "@formatjs/intl-listformat" "6.5.2"
-    intl-messageformat "9.11.4"
     tslib "^2.1.0"
 
 "@hapi/accept@5.0.2":
@@ -2376,7 +2345,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/hoist-non-react-statics@*", "@types/hoist-non-react-statics@^3.3.0", "@types/hoist-non-react-statics@^3.3.1":
+"@types/hoist-non-react-statics@*", "@types/hoist-non-react-statics@^3.3.0":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
   integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
@@ -2525,15 +2494,6 @@
   version "17.0.37"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.37.tgz#6884d0aa402605935c397ae689deed115caad959"
   integrity sha512-2FS1oTqBGcH/s0E+CjrCCR9+JMpsu9b69RTFO+40ua43ZqP5MmQ4iUde/dMjWR909KxZwmOQIFq6AV6NjEG5xg==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
-"@types/react@16 || 17":
-  version "17.0.39"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.39.tgz#d0f4cde092502a6db00a1cded6e6bf2abb7633ce"
-  integrity sha512-UVavlfAxDd/AgAacMa60Azl7ygyQNRwC/DsHZmKgNvPmRR5p70AJ5Q9EAmL2NWOJmeV+vVUI4IAP7GZrN8h8Ug==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -6090,7 +6050,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-intl-messageformat@9.11.4:
+intl-messageformat@^9.3.18:
   version "9.11.4"
   resolved "https://registry.yarnpkg.com/intl-messageformat/-/intl-messageformat-9.11.4.tgz#0f9030bc6d10e6a48592142f88e646d88f05f1f2"
   integrity sha512-77TSkNubIy/hsapz6LQpyR6OADcxhWdhSaboPb5flMaALCVkPvAIxr48AlPqaMl4r1anNcvR9rpLWVdwUY1IKg==
@@ -7627,6 +7587,13 @@ nestjs-session@^2.0.0:
   dependencies:
     create-nestjs-middleware-module "^0.2.1"
 
+next-intl@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-2.4.0.tgz#1b36f96cfa692c2584dae5f0fe717723c972f2a6"
+  integrity sha512-BSFpg43907MAYzWt+mQdaUKBSYtjy+46aGzAfoyVAFumTFdFlXQ6ORUYpxF7jc/g8OCCl+T0F+2hU9CCulaE+g==
+  dependencies:
+    use-intl "^2.4.0"
+
 next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
@@ -8576,6 +8543,11 @@ react-html-parser@^2.0.2:
   dependencies:
     htmlparser2 "^3.9.0"
 
+react-icons@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
+  integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
+
 react-image-gallery@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/react-image-gallery/-/react-image-gallery-1.2.7.tgz#2dfb83c52f32828a5340ca565f91bca58241fcfe"
@@ -8593,22 +8565,6 @@ react-image-magnify@^2.7.4:
     prop-types "15.6.0"
     react-cursor-position "2.5.3"
     react-required-if "1.0.1"
-
-react-intl@^5.24.6:
-  version "5.24.6"
-  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-5.24.6.tgz#d3dcd07ff967f804504cfdfd5dfa4ee1f64b4f80"
-  integrity sha512-6gUhQwNAeAoRpN6F3N+bR66aot/mI6yduRwQS5ajfmXHX/YFvOfINkgMFTTrcbf3+qjBhACNU3ek4wFt6cn2ww==
-  dependencies:
-    "@formatjs/ecma402-abstract" "1.11.3"
-    "@formatjs/icu-messageformat-parser" "2.0.18"
-    "@formatjs/intl" "2.0.0"
-    "@formatjs/intl-displaynames" "5.4.2"
-    "@formatjs/intl-listformat" "6.5.2"
-    "@types/hoist-non-react-statics" "^3.3.1"
-    "@types/react" "16 || 17"
-    hoist-non-react-statics "^3.3.2"
-    intl-messageformat "9.11.4"
-    tslib "^2.1.0"
 
 react-is@17.0.2, "react-is@^16.8.0 || ^17.0.0", react-is@^17.0.1, react-is@^17.0.2:
   version "17.0.2"
@@ -10093,6 +10049,13 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-intl@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/use-intl/-/use-intl-2.4.0.tgz#f0ed874dbb91fce0d6c37a9db7875eb09097aeba"
+  integrity sha512-okJxrUebOMkVp324Pgdd3nW8H0UWWDdwfry8mooumrG1NsnC9YxWa/M2RG44fK5GzqGEJR/3/Tmd3fbV1693Ew==
+  dependencies:
+    intl-messageformat "^9.3.18"
 
 use-memo-one@^1.1.1:
   version "1.1.2"

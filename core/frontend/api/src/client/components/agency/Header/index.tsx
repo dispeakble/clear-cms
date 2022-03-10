@@ -2,6 +2,7 @@ import Logo from "./Logo";
 import LinkItem from './LinkItem'
 
 import {HeaderContainer, HeaderWrapper, List} from './styled'
+import Languages from "./Languages";
 
 const Header = (props: any)  => {
     const links = props.links;
@@ -15,6 +16,8 @@ const Header = (props: any)  => {
                        links.map((link:any) => <LinkItem {...link} />)
                    }
                </List>
+
+               <Languages />
            </HeaderWrapper>
        </HeaderContainer>
     )
@@ -39,7 +42,7 @@ Header.defaultProps = {
             linkText: "Contact Us",
             linkSlug: "contact-us",
         },
-    ]
+    ],
 }
 
 export default Header;

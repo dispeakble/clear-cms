@@ -22,7 +22,7 @@ export const InfoContainer = styled.div`
   
   background: rgb(194, 36,71);
   color: white;
-  width: 35%;
+  min-width: 35%;
   
   display: flex;
   flex-direction: column;

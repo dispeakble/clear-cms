@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { NextPage } from 'next';
+import {GetStaticPropsContext, NextPage} from 'next';
 import {Wrapper} from './styled'
 import bg from "./assets/background.jpg"
 import Cards from '../../components/agency/Cards'
@@ -8,8 +8,13 @@ import ImageComponent from "../../components/agency/ImageComponent";
 import { withRouter } from 'next/router';
 import Header from '../../components/agency/Header'
 import Footer from '../../components/agency/Footer'
+
+
+
 const PageComponent: NextPage = (props) => {
     const [cards, setCards] = useState<[]>([])
+
+
     useEffect(() => {
        const fetchHotels = async () => {
            const response = await fetch('http://localhost:9898/api/agency/hotel');
@@ -24,27 +29,20 @@ const PageComponent: NextPage = (props) => {
     return (
         <>
             <Header />
-        <Wrapper>
-            <ImageComponent img={bg} />
-            <Cards cards={cards} />
-        </Wrapper>
+            <Wrapper>
+                <ImageComponent img={bg} />
+                <Cards cards={cards} />
+            </Wrapper>
             <Footer />
-            </>
+        </>
+
     )
 };
 
-export async function getServerSideProps(context: any) {
-    const data = await context.req.apiHub({
-        protocolMethod: 'sendMessage',
-        channel: 'frontendapi',
-        api: 'agency',
-        act: 'get',
-    });
-
-
-    return {
+export function getStaticProps({locale}: GetStaticPropsContext){
+    return{
         props:{
-            data: data
+            messages: require(`../../languages/agency/${locale}.json`)
         }
     }
 }

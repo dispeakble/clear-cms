@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import {useTranslations} from "next-intl";
 
 type Props = {
     linkText: string
@@ -6,11 +7,14 @@ type Props = {
 }
 
 export default function(props: Props) {
-    const {linkSlug, linkText} = props;
+    const {linkSlug} = props;
+    const t = useTranslations('global')
 
     return (
         <Item>
-            <LinkItem href={linkSlug}>{linkText}</LinkItem>
+            <LinkItem href={linkSlug}>
+                {t(`${linkSlug}`)}
+            </LinkItem>
         </Item>
     )
 }
