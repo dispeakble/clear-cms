@@ -11,7 +11,7 @@ const Languages = (props: { languages: any; }) => {
 
     return(
         <Container>
-            <SelectedLanguage>{languages[router.locale]} <BiChevronDown /></SelectedLanguage>
+            <SelectedLanguage>{languages[router.locale as string]} <BiChevronDown /></SelectedLanguage>
             <LanguagesDropdown>
                 {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

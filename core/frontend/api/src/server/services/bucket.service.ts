@@ -1,7 +1,7 @@
 import {HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
-import mime, {lookup} from "mime";
+import mime from "mime";
 import {Observable} from "rxjs";
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -50,10 +50,11 @@ export class BucketService {
                 }, (err) => {
                     resolve(err);
                 }, () => {
-
+                    // do nothing
                 });
 
             } catch (err) {
+                // eslint-disable-next-line no-console
                 console.log(err);
                 resolve(err);
             }
@@ -77,11 +78,13 @@ export class BucketService {
                 }
             });
 
-            handshake.theObserver.subscribe(data => {
+            handshake.theObserver.subscribe(() => {
                 //console.log(data);
             }, err => {
+                // eslint-disable-next-line no-console
                 console.log(err);
             }, () => {
+                // eslint-disable-next-line no-console
                 console.log('upload complete');
             })
 
@@ -89,10 +92,12 @@ export class BucketService {
                 params.initiator.subscribe(data => {
                     handshakeResponse.thePusher.next(data)
                 }, err => {
+                    // eslint-disable-next-line no-console
                     console.log(err);
                     handshakeResponse.thePusher.error(err);
                     subscriber.error(err);
                 }, () => {
+                    // eslint-disable-next-line no-console
                     console.log('Bucket.service: upload complete');
                     handshakeResponse.thePusher.complete();
                     subscriber.complete();
@@ -111,7 +116,7 @@ export class BucketService {
         if (data.params[0] && data.params[0].length) {
             file_name = params[0];
         }
-        this.publicPaths.forEach((e, i) => {
+        this.publicPaths.forEach((e) => {
             if(file_name.indexOf(e) === 0){
                 return true;
             }
@@ -169,7 +174,7 @@ export class BucketService {
             }, err => {
                 resolve(err);
             }, () => {
-
+                // do nothing
             })
         });
     }
@@ -208,6 +213,7 @@ export class BucketService {
                 });
             } catch (err) {
                 resolve(null)
+                // eslint-disable-next-line no-console
                 console.log(err);
             }
 
@@ -265,9 +271,11 @@ export class BucketService {
                 const readStream = fs.createReadStream(file_path, {highWaterMark: 52428800});
 
                 readStream.on('data', function (chunk) {
+                    // eslint-disable-next-line no-console
                     console.log('Buffering - ' + complete_path);
                     observer.next({type: "Buffer", data: chunk});
                 }).on('end', function () {
+                    // eslint-disable-next-line no-console
                     console.log('Done - ' + complete_path);
                     observer.complete();
                 });
@@ -346,6 +354,7 @@ export class BucketService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.httpService." + data.act + " not found");
         }
         return null;

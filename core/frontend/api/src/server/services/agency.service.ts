@@ -10,7 +10,7 @@ export class AgencyService {
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
-    public get(params) {
+    public get() {
         return new Observable((subscriber) => {
             (async () => {
                 try {
@@ -55,9 +55,7 @@ export class AgencyService {
                 }
             };
 
-            const res = await this.protocolService.sendMessage(payload).toPromise();
-
-            return res;
+            return await this.protocolService.sendMessage(payload).toPromise();
         } catch (err) {
             return err
         }
@@ -67,6 +65,7 @@ export class AgencyService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.agencyService." + data.act + " not found");
         }
         return null;

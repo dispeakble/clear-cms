@@ -38,12 +38,14 @@ class WsService {
 
             }
         } catch (err) {
+            // eslint-disable-next-line no-console
             console.error(err);
         }
     }
 
     ondisconnect(params) {
         this.isConnected = false;
+        // eslint-disable-next-line no-console
         console.log(params);
     }
 
