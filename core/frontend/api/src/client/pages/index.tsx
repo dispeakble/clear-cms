@@ -1,6 +1,5 @@
-import React from 'react';
 import { NextPage } from 'next';
-import PageContent from "./PageContent";
+import PageContent from "../helpers/PageContent";
 
 import { withRouter } from 'next/router';
 

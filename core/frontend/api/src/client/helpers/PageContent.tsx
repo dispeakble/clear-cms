@@ -1,4 +1,3 @@
-import React from 'react';
 import Head from 'next/head';
 import PageController from '../src/templates/Controllers/Page.controller';
 import DataController from './Controllers/Data.controller';
@@ -91,7 +90,11 @@ class PageContent {
                         href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
                     />
                 </Head>
-                <PageController {...props} />
+                {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    <PageController {...props} />
+                }
             </>
         )
     }
