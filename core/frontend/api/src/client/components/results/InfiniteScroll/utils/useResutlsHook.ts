@@ -9,29 +9,34 @@ export default function useResutlsHook(page: number){
     const [hasMore, setHasMore] = useState<boolean>(false)
 
     useEffect(() => {
+        let componentIsMounted = true
         setLoading(true)
         setFailed(false)
         axios.post(`/results-data`,
             {page: page}
         ).then(res => {
 
-            setLoading(false)
-            setFailed(false)
-            setHasMore(res.data.hasMore)
+            if(componentIsMounted){
+                setLoading(false)
+                setFailed(false)
+                setHasMore(res.data.hasMore)
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            setResults(prev => {
-                return [...prev, ...res.data.results[0]]
-            })
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                setResults(prev => {
+                    return [...prev, ...res.data.results[0]]
+                })
+            }
 
         }).catch(() => {
             setLoading(false)
             setFailed(true)
         })
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        return () => { }
+        return () => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            componentIsMounted = false;
+        }
     }, [page])
 
     return {loading, results, failed, hasMore}

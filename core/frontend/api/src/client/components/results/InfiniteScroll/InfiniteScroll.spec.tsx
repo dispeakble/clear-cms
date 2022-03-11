@@ -39,7 +39,7 @@ const server = setupServer(
 
             return res(
                 ctx.status(200),
-                ctx.json({ret})
+                ctx.json({data: { ret }})
             )
         }
     )

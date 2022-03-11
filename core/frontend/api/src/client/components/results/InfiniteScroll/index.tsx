@@ -35,7 +35,7 @@ const InfiniteScroll =  () => {
 
     return (
         <div data-testid="infinite-scroll-container">
-            {results.map((item, index) => {
+            {results && results.map((item, index) => {
                 if (results.length - 1 === index) return <Item key={index} {...item} ref={lastElement}/>
                 return <Item key={index} {...item} ref={null}/>
             })}
