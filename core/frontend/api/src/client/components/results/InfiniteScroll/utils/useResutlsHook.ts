@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react"
-import axios from "axios"
+import {getResults} from "./getResults";
 
 export default function useResutlsHook(page: number){
 
@@ -9,30 +9,25 @@ export default function useResutlsHook(page: number){
     const [hasMore, setHasMore] = useState<boolean>(false)
 
     useEffect(() => {
-        setLoading(true)
-        setFailed(false)
-        axios.post(`/results-data`,
-            {page: page}
-        ).then(res => {
+        async function fetchResults(){
+            try{
+                const {data} = await getResults()
 
-            setLoading(false)
-            setFailed(false)
-            setHasMore(res.data.hasMore)
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                setResults(prev => {
+                    return [...prev, ...data.results[0]]
+                })
+                setHasMore(data.hasMore)
+                setLoading(true);
+                setFailed(false);
+            } catch(err){
+                setFailed(true)
+                setLoading(false)
+            }
+        }
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            setResults(prev => {
-                return [...prev, ...res.data.results[0]]
-            })
-
-        }).catch(() => {
-            setLoading(false)
-            setFailed(true)
-        })
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        return () => { }
+        fetchResults()
     }, [page])
-
     return {loading, results, failed, hasMore}
 }

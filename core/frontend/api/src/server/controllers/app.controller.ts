@@ -218,7 +218,7 @@ export class AppController {
         await this.viewService.handler(mockRequest, res, url);
     }
 
-    @Post('results-data')
+    @Get('api/results-data')
     public async resultsData(@Res() res: Response, @Body() body){
         const {page} = body
         const dummy = [[

@@ -10,14 +10,14 @@ const Wrapper = styled.div`
 `
 
 import { withRouter } from 'next/router';
-import InfiniteScroll from "../../../components/results/InfiniteScroll";
+import InfiniteScrollComponent from "../../../components/results/InfiniteScroll";
 
 
 const PageComponent: NextPage = () => {
 
     return (
         <Wrapper>
-            <InfiniteScroll />
+            <InfiniteScrollComponent />
         </Wrapper>
 
     )

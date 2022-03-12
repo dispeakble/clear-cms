@@ -1,48 +1,52 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useState} from "react";
 
 import useResutlsHook from "./utils/useResutlsHook";
-import Item from "../Item"
+import {ItemContainer} from './styled'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const InfiniteScroll =  () => {
+import InfiniteScroll from "react-infinite-scroll-component";
+
+interface IResult{
+    itemTitle? : string
+    itemDescription? : string
+}
+
+
+function InfiniteScrollComponent  (){
 
     const [page, setPage] = useState<number>(1)
 
     const {loading, results, failed, hasMore} = useResutlsHook(page)
 
-    const observer = useRef();
-    const lastElement = useCallback((element) => {
-        if (loading) return
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        if (observer.current) { // @ts-ignore
-            observer.current.disconnect()
-        }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        observer.current = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && hasMore) setTimeout(() => {
-                setPage((prev: number) => prev + 1)
-            }, 1000)
-        })
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        if (element) { // @ts-ignore
-            observer.current.observe(element)
-        }
-
-
-    }, [loading, hasMore])
+    function nextPage(){
+        setPage(page+1)
+    }
 
     return (
-        <div data-testid="infinite-scroll-container">
-            {results.map((item, index) => {
-                if (results.length - 1 === index) return <Item key={index} {...item} ref={lastElement}/>
-                return <Item key={index} {...item} ref={null}/>
-            })}
-            {loading && <div>Loading...</div>}
-            {failed && <div data-testid="error-test-message">An error has occurred...</div>}
-        </div>
+        <>
+            {results.length > 0 &&
+                <div data-testid="infinite-scroll-container">
+                    <InfiniteScroll
+                        key="infinite-scroll"
+                        next={nextPage}
+                        hasMore={hasMore}
+                        loader={<div>Loading...</div>}
+                        dataLength={results.length}>
+                        {
+                            results.map(
+                                (item :IResult, index) =>
+                                    <ItemContainer key={index} data-testid="item-container" >
+                                        <h1>{ item.itemTitle}</h1>
+                                        <h2>{ item.itemDescription}</h2>
+                                    </ItemContainer>
+                            )
+                        }
+                    </InfiniteScroll>
+                </div>
+            }
+            {(loading && !failed) && <div data-testid="loader-test">Loading...</div>}
+            {(failed && !loading) && <div data-testid="error-test">An error has occurred...</div>}
+        </>
     )
 }
 
-export default InfiniteScroll
+export default InfiniteScrollComponent
