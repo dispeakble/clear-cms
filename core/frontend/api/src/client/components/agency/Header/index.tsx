@@ -4,25 +4,23 @@ import LinkItem from './LinkItem'
 import {HeaderContainer, HeaderWrapper, List} from './styled'
 import Languages from "./Languages";
 
-const Header = (props: any)  => {
+const Header = (props: any) => {
     const links = props.links;
 
-    return(
-       <HeaderContainer>
-           <HeaderWrapper>
-               <Logo />
-               <List>
-                   {
-                       links.map((link:any) => <LinkItem {...link} />)
-                   }
-               </List>
-
-               <Languages />
-           </HeaderWrapper>
-       </HeaderContainer>
+    return (
+        <HeaderContainer>
+            <HeaderWrapper>
+                <Logo/>
+                <List>
+                    {
+                        links.map((link: any, i) => <LinkItem {...link} key={`link-${i}`}/>)
+                    }
+                </List>
+                <Languages/>
+            </HeaderWrapper>
+        </HeaderContainer>
     )
 }
-
 
 Header.defaultProps = {
     links: [
