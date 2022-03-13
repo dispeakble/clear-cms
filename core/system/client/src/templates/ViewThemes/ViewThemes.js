@@ -66,7 +66,7 @@ import Modal from "../../components/Modal/Modal";
 class ViewThemes extends Component {
     state = {
         id: "",
-        side: 0,
+        side: 1,
         themes: [],
         createModal: false,
         showDeleteModal: false,
@@ -1005,39 +1005,12 @@ class ViewThemes extends Component {
     };
 
     render() {
-        let a11yProps = (index) => {
-            return {
-                id: `simple-tab-${index}`,
-                "aria-controls": `simple-tabpanel-${index}`,
-            };
-        };
-
         return (
             <React.Fragment>
                 <Helmet>
                     <title>Themes</title>
                 </Helmet>
-                <AppBar position="static" style={{marginTop: "52px"}}>
-                    <Tabs
-                        value={this.state.side}
-                        indicatorColor="secondary"
-                    >
-                        <Tab label="Public" href="/themes/public" component="a" onClick={(event) => {
-                            setTimeout(() => {
-                                this.props.hist.push("/themes/public")
-                            }, 250);
-
-                            event.preventDefault();
-                        }} {...a11yProps(0)} />
-                        <Tab label="Admin" href="/themes/admin" component="a" onClick={(event) => {
-                            setTimeout(() => {
-                                this.props.hist.push("/themes/admin")
-                            }, 250);
-                            event.preventDefault();
-                        }} {...a11yProps(1)} />
-                    </Tabs>
-                </AppBar>
-                <div>
+                <div style={{marginTop: "52px"}}>
                     {this.adminThemeList()}
                 </div>
                 <div
