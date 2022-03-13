@@ -11,10 +11,7 @@ export class SessionService {
     }
 
     public check(params): boolean {
-        if (params.session && params.session.hasOwnProperty('user') && !!params.session.user) {
-            return true;
-        }
-        return false;
+        return params.session && params.session.hasOwnProperty('user') && !!params.session.user;
     }
 
     parseCookie(params) {
@@ -62,8 +59,8 @@ export class SessionService {
         });
     }
 
-    public register(params) {
-        return new Promise((resolve, reject) => {
+    public register(params: any) {
+        return new Promise((resolve) => {
             if (params.session && params.data) {
                 params.session.user = params.data;
                 resolve(params.data);
@@ -74,7 +71,7 @@ export class SessionService {
     }
 
     public unregister(params) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             if (params.session) {
                 delete params.session.user;
                 resolve(params.data);

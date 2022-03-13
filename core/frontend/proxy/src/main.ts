@@ -34,13 +34,15 @@ const init = async () => {
 
     app.listen(+process.env.backend_port, '0.0.0.0');
 
-    console.log('Frontend module started');
+    return 'Frontend module started';
 
 }
 
-async function bootstrap() {
+function bootstrap() {
     try {
-        init();
+        init().then((message) => {
+            console.log(message);
+        });
     } catch (e) {
         console.log(e);
         process.exit(1);

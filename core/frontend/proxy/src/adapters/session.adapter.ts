@@ -1,13 +1,6 @@
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { Server } from 'socket.io';
-//import * as sharedsession from 'express-socket.io-session';
-import {ConfigService} from "../services/config.service";
-import { RedisService } from 'nestjs-redis';
-import * as session from "express-session";
-import * as ConnectRedis from 'connect-redis';
 import {Inject} from "@nestjs/common";
-import * as http from "http";
 import {MessageMappingProperties} from "@nestjs/websockets";
 import {EMPTY, fromEvent, Observable} from "rxjs";
 import {filter, mergeMap} from "rxjs/operators";
@@ -28,31 +21,7 @@ export class SessionAdapter extends IoAdapter {
     }
 
     createIOServer(port: number, options?: any): any {
-        //left here for example
-        console.log(this.session);
-        const server : Server = super.createIOServer(port, options);
-        //const configService: ConfigService = this.app.get(ConfigService)
-
-        // const redisClient = this.redisService.getClient();
-        // const store = new RedisStore({ client: redisClient });
-        //
-        // let ses = session.default({
-        //     store,
-        //     saveUninitialized: true,
-        //     secret: configService.SESSION_SECRET,
-        //     resave: false,
-        //     cookie: {
-        //         signed: true,
-        //         maxAge: 86400000
-        //     }
-        // });
-        //
-        // this.app.use(ses)
-        return server;
-    }
-
-    bindClientConnect(server, callback: Function) {
-        server.on('connection', callback);
+        return super.createIOServer(port, options);
     }
 
     bindMessageHandlers(

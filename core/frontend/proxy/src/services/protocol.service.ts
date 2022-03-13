@@ -14,11 +14,10 @@ export class ProtocolService {
 
     private handshakes = {};
 
-    @Inject('REDIS_SERVICE') private redisService: ClientProxy;
-    @Inject(CACHE_MANAGER) private cacheManager: Cache;
-
-    constructor() {
-
+    constructor(
+        @Inject('REDIS_SERVICE') private redisService: ClientProxy,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
+    ) {
     }
 
     public start() {

@@ -40,18 +40,15 @@ export class WsAuthGuard implements CanActivate {
         });
     }
 
-    canServe(params) {
+    canServe() {
         return true;
     }
 
     checkWs(params) {
-        if (params && params.session && params.session.user && params.session.user.email && params.session.user.fullname) {
-            return true;
-        }
-        return false;
+        return params && params.session && params.session.user && params.session.user.email && params.session.user.fullname;
     }
 
-    checkHttp(params) {
+    checkHttp() {
         return true;
     }
 }

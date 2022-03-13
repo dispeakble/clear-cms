@@ -20,7 +20,7 @@ describe("Component: Infinite Scroll", () => {
 
     beforeAll(() => {
         // eslint-disable-next-line no-console
-        console.log("@ beforeAll - Component: Infinite Scroll")
+        //console.log("@ beforeAll - Component: Infinite Scroll")
         server.listen()
     })
     beforeEach(async () => {
@@ -31,7 +31,7 @@ describe("Component: Infinite Scroll", () => {
     })
     afterAll(() => {
         // eslint-disable-next-line no-console
-        console.log("@ afterAll - Component: Infinite Scroll")
+        //console.log("@ afterAll - Component: Infinite Scroll")
         server.close()
     })
     test("display Loading state", async () => {
@@ -39,7 +39,7 @@ describe("Component: Infinite Scroll", () => {
         const loader = wrapper.find({"data-testid" : "loader-test"})
 
         // eslint-disable-next-line no-console
-        console.log(wrapper.debug())
+        //console.log(wrapper.debug())
         chaiExpect(loader.text()).to.equal('Loading...')
 
 
@@ -52,7 +52,7 @@ describe("Component: Infinite Scroll", () => {
         const item = await screen.findByTestId(/infinite-scroll-container/)
 
         // eslint-disable-next-line no-console
-        console.log(wrapper.debug())
+        //console.log(wrapper.debug())
         expect(item).toBeInTheDocument()
     })
 
@@ -64,7 +64,7 @@ describe("Component: Infinite Scroll", () => {
         const error = await screen.findByTestId(/error-test/)
 
         // eslint-disable-next-line no-console
-        console.log(wrapper.debug())
+        //console.log(wrapper.debug())
         expect(error).toBeInTheDocument()
 
     })
