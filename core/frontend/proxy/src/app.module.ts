@@ -55,5 +55,4 @@ import { GotModule, GotModuleOptions } from '@t00nday/nestjs-got';
 })
 
 export class AppModule {
-    constructor() { }
 }

@@ -1,5 +1,5 @@
 import {render, screen, waitFor} from '@testing-library/react'
-import Cards from './index'
+import Cards from '../components/agency/Cards'
 import '@testing-library/jest-dom'
 
 test("display card wrapper", async () => {

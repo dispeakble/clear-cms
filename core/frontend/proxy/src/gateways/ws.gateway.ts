@@ -7,9 +7,7 @@ import {
     OnGatewayConnection,
     OnGatewayDisconnect, ConnectedSocket, MessageBody
 } from '@nestjs/websockets';
-import {Session} from '@nestjs/common';
 import {Socket, Server} from 'socket.io';
-import {SessionService} from "../services/session.service";
 
 /**
  *    Important URIs:
@@ -24,21 +22,21 @@ export class WsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
     @WebSocketServer() wss: Server;
     private callbacks = {};
 
-    constructor(private sessionService: SessionService) {
+    constructor() {
     }
 
 
     afterInit(server: Server) {
         console.log('Websocket Initialized...');
-        server.on('connection', async (socket, ...rest) => {
+        server.on('connection', async (socket) => {
             socket.on('disconnect', this.handleDisconnect);
-            console.log('Websocket Connected...', rest);
-            return {sid: socket.id}
+            this.handleConnection();
+            return {sid: socket.id};
         })
     }
 
-    async handleConnection(client: Socket, @Session() session) {
-
+    handleConnection() {
+        console.log('Websocket Connected...');
     }
 
     handleDisconnect() {
