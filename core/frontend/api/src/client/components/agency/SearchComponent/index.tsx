@@ -11,7 +11,7 @@ import {
     SearchContainer,
     SearchInput,
     SearchItem,
-    SearchLabel, Separator, separator
+    SearchLabel, Separator
 } from './styled'
 import {AiOutlineSearch} from "react-icons/ai";
 import {useRef, useState} from "react"
@@ -96,7 +96,7 @@ function SearchComponent(){
         switch(e.target.id){
             case "adults-minus" : if(guests.adults > 1) setGuests(prev => ({adults: prev.adults-1, children: prev.children, infants: prev.infants}));
                 break;
-            case "adults-plus": if(guestsCount() < 9) setGuests(prev => ({adults: prev.adults+1, children: prev.children, infants: prev.infants}))  ;
+            case "adults-plus": if(guestsCount() < 10) setGuests(prev => ({adults: prev.adults+1, children: prev.children, infants: prev.infants}))  ;
                 break;
         }
     }
@@ -106,7 +106,7 @@ function SearchComponent(){
         switch(e.target.id){
             case "children-minus" : if(guests.children > 0) setGuests(prev => ({adults: prev.adults, children: prev.children-1, infants: prev.infants}));
                 break;
-            case "children-plus": if(guestsCount() < 9) setGuests(prev => ({adults: prev.adults, children: prev.children+1, infants: prev.infants}))  ;
+            case "children-plus": if(guestsCount() < 10) setGuests(prev => ({adults: prev.adults, children: prev.children+1, infants: prev.infants}))  ;
                 break;
         }
     }
@@ -115,7 +115,7 @@ function SearchComponent(){
         switch(e.target.id){
             case "infants-minus" : if(guests.infants > 0) setGuests(prev => ({adults: prev.adults, children: prev.children, infants: prev.infants-1}));
                 break;
-            case "infants-plus": if(guestsCount() < 9)setGuests(prev => ({adults: prev.adults, children: prev.children, infants: prev.infants+1}))  ;
+            case "infants-plus": if(guestsCount() < 10)setGuests(prev => ({adults: prev.adults, children: prev.children, infants: prev.infants+1}))  ;
                 break;
         }
     }

@@ -91,6 +91,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-typescript": "^7.16.7",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
