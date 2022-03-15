@@ -1,6 +1,14 @@
 {
     "presets": [
-        "next/babel"
+        "next/babel",
+        "@babel/preset-typescript",
+        [
+            "@babel/preset-env",
+            {
+                "modules": "commonjs"
+            }
+        ]
+
     ],
     "plugins": [
         [
@@ -10,6 +18,7 @@
                 "displayName": true,
                 "preprocess": false
             }
-        ]
+        ],
+        "@babel/plugin-transform-modules-commonjs"
     ]
 }

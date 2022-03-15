@@ -8,6 +8,9 @@ import ImageComponent from "../../components/agency/ImageComponent";
 import {withRouter} from 'next/router';
 import Header from '../../components/agency/Header'
 import Footer from '../../components/agency/Footer'
+import SearchComponent from "../../components/agency/SearchComponent";
+
+
 
 const Wrapper = styled.div`
   width: 1200px;
@@ -32,9 +35,11 @@ const PageComponent: NextPage = (props) => {
         <>
             <Header/>
             <Wrapper>
+                <SearchComponent />
                 <ImageComponent img={bg}/>
                 <Cards cards={cards}/>
             </Wrapper>
+
             <Footer/>
         </>
 

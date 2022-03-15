@@ -36,7 +36,9 @@
     "@nestjs/websockets": "^7.4.2",
     "@svgr/webpack": "^6.2.1",
     "@t00nday/nestjs-got": "^1.1.0",
+    "@types/react-calendar": "^3.5.0",
     "@types/styled-components": "^5.1.24",
+    "babel-preset-env": "^1.7.0",
     "busboy": "^0.3.1",
     "cache-manager": "^3.4.4",
     "cache-manager-redis-store": "^2.0.0",
@@ -61,6 +63,7 @@
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-calendar": "^3.7.0",
     "react-color": "^2.19.3",
     "react-datetime": "^3.1.1",
     "react-dom": "^17.0.2",
@@ -88,6 +91,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
