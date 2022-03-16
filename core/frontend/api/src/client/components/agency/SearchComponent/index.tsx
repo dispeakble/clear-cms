@@ -6,7 +6,7 @@ import {
     GuestsLabel,
     GuestsLabelContainer,
     Handler,
-    HandlerContainer,
+    HandlerContainer, Overlay,
     SearchButton,
     SearchContainer,
     SearchInput,
@@ -160,6 +160,12 @@ function SearchComponent(){
         }
     }
 
+    const closeModals = () => {
+        setCheckInCalendarIsOpen(false)
+        setCheckOutCalendarIsOpen(false)
+        setGuestsIsOpen(false)
+    }
+
     return(
         <SearchContainer onSubmit={searchSubmitHandler} data-testid="search-form">
 
@@ -182,15 +188,18 @@ function SearchComponent(){
                 </DateLabel>
                 {
                     checkInCalendarIsOpen &&
-                    <CalendarContainer id="checkIn">
-                        <SearchLabel>Check in date</SearchLabel>
-                        <Calendar
-                            onChange={onCheckInChange}
-                            value={checkInDate}
-                            minDate={new Date()}
-                            maxDate={new Date(date.setMonth(date.getMonth() + 3))}
-                        />
-                    </CalendarContainer>
+                    <>
+                        <CalendarContainer id="checkIn">
+                            <SearchLabel>Check in date</SearchLabel>
+                            <Calendar
+                                onChange={onCheckInChange}
+                                value={checkInDate}
+                                minDate={new Date()}
+                                maxDate={new Date(date.setMonth(date.getMonth() + 3))}
+                            />
+                        </CalendarContainer>
+                        <Overlay onClick={closeModals}/>
+                    </>
                 }
             </SearchItem>
             <Separator />
@@ -207,14 +216,17 @@ function SearchComponent(){
                 </DateLabel>
                 {
                     checkOutCalendarIsOpen &&
-                    <CalendarContainer id="checkOut">
+                    <>
+                        <CalendarContainer id="checkOut">
                         <SearchLabel>Check out date</SearchLabel>
                         <Calendar
                             onChange={onCheckOutChange}
                             value={checkOutDate}
                             minDate={checkInDate as unknown as Date}
                         />
-                    </CalendarContainer>
+                        </CalendarContainer>
+                        <Overlay onClick={closeModals}/>
+                    </>
                 }
             </SearchItem>
             <Separator />
@@ -232,65 +244,68 @@ function SearchComponent(){
                 </GuestsLabel>
                 {
                     guestIsOpen &&
-                    <GuestsContainer>
-                        <GuestsItem>
-                            <GuestsLabelContainer>
-                                <label>
-                                    Adults
-                                </label>
-                                <label>
-                                    Ages 13 or above.
-                                </label>
-                            </GuestsLabelContainer>
-                            <HandlerContainer>
-                                <Handler id="adults-minus" onClick={handleAdults}>
-                                    -
-                                </Handler>
-                                {guests.adults}
-                                <Handler id="adults-plus" onClick={handleAdults}>
-                                    +
-                                </Handler>
-                            </HandlerContainer>
-                        </GuestsItem>
-                        <GuestsItem>
-                            <GuestsLabelContainer>
-                                <label>
-                                    Children
-                                </label>
-                                <label>
-                                    Ages between 2 and 13.
-                                </label>
-                            </GuestsLabelContainer>
-                            <HandlerContainer>
-                                <Handler id="children-minus" onClick={handleChildren}>
-                                    -
-                                </Handler>
-                                {guests.children}
-                                <Handler id="children-plus" onClick={handleChildren}>
-                                    +
-                                </Handler>
-                            </HandlerContainer>
-                        </GuestsItem>
-                        <GuestsItem>
-                            <GuestsLabelContainer>
-                                <label>
-                                    Infants
-                                </label>
-                                <label>
-                                    Under 2.
-                                </label>
-                            </GuestsLabelContainer>
-                            <HandlerContainer>
-                                <Handler id="infants-minus" onClick={handleInfants}>
-                                    -
-                                </Handler>
-                                {guests.infants}
-                                <Handler id="infants-plus" onClick={handleInfants}>
-                                    +
-                                </Handler>
-                            </HandlerContainer>
-                        </GuestsItem>
-                    </GuestsContainer>
+                    <>
+                        <GuestsContainer>
+                            <GuestsItem>
+                                <GuestsLabelContainer>
+                                    <label>
+                                        Adults
+                                    </label>
+                                    <label>
+                                        Ages 13 or above.
+                                    </label>
+                                </GuestsLabelContainer>
+                                <HandlerContainer>
+                                    <Handler id="adults-minus" onClick={handleAdults}>
+                                        -
+                                    </Handler>
+                                    {guests.adults}
+                                    <Handler id="adults-plus" onClick={handleAdults}>
+                                        +
+                                    </Handler>
+                                </HandlerContainer>
+                            </GuestsItem>
+                            <GuestsItem>
+                                <GuestsLabelContainer>
+                                    <label>
+                                        Children
+                                    </label>
+                                    <label>
+                                        Ages between 2 and 13.
+                                    </label>
+                                </GuestsLabelContainer>
+                                <HandlerContainer>
+                                    <Handler id="children-minus" onClick={handleChildren}>
+                                        -
+                                    </Handler>
+                                    {guests.children}
+                                    <Handler id="children-plus" onClick={handleChildren}>
+                                        +
+                                    </Handler>
+                                </HandlerContainer>
+                            </GuestsItem>
+                            <GuestsItem>
+                                <GuestsLabelContainer>
+                                    <label>
+                                        Infants
+                                    </label>
+                                    <label>
+                                        Under 2.
+                                    </label>
+                                </GuestsLabelContainer>
+                                <HandlerContainer>
+                                    <Handler id="infants-minus" onClick={handleInfants}>
+                                        -
+                                    </Handler>
+                                    {guests.infants}
+                                    <Handler id="infants-plus" onClick={handleInfants}>
+                                        +
+                                    </Handler>
+                                </HandlerContainer>
+                            </GuestsItem>
+                        </GuestsContainer>
+                        <Overlay onClick={closeModals} />
+                    </>
                 }
             </SearchItem>
             <SearchButton type="submit">

@@ -1,5 +1,9 @@
 import styled from "styled-components"
 
+interface IDateLabel{
+    selected?:boolean
+}
+
 export const SearchContainer = styled.form`
   height: auto;
   display: flex;
@@ -20,6 +24,15 @@ export const Separator = styled.div`
   height: 100%;
   width : 1px;
   background: #333;
+`
+
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
 `
 
 export const SearchInput = styled.input`
@@ -77,7 +90,7 @@ export const SearchLabel = styled.label`
   cursor: pointer;
 `
 
-export const DateLabel = styled.label`
+export const DateLabel = styled.label<IDateLabel>`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
