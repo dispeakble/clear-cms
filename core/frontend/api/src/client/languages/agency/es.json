@@ -9,5 +9,22 @@
     "info-box-title" : "Aventuras",
     "info-box-description" : "Vacaciones y excursiones",
     "img-source" : "Imagen de"
+  },
+  "search": {
+    "destination": "Destino",
+    "input-placeholder" : "¿Adónde vas?",
+    "checkin": "Llegada",
+    "addDate": "Añadir fecha",
+    "checkinDate": "Fecha de registro",
+    "checkout": "Salida",
+    "checkoutDate" : "Fecha de salida",
+    "guests" : "Huéspedes",
+    "adults" : "Adultos",
+    "children" : "Niños",
+    "infants" : "Bebés",
+    "adults-age" : "13 años o más.",
+    "children-age" : "De 2 a 12 años.",
+    "infants-age" : "Menos de 2.",
+    "search-btn" : "Buscar"
   }
 }

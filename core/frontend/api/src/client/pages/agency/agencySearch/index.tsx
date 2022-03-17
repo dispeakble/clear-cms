@@ -46,5 +46,13 @@ const PageComponent: NextPage = (props) => {
     )
 };
 
+export function getStaticProps({locale}: GetStaticPropsContext) {
+    return {
+        props: {
+            messages: require(`../../../languages/agency/${locale}.json`)
+        }
+    }
+}
+
 
 export default withRouter(PageComponent);

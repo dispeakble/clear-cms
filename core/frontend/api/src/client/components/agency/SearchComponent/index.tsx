@@ -18,10 +18,12 @@ import {useRef, useState} from "react"
 import Calendar from 'react-calendar';
 import {useRouter} from 'next/router'
 import 'react-calendar/dist/Calendar.css';
+import {useTranslations} from "next-intl";
 
 function SearchComponent(){
 
     const router = useRouter()
+    const t = useTranslations('search')
 
     const date = new Date()
     const destinationRef = useRef(null)
@@ -170,27 +172,27 @@ function SearchComponent(){
         <SearchContainer onSubmit={searchSubmitHandler} data-testid="search-form">
 
             <SearchItem>
-                <SearchLabel onClick={focusDestination}>Destination</SearchLabel>
+                <SearchLabel onClick={focusDestination}>{t('destination')}</SearchLabel>
 
-                <SearchInput value={destination} onChange={handleDestination} ref={destinationRef} type="text" placeholder="Where are you going?"/>
+                <SearchInput value={destination} onChange={handleDestination} ref={destinationRef} type="text" placeholder={t('input-placeholder')}/>
             </SearchItem>
             <Separator />
             <SearchItem onClick={openCheckInCalendar}>
-                <SearchLabel onClick={openCheckInCalendar}>Check in</SearchLabel>
+                <SearchLabel onClick={openCheckInCalendar}>{t('checkin')}</SearchLabel>
                 <DateLabel selected={checkInDate !== null} onClick={openCheckInCalendar}>
                     {
                         checkInDate !== null ?
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             formateDate(checkInDate)
-                            : "Add date"
+                            : t('addDate')
                     }
                 </DateLabel>
                 {
                     checkInCalendarIsOpen &&
                     <>
                         <CalendarContainer id="checkIn">
-                            <SearchLabel>Check in date</SearchLabel>
+                            <SearchLabel>{t('checkinDate')}</SearchLabel>
                             <Calendar
                                 onChange={onCheckInChange}
                                 value={checkInDate}
@@ -204,21 +206,21 @@ function SearchComponent(){
             </SearchItem>
             <Separator />
             <SearchItem onClick={openCheckOutCalendar}>
-                <SearchLabel onClick={openCheckOutCalendar}>Check out</SearchLabel>
+                <SearchLabel onClick={openCheckOutCalendar}>{t('checkout')}</SearchLabel>
                 <DateLabel selected={checkOutDate !== null} onClick={openCheckOutCalendar}>
                     {
                         checkOutDate !== null ?
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             formateDate(checkOutDate)
-                            : "Add date"
+                            : t('addDate')
                     }
                 </DateLabel>
                 {
                     checkOutCalendarIsOpen &&
                     <>
                         <CalendarContainer id="checkOut">
-                        <SearchLabel>Check out date</SearchLabel>
+                        <SearchLabel>{t('checkoutDate')}</SearchLabel>
                         <Calendar
                             onChange={onCheckOutChange}
                             value={checkOutDate}
@@ -231,15 +233,15 @@ function SearchComponent(){
             </SearchItem>
             <Separator />
             <SearchItem onClick={openGuests}>
-                <SearchLabel onClick={openGuests}>Guests</SearchLabel>
+                <SearchLabel onClick={openGuests}>{t('guests')}</SearchLabel>
                 <GuestsLabel onClick={openGuests}>
                     {
                         guests.adults > 0 &&
-                        `${guests.adults} adults`
+                        `${guests.adults} ${t('adults')}`
                     }
                     {
                         guests.children > 0 &&
-                        `, ${guests.children} children`
+                        `, ${guests.children} ${t('children')}`
                     }
                 </GuestsLabel>
                 {
@@ -249,10 +251,10 @@ function SearchComponent(){
                             <GuestsItem>
                                 <GuestsLabelContainer>
                                     <label>
-                                        Adults
+                                        {t('adults')}
                                     </label>
                                     <label>
-                                        Ages 13 or above.
+                                        {t('adults-age')}
                                     </label>
                                 </GuestsLabelContainer>
                                 <HandlerContainer>
@@ -268,10 +270,10 @@ function SearchComponent(){
                             <GuestsItem>
                                 <GuestsLabelContainer>
                                     <label>
-                                        Children
+                                        {t('children')}
                                     </label>
                                     <label>
-                                        Ages between 2 and 13.
+                                        {t('children-age')}
                                     </label>
                                 </GuestsLabelContainer>
                                 <HandlerContainer>
@@ -287,10 +289,10 @@ function SearchComponent(){
                             <GuestsItem>
                                 <GuestsLabelContainer>
                                     <label>
-                                        Infants
+                                        {t('infants')}
                                     </label>
                                     <label>
-                                        Under 2.
+                                        {t('infants-age')}
                                     </label>
                                 </GuestsLabelContainer>
                                 <HandlerContainer>
@@ -309,7 +311,7 @@ function SearchComponent(){
                 }
             </SearchItem>
             <SearchButton type="submit">
-                <AiOutlineSearch /> Search
+                <AiOutlineSearch /> {t('search-btn')}
             </SearchButton>
         </SearchContainer>
     )
