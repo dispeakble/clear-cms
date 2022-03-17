@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {GetStaticPropsContext, NextPage} from 'next';
 import styled from "styled-components"
-import bg from "./assets/background.jpg"
-import Cards from '../../components/agency/Cards'
-import ImageComponent from "../../components/agency/ImageComponent";
+import bg from "../assets/background.jpg"
+import Cards from '../../../components/agency/Cards'
+import ImageComponent from "../../../components/agency/ImageComponent";
 
 import {withRouter} from 'next/router';
-import Header from '../../components/agency/Header'
-import Footer from '../../components/agency/Footer'
-import SearchComponent from "../../components/agency/SearchComponent";
+import Header from '../../../components/agency/Header'
+import Footer from '../../../components/agency/Footer'
+import SearchComponent from "../../../components/agency/SearchComponent";
 
 
 
@@ -35,6 +35,7 @@ const PageComponent: NextPage = (props) => {
         <>
             <Header/>
             <Wrapper>
+                <SearchComponent />
                 <ImageComponent img={bg}/>
                 <Cards cards={cards}/>
             </Wrapper>
@@ -48,7 +49,7 @@ const PageComponent: NextPage = (props) => {
 export function getStaticProps({locale}: GetStaticPropsContext) {
     return {
         props: {
-            messages: require(`../../languages/agency/${locale}.json`)
+            messages: require(`../../../languages/agency/${locale}.json`)
         }
     }
 }
