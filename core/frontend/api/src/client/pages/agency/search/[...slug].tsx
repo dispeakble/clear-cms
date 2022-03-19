@@ -2,6 +2,7 @@ import React from 'react';
 import { NextPage } from 'next';
 import styled from "styled-components"
 
+
 const Wrapper = styled.div`
     width: 1200px;
     margin: 0 auto;
@@ -16,16 +17,15 @@ import {useRouter, withRouter} from 'next/router';
 const PageComponent: NextPage = () => {
 
     const router = useRouter()
-    const { destination, checkin, checkout, adults, children, infants } = router.query
+    const {slug} = router.query
+
+    // eslint-disable-next-line no-console
+    console.log(slug)
+    //returns array for slugs
 
     return (
         <Wrapper>
-            destination : {destination}
-            Check In: {checkin}
-            check Out: {checkout}
-            Adults: {adults}
-            Children: {children}
-            Infants: {infants}
+            search page
         </Wrapper>
 
     )
