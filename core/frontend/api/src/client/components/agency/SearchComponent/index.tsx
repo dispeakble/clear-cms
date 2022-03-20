@@ -149,15 +149,7 @@ function SearchComponent(){
             && checkOutDate
             && guestsCount() > 0){
             router.push({
-                pathname: '/agency/search',
-                query: {
-                    destination: destination,
-                    checkin: checkInDate,
-                    checkout: checkOutDate,
-                    adults: guests.adults,
-                    children: guests.children,
-                    infants: guests.infants,
-                }
+                pathname: `/agency/search/${destination}/${formateDate(checkInDate)}/${formateDate(checkOutDate)}/${guests.adults}`,
             })
         }
     }
