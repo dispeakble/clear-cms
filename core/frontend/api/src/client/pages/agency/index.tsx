@@ -8,7 +8,6 @@ import ImageComponent from "../../components/agency/ImageComponent";
 import {withRouter} from 'next/router';
 import Header from '../../components/agency/Header'
 import Footer from '../../components/agency/Footer'
-import SearchComponent from "../../components/agency/SearchComponent";
 
 
 
