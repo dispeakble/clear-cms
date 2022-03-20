@@ -5,7 +5,6 @@ import React from "react"
 import {render, screen} from '@testing-library/react'
 import InfiniteScroll from '../components/results/InfiniteScroll'
 import '@testing-library/jest-dom'
-import { rest } from "msw"
 import { shallow, configure } from 'enzyme';
 import {expect as chaiExpect} from "chai";
 import Adapter from "enzyme-adapter-react-16";

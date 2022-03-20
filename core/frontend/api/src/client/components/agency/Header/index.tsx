@@ -13,7 +13,7 @@ const Header = (props: any) => {
                 <Logo/>
                 <List>
                     {
-                        links.map((link: any, i) => <LinkItem {...link} key={`link-${i}`}/>)
+                        links.map((link: any, i: number) => <LinkItem {...link} key={`link-${i}`}/>)
                     }
                 </List>
                 <Languages/>
