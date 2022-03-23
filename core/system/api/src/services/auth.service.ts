@@ -4,11 +4,14 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
 import * as md5 from "md5";
 import {Observable} from "rxjs";
+import {randomBytes} from "crypto";
+import * as bcrypt from 'bcrypt';
+import * as utils from "../utils/sendEmail"
 
 @Injectable()
 export class AuthService {
 
-    private methods = ["doLogout", "doLogin", "loadConfig", "ping"];
+    private methods = ["doLogout", "doLogin", "doPasswordReset", "loadConfig", "doChangePassword", "ping"];
     private config = {
         admin_table: "",
         admin_fields: []
@@ -112,6 +115,241 @@ export class AuthService {
                 observer.complete();
             });
         });
+    }
+
+    public doPasswordReset(params: any){
+        return new Observable(observer => {
+            const request = params.body.payload;
+            if(!request.hasOwnProperty('email')){
+                observer.complete();
+                return;
+            }
+
+            const payload: payloadInterface = {
+                channel: 'db',
+                api: 'sql',
+                act: 'get',
+                payload: {
+                    db: 'main',
+                    channel: 'system',
+                    data: {
+                        what: this.config.admin_table,
+                        fields: this.config.admin_fields,
+                        where: {
+                            email: request.email,
+                            active: 1,
+                        },
+                        limit: [0, 1]
+                    }
+                }
+            }
+
+            observer.next({type: 'meta', content_type: 'application/json'});
+            this.protocolService.sendMessage(payload).subscribe(async (reset_response) => {
+                console.log("here entered", reset_response)
+                if(reset_response && reset_response.email){
+                    const tokenPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'get',
+                        payload: {
+                            db: 'main',
+                            channel: 'system',
+                            data: {
+                                what: 'token',
+                                where: {
+                                    userId: reset_response.id,
+                                },
+                                limit: [0, 1]
+                            }
+                        }
+                    }
+
+                    const res = await this.protocolService.sendMessage(tokenPayload).toPromise();
+                    console.log('--------------------', res)
+                    if(res) {
+                        console.log("entered res")
+                        const remPayload: payloadInterface = {
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'rem',
+                            payload: {
+                                db: 'main',
+                                channel: 'system',
+                                data: {
+                                    what: 'token',
+                                    where: {
+                                        userId: reset_response.id,
+                                    }
+                                }
+                            }
+                        }
+
+                        await this.protocolService.sendMessage(remPayload);
+                    }
+
+                    const tempSalt = 10;
+
+                    const resetToken = randomBytes(32).toString("hex")
+                    const hash = await bcrypt.hash(resetToken, Number(tempSalt))
+
+                    const addTokenPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'add',
+                        payload: {
+                            db: 'main',
+                            channel: 'system',
+                            data: {
+                                what: 'token',
+                                data:{
+                                    userId: reset_response.id,
+                                    token: hash,
+                                    createdAt: Date.now()
+                                }
+                            }
+                        }
+                    }
+
+                    const addToken = await this.protocolService.sendMessage(addTokenPayload).toPromise();
+
+                    console.log('-------', addToken)
+
+                    const link = `http://localhost:3000/password-reset?token=${resetToken}&id=${reset_response.id}`;
+
+                    console.log(link)
+
+                    observer.next({
+                        success: "link sent",
+                        data: null
+                    })
+                } else {
+                    observer.next({
+                        error: "error occurred",
+                        data: null
+                    })
+                }
+                observer.complete();
+            }, err => {
+                observer.next({
+                    type:'String',
+                    data: {error: "Internal server error"},
+                    mime: 'application/json'
+                });
+                observer.complete();
+            }, () => {
+                observer.complete();
+            });
+        });
+    }
+
+    public doChangePassword(params: any){
+        return new Observable(subscriber => {
+            //check if the token exists as long as the user
+            const request: payloadInterface = {
+                channel: 'db',
+                api: 'sql',
+                act: 'get',
+                payload: {
+                    db: 'main',
+                    channel: 'system',
+                    data: {
+                        what: 'token',
+                        where: {
+                            userId: params.id,
+                            token: params.token
+                        },
+                        limit: [0, 1]
+                    }
+                }
+            };
+
+            this.protocolService.sendMessage(request).subscribe(async (data) => {
+                if(data && data && data ){
+                    // if token exists, update user password
+                    const updateRequest: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'set',
+                        payload: {
+                            db: 'main',
+                            channel: 'system',
+                            data: {
+                                what: 'user',
+                                data: {
+                                    password: String(params.password)
+                                },
+                                where: {
+                                    id: params.id
+                                }
+                            }
+                        }
+                    };
+
+                    const res = await this.protocolService.sendMessage(updateRequest).toPromise()
+
+                    if(res){
+                        const remPayload: payloadInterface = {
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'rem',
+                            payload: {
+                                db: 'main',
+                                channel: 'system',
+                                data: {
+                                    what: 'token',
+                                    where: {
+                                        userId: params.id,
+                                    }
+                                }
+                            }
+                        }
+
+                        await this.protocolService.sendMessage(remPayload);
+
+                        //create new token for the user
+                        const tempSalt = 10;
+
+                        const resetToken = randomBytes(32).toString("hex")
+                        const hash = await bcrypt.hash(resetToken, Number(tempSalt))
+
+                        const addTokenPayload: payloadInterface = {
+                            channel: 'db',
+                            api: 'sql',
+                            act: 'add',
+                            payload: {
+                                db: 'main',
+                                channel: 'system',
+                                data: {
+                                    what: 'token',
+                                    data:{
+                                        userId: params.id,
+                                        token: hash,
+                                        createdAt: Date.now()
+                                    }
+                                }
+                            }
+                        }
+
+                        await this.protocolService.sendMessage(addTokenPayload)
+                    }
+
+                    subscriber.next({
+                        success: "The user password was updated",
+                        data: null
+                    })
+                } else {
+                    subscriber.next({
+                        error: "The user was not updated",
+                        data: null
+                    });
+                }
+            }, err => {
+                subscriber.error(err);
+            }, () => {
+                subscriber.complete();
+            });
+        })
     }
 
     public perform(data: any, config?: ModuleInterface) {

@@ -88,7 +88,7 @@ class App extends Component {
                 ],
             },
         ],
-        excludeHeader: ["pages/preview", "view-auth", "recover-password", "logout", "products/preview"],
+        excludeHeader: ["pages/preview", "view-auth", "recover-password", "password-reset", "logout", "products/preview"],
         socket: {},
         defaultPalette: {}
     };
@@ -114,7 +114,7 @@ class App extends Component {
             });
 
             this.unlisten = this.props.history.listen((location) => {
-                if (!this.state.services.ws.isConnected && !['/view-auth', '/logout', '/recover-password'].includes(location.pathname)) {
+                if (!this.state.services.ws.isConnected && !['/view-auth', '/logout', '/recover-password', "/password-reset"].includes(location.pathname)) {
                     console.log('app will redirect to login')
                     this.props.history.push("/view-auth")
                 }
@@ -411,6 +411,14 @@ class App extends Component {
                         />
                         <Route
                             path="/recover-password"
+                            render={(props) => {
+                                return (
+                                    <AuthController {...props} services={this.state.services}/>
+                                );
+                            }}
+                        />
+                        <Route
+                            path="/password-reset"
                             render={(props) => {
                                 return (
                                     <AuthController {...props} services={this.state.services}/>

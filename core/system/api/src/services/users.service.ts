@@ -81,6 +81,7 @@ export class UsersService {
 
                     const res = await this.protocolService.sendMessage(request).toPromise();
 
+
                     subscriber.next({
                         success: "The user was added",
                         data: res

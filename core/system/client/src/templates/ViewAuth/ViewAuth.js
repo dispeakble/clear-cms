@@ -14,7 +14,7 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 import {Helmet} from "react-helmet";
 
@@ -87,6 +87,12 @@ class ViewAuth extends Component {
                 loginButton: "Recover Password",
                 loginTitle: "Recover your admin password"
             });
+        } else if(url.startsWith('/password-reset')){
+            this.setState({
+                loginText: "Enter new password",
+                loginButton: "Change Password",
+                loginTitle: "Recover your admin password"
+            })
         }
     }
 
@@ -119,9 +125,15 @@ class ViewAuth extends Component {
                 authButtonDisabled: this.state.emailValid && this.state.passwordValid ? {} : {disabled: true}
             });
         } else {
-            this.setState({
-                authButtonDisabled: this.state.emailValid ? {} : {disabled: true}
-            });
+            if(this.props.location.pathname === "/recover-password"){
+                this.setState({
+                    authButtonDisabled: this.state.emailValid ? {} : {disabled: true}
+                });
+            } else if(this.props.location.pathname === "/password-reset") {
+                this.setState({
+                    authButtonDisabled: this.state.passwordValid ? {} : {disabled: true}
+                });
+            }
         }
     };
 
@@ -153,16 +165,33 @@ class ViewAuth extends Component {
             }
 
         } else if (this.props.location.pathname === "/recover-password") {
-            const response = this.props.control.recover({
+            const response = await this.props.control.recover({
                 email: this.state.email
             });
 
-            if (response && response.email === this.state.email) {
+            console.log('response' , response)
+
+            if (!response.error) {
                 history.push("/view-auth/recovered");
                 this.changeTexts();
             } else {
                 credentialsPassed = false;
                 errorMessage = "Email not found. Please check the typed email and try again.";
+            }
+        } else if (this.props.location.pathname === "/reset-password") {
+            const {token, id} = useLocation()
+            const response = await this.props.control.reset({
+                password: this.state.password,
+                token: token,
+                id: id
+            })
+
+            if(response.success){
+                //history.push("/view-auth")
+                this.changeTexts()
+            } else {
+                credentialsPassed = false;
+                errorMessage = "Link has been expired, please try again with a new link.";
             }
         }
 
@@ -212,27 +241,51 @@ class ViewAuth extends Component {
                                         </CardHeader>
                                         <p className={classes.divider}>{this.state.loginText}</p>
                                         <CardBody>
-                                            <div className={classes.inputContainer}>
-                                                <CustomInput
-                                                    name="email"
-                                                    labelText="Email"
-                                                    id="email"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: (event) => this.handleInputChange(event),
-                                                    }}
-                                                    inputProps={{
-                                                        type: "email",
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Icon className={classes.inputIconsColor}>
-                                                                    account_circle
-                                                                </Icon>
-                                                            </InputAdornment>
-                                                        ),
-                                                    }}
-                                                />
-                                            </div>
+                                            {
+                                                this.props.location.pathname !== "/password-reset" ?
+                                                    (<div className={classes.inputContainer}>
+                                                        <CustomInput
+                                                            name="email"
+                                                            labelText="Email"
+                                                            id="email"
+                                                            formControlProps={{
+                                                                fullWidth: true,
+                                                                onChange: (event) => this.handleInputChange(event),
+                                                            }}
+                                                            inputProps={{
+                                                                type: "email",
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <Icon className={classes.inputIconsColor}>
+                                                                            account_circle
+                                                                        </Icon>
+                                                                    </InputAdornment>
+                                                                ),
+                                                            }}
+                                                        />
+                                                    </div>) :
+                                                    (
+                                                        <CustomInput
+                                                            labelText="Password"
+                                                            id="password"
+                                                            formControlProps={{
+                                                                fullWidth: true,
+                                                                onChange: (event) => this.handleInputChange(event),
+                                                            }}
+                                                            inputProps={{
+                                                                type: "password",
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <Icon className={classes.inputIconsColor}>
+                                                                            lock_outline
+                                                                        </Icon>
+                                                                    </InputAdornment>
+                                                                ),
+                                                                autoComplete: "off",
+                                                            }}
+                                                        />
+                                                    )
+                                            }
                                             <div className={classes.inputContainer}>
                                                 {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (
                                                     <React.Fragment>

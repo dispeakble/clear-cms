@@ -12,7 +12,8 @@ class AuthController extends Component {
     control = {
         login: (params) => this.login(params),
         logout: (params) => this.logout(params),
-        recover: (params) => this.recover(params)
+        recover: (params) => this.recover(params),
+        reset: (params) => this.reset(params)
     };
 
     async componentDidMount() {
@@ -67,7 +68,36 @@ class AuthController extends Component {
     }
 
     recover(params) {
-        console.log('will call recover api', params);
+        return new Promise((resolve) => {
+            this.sendPost({
+                module: 'system',
+                api: 'auth',
+                act: 'doPasswordReset',
+                payload: params
+            }).then(async (response) => {
+                console.log("entered 2", response)
+                if (response.success) {
+                    return resolve(response);
+                }
+                resolve(false);
+            });
+        });
+    }
+
+    reset(params) {
+       return new Promise((resolve) => {
+           this.sendPost({
+               module: 'system',
+               api: 'auth',
+               act :'doResetPassword',
+               payload: params
+           }).then(async (response) => {
+               if(response && response.success) {
+                   return resolve(response)
+               }
+               resolve(false)
+           })
+       })
     }
 
     onMessage(params) {
