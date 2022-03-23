@@ -15,7 +15,7 @@ export async function sendEmail(email, subject: string, payload, template: strin
             service: "gmail",
             auth: {
                 user: "zrouqui.ahmed.az@gmail.com",
-                pass: "YouuwWillNot97*-", // naturally, replace both with your real credentials or an application-specific password
+                pass: "pass", // naturally, replace both with your real credentials or an application-specific password
             },
         });
 
