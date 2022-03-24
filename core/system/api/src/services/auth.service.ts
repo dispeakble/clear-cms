@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 import {randomBytes} from "crypto";
 import * as bcrypt from 'bcrypt';
 import * as utils from "../utils/sendEmail"
+import {sendEmail} from "../utils/sendEmail";
 
 @Injectable()
 export class AuthService {
@@ -185,7 +186,8 @@ export class AuthService {
                             }
                         }
 
-                        await this.protocolService.sendMessage(remPayload);
+                        const resDel = await this.protocolService.sendMessage(remPayload).toPromise();
+                        console.log(resDel)
                     }
 
                     const tempSalt = 10;
@@ -219,6 +221,8 @@ export class AuthService {
 
                     console.log(link)
 
+                    await sendEmail(reset_response.email, "Password reset!", {name: reset_response.fname, link: link })
+
                     observer.next({
                         success: "link sent",
                         data: null
@@ -243,8 +247,9 @@ export class AuthService {
         });
     }
 
-    public doChangePassword(params: any){
-        return new Observable(subscriber => {
+    public async doChangePassword(params: any){
+        return new Observable((subscriber) => {
+            const body = params.body.payload;
             //check if the token exists as long as the user
             const request: payloadInterface = {
                 channel: 'db',
@@ -256,8 +261,7 @@ export class AuthService {
                     data: {
                         what: 'token',
                         where: {
-                            userId: params.id,
-                            token: params.token
+                            userId: body.id,
                         },
                         limit: [0, 1]
                     }
@@ -265,9 +269,9 @@ export class AuthService {
             };
 
             this.protocolService.sendMessage(request).subscribe(async (data) => {
-                if(data && data && data ){
-                    // if token exists, update user password
-                    const updateRequest: payloadInterface = {
+                const isValid = await bcrypt.compare(body.token, data.token);
+                if(data && isValid ){
+                    const updateAdmin: payloadInterface = {
                         channel: 'db',
                         api: 'sql',
                         act: 'set',
@@ -275,18 +279,18 @@ export class AuthService {
                             db: 'main',
                             channel: 'system',
                             data: {
-                                what: 'user',
-                                data: {
-                                    password: String(params.password)
+                                what: 'auth',
+                                data:{
+                                    'password': String(body.password),
                                 },
                                 where: {
-                                    id: params.id
+                                    'id': Number(body.id)
                                 }
                             }
                         }
                     };
 
-                    const res = await this.protocolService.sendMessage(updateRequest).toPromise()
+                    const res = await this.protocolService.sendMessage(updateAdmin).toPromise();
 
                     if(res){
                         const remPayload: payloadInterface = {
@@ -299,14 +303,13 @@ export class AuthService {
                                 data: {
                                     what: 'token',
                                     where: {
-                                        userId: params.id,
+                                        userId: body.id,
                                     }
                                 }
                             }
                         }
 
-                        await this.protocolService.sendMessage(remPayload);
-
+                        const resDel = await this.protocolService.sendMessage(remPayload).toPromise();
                         //create new token for the user
                         const tempSalt = 10;
 
@@ -323,7 +326,7 @@ export class AuthService {
                                 data: {
                                     what: 'token',
                                     data:{
-                                        userId: params.id,
+                                        userId: body.id,
                                         token: hash,
                                         createdAt: Date.now()
                                     }
@@ -331,7 +334,7 @@ export class AuthService {
                             }
                         }
 
-                        await this.protocolService.sendMessage(addTokenPayload)
+                        const addTokenRes = await this.protocolService.sendMessage(addTokenPayload).toPromise();
                     }
 
                     subscriber.next({
@@ -339,11 +342,13 @@ export class AuthService {
                         data: null
                     })
                 } else {
+                    console.log("not found")
                     subscriber.next({
                         error: "The user was not updated",
                         data: null
                     });
                 }
+                subscriber.complete()
             }, err => {
                 subscriber.error(err);
             }, () => {

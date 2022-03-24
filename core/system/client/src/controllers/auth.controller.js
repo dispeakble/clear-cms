@@ -75,7 +75,6 @@ class AuthController extends Component {
                 act: 'doPasswordReset',
                 payload: params
             }).then(async (response) => {
-                console.log("entered 2", response)
                 if (response.success) {
                     return resolve(response);
                 }
@@ -89,7 +88,7 @@ class AuthController extends Component {
            this.sendPost({
                module: 'system',
                api: 'auth',
-               act :'doResetPassword',
+               act :'doChangePassword',
                payload: params
            }).then(async (response) => {
                if(response && response.success) {

@@ -103,6 +103,7 @@ class ViewAuth extends Component {
                 this.setState({emailValid: emailValid, email: event.target.value}, this.applyAuthButtonState);
                 break;
             case "password":
+                console.log("modifiying me", this.state.password)
                 this.setState(
                     {
                         passwordValid: event.target.value.length >= 3 && event.target.value.length <= 30,
@@ -178,16 +179,23 @@ class ViewAuth extends Component {
                 credentialsPassed = false;
                 errorMessage = "Email not found. Please check the typed email and try again.";
             }
-        } else if (this.props.location.pathname === "/reset-password") {
-            const {token, id} = useLocation()
+        } else if (this.props.location.pathname === "/password-reset") {
+
+            const payload = this.props.location.search
+            const token = new URLSearchParams(payload).get("token")
+            const id = new URLSearchParams(payload).get("id")
+
+            console.log("clicked me", token, id, this.state.password)
             const response = await this.props.control.reset({
                 password: this.state.password,
                 token: token,
                 id: id
             })
 
+            console.log(token, id, this.state.password)
+
             if(response.success){
-                //history.push("/view-auth")
+                history.push("/view-auth")
                 this.changeTexts()
             } else {
                 credentialsPassed = false;
@@ -265,6 +273,7 @@ class ViewAuth extends Component {
                                                         />
                                                     </div>) :
                                                     (
+                                                        <div className={classes.inputContainer}>
                                                         <CustomInput
                                                             labelText="Password"
                                                             id="password"
@@ -284,7 +293,7 @@ class ViewAuth extends Component {
                                                                 autoComplete: "off",
                                                             }}
                                                         />
-                                                    )
+                                                    </div>)
                                             }
                                             <div className={classes.inputContainer}>
                                                 {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (

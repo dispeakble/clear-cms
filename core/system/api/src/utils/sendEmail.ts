@@ -4,23 +4,22 @@
 const nodemailer = require("nodemailer");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const handlebars = require("handlebars");
-import fs from "fs";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require("path");
+import fs = require('fs');
+import path = require('path');
 
-export async function sendEmail(email, subject: string, payload, template: string) {
-    try {
+export async function sendEmail(email, subject: string, payload) {
+        console.log("---- 1");
         // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "zrouqui.ahmed.az@gmail.com",
-                pass: "pass", // naturally, replace both with your real credentials or an application-specific password
+                user: "cms.clear.mail@gmail.com",
+                pass: "Test123*-", // naturally, replace both with your real credentials or an application-specific password
             },
         });
-
-        const source = fs.readFileSync(path.join(__dirname, template), "utf8");
-        const compiledTemplate = handlebars.compile(source);
+        const _template = 'Hi, {{name}} reset your password by accessing </br> <b>{{link}}</b>'
+        const compiledTemplate = handlebars.compile(_template);
         const options = () => {
             return {
                 from: "zrouqui.ahmed.az@gmail.com",
@@ -32,6 +31,7 @@ export async function sendEmail(email, subject: string, payload, template: strin
 
         // Send email
         transporter.sendMail(options(), (error, info) => {
+            console.log("entered 2")
             if (error) {
                 console.log(error)
                 return error;
@@ -40,9 +40,6 @@ export async function sendEmail(email, subject: string, payload, template: strin
                 return true;
             }
         });
-    } catch (error) {
-        return error;
-    }
 }
 
 /*
