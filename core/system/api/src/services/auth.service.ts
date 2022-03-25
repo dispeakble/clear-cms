@@ -15,7 +15,8 @@ export class AuthService {
     private methods = ["doLogout", "doLogin", "doPasswordReset", "loadConfig", "doChangePassword", "ping"];
     private config = {
         admin_table: "",
-        admin_fields: []
+        admin_fields: [],
+        host:""
     };
 
     constructor(@Inject('ProtocolService') private protocolService) {
@@ -147,7 +148,6 @@ export class AuthService {
 
             observer.next({type: 'meta', content_type: 'application/json'});
             this.protocolService.sendMessage(payload).subscribe(async (reset_response) => {
-                console.log("here entered", reset_response)
                 if(reset_response && reset_response.email){
                     const tokenPayload: payloadInterface = {
                         channel: 'db',
@@ -167,9 +167,7 @@ export class AuthService {
                     }
 
                     const res = await this.protocolService.sendMessage(tokenPayload).toPromise();
-                    console.log('--------------------', res)
                     if(res) {
-                        console.log("entered res")
                         const remPayload: payloadInterface = {
                             channel: 'db',
                             api: 'sql',
@@ -187,7 +185,6 @@ export class AuthService {
                         }
 
                         const resDel = await this.protocolService.sendMessage(remPayload).toPromise();
-                        console.log(resDel)
                     }
 
                     const tempSalt = 10;
@@ -215,10 +212,7 @@ export class AuthService {
 
                     const addToken = await this.protocolService.sendMessage(addTokenPayload).toPromise();
 
-                    console.log('-------', addToken)
-
-                    const link = `http://localhost:3000/password-reset?token=${resetToken}&id=${reset_response.id}`;
-
+                    const link = `http://${this.config.host}/password-reset?token=${resetToken}&id=${reset_response.id}`;
                     console.log(link)
 
                     await sendEmail(reset_response.email, "Password reset!", {name: reset_response.fname, link: link })
@@ -267,7 +261,7 @@ export class AuthService {
                     }
                 }
             };
-
+            subscriber.next({type: 'meta', content_type: 'application/json'});
             this.protocolService.sendMessage(request).subscribe(async (data) => {
                 const isValid = await bcrypt.compare(body.token, data.token);
                 if(data && isValid ){
@@ -281,7 +275,7 @@ export class AuthService {
                             data: {
                                 what: 'auth',
                                 data:{
-                                    'password': String(body.password),
+                                    'password': md5.default(String(body.password)),
                                 },
                                 where: {
                                     'id': Number(body.id)
@@ -342,7 +336,6 @@ export class AuthService {
                         data: null
                     })
                 } else {
-                    console.log("not found")
                     subscriber.next({
                         error: "The user was not updated",
                         data: null

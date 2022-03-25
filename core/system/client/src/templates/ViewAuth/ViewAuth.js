@@ -28,6 +28,7 @@ class ViewAuth extends Component {
         buttonState: false,
         emailValid: false,
         passwordValid: false,
+        passwordConfirm: '',
         email: "",
         password: "",
         credentialsErrorMessage: "",
@@ -103,7 +104,6 @@ class ViewAuth extends Component {
                 this.setState({emailValid: emailValid, email: event.target.value}, this.applyAuthButtonState);
                 break;
             case "password":
-                console.log("modifiying me", this.state.password)
                 this.setState(
                     {
                         passwordValid: event.target.value.length >= 3 && event.target.value.length <= 30,
@@ -113,6 +113,13 @@ class ViewAuth extends Component {
                 );
 
                 break;
+            case "passwordConfirm":
+                this.setState(
+                    {
+                        passwordConfirm: event.target.value
+                    },
+                    this.applyAuthButtonState
+                ); break;
             default:
                 break;
         }
@@ -132,7 +139,7 @@ class ViewAuth extends Component {
                 });
             } else if(this.props.location.pathname === "/password-reset") {
                 this.setState({
-                    authButtonDisabled: this.state.passwordValid ? {} : {disabled: true}
+                    authButtonDisabled: this.state.passwordValid && (this.state.password === this.state.passwordConfirm) ? {} : {disabled: true}
                 });
             }
         }
@@ -170,8 +177,6 @@ class ViewAuth extends Component {
                 email: this.state.email
             });
 
-            console.log('response' , response)
-
             if (!response.error) {
                 history.push("/view-auth/recovered");
                 this.changeTexts();
@@ -185,14 +190,11 @@ class ViewAuth extends Component {
             const token = new URLSearchParams(payload).get("token")
             const id = new URLSearchParams(payload).get("id")
 
-            console.log("clicked me", token, id, this.state.password)
             const response = await this.props.control.reset({
                 password: this.state.password,
                 token: token,
                 id: id
             })
-
-            console.log(token, id, this.state.password)
 
             if(response.success){
                 history.push("/view-auth")
@@ -273,27 +275,50 @@ class ViewAuth extends Component {
                                                         />
                                                     </div>) :
                                                     (
-                                                        <div className={classes.inputContainer}>
-                                                        <CustomInput
-                                                            labelText="Password"
-                                                            id="password"
-                                                            formControlProps={{
-                                                                fullWidth: true,
-                                                                onChange: (event) => this.handleInputChange(event),
-                                                            }}
-                                                            inputProps={{
-                                                                type: "password",
-                                                                endAdornment: (
-                                                                    <InputAdornment position="end">
-                                                                        <Icon className={classes.inputIconsColor}>
-                                                                            lock_outline
-                                                                        </Icon>
-                                                                    </InputAdornment>
-                                                                ),
-                                                                autoComplete: "off",
-                                                            }}
-                                                        />
-                                                    </div>)
+                                                        <>
+                                                            <div className={classes.inputContainer}>
+                                                                <CustomInput
+                                                                    labelText="Password"
+                                                                    id="password"
+                                                                    formControlProps={{
+                                                                        fullWidth: true,
+                                                                        onChange: (event) => this.handleInputChange(event),
+                                                                    }}
+                                                                    inputProps={{
+                                                                        type: "password",
+                                                                        endAdornment: (
+                                                                            <InputAdornment position="end">
+                                                                                <Icon className={classes.inputIconsColor}>
+                                                                                    lock_outline
+                                                                                </Icon>
+                                                                            </InputAdornment>
+                                                                        ),
+                                                                        autoComplete: "off",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <div className={classes.inputContainer}>
+                                                                <CustomInput
+                                                                    labelText="Confirm password"
+                                                                    id="passwordConfirm"
+                                                                    formControlProps={{
+                                                                        fullWidth: true,
+                                                                        onChange: (event) => this.handleInputChange(event),
+                                                                    }}
+                                                                    inputProps={{
+                                                                        type: "password",
+                                                                        endAdornment: (
+                                                                            <InputAdornment position="end">
+                                                                                <Icon className={classes.inputIconsColor}>
+                                                                                    lock_outline
+                                                                                </Icon>
+                                                                            </InputAdornment>
+                                                                        ),
+                                                                        autoComplete: "off",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </>)
                                             }
                                             <div className={classes.inputContainer}>
                                                 {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (
