@@ -1,37 +1,52 @@
 import React, {useEffect, useState} from 'react';
-import { NextPage } from 'next';
-import {Wrapper} from './styled'
-import bg from "./assets/background.jpg"
-import Cards from '../../components/agency/Cards'
-import ImageComponent from "../../components/agency/ImageComponent";
+import {NextPage} from 'next';
+import styled from 'styled-components'
+import {Colors} from "../../assets/design-set";
 
-import { withRouter } from 'next/router';
+import {withRouter} from 'next/router';
 import Header from '../../components/agency/Header'
 import Footer from '../../components/agency/Footer'
+import Hero from "../../components/agency/Hero";
+import UpcomingOffers from "../../components/agency/UpcomingOffers";
+import GallerySlider from "../../components/agency/GallerySlider";
+import AboutUs from '../../components/agency/AboutUs'
+import Slider from '../../components/agency/Slider'
+import DestinationCards from "../../components/agency/DestinationCards";
+
+
+
 const PageComponent: NextPage = (props) => {
     const [cards, setCards] = useState<[]>([])
     useEffect(() => {
-       const fetchHotels = async () => {
-           const response = await fetch('http://localhost:9898/api/agency/hotel');
-           const data = await response.json();
+        const fetchHotels = async () => {
+            const response = await fetch('http://localhost:9898/api/agency/hotel');
+            const data = await response.json();
             setCards(data.rows)
+
         }
         fetchHotels()
-    },[props])
+    }, [props])
 
     //TDO change here to add a new template. add header, menu, content and footer. whatever you want . dummy text
     //TODO very important. make reusable components
     return (
-        <>
-            <Header />
-        <Wrapper>
-            <ImageComponent img={bg} />
-            <Cards cards={cards} />
-        </Wrapper>
-            <Footer />
-            </>
+        <Agency>
+            <Header/>
+            <Hero/>
+            <UpcomingOffers/>
+            <GallerySlider/>
+            <AboutUs />
+            <DestinationCards />
+            <Slider />
+            <DestinationCards />
+            <Footer/>
+        </Agency>
     )
 };
+
+const Agency = styled.div`
+  background-color:${Colors.offWhite};
+`
 
 export async function getServerSideProps(context: any) {
     const data = await context.req.apiHub({
@@ -43,12 +58,11 @@ export async function getServerSideProps(context: any) {
 
 
     return {
-        props:{
+        props: {
             data: data
         }
     }
 }
 
 
-  
 export default withRouter(PageComponent);
