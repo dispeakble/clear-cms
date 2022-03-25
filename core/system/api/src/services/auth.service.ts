@@ -213,7 +213,6 @@ export class AuthService {
                     const addToken = await this.protocolService.sendMessage(addTokenPayload).toPromise();
 
                     const link = `http://${this.config.host}/password-reset?token=${resetToken}&id=${reset_response.id}`;
-                    console.log(link)
 
                     await sendEmail(reset_response.email, "Password reset!", {name: reset_response.fname, link: link })
 

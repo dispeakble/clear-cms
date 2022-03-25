@@ -9,9 +9,9 @@ const handlebars = require("handlebars");
 export async function sendEmail(email, subject: string, payload) {
         // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
-            service: "gmail",
+            service: "outlook",
             auth: {
-                user: "cms.clear.mail@gmail.com",
+                user: "cms.clear.reset@outlook.com",
                 pass: "Test123*-", // naturally, replace both with your real credentials or an application-specific password
             },
         });
@@ -19,7 +19,7 @@ export async function sendEmail(email, subject: string, payload) {
         const compiledTemplate = handlebars.compile(_template);
         const options = () => {
             return {
-                from: "cms.clear.mail@gmail.com",
+                from: "cms.clear.reset@outlook.com",
                 to: email,
                 subject: subject,
                 html: compiledTemplate(payload),
