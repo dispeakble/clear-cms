@@ -27,8 +27,7 @@ const PageComponent: NextPage = (props) => {
         fetchHotels()
     }, [props])
 
-    //TDO change here to add a new template. add header, menu, content and footer. whatever you want . dummy text
-    //TODO very important. make reusable components
+
     return (
         <Agency>
             <Header/>
