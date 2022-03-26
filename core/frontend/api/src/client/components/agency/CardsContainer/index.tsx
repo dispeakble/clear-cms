@@ -15,14 +15,16 @@ import {
     CardTextItem,
     CardPrice,
     CardTextContent,
-    CardTitle
+    CardTitle,
+    Button
 } from './styled'
 
 const CardsContainer = (props) => {
     const [card , setCard]=useState([])
+    const [activeAmount ,setActiceAmount]=useState(1)
     const {cards} = props;
 
-    const [] = useState(1);
+    const [] = useState(0);
 
     useEffect(() => {
         const fetchHotels = async () => {
@@ -33,9 +35,38 @@ const CardsContainer = (props) => {
         fetchHotels()
     }, [])
 
+   const  renderElement =()=>{
+        if(activeAmount == 1){
+            return(
+                <CardTextItem >
+                    <CardTitle>Gran Canaria</CardTitle>
+                    <CardPrice>224$</CardPrice>
+                </CardTextItem>
+            )
+        }else if(activeAmount == 2){
+            return(
+                <CardTextItem >
+                    <CardTitle>Palma De Mallorca</CardTitle>
+                    <CardPrice>244$</CardPrice>
+                </CardTextItem>
+            )
+        }else{
+            return(
+                <CardTextItem >
+                    <CardTitle>Tenerife</CardTitle>
+                    <CardPrice>300$</CardPrice>
+                </CardTextItem>
+            )
+        }
+
+    }
+const handleChangeState =(index:number)=>{
+    setActiceAmount(index)
+}
+
     return (
         <WrapperContainer data-testid='cards-wrapper'>
-           <CardsTabs />
+           <CardsTabs  handleActiveHotel={handleChangeState}/>
             <Cards>
                 {
                     card.map((hotel:any) => <Card>
@@ -46,21 +77,10 @@ const CardsContainer = (props) => {
                             <CardHead>
                                 <span>relax</span>
                                 <p>{hotel.Name}</p>
-                                <button>Book Now</button>
+                              <Button  >Book Now</Button>
                             </CardHead>
                             <CardTextContent>
-                                <CardTextItem >
-                                    <CardTitle>Gran Canaria</CardTitle>
-                                    <CardPrice>224$</CardPrice>
-                                </CardTextItem>
-                                <CardTextItem >
-                                    <CardTitle>Palma De Mallorca</CardTitle>
-                                    <CardPrice>244$</CardPrice>
-                                </CardTextItem> <CardTextItem >
-                                <CardTitle>Tenerife</CardTitle>
-                                <CardPrice>{hotel.Price}$</CardPrice>
-                            </CardTextItem>
-
+                                { renderElement() }
                             </CardTextContent>
                         </CardContent>
                     </Card>)

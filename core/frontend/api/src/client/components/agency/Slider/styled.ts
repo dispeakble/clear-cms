@@ -37,6 +37,7 @@ export const SliderBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor:pointer;
 
 `
 
@@ -46,6 +47,9 @@ export const SliderBoxHeading = styled.h3`
   line-height: 1.25em;
   text-align: center;
   margin-bottom: 16px;
+`
+export const SliderButton = styled.a`
+
 `
 export const SliderBoxActive = styled(SliderBox)`
   background-color: rgba(220,107,3,0.7);
@@ -100,8 +104,10 @@ export const SliderButtonContainer = styled.div`
 
 export const SliderBtnLeft = styled.div`
   text-shadow: ${Shadows.shadowMD};
+  cursor:pointer;
 `
 export const SliderBtnRight = styled(SliderBtnLeft)`
+  cursor:pointer;
 
 `
 

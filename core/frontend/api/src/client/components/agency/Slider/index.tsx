@@ -9,7 +9,30 @@ import {ChevronLeft, ChevronRight,Check} from "@material-ui/icons";
 
 
 
-import {SliderWrapper,SliderContainer,GalleryImage,SliderContentWrapper,ListItemContainer,ListItemDescription,ListItemHeading,ListItemIcon,ListContainer,GalleryMainImage,SliderBtnRight,SliderButtonContainer,SliderBtnLeft ,SliderLeft ,SliderBoxContainer ,SliderBoxHeading ,SliderBox ,SliderRight ,ImageSliderWrapper ,ImageSliderHeading ,GalleryContainer} from './styled'
+import {
+    SliderWrapper,
+    SliderContainer,
+    GalleryImage,
+    SliderContentWrapper,
+    ListItemContainer,
+    ListItemDescription,
+    ListItemHeading,
+    ListItemIcon,
+    ListContainer,
+    GalleryMainImage,
+    SliderBtnRight,
+    SliderButtonContainer,
+    SliderBtnLeft,
+    SliderLeft,
+    SliderBoxContainer,
+    SliderBoxHeading,
+    SliderBox,
+    SliderRight,
+    ImageSliderWrapper,
+    ImageSliderHeading,
+    GalleryContainer,
+    SliderButton
+} from './styled'
 
 const Slider = ({sliderData}) => {
     const [checkNumber , setCheckNumber]=useState([1,2,3])
@@ -40,8 +63,8 @@ const Slider = ({sliderData}) => {
                 <SliderLeft >
                     <SliderBoxContainer>
                         {
-                            sliderData.map((slide) =>  <SliderBox style={{backgroundColor: slide.val === checkNumber[1] ? 'rgba(220,107,3,0.7)' : 'rgba(255, 255, 255, 0.6)',color: slide.val === checkNumber[1] ? `${Colors.white}` : `${Colors.black}`}} >
-                                <SliderBoxHeading>{sliderData[0].heading}</SliderBoxHeading>
+                            sliderData.map((slide:any) =>  <SliderBox style={{backgroundColor: slide.val === checkNumber[1] ? 'rgba(220,107,3,0.7)' : 'rgba(255, 255, 255, 0.6)',color: slide.val === checkNumber[1] ? `${Colors.white}` : `${Colors.black}`}} >
+                              <SliderBoxHeading> {sliderData[0].heading}</SliderBoxHeading>
                             </SliderBox>)
                         }
 

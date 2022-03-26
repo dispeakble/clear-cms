@@ -30,6 +30,9 @@ export const TabButton = styled.div`
   padding: 8px 16px;
   border-radius: 8px;
 `
+export const Button = styled.button`
+  cursor:pointer;
+`
 
 export const TabButtonActive = styled(TabButton)`
   background-color: ${Colors.primaryColor};
@@ -62,7 +65,7 @@ export const CardImg = styled.div`
 export const CardHead = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
 
   span {
     background-color: #FCE8DD;

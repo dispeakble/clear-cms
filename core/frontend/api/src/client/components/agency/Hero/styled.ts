@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {Colors, Widths} from "../../../assets/design-set";
 import HeroBG from '../../../pages/agency/assets/hero-bg.jpg'
 
-
+import {Input, AutoComplete} from 'antd';
 
 export const HeroWrapper = styled.div`
   background-image: url(${HeroBG.src});
@@ -73,6 +73,7 @@ export  const IconWrapper = styled.div`
   top: 50%;
   right: -5px;
   transform: translate(-18px,-50%);
+  cursor:pointer;
 `
 
 export const SearchSettingsContainer = styled.div`
@@ -147,10 +148,34 @@ export const ParaNumber =styled.p`
   padding-left: 20px;
   align-items: center;
 `
+export const StarIcon =styled(SearchImage)`
+  width: auto;
+  height: 15px;
+`
 
 export const RightContainer = styled(LeftContainer)`
   flex: 3;
   div {
     width: 100px;
   }
+`
+export const Seacondliest =styled(AutoComplete)`
+  .ant-select-dropdown-menu-item-group-title {
+    color: #666;
+    font-weight: bold;
+  }
+  .ant-select-dropdown-menu-item-group {
+     border-bottom: 1px solid #f6f6f6;
+   }
+  .ant-select-dropdown-menu-item {
+    padding-left: 16px;
+  }
+  .ant-select-dropdown-menu-item.show-all {
+    text-align: center;
+    cursor: default;
+  }
+  .ant-select-dropdown-menu {
+    max-height: 300px;
+  }
+  
 `

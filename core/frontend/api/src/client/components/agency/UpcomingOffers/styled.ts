@@ -3,7 +3,7 @@ import {Colors, Widths} from "../../../assets/design-set";
 
 export const WrapperContainer = styled.div`
   width: 90%;
-  margin: 0 auto;
+  margin: 30px auto;
   max-width: ${Widths.containerWidth};
   height: 100%;
   padding: 0px 0;

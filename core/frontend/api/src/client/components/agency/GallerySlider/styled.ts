@@ -42,7 +42,9 @@ export const SliderButtonContainer = styled.div`
 
 export const SliderBtnLeft = styled.div`
   text-shadow: ${Shadows.shadowMD};
+  cursor:pointer;
 `
 export const SliderBtnRight = styled(SliderBtnLeft)`
+  cursor:pointer;
 
 `

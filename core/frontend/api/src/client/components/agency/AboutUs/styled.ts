@@ -4,6 +4,12 @@ import {Colors, Widths} from "../../../assets/design-set";
 export const AboutUsMainWrapper = styled.section`
   margin: 100px 120px 120px 120px;
 `
+export const ContactUsButton = styled.a`
+  color: ${Colors.white};
+  :hover{
+    color: ${Colors.white};
+  }
+`
 
 export const AboutUsWrapper = styled.section`
   display: flex;
@@ -95,4 +101,5 @@ export const PrimaryButton = styled.button`
   padding: 16px 32px;
   font-size: 20px;
   border-radius: 10px;
+  cursor:pointer;
 `

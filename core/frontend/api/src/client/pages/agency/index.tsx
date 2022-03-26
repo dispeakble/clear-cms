@@ -11,8 +11,8 @@ import UpcomingOffers from "../../components/agency/UpcomingOffers";
 import GallerySlider from "../../components/agency/GallerySlider";
 import AboutUs from '../../components/agency/AboutUs'
 import Slider from '../../components/agency/Slider'
-import DestinationCards from "../../components/agency/DestinationCards";
-
+import RecommendedDestinations from "../../components/agency/DestinationsCards/RecommendedDestination";
+import Destination from '../../components/agency/DestinationsCards/Destination'
 
 
 const PageComponent: NextPage = (props) => {
@@ -34,17 +34,19 @@ const PageComponent: NextPage = (props) => {
             <Hero/>
             <UpcomingOffers/>
             <GallerySlider/>
-            <AboutUs />
-            <DestinationCards />
-            <Slider />
-            <DestinationCards />
+            <AboutUs/>
+
+            <RecommendedDestinations/>
+            <Slider/>
+            <Destination/>
             <Footer/>
+
         </Agency>
     )
 };
 
 const Agency = styled.div`
-  background-color:${Colors.offWhite};
+  background-color: ${Colors.offWhite};
 `
 
 export async function getServerSideProps(context: any) {

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import {Item ,LinkItem} from './styled'
 
 type Props = {
     linkText: string
@@ -15,14 +15,3 @@ export default function(props: Props) {
     )
 }
 
-const Item = styled.li`
-    padding: 4px 0px;
-`
-
-const LinkItem = styled.a`
-  color:#fff;
-  :hover {
-    color: #f8f8f8;
-    border-bottom: 1px solid #f8f8f8;
-  }
-`
