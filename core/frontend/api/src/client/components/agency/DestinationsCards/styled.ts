@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {Colors, Widths} from "../../../assets/design-set";
-import OceanImg from '../../../pages/agency/assets/Cards/ocean.jpg';
 
 
 export const CardsWrapper = styled.div`
@@ -20,7 +19,6 @@ export const Cards = styled.div`
 
 `
 export const Card = styled.div`
-  //height: 555px;
   width: 390px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: ${Colors.white};
@@ -94,7 +92,7 @@ export const CardImageWrapper = styled.div`
   
 `
 
-export const ZoomImage = styled.img`
+export const ZoomImage = styled.div`
   position:absolute;
   right: 5px;
   bottom:5px;

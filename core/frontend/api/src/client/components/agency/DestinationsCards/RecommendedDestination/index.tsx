@@ -29,9 +29,9 @@ const DestinationCards = () => {
                 <DestinationCardTabs/>
                 <Cards>
                     {
-                        cardatils.map((value: any) => {
+                        cardatils.map((value: any,index:number) => {
                             return (
-                                 <CardView value={value} />
+                                 <CardView key={`${index}`} value={value} />
                             )
                         })
                     }

@@ -12,7 +12,6 @@ import GallerySlider from "../../components/agency/GallerySlider";
 import AboutUs from '../../components/agency/AboutUs'
 import Slider from '../../components/agency/Slider'
 import RecommendedDestinations from "../../components/agency/DestinationsCards/RecommendedDestination";
-import Destination from '../../components/agency/DestinationsCards/Destination'
 
 
 const PageComponent: NextPage = (props) => {
@@ -38,7 +37,6 @@ const PageComponent: NextPage = (props) => {
 
             <RecommendedDestinations/>
             <Slider/>
-            <Destination/>
             <Footer/>
 
         </Agency>

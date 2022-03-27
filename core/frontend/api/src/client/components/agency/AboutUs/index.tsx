@@ -41,8 +41,7 @@ const AboutUs = () => {
                                 best destination in world with us.
                             </AboutUsDescription>
 
-                                <PrimaryButton className="btn"> contact us</PrimaryButton>
-
+                                <PrimaryButton href={'contact-us'} className="btn"> contact us</PrimaryButton>
                     </AboutUsContentWrapper>
                 </AboutUsWrapper>
             </AboutUsContainer>

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {Colors, Widths} from "../../../assets/design-set";
 
 export const AboutUsMainWrapper = styled.section`
-  margin: 100px 120px 120px 120px;
+  margin:120px 90px 30px 90px;
 `
 export const ContactUsButton = styled.a`
   color: ${Colors.white};
@@ -92,7 +92,8 @@ export const AboutUsDescription = styled.p`
   line-height: 2em;
   color: rgba(87, 87, 87, 0.884);
 `
-export const PrimaryButton = styled.button`
+export const PrimaryButton = styled.a`
+  display:inline-block;
   margin-top: 30px;
   outline: none;
   border: none;
@@ -102,4 +103,7 @@ export const PrimaryButton = styled.button`
   font-size: 20px;
   border-radius: 10px;
   cursor:pointer;
+  :hover {
+    color:inherit;
+  }
 `
