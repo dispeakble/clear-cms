@@ -36,6 +36,7 @@ class ViewAuth extends Component {
         removeResetMessage: "",
         resetSuccessMessage: null,
         _passwordStrength: -1,
+        _confirmPasswordStrength: -1,
         loginText: "",
         loginButton: "",
         loginTitle: "",
@@ -136,8 +137,9 @@ class ViewAuth extends Component {
     handleInputChange = (event) => {
         switch (event.target.id) {
             case "email":
-                const emailValid = event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-                this.setState({emailValid: emailValid, email: event.target.value}, this.applyAuthButtonState);
+                this.setState({
+                    emailValid: event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
+                    email: event.target.value}, this.applyAuthButtonState);
                 break;
             case "password":
                 this.setState(
@@ -153,10 +155,13 @@ class ViewAuth extends Component {
 
                 this.setState(
                     {
+                        confirmPasswordValid: event.target.value.length >= 3 && event.target.value.length <= 30,
                         passwordConfirm: event.target.value
                     },
                     this.applyAuthButtonState
-                ); break;
+                );
+                this.checkPasswordStrength("_confirmPasswordStrength", event.target.value)
+                break;
             default:
                 break;
         }
@@ -176,7 +181,12 @@ class ViewAuth extends Component {
                 });
             } else if(this.props.location.pathname === "/password-reset") {
                 this.setState({
-                    authButtonDisabled: this.state.passwordValid && this.state._passwordStrength > 0 && (this.state.password === this.state.passwordConfirm) ? {} : {disabled: true}
+                    authButtonDisabled:
+                        this.state.passwordValid
+                        && this.state._passwordStrength > 0
+                        && (this.state.password === this.state.passwordConfirm)
+                            ? {}
+                            : {disabled: true}
                 });
             }
         }
@@ -270,8 +280,13 @@ class ViewAuth extends Component {
         let strengthTitle = ["weak", "medium", "strong", "very-strong"];
 
         let passwordStrengthTitle = "";
+        let confirmPasswordStrengthTitle = "";
 
         let passwordStrength = strengthColors.map(() => {
+            return "transparent";
+        });
+
+        let confirmPasswordStrength = strengthColors.map(() => {
             return "transparent";
         });
 
@@ -280,6 +295,14 @@ class ViewAuth extends Component {
             for (let i = 0; i <= this.state._passwordStrength; i++) {
                 passwordStrength[i] = strengthColors[i];
                 passwordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
+            }
+        }
+
+        if (this.state._confirmPasswordStrength > -1) {
+            confirmPasswordStrengthTitle = "";
+            for (let i = 0; i <= this.state._confirmPasswordStrength; i++) {
+                confirmPasswordStrength[i] = strengthColors[i];
+                confirmPasswordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
             }
         }
 
@@ -365,9 +388,13 @@ class ViewAuth extends Component {
                                                                         type: "password",
                                                                         endAdornment: (
                                                                             <InputAdornment position="end">
-                                                                                <Icon className={classes.inputIconsColor}>
-                                                                                    lock_outline
-                                                                                </Icon>
+                                                                                <Tooltip placement={"top"} arrow={true} open={true} title={confirmPasswordStrengthTitle}>
+                                                                                    <div className={classes.passwordStrength} style={{
+                                                                                        background: `conic-gradient(${confirmPasswordStrength.join(', ')} )`
+                                                                                    }}/>
+                                                                                </Tooltip>
+
+                                                                                <Icon className={classes.inputIconsColor}> lock_outline </Icon>
                                                                             </InputAdornment>
                                                                         ),
                                                                         autoComplete: "off",

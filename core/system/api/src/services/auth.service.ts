@@ -229,7 +229,7 @@ export class AuthService {
                         const settings = JSON.parse(settingsResponse.data)
                         const link = `http://${settings.websiteDomain}/password-reset?token=${resetToken}`;
 
-                        //await sendEmail(reset_response.email, "Password reset!", {name: reset_response.fname, link: link })
+                        await sendEmail(adminResponse.email, "Password reset!", {name: adminResponse.fname, link: link })
 
                         observer.next({
                             type:'String',

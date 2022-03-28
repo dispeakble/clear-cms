@@ -9,17 +9,18 @@ const handlebars = require("handlebars");
 export async function sendEmail(email, subject: string, payload) {
         // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
-            service: "outlook",
+            host: "mail.dosidoweb.com",
+            secure: true,
             auth: {
-                user: "cms.clear.reset@outlook.com",
-                pass: "Test123*-",
+                user: "noreply@dosidoweb.com",
+                pass: "9PYG$Bh@Oh3w",
             },
         });
         const _template = 'Hi, {{name}} reset your password by accessing </br> <b>{{link}}</b>'
         const compiledTemplate = handlebars.compile(_template);
         const options = () => {
             return {
-                from: "cms.clear.reset@outlook.com",
+                from: "noreply@dosidoweb.com",
                 to: email,
                 subject: subject,
                 html: compiledTemplate(payload),
