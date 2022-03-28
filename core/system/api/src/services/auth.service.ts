@@ -5,8 +5,6 @@ import * as fs from "fs";
 import * as md5 from "md5";
 import {Observable} from "rxjs";
 import {randomBytes} from "crypto";
-import * as bcrypt from 'bcrypt';
-import * as utils from "../utils/sendEmail"
 import {sendEmail} from "../utils/sendEmail";
 
 @Injectable()
@@ -42,7 +40,7 @@ export class AuthService {
     public doLogout() {
         return new Observable((observer) => {
             observer.next({
-                type:'String',
+                type: 'String',
                 data: {logout: "ok"},
                 mime: 'application/json',
                 callback: {
@@ -53,7 +51,7 @@ export class AuthService {
                 }
             });
             observer.complete();
-        })
+        });
     }
 
     public doLogin(params: any) {
@@ -87,7 +85,7 @@ export class AuthService {
             this.protocolService.sendMessage(payload).subscribe((auth_response) => {
                 if (auth_response && auth_response && auth_response) {
                     observer.next({
-                        type:'String',
+                        type: 'String',
                         data: auth_response,
                         mime: 'application/json',
                         callback: {
@@ -99,7 +97,7 @@ export class AuthService {
                     });
                 } else {
                     observer.next({
-                        type:'String',
+                        type: 'String',
                         data: {error: "Credentials mismatch"},
                         mime: 'application/json'
                     });
@@ -107,7 +105,7 @@ export class AuthService {
                 observer.complete();
             }, err => {
                 observer.next({
-                    type:'String',
+                    type: 'String',
                     data: {error: "Internal server error"},
                     mime: 'application/json'
                 });
@@ -118,12 +116,12 @@ export class AuthService {
         });
     }
 
-    public generateRecoverEmail(params: any){
+    public generateRecoverEmail(params: any) {
         return new Observable(observer => {
             (async () => {
-                try{
+                try {
                     const request = params.body.payload;
-                    if(!request.hasOwnProperty('email')){
+                    if (!request.hasOwnProperty('email')) {
                         observer.complete();
                         return;
                     }
@@ -144,116 +142,100 @@ export class AuthService {
                                 limit: [0, 1]
                             }
                         }
-                    }
+                    };
 
                     const adminResponse = await this.protocolService.sendMessage(adminRequest).toPromise();
 
-                    if(adminResponse && adminResponse.email){
-                        const tokenPayload: payloadInterface = {
-                            channel: 'db',
-                            api: 'sql',
-                            act: 'get',
-                            payload: {
-                                db: 'main',
-                                channel: 'system',
-                                data: {
-                                    what: 'token',
-                                    where: {
-                                        userId: adminResponse.id,
-                                    },
-                                    limit: [0, 1]
-                                }
-                            }
-                        }
-
-                        const tokenResponse = await this.protocolService.sendMessage(tokenPayload).toPromise();
-                        if(tokenResponse) {
-                            const removeTokenPayload: payloadInterface = {
-                                channel: 'db',
-                                api: 'sql',
-                                act: 'rem',
-                                payload: {
-                                    db: 'main',
-                                    channel: 'system',
-                                    data: {
-                                        what: 'token',
-                                        where: {
-                                            userId: adminResponse.id,
-                                        }
-                                    }
-                                }
-                            }
-
-                            const removeTokenResponse = await this.protocolService.sendMessage(removeTokenPayload).toPromise();
-                        }
-
-                        const resetToken = randomBytes(32).toString("hex")
-
-                        const addTokenPayload: payloadInterface = {
-                            channel: 'db',
-                            api: 'sql',
-                            act: 'add',
-                            payload: {
-                                db: 'main',
-                                channel: 'system',
-                                data: {
-                                    what: 'token',
-                                    data:{
-                                        userId: adminResponse.id,
-                                        token: resetToken,
-                                        createdAt: Date.now()
-                                    }
-                                }
-                            }
-                        }
-
-                        const addTokenResponse = await this.protocolService.sendMessage(addTokenPayload).toPromise();
-
-                        const settingsRequest: payloadInterface = {
-                            channel: 'db',
-                            api: 'sql',
-                            act: 'get',
-                            payload: {
-                                db: 'main',
-                                channel: 'system',
-                                data: {
-                                    what: 'setting',
-                                    data:{
-                                        isDefault: 1,
-                                    }
-                                }
-                            }
-                        }
-
-                        const settingsResponse = await this.protocolService.sendMessage(settingsRequest).toPromise();
-                        const settings = JSON.parse(settingsResponse.data)
-                        const link = `http://${settings.websiteDomain}/password-reset?token=${resetToken}`;
-
-                        await sendEmail(adminResponse.email, "Password reset!", {name: adminResponse.fname, link: link })
-
-                        observer.next({
-                            type:'String',
-                            data: {success: "email sent."},
-                            mime: 'application/json',
-                        });
-                    } else {
-                        observer.next({
-                            type:'String',
-                            data: {error: "Internal server error"},
-                            mime: 'application/json'
-                        })
+                    if (!adminResponse.hasOwnProperty('email')) {
+                        observer.complete();
+                        return;
                     }
-                    observer.complete()
-                }catch(err){
+
+                    //remove previous tokens if any
+                    const removeTokenPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'rem',
+                        payload: {
+                            db: 'main',
+                            channel: 'system',
+                            data: {
+                                what: 'token',
+                                where: {
+                                    userId: adminResponse.id,
+                                }
+                            }
+                        }
+                    };
+
+                    const removeTokenResponse = await this.protocolService.sendMessage(removeTokenPayload).toPromise();
+
+                    const resetToken = randomBytes(32).toString("hex");
+
+                    const addTokenPayload: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'add',
+                        payload: {
+                            db: 'main',
+                            channel: 'system',
+                            data: {
+                                what: 'token',
+                                data: {
+                                    userId: adminResponse.id,
+                                    token: resetToken
+                                }
+                            }
+                        }
+                    };
+
+                    const addTokenResponse = await this.protocolService.sendMessage(addTokenPayload).toPromise();
+
+                    const settingsRequest: payloadInterface = {
+                        channel: 'db',
+                        api: 'sql',
+                        act: 'get',
+                        payload: {
+                            db: 'main',
+                            channel: 'system',
+                            data: {
+                                what: 'setting',
+                                data: {
+                                    isDefault: 1,
+                                }
+                            }
+                        }
+                    };
+
+                    const settingsResponse = await this.protocolService.sendMessage(settingsRequest).toPromise();
+                    const settings = JSON.parse(settingsResponse.data);
+                    const link = `https://${settings.websiteDomain}/password-reset?token=${resetToken}`;
+
+                    await sendEmail(
+                        adminResponse.email,
+                        `Password reset link for ${adminResponse.fullname}`,
+                        {
+                            name: adminResponse.fname,
+                            link: link
+                        }
+                    );
+
+                    observer.next({
+                        type: 'String',
+                        data: {success: "email sent."},
+                        mime: 'application/json',
+                    });
+
+                    observer.complete();
+                } catch (err) {
                     observer.error(err);
                     observer.complete();
                 }
-
-            })()
+            })();
         });
     }
 
-    public async doChangePassword(params: any){
+    public async doChangePassword(params: any) {
         return new Observable((subscriber) => {
             (async () => {
                 const body = params.body.payload;
@@ -276,7 +258,7 @@ export class AuthService {
 
                 const tokenResponse = await this.protocolService.sendMessage(tokenPayload).toPromise();
 
-                if(tokenResponse){
+                if (tokenResponse) {
                     const updateAdmin: payloadInterface = {
                         channel: 'db',
                         api: 'sql',
@@ -286,7 +268,7 @@ export class AuthService {
                             channel: 'system',
                             data: {
                                 what: 'auth',
-                                data:{
+                                data: {
                                     password: md5.default(String(body.password)),
                                 },
                                 where: {
@@ -298,7 +280,7 @@ export class AuthService {
 
                     const changePasswordResponse = await this.protocolService.sendMessage(updateAdmin).toPromise();
 
-                    if(changePasswordResponse) {
+                    if (changePasswordResponse) {
                         const remTokenPayload: payloadInterface = {
                             channel: 'db',
                             api: 'sql',
@@ -316,6 +298,14 @@ export class AuthService {
                         }
 
                         const remTokenResponse = await this.protocolService.sendMessage(remTokenPayload).toPromise();
+                    } else {
+                        subscriber.error({
+                            type: 'String',
+                            data: {error: "Internal server error"},
+                            mime: 'application/json'
+                        });
+                        subscriber.complete();
+                        return;
                     }
 
                     const getAdminPayload: payloadInterface = {
@@ -338,7 +328,7 @@ export class AuthService {
 
                     const loginResponse = await this.doLogin({
                         body: {
-                            payload:{
+                            payload: {
                                 email: resAdmin.email,
                                 password: body.password
                             }
@@ -346,18 +336,15 @@ export class AuthService {
                     }).toPromise();
 
                     subscriber.next(loginResponse);
-
-                }else {
+                } else {
                     subscriber.error({
-                        type:'String',
+                        type: 'String',
                         data: {error: "Internal server error"},
                         mime: 'application/json'
-                    })
+                    });
                 }
-                subscriber.complete()
-
+                subscriber.complete();
             })();
-
         })
     }
 
