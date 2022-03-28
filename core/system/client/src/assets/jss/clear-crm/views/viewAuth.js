@@ -113,6 +113,47 @@ const signupPageStyle = {
     padding: "30px",
     background: "green",
   },
+  passwordStrength:{
+    display:"inline-block",
+    width:"24px",
+    height:"24px",
+    backgroundSize: "100% 100%",
+    backgroundPosition: "center",
+    background: "conic-gradient(grey 0 25%, grey 25% 50%, grey 50% 75%, grey 75% 100%)",
+    borderRadius: "50%"
+  },
+  passwordBar: {
+    display: "inline-block",
+    width: "calc(20% - 5px)",
+    height: "5px",
+    lineHeight: "13px",
+    border: "1px solid transparent",
+    borderRadius: "9px",
+    margin: "0 5px 0 0",
+    alignItems: "center",
+  },
+  passwordText: {
+    fontSize: "80%",
+    width: "calc(20% - 5px)",
+    margin: "0 5px 0 0",
+    whiteSpace: "nowrap",
+    textAlign: "left"
+  },
+  weak: {
+    backgroundColor: "red",
+  },
+  none: {
+    backgroundColor: "#B4B4B4",
+  },
+  medium: {
+    backgroundColor: "gold",
+  },
+  strong: {
+    backgroundColor: "#98FB98",
+  },
+  veryStrong: {
+    backgroundColor: "darkcyan",
+  },
 };
 
 export default signupPageStyle;

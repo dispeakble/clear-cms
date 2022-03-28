@@ -16,6 +16,7 @@ import {Page} from "./models/pages/page.model";
 import {PageToBox} from "./models/pages/page.to.box.model";
 import {PageToCategory} from "./models/pages/page.to.category.model";
 import {PageToConfig} from "./models/pages/page.to.config.model";
+import {Token} from "./models/general/token.model";
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import {PageToConfig} from "./models/pages/page.to.config.model";
             //general
             Category,
             PublicTheme,
+            Token,
             User,
 
             //pages

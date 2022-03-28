@@ -38,7 +38,8 @@ class AuthGuardService extends Component {
     }
 
     redirect(data) {
-        if (data && data.location) {
+        const urlParts =data.location.split('/')
+        if (data && data.location && ['view-auth', 'recover-password'].indexOf(urlParts[0]) > -1) {
             this.setState({
                 renderState: <Redirect to={data.location}/>
             })
