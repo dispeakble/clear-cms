@@ -12,7 +12,7 @@ export async function sendEmail(email, subject: string, payload) {
             service: "outlook",
             auth: {
                 user: "cms.clear.reset@outlook.com",
-                pass: "Test123*-", // naturally, replace both with your real credentials or an application-specific password
+                pass: "Test123*-",
             },
         });
         const _template = 'Hi, {{name}} reset your password by accessing </br> <b>{{link}}</b>'
@@ -29,8 +29,10 @@ export async function sendEmail(email, subject: string, payload) {
         // Send email
         transporter.sendMail(options(), (error, info) => {
             if (error) {
+                console.log(error)
                 return error;
             } else {
+                console.log('sent')
                 return true;
             }
         });

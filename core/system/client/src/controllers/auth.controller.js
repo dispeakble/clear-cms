@@ -72,10 +72,15 @@ class AuthController extends Component {
             this.sendPost({
                 module: 'system',
                 api: 'auth',
-                act: 'doPasswordReset',
+                act: 'generateRecoverEmail',
                 payload: params
             }).then(async (response) => {
-                if (response.success) {
+                if (response && response.success) {
+                    const wsConnected = await this.props.services.ws.start();
+                    if (wsConnected) {
+                        this.props.history.push('/view-auth/recovered');
+                        window.location.reload(false);
+                    }
                     return resolve(response);
                 }
                 resolve(false);
@@ -91,7 +96,12 @@ class AuthController extends Component {
                act :'doChangePassword',
                payload: params
            }).then(async (response) => {
-               if(response && response.success) {
+               if(response && response.email) {
+                   localStorage.setItem('admin', JSON.stringify({ fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email }));
+                   const wsConnected = await this.props.services.ws.start();
+                   if (wsConnected) {
+                       this.props.history.push('/');
+                   }
                    return resolve(response)
                }
                resolve(false)
