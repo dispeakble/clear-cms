@@ -17,7 +17,7 @@ export class AppController {
         description: 'Frontend Module',
         started: new Date(),
         config: {
-            channel: 'frontend',
+            channel: `${process.env.app}_frontend`,
             permissions: {
                 stop: false,
                 restart: true,
@@ -25,10 +25,10 @@ export class AppController {
             }
         },
         dependencies: [{
-            name: 'hub',
+            name: `${process.env.app}_hub`,
             version: 'latest'
         }, {
-            name: 'frontendproxy',
+            name: `${process.env.app}_frontendproxy`,
             version: 'latest'
         }]
     };
@@ -54,12 +54,12 @@ export class AppController {
         this.mainService = this;
     }
 
-    @MessagePattern({message: 'frontendapi'})
+    @MessagePattern({message: `${process.env.app}_frontend`})
     public onMessage(@Payload() data: payloadInterface) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontendapi'})
+    @EventPattern({event: `${process.env.app}_frontend`})
     public onEvent(@Payload() payload: payloadInterface) {
         return this.perform(payload);
     }
@@ -77,10 +77,10 @@ export class AppController {
                 stop: false
             },
             dependencies: [{
-                name: 'hub',
+                name: `${process.env.app}_hub`,
                 version: 'latest'
             },{
-                name: 'frontendproxy',
+                name: `${process.env.app}_frontendproxy`,
                 version: 'latest'
             }]
         };
@@ -88,12 +88,12 @@ export class AppController {
         const reg_msg = await this.systemService.registerModule(payload);
         this.logger.log(reg_msg);
         const port_map_msg = await this.protocolService.sendMessage({
-            channel: 'hub',
+            channel: `${process.env.app}_hub`,
             api: 'module',
             act: 'mapPort',
             payload: {
-                channel: 'frontendapi',
-                target: 'frontendproxy',
+                channel: `${process.env.app}_frontend`,
+                target: `${process.env.app}_frontendproxy`,
                 port: process.env.backend_port,
                 defaults: {
                     url: '/'
@@ -118,13 +118,13 @@ export class AppController {
     public async getFiles(@Req() req: Request, @Res() res: Response) {
         req.params[0] = `files/${req.params[0]}`;
         const fileReq = {
-            "channel": "frontendapi",
-            "payload": {
-                "ip": req.ip,
-                "hostname": req.hostname,
-                "params": req.params,
-                "headers": req.headers,
-                "query": req.query
+            channel: `${process.env.app}_frontend`,
+            payload: {
+                ip: req.ip,
+                hostname: req.hostname,
+                params: req.params,
+                headers: req.headers,
+                query: req.query
             }
         };
 
@@ -186,14 +186,15 @@ export class AppController {
 
     @Get('api/*')
     public async api(@Req() req: Request) {
+        //TODO get the db from a
         const parts = req.url.split('/');
-        return await this.perform({ //TODO get from the first portion of URL eg: /api/agency/
-            channel: 'db',
+        return await this.perform({
+            channel: `${process.env.app}_db`,
             api: 'sql',
             act: 'get',
             payload: {
                 db: parts[2],
-                channel: 'frontend',
+                channel: `${process.env.app}_frontend`,
                 data: {
                     what: parts[3],
                 }

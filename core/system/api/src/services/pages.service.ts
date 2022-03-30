@@ -29,12 +29,12 @@ export class PagesService {
             }
 
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'page',
                         where: {},
@@ -61,12 +61,12 @@ export class PagesService {
             (async () => {
                 try {
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'page',
                                 where: {
@@ -125,12 +125,12 @@ export class PagesService {
                 try {
                     const {boxes, pageProps, pageConfig} = params;
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'page',
                                 data: {
@@ -148,12 +148,12 @@ export class PagesService {
 
                     if(Array.isArray(pageConfig.categories) && pageConfig.categories.length) {
                         const pageToCategoryReq = {
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageToCategory',
                                     records: pageConfig.categories.map(catId => {
@@ -173,12 +173,12 @@ export class PagesService {
                     delete pageConfig.categories;
 
                     const configReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageConfig',
                                 data: {
@@ -190,12 +190,12 @@ export class PagesService {
                     const config = await this.protocolService.sendMessage(configReq).toPromise();
 
                     const pageToConfigReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToConfig',
                                 data: {
@@ -214,12 +214,12 @@ export class PagesService {
                         const newBoxes = boxes.filter(box => !box.data.templateUsed);
                         if (newBoxes.length) {
                             const pageBoxReq: payloadInterface = {
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'addBulk',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'pageBox',
                                         records: newBoxes.map((box) => {
@@ -241,12 +241,12 @@ export class PagesService {
                             const boxes = await this.protocolService.sendMessage(pageBoxReq).toPromise();
 
                             const pageToBoxReq: payloadInterface = {
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'addBulk',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'pageToBox',
                                         records: boxes.map((box, index) => {
@@ -272,12 +272,12 @@ export class PagesService {
                         const newBoxesFromTemplate = boxes.filter(box => (box.data.templateUsed && pageConfig.templateUsed !== box.data.templateUsed))
                         if (newBoxesFromTemplate && newBoxesFromTemplate.length) {
                             const pageToBoxReq: payloadInterface = {
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'addBulk',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'pageToBox',
                                         records: newBoxesFromTemplate.map((box) => {
@@ -300,12 +300,12 @@ export class PagesService {
                         // add boxes to the pages which are inherited from template
                         if (pageConfig.templateUsed) {
                             const templateIdReq: payloadInterface = {
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'get',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'page',
                                         fields: ['id'],
@@ -320,12 +320,12 @@ export class PagesService {
                             const templateId = await this.protocolService.sendMessage(templateIdReq).toPromise();
 
                             const pageToBoxReq: payloadInterface = {
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'add',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'pageToBox',
                                         data: boxes.filter(box => box.data.templateUsed).map((box) => {
@@ -375,12 +375,12 @@ export class PagesService {
                     const {boxes, pageProps, pageConfig} = params;
                     const newBoxesDetails = [];
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'set',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'page',
                                 where: {
@@ -405,12 +405,12 @@ export class PagesService {
                     * */
 
                     const pageToCategoryDelReq = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'rem',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToCategory',
                                 where: {
@@ -429,12 +429,12 @@ export class PagesService {
 
                     if(pageConfig.categories.length) {
                         const pageToCategoryReq = {
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageToCategory',
                                     records: pageConfig.categories.map(catId => {
@@ -451,12 +451,12 @@ export class PagesService {
                     delete pageConfig.categories;
 
                     const pagesToConfigReq: payloadInterface = {//TODO CAN BE JOINED WITH PAGE pageConfig
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToConfig',
                                 where: {
@@ -474,12 +474,12 @@ export class PagesService {
                     if (pageConfig.deleteOldBackground) {
                         //try to delete the existing background image
                         const oldConfigReq: payloadInterface = {//TODO CAN BE JOINED WITH PAGE pageToConfig
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'get',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageConfig',
                                     where: {
@@ -497,11 +497,11 @@ export class PagesService {
 
                                 if (oldConfig.hasBackgroundImage && oldConfig.backgroundImage.length) {
                                     await this.protocolService.sendMessage({
-                                        channel: 'bucket',
+                                        channel: `${process.env.app}_bucket`,
                                         api: 'fs',
                                         act: 'rm',
                                         payload: {
-                                            channel: 'system',
+                                            channel: `${process.env.app}_system`,
                                             selection: [`/pages/page-${pageId}/${oldConfigData.backgroundImage}`]
                                         }
                                     }).toPromise();
@@ -517,12 +517,12 @@ export class PagesService {
                     * */
 
                     const configReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'set',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageConfig',
                                 where: {
@@ -542,12 +542,12 @@ export class PagesService {
                     */
 
                     const ptb_req: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToBox',
                                 where: {
@@ -577,12 +577,12 @@ export class PagesService {
                         if (missing_boxIds.length) {
                             await Promise.all(missing_boxIds.map(async boxId => {
                                 await this.protocolService.sendMessage({
-                                    channel: 'db',
+                                    channel: `${process.env.app}_db`,
                                     api: 'sql',
                                     act: 'rem',
                                     payload: {
                                         db: 'main',
-                                        channel: 'system',
+                                        channel: `${process.env.app}_system`,
                                         data: {
                                             what: 'pageToBox',
                                             where: {
@@ -595,12 +595,12 @@ export class PagesService {
 
                                 if (template_boxIds.indexOf(boxId) === -1) {
                                     await this.protocolService.sendMessage({
-                                        channel: 'db',
+                                        channel: `${process.env.app}_db`,
                                         api: 'sql',
                                         act: 'rem',
                                         payload: {
                                             db: 'main',
-                                            channel: 'system',
+                                            channel: `${process.env.app}_system`,
                                             data: {
                                                 what: 'pageBox',
                                                 where: {
@@ -611,11 +611,11 @@ export class PagesService {
                                     }).toPromise();
 
                                     await this.protocolService.sendMessage({
-                                        channel: 'bucket',
+                                        channel: `${process.env.app}_bucket`,
                                         api: 'fs',
                                         act: 'rm',
                                         payload: {
-                                            channel: 'system',
+                                            channel: `${process.env.app}_system`,
                                             selection: [`/pages/page-${pageId}/box-${boxId}`]
                                         }
                                     }).toPromise();
@@ -650,12 +650,12 @@ export class PagesService {
                         })
 
                         const newAddedBoxes = await this.protocolService.sendMessage({
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageBox',
                                     returning: true,
@@ -666,12 +666,12 @@ export class PagesService {
                         }).toPromise();
 
                         const newPTB = await this.protocolService.sendMessage({
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageToBox',
                                     records: newAddedBoxes.map((newBox, index) => {
@@ -708,12 +708,12 @@ export class PagesService {
                     await Promise.all(existingBoxes.map(async box => {
 
                         const pageBoxPayload =  {
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'set',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageBox',
                                     data: {
@@ -732,12 +732,12 @@ export class PagesService {
                         await this.protocolService.sendMessage(pageBoxPayload).toPromise();
 
                         await this.protocolService.sendMessage({
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'set',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageToBox',
                                     data: {
@@ -773,12 +773,12 @@ export class PagesService {
                     if (existingBoxesFromTemplate && existingBoxesFromTemplate.length) {
                         await Promise.all(existingBoxesFromTemplate.map(async box => {
                             await this.protocolService.sendMessage({
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'set',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'pageToBox',
                                         data: {
@@ -806,12 +806,12 @@ export class PagesService {
                     if (newBoxesFromTemplate && newBoxesFromTemplate.length) {
                         await Promise.all(newBoxesFromTemplate.map(async box => {
                             await this.protocolService.sendMessage({
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'add',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     data: {
                                         what: 'pageToBox',
                                         data: {
@@ -871,12 +871,12 @@ export class PagesService {
 
                     // select pageToBox
                     const pageToBoxReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToBox',
                                 count: false,
@@ -891,12 +891,12 @@ export class PagesService {
 
                     // delete pageToBox first because of foreign key
                     const delPageToBoxReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'rem',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToBox',
                                 where: {
@@ -911,12 +911,12 @@ export class PagesService {
                     // delete pageBox
                     if (pageToBox.rows && pageToBox.rows.length) {
                         const boxesReq: payloadInterface = {
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'rem',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageBox',
                                     where: {
@@ -934,12 +934,12 @@ export class PagesService {
 
                     // select pageToConfig
                     const pageToConfigReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToConfig',
                                 count: false,
@@ -953,12 +953,12 @@ export class PagesService {
 
                     // delete pageToConfig first because of foreign key
                     const remPageToConfigReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'rem',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToConfig',
                                 where: {
@@ -973,12 +973,12 @@ export class PagesService {
                     if(pageToConfig) {
                         // delete config
                         const configReq: payloadInterface = {
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'rem',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageConfig',
                                     where: {
@@ -994,12 +994,12 @@ export class PagesService {
 
                     // delete pageToConfig first because of foreign key
                     const pageToCategoryReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'rem',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToCategory',
                                 where: {
@@ -1013,12 +1013,12 @@ export class PagesService {
 
                     //delete page
                     const pagesReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'rem',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'page',
                                 where: {
@@ -1054,12 +1054,12 @@ export class PagesService {
                     * 1. get the source page
                     * */
                     const sourcePage = await this.protocolService.sendMessage({
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'page',
                                 data: {
@@ -1085,12 +1085,12 @@ export class PagesService {
                     * */
 
                     const newPage = await this.protocolService.sendMessage({
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'page',
                                 data: omit(sourcePage.data, ['pageBoxes', 'pageConfigs'])
@@ -1103,12 +1103,12 @@ export class PagesService {
                     * */
 
                     const newPageConfig = await this.protocolService.sendMessage({
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageConfig',
                                 data: omit(sourcePage.pageConfigs[0], 'id')
@@ -1117,12 +1117,12 @@ export class PagesService {
                     }).toPromise();
 
                     const newPageToConfig = await this.protocolService.sendMessage({
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToConfig',
                                 data: {
@@ -1138,12 +1138,12 @@ export class PagesService {
                     * */
 
                     const ptc = await this.protocolService.sendMessage({
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToCategory',
                                 data: {
@@ -1155,12 +1155,12 @@ export class PagesService {
 
                     if(ptc.count) {
                         const new_ptc = await this.protocolService.sendMessage({
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'addBulk',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'pageToCategory',
                                     records: ptc.rows.map(ptc_item => {
@@ -1173,12 +1173,12 @@ export class PagesService {
                     }
 
                     const source_p_t_b = await this.protocolService.sendMessage({
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pageToBox',
                                 data: {
@@ -1190,11 +1190,11 @@ export class PagesService {
 
                     if (source_p_t_b.count) {
                         const copyAssets = await this.protocolService.sendMessage({
-                            channel: 'bucket',
+                            channel: `${process.env.app}_bucket`,
                             api: 'fs',
                             act: 'copy',
                             payload: {
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 replace: true,
                                 source: `/pages/page-${params.id}`,
                                 destination: `/pages/page-${newPage.id}`,
@@ -1207,12 +1207,12 @@ export class PagesService {
 
                             if(!sptb.templateUsed) {
                                 const old_box = await this.protocolService.sendMessage({
-                                    channel: 'db',
+                                    channel: `${process.env.app}_db`,
                                     api: 'sql',
                                     act: 'get',
                                     payload: {
                                         db: 'main',
-                                        channel: 'system',
+                                        channel: `${process.env.app}_system`,
                                         what: 'pageBox',
                                         where: {
                                             id: sptb.boxId
@@ -1221,23 +1221,23 @@ export class PagesService {
                                 }).toPromise();
 
                                 newBox = await this.protocolService.sendMessage({
-                                    channel: 'db',
+                                    channel: `${process.env.app}_db`,
                                     api: 'sql',
                                     act: 'add',
                                     payload: {
                                         db: 'main',
-                                        channel: 'system',
+                                        channel: `${process.env.app}_system`,
                                         what: 'pageBox',
                                         data: omit(old_box, 'id')
                                     }
                                 }).toPromise();
 
                                 const renameBoxFolders = await this.protocolService.sendMessage({
-                                    channel: 'bucket',
+                                    channel: `${process.env.app}_bucket`,
                                     api: 'fs',
                                     act: 'mv',
                                     payload: {
-                                        channel: 'system',
+                                        channel: `${process.env.app}_system`,
                                         replace: true,
                                         source: `/pages/page-${Number(params.id)}/box-${sptb.boxId}`,
                                         destination: `/pages/page-${newPage[0].id}/box-${newBox.id}`,
@@ -1247,12 +1247,12 @@ export class PagesService {
                             }
 
                             const new_p_t_b = await this.protocolService.sendMessage({
-                                channel: 'db',
+                                channel: `${process.env.app}_db`,
                                 api: 'sql',
                                 act: 'add',
                                 payload: {
                                     db: 'main',
-                                    channel: 'system',
+                                    channel: `${process.env.app}_system`,
                                     what: 'pageToBox',
                                     data: {
                                         pageId: newPage.id,
@@ -1281,11 +1281,11 @@ export class PagesService {
         if(Array.isArray(params.where)) {
             return Promise.all(params.where.map(async (param) => {
                 return this.protocolService.sendMessage({
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     api: 'fs',
                     act: 'rm',
                     payload: {
-                        channel: 'system',
+                        channel: `${process.env.app}_system`,
                         path: `/pages`,
                         selection: [`/page-${param.where.id}`]
                     }
@@ -1293,11 +1293,11 @@ export class PagesService {
             }))
         } else {
             return this.protocolService.sendMessage({
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'rm',
                 payload: {
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     path: `/pages`,
                     selection: [`/page-${params.where.id}`]
                 }

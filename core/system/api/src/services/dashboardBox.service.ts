@@ -37,12 +37,12 @@ export class DashboardBoxService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'dashboardBox',
                         where: params?.where
@@ -93,12 +93,12 @@ export class DashboardBoxService {
             (async () => {
                 try {
                     const request: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'dashboardBox',
                                 data: this.help.giveBoxValues(params)
@@ -125,12 +125,12 @@ export class DashboardBoxService {
     public edit (params: any){
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'dashboardBox',
                         where: {
@@ -157,12 +157,12 @@ export class DashboardBoxService {
     public remove (params: any){
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'dashboardBox',
                         where: {

@@ -16,12 +16,12 @@ export class SitemapService {
             (async () => {
                 try {
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pages',
                                 fields: ["*"],//it's optional. defaults to *
@@ -57,12 +57,12 @@ export class SitemapService {
             (async () => {
                 try {
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'categories',
                                 fields: ["*"],//it's optional. defaults to *,
@@ -88,12 +88,12 @@ export class SitemapService {
             (async () => {
                 try {
                     const pageToCategoryReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pages_to_categories',
                                 fields: ["page_id"],//it's optional. defaults to *,
@@ -112,12 +112,12 @@ export class SitemapService {
                     }
 
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'pages',
                                 fields: ["*"],//it's optional. defaults to *,

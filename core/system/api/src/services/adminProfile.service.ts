@@ -21,12 +21,12 @@ export class AdminProfileService {
         return new Observable(subscriber => {
             (async () => {
                 const payload: payloadInterface = {
-                    channel: 'db',
+                    channel: `${process.env.app}_db`,
                     api: 'sql',
                     act: 'get',
                     payload: {
                         db: 'main',
-                        channel: 'system',
+                        channel: `${process.env.app}_system`,
                         data: {
                             what: 'auth',
                             fields: ["fname", "lname", "email"],
@@ -56,12 +56,12 @@ export class AdminProfileService {
         params.payload.fullName = params.payload.fname + " " + params.payload.lname;
 
         const request: payloadInterface = {
-            channel: 'db',
+            channel: `${process.env.app}_db`,
             api: 'sql',
             act: 'set',
             payload: {
                 db: 'main',
-                channel: 'system',
+                channel: `${process.env.app}_system`,
                 data: {
                     what: 'auth',
                     where: {
@@ -83,12 +83,12 @@ export class AdminProfileService {
             //check the old password
 
             const checkPasswordRequest: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'get',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'auth',
                         fields: ["password"],

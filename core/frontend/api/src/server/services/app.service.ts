@@ -29,7 +29,7 @@ export class AppService {
             return this[data.act](data.payload);
         } else {
             // eslint-disable-next-line no-console
-            console.log("FrontendApi.AppService." + data.act + " not found");
+            console.log("Frontend.AppService." + data.act + " not found");
         }
         return null;
     }

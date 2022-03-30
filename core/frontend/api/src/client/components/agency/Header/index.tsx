@@ -1,21 +1,30 @@
 import Logo from "./Logo";
 import LinkItem from './LinkItem'
 
-import {HeaderContainer, HeaderWrapper, List} from './styled'
+import {HeaderContainer, HeaderWrapper, IconWrapper, InputSearch, InputWrapper, List} from './styled'
 import Languages from "./Languages";
+import Image from "next/image";
+
+import searchIcon from "../"
 
 const Header = (props: any) => {
     const links = props.links;
 
     return (
         <HeaderContainer>
-            <HeaderWrapper>
+            <HeaderWrapper data-testid='header-wrapper'>
                 <Logo/>
                 <List>
                     {
                         links.map((link: any, i: number) => <LinkItem {...link} key={`link-${i}`}/>)
                     }
                 </List>
+                <InputWrapper>
+                    <InputSearch data-testid='header-search-input' style={{height: '50px', width: '325px'}} type="search" placeholder={"Your Perfect Vacation ..."} />
+                    <IconWrapper>
+                        <Image src={searchIcon} />
+                    </IconWrapper>
+                </InputWrapper>
                 <Languages/>
             </HeaderWrapper>
         </HeaderContainer>
@@ -25,23 +34,18 @@ const Header = (props: any) => {
 Header.defaultProps = {
     links: [
         {
-            linkText: "Home",
-            linkSlug: "home",
+            linkText: "home",
+            linkSlug: "activities",
         },
         {
-            linkText: "About Us",
-            linkSlug: "about-us",
+            linkText: "hotels",
+            linkSlug: "hotels",
         },
         {
-            linkText: "Services",
-            linkSlug: "services",
-        },
-        {
-            linkText: "Contact Us",
-            linkSlug: "contact-us",
+            linkText: "packages",
+            linkSlug: "packages",
         },
     ],
-}
+};
 
 export default Header;
-

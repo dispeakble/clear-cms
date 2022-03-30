@@ -50,10 +50,10 @@ export class ProtocolService {
         let payload: payloadInterface = {
             api: 'module',
             act: 'register',
-            channel: 'system',
+            channel: `${process.env.app}_system`,
             payload: data
         };
-        return this.redisService.send({message: 'hub'}, payload).toPromise();
+        return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();
     }
 
     public ping(data: any, config: ModuleInterface){
