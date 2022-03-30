@@ -20,7 +20,7 @@ class PageContent {
 
             const page = await context.req.apiHub({
                 protocolMethod: 'sendMessage',
-                channel: 'frontendapi',
+                channel: `${process.env.app}_frontend`,
                 api: 'pages',
                 act: 'get',
                 payload: {

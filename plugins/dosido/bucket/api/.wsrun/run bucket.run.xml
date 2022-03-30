@@ -11,6 +11,7 @@
       <env name="backend_port" value="8686" />
       <env name="redis_port" value="6379" />
       <env name="redis_password" value="1gzHwbgfwR" />
+      <env name="app" value="marioviajes" />
     </envs>
     <method v="2" />
   </configuration>

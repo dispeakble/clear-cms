@@ -9,7 +9,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 export class ProtocolController {
 
     private config: ModuleInterface = {
-        name: 'hub',
+        name: `${process.env.app}_hub`,
         version: '20.07.19',
         description: 'Hub Module',
         started: new Date(),
@@ -26,13 +26,13 @@ export class ProtocolController {
                 private readonly moduleService: ModuleService)
     {}
 
-    @MessagePattern({message: 'hub'})//TODO should be an ENV or a config
+    @MessagePattern({message: `${process.env.app}_hub`})//TODO should be an ENV or a config
     public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext): Promise<payloadInterface> {
         const response = await this.perform(data);
         return response;
     }
 
-    @EventPattern({event: 'hub'})
+    @EventPattern({event: `${process.env.app}_hub`})
     public async onEvent(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         const response = await this.perform(data);
         return response;

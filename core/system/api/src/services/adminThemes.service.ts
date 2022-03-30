@@ -15,12 +15,12 @@ export class AdminThemesService {
     public list() {
         return new Observable((subscriber) => {
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'adminTheme',
                         fields: ["id", "title", "isDefault", "thumbnail"]
@@ -47,12 +47,12 @@ export class AdminThemesService {
     public get(params) {
         return new Observable((subscriber) => {
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'get',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'adminTheme',
                         fields: params.fields || ["title", "isDefault", "thumbnail", "data"],
@@ -76,12 +76,12 @@ export class AdminThemesService {
 
         if (params.data.isDefault) {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'adminTheme',
                         where: {
@@ -99,12 +99,12 @@ export class AdminThemesService {
 
         return new Observable((subscriber) => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'adminTheme',
                         where: params.where,
@@ -139,12 +139,12 @@ export class AdminThemesService {
         }
         return new Observable((subscriber) => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'add',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'adminTheme',
                         data: {
@@ -174,12 +174,12 @@ export class AdminThemesService {
     public rem(params) {
         return new Observable((subscriber) => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'adminTheme',
                         where: params

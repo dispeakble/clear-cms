@@ -3,7 +3,11 @@
     "home" : "Home",
     "about-us" : "Sobre Nosotros",
     "services" : "Servicios",
-    "contact-us" : "Contacta"
+    "contact-us" : "Contacta",
+    "activities" : "Ocupaciones",
+    "hotels" : "Hoteles",
+    "packages" : "Paquetes",
+    "search": "Búsqueda"
   },
   "home" : {
     "info-box-title" : "Aventuras",

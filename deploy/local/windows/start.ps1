@@ -1,5 +1,6 @@
 #!/usr/bin/env powershell
 $INIT_VERSION = "v0.0.1"
+$INIT_APP_NAME = "marioviajes"
 $INIT_POSTGRES_DEFAULT_USER = "cms"
 $INIT_POSTGRES_DEFAULT_PASSWORD = "1qaz"
 $INIT_POSTGRES_DEFAULT_DB = "main"
@@ -7,14 +8,16 @@ $INIT_POSTGRES_DEFAULT_CONNECTIONS = "main,agency"
 $INIT_PGADMIN_DEFAULT_EMAIL = "admin@localhost.local"
 $INIT_PGADMIN_DEFAULT_PASSWORD = "1qaz"
 $INIT_REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
-$CMS_HUB_VERSION="1646694310"
-$CMS_DB_VERSION="1646694310"
-$CMS_BUCKET_VERSION="1646694310"
-$CMS_FRONTEND_PROXY_VERSION="1646694310"
-$CMS_ADMIN_PROXY_VERSION="1646694310"
+$CMS_HUB_VERSION="1648587815"
+$CMS_DB_VERSION="1648587815"
+$CMS_BUCKET_VERSION="1648587815"
+$CMS_FRONTEND_PROXY_VERSION="1648587815"
+$CMS_ADMIN_PROXY_VERSION="1648587815"
 $PWD=$pwd.Path
 
 if (($VERSION = Read-Host "Installation revision (Enter for default: $INIT_VERSION )") -eq '') { $VERSION = $INIT_VERSION }
+
+if (($APP_NAME = Read-Host "App name (Enter for default:  $INIT_APP_NAME)") -eq '') { $APP_NAME = $INIT_APP_NAME }
 
 if (($REDIS_DEFAULT_PASSWORD = Read-Host "Redis password (Enter for default:  $INIT_REDIS_DEFAULT_PASSWORD)") -eq '') { $REDIS_DEFAULT_PASSWORD = $INIT_REDIS_DEFAULT_PASSWORD }
 
@@ -27,6 +30,7 @@ if (($PGADMIN_DEFAULT_EMAIL = Read-Host "PgAdmin email (Enter for default: $INIT
 if (($PGADMIN_DEFAULT_PASSWORD = Read-Host "PgAdmin password (Enter for default: $INIT_PGADMIN_DEFAULT_PASSWORD)") -eq '') { $PGADMIN_DEFAULT_PASSWORD = $INIT_PGADMIN_DEFAULT_PASSWORD }
 
 $env:VERSION=$VERSION
+$env:APP_NAME=$APP_NAME
 
 $env:REDIS_DEFAULT_PASSWORD=$REDIS_DEFAULT_PASSWORD
 
@@ -50,6 +54,7 @@ echo $PWD
 
 
 echo "$VERSION"
+echo "$APP_NAME"
 echo "$REDIS_DEFAULT_PASSWORD"
 echo "$POSTGRES_DEFAULT_USER"
 echo "$POSTGRES_DEFAULT_PASSWORD"
@@ -67,6 +72,7 @@ echo "$CMS_ADMIN_PROXY_VERSION"
 ((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace "MD5('1qaz')", "MD5('$PGADMIN_DEFAULT_PASSWORD')") | Set-Content -Path ..\..\pg.db\db.schema.sql
 
 #[System.Environment]::SetEnvironmentVariable("VERSION", $VERSION, 'Machine')
+#[System.Environment]::SetEnvironmentVariable("APP_NAME", $APP_NAME, 'Machine')
 #[System.Environment]::SetEnvironmentVariable("REDIS_DEFAULT_PASSWORD", $REDIS_DEFAULT_PASSWORD, 'Machine')
 #[System.Environment]::SetEnvironmentVariable("POSTGRES_DEFAULT_USER", $POSTGRES_DEFAULT_USER, 'Machine')
 #[System.Environment]::SetEnvironmentVariable("POSTGRES_DEFAULT_PASSWORD", $POSTGRES_DEFAULT_PASSWORD, 'Machine')

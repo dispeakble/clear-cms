@@ -19,12 +19,12 @@ export class CategoriesService {
     public total(params: any) {
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'get',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'categories',
                         fields: ["COUNT(id) as total"],
@@ -61,12 +61,12 @@ export class CategoriesService {
             })
 
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'category',
                         fields: ["id", "title", "description", "backgroundImage", "parentId", "createdAt", "updatedAt"],
@@ -99,12 +99,12 @@ export class CategoriesService {
             (async () => {
                 try {
                     const request: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'category',
                                 data: {
@@ -136,12 +136,12 @@ export class CategoriesService {
     public set(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'category',
                         where: {
@@ -173,12 +173,12 @@ export class CategoriesService {
     public rem(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'category',
                         where: {

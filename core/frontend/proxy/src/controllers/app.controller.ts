@@ -12,17 +12,17 @@ import {Observable} from "rxjs";
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: 'frontendproxy',
+        name: `${process.env.app}_frontendproxy`,
         version: '21.08.26',
         description: 'the main http frontend proxy (gateway)',
         started: new Date(),
         config: {
-            channel: 'frontendproxy',
+            channel: `${process.env.app}_frontendproxy`,
             restart: true,
             stop: false
         },
         dependencies: [{
-            name: 'hub',
+            name: `${process.env.app}_hub`,
             version: 'latest'
         }]
     };
@@ -210,7 +210,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: 'frontendproxy',
+                                channel: `${process.env.app}_frontendproxy`,
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {
@@ -256,13 +256,13 @@ export class AppController {
         try {
 
             const fileReq = {
-                "channel": "frontend",
-                "payload": {
-                    "ip": req.ip,
-                    "hostname": req.hostname,
-                    "path": req.params[0],
-                    "headers": req.headers,
-                    "query": req.query
+                channel: `${process.env.app}_frontend`,
+                payload: {
+                    ip: req.ip,
+                    hostname: req.hostname,
+                    path: req.params[0],
+                    headers: req.headers,
+                    query: req.query
                 }
             };
 
@@ -392,12 +392,12 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'frontendproxy'})
+    @MessagePattern({message: `${process.env.app}_frontendproxy`})
     public async onRedisMessage(@Payload() data: any) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontendproxy'})
+    @EventPattern({event: `${process.env.app}_frontendproxy`})
     public async onRedisEvent(@Payload() data: any) {
         return this.perform(data);
     }

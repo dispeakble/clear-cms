@@ -1,9 +1,10 @@
 {
   "global": {
     "home" : "Home",
-    "about-us" : "About Us",
-    "services" : "Services",
-    "contact-us" : "Contact Us"
+    "activities" : "Activities",
+    "hotels" : "Hotels",
+    "packages" : "Packages",
+    "search": "Search"
   },
   "home": {
     "info-box-title" : "Adventure",

@@ -15,7 +15,7 @@ export class ProtocolController {
         description: 'System Module',
         started: new Date(),
         config: {
-            channel: 'system',
+            channel: `${process.env.app}_system`,
             permissions: {
                 stop: false,
                 restart: true,
@@ -23,10 +23,10 @@ export class ProtocolController {
             }
         },
         dependencies: [{
-            name: 'hub',
+            name: `${process.env.app}_hub`,
             version: 'latest'
         }, {
-            name: 'proxy',
+            name: `${process.env.app}_proxy`,
             version: 'latest'
         }]
     };
@@ -57,12 +57,12 @@ export class ProtocolController {
 
     }
 
-    @MessagePattern({message: 'system'})
+    @MessagePattern({message: `${process.env.app}_system`})
     public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'system'})
+    @EventPattern({event: `${process.env.app}_system`})
     public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
         return this.perform(payload);
     }
@@ -91,21 +91,21 @@ export class ProtocolController {
                     stop: false
                 },
                 dependencies: [{
-                    name: 'hub',
+                    name: `${process.env.app}_hub`,
                     version: 'latest'
                 },{
-                    name: 'proxy',
+                    name: `${process.env.app}_proxy`,
                     version: 'latest'
                 }]
             };
 
             await this.protocolService.sendMessage({
-                channel: 'hub',
+                channel: `${process.env.app}_hub`,
                 api: 'module',
                 act: 'mapPort',
                 payload: {
-                    channel: 'system',
-                    target: 'proxy',
+                    channel: `${process.env.app}_system`,
+                    target: `${process.env.app}_proxy`,
                     port: process.env.backend_port,
                     defaults: {
                         url: '/',

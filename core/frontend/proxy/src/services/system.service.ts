@@ -68,14 +68,14 @@ export class SystemService {
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: 'hub'});
-            await this.waitForService({channel: 'db'});
-            await this.waitForService({channel: 'bucket'});
+            await this.waitForService({channel: `${process.env.app}_hub`});
+            await this.waitForService({channel: `${process.env.app}_db`});
+            await this.waitForService({channel: `${process.env.app}_bucket`});
 
             const payload: payloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: 'hub',
+                channel: `${process.env.app}_hub`,
                 config: {
                     restart: true,
                     stop: false
