@@ -47,11 +47,15 @@ class ViewGeneralSettings extends Component {
             defaultMetaDescription: {valid: false, empty: true},
             defaultFavicon: {valid: false, empty: true},
             faviconName: {valid: false, empty: true},
+            defaultWebsiteLogo: {valid: false, empty: true},
+            websiteLogo: {valid: false, empty: true},
             includeWebsiteTitle: {valid: false, empty: true},
             emailSender : {valid: false, empty: true},
             emailPassword: {valid: false, empty: true},
             contactEmail: {valid: false, empty: true},
         },
+        defaultWebsiteLogo: "",
+        websiteLogo: "",
         errors: "",
         messages: "",
         notification: "",
@@ -125,6 +129,16 @@ class ViewGeneralSettings extends Component {
                 valid: true,
                 empty: false
             };
+            validation.websiteLogo = {
+                valid: true,
+                empty: false
+            };
+            validation.defaultWebsiteLogo = {
+                valid: true,
+                empty: false
+            };
+
+
 
             this.setState({
                 websiteName: generalSettingsData.websiteName,
@@ -136,6 +150,8 @@ class ViewGeneralSettings extends Component {
                 defaultMetaDescription: generalSettingsData.defaultMetaDescription,
                 defaultFavicon: generalSettingsData.defaultFavicon,
                 faviconName: generalSettingsData.faviconName,
+                websiteLogo: generalSettingsData.websiteLogo,
+                defaultWebsiteLogo: generalSettingsData.defaultWebsiteLogo,
                 includeWebsiteTitle: generalSettingsData.includeWebsiteTitle,
                 websiteTimezone: generalSettingsData.websiteTimezone,
                 emailSender : generalSettingsData.emailSender,
@@ -242,6 +258,8 @@ class ViewGeneralSettings extends Component {
             defaultMetaDescription: this.state.defaultMetaDescription,
             defaultFavicon: this.state.defaultFavicon,
             faviconName: this.state.faviconName,
+            websiteLogo: this.state.websiteLogo,
+            defaultWebsiteLogo: this.state.defaultWebsiteLogo,
             includeWebsiteTitle: this.state.includeWebsiteTitle,
             websiteTimezone: this.state.websiteTimezone,
             emailSender: this.state.emailSender,
@@ -409,6 +427,34 @@ class ViewGeneralSettings extends Component {
                                         <p style={{width: "15px"}}></p>
 
                                     </div>
+
+                                    <div>
+                                        <h4>Upload website logo:</h4>
+                                        <label htmlFor="contained-button-file">
+                                            <input style={{display: "none"}} accept="image/*" id="contained-button-file" multiple type="file"
+                                                   onChange={async (e) =>
+                                                       this.setState({
+                                                           websiteLogo: e.target.files[0].name,
+                                                           defaultWebsiteLogo: await imageHelper.toBase64(e.target.files[0])
+                                                       })
+                                                   } />
+                                            <Button variant="contained" disabled={false} className={classes.button} color="primary" size="md" component="span">
+                                                Choose logo
+                                            </Button>
+                                        </label>
+                                    </div>
+
+                                    <p style={{width: "15px"}}></p>
+
+                                    {
+                                        this.state.websiteLogo ?
+                                            <div style={{minHeight: "60px", marginTop: "40px"}}>
+                                                <img src={this.state.defaultWebsiteLogo} alt={this.state.websiteLogo} style={{height: "30px", width:"30px"}} />
+                                                <h5 style={{fontStyle: "italic", textDecoration:"underline", lineHeight: "0"}}>{this.state.websiteLogo}</h5>
+                                            </div>
+                                            : <h5 style={{fontStyle: "italic"}}>no file selected.</h5>
+                                    }
+
                                     <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit" color="primary" size="lg" className={classes.button}>Save Settings</Button>
                                     <p style={{height: "15px", margin: 0}}>&nbsp;</p>
                                 </form>
