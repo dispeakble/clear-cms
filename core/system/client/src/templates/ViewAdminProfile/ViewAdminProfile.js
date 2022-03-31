@@ -26,6 +26,7 @@ class ViewAdminProfile extends Component {
         fname: "",
         lname: "",
         email: "",
+        address: "",
         password: "",
         newPassword: "",
         confirmPassword: "",
@@ -35,6 +36,7 @@ class ViewAdminProfile extends Component {
             fname: {valid: false, empty: true},
             lname: {valid: false, empty: true},
             email: {valid: false, empty: true},
+            address: {valid: false, empty: true},
             password: {valid: false, empty: true},
             newPassword: {valid: false, empty: true},
             confirmPassword: {valid: false, empty: true}
@@ -62,6 +64,10 @@ class ViewAdminProfile extends Component {
                     valid: true,
                     empty: false
                 };
+                validation.address = {
+                    valid: true,
+                    empty: false
+                };
                 validation.email = {
                     valid: true,
                     empty: false
@@ -70,7 +76,8 @@ class ViewAdminProfile extends Component {
                     validation: validation,
                     fname: profileData.fname,
                     lname: profileData.lname,
-                    email: profileData.email
+                    address: profileData.address,
+                    email: profileData.email,
                 })
             }
      
@@ -176,6 +183,10 @@ class ViewAdminProfile extends Component {
             errors.push('First name is not valid or not filled in')
         }
 
+        if (!this.state.validation.address.valid || this.state.validation.address.empty) {
+            errors.push('Address is not valid or not filled in')
+        }
+
         if (!this.state.validation.lname.valid || this.state.validation.lname.empty) {
             errors.push('Last name is not valid or not filled in')
         }
@@ -233,6 +244,7 @@ class ViewAdminProfile extends Component {
             fname: this.state.fname,
             lname: this.state.lname,
             email: this.state.email,
+            address: this.state.address,
             password: this.state.password,
             newPassword: this.state.newPassword,
             confirmPassword: this.state.confirmPassword
@@ -371,6 +383,22 @@ class ViewAdminProfile extends Component {
                                                     )
                                                 }}/>
                                             </div>
+                                            <CustomInput
+                                                labelText="Full address" id="address"
+                                                formControlProps={{
+                                                    autoComplete: "off",
+                                                    fullWidth: true,
+                                                    onChange: this.handleInputChange
+                                                }} inputProps={{
+                                                type: "text",
+                                                value: this.state.address,
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <Icon className={classes.inputIconsColor}> home </Icon>
+                                                    </InputAdornment>
+                                                ),
+                                                autoComplete: "off"
+                                            }}/>
                                             <CustomInput
                                                 labelText="Current password" id="password"
                                                 formControlProps={{
