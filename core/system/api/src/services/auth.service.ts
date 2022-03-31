@@ -209,9 +209,12 @@ export class AuthService {
 
                     const settingsResponse = await this.protocolService.sendMessage(settingsRequest).toPromise();
                     const settings = JSON.parse(settingsResponse.data);
+
                     const link = `https://${settings.websiteDomain}/password-reset?token=${resetToken}`;
 
                     await sendEmail(
+                        settings.emailSender,
+                        settings.emailPassword,
                         adminResponse.email,
                         `Password reset link for ${adminResponse.fullname}`,
                         {

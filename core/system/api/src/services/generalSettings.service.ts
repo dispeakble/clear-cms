@@ -70,7 +70,7 @@ export class GeneralSettingsService {
                                 isDefault: 1
                             },
                             data: {
-                                data: params.payload.data
+                                data: JSON.stringify(params.payload.data)
                             },
                         }
                     }
