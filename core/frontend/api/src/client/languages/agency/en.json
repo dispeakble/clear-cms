@@ -1,0 +1,31 @@
+{
+  "global": {
+    "home" : "Home",
+    "activities" : "Activities",
+    "hotels" : "Hotels",
+    "packages" : "Packages",
+    "search": "Search"
+  },
+  "home": {
+    "info-box-title" : "Adventure",
+    "info-box-description" : "Holidays and tours",
+    "img-source" : "Image from"
+  },
+  "search": {
+    "destination": "Destination",
+    "input-placeholder" : "Where are you going?",
+    "checkin": "Check in",
+    "addDate": "Add date",
+    "checkinDate": "Check in date",
+    "checkout": "Check out",
+    "checkoutDate" : "Check out date",
+    "guests" : "Guests",
+    "adults" : "Adults",
+    "children" : "Children",
+    "infants" : "Infants",
+    "adults-age" : "Ages 13 or above.",
+    "children-age" : "Ages between 2 and 13.",
+    "infants-age" : "Under 2.",
+    "search-btn" : "Search"
+  }
+}

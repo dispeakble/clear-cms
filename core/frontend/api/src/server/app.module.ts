@@ -68,5 +68,7 @@ import {AppService} from "./services/app.service";
 })
 
 export class AppModule {
-  constructor() { }
+  constructor() {
+    // do nothing
+  }
 }

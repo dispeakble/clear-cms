@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ProtocolService} from "./protocol.service";
@@ -17,7 +17,8 @@ export class SystemService {
         if (this.methods.includes(data.act)) {
             return this[data.act].call(Object.assign({}, data.payload));
         } else {
-            console.log("FrontendApi.SystemService." + data.act + " not found");
+            // eslint-disable-next-line no-console
+            console.log("Frontend.SystemService." + data.act + " not found");
         }
         return null;
     }
@@ -32,13 +33,11 @@ export class SystemService {
             };
             const serviceReq = this.protocolService.sendMessage(payload);
             serviceReq.subscribe(response => {
-                console.log(response);
                 if ('pong' === response.data) {
                     clearTimeout(rejectTimeout);
                     resolve(true);
                 }
-            }, err => {
-                console.log(err);
+            }, () => {
                 reject(false);
             }, () => {
                 //resolve(true);
@@ -51,7 +50,7 @@ export class SystemService {
     }
 
     private async waitForService(params) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const checkInterval = setInterval(async () => {
                 try {
                     const checkServiceResult = await this.checkService({channel: params.channel});
@@ -59,9 +58,11 @@ export class SystemService {
                         clearInterval(checkInterval);
                         resolve(true);
                     } else {
+                        // eslint-disable-next-line no-console
                         console.log(`${params.channel} not ready yet`);
                     }
                 } catch (err) {
+                    // eslint-disable-next-line no-console
                     console.log(`${params.channel} not ready yet`);
                 }
             }, 300);
@@ -70,15 +71,15 @@ export class SystemService {
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: 'hub'});
-            await this.waitForService({channel: 'db'});
-            await this.waitForService({channel: 'bucket'});
-            await this.waitForService({channel: 'frontendproxy'});
+            await this.waitForService({channel: `${process.env.app}_hub`});
+            await this.waitForService({channel: `${process.env.app}_db`});
+            await this.waitForService({channel: `${process.env.app}_bucket`});
+            await this.waitForService({channel: `${process.env.app}_frontendproxy`});
 
             const payload: payloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: 'hub',
+                channel: `${process.env.app}_hub`,
                 config: {
                     restart: true,
                     stop: false

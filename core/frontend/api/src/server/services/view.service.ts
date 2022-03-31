@@ -1,7 +1,6 @@
 import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
-import { Request, Response } from 'express';
 import {UrlWithParsedQuery} from "url";
 
 
@@ -22,6 +21,7 @@ export class ViewService implements OnModuleInit {
       });
       await this.server.prepare();
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   }

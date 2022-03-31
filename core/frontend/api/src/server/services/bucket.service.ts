@@ -1,7 +1,7 @@
 import {HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
-import mime, {lookup} from "mime";
+import mime from "mime";
 import {Observable} from "rxjs";
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -13,7 +13,7 @@ import {
 @Injectable()
 export class BucketService {
 
-    private methods = ["checkAccess", "getMeta", "info", "get", "list", "completePath", "upload", "download"];
+    private methods = ["checkAccess", "getMeta", "info", "get", "list", "completePath", /*"upload", */"download"];
     private publicPaths = ["/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
 
@@ -25,7 +25,7 @@ export class BucketService {
         return new Promise((resolve) => {
             try {
                 const metaPayload: payloadInterface = {
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     api: 'fs',
                     act: 'info',
                     payload: {
@@ -50,10 +50,11 @@ export class BucketService {
                 }, (err) => {
                     resolve(err);
                 }, () => {
-
+                    // do nothing
                 });
 
             } catch (err) {
+                // eslint-disable-next-line no-console
                 console.log(err);
                 resolve(err);
             }
@@ -61,7 +62,7 @@ export class BucketService {
         });
     }
 
-    private upload(params: any, config){
+    /*private upload(params: any, config){
         return new Observable(subscriber => {
 
             const handshake = params.perform({
@@ -69,7 +70,7 @@ export class BucketService {
                 api: 'protocol',
                 act: 'startHandshake',
                 payload: {
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     indication: {
                         api: 'fs',
                         act: 'upload'
@@ -77,11 +78,13 @@ export class BucketService {
                 }
             });
 
-            handshake.theObserver.subscribe(data => {
+            handshake.theObserver.subscribe(() => {
                 //console.log(data);
             }, err => {
+                // eslint-disable-next-line no-console
                 console.log(err);
             }, () => {
+                // eslint-disable-next-line no-console
                 console.log('upload complete');
             })
 
@@ -89,10 +92,12 @@ export class BucketService {
                 params.initiator.subscribe(data => {
                     handshakeResponse.thePusher.next(data)
                 }, err => {
+                    // eslint-disable-next-line no-console
                     console.log(err);
                     handshakeResponse.thePusher.error(err);
                     subscriber.error(err);
                 }, () => {
+                    // eslint-disable-next-line no-console
                     console.log('Bucket.service: upload complete');
                     handshakeResponse.thePusher.complete();
                     subscriber.complete();
@@ -102,7 +107,7 @@ export class BucketService {
             });
 
         });
-    }
+    }*/
 
     private checkPaths(data: any){
         const params = data.params;
@@ -111,7 +116,7 @@ export class BucketService {
         if (data.params[0] && data.params[0].length) {
             file_name = params[0];
         }
-        this.publicPaths.forEach((e, i) => {
+        this.publicPaths.forEach((e) => {
             if(file_name.indexOf(e) === 0){
                 return true;
             }
@@ -139,7 +144,7 @@ export class BucketService {
         return new Promise((resolve) => {
             const path_parts = params.path.split('/');
             this.protocolService.sendMessage({
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'info',
                 payload: {
@@ -169,7 +174,7 @@ export class BucketService {
             }, err => {
                 resolve(err);
             }, () => {
-
+                // do nothing
             })
         });
     }
@@ -208,6 +213,7 @@ export class BucketService {
                 });
             } catch (err) {
                 resolve(null)
+                // eslint-disable-next-line no-console
                 console.log(err);
             }
 
@@ -217,7 +223,7 @@ export class BucketService {
     private _getFromBucket(params: any) {
         const path_parts = params.path.split('/');
         this.protocolService.sendMessage({
-            channel: 'bucket',
+            channel: `${process.env.app}_bucket`,
             api: 'fs',
             act: 'read',
             payload: {
@@ -265,9 +271,11 @@ export class BucketService {
                 const readStream = fs.createReadStream(file_path, {highWaterMark: 52428800});
 
                 readStream.on('data', function (chunk) {
+                    // eslint-disable-next-line no-console
                     console.log('Buffering - ' + complete_path);
                     observer.next({type: "Buffer", data: chunk});
                 }).on('end', function () {
+                    // eslint-disable-next-line no-console
                     console.log('Done - ' + complete_path);
                     observer.complete();
                 });
@@ -284,7 +292,7 @@ export class BucketService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'list',
                 payload: {
@@ -304,7 +312,7 @@ export class BucketService {
     public completePath (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'completePath',
                 payload: {
@@ -325,7 +333,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'download',
                 payload: {
@@ -346,6 +354,7 @@ export class BucketService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.httpService." + data.act + " not found");
         }
         return null;

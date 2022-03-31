@@ -17,12 +17,12 @@ export class PagesService {
             (async () => {
                 try{
                     const payload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'page',
                                 how: "AND",
@@ -58,12 +58,12 @@ export class PagesService {
             (async () => {
                 try {
                     const pageReq: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'page',
                                 include: [{
@@ -99,12 +99,12 @@ export class PagesService {
                     }
 
                     const settingPayload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'setting'
                             }
@@ -129,6 +129,7 @@ export class PagesService {
                     subscriber.next({type: 'CompletePage', data: formattedPage});
                     subscriber.complete();
                 } catch (err) {
+                    // eslint-disable-next-line no-console
                     console.log('err', err)
                     subscriber.error(err);
                     subscriber.complete();
@@ -142,6 +143,7 @@ export class PagesService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.pagesService." + data.act + " not found");
         }
         return null;

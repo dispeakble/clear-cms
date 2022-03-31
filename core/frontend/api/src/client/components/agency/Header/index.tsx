@@ -3,8 +3,6 @@ import LinkItem from './LinkItem'
 import {HeaderContainer, HeaderWrapper, IconWrapper, InputSearch, InputWrapper, List} from './styled'
 import * as React from "react";
 
-
-
 const Header = (props: any) => {
     const links = props.links;
 
@@ -14,7 +12,7 @@ const Header = (props: any) => {
                 <Logo/>
                 <List>
                     {
-                        links.map((link: any, index: number) => <LinkItem key={`${index}`} {...link} />)
+links.map((link: any, index: number) => <LinkItem key={`${index}`} {...link} />)
                     }
                 </List>
                 <InputWrapper>
@@ -30,7 +28,6 @@ const Header = (props: any) => {
         </HeaderContainer>
     )
 }
-
 
 Header.defaultProps = {
     links: [

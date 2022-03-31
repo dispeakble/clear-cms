@@ -6,23 +6,23 @@ import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import multer from "multer";
-import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {Observable} from "rxjs";
 
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: 'frontendproxy',
+        name: `${process.env.app}_frontendproxy`,
         version: '21.08.26',
         description: 'the main http frontend proxy (gateway)',
         started: new Date(),
         config: {
-            channel: 'frontendproxy',
+            channel: `${process.env.app}_frontendproxy`,
             restart: true,
             stop: false
         },
         dependencies: [{
-            name: 'hub',
+            name: `${process.env.app}_hub`,
             version: 'latest'
         }]
     };
@@ -75,8 +75,7 @@ export class AppController {
             this.wsGateway.registerCallbacks({
                 callbacks: {
                     "onMessage": async (params) => {
-                        const response = await this.onMessage(params);
-                        return response;
+                        return await this.onMessage(params);
                     }
                 }
             });
@@ -93,11 +92,11 @@ export class AppController {
             let multerFinish = false;
             const multerObj = multer({
                 storage: {
-                    _handleFile: (req, file, cb) => {
-                        totalFiles = Number(req.body.totalFiles);
+                    _handleFile: (req, file) => {
+                        totalFiles = Number(body.totalFiles);
                         multerFinish = true;
                         //we will start a REDIS handshake with the consumer
-                        let handshake = this.protocolService.startHandshake({
+                        const handshake = this.protocolService.startHandshake({
                             channel: this.portChannel(),
                             indication: {
                                 api: 'bucket',
@@ -120,14 +119,14 @@ export class AppController {
 
                             //we use the pusher to send the init file upload command
                             handshakeResponse['thePusher'].next({
-                                api: req.body.api,
-                                act: req.body.act,
+                                api: body.api,
+                                act: body.act,
                                 payload: {
                                     type: 'meta',
                                     length: file.size,
-                                    path: req.body.path,
+                                    path: body.path,
                                     filename: file.fieldname,
-                                    replace: "true" === req.body.replace
+                                    replace: "true" === body.replace
                                 }
                             });
 
@@ -159,13 +158,10 @@ export class AppController {
                                     res.end(JSON.stringify({message: 'upload error'}));
                                 });
                             }, 1000);
-
-
-
                         });
                     },
-                    _removeFile: (req, file, cb) => {
-
+                    _removeFile: () => {
+                        console.log('will remove the uploaded file')
                     }
                 }
             }).any();
@@ -175,7 +171,6 @@ export class AppController {
                     this.logger.log(err)
                     return;
                 }
-
             });
 
             const start_date = new Date().getTime();
@@ -215,7 +210,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: 'frontendproxy',
+                                channel: `${process.env.app}_frontendproxy`,
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {
@@ -256,19 +251,18 @@ export class AppController {
 
     }
 
-    //@UseGuards(HttpAuthGuard)
     @Get('*')
     async onGet(@Res() res: Response, @Req() req: Request, @Session() session) {
         try {
 
             const fileReq = {
-                "channel": "frontend",
-                "payload": {
-                    "ip": req.ip,
-                    "hostname": req.hostname,
-                    "path": req.params[0],
-                    "headers": req.headers,
-                    "query": req.query
+                channel: `${process.env.app}_frontend`,
+                payload: {
+                    ip: req.ip,
+                    hostname: req.hostname,
+                    path: req.params[0],
+                    headers: req.headers,
+                    query: req.query
                 }
             };
 
@@ -398,44 +392,18 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'frontendproxy'})
-    public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
+    @MessagePattern({message: `${process.env.app}_frontendproxy`})
+    public async onRedisMessage(@Payload() data: any) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontendproxy'})
-    public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
+    @EventPattern({event: `${process.env.app}_frontendproxy`})
+    public async onRedisEvent(@Payload() data: any) {
         return this.perform(data);
     }
 
     private portChannel() {
-
         return this.publicPortMap[process.env.backend_port];
-
-        /*const headers = params.headers;
-        let port = headers.host.split(':')[1];
-
-        if (!port) {
-            if (headers.hasOwnProperty('x-forwarded-port') && headers['x-forwarded-port']) {
-                port = +headers['x-forwarded-port'];
-            } else {
-                port = 0;
-            }
-        }
-
-        if (!this.publicPortMap.hasOwnProperty(port) || !this.publicPortMap[port]) {
-            this.logger.log(headers)
-            this.logger.log(JSON.stringify(headers));
-            return null;
-        }
-        if(params.returnPort) {
-            if(this.publicPortMap.hasOwnProperty(port)){
-                return +port;
-            }
-        } else {
-            return this.publicPortMap[port];
-        }*/
-
     }
 
     private onMessage(params) {

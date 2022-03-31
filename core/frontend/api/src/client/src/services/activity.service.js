@@ -38,6 +38,7 @@ class ActivityService {
                 try {
                     payload = JSON.parse(payload);
                 } catch (err) {
+                    // eslint-disable-next-line no-console
                     console.log(err);
                     this.stop();
                 }

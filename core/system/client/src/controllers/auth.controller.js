@@ -12,7 +12,8 @@ class AuthController extends Component {
     control = {
         login: (params) => this.login(params),
         logout: (params) => this.logout(params),
-        recover: (params) => this.recover(params)
+        recover: (params) => this.recover(params),
+        reset: (params) => this.reset(params)
     };
 
     async componentDidMount() {
@@ -67,7 +68,45 @@ class AuthController extends Component {
     }
 
     recover(params) {
-        console.log('will call recover api', params);
+        return new Promise((resolve) => {
+            this.sendPost({
+                module: 'system',
+                api: 'auth',
+                act: 'generateRecoverEmail',
+                payload: params
+            }).then(async (response) => {
+                if (response && response.success) {
+                    const wsConnected = await this.props.services.ws.start();
+                    if (wsConnected) {
+                        this.props.history.push('/view-auth/recovered');
+                        window.location.reload(false);
+                    }
+                    return resolve(response);
+                }
+                resolve(false);
+            });
+        });
+    }
+
+    reset(params) {
+       return new Promise((resolve) => {
+           this.sendPost({
+               module: 'system',
+               api: 'auth',
+               act :'doChangePassword',
+               payload: params
+           }).then(async (response) => {
+               if(response && response.email) {
+                   localStorage.setItem('admin', JSON.stringify({ fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email }));
+                   const wsConnected = await this.props.services.ws.start();
+                   if (wsConnected) {
+                       this.props.history.push('/');
+                   }
+                   return resolve(response)
+               }
+               resolve(false)
+           })
+       })
     }
 
     onMessage(params) {

@@ -13,6 +13,8 @@
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="NODE_ENV" value="development" />
       <env name="SERVER_URL" value="http://localhost:9898" />
+      <env name="tpl_ver" value="v1" />
+      <env name="app" value="marioviajes" />
     </envs>
     <method v="2" />
   </configuration>

@@ -17,13 +17,13 @@ const PageComponent: NextPage = (props) => {
     const [cards, setCards] = useState<[]>([])
     useEffect(() => {
         const fetchHotels = async () => {
-            const response = await fetch('http://localhost:9898/api/agency/hotel');
+        const response = await fetch('http://localhost:9898/api/agency/hotel');
             const data = await response.json();
             setCards(data.rows)
         }
         fetchHotels()
     }, [props])
-    return (
+return (
         <Agency>
             <Header/>
             <Hero/>

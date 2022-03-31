@@ -14,13 +14,14 @@ import CardBody from "components/Card/CardBody.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardFooter from "components/Card/CardFooter.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 import {Helmet} from "react-helmet";
 
 import styles from "assets/jss/clear-crm/views/viewAuth.js";
 
 import PropTypes from "prop-types";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class ViewAuth extends Component {
     state = {
@@ -28,11 +29,14 @@ class ViewAuth extends Component {
         buttonState: false,
         emailValid: false,
         passwordValid: false,
+        passwordConfirm: '',
         email: "",
         password: "",
         credentialsErrorMessage: "",
         removeResetMessage: "",
         resetSuccessMessage: null,
+        _passwordStrength: -1,
+        _confirmPasswordStrength: -1,
         loginText: "",
         loginButton: "",
         loginTitle: "",
@@ -58,7 +62,7 @@ class ViewAuth extends Component {
                             place="tc"
                             color="success"
                             icon={DoneOutline}
-                            message="Password successfully reset. Please check your e-mail."
+                            message="A password recovery link has been sent. Please check your e-mail."
                         />
                     </div>
                 )
@@ -71,6 +75,40 @@ class ViewAuth extends Component {
         this.changeTexts();
 
     }
+
+    checkPasswordStrength = (passwordStrengthId, value) => {
+        const hasNumber = (value) => {
+            return new RegExp(/[0-9]/).test(value);
+        };
+
+        const hasMixed = (value) => {
+            return new RegExp(/[a-z]/).test(value) && new RegExp(/[A-Z]/).test(value);
+        };
+
+        const hasSpecial = (value) => {
+            return new RegExp(/[!#@$%^&*)(+=._-]/).test(value);
+        };
+
+        if (value.length >= 7 && hasNumber(value) && hasMixed(value) && hasSpecial(value)) {
+            this.setState({[passwordStrengthId]: 3});
+        } else if (
+            (value.length >= 6 && hasNumber(value) && hasMixed(value)) ||
+            (value.length >= 6 && hasNumber(value) && hasSpecial(value)) ||
+            (value.length >= 6 && hasMixed(value) && hasSpecial(value))
+        ) {
+            this.setState({[passwordStrengthId]: 2});
+        } else if (
+            (value.length >= 5 && hasNumber(value)) ||
+            (value.length >= 5 && hasMixed(value)) ||
+            (value.length >= 5 && hasSpecial(value))
+        ) {
+            this.setState({[passwordStrengthId]: 1});
+        } else if (value.length >= 5) {
+            this.setState({[passwordStrengthId]: 0});
+        } else {
+            this.setState({[passwordStrengthId]: -1});
+        }
+    };
 
     changeTexts(){
         const url = this.props.location.pathname;
@@ -87,14 +125,21 @@ class ViewAuth extends Component {
                 loginButton: "Recover Password",
                 loginTitle: "Recover your admin password"
             });
+        } else if(url.startsWith('/password-reset')){
+            this.setState({
+                loginText: "Enter new password",
+                loginButton: "Change Password",
+                loginTitle: "Recover your admin password"
+            })
         }
     }
 
     handleInputChange = (event) => {
         switch (event.target.id) {
             case "email":
-                const emailValid = event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-                this.setState({emailValid: emailValid, email: event.target.value}, this.applyAuthButtonState);
+                this.setState({
+                    emailValid: event.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i),
+                    email: event.target.value}, this.applyAuthButtonState);
                 break;
             case "password":
                 this.setState(
@@ -104,7 +149,18 @@ class ViewAuth extends Component {
                     },
                     this.applyAuthButtonState
                 );
+                this.checkPasswordStrength("_passwordStrength", event.target.value)
+                break;
+            case "passwordConfirm":
 
+                this.setState(
+                    {
+                        confirmPasswordValid: event.target.value.length >= 3 && event.target.value.length <= 30,
+                        passwordConfirm: event.target.value
+                    },
+                    this.applyAuthButtonState
+                );
+                this.checkPasswordStrength("_confirmPasswordStrength", event.target.value)
                 break;
             default:
                 break;
@@ -119,9 +175,20 @@ class ViewAuth extends Component {
                 authButtonDisabled: this.state.emailValid && this.state.passwordValid ? {} : {disabled: true}
             });
         } else {
-            this.setState({
-                authButtonDisabled: this.state.emailValid ? {} : {disabled: true}
-            });
+            if(this.props.location.pathname === "/recover-password"){
+                this.setState({
+                    authButtonDisabled: this.state.emailValid ? {} : {disabled: true}
+                });
+            } else if(this.props.location.pathname === "/password-reset") {
+                this.setState({
+                    authButtonDisabled:
+                        this.state.passwordValid
+                        && this.state._passwordStrength > 0
+                        && (this.state.password === this.state.passwordConfirm)
+                            ? {}
+                            : {disabled: true}
+                });
+            }
         }
     };
 
@@ -145,6 +212,7 @@ class ViewAuth extends Component {
             });
 
             if (response && response.email === this.state.email) {
+
                 history.push("/");
                 this.changeTexts();
             } else {
@@ -153,16 +221,32 @@ class ViewAuth extends Component {
             }
 
         } else if (this.props.location.pathname === "/recover-password") {
-            const response = this.props.control.recover({
+            const response = await this.props.control.recover({
                 email: this.state.email
             });
 
-            if (response && response.email === this.state.email) {
-                history.push("/view-auth/recovered");
-                this.changeTexts();
+            if (response) {
+                credentialsPassed = true;
             } else {
                 credentialsPassed = false;
                 errorMessage = "Email not found. Please check the typed email and try again.";
+            }
+        } else if (this.props.location.pathname === "/password-reset") {
+
+            const payload = this.props.location.search
+            const token = new URLSearchParams(payload).get("token")
+
+            const response = await this.props.control.reset({
+                password: this.state.password,
+                token: token
+            })
+
+            if(response){
+                credentialsPassed = true;
+                this.changeTexts()
+            } else {
+                credentialsPassed = false;
+                errorMessage = "Link has been expired, please try again with a new link.";
             }
         }
 
@@ -192,6 +276,36 @@ class ViewAuth extends Component {
 
         let loginOrRetrievePasswordURL = url.startsWith("/view-auth");
 
+        let strengthColors = ["red", "orange", "yellow", "darkgreen"];
+        let strengthTitle = ["weak", "medium", "strong", "very-strong"];
+
+        let passwordStrengthTitle = "";
+        let confirmPasswordStrengthTitle = "";
+
+        let passwordStrength = strengthColors.map(() => {
+            return "transparent";
+        });
+
+        let confirmPasswordStrength = strengthColors.map(() => {
+            return "transparent";
+        });
+
+        if (this.state._passwordStrength > -1) {
+            passwordStrengthTitle = "";
+            for (let i = 0; i <= this.state._passwordStrength; i++) {
+                passwordStrength[i] = strengthColors[i];
+                passwordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
+            }
+        }
+
+        if (this.state._confirmPasswordStrength > -1) {
+            confirmPasswordStrengthTitle = "";
+            for (let i = 0; i <= this.state._confirmPasswordStrength; i++) {
+                confirmPasswordStrength[i] = strengthColors[i];
+                confirmPasswordStrengthTitle = strengthTitle[i].replace('-', ' ') + ' password';
+            }
+        }
+
         return (
             <div>
                 <Helmet>
@@ -212,27 +326,83 @@ class ViewAuth extends Component {
                                         </CardHeader>
                                         <p className={classes.divider}>{this.state.loginText}</p>
                                         <CardBody>
-                                            <div className={classes.inputContainer}>
-                                                <CustomInput
-                                                    name="email"
-                                                    labelText="Email"
-                                                    id="email"
-                                                    formControlProps={{
-                                                        fullWidth: true,
-                                                        onChange: (event) => this.handleInputChange(event),
-                                                    }}
-                                                    inputProps={{
-                                                        type: "email",
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <Icon className={classes.inputIconsColor}>
-                                                                    account_circle
-                                                                </Icon>
-                                                            </InputAdornment>
-                                                        ),
-                                                    }}
-                                                />
-                                            </div>
+                                            {
+                                                this.props.location.pathname !== "/password-reset" ?
+                                                    (<div className={classes.inputContainer}>
+                                                        <CustomInput
+                                                            name="email"
+                                                            labelText="Email"
+                                                            id="email"
+                                                            formControlProps={{
+                                                                fullWidth: true,
+                                                                onChange: (event) => this.handleInputChange(event),
+                                                            }}
+                                                            inputProps={{
+                                                                type: "email",
+                                                                endAdornment: (
+                                                                    <InputAdornment position="end">
+                                                                        <Icon className={classes.inputIconsColor}>
+                                                                            account_circle
+                                                                        </Icon>
+                                                                    </InputAdornment>
+                                                                ),
+                                                            }}
+                                                        />
+                                                    </div>) :
+                                                    (
+                                                        <>
+                                                            <div className={classes.inputContainer}>
+                                                                <CustomInput
+                                                                    labelText="Password"
+                                                                    id="password"
+                                                                    formControlProps={{
+                                                                        fullWidth: true,
+                                                                        onChange: (event) => this.handleInputChange(event),
+                                                                    }}
+                                                                    inputProps={{
+                                                                        type: "password",
+                                                                        endAdornment: (
+                                                                            <InputAdornment position="end">
+                                                                                <Tooltip placement={"top"} arrow={true} open={true} title={passwordStrengthTitle}>
+                                                                                    <div className={classes.passwordStrength} style={{
+                                                                                        background: `conic-gradient(${passwordStrength.join(', ')} )`
+                                                                                    }}/>
+                                                                                </Tooltip>
+
+                                                                                <Icon className={classes.inputIconsColor}> lock_outline </Icon>
+                                                                            </InputAdornment>
+                                                                        ),
+                                                                        autoComplete: "off",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            <div className={classes.inputContainer}>
+                                                                <CustomInput
+                                                                    labelText="Confirm password"
+                                                                    id="passwordConfirm"
+                                                                    formControlProps={{
+                                                                        fullWidth: true,
+                                                                        onChange: (event) => this.handleInputChange(event),
+                                                                    }}
+                                                                    inputProps={{
+                                                                        type: "password",
+                                                                        endAdornment: (
+                                                                            <InputAdornment position="end">
+                                                                                <Tooltip placement={"top"} arrow={true} open={true} title={confirmPasswordStrengthTitle}>
+                                                                                    <div className={classes.passwordStrength} style={{
+                                                                                        background: `conic-gradient(${confirmPasswordStrength.join(', ')} )`
+                                                                                    }}/>
+                                                                                </Tooltip>
+
+                                                                                <Icon className={classes.inputIconsColor}> lock_outline </Icon>
+                                                                            </InputAdornment>
+                                                                        ),
+                                                                        autoComplete: "off",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </>)
+                                            }
                                             <div className={classes.inputContainer}>
                                                 {loginOrRetrievePasswordURL || this.props.location.pathname === "/view-auth/recovered" ? (
                                                     <React.Fragment>

@@ -1,10 +1,10 @@
-import {Controller, Get, Post, HttpStatus, Inject, Logger, Param, Req, Res, Body} from '@nestjs/common';
-import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {Body, Controller, Get, HttpStatus, Inject, Logger, Post, Req, Res} from '@nestjs/common';
+import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import { ViewService } from '../services/view.service';
+import {ViewService} from '../services/view.service';
 import {Request, Response} from "express";
-import { parse } from "url";
+import {parse} from "url";
 import {Observable} from "rxjs";
 
 @Controller('/')
@@ -17,7 +17,7 @@ export class AppController {
         description: 'Frontend Module',
         started: new Date(),
         config: {
-            channel: 'frontend',
+            channel: `${process.env.app}_frontend`,
             permissions: {
                 stop: false,
                 restart: true,
@@ -25,10 +25,10 @@ export class AppController {
             }
         },
         dependencies: [{
-            name: 'hub',
+            name: `${process.env.app}_hub`,
             version: 'latest'
         }, {
-            name: 'frontendproxy',
+            name: `${process.env.app}_frontendproxy`,
             version: 'latest'
         }]
     };
@@ -54,13 +54,13 @@ export class AppController {
         this.mainService = this;
     }
 
-    @MessagePattern({message: 'frontendapi'})
-    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    @MessagePattern({message: `${process.env.app}_frontend`})
+    public onMessage(@Payload() data: payloadInterface) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'frontendapi'})
-    public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
+    @EventPattern({event: `${process.env.app}_frontend`})
+    public onEvent(@Payload() payload: payloadInterface) {
         return this.perform(payload);
     }
 
@@ -77,10 +77,10 @@ export class AppController {
                 stop: false
             },
             dependencies: [{
-                name: 'hub',
+                name: `${process.env.app}_hub`,
                 version: 'latest'
             },{
-                name: 'frontendproxy',
+                name: `${process.env.app}_frontendproxy`,
                 version: 'latest'
             }]
         };
@@ -88,12 +88,12 @@ export class AppController {
         const reg_msg = await this.systemService.registerModule(payload);
         this.logger.log(reg_msg);
         const port_map_msg = await this.protocolService.sendMessage({
-            channel: 'hub',
+            channel: `${process.env.app}_hub`,
             api: 'module',
             act: 'mapPort',
             payload: {
-                channel: 'frontendapi',
-                target: 'frontendproxy',
+                channel: `${process.env.app}_frontend`,
+                target: `${process.env.app}_frontendproxy`,
                 port: process.env.backend_port,
                 defaults: {
                     url: '/'
@@ -115,16 +115,16 @@ export class AppController {
 
 
     @Get('files/*')
-    public async getFiles(@Req() req: Request, @Res() res: Response, @Param('path') path: string) {
+    public async getFiles(@Req() req: Request, @Res() res: Response) {
         req.params[0] = `files/${req.params[0]}`;
         const fileReq = {
-            "channel": "frontendapi",
-            "payload": {
-                "ip": req.ip,
-                "hostname": req.hostname,
-                "params": req.params,
-                "headers": req.headers,
-                "query": req.query
+            channel: `${process.env.app}_frontend`,
+            payload: {
+                ip: req.ip,
+                hostname: req.hostname,
+                params: req.params,
+                headers: req.headers,
+                query: req.query
             }
         };
 
@@ -148,7 +148,7 @@ export class AppController {
             try {
                 switch (data.type) {
                     case "meta":
-                        this.filesResponse({res, file: data, fileStats});
+                        AppController.filesResponse({res, file: data, fileStats});
 
                         file_meta.content_type = data.content_type;
                         file_meta.content_length = data.content_length;
@@ -159,6 +159,7 @@ export class AppController {
                         break;
                 }
             } catch (err) {
+                // eslint-disable-next-line no-console
                 console.log(err);
             }
 
@@ -178,27 +179,27 @@ export class AppController {
             const data = await this.agencyService.getHotels()
             return res.json(data)
         }catch(err){
+            // eslint-disable-next-line no-console
             console.log(err)
         }
     }
 
     @Get('api/*')
-    public async api(@Req() req: Request, @Res() res: Response) {
+    public async api(@Req() req: Request) {
+        //TODO get the db from a
         const parts = req.url.split('/');
-        const response = await this.perform({ //TODO get from the first portion of URL eg: /api/agency/
-            channel: 'db',
+        return await this.perform({
+            channel: `${process.env.app}_db`,
             api: 'sql',
             act: 'get',
             payload: {
                 db: parts[2],
-                channel: 'frontend',
+                channel: `${process.env.app}_frontend`,
                 data: {
                     what: parts[3],
                 }
             }
         }).toPromise();
-
-        return response;
     }
 
 
@@ -218,7 +219,7 @@ export class AppController {
         await this.viewService.handler(mockRequest, res, url);
     }
 
-    @Post('results-data')
+    @Get('api/results-data')
     public async resultsData(@Res() res: Response, @Body() body){
         const {page} = body
         const dummy = [[
@@ -293,7 +294,7 @@ export class AppController {
         return res.status(HttpStatus.OK).json(ret)
     }
 
-    private filesResponse(params) {
+    private static filesResponse(params) {
         const { res, file, fileStats } = params;
         res.set("Content-Type", file.content_type);
         res.set("Content-Length", file.content_length);
@@ -310,7 +311,7 @@ export class AppController {
         }
     }
 
-    private apiResponse(params) {
+    private static apiResponse(params) {
         const { res, data } = params;
         res.set("Content-Type", "application/json");
         res.set("Content-Length", params.data.length);

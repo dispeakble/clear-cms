@@ -5,13 +5,6 @@
 const serverUrl = process.env.SERVER_URL || 'http://localhost:9898';
 
 module.exports = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ["@svgr/webpack"]
-    });
-    return config;
-  },
   reactStrictMode: true,
   distDir: '../../.next',
   devIndicators: {
@@ -20,6 +13,10 @@ module.exports = {
   serverRuntimeConfig: {
     // Will only be available on the server side
     enabled: true
+  },
+  i18n: {
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
   },
 
   publicRuntimeConfig: {

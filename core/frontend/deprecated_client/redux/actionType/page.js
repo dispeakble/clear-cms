@@ -1,1 +1,0 @@
-export const PAGE_DATA_LOADED = 'PAGE_DATA_LOADED';

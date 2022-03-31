@@ -14,6 +14,7 @@ import {PublicTheme} from "../models/general/public.theme.model";
 import {Auth} from "../models/admin/auth.model";
 import {User} from "../models/general/user.model";
 import {QueryService} from "../../../services/query.service";
+import {Token} from "../models/general/token.model";
 
 @Injectable()
 export class MainService {
@@ -29,6 +30,7 @@ export class MainService {
         @InjectModel(Category, 'main') private categoryModel: Category,
         @InjectModel(PublicTheme, 'main') private publicThemeModel: PublicTheme,
         @InjectModel(User, 'main') private userModel: User,
+        @InjectModel(Token, 'main') private tokenModel: Token,
 
         //pages
         @InjectModel(PageBox, 'main') private pageBoxModel: PageBox,

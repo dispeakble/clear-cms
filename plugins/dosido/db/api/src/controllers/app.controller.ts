@@ -18,7 +18,7 @@ export class AppController {
         },
         dependencies: [
             {
-                name: 'hub',
+                name: `${process.env.app}_hub`,
                 version: 'latest'
             }
         ],
@@ -52,12 +52,12 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'db'})
+    @MessagePattern({message: `${process.env.app}_db`})
     public onMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'db'})
+    @EventPattern({event: `${process.env.app}_db`})
     public onEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }

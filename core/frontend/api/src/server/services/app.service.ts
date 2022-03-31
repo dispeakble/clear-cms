@@ -1,5 +1,4 @@
 import {Inject, Injectable} from '@nestjs/common';
-import {payloadInterface} from "../interfaces/payload.interface";
 
 @Injectable()
 export class AppService {
@@ -29,7 +28,8 @@ export class AppService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload);
         } else {
-            console.log("FrontendApi.AppService." + data.act + " not found");
+            // eslint-disable-next-line no-console
+            console.log("Frontend.AppService." + data.act + " not found");
         }
         return null;
     }

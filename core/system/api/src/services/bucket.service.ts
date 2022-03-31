@@ -26,7 +26,7 @@ export class BucketService {
         return new Promise((resolve) => {
             try {
                 const metaPayload: payloadInterface = {
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     api: 'fs',
                     act: 'info',
                     payload: {
@@ -70,7 +70,7 @@ export class BucketService {
                 api: 'protocol',
                 act: 'startHandshake',
                 payload: {
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     indication: {
                         api: 'fs',
                         act: 'upload'
@@ -143,7 +143,7 @@ export class BucketService {
         return new Promise((resolve) => {
             const path_parts = params.path.split('/');
             this.protocolService.sendMessage({
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'info',
                 payload: {
@@ -243,7 +243,7 @@ export class BucketService {
     private _getFromBucket(params: any) {
         const path_parts = params.path.split('/');
         this.protocolService.sendMessage({
-            channel: 'bucket',
+            channel: `${process.env.app}_bucket`,
             api: 'fs',
             act: 'read',
             payload: {
@@ -319,7 +319,7 @@ export class BucketService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'list',
                 payload: {
@@ -339,7 +339,7 @@ export class BucketService {
     public completePath (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'completePath',
                 payload: {
@@ -358,7 +358,7 @@ export class BucketService {
     public rm (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'rm',
                 payload: params
@@ -376,7 +376,7 @@ export class BucketService {
     public rename (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'rename',
                 payload: {
@@ -399,7 +399,7 @@ export class BucketService {
             //check if the file already exists in the selected folder
             //if it already exists then ask the user to overwrite
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'move',
                 payload: {
@@ -421,7 +421,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'download',
                 payload: {
@@ -442,7 +442,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'archive',
                 payload: {
@@ -465,7 +465,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'extract',
                 payload: {
@@ -486,7 +486,7 @@ export class BucketService {
     public mkdir (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'mkdir',
                 payload: {

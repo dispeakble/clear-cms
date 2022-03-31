@@ -24,8 +24,6 @@ export const List = styled.ul`
   display: flex;
   gap: 30px;
   margin-left: 550px;
-
-
 `
 
 export const InputWrapper = styled.div`

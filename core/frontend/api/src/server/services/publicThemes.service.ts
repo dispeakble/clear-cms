@@ -13,6 +13,7 @@ export class PublicThemesService {
     }
 
     onApplicationBootstrap() {
+        // do nothing
     }
 
     public async list() {
@@ -20,12 +21,12 @@ export class PublicThemesService {
             (async () => {
                 try {
                     const payload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 fields: ["id", "title", "isDefault", "thumbnail"]
@@ -59,12 +60,12 @@ export class PublicThemesService {
             (async () => {
                 try {
                     const payload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 fields: [
@@ -137,12 +138,12 @@ export class PublicThemesService {
                     }
 
                     const request: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'set',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 where: params.where,
@@ -202,12 +203,12 @@ export class PublicThemesService {
                         mui: params.mui
                     }
                     const request: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 data: {
@@ -237,12 +238,12 @@ export class PublicThemesService {
             (async () => {
                try {
                    const request: payloadInterface = {
-                       channel: 'db',
+                       channel: `${process.env.app}_db`,
                        api: 'sql',
                        act: 'rem',
                        payload: {
                            db: 'main',
-                           channel: 'frontend',
+                           channel: `${process.env.app}_frontend`,
                            data: {
                                what: 'publicTheme',
                                where: params
@@ -265,6 +266,7 @@ export class PublicThemesService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.publicThemes." + data.act + " not found");
         }
         return null;

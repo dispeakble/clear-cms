@@ -23,12 +23,12 @@ export class UsersService {
             })
 
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'user',
                         fields: ["id", "fname", "lname", "email", "type", "active", "createdAt", "accessedAt", "updatedAt"],
@@ -59,12 +59,12 @@ export class UsersService {
             (async () => {
                 try {
                     const request: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'user',
                                 data: {
@@ -80,6 +80,7 @@ export class UsersService {
                     };
 
                     const res = await this.protocolService.sendMessage(request).toPromise();
+
 
                     subscriber.next({
                         success: "The user was added",
@@ -98,12 +99,12 @@ export class UsersService {
     public set(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'user',
                         data: params.data,
@@ -128,12 +129,12 @@ export class UsersService {
     public rem(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: 'user',
                         where: {

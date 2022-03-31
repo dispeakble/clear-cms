@@ -50,21 +50,6 @@ class App extends Component {
                 icon: "apps",
                 subitems: [
                     {
-                        //TODO get this from hub module list
-                        toLink: "/pages",
-                        name: "Pages",
-                        controller: "pages",
-                        icon: "web",
-                        active: false
-                    },
-                    {
-                        toLink: "/categories",
-                        name: "Categories",
-                        controller: "categories",
-                        icon: "category",
-                        active: false,
-                    },
-                    {
                         toLink: "/themes",
                         name: "Themes",
                         controller: "themes",
@@ -78,13 +63,6 @@ class App extends Component {
                         name: "Bucket",
                         active: false,
                     },
-                    {
-                        toLink: "/users",
-                        name: "Users",
-                        controller: "users",
-                        icon: "people",
-                        active: false,
-                    }
                 ],
             },
             {
@@ -93,28 +71,6 @@ class App extends Component {
                 icon: "apps",
                 subitems: [
 
-                    {
-                        toLink: "/labels",
-                        name: "Labels",
-                        controller: "labels",
-                        icon: "subject",
-                        active: false,
-                    }
-                ],
-            },
-            {
-                id: 3,
-                name: "E-Commerce",
-                icon: "apps",
-                subitems: [
-
-                    {
-                        toLink: "/labels",
-                        name: "Labels",
-                        controller: "labels",
-                        icon: "subject",
-                        active: false,
-                    }
                 ],
             },
             {
@@ -132,7 +88,7 @@ class App extends Component {
                 ],
             },
         ],
-        excludeHeader: ["pages/preview", "view-auth", "recover-password", "logout", "products/preview"],
+        excludeHeader: ["pages/preview", "view-auth", "recover-password", "password-reset", "logout", "products/preview"],
         socket: {},
         defaultPalette: {}
     };
@@ -143,6 +99,14 @@ class App extends Component {
         super();
         this.state.services.ws = new WsService();
         this.state.services.ws.start().then((connected) => {
+
+            this.unlisten = this.props.history.listen((location) => {
+                if (!this.state.services.ws.isConnected && !['/view-auth', '/logout', '/recover-password', "/password-reset", "/view-auth/recovered"].includes(location.pathname)) {
+                    console.log('app will redirect to login')
+                    this.props.history.push("/view-auth")
+                }
+            });
+
             if (!connected) {
                 console.log('app will redirect to login');
                 this.unlisten();
@@ -156,15 +120,6 @@ class App extends Component {
                     message: (response) => this.onMessage(response)
                 }
             });
-
-            this.unlisten = this.props.history.listen((location) => {
-                if (!this.state.services.ws.isConnected && !['/view-auth', '/logout', '/recover-password'].includes(location.pathname)) {
-                    console.log('app will redirect to login')
-                    this.props.history.push("/view-auth")
-                }
-            });
-
-
         });
 
     }
@@ -172,6 +127,57 @@ class App extends Component {
     componentDidMount() {
 
         this.getTheme();
+
+        let features = {
+            pages: false,
+            categories: false,
+            users: false
+        };
+
+        //const forcedFeatures = localStorage.setItem('features', JSON.stringify({pages: true, categories: true, users: true}));
+
+        try {
+            const forcedFeatures = JSON.parse(localStorage.getItem('features'));
+
+            if(forcedFeatures) {
+                features = Object.assign({}, features, forcedFeatures);
+            }
+
+        } catch (err) {
+
+        }
+
+        const moduleList = this.state.moduleList;
+
+        if(features.pages) {
+            moduleList[1].subitems.push({
+                toLink: "/pages",
+                name: "Pages",
+                controller: "pages",
+                icon: "web",
+                active: false
+            });
+        }
+
+        if(features.categories) {
+            moduleList[1].subitems.push({
+                toLink: "/categories",
+                name: "Categories",
+                controller: "categories",
+                icon: "category",
+                active: false,
+            });
+        }
+
+        if(features.users) {
+            moduleList[1].subitems.push({
+                toLink: "/users",
+                name: "Users",
+                controller: "users",
+                icon: "people",
+                active: false,
+            });
+        }
 
         const navPayload = this.state.moduleList.find((module) => {
             let foundItem = false;
@@ -404,6 +410,14 @@ class App extends Component {
                         />
                         <Route
                             path="/recover-password"
+                            render={(props) => {
+                                return (
+                                    <AuthController {...props} services={this.state.services}/>
+                                );
+                            }}
+                        />
+                        <Route
+                            path="/password-reset"
                             render={(props) => {
                                 return (
                                     <AuthController {...props} services={this.state.services}/>

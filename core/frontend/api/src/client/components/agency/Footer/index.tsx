@@ -103,6 +103,4 @@ Footer.defaultProps = {
     ]
 }
 
-
-
 export default Footer;

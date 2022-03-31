@@ -73,6 +73,7 @@ class GalleryModule extends Component {
 
                         return imgObject;
                     } catch (err) {
+                        // eslint-disable-next-line no-console
                         console.log(err);
                     }
 

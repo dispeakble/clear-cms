@@ -18,12 +18,12 @@ export class CategoriesService {
 
                 try{
                     const payload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'category',
                                 fields: ["id", "title", "description", "backgroundImage", "parentId"],
@@ -48,6 +48,7 @@ export class CategoriesService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
+            // eslint-disable-next-line no-console
             console.log("Frontend.categoriesService." + data.act + " not found");
         }
         return null;
