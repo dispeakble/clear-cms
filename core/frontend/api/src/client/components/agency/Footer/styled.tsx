@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {Colors, Widths} from "../../../assets/design-set";
 
 export const FooterWrapper = styled.footer`
-  margin-top: 120px;
+  margin-top: 60px;
 `
 
 export const TopSection = styled.section`
@@ -64,6 +64,8 @@ export const InputSearch = styled.input`
   border: 1px solid ${Colors.primaryColor};
   padding: 16px;
   outline: none;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 `
 
 export const InputSearchBtn = styled.button`

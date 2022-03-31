@@ -35,10 +35,16 @@ const GallerySlider = ({galleryImages}) => {
                 <GalleryImage src={galleryImages.filter(img => img.val === images[2])[0].img}/>
                 <SliderButtonContainer>
                     <SliderBtnLeft data-testid='arrow-slide-left' onClick={() => handleMainImage('-')}>
-                        <ChevronLeft style={{color: Colors.white, fontSize: '52px'}}/>
+                        <svg width="23" height="39" viewBox="0 0 23 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 37L3 18.875L21 2" stroke="white" stroke-width="3"/>
+                        </svg>
+
                     </SliderBtnLeft>
                     <SliderBtnRight data-testid='arrow-slide-right' onClick={() => handleMainImage('+')}>
-                        <ChevronRight style={{color: Colors.white, fontSize: '52px'}}/>
+                        <svg width="23" height="39" viewBox="0 0 23 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 2L20 20.125L2.00001 37" stroke="white" stroke-width="3"/>
+                        </svg>
+
                     </SliderBtnRight>
                 </SliderButtonContainer>
             </GalleryContainer>

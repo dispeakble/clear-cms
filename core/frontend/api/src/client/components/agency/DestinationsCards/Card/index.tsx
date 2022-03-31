@@ -9,27 +9,29 @@ import {
     CardTitle,
     Card,
     Image,
-    ZoomImage
+    ZoomImage,
+    CardContentWrapperTop
 } from "../styled";
 import StarRating from "../../StarRating";
-
-import ZoomPNG from '../../../../pages/agency/assets/Cards/zoom-icon.png'
 
 const CardView = ({value}) => {
     return (
         <Card>
             <CardContentWrapper>
-                <StarRating rating={value.Rating}/>
-                <CardTitle>{value.Name}</CardTitle>
-                <CardDescription>{`${value.Description}`.substr(0, 80)}...</CardDescription>
-                <CardDuration>{`${value.Address}`.substr(0, 40)}...</CardDuration>
+               <CardContentWrapperTop>
+                   <StarRating rating={value.Rating}/>
+                   <CardTitle>{value.Name}</CardTitle>
+                   <CardDescription>{`${value.Description}`.substr(0, 80)}...</CardDescription>
+                   <CardDuration>{`${value.Address}`.substr(0, 40)}...</CardDuration>
+                   <CardPrice>159$</CardPrice>
+               </CardContentWrapperTop>
                 <CardContentBottom>
-                    <CardPrice>159$</CardPrice>
+
                     <CardButton>Book Now</CardButton>
                 </CardContentBottom>
             </CardContentWrapper>
             <CardImageWrapper>
-                <Image src={value.Images}/>
+                <Image src={value.Image}/>
                 <ZoomImage>
                     <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_35_322)">

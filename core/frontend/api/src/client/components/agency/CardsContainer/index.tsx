@@ -19,49 +19,24 @@ import {
     Button
 } from './styled'
 
-const CardsContainer = (props) => {
+const CardsContainer = (props:any) => {
     const [card , setCard]=useState([])
-    const [activeAmount ,setActiceAmount]=useState(1)
-    const {cards} = props;
-
+    const [activeAmount ,setActiveAmount]=useState(0)
     const [] = useState(0);
 
     useEffect(() => {
         const fetchHotels = async () => {
             const response = await fetch('http://localhost:9898/api/agency/hotel');
             const data = await response.json();
-            setCard(data.rows)
+            const items = data.rows.slice(0, 3)
+            setCard(items)
         }
         fetchHotels()
     }, [])
 
-   const  renderElement =()=>{
-        if(activeAmount == 1){
-            return(
-                <CardTextItem >
-                    <CardTitle>Gran Canaria</CardTitle>
-                    <CardPrice>224$</CardPrice>
-                </CardTextItem>
-            )
-        }else if(activeAmount == 2){
-            return(
-                <CardTextItem >
-                    <CardTitle>Palma De Mallorca</CardTitle>
-                    <CardPrice>244$</CardPrice>
-                </CardTextItem>
-            )
-        }else{
-            return(
-                <CardTextItem >
-                    <CardTitle>Tenerife</CardTitle>
-                    <CardPrice>300$</CardPrice>
-                </CardTextItem>
-            )
-        }
 
-    }
 const handleChangeState =(index:number)=>{
-    setActiceAmount(index)
+    setActiveAmount(index)
 }
 
     return (
@@ -69,18 +44,29 @@ const handleChangeState =(index:number)=>{
            <CardsTabs  handleActiveHotel={handleChangeState}/>
             <Cards>
                 {
-                    card.map((hotel:any) => <Card>
+                    card.map((hotel:any,index:number) => <Card key={`${index}`}>
                         <CardImg>
                             <img src={hotel.Images}/>
                         </CardImg>
                         <CardContent>
                             <CardHead>
-                                <span>relax</span>
-                                <p>{hotel.Name}</p>
+                                <span>Relax</span>
+                                <p>4 Days 3 Nights</p>
                               <Button  >Book Now</Button>
                             </CardHead>
                             <CardTextContent>
-                                { renderElement() }
+                                <CardTextItem >
+                                    <CardTitle>Gran Canaria</CardTitle>
+                                    <CardPrice>224$</CardPrice>
+                                </CardTextItem>
+                                <CardTextItem >
+                                    <CardTitle>Palma De Mallorca</CardTitle>
+                                    <CardPrice>244$</CardPrice>
+                                </CardTextItem>
+                                <CardTextItem >
+                                    <CardTitle>Tenerife</CardTitle>
+                                    <CardPrice>300$</CardPrice>
+                                </CardTextItem>
                             </CardTextContent>
                         </CardContent>
                     </Card>)

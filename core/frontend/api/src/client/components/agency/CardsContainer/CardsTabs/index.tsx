@@ -4,18 +4,14 @@ import {TabButton, TabButtonActive, TabContainer} from "../../CardsContainer/sty
 const CardsTabs = ({categories ,handleActiveHotel}) => {
     const [activeCategory, setActiveCategory] = useState(() => categories[0])
     return (
-
         <TabContainer>
             {
-                categories.map((category:any , Index:number) => category === activeCategory ? (
-                    <TabButtonActive onClick={() => {
-                        console.log(Index)
+                categories.map((category:any , index:number) => category === activeCategory ? (
+                    <TabButtonActive key={`${index}`} onClick={() => {
                         setActiveCategory(category)
-
                     }}>{category}</TabButtonActive>
-
-                ) : (<TabButton onClick={() => {
-                    handleActiveHotel(Index)
+                ) : (<TabButton key={`${index}`} onClick={() => {
+                    handleActiveHotel(index)
                     setActiveCategory(category)
                 }}>{category}</TabButton>))
             }

@@ -12,8 +12,7 @@ import GallerySlider from "../../components/agency/GallerySlider";
 import AboutUs from '../../components/agency/AboutUs'
 import Slider from '../../components/agency/Slider'
 import RecommendedDestinations from "../../components/agency/DestinationsCards/RecommendedDestination";
-
-
+import DestinationCards from '../../components/agency/DestinationsCards/Destinations'
 const PageComponent: NextPage = (props) => {
     const [cards, setCards] = useState<[]>([])
     useEffect(() => {
@@ -21,12 +20,9 @@ const PageComponent: NextPage = (props) => {
             const response = await fetch('http://localhost:9898/api/agency/hotel');
             const data = await response.json();
             setCards(data.rows)
-
         }
         fetchHotels()
     }, [props])
-
-
     return (
         <Agency>
             <Header/>
@@ -34,11 +30,10 @@ const PageComponent: NextPage = (props) => {
             <UpcomingOffers/>
             <GallerySlider/>
             <AboutUs/>
-
             <RecommendedDestinations/>
             <Slider/>
+            <DestinationCards />
             <Footer/>
-
         </Agency>
     )
 };

@@ -47,12 +47,13 @@ export const Cards = styled.div`
 `
 export const Card = styled.div`
   background-color: ${Colors.white};
-  padding: 16px;
+  padding: 20px;
   box-shadow: ${Shadows.primaryShadow};
   border-radius: 16px;
 `;
 export const CardImg = styled.div`
   margin-bottom: 16px;
+  padding:0px 8px;
 
   img {
     height: 275px;
@@ -71,13 +72,17 @@ export const CardHead = styled.div`
     background-color: #FCE8DD;
     color: ${Colors.primaryColor};
     font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 2px 12px;
+    border-radius: 16px;
+    width: min-content;
+    font-size:14px;
+    font-weight: 500;
   }
 
   p {
     font-size: 14px;
     font-weight: 500;
+    color: ${Colors.gray}
   }
 
   button {
@@ -85,8 +90,9 @@ export const CardHead = styled.div`
     border: none;
     background-color: ${Colors.primaryColor};
     color: ${Colors.white};
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 500;
   }
 `
 export const CardTextContent = styled.div`

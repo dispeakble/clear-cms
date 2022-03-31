@@ -5,14 +5,14 @@ import {Check} from "@material-ui/icons";
 import BoxContainerBG from '../../../pages/agency/assets/Slider/slider-box-bg.jpg'
 
 export const SliderWrapper = styled.section`
-  margin: 80px 0px 120px 0px;
+  margin: 120px 0px 30px 0px;
 `
 
 export const SliderContainer = styled.div`
   width: 90%;
   max-width: ${Widths.containerWidth};
   margin: 0 auto;
-  box-shadow: ${Shadows.shadowMD};
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
   display: flex;
 `
 export const SliderLeft = styled.div`
@@ -43,10 +43,11 @@ export const SliderBox = styled.div`
 
 export const SliderBoxHeading = styled.h3`
   font-size: 35px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.25em;
   text-align: center;
   margin-bottom: 16px;
+  text-shadow:0px 4px 4px rgba(0,0,0,0.25);
 `
 export const SliderButton = styled.a`
 
@@ -67,6 +68,7 @@ export const ImageSliderHeading = styled.div`
   font-weight: 500;
   color: ${Colors.primaryColor};
   text-align: center;
+  margin-bottom:60px;
 `
 
 // Gallery
@@ -89,8 +91,9 @@ export const GalleryImage = styled.img`
 export const GalleryMainImage = styled(GalleryImage)`
   flex: 5;
   opacity: 1;
-  margin: 16px -16px 0px -16px;
+  margin: -26px -16px 0px -16px;
   z-index: 2;
+  height:380px;
 `;
 
 export const SliderButtonContainer = styled.div`
@@ -115,11 +118,12 @@ export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin: 50px 0px 0px 50px;
+  margin: 50px 0px 25px 50px;
 `
 export const ListItemContainer = styled.div`
   display: flex;
   gap: 16px;
+  align-items: baseline;
 `
 
 export const ListItemIcon = styled(Check)`

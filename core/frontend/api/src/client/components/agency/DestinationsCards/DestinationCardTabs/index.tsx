@@ -1,20 +1,37 @@
 import React, {useState} from 'react';
 import {TabButton, TabButtonActive, TabContainer} from "../../CardsContainer/styled";
-
-const DestinationCardTabs = ({categories}) => {
+import styled from 'styled-components'
+import {Colors} from "../../../../assets/design-set";
+const DestinationCardTabs = ({categories ,onChange}) => {
     const [activeCategory, setActiveCategory] = useState(() => categories[0])
     return (
 
-        <TabContainer>
+        <DestinationTabContainer>
             {
-                categories.map(category => category === activeCategory ? (<TabButtonActive onClick={() => setActiveCategory(category)}>{category}</TabButtonActive>
+                categories.map((category:any, index:number) => category === activeCategory ? (<DestinationTabButtonActive key={`${index}`} onClick={() => setActiveCategory(category)}>{category}</DestinationTabButtonActive>
 
-                ) : (<TabButton onClick={() => setActiveCategory(category)}>{category}</TabButton>))
+                ) : (<DestinationTabButton key={`${index}`} onClick={() => {
+                    setActiveCategory(category)
+                    onChange(category)
+                }}>{category}</DestinationTabButton>))
             }
-        </TabContainer>
+        </DestinationTabContainer>
 
     )
 }
+
+const DestinationTabContainer = styled(TabContainer)`
+  background-color: transparent;
+  box-shadow: none;
+`
+const DestinationTabButtonActive = styled(TabButtonActive)`
+  background-color: ${Colors.white};
+  color:${Colors.primaryColor};
+`
+
+const DestinationTabButton = styled(TabButton)`
+  color:${Colors.gray};
+`
 
 DestinationCardTabs.defaultProps = {
     categories: [

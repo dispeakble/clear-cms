@@ -12,7 +12,7 @@ export const CardsContainer = styled.div`
 `
 
 export const Cards = styled.div`
-  margin-top: 60px;
+  margin-top: 30px;
   display: flex;
   gap: 30px;
   justify-content: space-between;
@@ -22,7 +22,7 @@ export const Card = styled.div`
   width: 390px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   background-color: ${Colors.white};
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
 `
@@ -31,6 +31,11 @@ export const CardContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  
+`
+
+export const CardContentWrapperTop = styled.div`
+  padding: 0 16px;
 `
 export const BookNowButton = styled.a`
   color: ${Colors.white};

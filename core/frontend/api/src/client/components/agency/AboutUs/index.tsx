@@ -1,7 +1,7 @@
 import React from 'react';
 
 import PersonOnBeach from '../../../pages/agency/assets/img.png';
-import {AboutUsMainWrapper ,ContactUsButton,AboutUsContainer ,PrimaryButton  ,AboutUsWrapper ,AboutImage ,AbsoluteItemOne ,AbsoluteItemTwo ,AbsoluteItemThree ,AboutUsImageWrapper ,AboutUsContentWrapper ,AboutUsTitle ,AboutUsDescription} from './styled'
+import {AboutUsMainWrapper,AboutUsContainer ,PrimaryButton  ,AboutUsWrapper ,AboutImage ,AbsoluteItemOne ,AbsoluteItemTwo ,AbsoluteItemThree ,AboutUsImageWrapper ,AboutUsContentWrapper ,AboutUsTitle ,AboutUsDescription} from './styled'
 
 const AboutUs = () => {
     return (
@@ -40,8 +40,7 @@ const AboutUs = () => {
                                 Would you explore nature paradise in the world, let's find the
                                 best destination in world with us.
                             </AboutUsDescription>
-
-                                <PrimaryButton href={'contact-us'} className="btn"> contact us</PrimaryButton>
+                                <PrimaryButton href={'contact-us'} className="btn"> Contact us</PrimaryButton>
                     </AboutUsContentWrapper>
                 </AboutUsWrapper>
             </AboutUsContainer>

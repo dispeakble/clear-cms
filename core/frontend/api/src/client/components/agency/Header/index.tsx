@@ -1,8 +1,6 @@
 import Logo from "./Logo";
 import LinkItem from './LinkItem'
 import {HeaderContainer, HeaderWrapper, IconWrapper, InputSearch, InputWrapper, List} from './styled'
-import {Colors} from '../../../assets/design-set'
-import {SearchOutlined} from "@material-ui/icons";
 import * as React from "react";
 
 
@@ -26,8 +24,6 @@ const Header = (props: any) => {
                             <circle cx="8.5" cy="8.5" r="7" stroke="#F5803E" stroke-width="3"/>
                             <line x1="14.6415" y1="14.6615" x2="22.0758" y2="22.3026" stroke="#F5803E" stroke-width="2"/>
                         </svg>
-
-
                     </IconWrapper>
                 </InputWrapper>
             </HeaderWrapper>

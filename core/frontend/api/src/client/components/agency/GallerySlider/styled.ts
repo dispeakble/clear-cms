@@ -27,7 +27,9 @@ export const GalleryImage = styled.img`
 
 export const GalleryMainImage = styled(GalleryImage)`
   opacity: 1;
-  margin: 16px -16px 0px -16px;
+  margin: 24px -16px 0px -16px;
+  height:450px;
+  width:330px;
   z-index: 2;
 `;
 
