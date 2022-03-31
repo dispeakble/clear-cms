@@ -15,7 +15,7 @@ export class AgencyService {
             (async () => {
                 try {
                     const payload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {

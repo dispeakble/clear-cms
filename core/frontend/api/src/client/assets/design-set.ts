@@ -9,7 +9,7 @@ export const Colors = {
     black: '#000',
     offWhite: '#f5f5f5',
     white: '#fff',
-    gray: '#505050',
+    gray: 'rgba(0,0,0,0.5)' 
 }
 
 export const Widths = {
