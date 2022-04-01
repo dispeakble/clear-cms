@@ -1,24 +1,27 @@
 {
   "global": {
     "home" : "Home",
-    "activities" : "Activities",
-    "hotels" : "Hotels",
-    "packages" : "Packages",
+
     "search": "Search"
   },
   "home": {
     "info-box-title" : "Adventure",
     "info-box-description" : "Holidays and tours",
-    "img-source" : "Image from"
+    "img-source" : "Image from",
+    "promo": {
+      "special-offers": "Special Offers",
+      "last-minute": "Last Minute",
+      "flights": "Flights"
+    }
   },
   "search": {
     "destination": "Destination",
     "input-placeholder" : "Where are you going?",
     "checkin": "Check in",
     "addDate": "Add date",
-    "checkinDate": "Check in date",
+    "checkinDate": "Staying from",
     "checkout": "Check out",
-    "checkoutDate" : "Check out date",
+    "checkoutDate" : "Staying until",
     "guests" : "Guests",
     "adults" : "Adults",
     "children" : "Children",
@@ -26,6 +29,12 @@
     "adults-age" : "Ages 13 or above.",
     "children-age" : "Ages between 2 and 13.",
     "infants-age" : "Under 2.",
-    "search-btn" : "Search"
+    "search-btn" : "Search",
+    "homeSearchPlaceholder": "Search a destination or a hotel...",
+    "hotels" : "Hotels",
+    "packages" : "Packages",
+    "flights" : "Flights",
+    "hotel-stars": "Category",
+    "activities" : "Activities"
   }
 }

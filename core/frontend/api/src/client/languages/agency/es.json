@@ -4,9 +4,7 @@
     "about-us" : "Sobre Nosotros",
     "services" : "Servicios",
     "contact-us" : "Contacta",
-    "activities" : "Ocupaciones",
-    "hotels" : "Hoteles",
-    "packages" : "Paquetes",
+
     "search": "Búsqueda"
   },
   "home" : {
@@ -29,6 +27,12 @@
     "adults-age" : "13 años o más.",
     "children-age" : "De 2 a 12 años.",
     "infants-age" : "Menos de 2.",
-    "search-btn" : "Buscar"
+    "search-btn" : "Buscar",
+    "homeSearchPlaceholder": "Buscar un destino o un hotel...",
+    "hotels" : "Hoteles",
+    "packages" : "Paquetes",
+    "flights" : "Vuelos",
+    "hotel-stars": "Categoría",
+    "activities" : "Ocupaciones"
   }
 }

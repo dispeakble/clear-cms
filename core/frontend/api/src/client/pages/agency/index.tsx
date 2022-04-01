@@ -14,15 +14,7 @@ import Slider from '../../components/agency/Slider'
 import RecommendedDestinations from "../../components/agency/DestinationsCards/RecommendedDestination";
 import DestinationCards from '../../components/agency/DestinationsCards/Destinations'
 const PageComponent: NextPage = (props) => {
-    const [cards, setCards] = useState<[]>([])
-    useEffect(() => {
-        const fetchHotels = async () => {
-        const response = await fetch('http://localhost:9898/api/agency/hotel');
-            const data = await response.json();
-            setCards(data.rows)
-        }
-        fetchHotels()
-    }, [props])
+
 return (
         <Agency>
             <Header/>
@@ -43,17 +35,12 @@ const Agency = styled.div`
 `
 
 export async function getServerSideProps(context: any) {
-    const data = await context.req.apiHub({
-        protocolMethod: 'sendMessage',
-        channel: 'frontendapi',
-        api: 'agency',
-        act: 'get',
-    });
+
 
 
     return {
         props: {
-            data: data
+            data: null
         }
     }
 }
