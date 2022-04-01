@@ -1,26 +1,26 @@
-
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const nodemailer = require("nodemailer");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const handlebars = require("handlebars");
+import * as fs from "fs"
+import path from "path"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
-export async function sendEmail(email, subject: string, payload) {
+export async function sendEmail(emailSender,emailSenderPassword, email, subject: string, payload) {
         // create reusable transporter object using the default SMTP transport
         const transporter = nodemailer.createTransport({
             host: "mail.dosidoweb.com",
             secure: true,
             auth: {
-                user: "noreply@dosidoweb.com",
-                pass: "9PYG$Bh@Oh3w",
+                user: emailSender,
+                pass: emailSenderPassword,
             },
         });
-        const _template = 'Hi, {{name}} reset your password by accessing </br> <b>{{link}}</b>'
-        const compiledTemplate = handlebars.compile(_template);
+        const document = fs.readFileSync(path.join(__dirname, './template/password-recover.handlebars'), "utf-8")
+        const compiledTemplate = handlebars.compile(document);
         const options = () => {
             return {
-                from: "noreply@dosidoweb.com",
+                from: emailSender,
                 to: email,
                 subject: subject,
                 html: compiledTemplate(payload),
@@ -33,7 +33,6 @@ export async function sendEmail(email, subject: string, payload) {
                 console.log(error)
                 return error;
             } else {
-                console.log('sent')
                 return true;
             }
         });

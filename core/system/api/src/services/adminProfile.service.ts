@@ -29,7 +29,7 @@ export class AdminProfileService {
                         channel: `${process.env.app}_system`,
                         data: {
                             what: 'auth',
-                            fields: ["fname", "lname", "email"],
+                            fields: ["fname", "lname", "email", "address"],
                             where: {
                                 id: params.client.id,
                                 active: 1

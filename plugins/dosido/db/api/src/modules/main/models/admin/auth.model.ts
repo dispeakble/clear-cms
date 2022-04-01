@@ -19,6 +19,9 @@ export class Auth extends Model {
     email: string;
 
     @Column
+    address: string;
+
+    @Column
     password: string;
 
     @Column
