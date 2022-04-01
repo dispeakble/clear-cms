@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Inject, Logger, Post, Req, Res} from '@nestjs/common';
+import {Body, Controller, Get, HttpStatus, Inject, Logger, Req, Res} from '@nestjs/common';
 import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";

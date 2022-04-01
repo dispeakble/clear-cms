@@ -1,4 +1,5 @@
 import {Item ,LinkItem} from './styled'
+import styled from "styled-components";
 
 type Props = {
     linkText: string

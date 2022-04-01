@@ -99,15 +99,14 @@ export const DateLabel = styled.label<IDateLabel>`
 
 export const CalendarContainer = styled.div`
   position: absolute;
-  left: 50%;
-  top: calc(100% + 20px);
-  transform: translateX(-50%);
   height: auto;
+  margin: 40px 0 0 -40px;
+  max-width: 290px;
   z-index: 20;
   padding: 30px 10px;
   background: white;
-  border-radius: 30px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 16px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
   display: flex;
   align-items: center;
   justify-content: center;

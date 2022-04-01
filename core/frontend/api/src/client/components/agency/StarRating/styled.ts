@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Star, StarHalf, StarOutline} from "@material-ui/icons";
+import {Star, StarOutline} from "@material-ui/icons";
 
 export const StarRatingContainer = styled.div`
   display: flex;
