@@ -5,7 +5,7 @@ import {payloadInterface} from "../interfaces/payload.interface";
 
 @Injectable()
 export class AgencyService {
-    private methods = ["get"];
+    private methods = ["get", "getTemplateVersion"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
     }
@@ -15,12 +15,12 @@ export class AgencyService {
             (async () => {
                 try {
                     const payload: payloadInterface = {
-                        channel: 'db',
+                    channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'agency',
-                            channel: 'frontend',
+                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'hotel',
                             }
@@ -43,12 +43,12 @@ export class AgencyService {
     public async getHotels() {
         try {
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'agency',
-                    channel: 'frontend',
+                    channel: `${process.env.app}_frontend`,
                     data: {
                         what: 'hotel',
                     }
@@ -59,6 +59,47 @@ export class AgencyService {
         } catch (err) {
             return err
         }
+    }
+
+    getSettings() {
+        return new Observable((subscriber) => {
+            (async () => {
+                try {
+                    /*const payload: payloadInterface = {
+                        channel: `${process.env.app}_db`,
+                        api: 'sql',
+                        act: 'get',
+                        payload: {
+                            db: 'agency',
+                            channel: 'frontend',
+                            data: {
+                                what: 'hotel',
+                            }
+                        }
+                    };
+
+                    const res = await this.protocolService.sendMessage(payload).toPromise();*/
+                    //TODO GET FROM DB SETTINGS INSTEAD OF HARD CODING
+                    subscriber.next({
+                        type: 'settings',
+                        data: {
+                            template: {
+                                version: 'v2',
+                                pallete: {
+                                    primary: '#F00',
+                                    secondary: '#0F0'
+                                }
+                            }
+                        }
+                    });
+                    subscriber.complete();
+                    return true;
+                } catch (err) {
+                    subscriber.error(err);
+                    subscriber.complete();
+                }
+            })()
+        })
     }
 
     public perform(data: any, config?: ModuleInterface) {

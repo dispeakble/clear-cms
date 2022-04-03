@@ -13,7 +13,7 @@ import {
 @Injectable()
 export class BucketService {
 
-    private methods = ["checkAccess", "getMeta", "info", "get", "list", "completePath", "upload", "download"];
+    private methods = ["checkAccess", "getMeta", "info", "get", "list", "completePath", /*"upload", */"download"];
     private publicPaths = ["/static", "/manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
 
@@ -25,7 +25,7 @@ export class BucketService {
         return new Promise((resolve) => {
             try {
                 const metaPayload: payloadInterface = {
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     api: 'fs',
                     act: 'info',
                     payload: {
@@ -62,7 +62,7 @@ export class BucketService {
         });
     }
 
-    private upload(params: any, config){
+    /*private upload(params: any, config){
         return new Observable(subscriber => {
 
             const handshake = params.perform({
@@ -70,7 +70,7 @@ export class BucketService {
                 api: 'protocol',
                 act: 'startHandshake',
                 payload: {
-                    channel: 'bucket',
+                    channel: `${process.env.app}_bucket`,
                     indication: {
                         api: 'fs',
                         act: 'upload'
@@ -107,7 +107,7 @@ export class BucketService {
             });
 
         });
-    }
+    }*/
 
     private checkPaths(data: any){
         const params = data.params;
@@ -144,7 +144,7 @@ export class BucketService {
         return new Promise((resolve) => {
             const path_parts = params.path.split('/');
             this.protocolService.sendMessage({
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'info',
                 payload: {
@@ -223,7 +223,7 @@ export class BucketService {
     private _getFromBucket(params: any) {
         const path_parts = params.path.split('/');
         this.protocolService.sendMessage({
-            channel: 'bucket',
+            channel: `${process.env.app}_bucket`,
             api: 'fs',
             act: 'read',
             payload: {
@@ -292,7 +292,7 @@ export class BucketService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'list',
                 payload: {
@@ -312,7 +312,7 @@ export class BucketService {
     public completePath (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'completePath',
                 payload: {
@@ -333,7 +333,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: 'bucket',
+                channel: `${process.env.app}_bucket`,
                 api: 'fs',
                 act: 'download',
                 payload: {

@@ -49,10 +49,10 @@ export class ProtocolService {
         const payload: payloadInterface = {
             api: 'module',
             act: 'register',
-            channel: 'frontend',
+            channel: `${process.env.app}_frontend`,
             payload: data
         };
-        return this.redisService.send({message: 'hub'}, payload).toPromise();
+        return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();
     }
 
     public ping(data: any, config: ModuleInterface){

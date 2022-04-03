@@ -22,7 +22,7 @@ export class AppController {
             stop: false
         },
         dependencies: [{
-            name: 'hub',
+            name: `${process.env.app}_hub`,
             version: 'latest'
         }]
     };
@@ -401,12 +401,12 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'proxy'})
+    @MessagePattern({message: `${process.env.app}_proxy`})
     public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'proxy'})
+    @EventPattern({event: `${process.env.app}_proxy`})
     public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }

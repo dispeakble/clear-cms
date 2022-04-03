@@ -8,19 +8,18 @@ import { RedisCacheService } from '../cache/redisCache.service';
 export class ModuleService {
 
     private methods = ["register", "mapPort", "getPort", "getChannel"];
-    private modules = {
-        hub: {
-            version: 'version',
-            description: 'The main hub',
-            started: new Date(),
-            dependencies: []
-        }
-    };
+    private modules = {};
     private moduleStatus = {};
 
     constructor(
         private protocolService: ProtocolService,
         private cacheService: RedisCacheService) {
+        this.modules[`${process.env.app}_hub`] = {
+            version: 'version',
+            description: `The main hub for ${process.env.app}`,
+            started: new Date(),
+            dependencies: []
+        }
     }
 
     private async register(params: ModuleInterface) {
@@ -72,7 +71,7 @@ export class ModuleService {
             const payload: payloadInterface = {//todo export this globally. lazy load
                 api: 'protocol',
                 act: 'ping',
-                channel: 'hub',
+                channel: `${process.env.app}_hub`,
                 payload: dep
             };
 
@@ -156,7 +155,7 @@ export class ModuleService {
         ports[data.port] = data.channel;
         await this.cacheService.set('ports', JSON.stringify(ports));
         return this.protocolService.sendMessage({
-            channel: data.target || 'proxy',
+            channel: data.target || `${process.env.app}_proxy`,
             payload: {
                 api: 'app',
                 act: 'updatePortMapping',

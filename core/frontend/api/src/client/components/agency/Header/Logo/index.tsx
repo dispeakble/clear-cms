@@ -1,16 +1,11 @@
-import styled from 'styled-components'
+import {LogoWrapper} from '../styled'
 
 const Logo = () => {
     return (
         <LogoWrapper>
-            Logo
+Logo
         </LogoWrapper>
     )
 }
-
-const LogoWrapper = styled.div`
-    color:#fff;
-    font-size: 24px;
-`
 
 export default Logo

@@ -15,13 +15,13 @@ export class AppController {
         description: 'CMS Bucket Module',
         started: new Date(),
         config: {
-            channel: 'bucket',
+            channel: `${process.env.app}_bucket`,
             restart: true,
             stop: false
         },
         dependencies: [
             {
-                name: 'hub',
+                name: `${process.env.app}_hub`,
                 version: 'latest'
             }
         ],
@@ -50,12 +50,12 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: 'bucket'})
+    @MessagePattern({message: `${process.env.app}_bucket`})
     public onMessage(@Payload() data: any) {
         return this.perform(data);
     }
 
-    @EventPattern({event: 'bucket'})
+    @EventPattern({event: `${process.env.app}_bucket`})
     public onEvent(@Payload() data: any) {
         return this.perform(data);
     }

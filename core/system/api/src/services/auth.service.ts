@@ -63,12 +63,12 @@ export class AuthService {
             }
 
             const payload: payloadInterface = {
-                channel: 'db',
+                channel: `${process.env.app}_db`,
                 api: 'sql',
                 act: 'get',
                 payload: {
                     db: 'main',
-                    channel: 'system',
+                    channel: `${process.env.app}_system`,
                     data: {
                         what: this.config.admin_table,
                         fields: this.config.admin_fields,
@@ -126,12 +126,12 @@ export class AuthService {
                         return;
                     }
                     const adminRequest: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: this.config.admin_table,
                                 fields: this.config.admin_fields,
@@ -153,12 +153,12 @@ export class AuthService {
 
                     //remove previous tokens if any
                     const removeTokenPayload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'rem',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'token',
                                 where: {
@@ -173,12 +173,12 @@ export class AuthService {
                     const resetToken = randomBytes(32).toString("hex");
 
                     const addTokenPayload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'token',
                                 data: {
@@ -192,12 +192,12 @@ export class AuthService {
                     const addTokenResponse = await this.protocolService.sendMessage(addTokenPayload).toPromise();
 
                     const settingsRequest: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'setting',
                                 data: {
@@ -243,12 +243,12 @@ export class AuthService {
             (async () => {
                 const body = params.body.payload;
                 const tokenPayload: payloadInterface = {
-                    channel: 'db',
+                    channel: `${process.env.app}_db`,
                     api: 'sql',
                     act: 'get',
                     payload: {
                         db: 'main',
-                        channel: 'system',
+                        channel: `${process.env.app}_system`,
                         data: {
                             what: 'token',
                             where: {
@@ -263,12 +263,12 @@ export class AuthService {
 
                 if (tokenResponse) {
                     const updateAdmin: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'set',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'auth',
                                 data: {
@@ -285,12 +285,12 @@ export class AuthService {
 
                     if (changePasswordResponse) {
                         const remTokenPayload: payloadInterface = {
-                            channel: 'db',
+                            channel: `${process.env.app}_db`,
                             api: 'sql',
                             act: 'rem',
                             payload: {
                                 db: 'main',
-                                channel: 'system',
+                                channel: `${process.env.app}_system`,
                                 data: {
                                     what: 'token',
                                     where: {
@@ -312,12 +312,12 @@ export class AuthService {
                     }
 
                     const getAdminPayload: payloadInterface = {
-                        channel: 'db',
+                        channel: `${process.env.app}_db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: 'system',
+                            channel: `${process.env.app}_system`,
                             data: {
                                 what: 'auth',
                                 where: {

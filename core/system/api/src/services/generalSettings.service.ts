@@ -17,12 +17,12 @@ export class GeneralSettingsService {
         return new Observable(subscriber => {
             (async () => {
                 const payload: payloadInterface = {
-                    channel: 'db',
+                    channel: `${process.env.app}_db`,
                     api: 'sql',
                     act: 'get',
                     payload: {
                         db: 'main',
-                        channel: 'system',
+                        channel: `${process.env.app}_system`,
                         data: {
                             what: 'setting',
                             fields: ["id", "data"],
@@ -58,12 +58,12 @@ export class GeneralSettingsService {
         return new Observable(subscriber => {
             (async () => {
                 const request: payloadInterface = {
-                    channel: 'db',
+                    channel: `${process.env.app}_db`,
                     api: 'sql',
                     act: 'set',
                     payload: {
                         db: 'main',
-                        channel: 'system',
+                        channel: `${process.env.app}_system`,
                         data: {
                             what: 'setting',
                             where: {

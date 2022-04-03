@@ -17,6 +17,7 @@
       <env name="pg_port" value="5432" />
       <env name="dev" value="true" />
       <env name="pg_connections" value="main,agency" />
+      <env name="app" value="marioviajes" />
     </envs>
     <method v="2" />
   </configuration>
