@@ -32,6 +32,23 @@ const generalSettingsPageStyle = {
     grid: {
         margin: 0
     },
+    colorPickerContainer: {
+        width: "100%",
+        padding: "20px",
+        cursor: "pointer",
+        borderRadius: "6px",
+        boxShadow:
+            "0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)",
+        textAlign: "center",
+        position: "relative",
+        maxHeight:"64px",
+    },
+    accordionColorItems: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        width: "100%",
+    },
     gridItem: {
         padding: 0
     },
