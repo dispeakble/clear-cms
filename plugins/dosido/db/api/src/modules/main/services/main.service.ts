@@ -21,24 +21,24 @@ export class MainService {
     constructor(
 
         //admin
-        @InjectModel(AdminTheme, 'main') private adminThemeModel: AdminTheme,
-        @InjectModel(Auth, 'main') private authModel: Auth,
-        @InjectModel(DashboardBox, 'main') private dashboardBoxModel: DashboardBox,
-        @InjectModel(Setting, 'main') private settingModel: Setting,
+        @InjectModel(AdminTheme, `main`) private adminThemeModel: AdminTheme,
+        @InjectModel(Auth, `main`) private authModel: Auth,
+        @InjectModel(DashboardBox, `main`) private dashboardBoxModel: DashboardBox,
+        @InjectModel(Setting, `main`) private settingModel: Setting,
 
         //general
-        @InjectModel(Category, 'main') private categoryModel: Category,
-        @InjectModel(PublicTheme, 'main') private publicThemeModel: PublicTheme,
-        @InjectModel(User, 'main') private userModel: User,
-        @InjectModel(Token, 'main') private tokenModel: Token,
+        @InjectModel(Category, `main`) private categoryModel: Category,
+        @InjectModel(PublicTheme, `main`) private publicThemeModel: PublicTheme,
+        @InjectModel(User, `main`) private userModel: User,
+        @InjectModel(Token, `main`) private tokenModel: Token,
 
         //pages
-        @InjectModel(PageBox, 'main') private pageBoxModel: PageBox,
-        @InjectModel(PageConfig, 'main') private pageConfigModel: PageConfig,
-        @InjectModel(Page, 'main') private pageModel: Page,
-        @InjectModel(PageToBox, 'main') private pageToBoxModel: PageToBox,
-        @InjectModel(PageToCategory, 'main') private pageToCategoryModel: PageToCategory,
-        @InjectModel(PageToConfig, 'main') private pageToConfigModel: PageToConfig,
+        @InjectModel(PageBox, `main`) private pageBoxModel: PageBox,
+        @InjectModel(PageConfig, `main`) private pageConfigModel: PageConfig,
+        @InjectModel(Page, `main`) private pageModel: Page,
+        @InjectModel(PageToBox, `main`) private pageToBoxModel: PageToBox,
+        @InjectModel(PageToCategory, `main`) private pageToCategoryModel: PageToCategory,
+        @InjectModel(PageToConfig, `main`) private pageToConfigModel: PageToConfig,
 
         //services
         @Inject('QueryService') private queryService: QueryService

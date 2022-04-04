@@ -24,13 +24,13 @@ import Calendar from 'react-calendar'
 
 import "antd/dist/antd.css";
 import {useState} from "react";
-import ClickAwayListener from '@mui/material/ClickAwayListener';
+//import ClickAwayListener from '@mui/material/ClickAwayListener';
 import moment from "moment";
 
 const Hero = () => {
     const [data, setData] = React.useState([])
     const [backUpData, setBackUpData] = useState([])
-    const searchInputRef = useRef()
+    //const searchInputRef = useRef()
     const [show, setShow] = useState({
             pickupDate: false,
             dropOffDate: false,
@@ -75,10 +75,10 @@ const Hero = () => {
     ]
 
 
-    const handleSearchInput = () => {
+    /*const handleSearchInput = () => {
         searchInputRef.current.focus()
-    }
-    React.useEffect(() => {
+    }*/
+    /*React.useEffect(() => {
         const getHotel = arr.map((value: any) => {
 
             return value.location
@@ -125,7 +125,7 @@ const Hero = () => {
         setBackUpData(mainFilter)
         setData(mainFilter)
 
-    }, [])
+    }, [])*/
     const CheckAllToFalse = () => {
         setShow({
             ...show,
@@ -134,15 +134,15 @@ const Hero = () => {
             adults: false,
             children: false,
             infants: false,
-            stars: false,
+            star: false,
         })
     }
-    const onSearch = (searchText: string) => {
-        let str: string = String(searchText).toLowerCase()
-        let searchData = backUpData.map((valueMap) => {
-            let SearchHotel = valueMap.options.filter((valuehotel: any) => {
-                let fildata = String(valuehotel?.value).toLowerCase()
-                if (fildata?.includes(str)) {
+    /*const onSearch = (searchText: string) => {
+        const str: string = String(searchText).toLowerCase()
+        const searchData = backUpData.map((valueMap: any) => {
+            const SearchHotel = valueMap.options.filter((valuehotel: any) => {
+                const fillData = String(valuehotel?.value).toLowerCase()
+                if (fillData?.includes(str)) {
                     return true
                 }
             })
@@ -162,7 +162,7 @@ const Hero = () => {
             return x !== undefined;
         });
         setData(filtered)
-    };
+    };*/
 
     const handleClickAway = (data: any) => {
         setShow({
@@ -276,7 +276,7 @@ const Hero = () => {
             infants: Number(AllData.infants) + 1
         })
     }
-    const handleStarValue = (data) => {
+    const handleStarValue = (data: any) => {
         setAllData({
             ...AllData,
             star: data
@@ -290,17 +290,16 @@ const Hero = () => {
             <HeroContainer>
                 <HeroContentWrapper>
                     <HeroSearchBar>
-                        <SearchBarContainer onClick={handleSearchInput}>
+                        <SearchBarContainer>
                             <SearchInputContainer>
                                 <AutoComplete
                                     dropdownClassName="certain-category-search-dropdown"
                                     dropdownStyle={{backgroundColor: 'white'}}
                                     dropdownMatchSelectWidth={500}
-                                    onSearch={onSearch}
                                     options={data}
                                     style={{width: '50%'}}
                                 >
-                                    <InputSearch ref={searchInputRef} style={{width: '100%'}} type="search"
+                                    <InputSearch style={{width: '100%'}} type="search"
                                                  placeholder={'Search For a Hotel or a Destination...'}/>
                                 </AutoComplete>
 
@@ -319,7 +318,7 @@ const Hero = () => {
                                 <LeftContainer>
                                     <StayingInfoWrapper>
                                         <div>
-                                            <ClickAwayListener onClickAway={() => handleClickAway('pickupDate')}>
+                                            <div>
                                                 <DivView>
                                                     <svg width="20" height="31" viewBox="0 0 20 31" fill="none"
                                                          xmlns="http://www.w3.org/2000/svg" onClick={handleShowPickup}
@@ -351,7 +350,7 @@ const Hero = () => {
                                                         </CalendarView>
                                                     ) : null}
                                                 </DivView>
-                                            </ClickAwayListener>
+                                            </div>
 
 
                                         </div>
@@ -367,7 +366,7 @@ const Hero = () => {
                                     <StayingInfoWrapper>
                                         <div style={{cursor: 'pointer'}} onClick={handleShowDropOff}>
 
-                                            <ClickAwayListener onClickAway={() => handleClickAway('dropOffDate')}>
+                                            <div>
                                                 <DivView>
                                                     <svg width="19" height="30" viewBox="0 0 19 30" fill="none"
                                                          xmlns="http://www.w3.org/2000/svg">
@@ -393,7 +392,7 @@ const Hero = () => {
                                                         </CalendarView>
                                                     ) : null}
                                                 </DivView>
-                                            </ClickAwayListener>
+                                            </div>
 
 
                                         </div>
@@ -406,7 +405,7 @@ const Hero = () => {
                                     </StayingInfoWrapper>
                                 </LeftContainer>
                                 <RightContainer>
-                                    <ClickAwayListener onClickAway={() => handleClickAway('adults')}>
+                                    <div>
                                         <PassengerWrapper>
                                             <DivView>
                                                 <Passenger onClick={() => handleShowAdults()}>
@@ -451,9 +450,9 @@ const Hero = () => {
 
 
                                         </PassengerWrapper>
-                                    </ClickAwayListener>
+                                    </div>
                                     <PassengerWrapper>
-                                        <ClickAwayListener onClickAway={() => handleClickAway('children')}>
+                                        <div>
                                             <DivView>
                                                 <Passenger onClick={handleShowChildren}>
                                                     <PassengerDetailsWrapper>
@@ -484,11 +483,11 @@ const Hero = () => {
                                                     </PassangerView>
                                                 ) : null}
                                             </DivView>
-                                        </ClickAwayListener>
+                                        </div>
 
                                     </PassengerWrapper>
                                     <PassengerWrapper>
-                                        <ClickAwayListener onClickAway={() => handleClickAway('infants')}>
+                                        <div>
                                             <DivView>
                                                 <Passenger onClick={handleShowInfants}>
                                                     <PassengerDetailsWrapper>
@@ -535,10 +534,10 @@ const Hero = () => {
                                                 ) : null}
 
                                             </DivView>
-                                        </ClickAwayListener>
+                                        </div>
                                     </PassengerWrapper>
                                     <PassengerWrapper>
-                                        <ClickAwayListener onClickAway={() => handleClickAway('star')}>
+                                        <div>
                                             <DivView>
                                                 <PassengerDetailsWrapper onClick={handleShowStar}>
                                                     <svg width="14" height="13" viewBox="0 0 14 13" fill="none"
@@ -565,7 +564,7 @@ const Hero = () => {
                                                     </PassangerView>
                                                 ) : null}
                                             </DivView>
-                                        </ClickAwayListener>
+                                        </div>
 
                                     </PassengerWrapper>
                                 </RightContainer>

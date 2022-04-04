@@ -85,6 +85,7 @@ export const StyledMiddleText = styled.div`
 `;
 
 export const StyledWebsiteName = styled.div`
+  font-family: Poppins, "Arial", sans-serif, serif;
   font-size: 80px;
   text-align: center;
   color: #FFFFFF;

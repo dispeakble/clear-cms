@@ -4,75 +4,45 @@ import {ModuleInterface} from "../interfaces/module.interface";
 @Injectable()
 export class TestService {
 
-    private methods = ["waitForDb", "isReady"];
+    private methods = ["checkTables"];
 
-    private ready = false;
+    private pool;
 
-    constructor(@Inject('SequelizeService') private sequelizeService) {
+    private config = {
+        host: process.env.pg_host,
+        port: process.env.pg_port || 5432,
+        database: 'postgres',
+        user: process.env.pg_user,
+        password: process.env.pg_password,
+        max: 2000000,
+        connectionTimeoutMillis: 2000,
+    };
 
-    }
-
-    async onApplicationBootstrap() {
-        const checkIntervalId = setInterval(async () => {
-
-            const dbTest = await this.testDb();
-
-            if(dbTest) {
-                clearInterval(checkIntervalId);
-                clearTimeout(checkTimeoutId);
-                this.ready = true;
-            }
-        }, 300);
-
-        const checkTimeoutId = setTimeout(() => {
-            clearInterval(checkIntervalId);
-            process.exit(1);
-        }, 30 * 1000);
-    }
-
-    private isReady() {
-        return this.ready;
-    }
-
-    private async testDb() {
-        return new Promise(resolve => {
-            this.sequelizeService.perform({
-                act: 'get',
-                payload: {
-                    db: 'main',
-                    data: {
-                        what: 'auth',
-                        limit: [0, 1],
-                    },
-                },
-            }).subscribe(data => {
-                resolve(data);
-            }, err => {
-                resolve(false);
-            }, () => {
-                resolve(false)
-            });
-        });
+    constructor(
+      @Inject('PgPool') private pgPool,
+    ) {
 
     }
 
-    public waitForDb() {
-        return new Promise(resolve => {
-            const checkIntervalId = setInterval(() => {
-                console.log('Waiting for Postgres')
-                if(this.ready) {
-                    clearInterval(checkIntervalId);
-                    clearTimeout(checkTimeoutId);
-                    resolve(true);
+    start() {
+        return new Promise((resolve) => {
+            ;(async () => {
+                let tableList = null;
+                this.pool = new this.pgPool(this.config);
+                try {
+                    tableList = await this.pool.query('SELECT table_name FROM information_schema.tables');
+                } catch (err) {
+                    console.log(err);
+                    resolve(false);
+                    return;
                 }
-            }, 300);
 
-            const checkTimeoutId = setTimeout(() => {
-                clearInterval(checkIntervalId);
-                resolve(false);
-            }, 30 * 1000);
+                resolve(tableList.rows && tableList.rows.length > 0);
+                return;
 
+            })();
         });
+
     }
 
     public perform(data: any, config?: ModuleInterface) {

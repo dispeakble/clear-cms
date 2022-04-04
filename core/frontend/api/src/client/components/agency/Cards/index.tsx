@@ -2,12 +2,21 @@ import {CardWrapper} from './styled'
 import Card from "../Card";
 import SkeletonCard from "../SkeletonCard";
 
-const Cards = (props: any) => {
+type CardProps = {
+    Name: string;
+    Description: string;
+}
+
+type CardsProps = {
+    cards: CardProps[]
+};
+
+const Cards = (props: CardsProps) => {
     const {cards} = props;
     return(
         <CardWrapper data-testid="cards-wrapper">
             {
-                props.cards.length > 0 ? props.cards.map((card: any, i: number) =>
+                cards.length > 0 ? cards.map((card: any, i: number) =>
                     <Card key={i} cardTitle={card.Name} cardDescription={card.Description}/>
                 ) : (
                     <SkeletonCard />

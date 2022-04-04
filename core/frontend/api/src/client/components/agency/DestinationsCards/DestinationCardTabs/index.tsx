@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TabButton, TabButtonActive, TabContainer} from "../../CardsContainer/styled";
 import styled from 'styled-components'
 import {Colors} from "../../../../assets/design-set";
-const DestinationCardTabs = ({categories ,onChange}) => {
+const DestinationCardTabs = ({categories, onChange}: any) => {
     const [activeCategory, setActiveCategory] = useState(() => categories[0])
     return (
 

@@ -4,7 +4,7 @@ import {FooterWrapper,TopSection,BottomSection,FooterBarContainer,SocialIconButt
 
 import {Facebook, Instagram, Twitter} from '@material-ui/icons'
 
-const Footer = ({sitemapLinks, impLinks}) => {
+const Footer = ({sitemapLinks, impLinks}: any) => {
     return (
         <FooterWrapper data-testid="footer-wrapper">
             <TopSection data-testid='footer-top-section'>
@@ -33,13 +33,13 @@ const Footer = ({sitemapLinks, impLinks}) => {
 
                         <LinkList>
                             {
-                                sitemapLinks.map((link, index) => <li key={`${index}`}><LinkItem href={link.linkURL}>{link.text}</LinkItem></li>)
+                                sitemapLinks.map((link: any, index: number) => <li key={`${index}`}><LinkItem href={link.linkURL}>{link.text}</LinkItem></li>)
                             }
 
                         </LinkList>
                         <LinkList>
                             {
-                                impLinks.map((link, index) => <li key={`${index}`}><LinkItem href={link.linkURL}>{link.text}</LinkItem></li>)
+                                impLinks.map((link: any, index: number) => <li key={`${index}`}><LinkItem href={link.linkURL}>{link.text}</LinkItem></li>)
                             }
                         </LinkList>
                         <LinkList>

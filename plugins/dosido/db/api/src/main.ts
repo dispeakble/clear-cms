@@ -1,14 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
-
-Logger.overrideLogger(['error']);
+import InitDb from './init.db';
+const initDb = new InitDb();
 
 async function bootstrap() {
     try {
+        const createdDatabases = await initDb.start();
         const app = await NestFactory.create(
-            AppModule
+          AppModule.register({
+              createdDatabases: createdDatabases,
+          }),
         );
         await app.init();
         await app.connectMicroservice({
@@ -27,7 +29,7 @@ async function bootstrap() {
                 retry_strategy: 1000
             }
         });
-        await app.startAllMicroservicesAsync();
+        app.startAllMicroservices();
     } catch(err){
         console.error(err);
         process.exit(1);

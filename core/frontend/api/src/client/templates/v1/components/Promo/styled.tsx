@@ -8,6 +8,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 60px;
 `;
 
 export const StyledCardsWrapper = styled.div`
@@ -124,7 +125,8 @@ export const StyledTabs = styled.div`
   border-radius: 10px;
   padding: 10px;
   display: flex;
-  width: 600px;
+  max-width: 600px;
+  width: 100%;
   margin-bottom: 20px;
   gap: 10px;
 `;
@@ -133,11 +135,15 @@ export const StyledTabBtn = styled.div`
   flex: 1;
   background: #FFFFFF;
   color: ${Colors.gray};
-  line-height: 42px;
-  padding: 0 10px;
+  padding: 15px;
   text-align: center;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 12px;
+  @media ${device.tablet} {
+    font-size: 18px;
+    padding: 0 10px;
+    line-height: 42px;
+  }
   &:hover {
     background: ${Colors.primaryLight};
     color: #FFFFFF;

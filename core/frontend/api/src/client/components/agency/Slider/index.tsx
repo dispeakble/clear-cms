@@ -33,7 +33,7 @@ import {
     GalleryContainer,
 } from './styled'
 
-const Slider = ({sliderData}) => {
+const Slider = ({sliderData}: any) => {
     const [checkNumber , setCheckNumber]=useState([1,2,3])
 
 
@@ -92,9 +92,9 @@ const Slider = ({sliderData}) => {
                     <ImageSliderWrapper>
                         <ImageSliderHeading>Best Water Parks</ImageSliderHeading>
                         <GalleryContainer>
-                            <GalleryImage src={sliderData.filter(img => img.val === checkNumber[0])[0].img}/>
-                            <GalleryMainImage src={sliderData.filter(img => img.val === checkNumber[1])[0].img} />
-                            <GalleryImage src={sliderData.filter(img => img.val === checkNumber[2])[0].img} />
+                            <GalleryImage src={sliderData.filter((slide: any) => slide.val === checkNumber[0])[0].img}/>
+                            <GalleryMainImage src={sliderData.filter((slide: any) => slide.val === checkNumber[1])[0].img} />
+                            <GalleryImage src={sliderData.filter((slide: any) => slide.val === checkNumber[2])[0].img} />
                             <SliderButtonContainer>
                                 <SliderBtnLeft onClick={() => CheckNumberFunction('-')}>
                                     <svg width="23" height="39" viewBox="0 0 23 39" fill="none" xmlns="http://www.w3.org/2000/svg">

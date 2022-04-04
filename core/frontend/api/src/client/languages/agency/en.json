@@ -12,6 +12,28 @@
       "special-offers": "Special Offers",
       "last-minute": "Last Minute",
       "flights": "Flights"
+    },
+    "about-us": {
+      "title": "Travel Any Corner of The World With Us",
+      "description": "Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.\n\nWould you explore nature paradise in the world, let’s find the best destination in world with us.",
+      "contact-us": "Contact Us"
+    },
+    "recommended": {
+      "title": "Recommended Destination",
+      "book-now": "Book Now",
+      "tabs": {
+        "popular": "Popular",
+        "adventure": "Adventure",
+        "relax": "Relax",
+        "see-prices": "See prices"
+      }
+    },
+    "tabbed" : {
+      "tabs": {
+        "packages": "Flights + Hotels",
+        "relax": "Relax on the finest beaches",
+        "water-parks": "Fun water parks and zoos"
+      }
     }
   },
   "search": {

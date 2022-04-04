@@ -41,7 +41,7 @@ import {Token} from "./models/general/token.model";
             PageToBox,
             PageToCategory,
             PageToConfig,
-        ], 'main'),
+        ], `main`),
     ],
     providers: [MainService, QueryService],
     exports: [MainService]

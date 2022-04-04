@@ -18,6 +18,7 @@ COPY ./nest-cli.json /usr/src/api/nest-cli.json
 COPY ./tsconfig.build.json /usr/src/api/tsconfig.build.json
 COPY ./tsconfig.json /usr/src/api/tsconfig.json
 
-RUN yarn run build
+
+CMD ["yarn","run","build"]
 
 CMD ["yarn","run","start:prod"]

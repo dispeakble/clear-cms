@@ -9,7 +9,7 @@ import {ChevronLeft, ChevronRight} from '@material-ui/icons';
 import {WrapperContainer ,GalleryContainer ,GalleryMainImage ,GalleryImage ,SliderButtonContainer ,SliderBtnLeft ,SliderBtnRight} from './styled'
 
 
-const GallerySlider = ({galleryImages}) => {
+const GallerySlider = ({galleryImages}: any) => {
 
     const [images, setImages] = useState([1,2,3]);
 
@@ -30,9 +30,9 @@ const GallerySlider = ({galleryImages}) => {
     return (
         <WrapperContainer data-testid='gallery-wrapper'>
             <GalleryContainer>
-                <GalleryImage src={galleryImages.filter(img => img.val === images[0])[0].img}/>
-                <GalleryMainImage src={galleryImages.filter(img => img.val === images[1])[0].img}/>
-                <GalleryImage src={galleryImages.filter(img => img.val === images[2])[0].img}/>
+                <GalleryImage src={galleryImages.filter((img: any) => img.val === images[0])[0].img}/>
+                <GalleryMainImage src={galleryImages.filter((img: any) => img.val === images[1])[0].img}/>
+                <GalleryImage src={galleryImages.filter((img: any) => img.val === images[2])[0].img}/>
                 <SliderButtonContainer>
                     <SliderBtnLeft data-testid='arrow-slide-left' onClick={() => handleMainImage('-')}>
                         <svg width="23" height="39" viewBox="0 0 23 39" fill="none" xmlns="http://www.w3.org/2000/svg">

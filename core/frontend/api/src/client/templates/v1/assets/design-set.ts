@@ -10,7 +10,7 @@ export const Colors = {
     offWhite: '#f5f5f5',
     white: '#fff',
     gray: '#505050',
-    mainBackground: '#F7F7F7',
+    mainBackground: '#E5E5E5',
 }
 
 export const Widths = {

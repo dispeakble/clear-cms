@@ -28,13 +28,10 @@ services:
     ports:
       - "5432:5432"
     environment:
-      PGOPTIONS: "-c custom.is_agency=true"
       POSTGRES_USER: ${POSTGRES_DEFAULT_USER}
-      POSTGRES_DB: ${POSTGRES_DEFAULT_DB}
+      POSTGRES_DB: 'postgres'
       POSTGRES_PASSWORD: ${POSTGRES_DEFAULT_PASSWORD}
     volumes:
-      - ${PWD}/../../pg.db/db.schema.sql:/docker-entrypoint-initdb.d/init.sql
-      - ${PWD}/../../pg.db/agency.db.sql:/agency.db.sql
       - postgresdata:/var/lib/postgresql
     networks:
       node_net:

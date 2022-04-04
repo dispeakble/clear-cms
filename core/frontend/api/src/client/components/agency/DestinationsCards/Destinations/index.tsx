@@ -10,7 +10,7 @@ import {
 } from '../styled'
 
 
-const DestinationsCards = ({data}) => {
+const DestinationsCards = ({data}: any) => {
     const [cardDetails, setCard] = useState([])
     const [type, setType] = useState('Popular')
     useEffect(() => {
@@ -23,11 +23,13 @@ const DestinationsCards = ({data}) => {
     }, [])
 
     const onSetLocation = (dataValue: string) => {
+        // eslint-disable-next-line no-console
         console.log(dataValue)
         const ArrayData = data?.filter((value: any) => {
             return value.Type == dataValue
         })
         const items = ArrayData.slice(0, 3)
+        // eslint-disable-next-line no-console
         console.log(items)
         setCard(items)
 

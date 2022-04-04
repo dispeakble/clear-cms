@@ -26,7 +26,7 @@ export const TabContainer = styled.div`
 export const TabButton = styled.div`
   font-size: 22px;
   font-weight: 500;
-  color: ${Colors.grey};
+  color: ${Colors.gray};
   padding: 8px 16px;
   border-radius: 8px;
 `

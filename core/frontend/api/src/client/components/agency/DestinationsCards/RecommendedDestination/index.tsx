@@ -10,7 +10,7 @@ import {
 } from '../styled'
 
 
-const DestinationCards = ({data}) => {
+const DestinationCards = ({data}: any) => {
     const [cardDetails, setCard] = useState([])
     const [type, setType]=useState('Popular')
     useEffect(() => {

@@ -62,6 +62,7 @@ export async function getServerSideProps(context: any) {
     try {
         websiteData = JSON.parse(response.data);
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err)
     }
 

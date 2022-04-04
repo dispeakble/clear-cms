@@ -2,10 +2,18 @@ import {Body, Controller, Get, HttpStatus, Inject, Logger, Req, Res} from '@nest
 import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {FsResponse} from "../interfaces/fs.interface";
 import {ViewService} from '../services/view.service';
 import {Request, Response} from "express";
 import {parse} from "url";
 import {Observable} from "rxjs";
+import {ProtocolService} from "../services/protocol.service";
+import {SystemService} from "../services/system.service";
+import {PublicThemesService} from "../services/publicThemes.service";
+import {CategoriesService} from "../services/categories.service";
+import {PagesService} from "../services/pages.service";
+import {BucketService} from "../services/bucket.service";
+import {AgencyService} from "../services/agency.service";
 
 @Controller('/')
 export class AppController {
@@ -40,13 +48,13 @@ export class AppController {
     private mainService;
 
     constructor(
-        @Inject('ProtocolService') private protocolService,
-        @Inject('SystemService') private systemService,
-        @Inject('PublicThemesService') private publicThemesService,
-        @Inject('CategoriesService') private categoriesService,
-        @Inject('PagesService') private pagesService,
-        @Inject('BucketService') private bucketService,
-        @Inject('AgencyService') private agencyService,
+        @Inject('ProtocolService') private protocolService: ProtocolService,
+        @Inject('SystemService') private systemService: SystemService,
+        @Inject('PublicThemesService') private publicThemesService: PublicThemesService,
+        @Inject('CategoriesService') private categoriesService: CategoriesService,
+        @Inject('PagesService') private pagesService: PagesService,
+        @Inject('BucketService') private bucketService: BucketService,
+        @Inject('AgencyService') private agencyService: AgencyService,
 
         private viewService: ViewService
     ) {
@@ -144,7 +152,7 @@ export class AppController {
             content_type: ''
         };
 
-        getSubscriber.subscribe((data) => {
+        getSubscriber.subscribe((data: FsResponse) => {
             try {
                 switch (data.type) {
                     case "meta":

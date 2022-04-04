@@ -13,7 +13,7 @@ import {HelpService} from "./help.service";
 export class BucketService {
 
     private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
-    private publicPaths = ["view-auth", "static", "manifest.json"];//TODO GET THIS FROM A CONFIG
+    private publicPaths = ["view-auth", "recover-password", "static", "manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
     private help: any;
 

@@ -18,16 +18,7 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- TOC entry 3365 (class 1262 OID 16384)
--- Name: main; Type: DATABASE; Schema: -; Owner: cms
---
-
-SELECT 'CREATE DATABASE main WITH TEMPLATE = template0 ENCODING = ''UTF8'' LC_COLLATE = ''en_US.utf8'' LC_CTYPE = ''en_US.utf8'''
-WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'main')\gexec
-
-ALTER DATABASE main OWNER TO cms;
-
+-- HOW DO I CHANGE THIS TO BE A VARIABLE --
 \connect main
 
 SET statement_timeout = 0;
@@ -833,30 +824,17 @@ INSERT INTO "public"."AdminThemes" VALUES (2, 'Day', 0, '{"common":{"black":"#00
 
 
 -- agency
+
+SELECT (current_setting('custom.plugins') ) AS plugins \gset
+\if :split_part(:plugins, ',')
+    \echo plugins: :split_part(:plugins, ',')
+
 SELECT ('true' = current_setting('custom.is_agency')) AS is_agency \gset
 \if :is_agency
     \echo starting agency SQL
     \i /agency.db.sql
     \echo finished agency SQL
 \endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

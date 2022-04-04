@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
-import {TabButton, TabButtonActive, TabContainer} from "../../CardsContainer/styled";
+import {TabButton, TabButtonActive, TabContainer} from "../styled";
 
-const CardsTabs = ({categories ,handleActiveHotel}) => {
+type CardsTabsProps = {
+    categories: any;
+    handleActiveHotel: any
+}
+
+const CardsTabs = ({categories, handleActiveHotel}: CardsTabsProps) => {
     const [activeCategory, setActiveCategory] = useState(() => categories[0])
     return (
         <TabContainer>

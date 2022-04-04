@@ -103,6 +103,7 @@ class App extends Component {
             this.unlisten = this.props.history.listen((location) => {
                 if (!this.state.services.ws.isConnected && !['/view-auth', '/logout', '/recover-password', "/password-reset", "/view-auth/recovered"].includes(location.pathname)) {
                     console.log('app will redirect to login')
+                    debugger;
                     this.props.history.push("/view-auth")
                 }
             });
@@ -110,6 +111,7 @@ class App extends Component {
             if (!connected) {
                 console.log('app will redirect to login');
                 this.unlisten();
+                debugger;
                 this.props.history.push("/view-auth");
                 return;
             }

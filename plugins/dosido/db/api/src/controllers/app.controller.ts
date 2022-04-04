@@ -3,6 +3,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {Observable} from "rxjs";
+import { ConfigService } from "@nestjs/config";
 
 @Controller()
 export class AppController {
@@ -14,7 +15,8 @@ export class AppController {
         started: new Date(),
         config: {
             restart: true,
-            stop: false
+            stop: false,
+            createdDatabases: []
         },
         dependencies: [
             {
@@ -33,14 +35,23 @@ export class AppController {
       @Inject('SystemService') private systemService,
       @Inject('TestService') private testService,
       @Inject('SequelizeService') private sqlService,
+      private configService: ConfigService
     ) {
 
     }
     async onApplicationBootstrap() {
         await this.protocolService.start();
-        await this.testService.waitForDb();
-        if(!this.testService.isReady()) {
-            throw 'Db not ready yet';
+
+        const dbStatus = await this.testService.start();//TODO need to test if tables are there
+
+        if(!dbStatus) {
+            throw 'Db is down'
+        }
+
+        const createdDatabases = this.configService.get('createdDatabases');
+
+        if(createdDatabases) {
+            this.moduleConfig.config.createdDatabases = createdDatabases;
         }
 
         const data = await this.systemService.registerModule(this.moduleConfig);

@@ -8,6 +8,7 @@ export class SequelizeService {
     constructor(
         @Inject('MainService') private mainService,
         @Inject('AgencyService') private agencyService,
+        @Inject('PgPool') private pgPool,
         ) {
 
     }

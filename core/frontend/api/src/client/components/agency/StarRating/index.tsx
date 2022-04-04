@@ -1,7 +1,7 @@
 import React from 'react';
 import {StarRatingContainer, Image, ImageWrapper} from './styled'
 
-const StarRating = ({rating}) => {
+const StarRating = ({rating}: any) => {
     const ratingStar = Math.floor(rating);
     const arr = [1, 2, 3, 4, 5];
     const starArr: number[] = []

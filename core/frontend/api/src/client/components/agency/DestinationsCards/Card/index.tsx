@@ -14,7 +14,7 @@ import {
 } from "../styled";
 import StarRating from "../../StarRating";
 
-const CardView = ({value}) => {
+const CardView = ({value}: any) => {
     return (
         <Card>
             <CardContentWrapper>

@@ -31,6 +31,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "cache-manager": "^3.4.0",
     "cache-manager-redis-store": "^2.0.0",
+    "md5-typescript": "^1.0.5",
     "nestjs-redis": "^1.2.8",
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",

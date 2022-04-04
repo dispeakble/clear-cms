@@ -1,41 +1,42 @@
-import {Column, Model, Table} from "sequelize-typescript";
-import {DataTypes} from "sequelize";
+import { Column, Model, Table } from 'sequelize-typescript';
+import { DataTypes } from 'sequelize';
 
 @Table
 export class Auth extends Model {
-    @Column({primaryKey: true, autoIncrement: true, autoIncrementIdentity: true})
-    id: number;
+  @Column({
+    primaryKey: true,
+    autoIncrement: true,
+    autoIncrementIdentity: true,
+  })
+  id: number;
 
-    @Column
-    fname: string;
+  @Column
+  fname: string;
 
-    @Column
-    lname: string;
+  @Column
+  lname: string;
 
-    @Column
-    fullname: string;
+  @Column
+  fullname: string;
 
-    @Column
-    email: string;
+  @Column
+  email: string;
 
-    @Column
-    address: string;
+  @Column
+  address: string;
 
-    @Column
-    password: string;
+  @Column
+  password: string;
 
-    @Column
-    active: number;
+  @Column
+  active: number;
 
-    @Column({type: DataTypes.DATE, allowNull: true})
-    accessedAt: number;
+  @Column({ type: DataTypes.DATE, allowNull: true })
+  accessedAt: number;
 
+  @Column({ type: DataTypes.DATE, defaultValue: DataTypes.NOW })
+  createdAt: number;
 
-    @Column({type: DataTypes.DATE, defaultValue: DataTypes.NOW})
-    createdAt: number;
-
-
-    @Column({type: DataTypes.DATE, defaultValue: DataTypes.NOW})
-    updatedAt: number;
-
+  @Column({ type: DataTypes.DATE, defaultValue: DataTypes.NOW })
+  updatedAt: number;
 }
