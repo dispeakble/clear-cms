@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {NextPage} from 'next';
 import styled from 'styled-components'
 import {Colors} from "../../assets/design-set";
@@ -13,10 +13,17 @@ import AboutUs from '../../components/agency/AboutUs'
 import Slider from '../../components/agency/Slider'
 import RecommendedDestinations from "../../components/agency/DestinationsCards/RecommendedDestination";
 import DestinationCards from '../../components/agency/DestinationsCards/Destinations'
-const PageComponent: NextPage = (props) => {
+import { Helmet as Helmet } from 'react-helmet-async';
+const PageComponent: NextPage = () => {
 
 return (
         <Agency>
+          <Helmet>
+            <link
+              href="https://fonts.googleapis.com/css2?family=Poppins"
+              rel="stylesheet"
+            />
+          </Helmet>
             <Header/>
             <Hero/>
             <UpcomingOffers/>
@@ -34,16 +41,12 @@ const Agency = styled.div`
   background-color: ${Colors.offWhite};
 `
 
-export async function getServerSideProps(context: any) {
-
-
-
+export async function getServerSideProps() {
     return {
         props: {
             data: null
         }
     }
 }
-
 
 export default withRouter(PageComponent);

@@ -1,10 +1,11 @@
 import React from 'react';
-import {GetServerSidePropsContext, NextPage} from 'next';
+import {NextPage} from 'next';
 
 import {withRouter} from 'next/router';
 import dynamic from "next/dynamic";
 import {NextRouter} from "next/dist/shared/lib/router/router";
 import {HomePageProps} from "../../templates/v1/HomePage";
+import { Helmet } from "react-helmet-async";
 
 interface WithRouterProps {
     router: NextRouter
@@ -29,7 +30,15 @@ const PageComponent: NextPage<ComponentProps> = ({version, settings}) => {
         websiteUrl: settings.websiteDomain
     }
 
-    return <Component {...homePagePayload}/>;
+    return <>
+        <Helmet>
+            <link
+              href="https://fonts.googleapis.com/css2?family=Poppins"
+              rel="stylesheet"
+            />
+        </Helmet>
+        <Component {...homePagePayload}/>
+    </>;
 };
 
 export async function getServerSideProps(context: any) {

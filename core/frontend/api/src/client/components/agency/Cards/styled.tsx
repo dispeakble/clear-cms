@@ -10,4 +10,4 @@ export const CardWrapper = styled.div`
   z-index: 5;
   
   position: relative;
-`
+`;

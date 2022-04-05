@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const HeroContainer = styled.div`
   width: 100%;
@@ -8,11 +8,11 @@ export const HeroContainer = styled.div`
   z-index: 1;
   position: relative;
   
-`
+`;
 
 export const ImageContainer = styled.div`
   width: 90%;
-`
+`;
 export const InfoContainer = styled.div`
   position: absolute;
   left: 0;
@@ -50,4 +50,4 @@ export const InfoContainer = styled.div`
       text-decoration: underline;
     }
   }
-`
+`;

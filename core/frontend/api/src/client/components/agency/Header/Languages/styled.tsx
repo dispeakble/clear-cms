@@ -10,12 +10,12 @@ export const SelectedLanguage = styled.button`
   &:hover ~ div {
     display: block;
   }
-`
+`;
 
 export const Container = styled.div`
   position: relative;
   display: inline-block;
-`
+`;
 
 export const LanguagesDropdown = styled.div`
   display: none;
@@ -37,4 +37,4 @@ export const LanguagesDropdown = styled.div`
     display: block;
     
   }
-`
+`;

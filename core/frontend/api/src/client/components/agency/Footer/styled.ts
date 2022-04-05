@@ -1,27 +1,27 @@
 import styled from "styled-components";
-import {Colors, Widths} from "../../../assets/design-set";
+import { Colors, Widths } from "../../../assets/design-set";
 
 export const FooterWrapper = styled.footer`
   margin-top: 60px;
-`
+`;
 
 export const TopSection = styled.section`
   background-color: ${Colors.primaryColor};
   padding: 24px 0px;
-`
+`;
 
 export const BottomSection = styled(TopSection)`
   background-color: ${Colors.white};
-`
+`;
 
 export const Container = styled.div` width: 90%;
   max-width: ${Widths.containerWidth};
   margin: 0 auto;
-`
+`;
 
 export const BottomSectionWrapper = styled.div`
   display: flex;
-`
+`;
 
 export const TermsHeading = styled.h5`
   margin: 8px 0px 0px 0px;
@@ -29,12 +29,12 @@ export const TermsHeading = styled.h5`
   text-transform: uppercase;
   font-weight: 300;
   color: ${Colors.white};
-`
+`;
 export const TermsDescription = styled.p`
   font-size: 20px;
   font-weight: 500;
   color: #ccc;
-`
+`;
 
 export const LinkList = styled.ul`
   flex: 1;
@@ -43,7 +43,7 @@ export const LinkList = styled.ul`
   flex-direction: column;
   gap: 8px;
   padding: 0;
-`
+`;
 
 export const LinkItem = styled.a`
   font-size: 23px;
@@ -52,12 +52,12 @@ export const LinkItem = styled.a`
   :hover {
     color: inherit;
   }
-`
+`;
 
 export const InputContainer = styled.div`
   display: flex;
   margin-top: 16px;
-`
+`;
 export const InputSearch = styled.input`
   height: 60px;
   width: 270px;
@@ -66,7 +66,7 @@ export const InputSearch = styled.input`
   outline: none;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-`
+`;
 
 export const InputSearchBtn = styled.button`
   margin: 0;
@@ -76,17 +76,17 @@ export const InputSearchBtn = styled.button`
   color: white;
   padding: 0px 24px;
   cursor:pointer;
-`
+`;
 
 export const FooterBottomBar = styled.div`
   padding-bottom: 24px;
   background-color: ${Colors.white};
-`
+`;
 
 export const FooterBarContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const SocialIconButton = styled.div`
   display: flex;
@@ -100,7 +100,7 @@ export const SocialIconButton = styled.div`
     font-weight: 500;
     color: ${Colors.black};
   }
-`
+`;
 
 export const NewsLetterTitle = styled.h5`
   font-size: 25px;
@@ -108,4 +108,4 @@ export const NewsLetterTitle = styled.h5`
   text-decoration: none;
   font-weight: 600;
   margin: 0;
-`
+`;

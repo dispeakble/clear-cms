@@ -1,4 +1,4 @@
-import styled, {keyframes} from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const textAnimation = keyframes`
   0%{
@@ -17,7 +17,7 @@ const textAnimation = keyframes`
     opacity:0;
     transform: translateY(30px);
   }
-`
+`;
 export const CardTitle = styled.h3`
   opacity:0;
   transform: translateY(-30px);
@@ -30,7 +30,7 @@ export const CardTitle = styled.h3`
   animation-duration:10s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
-`
+`;
 
 export const CardDescription = styled.p`
   opacity:0;
@@ -42,7 +42,7 @@ export const CardDescription = styled.p`
   animation-duration:10s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
-`
+`;
 
 export const Item = styled.div`
   width: 100%;
@@ -55,4 +55,4 @@ export const Item = styled.div`
   align-items: center;
   justify-content: center;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-`
+`;

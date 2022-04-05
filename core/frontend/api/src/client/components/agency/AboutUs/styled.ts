@@ -1,41 +1,41 @@
 import styled from "styled-components";
-import {Colors, Widths} from "../../../assets/design-set";
+import { Colors, Widths } from "../../../assets/design-set";
 
 export const AboutUsMainWrapper = styled.section`
   margin:120px 90px 30px 90px;
-`
+`;
 export const ContactUsButton = styled.a`
   color: ${Colors.white};
   :hover{
     color: ${Colors.white};
   }
-`
+`;
 
 export const AboutUsWrapper = styled.section`
   display: flex;
   gap: 90px;
-`
+`;
 export const AboutUsContainer = styled.div`
   width: 90%;
   max-width: ${Widths.containerWidth};
   margin: 0 auto;
-`
+`;
 
 export const AboutUsImageWrapper = styled.div`
   flex: 2;
   position: relative;
-`
+`;
 export const AboutImage = styled.img`
   height: 800px;
   width: 480px;
   object-fit: cover;
-`
+`;
 
 export const AboutUsContentWrapper = styled.div`
   flex: 3;
   align-self: center;
   padding-right: 30px;
-`
+`;
 
 export const AbsoluteItem = styled.div` position: absolute;
   height: 120px;
@@ -63,35 +63,35 @@ export const AbsoluteItem = styled.div` position: absolute;
     text-transform: uppercase;
     font-weight: 300;
   }
-`
+`;
 
 export const AbsoluteItemOne = styled(AbsoluteItem)`
   right: -60px;
   top: 15%;
   transform: translate(0, -15%);
-`
+`;
 export const AbsoluteItemTwo = styled(AbsoluteItem)`
   left: -60px;
   top: 50%;
   transform: translate(0, -50%);
-`
+`;
 export const AbsoluteItemThree = styled(AbsoluteItem)`
   right: -60px;
   top: 85%;
   transform: translate(0, -85%);
-`
+`;
 
 export const AboutUsTitle = styled.h2`
   font-size: 48px;
   font-weight: 600;
   line-height: 1.6em;
   color: ${Colors.black};
-`
+`;
 export const AboutUsDescription = styled.p`
   font-size: 20px;
   line-height: 2em;
   color: rgba(87, 87, 87, 0.884);
-`
+`;
 export const PrimaryButton = styled.a`
   display:inline-block;
   margin-top: 30px;
@@ -106,4 +106,4 @@ export const PrimaryButton = styled.a`
   :hover {
     color:inherit;
   }
-`
+`;

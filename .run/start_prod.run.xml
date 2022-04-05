@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run frontend api" type="js.build_tools.npm">
+  <configuration default="false" name="frontend start:prod" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/core/frontend/api/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start:dev" />
+      <script value="start:prod" />
     </scripts>
     <node-interpreter value="project" />
     <envs>
@@ -12,7 +12,7 @@
       <env name="redis_port" value="6379" />
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="NODE_ENV" value="development" />
-      <env name="APP_DOMAIN" value="http://localhost:9898" />
+      <env name="SERVER_URL" value="http://localhost:9898" />
       <env name="tpl_ver" value="v1" />
       <env name="app" value="marioviajes" />
     </envs>

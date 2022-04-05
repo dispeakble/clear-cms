@@ -173,6 +173,27 @@ services:
       node_net:
         ipv4_address: 172.28.1.14
     tty: true
+
+  cms-frontend:
+    container_name: cms-frontend
+    image: "dispeakble/crm-frontend-api:${CMS_FRONTEND_VERSION}"
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+      - cms-hub
+      - cms-db
+    environment:
+      - app=${APP_NAME}
+      - app_domain=${APP_DOMAIN}
+      - redis_server=172.28.1.1
+      - redis_port=6379
+      - redis_password=${REDIS_DEFAULT_PASSWORD}
+      - tpl_ver=${TPL_VER}
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.15
+    tty: true
 networks:
   node_net:
     ipam:

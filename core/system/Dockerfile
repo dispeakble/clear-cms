@@ -41,5 +41,5 @@ RUN npm run build
 
 CMD ["rm", "-fr", "src"]
 RUN rm -fr node_modules
-RUN npm install --only=prod
+RUN yarn install --production
 CMD ["npm","run","start:prod"]

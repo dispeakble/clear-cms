@@ -1,7 +1,7 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
-interface IDateLabel{
-    selected?:boolean
+interface IDateLabel {
+  selected?: boolean;
 }
 
 export const SearchContainer = styled.form`
@@ -18,13 +18,13 @@ export const SearchContainer = styled.form`
 
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   position: relative;
-`
+`;
 
 export const Separator = styled.div`
   height: 100%;
   width : 1px;
   background: #333;
-`
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -33,7 +33,7 @@ export const Overlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 15;
-`
+`;
 
 export const SearchInput = styled.input`
   border: none;
@@ -41,7 +41,7 @@ export const SearchInput = styled.input`
   padding: 0;
   background: transparent;
   text-align: center;
-`
+`;
 
 export const SearchItem = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ export const SearchItem = styled.div`
     background: rgb(170, 170, 170, .3);
     transition: background .4s ease-in-out;
   }
-`
+`;
 
 export const SearchButton = styled.button`
   display: flex;
@@ -80,7 +80,7 @@ export const SearchButton = styled.button`
   svg{
     font-size: 18px;
   }
-`
+`;
 
 export const SearchLabel = styled.label`
   font-size: 12px;
@@ -88,14 +88,14 @@ export const SearchLabel = styled.label`
   color: #333;
   margin-bottom: 4px;
   cursor: pointer;
-`
+`;
 
 export const DateLabel = styled.label<IDateLabel>`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   color: ${(props) => props.selected ? "#333" : "#777"};
-`
+`;
 
 export const CalendarContainer = styled.div`
   position: absolute;
@@ -112,14 +112,14 @@ export const CalendarContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const GuestsLabel = styled.div`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   color: #777;
-`
+`;
 
 export const GuestsContainer = styled.div`
   position: absolute;
@@ -139,7 +139,7 @@ export const GuestsContainer = styled.div`
   gap: 20px;
   
   width: 300px;
-`
+`;
 
 export const GuestsItem = styled.div`
   width: 100%;
@@ -149,7 +149,7 @@ export const GuestsItem = styled.div`
   align-items: center;
   font-size: 16px;
   color: #333;
-`
+`;
 
 export const Handler = styled.div`
   font-size: 16px;
@@ -167,7 +167,7 @@ export const Handler = styled.div`
   &::selection{
     background: none;
   }
-`
+`;
 
 export const HandlerContainer = styled.div`
   width: 100px;
@@ -175,7 +175,7 @@ export const HandlerContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 16px;
-`
+`;
 
 export const GuestsLabelContainer = styled.div`
   display: flex;
@@ -193,4 +193,4 @@ export const GuestsLabelContainer = styled.div`
     color: #777;
   }
 
-`
+`;
