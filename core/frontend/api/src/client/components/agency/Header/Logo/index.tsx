@@ -1,11 +1,11 @@
-import {LogoWrapper} from '../styled'
+import { LogoWrapper } from "../styled";
 
 const Logo = () => {
-    return (
-        <LogoWrapper>
-Logo
-        </LogoWrapper>
-    )
-}
+  return (
+    <LogoWrapper>
+      Logo
+    </LogoWrapper>
+  );
+};
 
-export default Logo
+export default Logo;

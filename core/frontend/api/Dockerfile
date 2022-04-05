@@ -12,13 +12,14 @@ COPY ./yarn.lock /usr/src/api/
 RUN yarn install --ignore-engines
 
 COPY ./src /usr/src/api/src
-COPY ./config /usr/src/api/config
 COPY ./.eslintrc.js /usr/src/api/.eslintrc.js
 COPY ./nest-cli.json /usr/src/api/nest-cli.json
 COPY ./tsconfig.build.json /usr/src/api/tsconfig.build.json
 COPY ./tsconfig.json /usr/src/api/tsconfig.json
 
+RUN yarn build:prod
 
-CMD ["yarn","run","build"]
+RUN rm -fr node_modules
+RUN yarn install --production
 
-CMD ["yarn","run","start:prod"]
+CMD ["npm","run","start:prod"]
