@@ -11,6 +11,7 @@ export const Colors = {
     white: '#fff',
     gray: '#505050',
     mainBackground: '#E5E5E5',
+    borderOutline: '#DBDBDB',
 }
 
 export const Widths = {

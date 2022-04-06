@@ -70,7 +70,7 @@ export const MainWrapper = styled.div`
 export const StyledContentWrapper = styled.div`
   width: 100%;
   margin-top: 95px;
-  
+  background: ${Colors.offWhite};
   @media (min-width: ${size.tablet}) {
     padding: 0 40px;
   }

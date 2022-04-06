@@ -4,16 +4,18 @@ import breadcrumbIcon from "../../assets/img/breadcrumb-icon.svg";
 import {size} from "../../styled";
 
 export const StyledBreadcrumbs = styled.div`
-  background: ${Colors.primaryColor};
+  background: ${Colors.primaryColor}; 
   color: white;
   border-radius: 10px;
   box-shadow: 0 4px 4px rgba(0,0,0,0.25);
   width: 100%;
   padding: 0 20px;
+  margin-top: 20px;
 `;
 
 export const StyledBreadcrumbLink = styled.a`
   color: #FFFFFF;
+  font-weight: 500;
   padding: 5px;
   line-height: 40px;
   text-decoration: none;
