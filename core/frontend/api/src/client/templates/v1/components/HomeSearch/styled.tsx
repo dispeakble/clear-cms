@@ -34,6 +34,11 @@ export const StyledHomeSearch = styled.div`
   }
 `;
 
+export const FlightsSearchInputContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`
+
 export const StyledSearchTabs = styled.div`
   border-radius: 16px 16px 0 0;
   & :first-child {
@@ -60,6 +65,14 @@ export const StyledSearchTab = styled.div`
   }
 `;
 
+export const CheckboxContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+`
+
 export const StyledSearchInput = styled.input`
   background: url(${searchIcon.src}) no-repeat 16px center white;
   border-radius: 0 16px 0 0;
@@ -72,6 +85,19 @@ export const StyledSearchInput = styled.input`
     color: rgba(0,0,0,0.6)
   }
 `;
+
+export const StyledFlightInput = styled.input`
+  background: white;
+  margin-top: 5px;
+  padding: 20px 50px;
+  width: 100%;
+  outline: none;
+  border: none;
+  &::placeholder{
+    color: rgba(0,0,0,0.6)
+  }
+`;
+
 
 export const StyledSearchOptions = styled.div`
   margin-top: 5px;
@@ -122,6 +148,10 @@ export const StyledSearchCheckinGroup = styled.div`
       color: #FFFFFF !important;
     }
     
+  }
+  
+  &:not(:first-child){
+    margin: 0 0 0 10px;
   }
 `;
 

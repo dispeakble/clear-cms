@@ -9,7 +9,7 @@ type HeaderWrapperProps = {
 }
 
 export const HeaderWrapper = styled.header<HeaderWrapperProps>`
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -24,7 +24,8 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   transition: background-color 1000ms linear;
   
   &.fixedHeader {
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
   }
   
   @media (max-width: ${size.laptop}) {

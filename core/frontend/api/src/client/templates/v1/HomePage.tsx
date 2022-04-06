@@ -9,6 +9,9 @@ import VerticalPhotoSlider from "./components/VerticalPhotoSlider";
 import QuickAboutUs from "./components/QuickAboutUs";
 import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
+import Terms from "./components/Footer/Terms";
+import Footer from "./components/Footer";
+import BottomCards from "./components/BottomCards";
 
 export type HomePageProps = {
     websiteName: string;
@@ -31,6 +34,9 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
         <QuickAboutUs />
         <Recommended />
         <TabbedContent/>
+        <BottomCards />
+        <Terms />
+        <Footer />
     </MainWrapper>;
 };
 

@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   display: flex;
   padding: 34px;
   width: 100%;
+  margin-bottom: 50px;
 `;
 
 export const StyledTabs = styled.div`

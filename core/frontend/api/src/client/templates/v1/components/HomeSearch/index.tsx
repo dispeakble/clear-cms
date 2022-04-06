@@ -16,7 +16,7 @@ import {
     StyledLabel,
     StyledValue, StyledPrimaryValue, StyledCenterLabel,
     CalendarContainer,
-    Overlay,
+    Overlay, FlightsSearchInputContainer, StyledFlightInput, CheckboxContainer,
 } from "./styled";
 import {useRef, useState} from "react";
 import {useRouter} from "next/router";
@@ -25,6 +25,7 @@ import {
     SearchLabel
 } from "../../../../components/agency/SearchComponent/styled";
 import Calendar from "react-calendar";
+import CustomCheckbox from "./CustomCheckbox";
 
 const HomeSearch = () => {
     const router = useRouter();
@@ -32,22 +33,31 @@ const HomeSearch = () => {
 
     const date = new Date()
     const destinationRef = useRef(null)
+    const departureRef = useRef(null)
 
     const [checkInCalendarIsOpen, setCheckInCalendarIsOpen] = useState(false)
     const [checkOutCalendarIsOpen, setCheckOutCalendarIsOpen] = useState(false)
     const [checkInDate, setCheckInDate] = useState(null)
     const [checkOutDate, setCheckOutDate] = useState(null)
+    const [departure, setDeparture] = useState('');
     const [guests, setGuests] = useState({
         adults: 1,
         children: 0,
         infants: 0
     })
+    const [activeTab, setActiveTab] = useState('packages')
     const [guestIsOpen, setGuestsIsOpen] = useState(false)
     const [destination, setDestination] = useState("")
+    const [oneWay, setOneWay] = useState(false)
 
     const handleDestination = (e: any) => {
         e.preventDefault()
         setDestination(e.target.value)
+    }
+
+    const handleDeparture = (e: any) => {
+        e.preventDefault()
+        setDeparture(e.target.value)
     }
 
     const onCheckInChange = (date: any) => {
@@ -160,154 +170,315 @@ const HomeSearch = () => {
 
     return <StyledHomeSearch>
         <StyledSearchTabs>
-            <StyledSearchTab className="selected">{t('search.packages')}</StyledSearchTab>
-            <StyledSearchTab>{t('search.hotels')}</StyledSearchTab>
-            <StyledSearchTab>{t('search.flights')}</StyledSearchTab>
+            <StyledSearchTab className={activeTab === "packages" ? "selected" : ""} onClick={() => setActiveTab('packages')}>{t('search.packages')}</StyledSearchTab>
+            <StyledSearchTab className={activeTab === "hotels" ? "selected" : ""} onClick={() => setActiveTab('hotels')}>{t('search.hotels')}</StyledSearchTab>
+            <StyledSearchTab className={activeTab === "flights" ? "selected" : ""} onClick={() => setActiveTab('flights')}>{t('search.flights')}</StyledSearchTab>
         </StyledSearchTabs>
-        <StyledSearchInput placeholder={t('search.homeSearchPlaceholder')} value={destination} onChange={handleDestination} ref={destinationRef}/>
-        <StyledSearchOptions>
-            <StyledSearchCheckinGroup>
-                <StyledCheckIn onClick={openCheckInCalendar}>
-                    <StyledLabel>{t('search.checkinDate')}</StyledLabel>
-                    <StyledValue>{
-                        checkInDate !== null ?
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            formatDate(checkInDate)
-                            : t('search.addDate')
-                    }</StyledValue>
-                    {
-                        checkInCalendarIsOpen &&
-                        <>
-                            <CalendarContainer id="checkIn">
-                                <SearchLabel>{t('search.checkinDate')}</SearchLabel>
-                                <Calendar
-                                    onChange={onCheckInChange}
-                                    value={checkInDate}
-                                    minDate={new Date()}
-                                />
-                            </CalendarContainer>
-                            <Overlay onClick={closeModals}/>
-                        </>
-                    }
-                </StyledCheckIn>
-                <StyledCheckOut onClick={openCheckOutCalendar}>
-                    <StyledLabel>{t('search.checkout')}</StyledLabel>
-                    <StyledValue>{
-                        checkOutDate !== null ?
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            formatDate(checkOutDate)
-                            : t('search.addDate')
-                    }</StyledValue>
-                    {
-                        checkOutCalendarIsOpen &&
-                        <>
-                            <CalendarContainer id="checkOut">
-                                <SearchLabel>{t('search.checkoutDate')}</SearchLabel>
-                                <Calendar
-                                    onChange={onCheckOutChange}
-                                    value={checkOutDate}
-                                    minDate={checkInDate as unknown as Date}
-                                />
-                            </CalendarContainer>
-                            <Overlay onClick={closeModals}/>
-                        </>
-                    }
-                </StyledCheckOut>
-            </StyledSearchCheckinGroup>
-            <StyledSearchOptionsGroup onClick={openGuests}>
-                <StyledPerson>
-                    <StyledCenterLabel>
-                        <StyledLabel>{t('search.adults')}</StyledLabel>
-                        <StyledPrimaryValue>{guests.adults}</StyledPrimaryValue>
-                    </StyledCenterLabel>
-                </StyledPerson>
-                <StyledChild>
-                    <StyledCenterLabel>
-                        <StyledLabel>{t('search.children')}</StyledLabel>
-                        <StyledPrimaryValue>{guests.children}</StyledPrimaryValue>
-                    </StyledCenterLabel>
-                </StyledChild>
-                <StyledInfant>
-                    <StyledCenterLabel>
-                        <StyledLabel>{t('search.infants')}</StyledLabel>
-                        <StyledPrimaryValue>{guests.infants}</StyledPrimaryValue>
-                    </StyledCenterLabel>
-                </StyledInfant>
-                <StyledStars>
-                    <StyledCenterLabel>
-                        <StyledLabel>{t('search.hotel-stars')}</StyledLabel>
-                        <StyledPrimaryValue>2</StyledPrimaryValue>
-                    </StyledCenterLabel>
-                </StyledStars>
-                {
-                    guestIsOpen &&
-                    <>
-                        <GuestsContainer>
-                            <GuestsItem>
-                                <GuestsLabelContainer>
-                                    <label>
-                                        {t('search.adults')}
-                                    </label>
-                                    <label>
-                                        {t('search.adults-age')}
-                                    </label>
-                                </GuestsLabelContainer>
-                                <HandlerContainer>
-                                    <Handler id="adults-minus" onClick={handleAdults}>
-                                        -
-                                    </Handler>
-                                    {guests.adults}
-                                    <Handler id="adults-plus" onClick={handleAdults}>
-                                        +
-                                    </Handler>
-                                </HandlerContainer>
-                            </GuestsItem>
-                            <GuestsItem>
-                                <GuestsLabelContainer>
-                                    <label>
-                                        {t('search.children')}
-                                    </label>
-                                    <label>
-                                        {t('search.children-age')}
-                                    </label>
-                                </GuestsLabelContainer>
-                                <HandlerContainer>
-                                    <Handler id="children-minus" onClick={handleChildren}>
-                                        -
-                                    </Handler>
-                                    {guests.children}
-                                    <Handler id="children-plus" onClick={handleChildren}>
-                                        +
-                                    </Handler>
-                                </HandlerContainer>
-                            </GuestsItem>
-                            <GuestsItem>
-                                <GuestsLabelContainer>
-                                    <label>
-                                        {t('search.infants')}
-                                    </label>
-                                    <label>
-                                        {t('search.infants-age')}
-                                    </label>
-                                </GuestsLabelContainer>
-                                <HandlerContainer>
-                                    <Handler id="infants-minus" onClick={handleInfants}>
-                                        -
-                                    </Handler>
-                                    {guests.infants}
-                                    <Handler id="infants-plus" onClick={handleInfants}>
-                                        +
-                                    </Handler>
-                                </HandlerContainer>
-                            </GuestsItem>
-                        </GuestsContainer>
-                        <Overlay onClick={closeModals} />
-                    </>
-                }
-            </StyledSearchOptionsGroup>
-        </StyledSearchOptions>
+        {
+            (activeTab === "packages" || activeTab === "hotels") &&
+            <>
+                <StyledSearchInput placeholder={t('search.homeSearchPlaceholder')} value={destination} onChange={handleDestination} ref={destinationRef}/>
+                <StyledSearchOptions>
+                    <StyledSearchCheckinGroup>
+                        <StyledCheckIn onClick={openCheckInCalendar}>
+                            <StyledLabel>{t('search.checkinDate')}</StyledLabel>
+                            <StyledValue>{
+                                checkInDate !== null ?
+                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                    // @ts-ignore
+                                    formatDate(checkInDate)
+                                    : t('search.addDate')
+                            }</StyledValue>
+                            {
+                                checkInCalendarIsOpen &&
+                                <>
+                                    <CalendarContainer id="checkIn">
+                                        <SearchLabel>{t('search.checkinDate')}</SearchLabel>
+                                        <Calendar
+                                            onChange={onCheckInChange}
+                                            value={checkInDate}
+                                            minDate={new Date()}
+                                        />
+                                    </CalendarContainer>
+                                    <Overlay onClick={closeModals}/>
+                                </>
+                            }
+                        </StyledCheckIn>
+                        <StyledCheckOut onClick={openCheckOutCalendar}>
+                            <StyledLabel>{t('search.checkout')}</StyledLabel>
+                            <StyledValue>{
+                                checkOutDate !== null ?
+                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                    // @ts-ignore
+                                    formatDate(checkOutDate)
+                                    : t('search.addDate')
+                            }</StyledValue>
+                            {
+                                checkOutCalendarIsOpen &&
+                                <>
+                                    <CalendarContainer id="checkOut">
+                                        <SearchLabel>{t('search.checkoutDate')}</SearchLabel>
+                                        <Calendar
+                                            onChange={onCheckOutChange}
+                                            value={checkOutDate}
+                                            minDate={checkInDate as unknown as Date}
+                                        />
+                                    </CalendarContainer>
+                                    <Overlay onClick={closeModals}/>
+                                </>
+                            }
+                        </StyledCheckOut>
+                    </StyledSearchCheckinGroup>
+                    <StyledSearchOptionsGroup onClick={openGuests}>
+                        <StyledPerson>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.adults')}</StyledLabel>
+                                <StyledPrimaryValue>{guests.adults}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledPerson>
+                        <StyledChild>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.children')}</StyledLabel>
+                                <StyledPrimaryValue>{guests.children}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledChild>
+                        <StyledInfant>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.infants')}</StyledLabel>
+                                <StyledPrimaryValue>{guests.infants}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledInfant>
+                        <StyledStars>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.hotel-stars')}</StyledLabel>
+                                <StyledPrimaryValue>2</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledStars>
+                        {
+                            guestIsOpen &&
+                            <>
+                                <GuestsContainer>
+                                    <GuestsItem>
+                                        <GuestsLabelContainer>
+                                            <label>
+                                                {t('search.adults')}
+                                            </label>
+                                            <label>
+                                                {t('search.adults-age')}
+                                            </label>
+                                        </GuestsLabelContainer>
+                                        <HandlerContainer>
+                                            <Handler id="adults-minus" onClick={handleAdults}>
+                                                -
+                                            </Handler>
+                                            {guests.adults}
+                                            <Handler id="adults-plus" onClick={handleAdults}>
+                                                +
+                                            </Handler>
+                                        </HandlerContainer>
+                                    </GuestsItem>
+                                    <GuestsItem>
+                                        <GuestsLabelContainer>
+                                            <label>
+                                                {t('search.children')}
+                                            </label>
+                                            <label>
+                                                {t('search.children-age')}
+                                            </label>
+                                        </GuestsLabelContainer>
+                                        <HandlerContainer>
+                                            <Handler id="children-minus" onClick={handleChildren}>
+                                                -
+                                            </Handler>
+                                            {guests.children}
+                                            <Handler id="children-plus" onClick={handleChildren}>
+                                                +
+                                            </Handler>
+                                        </HandlerContainer>
+                                    </GuestsItem>
+                                    <GuestsItem>
+                                        <GuestsLabelContainer>
+                                            <label>
+                                                {t('search.infants')}
+                                            </label>
+                                            <label>
+                                                {t('search.infants-age')}
+                                            </label>
+                                        </GuestsLabelContainer>
+                                        <HandlerContainer>
+                                            <Handler id="infants-minus" onClick={handleInfants}>
+                                                -
+                                            </Handler>
+                                            {guests.infants}
+                                            <Handler id="infants-plus" onClick={handleInfants}>
+                                                +
+                                            </Handler>
+                                        </HandlerContainer>
+                                    </GuestsItem>
+                                </GuestsContainer>
+                                <Overlay onClick={closeModals} />
+                            </>
+                        }
+                    </StyledSearchOptionsGroup>
+                </StyledSearchOptions>
+            </>
+        }
+        {
+            activeTab === "flights" &&
+            <>
+                <FlightsSearchInputContainer>
+                    <StyledFlightInput placeholder={t('search.flightsDeparturePlaceholder')} value={departure} onChange={handleDeparture} ref={departureRef}/>
+                    <StyledFlightInput placeholder={t('search.flightsDestinationPlaceholder')} value={destination} onChange={handleDestination} ref={destinationRef}/>
+                </FlightsSearchInputContainer>
+                <StyledSearchOptions>
+                    <StyledSearchCheckinGroup>
+                        <StyledCheckIn onClick={openCheckInCalendar}>
+                            <StyledLabel>{t('search.departure')}</StyledLabel>
+                            <StyledValue>{
+                                checkInDate !== null ?
+                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                    // @ts-ignore
+                                    formatDate(checkInDate)
+                                    : t('search.addDate')
+                            }</StyledValue>
+                            {
+                                checkInCalendarIsOpen &&
+                                <>
+                                    <CalendarContainer id="checkIn">
+                                        <SearchLabel>{t('search.departureDate')}</SearchLabel>
+                                        <Calendar
+                                            onChange={onCheckInChange}
+                                            value={checkInDate}
+                                            minDate={new Date()}
+                                        />
+                                    </CalendarContainer>
+                                    <Overlay onClick={closeModals}/>
+                                </>
+                            }
+                        </StyledCheckIn>
+                        {
+                            !oneWay &&
+                            <StyledCheckOut onClick={openCheckOutCalendar}>
+                                <StyledLabel>{t('search.return')}</StyledLabel>
+                                <StyledValue>{
+                                    checkOutDate !== null ?
+                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                        // @ts-ignore
+                                        formatDate(checkOutDate)
+                                        : t('search.addDate')
+                                }</StyledValue>
+                                {
+                                    checkOutCalendarIsOpen &&
+                                    <>
+                                        <CalendarContainer id="checkOut">
+                                            <SearchLabel>{t('search.returnDate')}</SearchLabel>
+                                            <Calendar
+                                                onChange={onCheckOutChange}
+                                                value={checkOutDate}
+                                                minDate={checkInDate as unknown as Date}
+                                            />
+                                        </CalendarContainer>
+                                        <Overlay onClick={closeModals}/>
+                                    </>
+                                }
+                            </StyledCheckOut>
+                        }
+                    </StyledSearchCheckinGroup>
+                    <StyledSearchCheckinGroup>
+                        <CheckboxContainer>
+                            <CustomCheckbox state={oneWay} setState={setOneWay}>
+                                One way flight ?
+                            </CustomCheckbox>
+                        </CheckboxContainer>
+                    </StyledSearchCheckinGroup>
+                    <StyledSearchOptionsGroup onClick={openGuests}>
+                        <StyledPerson>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.adults')}</StyledLabel>
+                                <StyledPrimaryValue>{guests.adults}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledPerson>
+                        <StyledChild>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.children')}</StyledLabel>
+                                <StyledPrimaryValue>{guests.children}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledChild>
+                        <StyledInfant>
+                            <StyledCenterLabel>
+                                <StyledLabel>{t('search.infants')}</StyledLabel>
+                                <StyledPrimaryValue>{guests.infants}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                        </StyledInfant>
+                        {
+                            guestIsOpen &&
+                            <>
+                                <GuestsContainer>
+                                    <GuestsItem>
+                                        <GuestsLabelContainer>
+                                            <label>
+                                                {t('search.adults')}
+                                            </label>
+                                            <label>
+                                                {t('search.adults-age')}
+                                            </label>
+                                        </GuestsLabelContainer>
+                                        <HandlerContainer>
+                                            <Handler id="adults-minus" onClick={handleAdults}>
+                                                -
+                                            </Handler>
+                                            {guests.adults}
+                                            <Handler id="adults-plus" onClick={handleAdults}>
+                                                +
+                                            </Handler>
+                                        </HandlerContainer>
+                                    </GuestsItem>
+                                    <GuestsItem>
+                                        <GuestsLabelContainer>
+                                            <label>
+                                                {t('search.children')}
+                                            </label>
+                                            <label>
+                                                {t('search.children-age')}
+                                            </label>
+                                        </GuestsLabelContainer>
+                                        <HandlerContainer>
+                                            <Handler id="children-minus" onClick={handleChildren}>
+                                                -
+                                            </Handler>
+                                            {guests.children}
+                                            <Handler id="children-plus" onClick={handleChildren}>
+                                                +
+                                            </Handler>
+                                        </HandlerContainer>
+                                    </GuestsItem>
+                                    <GuestsItem>
+                                        <GuestsLabelContainer>
+                                            <label>
+                                                {t('search.infants')}
+                                            </label>
+                                            <label>
+                                                {t('search.infants-age')}
+                                            </label>
+                                        </GuestsLabelContainer>
+                                        <HandlerContainer>
+                                            <Handler id="infants-minus" onClick={handleInfants}>
+                                                -
+                                            </Handler>
+                                            {guests.infants}
+                                            <Handler id="infants-plus" onClick={handleInfants}>
+                                                +
+                                            </Handler>
+                                        </HandlerContainer>
+                                    </GuestsItem>
+                                </GuestsContainer>
+                                <Overlay onClick={closeModals} />
+                            </>
+                        }
+                    </StyledSearchOptionsGroup>
+                </StyledSearchOptions>
+            </>
+        }
     </StyledHomeSearch>
 }
 

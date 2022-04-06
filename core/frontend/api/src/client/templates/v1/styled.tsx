@@ -10,6 +10,7 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     background: url('${headerBg.src}') no-repeat center top ${Colors.mainBackground};
     background-size: 100%;
+    overflow-x: hidden;
   }
 `
 
