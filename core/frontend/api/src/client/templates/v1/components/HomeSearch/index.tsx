@@ -16,7 +16,8 @@ import {
     StyledLabel,
     StyledValue, StyledPrimaryValue, StyledCenterLabel,
     CalendarContainer,
-    Overlay, FlightsSearchInputContainer, StyledFlightInput, CheckboxContainer,
+    StyledHomeSearchHeader,
+    Overlay, FlightsSearchInputContainer, StyledFlightInput, CheckboxContainer, StyledSearchButton,
 } from "./styled";
 import {useRef, useState} from "react";
 import {useRouter} from "next/router";
@@ -169,11 +170,16 @@ const HomeSearch = () => {
     }
 
     return <StyledHomeSearch>
-        <StyledSearchTabs>
-            <StyledSearchTab className={activeTab === "packages" ? "selected" : ""} onClick={() => setActiveTab('packages')}>{t('search.packages')}</StyledSearchTab>
-            <StyledSearchTab className={activeTab === "hotels" ? "selected" : ""} onClick={() => setActiveTab('hotels')}>{t('search.hotels')}</StyledSearchTab>
-            <StyledSearchTab className={activeTab === "flights" ? "selected" : ""} onClick={() => setActiveTab('flights')}>{t('search.flights')}</StyledSearchTab>
-        </StyledSearchTabs>
+        <StyledHomeSearchHeader>
+            <StyledSearchTabs>
+                <StyledSearchTab className={activeTab === "packages" ? "selected" : ""} onClick={() => setActiveTab('packages')}>{t('search.packages')}</StyledSearchTab>
+                <StyledSearchTab className={activeTab === "hotels" ? "selected" : ""} onClick={() => setActiveTab('hotels')}>{t('search.hotels')}</StyledSearchTab>
+                <StyledSearchTab className={activeTab === "flights" ? "selected" : ""} onClick={() => setActiveTab('flights')}>{t('search.flights')}</StyledSearchTab>
+            </StyledSearchTabs>
+            <StyledSearchButton>
+                Search
+            </StyledSearchButton>
+        </StyledHomeSearchHeader>
         {
             (activeTab === "packages" || activeTab === "hotels") &&
             <>

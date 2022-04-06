@@ -75,7 +75,7 @@ export const CheckboxContainer = styled.div`
 
 export const StyledSearchInput = styled.input`
   background: url(${searchIcon.src}) no-repeat 16px center white;
-  border-radius: 0 16px 0 0;
+  border-radius: 0 0 0 0;
   margin-top: 5px;
   padding: 20px 50px;
   width: 100%;
@@ -167,6 +167,22 @@ export const StyledCheckIn = styled.span`
     pointer-events: none;
   }
 `;
+
+export const StyledHomeSearchHeader = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+ 
+`
+
+export const StyledSearchButton = styled.button`
+  border-radius: 0 16px 0 0;
+  min-width: 180px;
+  color: #FFFFFF;
+  border: none;
+  background: #DC6B03;
+  cursor: pointer;
+`
 
 export const StyledCheckOut = styled.span`
   display: inline-block;
