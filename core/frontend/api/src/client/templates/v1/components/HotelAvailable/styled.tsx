@@ -28,11 +28,10 @@ export const Modifier = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
   gap: 20px;
-
 `
 
 export const HotelCheck = styled.div`
-  width: 60%;
+  flex: 1;
   display: flex;
   gap: 20px
 `
@@ -47,7 +46,6 @@ export const LeftSide = styled.div`
   background: ${Colors.white};
 `
 export const RightSide = styled.div`
-  width: 498px;
   border: 2px solid ${Colors.borderOutline};
   border-radius: 16px;
   flex: 5;
@@ -60,8 +58,8 @@ export const RightSide = styled.div`
 export const DropdownIcon = styled.div`
   width: 24px;
   position: relative;
-  top: 3px;
-  left: 10px;
+  top: 6px;
+  left: 0;
   background: url(${dropdownIcon.src}) no-repeat left center;
 
 `
@@ -69,33 +67,33 @@ export const RefreshPrice = styled.div`
   position: relative;
 
   button {
-    width: 287px;
     height: 66px;
     background: linear-gradient(180deg, #7CCF13 0%, #639722 100%);
     color: ${Colors.white};
     border-radius: 12px;
     border: none;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: 24px;
+    font-size: 17px;
     align-items: center;
     cursor: pointer;
     text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-    padding: 0 46px 0 65px;
+    padding: 0 40px;
+    display: flex;
+    justify-content: center;
     :hover{
       background: linear-gradient(180deg, #7CCF13 100%, #639722 0%);
-      
+    }
+    @media (min-width: ${size.laptopL}) {
+      font-size: 24px;
     }
   }
 `
 export const RefreshIcon = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 42px;
+  margin-right: 10px;
   width: 24px;
   height: 24px;
   background: url(${refreshIcon.src}) no-repeat left center;
   cursor: pointer;
- 
 `
 
 export const RoomTable = styled.div``

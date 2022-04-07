@@ -18,10 +18,12 @@ import {Shadows} from "../../../../assets/design-set";
 
 
 export const Wrapper = styled.div`
-  display: flex;
-  flex: 1 1;
   margin-top: 30px;
   gap: 20px;
+  @media (min-width: ${size.laptop}) {
+    display: flex;
+    flex: 1 1;
+  }
 `;
 
 export const DealCard = styled.div`
@@ -64,7 +66,6 @@ export const Destination = styled.div`
 export const HotelSearch = styled.div`
   display: flex;
   justify-content: space-around;
-    width: 379px;
   height: 50px;
   background: ${Colors.white};
 
@@ -106,14 +107,14 @@ export const DropdownIcon = styled.div`
   background: url(${dropdownIcon.src}) no-repeat left center;
 `
 export const NewSearch = styled.div`
-    cursor: pointer;
-  display: -webkit-box;
-  button{
+  display: flex;
+  flex: 1;
+  
+  button {
     background: linear-gradient(180deg, ${Colors.primaryDark} 0%, ${Colors.primaryColor} 100%);
     color: ${Colors.white};
-
-    width: 379px;
     height: 50px;
+    padding-right: 20px;
     border-radius: 12px;
     border: none;
     box-shadow: 0 4px 4px rgba(0,0,0,0.25);
@@ -121,22 +122,23 @@ export const NewSearch = styled.div`
     font-size: 20px;
     line-height: 30px;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
+    display: flex;
+    flex: 1;
     &:hover {
       color: ${Colors.primaryLight}
   }
 `
 export const WhiteIcon = styled.div`
-  position: relative;
-  height: 30px;
-  top: 44px;
-  left: 102px;
-  background: url(${WhiteSearchIcon.src}) no-repeat left center;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  background: url(${WhiteSearchIcon.src}) no-repeat center center;
 `
 export const GuestType = styled.div`
   display: flex;
   justify-content: space-around;
-  width: 379px;
   height: 50px;
   background: ${Colors.white};
 
@@ -146,7 +148,8 @@ export const GuestType = styled.div`
   border-radius: 10px;
 `
 export const AdultBox = styled.div`
-display: flex;
+  display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -179,14 +182,23 @@ export const InfantIcon = styled.div`
   background: url(${infantIcon.src}) no-repeat left center;
 `
 export const HotelView = styled.div`
-    width: 100%;
+  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 10px;
+  @media (min-width: ${size.laptop}) {
+    width: 379px;
+    padding: 0;
+  }
 `
-export const HotelResult = styled.div`
-display: flex;
-  justify-content: space-between;
+export const HotelInfo = styled.div`
+  display: block;
+  @media (min-width: ${size.laptopL}) {
+    display: flex;
+    justify-content: space-between;
+  }
 `
 export const HotelName = styled.div`
   font-size: 36px;
@@ -197,13 +209,10 @@ export const HotelName = styled.div`
   cursor: default;
 `
 export const ViewPrice = styled.div`
-  width: 268px;
   position: relative;
   display: flex;
-  justify-content: end;
- 
-  button{
-    width: 268px;
+  button {
+    flex: 1;
     height: 66px;
     background: linear-gradient(180deg, #7CCF13 0%, #639722 100%);
     color: ${Colors.white};
@@ -215,21 +224,23 @@ export const ViewPrice = styled.div`
     cursor: pointer;
     text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
     padding: 0 46px 0 65px;
+    display: flex;
+    justify-content: center;
     &:hover {
-      background: linear-gradient(180deg, #7CCF13 100%, #639722 0%);
+      background: linear-gradient(180deg, #b7f964 0%, #639722 100%);
     }
-    
+    @media (min-width: ${size.tablet}) {
+      width: 268px;
+    }
   }
 `
-export const InfoIcon = styled.div`
-  height: 22px;
-  position: absolute;
-  top: 23px;
-  left: 50px;
-  width: 25px;
+export const InfoIcon = styled.span`
+  display: inline-block;
+  height: 32px;
+  width: 32px;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  background: url(${infoicon.src}) no-repeat left center;
+  background: url(${infoicon.src}) no-repeat center center;
 
 `
 export const LeftSide = styled.div``
@@ -259,7 +270,9 @@ export const ViewMap = styled.div`
 // Slider Section
 
 export const SliderSection = styled.div`
-display: flex;
+  position: relative;
+  height: 100%;
+  display: flex;
 `
 export const DateDiv=styled.div`
 position: relative;
@@ -344,5 +357,16 @@ export const ImageCount = styled.div`
   width: 183px;
   height: 130px;
   background-size: cover;
-  marginTop: 10px;
+  margin-top: 10px;
 `
+
+export const StyledDescription = styled.div`
+  width: 100%;
+  font-size: 20px;
+  color: rgba(0,0,0,0.5);
+`;
+
+export const StyledDescriptionMore = styled.a`
+  cursor: pointer;
+  color: ${Colors.primaryColor};
+`;

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import {device, size} from "../../styled";
 
-export const StyledSliderWrapper = styled.div<{maxWidth: string}>`
-  width: 100%;
+export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;
   justify-content: center;
   display: flex;
@@ -10,40 +9,44 @@ export const StyledSliderWrapper = styled.div<{maxWidth: string}>`
   & .swiper-button-prev {
     left: 0;
     @media ${device.tablet} {
-      left: 29%;
+      left: 0;
     }
   }
   & .swiper-button-next {
     right: 0;
     @media ${device.tablet} {
-      right: 28%;
+      right: 0;
     }
   }
-  
+
   & .swiper-button-next, .swiper-button-prev {
     color: #FFFFFF;
   }
-  
-  @media ${device.tablet} {
-    width: ${({maxWidth}) => maxWidth};
-  }
+
 `;
 
 type StyledSliderImageProps = {
-    src: any;
-    maxHeight: string;
+  src: any;
 }
 
 export const StyledSliderImage = styled.div<StyledSliderImageProps>`
   background: url(${({src}) => src}) no-repeat center center;
   background-size: cover;
-  width: 300px;
-  height: ${({maxHeight}) => maxHeight};
+  width: 620px;
+  height: 200px;
+  @media (min-width: ${size.laptop}) {
+    width: 438px;
+    height: 375px;
+  }
+  @media (min-width: ${size.laptopL}) {
+    width: 818px;
+    height: 375px;
+  }
   &.first {
-    
+
   }
   &.last {
-    
+
   }
   &.middle {
     width: 397px;

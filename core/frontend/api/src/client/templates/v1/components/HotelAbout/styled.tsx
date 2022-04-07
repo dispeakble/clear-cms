@@ -2,17 +2,24 @@ import styled from "styled-components";
 import {Colors} from "../../assets/design-set";
 import {size} from "../../styled";
 import highlight from "../../assets/img/highlight-image.svg"
+import hotel1 from "../../assets/img/hotels/small/hotel1.jpg"
 import checkIcon from "../../assets/img/check-icon.svg"
 
 
 export const About = styled.div`
-  display: flex;
   margin-top: 37px;
-  padding: 37px 42px;
-  gap: 20px;
+  @media (min-width: ${size.laptopL}) {
+    display: flex;
+    gap: 20px;
+    padding: 37px 42px;
+  }
 `
 
-export const LeftSection = styled.div``
+export const LeftSection = styled.div`
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+`
 export const HotelName = styled.div`
   font-weight: 600;
   font-size: 32px;
@@ -45,20 +52,27 @@ display: flex;
   gap:20px;
 `
 export const MapSection = styled.div`
-  width: 485px;
+  width: 100%;
   height: 298px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  @media (min-width: ${size.laptopL}) {
+    width: 485px;
+  }
 `
 
 
 export const Highlights = styled.div`
-  width: 497px;
+  width: 100%;
   height: 427px;  
-  background: url(${highlight.src}) no-repeat left center;
+  background: url(${hotel1.src}) no-repeat center center;
+  background-size: cover;
+  border-radius: 20px;
   padding: 20px 35px;
   cursor: default;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
+  @media (min-width: ${size.laptopL}) {
+    width: 497px;
+  }
 `
 
 export const Cardtitle =styled.div`

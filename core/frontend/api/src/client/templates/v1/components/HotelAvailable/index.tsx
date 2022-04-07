@@ -349,11 +349,11 @@ const HotelAvailable = ({
                     </RightSide>
                 </HotelCheck>
                 <RefreshPrice>
-                    <Tooltip title="refresh prices" >
-                        <RefreshIcon/>
-                    </Tooltip>
 
-                    <button>Refresh Prices</button>
+                    <button>
+                        <Tooltip title="refresh prices" >
+                            <RefreshIcon/>
+                        </Tooltip><span>Refresh Prices</span></button>
                 </RefreshPrice>
             </Modifier>
             <RoomTable>
