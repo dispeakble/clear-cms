@@ -1,0 +1,24 @@
+name: Build System
+
+env:
+  TIMESTAMP: $(date +%s)
+
+on:
+  pull_request:
+    paths: 
+      - 'core/system/api/**'
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: CD to system
+      run: cd core/system/api
+    - name: Build the System Docker image
+      run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
+    - name: Push docker image
+      run: docker push dispeakble/crm-system:$TIMESTAMP

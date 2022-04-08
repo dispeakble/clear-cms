@@ -1,7 +1,5 @@
-import {ClientProxy, Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
+import {ClientProxy} from "@nestjs/microservices";
 import {Inject, Injectable} from "@nestjs/common";
-import {AppService} from "./app.service";
-import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 
 

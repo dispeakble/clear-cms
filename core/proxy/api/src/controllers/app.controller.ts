@@ -12,12 +12,12 @@ import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: 'proxy',
+        name: `${process.env.app}_proxy`,
         version: '21.07.28',
         description: 'the main http proxy (gateway)',
         started: new Date(),
         config: {
-            channel: 'proxy',
+            channel: `${process.env.app}_proxy`,
             restart: true,
             stop: false
         },
@@ -216,7 +216,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: 'proxy',
+                                channel: `${process.env.app}_proxy`,
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {

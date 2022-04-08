@@ -40,6 +40,7 @@ export class ProtocolController {
 
     async onApplicationBootstrap() {
         await this.protocolService.start();
+        this.moduleService.checkModules();
         console.log('Hub started')
     }
 
