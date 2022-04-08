@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build the Docker image
-        working-directory: '$WORKING_DIR'
+        working-directory: core/hub
         run: docker build . --file Dockerfile --tag $DOCKER_IMAGE
       - name: Push docker image
         run: docker push $DOCKER_IMAGE
