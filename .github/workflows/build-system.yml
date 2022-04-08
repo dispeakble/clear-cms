@@ -16,9 +16,10 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - name: CD to system
-      run: cd /core/system
-    - name: Build the System Docker image
-      run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
-    - name: Push docker image
-      run: docker push dispeakble/crm-system:$TIMESTAMP
+      - uses: actions/checkout@v3
+      - name: CD to system
+        run: cd core/system
+      - name: Build the System Docker image
+        run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
+      - name: Push docker image
+        run: docker push dispeakble/crm-system:$TIMESTAMP
