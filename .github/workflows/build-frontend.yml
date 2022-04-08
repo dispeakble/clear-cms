@@ -5,8 +5,7 @@ env:
 
 on:
   pull_request_target:
-    types:
-      - opened
+    types: ['opened', 'edited', 'reopened', 'synchronize']
   pull_request:
     paths: 
       - 'core/frontend/api/**'
