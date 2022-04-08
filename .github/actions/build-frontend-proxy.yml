@@ -1,6 +1,0 @@
-name: 'Build Frontend'
-description: 'Build the frontend image'
-working-directory: core/frontend
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

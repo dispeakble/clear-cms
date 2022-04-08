@@ -19,9 +19,9 @@ jobs:
 
     steps:
       - name: Build the Backend Proxy Docker image
-        id: hello
-        uses: actions/build-frontend@v1
-      - name: Build docker image
-        run: docker build . --file Dockerfile --tag dispeakble/crm-frontend:$TIMESTAMP
+        uses: ./
+        working-directory: core/proxy
+        run: docker build . --file Dockerfile --tag dispeakble/crm-proxy:$TIMESTAMP
       - name: Push docker image
-        run: docker push dispeakble/crm-frontend:$TIMESTAMP
+        uses: ./
+        run: docker push dispeakble/crm-proxy:$TIMESTAMP
