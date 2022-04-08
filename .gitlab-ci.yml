@@ -1,0 +1,16 @@
+before_script:
+  - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
+
+docker-build-frontend:
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+  script:
+    - cd core/frontend/api
+    - docker build -t dispeakble/crm-frontend-api:$COMMIT_TIME .
+    - docker push dispeakble/crm-frontend-api:$COMMIT_TIME
+  only:
+    - merge_requests
