@@ -15,12 +15,21 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Build the System Docker image
-        working-directory: ../core/system
-        run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+      - name: Build the Frontend Proxy Docker image
+        working-directory: core/frontend/proxy
+        run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-proxy:$TIMESTAMP
       - name: Push docker image
-        run: docker push dispeakble/crm-system:$TIMESTAMP
+        run: docker push dispeakble/crm-frontend-proxy:$TIMESTAMP
+      - name: Report
+        if: failure() && github.event.action != 'push'
+        with: fancy/commenter@v1
+          message: |
+            Some checks have failed.
