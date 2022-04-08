@@ -1,13 +1,13 @@
 name: Build Hub
 
 env:
-  DOCKER_IMAGE: dispeakble/crm-hub:$(date +%s)
+  DOCKER_IMAGE: 'dispeakble/crm-hub:$(date +%s)'
   WORKING_DIR: core/hub
 
 on:
   pull_request:
     paths:
-      - $WORKING_DIR/**
+      - '$WORKING_DIR/**'
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 
