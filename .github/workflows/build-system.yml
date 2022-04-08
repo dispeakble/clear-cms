@@ -4,6 +4,8 @@ env:
   TIMESTAMP: $(date +%s)
 
 on:
+  pull_request_target:
+    types: ['opened', 'edited', 'reopened', 'synchronize']
   pull_request:
     paths: 
       - 'core/system/api/**'
@@ -16,7 +18,6 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@v3
       - name: CD to system
         run: cd core/system
       - name: Build the System Docker image
