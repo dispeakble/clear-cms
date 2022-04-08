@@ -18,8 +18,9 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build the Backend Proxy Docker image
-        working-directory: ./core/proxy
+        working-directory: ../core/proxy
         run: docker build . --file Dockerfile --tag dispeakble/crm-proxy:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-proxy:$TIMESTAMP

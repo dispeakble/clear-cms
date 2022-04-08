@@ -18,8 +18,9 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build the Bucket Docker image
-        working-directory: ./plugins/dosido/bucket
+        working-directory: ../plugins/dosido/bucket
         run: docker build . --file Dockerfile --tag dispeakble/crm-bucket:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-bucket:$TIMESTAMP
