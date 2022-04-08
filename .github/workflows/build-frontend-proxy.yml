@@ -4,6 +4,9 @@ env:
   TIMESTAMP: $(date +%s)
 
 on:
+  pull_request_target:
+    types:
+      - opened
   pull_request:
     paths: 
       - 'core/frontend/proxy/api/**'
@@ -16,7 +19,6 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@v3
       - name: CD to frontend/proxy
         run: cd core/frontend/proxy
       - name: Build the Frontend Proxy Docker image
