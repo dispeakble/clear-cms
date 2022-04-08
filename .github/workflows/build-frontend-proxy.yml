@@ -19,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: debug
+        run: ls -lash
       - name: Build the Frontend Proxy Docker image
         working-directory: ../core/frontend/proxy
         run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-proxy:$TIMESTAMP
