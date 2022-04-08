@@ -1,4 +1,4 @@
-FROM node:14.17.5-alpine As crm-nestjs
+FROM node:16-alpine As crm-nestjs
 
 RUN mkdir -p /usr/src/api
 
@@ -22,4 +22,4 @@ RUN yarn build:prod
 RUN rm -fr node_modules
 RUN yarn install --production
 
-CMD ["npm","run","start:prod"]
+CMD ["yarn","run","start:prod"]

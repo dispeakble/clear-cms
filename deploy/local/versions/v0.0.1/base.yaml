@@ -188,8 +188,12 @@ services:
       - app_domain=${APP_DOMAIN}
       - redis_server=172.28.1.1
       - redis_port=6379
+      - backend_port=9898
       - redis_password=${REDIS_DEFAULT_PASSWORD}
       - tpl_ver=${TPL_VER}
+      - NODE_ENV=production
+    ports:
+      - "127.0.0.1:9898:9898"
     networks:
       node_net:
         ipv4_address: 172.28.1.15

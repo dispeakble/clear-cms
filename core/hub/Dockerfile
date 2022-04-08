@@ -18,4 +18,4 @@ COPY ./api/tsconfig.json /usr/src/api/tsconfig.json
 RUN npm run build
 
 CMD ["rm", "-fr", "src"]
-CMD ["npm","run","start:prod"]
+CMD ["yarn","run","start:prod"]
