@@ -16,9 +16,10 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - name: CD to frontend
-      run: cd /core/frontend
-    - name: Build the Frontend Docker image
-      run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-api:$TIMESTAMP
-    - name: Push docker image
-      run: docker push dispeakble/crm-frontend-api:$TIMESTAMP
+      - uses: actions/checkout@v3
+      - name: CD to frontend
+        run: cd core/frontend
+      - name: Build the Frontend Docker image
+        run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-api:$TIMESTAMP
+      - name: Push docker image
+        run: docker push dispeakble/crm-frontend-api:$TIMESTAMP
