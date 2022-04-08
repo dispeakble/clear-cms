@@ -5,8 +5,7 @@ env:
 
 on:
   pull_request_target:
-    types:
-      - opened
+    types: ['opened', 'edited', 'reopened', 'synchronize']
   pull_request:
     paths: 
       - 'core/frontend/api/**'
@@ -19,8 +18,9 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build the Frontend Docker image
-        working-directory: ./core/frontend/api
+        working-directory: ../core/frontend/api
         run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-api:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-frontend-api:$TIMESTAMP

@@ -8,7 +8,7 @@ on:
     types: ['opened', 'edited', 'reopened', 'synchronize']
   pull_request:
     paths: 
-      - 'core/system/api/**'
+      - 'core/system/**'
     branches: [ master ]
 
 jobs:
@@ -18,8 +18,9 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build the System Docker image
-        working-directory: ./core/system
+        working-directory: ../core/system
         run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-system:$TIMESTAMP

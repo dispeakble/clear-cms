@@ -5,11 +5,10 @@ env:
 
 on:
   pull_request_target:
-    types:
-      - opened
+    types: ['opened', 'edited', 'reopened', 'synchronize']
   pull_request:
     paths: 
-      - 'core/db/api/**'
+      - 'plugins/dosido/db/**'
     branches: [ master ]
 
 jobs:
@@ -19,8 +18,9 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      - uses: actions/checkout@v2
       - name: Build the Db Docker image
-        working-directory: ./plugins/dosido/db
+        working-directory: ../plugins/dosido/db
         run: docker build . --file Dockerfile --tag dispeakble/crm-db:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-db:$TIMESTAMP
