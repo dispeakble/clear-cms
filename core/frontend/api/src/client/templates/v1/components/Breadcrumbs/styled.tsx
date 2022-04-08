@@ -34,8 +34,6 @@ export const StyledBreadcrumbLink = styled.a`
   }
 
   @media (min-width: ${size.laptop}) {
-    
-    
     padding: 16px 26px 16px 5px;
   }
 `;
