@@ -1,0 +1,24 @@
+name: Build Backend Proxy
+
+env:
+  TIMESTAMP: $(date +%s)
+
+on:
+  pull_request:
+    paths: 
+      - 'core/proxy/api/**'
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: CD to proxy
+      run: cd core/proxy/api
+    - name: Build the Backend Proxy Docker image
+      run: docker build . --file Dockerfile --tag dispeakble/crm-proxy:$TIMESTAMP
+    - name: Push docker image
+      run: docker push dispeakble/crm-proxy:$TIMESTAMP

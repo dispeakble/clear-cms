@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build Frontend
 
 env:
   TIMESTAMP: $(date +%s)
@@ -20,3 +20,5 @@ jobs:
       run: cd core/frontend/api
     - name: Build the Frontend Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-api:$TIMESTAMP
+    - name: Push docker image
+      run: docker push dispeakble/crm-frontend-api:$TIMESTAMP

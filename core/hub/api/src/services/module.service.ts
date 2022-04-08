@@ -3,12 +3,12 @@ import { ModuleInterface } from "../interfaces/module.interface";
 import { ProtocolService } from "./protocol.service";
 import { payloadInterface } from "../interfaces/payload.interface";
 import { RedisCacheService } from "../cache/redisCache.service";
-import {Md5} from "md5-typescript";
+import * as crypto from 'crypto';
 
 @Injectable()
 export class ModuleService {
 
-  private methods = ["register", "mapPort", "getPort", "getChannel"];
+  private methods = ["register", "mapPort", "getPort", "getChannel", "checkModules"];
   private modules = {};
   private moduleStatus = {};
 
@@ -21,6 +21,56 @@ export class ModuleService {
       started: new Date(),
       dependencies: []
     };
+  }
+
+  public async checkModules() {
+
+    const modules = ['frontend', 'frontendproxy', 'adminproxy', 'system', 'bucket', 'db'];
+
+    setInterval(() => {
+      modules.map(async (module) => {
+        const pingResponse = await this.pingModule({
+          name: module
+        });
+
+        if(!pingResponse) {
+          delete this.modules[`${process.env.app}_${module}`];
+        } else {
+          this.modules[`${process.env.app}_${module}`] = {
+            version: pingResponse.version,
+            description: '',
+            started: new Date(),
+            dependencies: []
+          };
+        }
+      })
+    }, 3000)
+
+  }
+
+  private pingModule = (dep) => {
+    return new Promise<any>(async (resolve_ping) => {
+      try {
+        setTimeout(() => {
+          resolve_ping(null);
+        }, 1000);
+
+        const payload: payloadInterface = {//todo export this globally. lazy load
+          api: "protocol",
+          act: "ping",
+          channel: `${process.env.app}_hub`,
+          payload: dep
+        };
+
+        const module_response = await this.protocolService.sendMessage({
+          channel: `${process.env.app}_${dep.name}`,
+          payload: payload
+        });
+        resolve_ping(module_response);
+      } catch (ex) {
+        resolve_ping(null);
+      }
+    })
   }
 
   private async register(params: ModuleInterface) {
@@ -69,29 +119,10 @@ export class ModuleService {
         missingDeps.push(dep);
         return dep;
       }
-      const payload: payloadInterface = {//todo export this globally. lazy load
-        api: "protocol",
-        act: "ping",
-        channel: `${process.env.app}_hub`,
-        payload: dep
-      };
+
 
       try {
-        const pingResponse = await new Promise<any>(async (resolve_ping, reject_ping) => {
-          try {
-            setTimeout(() => {
-              resolve_ping(null);
-            }, 1000);
-
-            const module_response = await this.protocolService.sendMessage({
-              channel: dep.name,
-              payload: payload
-            });
-            resolve_ping(module_response);
-          } catch (ex) {
-            resolve_ping(null);
-          }
-        });
+        const pingResponse = await this.pingModule(dep);
 
         if (!pingResponse) {
           moduleAction = "retry";
@@ -177,7 +208,7 @@ export class ModuleService {
               fname: process.env.admin_fname,
               lname: process.env.admin_lname,
               email: process.env.admin_email,
-              password: Md5.init(process.env.admin_password),
+              password: crypto.createHash('md5').update(process.env.admin_password).digest("hex"),
               active: 1
             }
           }

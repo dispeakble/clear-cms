@@ -1,0 +1,24 @@
+name: Build Db
+
+env:
+  TIMESTAMP: $(date +%s)
+
+on:
+  pull_request:
+    paths: 
+      - 'core/db/api/**'
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: CD to db
+      run: cd core/db/api
+    - name: Build the Db Docker image
+      run: docker build . --file Dockerfile --tag dispeakble/crm-db:$TIMESTAMP
+    - name: Push docker image
+      run: docker push dispeakble/crm-db:$TIMESTAMP
