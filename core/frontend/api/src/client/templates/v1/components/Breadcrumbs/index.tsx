@@ -2,7 +2,6 @@ import {useTranslations} from "next-intl";
 import {StyledBreadcrumbLink, StyledBreadcrumbs} from "./styled";
 
 const Breadcrumbs = () => {
-
     const t = useTranslations();
 
     return (<StyledBreadcrumbs>
@@ -12,7 +11,6 @@ const Breadcrumbs = () => {
         <StyledBreadcrumbLink href="#">Adeje</StyledBreadcrumbLink>
         <StyledBreadcrumbLink href="#">Hotel Victoria (Hotel)</StyledBreadcrumbLink>
     </StyledBreadcrumbs>)
-
 };
 
 export default Breadcrumbs;
