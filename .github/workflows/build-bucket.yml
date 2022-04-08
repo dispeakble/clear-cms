@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: CD to bucket
-      run: cd core/bucket/api
+      run: cd /core/bucket
     - name: Build the Bucket Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-bucket:$TIMESTAMP
     - name: Push docker image

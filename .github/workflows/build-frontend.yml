@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: CD to frontend
-      run: cd core/frontend/api
+      run: cd /core/frontend
     - name: Build the Frontend Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-api:$TIMESTAMP
     - name: Push docker image
