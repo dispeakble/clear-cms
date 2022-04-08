@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+env:
+  TIMESTAMP: $(date +%s)
+
+on:
+  pull_request:
+    paths: 
+      - 'core/frontend/api/**'
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - name: CD to frontend
+      run: cd core/frontend/api
+    - name: Build the Frontend Docker image
+      run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-api:$TIMESTAMP
