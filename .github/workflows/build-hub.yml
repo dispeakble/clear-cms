@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: CD to hub
-      run: cd core/hub/api
+      run: cd /core/hub
     - name: Build the Hub Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-hub:$TIMESTAMP
     - name: Push docker image

@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: CD to frontend/proxy
-      run: cd core/frontend/proxy/api
+      run: cd /core/frontend/proxy
     - name: Build the Frontend Proxy Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-frontend-proxy:$TIMESTAMP
     - name: Push docker image

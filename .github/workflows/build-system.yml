@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: CD to system
-      run: cd core/system/api
+      run: cd /core/system
     - name: Build the System Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
     - name: Push docker image

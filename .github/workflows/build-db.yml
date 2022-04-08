@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: CD to db
-      run: cd core/db/api
+      run: cd /core/db
     - name: Build the Db Docker image
       run: docker build . --file Dockerfile --tag dispeakble/crm-db:$TIMESTAMP
     - name: Push docker image
