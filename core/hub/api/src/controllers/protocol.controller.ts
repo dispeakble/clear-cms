@@ -23,8 +23,9 @@ export class ProtocolController {
     };
 
     constructor(private readonly protocolService: ProtocolService,
-                private readonly moduleService: ModuleService)
-    {}
+                private readonly moduleService: ModuleService) {
+
+    }
 
     @MessagePattern({message: `${process.env.app}_hub`})//TODO should be an ENV or a config
     public async onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext): Promise<payloadInterface> {
