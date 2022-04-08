@@ -210,10 +210,6 @@ export class AppController {
         }).toPromise();
     }
 
-
-
-
-
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
         const url = parse(req.url, true);
