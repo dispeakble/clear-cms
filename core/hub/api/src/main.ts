@@ -31,6 +31,7 @@ async function bootstrap() {
         });
 
         await app.startAllMicroservicesAsync();
+
     } catch(err) {
         console.error(err);
         process.exit(1);
