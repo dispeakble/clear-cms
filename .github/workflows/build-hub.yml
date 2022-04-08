@@ -19,9 +19,8 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - name: CD to hub
-        run: cd core/hub
       - name: Build the Hub Docker image
+        working-directory: ./core/hub
         run: docker build . --file Dockerfile --tag dispeakble/crm-hub:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-hub:$TIMESTAMP

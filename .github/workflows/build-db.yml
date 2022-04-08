@@ -19,9 +19,8 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - name: CD to db
-        run: cd core/db
       - name: Build the Db Docker image
+        working-directory: ./plugins/dosido/db
         run: docker build . --file Dockerfile --tag dispeakble/crm-db:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-db:$TIMESTAMP
