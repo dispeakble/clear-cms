@@ -27,7 +27,3 @@ jobs:
         run: docker build . --file Dockerfile --tag dispeakble/crm-bucket:$TIMESTAMP
       - name: Push docker image
         run: docker push dispeakble/crm-bucket:$TIMESTAMP
-      - name: Report
-        if: failure() && github.event.action != 'push'
-        with: fancy/commenter@v1
-          message: Some checks have failed.
