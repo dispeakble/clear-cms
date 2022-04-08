@@ -1,29 +1,35 @@
 name: Build System API
 
 env:
-  TIMESTAMP: $(date +%s)
+  DOCKER_IMAGE: dispeakble/crm-system:$(date +%s)
+  WORKING_DIR: core/system
 
 on:
-  pull_request_target:
-    types: ['opened', 'edited', 'reopened', 'synchronize']
   pull_request:
-    paths: 
-      - 'core/system/**'
+    paths:
+      - $WORKING_DIR/**
     branches: [ master ]
+    types: [opened, synchronize, reopened, synchronize]
 
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
       - name: Docker login
-        run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-      - name: Build the System API Docker image
-        working-directory: core/system
-        run: docker build . --file Dockerfile --tag dispeakble/crm-system:$TIMESTAMP
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build the Docker image
+        working-directory: $WORKING_DIR
+        run: docker build . --file Dockerfile --tag $DOCKER_IMAGE
       - name: Push docker image
-        run: docker push dispeakble/crm-system:$TIMESTAMP
+        run: docker push $DOCKER_IMAGE
