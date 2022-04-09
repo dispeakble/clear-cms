@@ -1,0 +1,22 @@
+name: Run Frontend Test
+
+env:
+  WORKING_DIR: core/frontend/api
+
+on:
+  pull_request:
+    paths:
+      - ${{ env.WORKING_DIR }}/**
+    branches: [ master ]
+    types: [opened, synchronize, reopened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Perform lint test
+        run: npm run test
