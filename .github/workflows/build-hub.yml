@@ -14,10 +14,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        working-dir: core/hub
-        docker-image: dispeakble/crm-hub:$(date +%s)
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -29,7 +25,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build the Docker image
-        working-directory: ${{ matrix.working-dir }}
-        run: docker build . --file Dockerfile --tag ${{ matrix.docker-image }}
+        working-directory: ${{ env.WORKING_DIR }}
+        run: docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
       - name: Push docker image
-        run: docker push ${{ matrix.docker-image }}
+        run: docker push ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
