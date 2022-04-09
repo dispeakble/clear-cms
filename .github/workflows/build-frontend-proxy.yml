@@ -1,35 +1,31 @@
 name: Build Frontend Proxy
 
 env:
-  DOCKER_IMAGE: dispeakble/crm-frontend-proxy:$(date +%s)
+  DOCKER_IMAGE: 'dispeakble/crm-frontend-proxy:'
   WORKING_DIR: core/frontend/proxy
 
 on:
   pull_request:
     paths:
-      - $WORKING_DIR/**
+      - ${{ env.WORKING_DIR }}/**
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 1
-
       - name: Docker login
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build the Docker image
-        working-directory: $WORKING_DIR
-        run: docker build . --file Dockerfile --tag $DOCKER_IMAGE
+        working-directory: ${{ env.WORKING_DIR }}
+        run: docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
       - name: Push docker image
-        run: docker push $DOCKER_IMAGE
+        run: docker push ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
