@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        working-dir: "core/hub"
-        docker-image: "dispeakble/crm-hub:$(date +%s)"
+        working-dir: core/hub
+        docker-image: dispeakble/crm-hub:$(date +%s)
     steps:
       - name: Checkout
         uses: actions/checkout@v3
