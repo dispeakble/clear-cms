@@ -6,7 +6,7 @@ env:
 on:
   pull_request:
     paths:
-      - ${{ env.WORKING_DIR }}/**
+      - "${{ env.WORKING_DIR }}/**"
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 
