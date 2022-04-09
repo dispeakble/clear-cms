@@ -8,8 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:prod": "npm run build_next_simple && nest build",
-    "build_next": "npm run test && npm run lint && next build ./src/client",
+    "build:prod": "npm run build_next && nest build",
+    "build_next": "npm run lint && npm run test && next build ./src/client",
     "build_next_simple": "next build ./src/client",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
