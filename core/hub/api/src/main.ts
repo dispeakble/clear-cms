@@ -6,19 +6,6 @@ import {Transport} from '@nestjs/microservices';
 Logger.overrideLogger(['error']);
 
 async function bootstrap() {
-    654sad456d654ad654adsasd
-
-    ds
-    dsa
-    dsa
-    sad
-    sad
-    ads
-    ads
-    asd
-    sad
-    asd
-    saddsadas
     try {
         const app = await NestFactory.create(
             AppModule
