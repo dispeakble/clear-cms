@@ -30,9 +30,54 @@
     },
     "tabbed" : {
       "tabs": {
-        "packages": "Flights + Hotels",
-        "relax": "Relax on the finest beaches",
-        "water-parks": "Fun water parks and zoos"
+        "first": "Flights + Hotels",
+        "second": "Relax on the finest beaches",
+        "third": "Fun water parks and zoos"
+      },
+      "first": {
+        "title": "The complete package",
+        "first": {
+          "subtitle": "Cheap flights",
+          "content": "Find your desired plane ticket easily"
+        },
+        "second": {
+          "subtitle": "A diverse hotel selection",
+          "content": "You will find the perfect hotel for your dream vacation"
+        },
+        "third": {
+          "subtitle": "Put them all together",
+          "content": "Profit from our package deals with flights and hotel bookings"
+        }
+      },
+      "second": {
+        "title": "Fun at the beach",
+        "first": {
+          "subtitle": "Things to do",
+          "content": "You can choose between a surf beach on one side and a gentle harbour swim"
+        },
+        "second": {
+          "subtitle": "Have a snack",
+          "content": "Feast on fresh seafood marinated in chili and lime"
+        },
+        "third": {
+          "subtitle": "Sunset magic",
+          "content": "Lantern-lit beach huts make a memorable setting to watch the sun go down"
+        }
+      },
+      "third": {
+        "title": "Fun at the Zoo",
+        "first": {
+          "subtitle": "Watch exotic birds",
+          "content": "Friendly birds are always happy to see you"
+        },
+        "second": {
+          "subtitle": "Dolphins show",
+          "content": "Watch the dolphins perform the wildest tricks"
+        },
+        "third": {
+          "subtitle": "Huge Aquarium",
+          "content": "Get a unique experience at the aquarium. We have penguins"
+        }
       }
     }
   },
