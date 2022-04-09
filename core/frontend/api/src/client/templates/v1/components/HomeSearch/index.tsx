@@ -238,7 +238,7 @@ const HomeSearch = () => {
                 <StyledStars>
                     <StyledCenterLabel>
                         <StyledLabel>{t('search.hotel-stars')}</StyledLabel>
-                        <StyledPrimaryValue>2</StyledPrimaryValue>
+                        <StyledPrimaryValue>4</StyledPrimaryValue>
                     </StyledCenterLabel>
                 </StyledStars>
                 {

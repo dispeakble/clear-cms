@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         background: url('${headerBg.src}') no-repeat center top ${Colors.mainBackground};
         background-size: 100%;
+        font-family: "Poppins", Arial, sans-serif, serif;
     }
 `;
 
@@ -84,7 +85,6 @@ export const StyledMiddleText = styled.div`
 `;
 
 export const StyledWebsiteName = styled.div`
-    font-family: Poppins, "Arial", sans-serif, serif;
     font-size: 80px;
     text-align: center;
     color: #FFFFFF;

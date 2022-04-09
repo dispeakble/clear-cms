@@ -5,7 +5,7 @@ import searchIcon from '../../assets/img/search-icon.svg'
 import {device, size} from "../../styled";
 
 type HeaderWrapperProps = {
-    className: string
+  className: string
 }
 
 export const HeaderWrapper = styled.header<HeaderWrapperProps>`
@@ -15,6 +15,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   align-items: center;
   background: rgba(0,0,0,0);
   position: fixed;
+  z-index: 9999;
   top: 0;
   margin: 0 auto;
   padding: 20px;
@@ -22,11 +23,11 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   -webkit-transition: background-color 1000ms linear;
   -ms-transition: background-color 1000ms linear;
   transition: background-color 1000ms linear;
-  
+
   &.fixedHeader {
-    background: rgba(0,0,0,0.2);
+    background: ${Colors.primaryColor};
   }
-  
+
   @media (max-width: ${size.laptop}) {
     padding: 0;
   }
@@ -100,7 +101,7 @@ export const InputSearch = styled.input`
   &::placeholder {
     color: transparent;
   }
-  
+
   &:focus {
     padding: 8px 8px 8px 65px;
     width: 100%;
@@ -108,7 +109,7 @@ export const InputSearch = styled.input`
 
   @media (min-width: ${size.laptop}) {
     padding: 8px 8px 8px 65px;
-    
+
     width: 100%;
     &::placeholder {
       color: inherit;

@@ -1,7 +1,10 @@
 export const Colors = {
     primaryColor: '#DC6B03',
+    primaryColorRBG: '220, 107, 3',
+    primaryColorFadedRBG: '252, 232, 221',
     primaryDark: 'orange',
     primaryLight: '#FF9F5A',
+    primaryRed: '#DC0303',
     secondaryColor: 'red',
     accentColor: 'orange',
     darkRed: '#E90000',

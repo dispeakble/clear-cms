@@ -1,23 +1,50 @@
-import {StyledContent, StyledTab, StyledTabs, StyledTitle, Wrapper} from "./styled";
+import {
+    StyledContent, StyledContentSubtitle,
+    StyledContentTitle,
+    StyledContentWrapper,
+    StyledTab,
+    StyledTabs,
+    StyledTitle,
+    Wrapper
+} from "./styled";
 import {useTranslations} from "next-intl";
-import VerticalPhotoSlider from "../VerticalPhotoSlider";
 import * as React from "react";
+import VerticalTabbedSlider from "./VerticalTabbedSlider";
+import { useState } from "react";
 
 const TabbedContent = () => {
+    const [selectedTab, setSelectedTab] = useState(0);
     const t = useTranslations()
+
+    const slides = ['first', 'second', 'third'];
 
     return (<Wrapper>
         <StyledTabs>
-            <StyledTab>{t('home.tabbed.tabs.packages')}</StyledTab>
-            <StyledTab>{t('home.tabbed.tabs.relax')}</StyledTab>
-            <StyledTab>{t('home.tabbed.tabs.water-parks')}</StyledTab>
+            {slides.map((slide, index) => (
+              <StyledTab key={slide} onClick={() => setSelectedTab(index)} className={selectedTab === index ? 'selected' : ''}>{t(`home.tabbed.tabs.${slide}`)}</StyledTab>
+            ))}
         </StyledTabs>
         <StyledContent>
-            <StyledTitle>Best Water Parks</StyledTitle>
-            <div>
-                <VerticalPhotoSlider maxWidth="600px" maxHeight="250px"/>
-            </div>
-
+            {slides.map((slide, index) => (
+              selectedTab === index && <div>
+                  <StyledTitle>{t(`home.tabbed.${slide}.title`)}</StyledTitle>
+                  <div>
+                      <VerticalTabbedSlider maxWidth="732px" maxHeight="250px"/>
+                  </div>
+                  <StyledContentWrapper>
+                      <StyledContentTitle>{t(`home.tabbed.${slide}.first.subtitle`)}</StyledContentTitle>
+                      <StyledContentSubtitle>{t(`home.tabbed.${slide}.first.content`)}</StyledContentSubtitle>
+                  </StyledContentWrapper>
+                  <StyledContentWrapper>
+                      <StyledContentTitle>{t(`home.tabbed.${slide}.second.subtitle`)}</StyledContentTitle>
+                      <StyledContentSubtitle>{t(`home.tabbed.${slide}.second.content`)}</StyledContentSubtitle>
+                  </StyledContentWrapper>
+                  <StyledContentWrapper>
+                      <StyledContentTitle>{t(`home.tabbed.${slide}.third.subtitle`)}</StyledContentTitle>
+                      <StyledContentSubtitle>{t(`home.tabbed.${slide}.third.content`)}</StyledContentSubtitle>
+                  </StyledContentWrapper>
+              </div>
+            ))}
         </StyledContent>
     </Wrapper>);
 }
