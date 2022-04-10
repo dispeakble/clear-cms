@@ -69,7 +69,7 @@ export const StyledSearchInput = styled.input`
   outline: none;
   border: none;
   &::placeholder{
-    color: rgba(0,0,0,0.6)
+    color: rgba(0,0,0,0.6);
   }
 `;
 

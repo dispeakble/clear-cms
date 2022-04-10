@@ -1,10 +1,10 @@
-FROM node:16-alpine As crm-nestjs
+FROM node:16.13.1-alpine As crm-nestjs
 
 RUN mkdir -p /usr/src/api
 
 WORKDIR /usr/src/api
 
-RUN npm i -g @nestjs/cli
+RUN yarn global add @nestjs/cli
 
 COPY ./package.json /usr/src/api/
 COPY ./yarn.lock /usr/src/api/

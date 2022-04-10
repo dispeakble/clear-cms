@@ -7,7 +7,7 @@ env:
 on:
   pull_request:
     paths:
-      - ${{ env.WORKING_DIR }}/**
+      - "core/frontend/api/**"
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 
@@ -24,6 +24,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Use node js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
       - name: Build the Docker image
         working-directory: ${{ env.WORKING_DIR }}
         run: docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}

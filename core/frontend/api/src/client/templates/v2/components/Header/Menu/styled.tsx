@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {size} from "../../../styled";
+import { size } from "../../../styled";
 
 export const StyledMenuWrapper = styled.div`
   min-width: 52px;
@@ -53,7 +53,7 @@ export const StyledMenu = styled.ul`
 
 export const Item = styled.li`
   padding: 4px 0px;
-`
+`;
 
 export const LinkItem = styled.a`
   color: #fff;
@@ -62,4 +62,4 @@ export const LinkItem = styled.a`
     color: #f8f8f8;
     border-bottom: 1px solid #f8f8f8;
   }
-`
+`;
