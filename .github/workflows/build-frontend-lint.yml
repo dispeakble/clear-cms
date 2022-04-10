@@ -19,4 +19,5 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Perform lint test
+        working-directory: ${{ env.WORKING_DIR }}
         run: npm run lint:prod
