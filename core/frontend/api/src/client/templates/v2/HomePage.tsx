@@ -6,6 +6,9 @@ import {MainWrapper, GlobalStyle, StyledWebsiteName, StyledMiddleText, StyledWeb
 import HomeSearch from './components/HomeSearch'
 import TopHotels from "./components/Promo/TopHotels";
 import VerticalPhotoSlider from "./components/VerticalPhotoSlider";
+import QuickAboutUs from "./components/QuickAboutUs";
+import Recommended from "./components/Recommended";
+import TabbedContent from "./components/TabbedContent";
 
 export type HomePageProps = {
     websiteName: string;
@@ -24,8 +27,10 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
             <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
         </StyledMiddleText>
         <TopHotels/>
-        <VerticalPhotoSlider/>
-        {websiteUrl}
+        <VerticalPhotoSlider maxWidth="890px" maxHeight="370px"/>
+        <QuickAboutUs />
+        <Recommended />
+        <TabbedContent/>
     </MainWrapper>;
 };
 

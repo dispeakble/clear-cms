@@ -52,7 +52,7 @@ export const StyledMenu = styled.ul`
 `;
 
 export const Item = styled.li`
-  padding: 4px 0px;
+  padding: 4px 0;
 `
 
 export const LinkItem = styled.a`

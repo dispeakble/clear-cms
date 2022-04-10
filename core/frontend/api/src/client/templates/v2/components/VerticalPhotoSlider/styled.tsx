@@ -1,31 +1,44 @@
 import styled from "styled-components";
+import {device, size} from "../../styled";
 
-export const StyledSliderWrapper = styled.div`
-  margin: 60px 0;
-  width: 870px;
+export const StyledSliderWrapper = styled.div<{maxWidth: string}>`
+  width: 100%;
+  overflow: hidden;
+  justify-content: center;
   display: flex;
   align-items: center;
   & .swiper-button-prev {
-    left: 29%;
+    left: 0;
+    @media ${device.tablet} {
+      left: 29%;
+    }
   }
   & .swiper-button-next {
-    right: 28%;
+    right: 0;
+    @media ${device.tablet} {
+      right: 28%;
+    }
   }
   
   & .swiper-button-next, .swiper-button-prev {
     color: #FFFFFF;
   }
+  
+  @media ${device.laptop} {
+    width: ${({maxWidth}) => maxWidth};
+  }
 `;
 
 type StyledSliderImageProps = {
     src: any;
+    maxHeight: string;
 }
 
 export const StyledSliderImage = styled.div<StyledSliderImageProps>`
   background: url(${({src}) => src}) no-repeat center center;
   background-size: cover;
   width: 300px;
-  height: 340px;
+  height: ${({maxHeight}) => maxHeight};
   &.first {
     
   }

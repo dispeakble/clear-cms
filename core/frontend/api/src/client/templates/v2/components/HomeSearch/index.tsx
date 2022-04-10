@@ -60,7 +60,7 @@ const HomeSearch = () => {
         setCheckOutCalendarIsOpen(false)
     }
 
-    const formateDate = (date : any) => {
+    const formatDate = (date : any) => {
         return Intl.DateTimeFormat(router.locale, {
             month: 'short',
             day: '2-digit',
@@ -147,7 +147,7 @@ const HomeSearch = () => {
             && checkOutDate
             && guestsCount() > 0){
             router.push({
-                pathname: `/agency/search/${destination}/${formateDate(checkInDate)}/${formateDate(checkOutDate)}/${guests.adults}`,
+                pathname: `/agency/search/${destination}/${formatDate(checkInDate)}/${formatDate(checkOutDate)}/${guests.adults}`,
             })
         }
     }
@@ -173,7 +173,7 @@ const HomeSearch = () => {
                         checkInDate !== null ?
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
-                            formateDate(checkInDate)
+                            formatDate(checkInDate)
                             : t('search.addDate')
                     }</StyledValue>
                     {
@@ -197,7 +197,7 @@ const HomeSearch = () => {
                         checkOutDate !== null ?
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
-                            formateDate(checkOutDate)
+                            formatDate(checkOutDate)
                             : t('search.addDate')
                     }</StyledValue>
                     {

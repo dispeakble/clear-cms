@@ -1,11 +1,24 @@
 import * as React from "react";
+import {useTranslations} from "next-intl";
+import Header from "./components/Header";
 
-import {MainWrapper, GlobalStyle} from "./styled";
+import {MainWrapper, GlobalStyle, StyledContentWrapper} from "./styled";
 import Breadcrumbs from "./components/Breadcrumbs";
 
-const HomePage = () => {
+export type HomePageProps = {
+    websiteName: string;
+    websiteUrl: string;
+    websiteSlogan: string;
+}
+
+const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
+    const t = useTranslations();
     return <MainWrapper>
-        <Breadcrumbs/>
+        <GlobalStyle />
+        <Header websiteName={websiteName}/>
+        <StyledContentWrapper>
+            <Breadcrumbs/>
+        </StyledContentWrapper>
     </MainWrapper>;
 };
 

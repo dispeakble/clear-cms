@@ -20,7 +20,7 @@ export default function(props: Props) {
 }
 
 const Item = styled.li`
-    padding: 4px 0px;
+    padding: 4px 0;
 `
 
 const LinkItem = styled.a`

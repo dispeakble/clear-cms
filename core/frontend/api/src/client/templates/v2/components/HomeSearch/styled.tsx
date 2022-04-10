@@ -48,11 +48,14 @@ export const StyledSearchTab = styled.div`
   padding: 20px;
   background: white;
   cursor: pointer;
+  &:hover {
+    background: ${Colors.primaryLight};
+  }
   &:hover, &.selected {
-    background: ${Colors.primaryColor};
     color: white;
   }
   &.selected {
+    background: ${Colors.primaryColor};
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
   }
 `;
@@ -114,7 +117,11 @@ export const StyledSearchCheckinGroup = styled.div`
     width: auto;
   }
   & > span:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: ${Colors.primaryLight};
+    & > * {
+      color: #FFFFFF !important;
+    }
+    
   }
 `;
 
@@ -153,7 +160,10 @@ export const StyledSearchOptionsGroup = styled.div`
     margin: 0 0 0 10px;
   }
   & > div:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: ${Colors.primaryLight};
+    & div > * {
+      color: #FFFFFF !important;
+    }
   }
 `;
 
@@ -162,6 +172,7 @@ export const StyledPerson = styled.div`
   cursor: pointer;
   background: url(${person.src}) no-repeat 15px 15px;
   padding: 20px 30px;
+  height: 100%;
   min-width: 86px;
   @media ${device.mobileS} {
     width: 50%;
@@ -178,6 +189,7 @@ export const StyledChild = styled.div`
   background: url(${child.src}) no-repeat 15px 15px;
   padding: 20px 30px;
   min-width: 86px;
+  height: 100%;
   @media ${device.mobileS} {
     width: 50%;
   }
@@ -192,6 +204,7 @@ export const StyledInfant = styled.div`
   background: url(${infant.src}) no-repeat 15px 15px;
   padding: 20px 30px;
   min-width: 86px;
+  height: 100%;
   @media ${device.mobileS} {
     width: 50%;
   }
@@ -206,6 +219,7 @@ export const StyledStars = styled.div`
   background: url(${star.src}) no-repeat 15px 18px;
   padding: 20px 30px;
   min-width: 86px;
+  height: 100%;
   @media ${device.mobileS} {
     width: 50%;
   }

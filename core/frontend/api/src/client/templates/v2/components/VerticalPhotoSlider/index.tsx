@@ -11,10 +11,14 @@ import hotel2 from "../../assets/img/hotels/small/hotel5.jpg";
 import hotel3 from "../../assets/img/hotels/small/hotel6.jpg";
 import {EffectCoverflow, Navigation} from "swiper";
 
+type VerticalPhotoSliderProps = {
+    maxWidth: string;
+    maxHeight: string;
+};
 
-const VerticalPhotoSlider = () => {
+const VerticalPhotoSlider = ({maxWidth, maxHeight}: VerticalPhotoSliderProps) => {
 
-    return <StyledSliderWrapper>
+    return <StyledSliderWrapper maxWidth={maxWidth}>
         <Swiper
             effect={"coverflow"}
             grabCursor={true}
@@ -33,9 +37,9 @@ const VerticalPhotoSlider = () => {
             modules={[EffectCoverflow, Navigation]}
             className="mySwiper"
         >
-            <SwiperSlide><StyledSliderImage src={hotel1.src}/></SwiperSlide>
-            <SwiperSlide><StyledSliderImage src={hotel2.src}/></SwiperSlide>
-            <SwiperSlide><StyledSliderImage src={hotel3.src}/></SwiperSlide>
+            <SwiperSlide><StyledSliderImage maxHeight={maxHeight} src={hotel1.src}/></SwiperSlide>
+            <SwiperSlide><StyledSliderImage maxHeight={maxHeight} src={hotel2.src}/></SwiperSlide>
+            <SwiperSlide><StyledSliderImage maxHeight={maxHeight} src={hotel3.src}/></SwiperSlide>
         </Swiper>
     </StyledSliderWrapper>;
 }
