@@ -28,7 +28,7 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         uses: actions/setup-node@v3
         with:
-         node-version: '16'
+          node-version: '16'
         run: docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
       - name: Push docker image
         run: docker push ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
