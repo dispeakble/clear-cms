@@ -1,17 +1,17 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
+import { Colors } from "../../assets/design-set";
 
-import searchIcon from '../../assets/img/search-icon.svg'
-import checkIn from '../../assets/img/check-in.svg'
-import checkOut from '../../assets/img/check-out.svg'
-import person from '../../assets/img/person-icon.svg'
-import child from '../../assets/img/child-icon.svg'
-import infant from '../../assets/img/infant-icon.svg'
-import star from '../../assets/img/star-icon.svg'
-import {device} from "../../styled";
+import searchIcon from "../../assets/img/search-icon.svg";
+import checkIn from "../../assets/img/check-in.svg";
+import checkOut from "../../assets/img/check-out.svg";
+import person from "../../assets/img/person-icon.svg";
+import child from "../../assets/img/child-icon.svg";
+import infant from "../../assets/img/infant-icon.svg";
+import star from "../../assets/img/star-icon.svg";
+import { device } from "../../styled";
 
-interface IDateLabel{
-    selected?:boolean
+interface IDateLabel {
+  selected?: boolean;
 }
 
 export const StyledHomeSearch = styled.div`
@@ -36,9 +36,11 @@ export const StyledHomeSearch = styled.div`
 
 export const StyledSearchTabs = styled.div`
   border-radius: 16px 16px 0 0;
+
   & :first-child {
     border-radius: 16px 0 0 0;
   }
+
   & :last-child {
     border-radius: 0 16px 0 0;
   }
@@ -48,12 +50,14 @@ export const StyledSearchTab = styled.div`
   padding: 20px;
   background: white;
   cursor: pointer;
+
   &:hover, &.selected {
     background: ${Colors.primaryColor};
     color: white;
   }
+
   &.selected {
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -65,8 +69,9 @@ export const StyledSearchInput = styled.input`
   width: 100%;
   outline: none;
   border: none;
-  &::placeholder{
-    color: rgba(0,0,0,0.6)
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.6);
   }
 `;
 
@@ -88,7 +93,7 @@ export const StyledCenterLabel = styled.div`
 
 export const StyledLabel = styled.label`
   display: block;
-  color: rgba(0,0,0,0.5); 
+  color: rgba(0, 0, 0, 0.5);
   font-size: 12px;
 `;
 
@@ -113,8 +118,9 @@ export const StyledSearchCheckinGroup = styled.div`
   @media ${device.tablet} {
     width: auto;
   }
+
   & > span:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -126,6 +132,7 @@ export const StyledCheckIn = styled.span`
   padding: 20px 40px;
   border-radius: 8px 0 0 8px;
   flex: 1;
+
   & label {
     pointer-events: none;
   }
@@ -139,6 +146,7 @@ export const StyledCheckOut = styled.span`
   padding: 20px 40px;
   border-radius: 0 8px 8px 0;
   flex: 1;
+
   & label {
     pointer-events: none;
   }
@@ -152,8 +160,9 @@ export const StyledSearchOptionsGroup = styled.div`
     flex: 1;
     margin: 0 0 0 10px;
   }
+
   & > div:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -221,14 +230,14 @@ export const SearchLabel = styled.label`
   color: #333;
   margin-bottom: 4px;
   cursor: pointer;
-`
+`;
 
 export const DateLabel = styled.label<IDateLabel>`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   color: ${(props) => props.selected ? "#333" : "#777"};
-`
+`;
 
 export const CalendarContainer = styled.div`
   position: absolute;
@@ -254,17 +263,21 @@ export const CalendarContainer = styled.div`
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
   }
+
   .react-calendar--doubleView {
     width: 700px;
   }
+
   .react-calendar--doubleView .react-calendar__viewContainer {
     display: flex;
     margin: -0.5em;
   }
+
   .react-calendar--doubleView .react-calendar__viewContainer > * {
     width: 50%;
     margin: 0.5em;
   }
+
   .react-calendar,
   .react-calendar *,
   .react-calendar *:before,
@@ -273,39 +286,48 @@ export const CalendarContainer = styled.div`
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
+
   .react-calendar button {
     margin: 0;
     border: 0;
     outline: none;
   }
+
   .react-calendar button:enabled:hover {
     cursor: pointer;
   }
+
   .react-calendar__navigation {
     display: flex;
     height: 44px;
     margin-bottom: 1em;
   }
+
   .react-calendar__navigation button {
     min-width: 44px;
     background: none;
   }
+
   .react-calendar__navigation button:disabled {
     background-color: #f0f0f0;
   }
+
   .react-calendar__navigation button:enabled:hover,
   .react-calendar__navigation button:enabled:focus {
     background-color: #e6e6e6;
   }
+
   .react-calendar__month-view__weekdays {
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 0.75em;
   }
+
   .react-calendar__month-view__weekdays__weekday {
     padding: 0.5em;
   }
+
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
     display: flex;
     align-items: center;
@@ -313,17 +335,21 @@ export const CalendarContainer = styled.div`
     font-size: 0.75em;
     font-weight: bold;
   }
+
   .react-calendar__month-view__days__day--weekend {
     color: ${Colors.darkRed};
   }
+
   .react-calendar__month-view__days__day--neighboringMonth {
     color: ${Colors.gray};
   }
+
   .react-calendar__year-view .react-calendar__tile,
   .react-calendar__decade-view .react-calendar__tile,
   .react-calendar__century-view .react-calendar__tile {
     padding: 2em 0.5em;
   }
+
   .react-calendar__tile {
     max-width: 100%;
     padding: 10px 6.6667px;
@@ -331,40 +357,49 @@ export const CalendarContainer = styled.div`
     text-align: center;
     line-height: 16px;
   }
+
   .react-calendar__tile:disabled {
     background-color: #FFFFFF;
   }
+
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
     background-color: #FFFFFF;
   }
+
   .react-calendar__tile--now {
     background: ${Colors.mainBackground};
   }
+
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
     background: ${Colors.mainBackground};
   }
+
   .react-calendar__tile--hasActive {
     background: ${Colors.primaryColor};
   }
+
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
     background: ${Colors.primaryColor};
   }
+
   .react-calendar__tile--active {
     background: ${Colors.primaryColor};
     color: white;
   }
+
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
     background: ${Colors.primaryColor};
   }
+
   .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: ${Colors.gray};
   }
 
-`
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -373,4 +408,4 @@ export const Overlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 15;
-`
+`;

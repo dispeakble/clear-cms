@@ -22,7 +22,7 @@ export const StyledBreadcrumbLink = styled.a`
   font-size: 11px;
   white-space: nowrap;
   &:hover {
-    color: ${Colors.primaryLight}
+    color: ${Colors.primaryLight};
   }
 
   @media (min-width: ${size.tablet}) {

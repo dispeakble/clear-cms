@@ -13,12 +13,12 @@ export const SelectedLanguage = styled.button`
   }
 
   white-space: nowrap;
-`
+`;
 
 export const Container = styled.div`
   position: relative;
   display: inline-block;
-`
+`;
 
 export const LanguagesDropdown = styled.div`
   display: none;
@@ -43,4 +43,4 @@ export const LanguagesDropdown = styled.div`
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
-`
+`;

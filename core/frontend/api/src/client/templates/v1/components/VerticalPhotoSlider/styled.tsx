@@ -19,19 +19,19 @@ export const StyledSliderWrapper = styled.div<{maxWidth: string}>`
       right: 28%;
     }
   }
-  
+
   & .swiper-button-next, .swiper-button-prev {
     color: #FFFFFF;
   }
-  
+
   @media ${device.laptop} {
     width: ${({maxWidth}) => maxWidth};
   }
 `;
 
 type StyledSliderImageProps = {
-    src: any;
-    maxHeight: string;
+  src: any;
+  maxHeight: string;
 }
 
 export const StyledSliderImage = styled.div<StyledSliderImageProps>`
@@ -40,10 +40,10 @@ export const StyledSliderImage = styled.div<StyledSliderImageProps>`
   width: 300px;
   height: ${({maxHeight}) => maxHeight};
   &.first {
-    
+
   }
   &.last {
-    
+
   }
   &.middle {
     width: 397px;

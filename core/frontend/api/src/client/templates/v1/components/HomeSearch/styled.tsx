@@ -11,7 +11,7 @@ import star from '../../assets/img/star-icon.svg'
 import {device} from "../../styled";
 
 interface IDateLabel{
-    selected?:boolean
+  selected?:boolean
 }
 
 export const StyledHomeSearch = styled.div`
@@ -69,7 +69,7 @@ export const StyledSearchInput = styled.input`
   outline: none;
   border: none;
   &::placeholder{
-    color: rgba(0,0,0,0.6)
+    color: rgba(0,0,0,0.6);
   }
 `;
 
@@ -91,7 +91,7 @@ export const StyledCenterLabel = styled.div`
 
 export const StyledLabel = styled.label`
   display: block;
-  color: rgba(0,0,0,0.5); 
+  color: rgba(0,0,0,0.5);
   font-size: 12px;
 `;
 
@@ -121,7 +121,7 @@ export const StyledSearchCheckinGroup = styled.div`
     & > * {
       color: #FFFFFF !important;
     }
-    
+
   }
 `;
 

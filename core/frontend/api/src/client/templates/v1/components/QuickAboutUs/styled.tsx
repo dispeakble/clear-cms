@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
-import {Colors} from "../../assets/design-set";
+import { device } from "../../styled";
+import { Colors } from "../../assets/design-set";
 
 export const StyledQuickAboutUs = styled.div`
   width: 100%;
@@ -12,8 +12,8 @@ export const StyledQuickAboutUs = styled.div`
   }
 `;
 
-export  const  StyledQuickAboutUsImage = styled.div<{src: any}>`
-  background: url(${({src}) => src}) no-repeat center center;
+export const StyledQuickAboutUsImage = styled.div<{ src: any }>`
+  background: url(${({ src }) => src}) no-repeat center center;
   background-size: cover;
   flex: 1;
   margin-right: 6%;
@@ -21,7 +21,7 @@ export  const  StyledQuickAboutUsImage = styled.div<{src: any}>`
   min-height: 250px;
 `;
 
-export  const  StyledQuickAboutUsText = styled.div<{src: any}>`
+export const StyledQuickAboutUsText = styled.div<{ src: any }>`
   flex: 1;
   padding: 6%;
   width: 100%;
@@ -47,8 +47,9 @@ export const StyledContactBtn = styled.a`
   padding: 0 16px;
   display: inline-block;
   margin-top: 6%;
+
   &:hover {
-    color: ${Colors.primaryLight}
+    color: ${Colors.primaryLight};
   }
 `;
 
@@ -58,6 +59,7 @@ export const StyledFloatingPrice = styled.div`
   padding: 30%;
   text-align: center;
   font-size: 36px;
+
   & span {
     text-transform: uppercase;
     color: black;
