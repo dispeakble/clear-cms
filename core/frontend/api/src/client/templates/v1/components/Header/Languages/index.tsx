@@ -10,7 +10,6 @@ const Languages = (props: { languages: any; }) => {
     const locales = router.locales || [];
     const {languages} = props
 
-
     return(
         <Container>
             <SelectedLanguage>{languages[router.locale as string]} <BiChevronDown /></SelectedLanguage>
