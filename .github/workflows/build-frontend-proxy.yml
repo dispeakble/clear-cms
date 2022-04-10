@@ -7,7 +7,7 @@ env:
 on:
   pull_request:
     paths:
-      - core/frontend/proxy/**
+      - "core/frontend/proxy/**"
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 

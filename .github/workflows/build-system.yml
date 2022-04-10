@@ -7,7 +7,7 @@ env:
 on:
   pull_request:
     paths:
-      - core/system/**
+      - "core/system/**"
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 

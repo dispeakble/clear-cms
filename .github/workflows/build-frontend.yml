@@ -7,7 +7,7 @@ env:
 on:
   pull_request:
     paths:
-      - core/frontend/api/**
+      - "core/frontend/api/**"
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 

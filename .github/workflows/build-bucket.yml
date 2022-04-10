@@ -7,7 +7,7 @@ env:
 on:
   pull_request:
     paths:
-      - core/bucket/**
+      - "core/bucket/**"
     branches: [ master ]
     types: [opened, synchronize, reopened, synchronize]
 
