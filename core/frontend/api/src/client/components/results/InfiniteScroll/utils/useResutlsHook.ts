@@ -4,7 +4,7 @@ import {getResults} from "./getResults";
 export default function useResutlsHook(page: number){
 
     const [loading, setLoading] = useState<boolean>(true)
-    const [results, setResults] = useState<[]>([])
+    const [results, setResults] = useState<any[]>(null)
     const [failed, setFailed] = useState<boolean>(false)
     const [hasMore, setHasMore] = useState<boolean>(false)
 
@@ -13,8 +13,6 @@ export default function useResutlsHook(page: number){
             try{
                 const {data} = await getResults()
 
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 setResults(prev => {
                     return [...prev, ...data.results[0]]
                 })
