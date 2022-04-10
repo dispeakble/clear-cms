@@ -1,5 +1,4 @@
 import * as React from "react";
-import {useTranslations} from "next-intl";
 import Header from "./components/Header";
 
 import {MainWrapper, GlobalStyle, StyledWebsiteName, StyledMiddleText, StyledWebsiteSlogan} from "./styled";
@@ -17,7 +16,6 @@ export type HomePageProps = {
 }
 
 const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
-    const t = useTranslations();
     return <MainWrapper>
         <GlobalStyle />
         <Header websiteName={websiteName}/>
