@@ -1,4 +1,4 @@
-FROM node:16-alpine As crm-nestjs
+FROM node:16.13.1-alpine As crm-nestjs
 
 RUN mkdir -p /usr/src/api
 

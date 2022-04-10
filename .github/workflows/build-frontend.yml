@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
+          cache: 'yarn'
       - name: Build the Docker image
         working-directory: ${{ env.WORKING_DIR }}
         run: docker build . --file Dockerfile --tag ${{ env.DOCKER_IMAGE }}${{ github.event.pull_request.head.sha }}
