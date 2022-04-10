@@ -8,7 +8,7 @@ import person from '../../assets/img/person-icon.svg'
 import child from '../../assets/img/child-icon.svg'
 import infant from '../../assets/img/infant-icon.svg'
 import star from '../../assets/img/star-icon.svg'
-import {device} from "../../styled";
+import { device, size } from "../../styled";
 
 interface IDateLabel{
   selected?:boolean
@@ -93,6 +93,7 @@ export const StyledLabel = styled.label`
   display: block;
   color: rgba(0,0,0,0.5);
   font-size: 12px;
+  white-space: nowrap;
 `;
 
 export const StyledValue = styled.label`
@@ -100,6 +101,7 @@ export const StyledValue = styled.label`
   font-weight: bold;
   color: black;
   font-size: 14px;
+  white-space: nowrap;
 `;
 
 export const StyledPrimaryValue = styled.div`
@@ -111,7 +113,7 @@ export const StyledPrimaryValue = styled.div`
 export const StyledSearchCheckinGroup = styled.div`
   border: 2px solid #EFEFEF;
   border-radius: 10px;
-  display: inline-block;
+  display: flex;
   width: 100%;
   @media ${device.tablet} {
     width: auto;
@@ -126,26 +128,30 @@ export const StyledSearchCheckinGroup = styled.div`
 `;
 
 export const StyledCheckIn = styled.span`
-  display: inline-block;
-  height: 100%;
   cursor: pointer;
   background: url(${checkIn.src}) no-repeat 10px center;
   padding: 20px 40px;
   border-radius: 8px 0 0 8px;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 77px;
   & label {
     pointer-events: none;
   }
 `;
 
 export const StyledCheckOut = styled.span`
-  display: inline-block;
-  height: 100%;
   cursor: pointer;
   background: url(${checkOut.src}) no-repeat 10px center;
   padding: 20px 40px;
   border-radius: 0 8px 8px 0;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 77px;
   & label {
     pointer-events: none;
   }
@@ -170,26 +176,32 @@ export const StyledSearchOptionsGroup = styled.div`
 export const StyledPerson = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${person.src}) no-repeat 15px 15px;
+  background: url(${person.src}) no-repeat 15px 18px;
   padding: 20px 30px;
-  height: 100%;
   min-width: 86px;
+  min-height: 77px;
+  border-radius: 8px 0 0 8px;
+  @media (max-width: ${size.laptop}) {
+    border-radius: 8px 0 0 0;
+  }
   @media ${device.mobileS} {
     width: 50%;
   }
   @media ${device.laptop} {
     width: 25%;
   }
-  border-radius: 8px 0 0 8px;
 `;
 
 export const StyledChild = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${child.src}) no-repeat 15px 15px;
+  background: url(${child.src}) no-repeat 8px 20px;
   padding: 20px 30px;
   min-width: 86px;
-  height: 100%;
+  min-height: 77px;
+  @media (max-width: ${size.laptop}) {
+    border-radius: 0 8px 0 0;
+  }
   @media ${device.mobileS} {
     width: 50%;
   }
@@ -201,10 +213,13 @@ export const StyledChild = styled.div`
 export const StyledInfant = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${infant.src}) no-repeat 15px 15px;
+  background: url(${infant.src}) no-repeat 15px 20px;
   padding: 20px 30px;
   min-width: 86px;
-  height: 100%;
+  min-height: 77px;
+  @media (max-width: ${size.laptop}) {
+    border-radius: 0 0 0 8px;
+  }
   @media ${device.mobileS} {
     width: 50%;
   }
@@ -216,17 +231,21 @@ export const StyledInfant = styled.div`
 export const StyledStars = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${star.src}) no-repeat 15px 18px;
+  background: url(${star.src}) no-repeat 13px 22px;
   padding: 20px 30px;
   min-width: 86px;
-  height: 100%;
+  min-height: 77px;
+  border-radius: 0 8px 8px 0;
+  @media (max-width: ${size.laptop}) {
+    border-radius: 0 0 8px 0;
+  }
   @media ${device.mobileS} {
     width: 50%;
   }
   @media ${device.laptop} {
     width: 25%;
   }
-  border-radius: 0 8px 8px 0;
+  
 `;
 
 export const SearchLabel = styled.label`

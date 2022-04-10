@@ -15,6 +15,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   align-items: center;
   background: rgba(0,0,0,0);
   position: fixed;
+  z-index: 9999;
   top: 0;
   margin: 0 auto;
   padding: 20px;
@@ -24,7 +25,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   transition: background-color 1000ms linear;
 
   &.fixedHeader {
-    background: rgba(0,0,0,0.2);
+    background: ${Colors.primaryColor};
   }
 
   @media (max-width: ${size.laptop}) {
