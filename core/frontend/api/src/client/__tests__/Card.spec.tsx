@@ -18,7 +18,7 @@ test('card title exists on document', async () => {
     expect(cardTitle).toBeInTheDocument()
 })
 
-test("card description exists on document", async () => {
+test('card description exists on document', async () => {
 
     render(<Card />)
     const cardDescription = screen.getByTestId(/card-description/)
