@@ -7,6 +7,7 @@ export const SelectedLanguage = styled.button`
   font-size: 16px;
   border: none;
   cursor: pointer;
+
   &:hover ~ div {
     display: block;
   }
@@ -29,12 +30,12 @@ export const LanguagesDropdown = styled.div`
   &:hover {
     display: block;
   }
-  
-  a{
+
+  a {
     color: white;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    
+
   }
 `;

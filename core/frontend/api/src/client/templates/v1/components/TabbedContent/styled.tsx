@@ -43,5 +43,5 @@ export const StyledContent = styled.div`
 export const StyledTitle = styled.div`
   margin: 20px 0;
   font-size: 44px;
-  color: ${Colors.primaryColor}
+  color: ${Colors.primaryColor};
 `;

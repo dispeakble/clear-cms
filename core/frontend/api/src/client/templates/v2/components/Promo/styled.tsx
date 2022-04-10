@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
-import {device} from "../../styled";
+import { Colors } from "../../assets/design-set";
+import { device } from "../../styled";
 
 export const StyledWrapper = styled.div`
   width: 100%;
@@ -44,20 +44,21 @@ export const StyledCardImageHolder = styled.div`
   border-radius: 18px;
   margin-bottom: 20px;
 `;
-export const StyledCardImage = styled.div<{src: any}>`
+export const StyledCardImage = styled.div<{ src: any }>`
   width: 100%;
   height: 100%;
   transition: transform 600ms ease-in-out;
   -moz-transition: transform 600ms ease-in-out;
   -ms-transition: transform 600ms ease-in-out;
   -o-transition: transform 600ms ease-in-out;
-  -webkit-transition: transform 600ms ease-in-out;  
-  background: url(${({src}) => src}) no-repeat center center;
+  -webkit-transition: transform 600ms ease-in-out;
+  background: url(${({ src }) => src}) no-repeat center center;
   background-size: cover;
   cursor: pointer;
   transform: scale(1);
+
   &:hover {
-    transform: scale(1.1)
+    transform: scale(1.1);
   }
 `;
 
@@ -86,7 +87,7 @@ export const StyledGrayLabel = styled.span`
   flex: 1;
   line-height: 21px;
   text-align: center;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0, 0, 0, 0.5);
 `;
 
 export const SmallBookNow = styled.span`
@@ -98,6 +99,7 @@ export const SmallBookNow = styled.span`
   line-height: 21px;
   height: 21px;
   cursor: pointer;
+
   &:hover {
     background: ${Colors.primaryLight};
   }
@@ -116,7 +118,7 @@ export const StyledDestination = styled.div`
 `;
 
 export const StyledPrice = styled.div`
-    white-space: nowrap;
+  white-space: nowrap;
 `;
 
 export const StyledTabs = styled.div`
@@ -138,11 +140,13 @@ export const StyledTabBtn = styled.div`
   text-align: center;
   cursor: pointer;
   font-size: 18px;
+
   &:hover {
     background: ${Colors.primaryLight};
     color: #FFFFFF;
     border-radius: 8px;
   }
+
   &.selected {
     background: ${Colors.primaryColor};
     color: #FFFFFF;

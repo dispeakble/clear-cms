@@ -30,13 +30,13 @@ export const InputWrapper = styled.div`
   background-color: ${Colors.primaryColor};
   padding: 1px;
   position: relative;
- 
+
 `;
 export const IconWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 35px;
-  transform: translate(-18px,-50%);
+  transform: translate(-18px, -50%);
 `;
 
 export const InputSearch = styled.input`
@@ -46,7 +46,7 @@ export const InputSearch = styled.input`
 `;
 
 export const LogoWrapper = styled.div`
-    color:#fff;
-    font-size: 24px;
-    
+  color: #fff;
+  font-size: 24px;
+
 `;

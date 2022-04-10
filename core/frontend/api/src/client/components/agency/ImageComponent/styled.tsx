@@ -31,7 +31,9 @@ export const InfoContainer = styled.div`
   
   height: 200px;
   
-  h2,h3 {margin: 0}
+  h2,h3 {
+    margin: 0;
+  }
   
   h2{
     font-size: 50px;
