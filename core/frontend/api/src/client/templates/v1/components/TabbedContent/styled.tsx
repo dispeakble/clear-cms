@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
+import { Colors } from "../../assets/design-set";
 import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
 import checkSign from "../../assets/img/check-sign-gold.svg";
 import { size } from "../../styled";

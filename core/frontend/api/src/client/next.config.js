@@ -6,6 +6,9 @@ const serverUrl = process.env.APP_DOMAIN || 'http://localhost:9898';
 
 module.exports = {
   reactStrictMode: true,
+  compiler: {
+    styledComponents: true,
+  },
   distDir: '../../.next',
   devIndicators: {
     buildActivity: false

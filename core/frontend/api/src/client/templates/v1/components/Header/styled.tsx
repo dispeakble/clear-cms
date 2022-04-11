@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-import {Colors} from '../../assets/design-set'
+import styled from "styled-components";
+import { Colors } from "../../assets/design-set";
 
-import searchIcon from '../../assets/img/search-icon.svg'
-import {device, size} from "../../styled";
+import searchIcon from "../../assets/img/search-icon.svg";
+import { device, size } from "../../styled";
 
 type HeaderWrapperProps = {
   className: string
@@ -55,7 +55,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   @media ${device.desktopL} {
     max-width: 1440px;
   }
-`
+`;
 
 export const LogoWrapper = styled.div`
   order: 1;
@@ -64,7 +64,7 @@ export const LogoWrapper = styled.div`
     flex: 1;
     text-align: center;
   }
-`
+`;
 
 export const MenuWrapper = styled.div`
   flex: 1;
@@ -76,7 +76,7 @@ export const MenuWrapper = styled.div`
     flex: none;
     margin: 0;
   }
-`
+`;
 
 export const SearchWrapper = styled.div`
   border: 1px solid ${Colors.primaryColor};
@@ -88,7 +88,7 @@ export const SearchWrapper = styled.div`
     order: 3;
     margin: 0;
   }
-`
+`;
 
 export const InputSearch = styled.input`
   outline: none;
@@ -115,11 +115,11 @@ export const InputSearch = styled.input`
       color: inherit;
     }
   }
-`
+`;
 
 export const LanguagesWrapper = styled.div`
   order: 3;
   @media (max-width: ${size.laptop}) {
     order: 4;
   }
-`
+`;

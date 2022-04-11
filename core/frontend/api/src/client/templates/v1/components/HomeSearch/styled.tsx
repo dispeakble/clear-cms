@@ -1,17 +1,17 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
+import { Colors } from "../../assets/design-set";
 
-import searchIcon from '../../assets/img/search-icon.svg'
-import checkIn from '../../assets/img/check-in.svg'
-import checkOut from '../../assets/img/check-out.svg'
-import person from '../../assets/img/person-icon.svg'
-import child from '../../assets/img/child-icon.svg'
-import infant from '../../assets/img/infant-icon.svg'
-import star from '../../assets/img/star-icon.svg'
+import searchIcon from "../../assets/img/search-icon.svg";
+import checkIn from "../../assets/img/check-in.svg";
+import checkOut from "../../assets/img/check-out.svg";
+import person from "../../assets/img/person-icon.svg";
+import child from "../../assets/img/child-icon.svg";
+import infant from "../../assets/img/infant-icon.svg";
+import star from "../../assets/img/star-icon.svg";
 import { device, size } from "../../styled";
 
-interface IDateLabel{
-  selected?:boolean
+interface IDateLabel {
+  selected?: boolean;
 }
 
 export const StyledHomeSearch = styled.div`
@@ -49,7 +49,7 @@ export const StyledSearchTab = styled.div`
   background: white;
   cursor: pointer;
   &:hover {
-    background: ${Colors.primaryLight};
+    background: ${Colors.primaryColorHover};
   }
   &:hover, &.selected {
     color: white;
@@ -60,16 +60,46 @@ export const StyledSearchTab = styled.div`
   }
 `;
 
-export const StyledSearchInput = styled.input`
-  background: url(${searchIcon.src}) no-repeat 16px center white;
-  border-radius: 0 16px 0 0;
+export const StyledSearchInputHolder = styled.div`
   margin-top: 5px;
-  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  
+  border-radius: 0 0 16px 16px;
+  background: none;
+  @media ${device.tablet} {
+    background: ${Colors.white};
+    flex-direction: row;
+    border-radius: 0 16px 0 0;
+  }
+`;
+
+export const StyledSearchInput = styled.input`
+  flex: 1;
+  background: url(${searchIcon.src}) no-repeat 16px center white;
+  padding: 20px 0 20px 50px;
   width: 100%;
   outline: none;
   border: none;
   &::placeholder{
     color: rgba(0,0,0,0.6);
+  }
+`;
+
+export const StyledSearchButton = styled.button`
+  background: ${Colors.primaryColor};
+  &:hover {
+    background: ${Colors.primaryColorHover};
+  }
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 5px;
+  @media ${device.tablet} {
+    margin-top: 0;
+    border-radius: 0 16px 0 16px;
   }
 `;
 
@@ -85,15 +115,22 @@ export const StyledSearchOptions = styled.div`
 `;
 
 export const StyledCenterLabel = styled.div`
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+ 
 `;
 
 export const StyledLabel = styled.label`
-  display: block;
+  display: flex;
+  align-items: center;
   color: rgba(0,0,0,0.5);
   font-size: 12px;
   white-space: nowrap;
+  & > span {
+    padding-right: 10px !important;
+  }
 `;
 
 export const StyledValue = styled.label`
@@ -130,12 +167,9 @@ export const StyledSearchCheckinGroup = styled.div`
 export const StyledCheckIn = styled.span`
   cursor: pointer;
   background: url(${checkIn.src}) no-repeat 10px center;
-  padding: 20px 40px;
+  padding: 20px 10px 20px 40px;
   border-radius: 8px 0 0 8px;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   min-height: 77px;
   & label {
     pointer-events: none;
@@ -145,12 +179,9 @@ export const StyledCheckIn = styled.span`
 export const StyledCheckOut = styled.span`
   cursor: pointer;
   background: url(${checkOut.src}) no-repeat 10px center;
-  padding: 20px 40px;
+  padding: 20px 10px 20px 40px;
   border-radius: 0 8px 8px 0;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   min-height: 77px;
   & label {
     pointer-events: none;
@@ -158,92 +189,78 @@ export const StyledCheckOut = styled.span`
 `;
 
 export const StyledSearchOptionsGroup = styled.div`
+  cursor: pointer !important;
   border: 2px solid #EFEFEF;
   border-radius: 10px;
   margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   @media ${device.tablet} {
     flex: 1;
     margin: 0 0 0 10px;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+  @media ${device.laptop} {
+    grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
+  }
+  @media ${device.laptopL} {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
   }
   & > div:hover {
     background-color: ${Colors.primaryLight};
-    & div > * {
-      color: #FFFFFF !important;
+    & > ${StyledCenterLabel} * {
+      color: white !important;
     }
   }
 `;
 
-export const StyledPerson = styled.div`
+export const StyledPerson = styled.div<{onClick: () => void}>`
   display: inline-block;
   cursor: pointer;
-  background: url(${person.src}) no-repeat 15px 18px;
-  padding: 20px 30px;
+  padding: 20px 0px 20px;
   min-width: 86px;
   min-height: 77px;
   border-radius: 8px 0 0 8px;
-  @media (max-width: ${size.laptop}) {
+  position: relative;
+  @media (max-width: ${size.mobileL}) {
     border-radius: 8px 0 0 0;
-  }
-  @media ${device.mobileS} {
-    width: 50%;
-  }
-  @media ${device.laptop} {
-    width: 25%;
   }
 `;
 
 export const StyledChild = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${child.src}) no-repeat 8px 20px;
-  padding: 20px 30px;
+  padding: 20px 0px 20px;
   min-width: 86px;
   min-height: 77px;
-  @media (max-width: ${size.laptop}) {
+  position: relative;
+  @media (max-width: ${size.mobileL}) {
     border-radius: 0 8px 0 0;
-  }
-  @media ${device.mobileS} {
-    width: 50%;
-  }
-  @media ${device.laptop} {
-    width: 25%;
   }
 `;
 
 export const StyledInfant = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${infant.src}) no-repeat 15px 20px;
-  padding: 20px 30px;
+  padding: 20px 0px 20px;
   min-width: 86px;
   min-height: 77px;
-  @media (max-width: ${size.laptop}) {
+  position: relative;
+  @media (max-width: ${size.mobileL}) {
     border-radius: 0 0 0 8px;
-  }
-  @media ${device.mobileS} {
-    width: 50%;
-  }
-  @media ${device.laptop} {
-    width: 25%;
   }
 `;
 
 export const StyledStars = styled.div`
   display: inline-block;
   cursor: pointer;
-  background: url(${star.src}) no-repeat 13px 22px;
-  padding: 20px 30px;
+  padding: 20px 0px 20px;
   min-width: 86px;
   min-height: 77px;
+  position: relative;
   border-radius: 0 8px 8px 0;
-  @media (max-width: ${size.laptop}) {
+  @media (max-width: ${size.mobileL}) {
     border-radius: 0 0 8px 0;
-  }
-  @media ${device.mobileS} {
-    width: 50%;
-  }
-  @media ${device.laptop} {
-    width: 25%;
   }
   
 `;
@@ -254,19 +271,19 @@ export const SearchLabel = styled.label`
   color: #333;
   margin-bottom: 4px;
   cursor: pointer;
-`
+`;
 
 export const DateLabel = styled.label<IDateLabel>`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   color: ${(props) => props.selected ? "#333" : "#777"};
-`
+`;
 
 export const CalendarContainer = styled.div`
   position: absolute;
   height: auto;
-  margin: 40px 0 0 -40px;
+  margin: 40px 0 0 -50px;
   max-width: 290px;
   z-index: 20;
   padding: 30px 10px;
@@ -397,7 +414,7 @@ export const CalendarContainer = styled.div`
     background-color: ${Colors.gray};
   }
 
-`
+`;
 
 export const Overlay = styled.div`
   position: fixed;
@@ -406,4 +423,4 @@ export const Overlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 15;
-`
+`;

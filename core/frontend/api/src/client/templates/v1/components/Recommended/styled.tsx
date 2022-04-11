@@ -1,30 +1,35 @@
 import styled from "styled-components";
-import { device } from "../../styled";
+import { device, size } from "../../styled";
 import { Colors } from "../../assets/design-set";
 import coldStar from "../../assets/img/cold-star.svg";
 import goldStar from "../../assets/img/gold-star.svg";
 import zoomIcon from "../../assets/img/zoom-icon.svg";
 
 export const Wrapper = styled.div`
-  margin: 20px;
   width: 100%;
   display: grid;
   grid-gap: 30px;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-  @media ${device.laptopL} {
+  @media (min-width: ${device.tablet}) {
+    margin: 20px;
+  }
+  @media (min-width: ${device.laptopL}) {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 `;
 
 export const StyledCard = styled.div`
-  margin: 20px;
   background: white;
   box-shadow: 0 4px 25px rgba(0, 0, 0, .1);
-  padding: 20px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  @media (min-width: ${size.tablet}) {
+    margin: 20px;
+    padding: 20px;
+  }
 `;
 
 export const StyledTitle = styled.div`

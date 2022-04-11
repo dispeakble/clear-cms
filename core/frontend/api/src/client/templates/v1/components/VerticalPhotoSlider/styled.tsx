@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
+import { device } from "../../styled";
 
-export const StyledSliderWrapper = styled.div<{maxWidth: string}>`
+export const StyledSliderWrapper = styled.div<{ maxWidth: string }>`
   width: 100%;
   overflow: hidden;
   justify-content: center;
@@ -25,7 +25,7 @@ export const StyledSliderWrapper = styled.div<{maxWidth: string}>`
   }
 
   @media ${device.laptop} {
-    width: ${({maxWidth}) => maxWidth};
+    width: ${({ maxWidth }) => maxWidth};
   }
 `;
 
@@ -35,10 +35,10 @@ type StyledSliderImageProps = {
 }
 
 export const StyledSliderImage = styled.div<StyledSliderImageProps>`
-  background: url(${({src}) => src}) no-repeat center center;
+  background: url(${({ src }) => src}) no-repeat center center;
   background-size: cover;
   width: 300px;
-  height: ${({maxHeight}) => maxHeight};
+  height: ${({ maxHeight }) => maxHeight};
   &.first {
 
   }
