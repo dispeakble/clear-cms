@@ -9,13 +9,13 @@ import HotelAvailable from "./components/HotelAvailable";
 import {useState} from "react";
 import moment from "moment";
 
-export type HomePageProps = {
+export type HotelPageProps = {
     websiteName: string;
     websiteUrl: string;
     websiteSlogan: string;
 }
 
-const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
+const HotelPage = ({websiteName, websiteUrl, websiteSlogan}: HotelPageProps) => {
     const t = useTranslations();
     const [data, setData] = useState({
         hotel: '',
@@ -29,14 +29,14 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
 
     })
 
-    const handleCahngeInput = (name: string, value: any) => {
+    const handleChangeInput = (name: string, value: any) => {
         setData({
             ...data,
             [name]: value
         })
 
     }
-    const hanldeAdultPlus = () => {
+    const handleAdultPlus = () => {
         setData({
             ...data,
             passanger: {
@@ -46,7 +46,7 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
         })
 
     }
-    const hanldeAdultMinus = () => {
+    const handleAdultMinus = () => {
         if(Number(data.passanger.adults)>0){
             setData({
                 ...data,
@@ -59,7 +59,7 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
 
 
     }
-    const hanldeInfantsPlus = () => {
+    const handleInfantsPlus = () => {
         setData({
             ...data,
             passanger: {
@@ -69,7 +69,7 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
         })
 
     }
-    const hanldeInfantsMinus = () => {
+    const handleInfantsMinus = () => {
         if(Number(data.passanger.infants)>0){
             setData({
                 ...data,
@@ -83,7 +83,7 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
 
     }
 
-    const hanldeChildrenPlus = () => {
+    const handleChildrenPlus = () => {
         setData({
             ...data,
             passanger: {
@@ -93,7 +93,7 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
         })
 
     }
-    const hanldeChildrenMinus = () => {
+    const handleChildrenMinus = () => {
         if(Number(data.passanger.children)>0) {
             setData({
                 ...data,
@@ -121,36 +121,36 @@ const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
         })
     }
 
-    return <MainWrapper>
+    return <MainWrapper data-testid="hotel-page-wrapper">
         <GlobalStyle/>
         <Header websiteName={websiteName}/>
         <StyledContentWrapper>
             <Breadcrumbs/>
             <HotelDetail
                 data={data}
-                         hanldeChildrenMinus={hanldeChildrenMinus}
-                         hanldeChildrenPlus={hanldeChildrenPlus}
-                         hanldeInfantsMinus={hanldeInfantsMinus}
-                         hanldeInfantsPlus={hanldeInfantsPlus}
-                         handleCahngeInput={handleCahngeInput}
-                         hanldeAdultPlus={hanldeAdultPlus}
-                         hanldeAdultMinus={hanldeAdultMinus}
+                         handleChildrenMinus={handleChildrenMinus}
+                         handleChildrenPlus={handleChildrenPlus}
+                         handleInfantsMinus={handleInfantsMinus}
+                         handleInfantsPlus={handleInfantsPlus}
+                         handleChangeInput={handleChangeInput}
+                         handleAdultPlus={handleAdultPlus}
+                         handleAdultMinus={handleAdultMinus}
                 handleSearch={handleSearch}
                 handleHotelSearch={handleHotelSearch}
             />
             <HotelAbout/>
             <HotelAvailable
                 data={data}
-                hanldeChildrenMinus={hanldeChildrenMinus}
-                hanldeChildrenPlus={hanldeChildrenPlus}
-                hanldeInfantsMinus={hanldeInfantsMinus}
-                hanldeInfantsPlus={hanldeInfantsPlus}
-                handleCahngeInput={handleCahngeInput}
-                hanldeAdultPlus={hanldeAdultPlus}
-                hanldeAdultMinus={hanldeAdultMinus}
+                handleChildrenMinus={handleChildrenMinus}
+                handleChildrenPlus={handleChildrenPlus}
+                handleInfantsMinus={handleInfantsMinus}
+                handleInfantsPlus={handleInfantsPlus}
+                handleChangeInput={handleChangeInput}
+                handleAdultPlus={handleAdultPlus}
+                handleAdultMinus={handleAdultMinus}
             />
         </StyledContentWrapper>
     </MainWrapper>;
 };
 
-export default HomePage;
+export default HotelPage;

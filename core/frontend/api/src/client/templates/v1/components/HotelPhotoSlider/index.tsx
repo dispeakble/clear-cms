@@ -2,9 +2,9 @@ import {StyledSliderImage, HotelPhotoSliderWrapper} from "./styled";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/navigation";
+import "swiper/swiper.min.css";
+import "swiper/components/effect-coverflow/effect-coverflow.min.css";
+import "swiper/components/navigation/navigation.min.css";
 
 import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
 import hotel2 from "../../assets/img/hotels/small/hotel5.jpg";

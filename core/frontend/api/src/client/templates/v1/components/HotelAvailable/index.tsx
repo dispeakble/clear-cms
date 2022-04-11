@@ -1,8 +1,42 @@
 import {useTranslations} from "next-intl";
 import {
-    QueryTitle, Wrapper, Modifier, HotelCheck, RefreshPrice, RefreshIcon, LeftSide, RightSide, RoomTable, TableHead,
-    RoomType, Meal, SelectRoom, Price, BookNow, TableBody, ColumnOne, ColumnTwo, ColumnThree, ColumnFour, ColumnFive,
-    OrgInfoIcon, BedroomIcon, RowView, DropdownIcon, GuestNumber, DivView, CalendarView, PassangerView, SpanDiv, CheckBg,CheckTitle,Passenger
+    QueryTitle,
+    Wrapper,
+    Modifier,
+    HotelCheck,
+    RefreshPrice,
+    RefreshIcon,
+    LeftSide,
+    RightSide,
+    RoomTable,
+    TableHead,
+    RoomType,
+    Meal,
+    SelectRoom,
+    Price,
+    BookNow,
+    TableBody,
+    ColumnOne,
+    ColumnTwo,
+    ColumnThree,
+    ColumnFour,
+    ColumnFive,
+    OrgInfoIcon,
+    DropdownIcon,
+    GuestNumber,
+    DivView,
+    CalendarView,
+    PassangerView,
+    SpanDiv,
+    CheckBg,
+    CheckTitle,
+    Passenger,
+    ColumnBreak,
+    LeftIcon,
+    RightIcon,
+    TopUp,
+    InnerRoomList,
+    OptionRightIcon
 } from "./styled";
 import {
     PassengerWrapper,
@@ -14,16 +48,27 @@ import moment from "moment";
 import React, {useState} from "react";
 import {Tooltip} from 'antd';
 
+type HotelAvailableProps = {
+    data: any;
+    handleAdultPlus: () => void;
+    handleAdultMinus: () => void;
+    handleInfantsPlus: () => void;
+    handleChangeInput: (name: string, value: any) => void;
+    handleChildrenMinus: () => void;
+    handleChildrenPlus: () => void;
+    handleInfantsMinus: () => void;
+}
+
 const HotelAvailable = ({
                             data,
-                            hanldeAdultPlus,
-                            hanldeAdultMinus,
-                            hanldeInfantsPlus,
-                            handleCahngeInput,
-                            hanldeChildrenMinus,
-                            hanldeChildrenPlus,
-                            hanldeInfantsMinus
-                        }) => {
+                            handleAdultPlus,
+                            handleAdultMinus,
+                            handleInfantsPlus,
+                            handleChangeInput,
+                            handleChildrenMinus,
+                            handleChildrenPlus,
+                            handleInfantsMinus
+                        }: HotelAvailableProps) => {
     const [show, setShow] = useState({
         checkin: false,
         checkout: false,
@@ -51,7 +96,7 @@ const HotelAvailable = ({
 
 
     ])
-
+    const customColors = ['#FFFFFF'];
     const t = useTranslations();
 
 
@@ -111,7 +156,6 @@ const HotelAvailable = ({
                     <LeftSide>
                         <ClickAwayListener onClickAway={() => handleClickAway('checkin')}>
                             <DivView>
-
                                 <StayingInfoWrapper>
                                     <div>
                                         <svg width="20" height="31" viewBox="0 0 20 31" fill="none"
@@ -147,17 +191,14 @@ const HotelAvailable = ({
                                 </StayingInfoWrapper>
                                 {show.checkin ? (
                                     <CalendarView>
-
                                         <Calendar
                                             onChange={(value: any) => {
-                                                handleCahngeInput('checkin', value)
+                                                handleChangeInput('checkin', value)
                                                 handleDateAway('checkin')
                                             }}
                                             minDate={data.checkin}
                                             value={data.checkin}
                                         />
-
-
                                     </CalendarView>
                                 ) : null}
                             </DivView>
@@ -198,7 +239,7 @@ const HotelAvailable = ({
                                     <CalendarView>
                                         <Calendar
                                             onChange={(value: any) => {
-                                                handleCahngeInput('checkout', value)
+                                                handleChangeInput('checkout', value)
                                                 handleDateAway('checkout')
                                             }}
                                             minDate={new Date(moment(data.checkin).add(1, 'd'))}
@@ -240,11 +281,11 @@ const HotelAvailable = ({
                                     {show.adults ? (
                                         <PassangerView>
                                             <CounterDiv>
-                                                <CounterBtn onClick={hanldeAdultMinus}>
+                                                <CounterBtn onClick={handleAdultMinus}>
                                                     -
                                                 </CounterBtn>
                                                 <div>{data?.passanger.adults}</div>
-                                                <CounterBtn onClick={hanldeAdultPlus}>
+                                                <CounterBtn onClick={handleAdultPlus}>
                                                     +
                                                 </CounterBtn>
 
@@ -280,11 +321,11 @@ const HotelAvailable = ({
                                     {show.children ? (
                                         <PassangerView>
                                             <CounterDiv>
-                                                <CounterBtn onClick={hanldeChildrenMinus}>
+                                                <CounterBtn onClick={handleChildrenMinus}>
                                                     -
                                                 </CounterBtn>
                                                 <div>{data?.passanger.children}</div>
-                                                <CounterBtn onClick={hanldeChildrenPlus}>
+                                                <CounterBtn onClick={handleChildrenPlus}>
                                                     +
                                                 </CounterBtn>
                                             </CounterDiv>
@@ -332,11 +373,11 @@ const HotelAvailable = ({
                                     {show.infants ? (
                                         <PassangerView>
                                             <CounterDiv>
-                                                <CounterBtn onClick={hanldeInfantsMinus}>
+                                                <CounterBtn onClick={handleInfantsMinus}>
                                                     -
                                                 </CounterBtn>
                                                 <div>{data?.passanger.infants}</div>
-                                                <CounterBtn onClick={hanldeInfantsPlus}>
+                                                <CounterBtn onClick={handleInfantsPlus}>
                                                     +
                                                 </CounterBtn>
                                             </CounterDiv>
@@ -360,31 +401,63 @@ const HotelAvailable = ({
                 <TableHead>
                     <RoomType>Room Type</RoomType>
                     <Meal>Meals</Meal>
-                    <SelectRoom>Select Rooms</SelectRoom>
+                    <SelectRoom>Rooms</SelectRoom>
                     <Price>Price</Price>
                     <BookNow> </BookNow>
                 </TableHead>
-                <RowView>
+                {/*<RowView>*/}
                     {
                         forArray?.map((w, index) => {
                             return (
                                 <TableBody>
                                     <ColumnOne>
-                                            <Tooltip title="information">
+                                        {customColors.map(color => (
+                                            <Tooltip placement="bottom"
+                                                     title={t("tooltip.view_price")}
+                                                     color={color} key={color}
+                                                     overlayInnerStyle={{
+                                                         color:"#00000080",
+                                                         fontSize: "15px",
+                                                         lineHeight: "20px",
+                                                         width: "300px",
+                                                         cursor: "default",
+                                                         boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
+                                                         borderRadius: "12px",
+                                                         padding: "13px 18px"
+                                                     }}
+                                                     overlayStyle={{}}
+                                            >
                                                 <OrgInfoIcon/>
                                             </Tooltip>
+                                        ))}
                                         Premium Family Room {index + 1}
                                     </ColumnOne>
                                     <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
                                     <ColumnThree>
-                                        <BedroomIcon/>
-                                        <input type="number" min='1' value={w.totelroom} max='100' onChange={(e) => {
-                                            const value = [...forArray]
-                                            value[index].totelroom = e.target.value
-                                            seyForArray(value)
-                                        }} placeholder={t('hotelAvailable.selectRoom')}></input>
+                                        {/*<input type="number" min='1' value={w.totelroom} max='100' onChange={(e) => {*/}
+                                        {/*    const value = [...forArray]*/}
+                                        {/*    value[index].totelroom = Number(e.target.value)*/}
+                                        {/*    seyForArray(value)*/}
+                                        {/*}} placeholder={t('hotelAvailable.selectRoom')}></input>*/}
+                                        <LeftIcon/>
+                                        <ul>
+                                            <input type="text" placeholder="1 Rooms" readOnly/>
+                                            <InnerRoomList>
+                                                <li>
+                                                    <LeftIcon/>
+                                                    1 Rooms
+                                                    <OptionRightIcon>
+                                                        <TopUp/>
+                                                    </OptionRightIcon>
+                                                </li>
+                                            </InnerRoomList>
+                                        </ul>
+                                        <RightIcon>
+                                            <TopUp/>
+                                        </RightIcon>
                                     </ColumnThree>
                                     <ColumnFour>{Number(w.hotelPrice) * Number(w.totelroom)}{' \u20AC'}</ColumnFour>
+                                    <ColumnBreak/>
                                     <ColumnFive>
                                         <button>Book Now</button>
                                     </ColumnFive>
@@ -394,7 +467,7 @@ const HotelAvailable = ({
                     }
 
 
-                </RowView>
+                {/*</RowView>*/}
             </RoomTable>
         </Wrapper>
     )

@@ -99,7 +99,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "styled-components": "^5.3.3",
-    "swiper": "^8.0.7",
+    "swiper": "6.8.4",
     "ts-deferred": "^1.0.4",
     "underscore": "^1.13.1",
     "websocket": "^1.0.34"

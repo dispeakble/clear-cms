@@ -38,23 +38,36 @@ import {
     ViewMap,
     ViewPrice,
     WhiteIcon,
-    Wrapper
+    Wrapper,DetailsCard,CardDesc,Person,BoxLeft,BoxRight,DetailTop,Quantity,PersonEntry,SubDetail,CloseIcon
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
 
+type HotelDetailProps = {
+    data: any;
+    handleAdultPlus: () => void;
+    handleAdultMinus: () => void;
+    handleHotelSearch: () => void;
+    handleInfantsPlus: () => void;
+    handleChangeInput: (data: string, value: any) => void;
+    handleChildrenMinus: () => void;
+    handleChildrenPlus: () => void;
+    handleInfantsMinus: () => void;
+    handleSearch: (data: string) => void;
+}
+
 const HotelDetail = ({
                          data,
-                         hanldeAdultPlus,
-                         hanldeAdultMinus,
+                         handleAdultPlus,
+                         handleAdultMinus,
                          handleHotelSearch,
-                         hanldeInfantsPlus,
-                         handleCahngeInput,
-                         hanldeChildrenMinus,
-                         hanldeChildrenPlus,
-                         hanldeInfantsMinus,
+                         handleInfantsPlus,
+                         handleChangeInput,
+                         handleChildrenMinus,
+                         handleChildrenPlus,
+                         handleInfantsMinus,
                          handleSearch
-                     }) => {
+                     }: HotelDetailProps) => {
     const [show, setShow] = useState({
         checkin: false,
         checkout: false,
@@ -85,9 +98,9 @@ const HotelDetail = ({
             location: "Mohali"
         }
     ];
-
+    const customColors = ['#FFFFFF'];
     React.useEffect(() => {
-        const getHotel = arr.map((value: any) => {
+        /*const getHotel = arr.map((value: any) => {
             return value.location;
         });
         const uniqueChars = [...getHotel];
@@ -130,7 +143,7 @@ const HotelDetail = ({
             );
         });
         setBackUpData(mainFilter);
-        setMainValue(mainFilter);
+        setMainValue(mainFilter);*/
 
     }, []);
 
@@ -171,7 +184,7 @@ const HotelDetail = ({
         });
     };
     const onSearch = (searchText: string) => {
-        const str: string = String(searchText).toLowerCase();
+        /*const str: string = String(searchText).toLowerCase();
         const searchData = backUpData.map((valueMap) => {
             const SearchHotel = valueMap.options.filter((valuehotel: any) => {
                 const fildata = String(valuehotel?.value).toLowerCase();
@@ -195,11 +208,11 @@ const HotelDetail = ({
             return x !== undefined;
         });
         console.log(filtered);
-        setMainValue(filtered);
+        setMainValue(filtered);*/
     };
 
     const onSelect = (data: string) => {
-        handleHotelSearch(data);
+        //handleHotelSearch(data);
     };
 
     return (
@@ -249,8 +262,9 @@ const HotelDetail = ({
                                 <Calendar
                                   minDate={data.checkin}
                                   value={data.checkin}
-                                  onChange={(value) => {
-                                      handleCahngeInput("checkin", value);
+
+                                  onChange={(value: any) => {
+                                      handleChangeInput("checkin", value);
                                       handleDateAway("checkin");
                                   }}
                                 />
@@ -281,8 +295,8 @@ const HotelDetail = ({
                                 <Calendar
                                   minDate={new Date(moment(data.checkin).add(1, "d"))}
                                   value={new Date(data.checkout)}
-                                  onChange={(value) => {
-                                      handleCahngeInput("checkout", value);
+                                  onChange={(value: any) => {
+                                      handleChangeInput("checkout", value);
                                       handleDateAway("checkout");
                                   }}
                                 />
@@ -321,36 +335,57 @@ const HotelDetail = ({
                                   <DropdownIcon onClick={() => handleShowPassanger()} />
                               </GuestType>
                               {show.details ? (
-                                <MemberBox>
-                                    <PersonBox>
-                                        <PersonBox>Adults</PersonBox>
-                                        <CounterBtn onClick={hanldeAdultMinus}>-</CounterBtn>
-                                        <span>{data.passanger.adults}</span>
-                                        <CounterBtn onClick={hanldeAdultPlus}>+</CounterBtn>
-
-
-                                    </PersonBox>
-
-
-                                    <PersonBox>
-                                        <PersonBox>Children</PersonBox>
-                                        <CounterBtn onClick={hanldeChildrenMinus}>-</CounterBtn>
-                                        <span>{data.passanger.children}</span>
-                                        <CounterBtn onClick={hanldeChildrenPlus}>+</CounterBtn>
-
-
-                                    </PersonBox>
-                                    <PersonBox>
-                                        <PersonBox>Infants</PersonBox>
-                                        <CounterBtn onClick={hanldeInfantsMinus}>-</CounterBtn>
-                                        <span>{data.passanger.infants}</span>
-                                        <CounterBtn onClick={hanldeInfantsPlus}>+</CounterBtn>
-
-
-                                    </PersonBox>
-
-                                </MemberBox>
-
+                                  <DetailsCard>
+                                      <DetailTop>
+                                          <CloseIcon/>
+                                          Details
+                                      </DetailTop>
+                                      <PersonEntry>
+                                      <CardDesc>Add Numbers of Persons</CardDesc>
+                                      <Person>
+                                          <BoxLeft>
+                                              <h3>Adults</h3>
+                                              <p>12Yrs & above on the day of travel</p>
+                                          </BoxLeft>
+                                          <BoxRight>
+                                              <Quantity>
+                                                  <span>-</span>
+                                                  <h5>03</h5>
+                                                  <span>+</span>
+                                              </Quantity>
+                                          </BoxRight>
+                                      </Person>
+                                      <Person>
+                                          <BoxLeft>
+                                              <h3>Children</h3>
+                                              <p>2-12 yrs on the day of travel</p>
+                                          </BoxLeft>
+                                          <BoxRight>
+                                              <Quantity>
+                                                  <span>-</span>
+                                                  <h5>02</h5>
+                                                  <span>+</span>
+                                              </Quantity>
+                                          </BoxRight>
+                                      </Person>
+                                      <Person>
+                                          <BoxLeft>
+                                              <h3>Infants</h3>
+                                              <p>Under 2 yrs on the day of travel</p>
+                                          </BoxLeft>
+                                          <BoxRight>
+                                              <Quantity>
+                                                  <span>-</span>
+                                                  <h5>00</h5>
+                                                  <span>+</span>
+                                              </Quantity>
+                                          </BoxRight>
+                                      </Person>
+                                      <SubDetail>
+                                          <button>Done</button>
+                                      </SubDetail>
+                                      </PersonEntry>
+                                  </DetailsCard>
 
                               ) : null}
                           </DateDiv>
@@ -378,9 +413,29 @@ const HotelDetail = ({
                       </ShortDescription>
                   </LeftSide>
                   <ViewPrice>
-                      <button><Tooltip title="information">
-                          <InfoIcon />
-                      </Tooltip><span>View Prices</span></button>
+                      <button>
+                      {customColors.map(color => (
+                          <Tooltip placement="bottom"
+                                   title={t("tooltip.view_price")}
+                                   color={color} key={color}
+                                   overlayInnerStyle={{
+                                       color:"#00000080",
+                                       fontSize: "15px",
+                                       lineHeight: "20px",
+                                       width: "300px",
+                                       cursor: "default",
+                                       boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
+                                       borderRadius: "12px",
+                                       padding: "13px 18px"
+                                   }}
+                                   overlayStyle={{}}
+                          >
+                              <InfoIcon />
+                          </Tooltip>
+                          ))}
+                          <span>View Prices</span>
+                      </button>
+
                   </ViewPrice>
               </HotelInfo>
               <SliderSection>

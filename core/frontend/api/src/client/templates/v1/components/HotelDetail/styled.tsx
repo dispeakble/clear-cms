@@ -9,6 +9,7 @@ import adultIcon from "../../assets/img/person-icon.svg"
 import infantIcon from "../../assets/img/infant-icon.svg"
 import childIcon from "../../assets/img/child-icon.svg"
 import infoicon from "../../assets/img/info-icon.svg"
+import closeIcon from "../../assets/img/close-icon.svg"
 import {Shadows} from "../../../../assets/design-set";
 
 
@@ -125,9 +126,12 @@ export const NewSearch = styled.div`
     justify-content: center;
     cursor: pointer;
     display: flex;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
     flex: 1;
     &:hover {
-      color: ${Colors.primaryLight}
+      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      color: #FFFFFF;
+      text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   }
 `
 export const WhiteIcon = styled.div`
@@ -226,8 +230,9 @@ export const ViewPrice = styled.div`
     padding: 0 46px 0 65px;
     display: flex;
     justify-content: center;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     &:hover {
-      background: linear-gradient(180deg, #b7f964 0%, #639722 100%);
+      background: linear-gradient(180deg, #A9F945 0%, #69AD14 100%);
     }
     @media (min-width: ${size.tablet}) {
       width: 268px;
@@ -364,9 +369,137 @@ export const StyledDescription = styled.div`
   width: 100%;
   font-size: 20px;
   color: rgba(0,0,0,0.5);
+  display: inline;
+  @media only screen and (max-width:${size.tablet}){
+    font-size:18px;
+    margin-top:10px;
+  }
 `;
 
 export const StyledDescriptionMore = styled.a`
   cursor: pointer;
   color: ${Colors.primaryColor};
+`;
+
+export const DetailsCard = styled.div`
+  position: absolute;
+  z-index: 1;
+  width: 320px;
+  background: ${Colors.white};
+  border-radius: 12px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+`;
+export const PersonEntry = styled.div`
+  padding: 0 22px 70px 22px;
+
+`;
+export const SubDetail = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+margin-top: 50px;
+  button {
+    background: linear-gradient(180deg, ${Colors.primaryDark} 0%, ${Colors.primaryColor} 100%);
+    color: ${Colors.white};
+    width: 340px;
+    height: 45px;
+    padding-right: 20px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    display: flex;
+    text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    flex: 1;
+    &:hover {
+      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      color: #FFFFFF;
+      text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+    }
+`;
+export const CardDesc = styled.div`
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 200%;
+  text-transform: uppercase;
+  color: #7C7C7C;
+  display: flex;
+  justify-content: flex-start;
+`;
+export const Person = styled.div`
+display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+export const BoxLeft = styled.div`
+display: flex;
+  flex-direction: column;
+    h3{
+      font-weight: 600;
+      font-size: 25px;
+      line-height: 38px;
+      margin-bottom: 0;
+      color: ${Colors.black};
+    }
+  p{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 200%;
+    color: ${Colors.gray};
+  }
+`;
+export const BoxRight = styled.div``;
+export const DetailTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 93px;
+  background: ${Colors.white};
+  box-shadow: 0px 1px 7px rgba(0, 0, 0, 0.25);
+  font-weight: 600;
+  font-size: 27.5px;
+  line-height: 41px;
+  text-align: center;
+  border-radius: 12px 12px 0 0;
+  color: ${Colors.black};
+  margin-bottom: 30px;
+`;
+export const CloseIcon = styled.div`
+  background: url(${closeIcon.src}) no-repeat left center;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  right: 80px;
+`;
+export const Quantity = styled.div`
+display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 130px;
+  height: 44.31px;
+  border-radius: 12px;
+  border: 1px solid ${Colors.borderOutline};
+  
+  span{
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 38px;
+    color: ${Colors.black};
+    cursor: pointer;
+  }
+  h5{
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 38px;
+    color: ${Colors.black};
+    margin-bottom: 0;
+  }
 `;
