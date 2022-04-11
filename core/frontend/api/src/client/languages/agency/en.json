@@ -1,7 +1,6 @@
 {
   "global": {
     "home" : "Home",
-
     "search": "Search"
   },
   "home": {
@@ -79,11 +78,16 @@
           "content": "Get a unique experience at the aquarium. We have penguins"
         }
       }
+    },
+    "terms-and-conditions": {
+      "title": "Terms and conditions",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla sapien libero, non malesuada nisi lacinia vel. Nam euvarius justo. Phaselluslaoreet sapien augue, a accumsan turpis dapibus vitae. Curabitur ac nibh felis. Sed eu metus quis erosegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttitor lor sit ametsegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttit"
     }
   },
   "search": {
     "destination": "Destination",
     "input-placeholder" : "Where are you going?",
+    "searchButton" : "Find deals",
     "checkin": "Check in",
     "addDate": "Add date",
     "checkinDate": "Staying from",
@@ -103,5 +107,18 @@
     "flights" : "Flights",
     "hotel-stars": "Category",
     "activities" : "Activities"
+  },
+  "footer": {
+    "links": {
+      "about-us": "About Us",
+      "contact": "Contact",
+      "disclaimer": "Disclaimer",
+      "useful-information": "Useful Information",
+      "file-a-complaint": "File a complaint",
+      "working-hours": "Working Hours"
+    },
+    "email-address": "Email Address",
+    "subscribe-title": "Subscribe to our newsletter",
+    "subscribe": "Subscribe"
   }
 }

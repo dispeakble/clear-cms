@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
+import { Colors } from "../../assets/design-set";
 import breadcrumbIcon from "../../assets/img/breadcrumb-icon.svg";
-import {size} from "../../styled";
+import { size } from "../../styled";
 
 export const StyledBreadcrumbs = styled.div`
   background: ${Colors.primaryColor};
