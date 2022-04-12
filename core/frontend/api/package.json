@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:prod": "yarn run build_next_simple && nest build",
+    "build:prod": "nest build",
     "build_next": "yarn run lint && yarn test && next build ./src/client",
     "build_next_simple": "next build ./src/client",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
