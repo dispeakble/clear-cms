@@ -36,12 +36,12 @@ import {
     RightIcon,
     TopUp,
     InnerRoomList,
-    OptionRightIcon
-} from "./styled";
-import {
+    OptionRightIcon,
+    CounterDiv, CounterBtn,
     PassengerWrapper,
-    StayingInfoWrapper, CounterDiv, CounterBtn, PassengerDetailsWrapper
-} from '../../../../components/agency/Hero/styled'
+    StayingInfoWrapper,
+    PassengerDetailsWrapper
+} from "./styled";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Calendar from "react-calendar";
 import moment from "moment";
@@ -242,7 +242,7 @@ const HotelAvailable = ({
                                                 handleChangeInput('checkout', value)
                                                 handleDateAway('checkout')
                                             }}
-                                            minDate={new Date(moment(data.checkin).add(1, 'd'))}
+                                            minDate={new Date(String(moment(data.checkin).add(1, 'd')))}
                                             value={new Date(data.checkout)}
                                         />
                                     </CalendarView>

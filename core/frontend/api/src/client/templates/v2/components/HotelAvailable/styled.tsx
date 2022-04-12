@@ -5,8 +5,6 @@ import refreshIcon from "../../assets/img/refresh-icon.svg"
 import orgInfoIcon from "../../assets/img/orginfo-icon.svg"
 import bedroomIcon from "../../assets/img/bedroom-icon.svg"
 import dropdownIcon from "../../assets/img/dropdown-icon.svg"
-import roomupIcon from "../../assets/img/roomDrop-icon.svg"
-import roomdownIcon from "../../assets/img/roomUp-icon.svg"
 import dropLightIcon from "../../assets/img/DropLight-icon.svg"
 import dropDarkIcon from "../../assets/img/DropDark-icon.svg"
 
@@ -524,3 +522,15 @@ export const CheckTitle = styled.div`
   color: ${Colors.gray};
   font-weight: 500;
 `
+
+export const PassengerWrapper = styled.div`
+
+`;
+
+export const StayingInfoWrapper = styled.div`
+
+`;
+
+export const PassengerDetailsWrapper = styled.div`
+
+`;

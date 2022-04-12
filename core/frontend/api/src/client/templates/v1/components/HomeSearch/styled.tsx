@@ -194,17 +194,17 @@ export const StyledSearchOptionsGroup = styled.div`
   border-radius: 10px;
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   @media ${device.tablet} {
     flex: 1;
     margin: 0 0 0 10px;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   }
   @media ${device.laptop} {
-    grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(98px, 1fr));
   }
   @media ${device.laptopL} {
-    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
   }
   & > div:hover {
     background-color: ${Colors.primaryLight};
