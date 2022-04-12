@@ -1,7 +1,6 @@
-import styled from 'styled-components'
-import { createGlobalStyle } from 'styled-components'
-import {Colors} from "./assets/design-set";
-import headerBg from './assets/img/header-bg.jpg'
+import styled, { createGlobalStyle } from "styled-components";
+import { Colors } from "./assets/design-set";
+import headerBg from "./assets/img/header-bg.jpg";
 
 
 export const GlobalStyle = createGlobalStyle`
@@ -10,30 +9,31 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     background: url('${headerBg.src}') no-repeat center top ${Colors.mainBackground};
     background-size: 100%;
+    font-family: "Poppins", Arial, sans-serif, serif;
   }
-`
+`;
 
 export const size = {
-    mobileS: '320px',
-    mobileM: '375px',
-    mobileL: '425px',
-    tablet: '768px',
-    laptop: '1024px',
-    laptopL: '1440px',
-    desktop: '1920px',
-    desktopL: '2560px',
-}
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  laptop: "1024px",
+  laptopL: "1440px",
+  desktop: "1920px",
+  desktopL: "2560px"
+};
 
 export const device = {
-    mobileS: `(min-width: ${size.mobileS})`,
-    mobileM: `(min-width: ${size.mobileM})`,
-    mobileL: `(min-width: ${size.mobileL})`,
-    tablet: `(min-width: ${size.tablet})`,
-    laptop: `(min-width: ${size.laptop})`,
-    laptopL: `(min-width: ${size.laptopL})`,
-    desktop: `(min-width: ${size.desktop})`,
-    desktopL: `(min-width: ${size.desktopL})`
-}
+  mobileS: `(min-width: ${size.mobileS})`,
+  mobileM: `(min-width: ${size.mobileM})`,
+  mobileL: `(min-width: ${size.mobileL})`,
+  tablet: `(min-width: ${size.tablet})`,
+  laptop: `(min-width: ${size.laptop})`,
+  laptopL: `(min-width: ${size.laptopL})`,
+  desktop: `(min-width: ${size.desktop})`,
+  desktopL: `(min-width: ${size.desktopL})`
+};
 
 export const MainWrapper = styled.div`
   height: 100%;
@@ -66,8 +66,16 @@ export const MainWrapper = styled.div`
   @media ${device.desktopL} {
     max-width: 1440px;
   }
-`
+`;
+export const StyledContentWrapper = styled.div`
+  width: 100%;
+  margin-top: 95px;
 
+  background: ${Colors.offWhite};
+  @media (min-width: ${size.tablet}) {
+    padding: 0 40px;
+  }
+`;
 
 export const StyledMiddleText = styled.div`
   display: flex;
@@ -81,12 +89,23 @@ export const StyledWebsiteName = styled.div`
   font-size: 80px;
   text-align: center;
   color: #FFFFFF;
-  text-shadow: 2px 2px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
 export const StyledWebsiteSlogan = styled.div`
   font-size: 24px;
   text-align: center;
   color: #FFFFFF;
-  text-shadow: 2px 2px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+`;
+
+export const StyledTermsOfUse = styled.div`
+  background: ${Colors.primaryColor};
+  color: ${Colors.white};
+  line-height: 200%;
+  padding: 10px;
+  text-align: justify;
+  @media (min-width: ${size.tablet}) {
+    padding: 20px 90px;
+
 `;
