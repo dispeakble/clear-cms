@@ -236,7 +236,7 @@ export class ModuleService {
               data: JSON.stringify({
                 websiteName: process.env.website_name,
                 websiteDomain: process.env.website_domain,
-                websiteOwner: process.env.website_owner,
+                websiteOwner: `${process.env.admin_fname} ${process.env.admin_lname}`,
                 websiteAdminEmail: process.env.website_email,
                 applicationVersion: process.env.app_version,
               })

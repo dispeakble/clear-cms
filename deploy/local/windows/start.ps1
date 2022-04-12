@@ -1,7 +1,14 @@
 #!/usr/bin/env powershell
 $INIT_VERSION = "v0.0.1"
 $INIT_APP_NAME = "marioviajes"
-$INIT_APP_DOMAIN = "marioviajes.com"
+$INIT_APP_VERSION = "1.5.0"
+$INIT_WEBSITE_NAME = "Mario Viajes"
+$INIT_WEBSITE_EMAIL = "contact@marioviajes.com"
+$INIT_ADMIN_FNAME = "Mario Viajes"
+$INIT_ADMIN_LNAME = "Mario Viajes"
+$INIT_WEBSITE_DOMAIN = "marioviajes.com"
+$INIT_DEFAULT_EMAIL = "admin@localhost.local"
+$INIT_DEFAULT_PASSWORD = "1qaz"
 $INIT_TPL_VER = "v1"
 $INIT_POSTGRES_DEFAULT_USER = "cms"
 $INIT_POSTGRES_DEFAULT_PASSWORD = "1qaz"
@@ -21,7 +28,14 @@ $PWD=$pwd.Path
 if (($VERSION = Read-Host "Installation revision (Enter for default: $INIT_VERSION )") -eq '') { $VERSION = $INIT_VERSION }
 
 if (($APP_NAME = Read-Host "App name (Enter for default:  $INIT_APP_NAME)") -eq '') { $APP_NAME = $INIT_APP_NAME }
-if (($APP_DOMAIN = Read-Host "App domain E.G. example.com (Enter for default:  $INIT_APP_DOMAIN)") -eq '') { $APP_DOMAIN = $INIT_APP_DOMAIN }
+if (($APP_VERSION = Read-Host "App version (Enter for default:  $INIT_APP_VERSION)") -eq '') { $APP_VERSION = $INIT_APP_VERSION }
+if (($DEFAULT_EMAIL = Read-Host "Admin Email (Enter for default: $INIT_DEFAULT_EMAIL)") -eq '') { $DEFAULT_EMAIL = $INIT_DEFAULT_EMAIL }
+if (($DEFAULT_PASSWORD = Read-Host "Admin Password (Enter for default: $INIT_DEFAULT_PASSWORD)") -eq '') { $DEFAULT_EMAIL = $INIT_DEFAULT_PASSWORD }
+if (($WEBSITE_NAME = Read-Host "Website name (Enter for default: $INIT_WEBSITE_NAME)") -eq '') { $WEBSITE_NAME = $INIT_WEBSITE_NAME }
+if (($WEBSITE_EMAIL = Read-Host "Website name (Enter for default: $INIT_WEBSITE_EMAIL)") -eq '') { $WEBSITE_EMAIL = $INIT_WEBSITE_EMAIL }
+if (($ADMIN_FNAME = Read-Host "Admin first name (Enter for default: $INIT_ADMIN_FNAME)") -eq '') { $ADMIN_FNAME = $INIT_ADMIN_FNAME }
+if (($ADMIN_LNAME = Read-Host "Admin last name (Enter for default: $INIT_ADMIN_LNAME)") -eq '') { $ADMIN_LNAME = $INIT_ADMIN_LNAME }
+if (($WEBSITE_DOMAIN = Read-Host "Website domain (Enter for default: $INIT_WEBSITE_DOMAIN)") -eq '') { $WEBSITE_DOMAIN = $INIT_WEBSITE_DOMAIN }
 if (($TPL_VER = Read-Host "App template E.G. v1 (Enter for default:  $INIT_TPL_VER)") -eq '') { $TPL_VER = $INIT_TPL_VER }
 
 if (($REDIS_DEFAULT_PASSWORD = Read-Host "Redis password (Enter for default:  $INIT_REDIS_DEFAULT_PASSWORD)") -eq '') { $REDIS_DEFAULT_PASSWORD = $INIT_REDIS_DEFAULT_PASSWORD }
@@ -36,6 +50,14 @@ if (($PGADMIN_DEFAULT_PASSWORD = Read-Host "PgAdmin password (Enter for default:
 
 $env:VERSION=$VERSION
 $env:APP_NAME=$APP_NAME
+$env:APP_VERSION=$APP_VERSION
+$env:DEFAULT_EMAIL=$DEFAULT_EMAIL
+$env:DEFAULT_PASSWORD=$DEFAULT_PASSWORD
+$env:WEBSITE_NAME=$WEBSITE_NAME
+$env:WEBSITE_EMAIL=$WEBSITE_EMAIL
+$env:ADMIN_FNAME=$ADMIN_FNAME
+$env:ADMIN_LNAME=$ADMIN_LNAME
+$env:WEBSITE_DOMAIN=$WEBSITE_DOMAIN
 $env:APP_DOMAIN=$APP_DOMAIN
 $env:TPL_VER=$TPL_VER
 
@@ -60,9 +82,16 @@ $env:PWD=$PWD
 
 echo $PWD
 
-
 echo "$VERSION"
 echo "$APP_NAME"
+echo "$APP_VERSION"
+echo "$DEFAULT_EMAIL"
+echo "$DEFAULT_PASSWORD"
+echo "$WEBSITE_NAME"
+echo "$WEBSITE_EMAIL"
+echo "$ADMIN_FNAME"
+echo "$ADMIN_LNAME"
+echo "$WEBSITE_DOMAIN"
 echo "$APP_DOMAIN"
 echo "$TPL_VER"
 echo "$REDIS_DEFAULT_PASSWORD"

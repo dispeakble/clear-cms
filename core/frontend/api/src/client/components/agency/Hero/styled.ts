@@ -1,10 +1,8 @@
 import styled from "styled-components";
 import { Colors, Shadows, Widths } from "../../../assets/design-set";
-import HeroBG from "../../../pages/agency/assets/hero-bg.jpg";
 import { Rate } from "antd";
 
 export const HeroWrapper = styled.div`
-  background-image: url(${HeroBG.src});
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
