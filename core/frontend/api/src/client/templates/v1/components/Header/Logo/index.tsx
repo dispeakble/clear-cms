@@ -5,7 +5,7 @@ const Logo = () => {
   return <LogoWrapper>
     <Image
       loader={() => `/files/images/logoSmall.png`}
-      src="logo.png"
+      src="https://www.google.com/logos/doodles/2022/montserrat-caballes-89th-birthday-6753651837109386-l.webp"
       width={300}
       height={48}
     />

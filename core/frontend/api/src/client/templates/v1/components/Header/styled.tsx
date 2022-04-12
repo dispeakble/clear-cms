@@ -25,6 +25,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   transition: background-color 1000ms linear;
 
   &.fixedHeader {
+    z-index: 999;
     background: ${Colors.primaryColor};
   }
 

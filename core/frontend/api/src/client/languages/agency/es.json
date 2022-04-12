@@ -109,6 +109,25 @@
     "hotel-stars": "Categoría",
     "activities" : "Ocupaciones"
   },
+  "deals" : {
+    "hotel": "Hotel Victoria",
+    "location": "Bischofshofen, 4, 38660 Adeje, Spain",
+    "checkin": "Saturday, 12 March...",
+    "checkout": "Saturday, 13 March...",
+    "detail": {
+      "adult": "Adult-",
+      "child": "Child-",
+      "infant": "infant-"
+    }
+  },
+  "hotelAbout" : {
+    "hotel": "Hotel Victoria, Adeje, Spain ",
+    "star": "(4 Stars)",
+    "cardTitle": "Hotel Victoria Highlights"
+  },
+  "hotelAvailable" : {
+    "selectRoom": "2 Rooms"
+  },
   "footer": {
     "links": {
       "about-us": "About Us",
