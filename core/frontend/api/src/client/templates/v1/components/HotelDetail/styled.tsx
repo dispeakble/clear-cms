@@ -1,21 +1,6 @@
 import styled from "styled-components";
 import {size} from "../../styled";
-import searchIcon from "../../assets/img/search-icon.svg"
-import WhiteSearchIcon from "../../assets/img/white-search-icon.svg"
-import calenderIcon from "../../assets/img/calender-icon.svg"
-import dropdownIcon from "../../assets/img/dropdown-icon.svg"
-import adultIcon from "../../assets/img/person-icon.svg"
-import infantIcon from "../../assets/img/infant-icon.svg"
-import childIcon from "../../assets/img/child-icon.svg"
-import infoicon from "../../assets/img/info-icon.svg"
-import closeIcon from "../../assets/img/close-icon.svg"
 import {Shadows} from "../../../../assets/design-set";
-
-
-
-
-
-
 
 export const Wrapper = styled.div`
   margin-top: 30px;
@@ -90,7 +75,7 @@ export const  SearchIcon = styled.div`
   position: relative;
   top: 13px;
   left: 18px;
-background: url(${searchIcon.src}) no-repeat left center;`
+background: url(${({theme}) => theme.icon('search')}) no-repeat left center;`
 
 export const CalenderIcon = styled.div`
   width: 50px;
@@ -98,13 +83,13 @@ export const CalenderIcon = styled.div`
   position: relative;
   top: 13px;
   left: 18px;
-  background: url(${calenderIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('calendar')}) no-repeat left center;
 `
 export const DropdownIcon = styled.div`
   width: 40px;
   height: 57px;
   cursor: pointer;
-  background: url(${dropdownIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
 `
 export const NewSearch = styled.div`
   display: flex;
@@ -137,7 +122,7 @@ export const WhiteIcon = styled.div`
   width: 50px;
   height: 50px;
   display: inline-block;
-  background: url(${WhiteSearchIcon.src}) no-repeat center center;
+  background: url(${({theme}) => theme.icon('searchWhite')}) no-repeat center center;
 `
 export const GuestType = styled.div`
   display: flex;
@@ -162,7 +147,7 @@ export const AdultIcon = styled.div`
   height: 26px;
   width: 10px;
   top: 0px;
-  background: url(${adultIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('adult')}) no-repeat left center;
 `
 export const AdultNumber = styled.div`
   font-weight: 500;
@@ -175,14 +160,14 @@ export const ChildIcon = styled.div`
   height: 26px;
   width: 10px;
   top: 0px;
-  background: url(${childIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
 `
 export const InfantIcon = styled.div`
   position: relative;
   height: 26px;
   width: 15px;
   top: 0px;
-  background: url(${infantIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('infant')}) no-repeat left center;
 `
 export const HotelView = styled.div`
   flex: 1;
@@ -244,7 +229,7 @@ export const InfoIcon = styled.span`
   width: 32px;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  background: url(${infoicon.src}) no-repeat center center;
+  background: url(${({theme}) => theme.icon('info')}) no-repeat center center;
 
 `
 export const LeftSide = styled.div``
@@ -471,7 +456,7 @@ export const DetailTop = styled.div`
   margin-bottom: 30px;
 `;
 export const CloseIcon = styled.div`
-  background: url(${closeIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('close')}) no-repeat left center;
   width: 22px;
   height: 22px;
   position: relative;

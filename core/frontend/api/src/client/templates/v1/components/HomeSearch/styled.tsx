@@ -1,10 +1,5 @@
 import styled from "styled-components";
 
-import searchIcon from "../../assets/img/search-icon.svg";
-import person from "../../assets/img/person-icon.svg";
-import child from "../../assets/img/child-icon.svg";
-import infant from "../../assets/img/infant-icon.svg";
-import star from "../../assets/img/star-icon.svg";
 import { device, size } from "../../styled";
 
 interface IDateLabel {

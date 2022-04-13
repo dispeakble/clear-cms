@@ -1,22 +1,12 @@
 import styled from "styled-components";
 import {size} from "../../styled";
-import refreshIcon from "../../assets/img/refresh-icon.svg"
-import orgInfoIcon from "../../assets/img/orginfo-icon.svg"
-import bedroomIcon from "../../assets/img/bedroom-icon.svg"
-import dropdownIcon from "../../assets/img/dropdown-icon.svg"
-import dropLightIcon from "../../assets/img/DropLight-icon.svg"
-import dropDarkIcon from "../../assets/img/DropDark-icon.svg"
-
-
-
 import {Shadows} from "../../../../assets/design-set";
-
 
 export const QueryTitle = styled.div`
   font-weight: 600;
   font-size: 22px;
   line-height: 33px;
-  color: #${({theme}) => theme.colors.black};
+  color: ${({theme}) => theme.colors.black};
   margin-bottom: 10px;
   @media only screen and (max-width: ${size.laptop}) {
     text-align: center;
@@ -80,7 +70,7 @@ export const DropdownIcon = styled.div`
   position: relative;
   top: 6px;
   left: 0;
-  background: url(${dropdownIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
 
 `
 export const RefreshPrice = styled.div`
@@ -119,7 +109,7 @@ export const RefreshIcon = styled.div`
   margin-right: 10px;
   width: 24px;
   height: 24px;
-  background: url(${refreshIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('refresh')}) no-repeat left center;
   cursor: pointer;
 `
 
@@ -196,7 +186,7 @@ export const OrgInfoIcon = styled.div`
   margin: 5px 10px;
   width: 22px;
   height: 22px;
-  background: url(${orgInfoIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('orginfo')}) no-repeat left center;
 
   :hover {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -285,7 +275,7 @@ export const ColumnThree = styled.div`
 
 `
 export const LeftIcon = styled.div`
-  background: url(${bedroomIcon.src}) no-repeat 8px center ${({theme}) => theme.colors.white};
+  background: url(${({theme}) => theme.icon('bedroom')}) no-repeat 8px center ${({theme}) => theme.colors.white};
   width: 36px;
   height: 37px;
   position: relative;
@@ -309,11 +299,11 @@ export const TopUp = styled.div`
   height: 18px;
   display: flex;
   align-items: center;
-  background: url(${dropLightIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('dropLight')}) no-repeat left center;
   position: relative;
   top: 10px;
   :hover{
-    background: url(${dropDarkIcon.src}) no-repeat left center;
+    background: url(${({theme}) => theme.icon('dropDark')}) no-repeat left center;
 
   }
 `;
@@ -427,7 +417,7 @@ export const BedroomIcon = styled.div`
   margin: 9px 0 0 25px;
   width: 18px;
   height: 20px;;
-  background: url(${bedroomIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('bedroom')}) no-repeat left center;
   @media (max-width: ${size.laptopL}) {
     margin: 9px 0 0 9px;
   }

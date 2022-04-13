@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import {size} from "../../styled";
-import highlight from "../../assets/img/highlight-image.svg"
 import hotel1 from "../../assets/img/hotels/small/hotel1.jpg"
-import checkIcon from "../../assets/img/check-icon.svg"
 
 
 export const About = styled.div`
@@ -133,7 +131,7 @@ export const CheckedIcon = styled.div`
   height: 23.51px;
   position: relative;
   top: 8px;
-  background: url(${checkIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
 
 
 `
