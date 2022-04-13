@@ -1,13 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
-import {SketchPicker} from "react-color"
-import {withStyles} from "@material-ui/core/styles";
+import { SketchPicker } from "react-color";
+import { withStyles } from "@material-ui/core/styles";
 // core components
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 import CustomInput from "components/CustomInput/CustomInput.js";
 import AddAlert from "@material-ui/icons/AddAlert";
@@ -16,30 +16,21 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 
 import styles from "assets/jss/clear-crm/views/generalSettings";
 
-import {FormControlLabel, TextField} from "@material-ui/core";
+import { FormControlLabel, TextField } from "@material-ui/core";
 import moment from "moment-timezone";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
-import {ToggleButtonGroup} from "@material-ui/lab";
+import { ToggleButtonGroup } from "@material-ui/lab";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import imageHelper from "../../helpers/image.helper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
-import CustomDropdown from "../../components/CustomDropdown/CustomDropdown";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import {Apps} from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
-import List from "@material-ui/core/List";
-import {NavLink} from "react-router-dom";
-import ListItem from "@material-ui/core/ListItem";
-import Icon from "@material-ui/core/Icon";
-import ListItemText from "@material-ui/core/ListItemText";
 import Accordion from "@material-ui/core/Accordion";
-import generalSettingsPageStyle from "assets/jss/clear-crm/views/generalSettings";
 
 class ViewGeneralSettings extends Component {
     state = {
@@ -54,21 +45,27 @@ class ViewGeneralSettings extends Component {
         contactEmail: "",
         selectedTheme: "V1",
         colorScheme: {
-            primary: "#FFFFFF",
-            secondary: "#FFFFFF",
-            success: "#4caf50",
-            error: "#f44336",
-            text: "#333333",
-            paper: "#FFFFFF",
+            primaryColor: {label: "Primary Color", value: "#DC6B03"},
+            primaryColorRBG: {label: "Primary Color RBG", value: {r: 220, g: 107, b: 3}},
+            primaryColorFadedRBG: {label: "Primary Color Faded RBG", value: {r: 252, g: 232, b: 221}},
+            primaryDark: {label: "Primary Dark", value: "orange"},
+            primaryLight: {label: "Primary Light", value: "#FF9F5A"},
+            primaryColorHover: {label: "Primary Color Hover", value: "#FC8C25"},
+            primaryRed: {label: "Primary Red", value: "#DC0303"},
+            secondaryColor: {label: "Secondary Color", value: "#FF0000"},
+            accentColor: {label: "Accent Color", value: "#f39200"},
+            darkRed: {label: "Dark Red", value: "#E90000"},
+            jetBlack: {label: "Jet Black", value: "#333"},
+            black: {label: "Black", value: "#000"},
+            offWhite: {label: "Off White", value: "#f5f5f5"},
+            white: {label: "White", value: "#fff"},
+            gray: {label: "Gray", value: "#505050"},
+            mainBackground: {label: "Main Background", value: "#E5E5E5"},
+            footerLinks: {label: "Footer Links", value: "#868484"},
+            greyBorder: {label: "Grey Border", value: "#ACACAC"},
+            borderOutline: {label: "Border Outline", value: "#DBDBDB"},
         },
-        colorPickerIsOpen: {
-            primary: false,
-            secondary: false,
-            success: false,
-            error: false,
-            text: false,
-            paper: false,
-        },
+        colorPickerIsOpen: "",
         validation: {
             websiteName: {valid: false, empty: true},
             websiteDomain: {valid: false, empty: true},
@@ -86,15 +83,7 @@ class ViewGeneralSettings extends Component {
             emailSender : {valid: false, empty: true},
             emailPassword: {valid: false, empty: true},
             contactEmail: {valid: false, empty: true},
-            selectedTheme: {valid: false, empty: true},
-            colorScheme: {
-                primary: {valid: false, empty: true},
-                secondary: {valid: false, empty: true},
-                success: {valid: false, empty: true},
-                error: {valid: false, empty: true},
-                text: {valid: false, empty: true},
-                paper: {valid: false, empty: true},
-            },
+            selectedTheme: {valid: false, empty: true}
         },
         defaultWebsiteLogo: "",
         websiteLogo: "",
@@ -183,46 +172,26 @@ class ViewGeneralSettings extends Component {
                 empty: false
             };
 
-            validation.colorScheme.primary = {
-                valid: true,
-                empty: false
-            };
-
-            validation.colorScheme.secondary = {
-                valid: true,
-                empty: false
-            };
-
-            validation.colorScheme.success = {
-                valid: true,
-                empty: false
-            };
-
-            validation.colorScheme.error = {
-                valid: true,
-                empty: false
-            };
-
-            validation.colorScheme.text = {
-                valid: true,
-                empty: false
-            };
-
-            validation.colorScheme.paper = {
-                valid: true,
-                empty: false
-            };
-
-            validation.selectedTheme = {
-                valid: true,
-                empty: false
-            }
-
             if(generalSettingsData.colorScheme){
-                generalSettingsData.colorScheme = JSON.parse(generalSettingsData.colorScheme)
-                this.setState({
-                    colorScheme: generalSettingsData.colorScheme
-                })
+
+                try {
+                    const dbColors = JSON.parse(generalSettingsData.colorScheme);
+
+                    const currentScheme = this.state.colorScheme;
+
+                    Object.keys(currentScheme).map((color) => {
+                        if(dbColors.hasOwnProperty(color)) {
+                            currentScheme[color].value = dbColors[color];
+                        }
+                    });
+
+                    this.setState({
+                        colorScheme: currentScheme
+                    })
+
+                } catch (err) {
+                    console.log(err);
+                }
             }
 
             if(generalSettingsData.selectedTheme){
@@ -356,7 +325,7 @@ class ViewGeneralSettings extends Component {
             emailSender: this.state.emailSender,
             emailPassword: this.state.emailPassword,
             contactEmail: this.state.contactEmail,
-            colorScheme: JSON.stringify(this.state.colorScheme),
+            colorScheme: this.state.colorScheme,
             selectedTheme: this.state.selectedTheme,
         }});
         if (result) {
@@ -657,7 +626,7 @@ class ViewGeneralSettings extends Component {
                                     <p style={{width: "15px"}}></p>
 
                                     <Accordion
-                                        expanded={this.state.colorSchemeAccordionIsOpen}
+                                        expanded={true}
                                         onChange={() => {
                                             this.setState({
                                                 colorSchemeAccordionIsOpen: !this.state.colorSchemeAccordionIsOpen
@@ -675,183 +644,51 @@ class ViewGeneralSettings extends Component {
                                         <Divider />
                                         <AccordionDetails className={classes.accordion}>
                                             <div className={classes.accordionColorItems}>
-                                                <div className={classes.colorPickerContainer}
-                                                     style={{ background: this.state.colorScheme.primary }}
-                                                     onClick={(e) => {
-                                                         this.setState({
-                                                             colorPickerIsOpen: {...this.state.colorPickerIsOpen,
-                                                                 primary: !this.state.colorPickerIsOpen.primary,
-                                                                 secondary: false,
-                                                                 success: false,
-                                                                 error: false,
-                                                                 text: false,
-                                                                 paper: false,
-                                                             }
-                                                         })
-                                                     }}
-                                                >
-                                                    <Typography className={classes.heading} >Primary: {this.state.colorScheme.primary}</Typography>
-                                                    {
-                                                        this.state.colorPickerIsOpen.primary &&
-                                                        <SketchPicker
-                                                            color={this.state.colorScheme.primary}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(color) => {
-                                                                this.setState({
-                                                                    colorScheme: {...this.state.colorScheme, primary: color.hex}
-                                                                })
-                                                            }}
-                                                        />
-                                                    }
-                                                </div>
 
-                                                <div className={classes.colorPickerContainer}
-                                                     style={{ background: this.state.colorScheme.secondary }}
-                                                     onClick={(e) => {
-                                                         this.setState({
-                                                             colorPickerIsOpen: {...this.state.colorPickerIsOpen,
-                                                                 primary: false,
-                                                                 secondary: !this.state.colorPickerIsOpen.secondary,
-                                                                 success: false,
-                                                                 error: false,
-                                                                 text: false,
-                                                                 paper: false,}
-                                                         })
-                                                     }}
-                                                >
-                                                    <Typography className={classes.heading}>Secondary: {this.state.colorScheme.secondary}</Typography>
-                                                    {
-                                                        this.state.colorPickerIsOpen.secondary &&
-                                                        <SketchPicker
-                                                            color={this.state.colorScheme.secondary}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(color) => {
-                                                                this.setState({
-                                                                    colorScheme: {...this.state.colorScheme, secondary: color.hex}
-                                                                })
-                                                            }}
-                                                        />
-                                                    }
-                                                </div>
+                                                {Object.keys(this.state.colorScheme).map((color, index) => {
 
-                                                <div className={classes.colorPickerContainer}
-                                                     style={{ background: this.state.colorScheme.success }}
-                                                     onClick={(e) => {
-                                                         this.setState({
-                                                             colorPickerIsOpen: {...this.state.colorPickerIsOpen,
-                                                                 primary: false,
-                                                                 secondary: false,
-                                                                 success: !this.state.colorPickerIsOpen.success,
-                                                                 error: false,
-                                                                 text: false,
-                                                                 paper: false,}
-                                                         })
-                                                     }}
-                                                >
-                                                    <Typography className={classes.heading}>Success: {this.state.colorScheme.success}</Typography>
-                                                    {
-                                                        this.state.colorPickerIsOpen.success &&
-                                                        <SketchPicker
-                                                            color={this.state.colorScheme.success}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(color) => {
-                                                                this.setState({
-                                                                    colorScheme: {...this.state.colorScheme, success: color.hex}
-                                                                })
-                                                            }}
-                                                        />
-                                                    }
-                                                </div>
+                                                    const colorValue = this.state.colorScheme[color].value;
 
-                                                <div className={classes.colorPickerContainer}
-                                                     style={{ background: this.state.colorScheme.error }}
-                                                     onClick={(e) => {
-                                                         this.setState({
-                                                             colorPickerIsOpen: {...this.state.colorPickerIsOpen,
-                                                                 primary: false,
-                                                                 secondary: false,
-                                                                 success: false,
-                                                                 error: !this.state.colorPickerIsOpen.error,
-                                                                 text: false,
-                                                                 paper: false,}
-                                                         })
-                                                     }}
-                                                >
-                                                    <Typography className={classes.heading}>Error: {this.state.colorScheme.error}</Typography>
-                                                    {
-                                                        this.state.colorPickerIsOpen.error &&
-                                                        <SketchPicker
-                                                            color={this.state.colorScheme.error}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(color) => {
-                                                                this.setState({
-                                                                    colorScheme: {...this.state.colorScheme, error: color.hex}
-                                                                })
-                                                            }}
-                                                        />
-                                                    }
-                                                </div>
+                                                    const bgColor = typeof colorValue === 'object' ? `rgba(${colorValue.r},${colorValue.g},${colorValue.b})` : colorValue;
 
-                                                <div className={classes.colorPickerContainer}
-                                                     style={{ background: this.state.colorScheme.text }}
-                                                     onClick={(e) => {
-                                                         this.setState({
-                                                             colorPickerIsOpen: {...this.state.colorPickerIsOpen,
-                                                                 primary: false,
-                                                                 secondary: false,
-                                                                 success: false,
-                                                                 error: false,
-                                                                 text: !this.state.colorPickerIsOpen.text,
-                                                                 paper: false}
-                                                         })
-                                                     }}
-                                                >
-                                                    <Typography className={classes.heading}>Text: {this.state.colorScheme.text}</Typography>
-                                                    {
-                                                        this.state.colorPickerIsOpen.text &&
-                                                        <SketchPicker
-                                                            color={this.state.colorScheme.text}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(color) => {
-                                                                this.setState({
-                                                                    colorScheme: {...this.state.colorScheme, text: color.hex}
-                                                                })
-                                                            }}
-                                                        />
-                                                    }
-                                                </div>
+                                                    return (
+                                                      <div
+                                                        key={index}
+                                                        className={classes.colorPickerContainer}
+                                                        style={{ background: bgColor }}
+                                                        onClick={(e) => {
+                                                            this.setState({
+                                                                colorPickerIsOpen: color
+                                                            });
+                                                        }}
+                                                      >
+                                                          <Typography
+                                                            className={classes.heading}>{this.state.colorScheme[color].label}: {bgColor}</Typography>
+                                                          {
+                                                            this.state.colorPickerIsOpen === color &&
+                                                            <SketchPicker
+                                                              color={this.state.colorScheme[color].value}
+                                                              styles={this.pickerStyles}
+                                                              onChange={(changedColor) => {
+                                                                  const newColor = {};
+                                                                  const currentColor = this.state.colorScheme[color];
 
-                                                <div className={classes.colorPickerContainer}
-                                                     style={{ background: this.state.colorScheme.paper }}
-                                                     onClick={(e) => {
-                                                         e.preventDefault();
-                                                             this.setState({
-                                                                 colorPickerIsOpen: {...this.state.colorPickerIsOpen,
-                                                                     primary: false,
-                                                                     secondary: false,
-                                                                     success: false,
-                                                                     error: false,
-                                                                     text: false,
-                                                                     paper: !this.state.colorPickerIsOpen.paper}
-                                                             })
-                                                     }}
-                                                >
-                                                    <Typography className={classes.heading}>Paper: {this.state.colorScheme.paper}</Typography>
-                                                    {
-                                                        this.state.colorPickerIsOpen.paper &&
-                                                        <SketchPicker
-                                                            id='color-picker'
-                                                            color={this.state.colorScheme.paper}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(color) => {
-                                                                this.setState({
-                                                                    colorScheme: {...this.state.colorScheme, paper: color.hex}
-                                                                })
-                                                            }}
-                                                        />
-                                                    }
-                                                </div>
+                                                                  newColor[color] = currentColor;
 
+                                                                  if(typeof currentColor.value === 'object') {
+                                                                      newColor[color].value = changedColor.rgb;
+                                                                  } else {
+                                                                      newColor[color].value = changedColor.hex;
+                                                                  }
+                                                                  this.setState({
+                                                                      colorScheme: { ...this.state.colorScheme, ...newColor }
+                                                                  });
+                                                              }}
+                                                            />
+                                                          }
+                                                      </div>
+                                                    );
+                                                })}
                                             </div>
                                         </AccordionDetails>
                                     </Accordion>

@@ -1,15 +1,13 @@
-export const Colors = {
+export const Colors = {//TODO GET FROM DB
   primaryColor: "#DC6B03",
   primaryColorRBG: "220, 107, 3",
   primaryColorFadedRBG: "252, 232, 221",
-  primaryDark: "orange",
+  primaryDark: "#f39200",
   primaryLight: "#FF9F5A",
   primaryColorHover: "#FC8C25",
   primaryRed: "#DC0303",
   secondaryColor: "red",
-  accentColor: "orange",
   darkRed: "#E90000",
-  jetBlack: "#333",
   black: "#000",
   offWhite: "#f5f5f5",
   white: "#fff",

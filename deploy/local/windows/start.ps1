@@ -17,12 +17,13 @@ $INIT_POSTGRES_DEFAULT_CONNECTIONS = "main,agency"
 $INIT_PGADMIN_DEFAULT_EMAIL = "admin@localhost.local"
 $INIT_PGADMIN_DEFAULT_PASSWORD = "1qaz"
 $INIT_REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
-$CMS_HUB_VERSION="1649403237"
-$CMS_DB_VERSION="1649403237"
-$CMS_BUCKET_VERSION="1649403237"
-$CMS_FRONTEND_PROXY_VERSION="1649403237"
-$CMS_FRONTEND_VERSION="1649624219"
-$CMS_ADMIN_PROXY_VERSION="1649403237"
+$CMS_HUB_VERSION="1649808701"
+$CMS_DB_VERSION="1649808701"
+$CMS_BUCKET_VERSION="1649808701"
+$CMS_FRONTEND_PROXY_VERSION="1649808701"
+$CMS_FRONTEND_VERSION="1649798369"
+$CMS_ADMIN_PROXY_VERSION="1649808701"
+$CMS_ADMIN_SYSTEM_VERSION="1649808701"
 $PWD=$pwd.Path
 
 if (($VERSION = Read-Host "Installation revision (Enter for default: $INIT_VERSION )") -eq '') { $VERSION = $INIT_VERSION }
@@ -30,7 +31,7 @@ if (($VERSION = Read-Host "Installation revision (Enter for default: $INIT_VERSI
 if (($APP_NAME = Read-Host "App name (Enter for default:  $INIT_APP_NAME)") -eq '') { $APP_NAME = $INIT_APP_NAME }
 if (($APP_VERSION = Read-Host "App version (Enter for default:  $INIT_APP_VERSION)") -eq '') { $APP_VERSION = $INIT_APP_VERSION }
 if (($DEFAULT_EMAIL = Read-Host "Admin Email (Enter for default: $INIT_DEFAULT_EMAIL)") -eq '') { $DEFAULT_EMAIL = $INIT_DEFAULT_EMAIL }
-if (($DEFAULT_PASSWORD = Read-Host "Admin Password (Enter for default: $INIT_DEFAULT_PASSWORD)") -eq '') { $DEFAULT_EMAIL = $INIT_DEFAULT_PASSWORD }
+if (($DEFAULT_PASSWORD = Read-Host "Admin Password (Enter for default: $INIT_DEFAULT_PASSWORD)") -eq '') { $DEFAULT_PASSWORD = $INIT_DEFAULT_PASSWORD }
 if (($WEBSITE_NAME = Read-Host "Website name (Enter for default: $INIT_WEBSITE_NAME)") -eq '') { $WEBSITE_NAME = $INIT_WEBSITE_NAME }
 if (($WEBSITE_EMAIL = Read-Host "Website name (Enter for default: $INIT_WEBSITE_EMAIL)") -eq '') { $WEBSITE_EMAIL = $INIT_WEBSITE_EMAIL }
 if (($ADMIN_FNAME = Read-Host "Admin first name (Enter for default: $INIT_ADMIN_FNAME)") -eq '') { $ADMIN_FNAME = $INIT_ADMIN_FNAME }
@@ -77,6 +78,7 @@ $env:CMS_BUCKET_VERSION=$CMS_BUCKET_VERSION
 $env:CMS_FRONTEND_PROXY_VERSION=$CMS_FRONTEND_PROXY_VERSION
 $env:CMS_FRONTEND_VERSION=$CMS_FRONTEND_VERSION
 $env:CMS_ADMIN_PROXY_VERSION=$CMS_ADMIN_PROXY_VERSION
+$env:CMS_ADMIN_SYSTEM_VERSION=$CMS_ADMIN_SYSTEM_VERSION
 
 $env:PWD=$PWD
 
@@ -107,9 +109,7 @@ echo "$CMS_BUCKET_VERSION"
 echo "$CMS_FRONTEND_PROXY_VERSION"
 echo "$CMS_FRONTEND_VERSION"
 echo "$CMS_ADMIN_PROXY_VERSION"
-
-((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace 'admin@localhost.local', $INIT_PGADMIN_DEFAULT_EMAIL) | Set-Content -Path ..\..\pg.db\db.schema.sql
-((Get-Content -path ..\..\pg.db\db.schema.sql -Raw) -replace "MD5('1qaz')", "MD5('$PGADMIN_DEFAULT_PASSWORD')") | Set-Content -Path ..\..\pg.db\db.schema.sql
+echo "$CMS_ADMIN_SYSTEM_VERSION"
 
 echo "**************** Starting Services *****************"
 

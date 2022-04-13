@@ -1,9 +1,6 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
 import {size} from "../../styled";
-import highlight from "../../assets/img/highlight-image.svg"
 import hotel1 from "../../assets/img/hotels/small/hotel1.jpg"
-import checkIcon from "../../assets/img/check-icon.svg"
 
 
 export const About = styled.div`
@@ -49,10 +46,10 @@ export const Description = styled.div`
     font-weight: 500;
     font-size: 20px;
     padding-left: 6px;
-    color: ${Colors.secondaryColor};
+    color: ${({theme}) => theme.colors.secondaryColor};
     cursor: pointer;
     :hover{
-      color: ${Colors.primaryColor};
+      color: ${({theme}) => theme.colors.primaryColor};
     }
   }
 `
@@ -98,7 +95,7 @@ export const Cardtitle = styled.div`
   font-size: 33px;
   line-height: 50px;
   text-align: center;
-  color: ${Colors.primaryColor};
+  color: ${({theme}) => theme.colors.primaryColor};
   text-shadow: 0px 4px 4px rgb(0 0 0 / 55%);
   @media only screen and (max-width:${size.tablet}){
     margin-bottom: 10px;
@@ -106,7 +103,7 @@ export const Cardtitle = styled.div`
   }
   
   ::after {
-    border-bottom: 2px solid ${Colors.white};
+    border-bottom: 2px solid ${({theme}) => theme.colors.white};
     content: '';
     width: 90%;
     display: block;
@@ -124,7 +121,7 @@ export const Feature = styled.div`
     gap: 5px;
     font-size: 23px;
     line-height: 34px;
-    color: ${Colors.white};
+    color: ${({theme}) => theme.colors.white};
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.55);
     list-style: none;
   }
@@ -134,7 +131,7 @@ export const CheckedIcon = styled.div`
   height: 23.51px;
   position: relative;
   top: 8px;
-  background: url(${checkIcon.src}) no-repeat left center;
+  background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
 
 
 `

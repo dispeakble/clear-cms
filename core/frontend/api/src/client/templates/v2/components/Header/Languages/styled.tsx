@@ -23,7 +23,7 @@ export const Container = styled.div`
 export const LanguagesDropdown = styled.div`
   display: none;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: ${({theme}) => theme.colors.primaryColor};
   min-width: 80px;
   z-index: 1;
   left: 50%;
@@ -40,7 +40,7 @@ export const LanguagesDropdown = styled.div`
     display: block;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: ${({theme}) => theme.colors.primaryColorHover};
     }
   }
 `;
