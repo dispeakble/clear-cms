@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
 
-import searchIcon from "../../assets/img/search-icon.svg";
 import { device, size } from "../../styled";
 
 type HeaderWrapperProps = {
@@ -26,7 +24,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
 
   &.fixedHeader {
     z-index: 999;
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
   }
 
   @media (max-width: ${size.laptop}) {
@@ -80,9 +78,9 @@ export const MenuWrapper = styled.div`
 `;
 
 export const SearchWrapper = styled.div`
-  border: 1px solid ${Colors.primaryColor};
+  border: 1px solid ${({theme}) => theme.colors.primaryColor};
   position: relative;
-  background: url(${searchIcon.src}) no-repeat 16px center #FFFFFF;
+  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center #FFFFFF;
   order: 4;
   margin-left: 10px;
   @media (max-width: ${size.laptop}) {

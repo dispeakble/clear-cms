@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {Colors} from "../../assets/design-set";
 import {size} from "../../styled";
 import refreshIcon from "../../assets/img/refresh-icon.svg"
 import orgInfoIcon from "../../assets/img/orginfo-icon.svg"
@@ -17,7 +16,7 @@ export const QueryTitle = styled.div`
   font-weight: 600;
   font-size: 22px;
   line-height: 33px;
-  color: #${Colors.black};
+  color: #${({theme}) => theme.colors.black};
   margin-bottom: 10px;
   @media only screen and (max-width: ${size.laptop}) {
     text-align: center;
@@ -57,24 +56,24 @@ export const HotelCheck = styled.div`
 
 `
 export const LeftSide = styled.div`
-  border: 2px solid ${Colors.borderOutline};
+  border: 2px solid ${({theme}) => theme.colors.borderOutline};
   border-radius: 16px;
   flex: 2;
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 10px 5px 0 5px;
-  background: ${Colors.white};
+  background: ${({theme}) => theme.colors.white};
 `
 export const RightSide = styled.div`
-  border: 2px solid ${Colors.borderOutline};
+  border: 2px solid ${({theme}) => theme.colors.borderOutline};
   border-radius: 16px;
   flex: 5;
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 10px 10px 0 10px;
-  background: ${Colors.white};
+  background: ${({theme}) => theme.colors.white};
 `
 export const DropdownIcon = styled.div`
   width: 24px;
@@ -90,7 +89,7 @@ export const RefreshPrice = styled.div`
   button {
     height: 66px;
     background: linear-gradient(180deg, #7CCF13 0%, #639722 100%);
-    color: ${Colors.white};
+    color: ${({theme}) => theme.colors.white};
     border-radius: 12px;
     border: none;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -180,9 +179,9 @@ export const TableBody = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  border: 2px solid ${Colors.borderOutline};
+  border: 2px solid ${({theme}) => theme.colors.borderOutline};
   border-radius: 16px;
-  background-color: ${Colors.white};
+  background-color: ${({theme}) => theme.colors.white};
   font-size: 20px;
   padding: 10px;
   gap: 10px;
@@ -221,14 +220,14 @@ export const ColumnOne = styled.div`
   display: flex;
   font-weight: 500;
   line-height: 30px;
-  color: ${Colors.black};
+  color: ${({theme}) => theme.colors.black};
   cursor: default;
   white-space: nowrap;
 `
 export const ColumnTwo = styled.div`
   font-weight: 500;
   line-height: 30px;
-  color: ${Colors.black};
+  color: ${({theme}) => theme.colors.black};
   cursor: default;
   white-space: nowrap;
 `
@@ -286,7 +285,7 @@ export const ColumnThree = styled.div`
 
 `
 export const LeftIcon = styled.div`
-  background: url(${bedroomIcon.src}) no-repeat 8px center ${Colors.white};
+  background: url(${bedroomIcon.src}) no-repeat 8px center ${({theme}) => theme.colors.white};
   width: 36px;
   height: 37px;
   position: relative;
@@ -327,7 +326,7 @@ export const InnerRoomList = styled.div`
   background: white;
   border-radius: 30px;
   left: 0px;
-  border: 1px solid ${Colors.borderOutline};
+  border: 1px solid ${({theme}) => theme.colors.borderOutline};
   visibility: hidden;
   opacity: 0;
   transition: all 100ms ease-in-out;
@@ -357,10 +356,10 @@ export const InnerRoomList = styled.div`
 
     }
     :hover{
-      background: ${Colors.white};
-      border: 1px solid ${Colors.borderOutline};
+      background: ${({theme}) => theme.colors.white};
+      border: 1px solid ${({theme}) => theme.colors.borderOutline};
       filter: drop-shadow(1px -2px 4px rgba(0,0,0,0.17));
-      color: ${Colors.gray};
+      color: ${({theme}) => theme.colors.gray};
       border-radius: 30px;
       transition: all 100ms ease-in-out;
 
@@ -370,7 +369,7 @@ export const InnerRoomList = styled.div`
 export const ColumnFour = styled.div`
   font-weight: bold;
   line-height: 30px;
-  color: ${Colors.secondaryColor};
+  color: ${({theme}) => theme.colors.secondaryColor};
   cursor: default;
   white-space: nowrap;
   font-size: 27px;
@@ -384,7 +383,7 @@ export const ColumnFour = styled.div`
 export const ColumnFive = styled.div`
   font-weight: 500;
   line-height: 30px;
-  color: ${Colors.black};
+  color: ${({theme}) => theme.colors.black};
   width: 210px;
   @media (max-width: ${size.tablet}) {
     width: 100%;
@@ -396,7 +395,7 @@ export const ColumnFive = styled.div`
     width: 100%;
     height: 50px;
     background: linear-gradient(180deg, #FFAC5C 0%, #FF840D 100%);
-    color: ${Colors.white};
+    color: ${({theme}) => theme.colors.white};
     border-radius: 12px;
     border: none;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -448,7 +447,7 @@ export const GuestNumber = styled.div`
   align-items: center;
   font-weight: 600;
   margin: 0;
-  color: ${Colors.primaryColor};
+  color: ${({theme}) => theme.colors.primaryColor};
   font-weight: 500;
   font-size: 16px;
 `
@@ -477,13 +476,13 @@ export const PassangerView = styled.div`
   top: 120%;
   left: 50%;
   transform: translate(-50%, -10%);
-  background-color: ${Colors.white};
+  background-color: ${({theme}) => theme.colors.white};
   box-shadow: ${Shadows.primaryShadow};
   min-width: 120px;
   padding: 10px;
   z-index: 1;
   border-radius: 25px;
-  border: 1px solid ${Colors.borderOutline};
+  border: 1px solid ${({theme}) => theme.colors.borderOutline};
 `
 
 
@@ -495,15 +494,15 @@ export const CounterDiv = styled.div`
 `
 export const CounterBtn = styled.div`
   fontSize: 12px;
-  background-color: ${Colors.offWhite};
+  background-color: ${({theme}) => theme.colors.offWhite};
   cursor: pointer;
   width: 20px;
   border-radius: 100%;
   box-shadow: ${Shadows.primaryShadow};
 
   :hover {
-    background-color: ${Colors.primaryColor};
-    color: ${Colors.white};
+    background-color: ${({theme}) => theme.colors.primaryColor};
+    color: ${({theme}) => theme.colors.white};
   }
 `
 export const SpanDiv = styled.span`
@@ -519,7 +518,7 @@ export const CheckBg = styled.div`
   cursor: default;
 `
 export const CheckTitle = styled.div`
-  color: ${Colors.gray};
+  color: ${({theme}) => theme.colors.gray};
   font-weight: 500;
 `
 

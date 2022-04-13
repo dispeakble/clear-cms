@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import HomePage, { HomePageProps } from "../HomePage";
+import HomePage from "../HomePage";
 import { IntlProvider } from 'next-intl';
 
 jest.mock("next/router", () => ({
@@ -23,13 +23,16 @@ jest.mock('next/image', () => ({
 
 const messages = require("../../../languages/agency/en.json");
 
-const homePageProps: HomePageProps = {
+const homePageProps: any = {
   websiteName: "Example website",
   websiteUrl: "example.com",
-  websiteSlogan: "Example website slogan"
+  websiteSlogan: "Example website slogan",
+  colorScheme: {
+
+  }
 };
 
-const Wrapper = ({ ...props }: HomePageProps) => {
+const Wrapper = ({ ...props }: any) => {
   return (
     <IntlProvider locale="en" messages={messages}>
       <HomePage {...props} />
@@ -43,8 +46,8 @@ describe("Home Page Suite", () => {
 
     const homePage = render(<Wrapper {...homePageProps} />);
 
-    //TODO add tests for the search form
-    //TODO add tests for every component
+    expect(homePage).toMatchSnapshot();
+
   });
 
 });

@@ -10,7 +10,7 @@ import {Observable} from "rxjs";
 export class AppController {
 
     private moduleConfig: ModuleInterface = {
-        name: 'bucket',
+        name: `${process.env.app}_bucket`,
         version: '21.05.16',
         description: 'CMS Bucket Module',
         started: new Date(),

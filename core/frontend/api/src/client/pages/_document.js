@@ -5,12 +5,10 @@ export default class MyDocument extends Document {
     render() {
         return (
             <Html lang="en">
-                <Head>
-                    <title>404 not found</title>
-                </Head>
+                <Head/>
                 <body>
-                <Main />
-                <NextScript />
+                  <Main />
+                  <NextScript />
                 </body>
             </Html>
         )

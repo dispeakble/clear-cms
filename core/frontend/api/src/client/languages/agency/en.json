@@ -5,6 +5,9 @@
     "pageTitle": "Hotels page :: {websiteName}"
   },
   "home": {
+    "seo": {
+      "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
+    },
     "info-box-title" : "Adventure",
     "info-box-description" : "Holidays and tours",
     "img-source" : "Image from",

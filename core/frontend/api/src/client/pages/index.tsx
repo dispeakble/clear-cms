@@ -1,14 +1,14 @@
-import React from 'react';
-import {NextPage} from 'next';
+import React from "react";
+import { NextPage } from "next";
 
-import {withRouter} from 'next/router';
+import { withRouter } from "next/router";
 import dynamic from "next/dynamic";
-import {NextRouter} from "next/dist/shared/lib/router/router";
-import {HomePageProps} from "../templates/v1/HomePage";
+import { NextRouter } from "next/dist/shared/lib/router/router";
 import { Helmet } from "react-helmet-async";
+import { useTranslations } from "next-intl";
 
 interface WithRouterProps {
-    router: NextRouter
+    router: NextRouter;
 }
 
 interface ComponentProps extends WithRouterProps {
@@ -17,27 +17,26 @@ interface ComponentProps extends WithRouterProps {
 }
 
 const templates: any = {
-    v1: dynamic(() => import('../templates/v1/HomePage')),
-    v2: dynamic(() => import('../templates/v2/HomePage')),
-}
+    v1: dynamic(() => import("../templates/v1/HomePage")),
+    v2: dynamic(() => import("../templates/v2/HomePage"))
+};
 
-const PageComponent: NextPage<ComponentProps> = ({version, settings}) => {
+const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
+    const t = useTranslations();
+
     const Component = templates[version];
 
-    const homePagePayload: HomePageProps = {
-        websiteName: settings.websiteName,
-        websiteSlogan: 'test',
-        websiteUrl: settings.websiteDomain
-    }
+    const homePagePayload: any = settings;
 
     return <>
         <Helmet>
+            <title>{t("home.seo.pageTitle", { websiteName: settings.websiteName })}</title>
             <link
               href="https://fonts.googleapis.com/css2?family=Poppins"
               rel="stylesheet"
             />
         </Helmet>
-        <Component {...homePagePayload}/>
+        <Component {...homePagePayload} />
     </>;
 };
 
@@ -45,20 +44,20 @@ export async function getServerSideProps(context: any) {
 
     const payload = {
         channel: `${process.env.app}_db`,
-        protocolMethod: 'sendMessage',
-        api: 'sql',
-        act: 'get',
+        protocolMethod: "sendMessage",
+        api: "sql",
+        act: "get",
         payload: {
-            db: 'main',
+            db: "main",
             channel: `${process.env.app}_frontend`,
             data: {
-                what: 'setting',
+                what: "setting",
                 limit: [0, 1]
             }
         }
-    }
+    };
 
-    if(!context.req.apiHub) {
+    if (!context.req.apiHub) {
         return {
             props: null
         };
@@ -66,13 +65,28 @@ export async function getServerSideProps(context: any) {
 
     const response = await context.req.apiHub(payload);
 
-    let websiteData = {};
+    const websiteData: any = {};
 
     try {
-        websiteData = JSON.parse(response.data);
+        const dbWebsiteData = JSON.parse(response.data);
+        websiteData["applicationVersion"] = dbWebsiteData["applicationVersion"];
+        Object.keys(dbWebsiteData["colorScheme"]).map(color => {
+            if ("string" === typeof dbWebsiteData["colorScheme"][color].value) {
+                dbWebsiteData["colorScheme"][color] = dbWebsiteData["colorScheme"][color].value;
+            } else {
+                const { r, g, b } = dbWebsiteData["colorScheme"][color].value;
+                dbWebsiteData["colorScheme"][color] = `${r}, ${g}, ${b}`;
+            }
+
+        });
+        websiteData["colorScheme"] = dbWebsiteData["colorScheme"];
+        websiteData["selectedTheme"] = dbWebsiteData["selectedTheme"];
+        websiteData["websiteAdminEmail"] = dbWebsiteData["websiteAdminEmail"];
+        websiteData["websiteDomain"] = dbWebsiteData["websiteDomain"];
+        websiteData["websiteName"] = dbWebsiteData["websiteName"];
     } catch (err) {
         // eslint-disable-next-line no-console
-        console.log(err)
+        console.log(err);
     }
 
     return {
@@ -81,7 +95,7 @@ export async function getServerSideProps(context: any) {
             version: String(process.env.tpl_ver), //TODO GET FROM hubAPI
             messages: require(`../languages/agency/${context.locale}.json`)
         }
-    }
+    };
 }
 
 

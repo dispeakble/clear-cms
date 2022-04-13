@@ -3,7 +3,7 @@ import { ModuleInterface } from "../interfaces/module.interface";
 import { ProtocolService } from "./protocol.service";
 import { payloadInterface } from "../interfaces/payload.interface";
 import { RedisCacheService } from "../cache/redisCache.service";
-import * as crypto from 'crypto';
+import * as crypto from "crypto";
 
 @Injectable()
 export class ModuleService {
@@ -222,6 +222,70 @@ export class ModuleService {
       console.log(err);
     }
 
+    const defaultSettings = {
+      "websiteName": process.env.website_name,
+      "websiteDomain": process.env.website_domain,
+      "websiteOwner": `${process.env.admin_fname} ${process.env.admin_lname}`,
+      "websiteAdminEmail": process.env.website_email,
+      "applicationVersion": process.env.app_version,
+      "emailSender": "admin@localhost.local",
+      "emailPassword": "1qaz",
+      "colorScheme": {
+        primaryColor: "#DC6B03",
+        primaryColorRBG: "220, 107, 3",
+        primaryColorFadedRBG: "252, 232, 221",
+        primaryDark: "orange",
+        primaryLight: "#FF9F5A",
+        primaryColorHover: "#FC8C25",
+        primaryRed: "#DC0303",
+        secondaryColor: "#FF0000",
+        accentColor: "#f39200",
+        darkRed: "#E90000",
+        jetBlack: "#333",
+        black: "#000",
+        offWhite: "#f5f5f5",
+        white: "#fff",
+        gray: "#505050",
+        mainBackground: "#E5E5E5",
+        footerLinks: "#868484",
+        greyBorder: "#ACACAC",
+        borderOutline: "#DBDBDB"
+      },
+      "selectedTheme": "V1"
+    };
+
+    const test = {
+      "websiteName": "Mario Viajes",
+      "websiteDomain": "marioviajes.com",
+      "websiteOwner": "Mario Viajes Mario Viajes",
+      "websiteAdminEmail": "contact@marioviajes.com",
+      "applicationVersion": "1.5.0",
+      "emailSender": "admin@localhost.local",
+      "emailPassword": "1qaz",
+      "colorScheme": {
+        "primaryColor": { "label": "Primary Color", "value": "#9c1b90" },
+        "primaryColorRBG": { "label": "Primary Color RBG", "value": { "r": 220, "g": 107, "b": 3 } },
+        "primaryColorFadedRBG": { "label": "Primary Color Faded RBG", "value": { "r": 252, "g": 232, "b": 221 } },
+        "primaryDark": { "label": "Primary Dark", "value": "orange" },
+        "primaryLight": { "label": "Primary Light", "value": "#FF9F5A" },
+        "primaryColorHover": { "label": "Primary Color Hover", "value": "#FC8C25" },
+        "primaryRed": { "label": "Primary Red", "value": "#DC0303" },
+        "secondaryColor": { "label": "Secondary Color", "value": "#FF0000" },
+        "accentColor": { "label": "Accent Color", "value": "#f39200" },
+        "darkRed": { "label": "Dark Red", "value": "#E90000" },
+        "jetBlack": { "label": "Jet Black", "value": "#333" },
+        "black": { "label": "Black", "value": "#000" },
+        "offWhite": { "label": "Off White", "value": "#f5f5f5" },
+        "white": { "label": "White", "value": "#fff" },
+        "gray": { "label": "Gray", "value": "#505050" },
+        "mainBackground": { "label": "Main Background", "value": "#E5E5E5" },
+        "footerLinks": { "label": "Footer Links", "value": "#868484" },
+        "greyBorder": { "label": "Grey Border", "value": "#ACACAC" },
+        "borderOutline": { "label": "Border Outline", "value": "#DBDBDB" }
+      },
+      "selectedTheme": "V1"
+    };
+
     const settingsPayload = {
       channel: `${process.env.app}_db`,
       payload: {
@@ -233,13 +297,7 @@ export class ModuleService {
             what: "setting",
             data: {
               isDefault: 1,
-              data: JSON.stringify({
-                websiteName: process.env.website_name,
-                websiteDomain: process.env.website_domain,
-                websiteOwner: `${process.env.admin_fname} ${process.env.admin_lname}`,
-                websiteAdminEmail: process.env.website_email,
-                applicationVersion: process.env.app_version,
-              })
+              data: JSON.stringify(defaultSettings)
             }
           }
         }
@@ -340,6 +398,8 @@ export class ModuleService {
     }
 
     addThemes();
+
+
 
   }
 

@@ -10,7 +10,7 @@ export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
-        name: 'system',
+        name: `${process.env.app}_system`,
         version: '21.07.26',
         description: 'System Module',
         started: new Date(),
@@ -80,24 +80,6 @@ export class ProtocolController {
 
             this.state.ready = true;
             this.mainService = this;
-
-            const payload: ModuleInterface = {
-                name: 'system',
-                version: '21.01.12',
-                description: 'the system api and client',
-                started: new Date(),
-                config: {
-                    restart: true,
-                    stop: false
-                },
-                dependencies: [{
-                    name: `${process.env.app}_hub`,
-                    version: 'latest'
-                },{
-                    name: `${process.env.app}_proxy`,
-                    version: 'latest'
-                }]
-            };
 
             await this.protocolService.sendMessage({
                 channel: `${process.env.app}_hub`,

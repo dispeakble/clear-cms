@@ -263,7 +263,7 @@ export class AppController {
         try {
 
             const fileReq = {
-                "channel": "system",
+                "channel": `${process.env.app}_system`,
                 "payload": {
                     "ip": req.ip,
                     "hostname": req.hostname,
@@ -447,7 +447,7 @@ export class AppController {
             const data = params.data;
 
             const payload: payloadInterface = {
-                channel: data.module,
+                channel: `${process.env.app}_${data.module}`,
                 api: data.api,
                 act: data.act,
                 payload: data.payload
