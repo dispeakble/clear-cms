@@ -6,65 +6,65 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="styled__MainWrapper-sc-1c2vi5p-0 dkCVKL"
+        class="styled__MainWrapper-sc-1y5gkei-0 jmqgDE"
       >
         <div
-          class="styled__TopContentWrapper-sc-1c2vi5p-1 cQcVNk"
+          class="styled__TopContentWrapper-sc-1y5gkei-1 fYAIab"
         >
           <div
-            class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+            class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
           >
             <header
-              class="styled__HeaderWrapper-sc-1da3qfr-0 bDaAQD"
+              class="styled__HeaderWrapper-sc-ffk3hg-0 fsATDC"
               data-testid="header-wrapper"
             >
               <div
-                class="styled__LogoWrapper-sc-1da3qfr-1 eiMfpa"
+                class="styled__LogoWrapper-sc-ffk3hg-1 eqLETf"
               >
                 <a
                   href="/"
                 >
                   <div
-                    class="Logo__LogoWrapper-sc-1i3eazt-0 jNrxJa"
+                    class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
                   >
                     voila
                   </div>
                 </a>
               </div>
               <div
-                class="styled__MenuWrapper-sc-1da3qfr-2 rWOHi"
+                class="styled__MenuWrapper-sc-ffk3hg-2 hXYOUr"
               >
                 <div
-                  class="styled__StyledMenuWrapper-sc-v8jcxf-0 eWoTlf"
+                  class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
                 >
                   <ul
-                    class="styled__StyledMenu-sc-v8jcxf-1 fgIbGf"
+                    class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
                   >
                     <li
-                      class="styled__Item-sc-v8jcxf-2 csBYlq"
+                      class="styled__Item-sc-1nuctas-2 hZRbII"
                     >
                       <a
-                        class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
                         href="activities"
                       >
                         Activities
                       </a>
                     </li>
                     <li
-                      class="styled__Item-sc-v8jcxf-2 csBYlq"
+                      class="styled__Item-sc-1nuctas-2 hZRbII"
                     >
                       <a
-                        class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
                         href="hotels"
                       >
                         Hotels
                       </a>
                     </li>
                     <li
-                      class="styled__Item-sc-v8jcxf-2 csBYlq"
+                      class="styled__Item-sc-1nuctas-2 hZRbII"
                     >
                       <a
-                        class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
                         href="packages"
                       >
                         Packages
@@ -74,13 +74,13 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__LanguagesWrapper-sc-1da3qfr-5 DvPAU"
+                class="styled__LanguagesWrapper-sc-ffk3hg-5 ixfByd"
               >
                 <div
-                  class="styled__Container-sc-1fbn5z7-1 bDVtyr"
+                  class="styled__Container-sc-1be6fz4-1 bcyYaQ"
                 >
                   <button
-                    class="styled__SelectedLanguage-sc-1fbn5z7-0 fgCMAp"
+                    class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
                   >
                      
                     <svg
@@ -98,15 +98,15 @@ Object {
                     </svg>
                   </button>
                   <div
-                    class="styled__LanguagesDropdown-sc-1fbn5z7-2 jCXLMk"
+                    class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
                   />
                 </div>
               </div>
               <div
-                class="styled__SearchWrapper-sc-1da3qfr-3 hfqmmk"
+                class="styled__SearchWrapper-sc-ffk3hg-3 jlmBFt"
               >
                 <input
-                  class="styled__InputSearch-sc-1da3qfr-4 dNVEhL"
+                  class="styled__InputSearch-sc-ffk3hg-4 lgxCoS"
                   data-testid="header-search-input"
                   placeholder="Search"
                   type="search"
@@ -114,150 +114,150 @@ Object {
               </div>
             </header>
             <div
-              class="styled__StyledHomeSearch-sc-1mi76mm-0 fqbcwf"
+              class="styled__StyledHomeSearch-sc-1s95kis-0 ecWoaw"
             >
               <div
-                class="styled__StyledSearchTabs-sc-1mi76mm-1 fDxYlE"
+                class="styled__StyledSearchTabs-sc-1s95kis-1 jGUKhf"
               >
                 <div
-                  class="styled__StyledSearchTab-sc-1mi76mm-2 jgXrbe selected"
+                  class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt selected"
                 >
                   Packages
                 </div>
                 <div
-                  class="styled__StyledSearchTab-sc-1mi76mm-2 jgXrbe"
+                  class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
                 >
                   Hotels
                 </div>
                 <div
-                  class="styled__StyledSearchTab-sc-1mi76mm-2 jgXrbe"
+                  class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
                 >
                   Flights
                 </div>
               </div>
               <div
-                class="styled__StyledSearchInputHolder-sc-1mi76mm-3 kExbNA"
+                class="styled__StyledSearchInputHolder-sc-1s95kis-3 gbagwL"
               >
                 <input
-                  class="styled__StyledSearchInput-sc-1mi76mm-4 iEwVe"
+                  class="styled__StyledSearchInput-sc-1s95kis-4 kNaoel"
                   placeholder="Search a destination or a hotel..."
                   value=""
                 />
                 <button
-                  class="styled__StyledSearchButton-sc-1mi76mm-5 fEzIwk"
+                  class="styled__StyledSearchButton-sc-1s95kis-5 fCmrRD"
                 >
                   Find deals
                 </button>
               </div>
               <div
-                class="styled__StyledSearchOptions-sc-1mi76mm-6 fTDsYW"
+                class="styled__StyledSearchOptions-sc-1s95kis-6 lgKxqJ"
               >
                 <div
-                  class="styled__StyledSearchCheckinGroup-sc-1mi76mm-11 bRwiYD"
+                  class="styled__StyledSearchCheckinGroup-sc-1s95kis-11 hDNnSU"
                 >
                   <span
-                    class="styled__StyledCheckIn-sc-1mi76mm-12 IAZxD"
+                    class="styled__StyledCheckIn-sc-1s95kis-12 bjltEk"
                   >
                     <label
-                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                     >
                       Staying from
                     </label>
                     <label
-                      class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                      class="styled__StyledValue-sc-1s95kis-9 iJKyzA"
                     >
                       Add date
                     </label>
                   </span>
                   <span
-                    class="styled__StyledCheckOut-sc-1mi76mm-13 cbwIvn"
+                    class="styled__StyledCheckOut-sc-1s95kis-13 fqlEzg"
                   >
                     <label
-                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                     >
                       Check out
                     </label>
                     <label
-                      class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                      class="styled__StyledValue-sc-1s95kis-9 iJKyzA"
                     >
                       Add date
                     </label>
                   </span>
                 </div>
                 <div
-                  class="styled__StyledSearchOptionsGroup-sc-1mi76mm-14 jaHFpt"
+                  class="styled__StyledSearchOptionsGroup-sc-1s95kis-14 ftSoDR"
                 >
                   <div
-                    class="styled__StyledPerson-sc-1mi76mm-15 gkfxet"
+                    class="styled__StyledPerson-sc-1s95kis-15 diooxm"
                   >
                     <div
-                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                      class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                     >
                       <label
-                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                        class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                       >
                         voila
                         Adults
                       </label>
                       <div
-                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                        class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                       >
                         1
                       </div>
                     </div>
                   </div>
                   <div
-                    class="styled__StyledChild-sc-1mi76mm-16 gxOsAp"
+                    class="styled__StyledChild-sc-1s95kis-16 jXHDQe"
                   >
                     <div
-                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                      class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                     >
                       <label
-                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                        class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                       >
                         voila
                         Children
                       </label>
                       <div
-                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                        class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                       >
                         0
                       </div>
                     </div>
                   </div>
                   <div
-                    class="styled__StyledInfant-sc-1mi76mm-17 blYMOg"
+                    class="styled__StyledInfant-sc-1s95kis-17 jGHAJr"
                   >
                     <div
-                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                      class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                     >
                       <label
-                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                        class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                       >
                         voila
                         Infants
                       </label>
                       <div
-                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                        class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                       >
                         0
                       </div>
                     </div>
                   </div>
                   <div
-                    class="styled__StyledStars-sc-1mi76mm-18 hoexoe"
+                    class="styled__StyledStars-sc-1s95kis-18 FjnIV"
                   >
                     <div
-                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                      class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                     >
                       <label
-                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                        class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                       >
                         voila
                         Category
                       </label>
                       <div
-                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                        class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                       >
                         4
                       </div>
@@ -267,15 +267,15 @@ Object {
               </div>
             </div>
             <div
-              class="styled__StyledMiddleText-sc-1c2vi5p-5 iKvAXz"
+              class="styled__StyledMiddleText-sc-1y5gkei-5 enbBnw"
             >
               <div
-                class="styled__StyledWebsiteName-sc-1c2vi5p-6 ckbofk"
+                class="styled__StyledWebsiteName-sc-1y5gkei-6 xxDCP"
               >
                 Example website
               </div>
               <div
-                class="styled__StyledWebsiteSlogan-sc-1c2vi5p-7 hAWBjA"
+                class="styled__StyledWebsiteSlogan-sc-1y5gkei-7 kHNTMr"
               >
                 Example website slogan
               </div>
@@ -283,250 +283,250 @@ Object {
           </div>
         </div>
         <div
-          class="styled__PaperWrapper-sc-1c2vi5p-3 cYQptI"
+          class="styled__PaperWrapper-sc-1y5gkei-3 couEr"
         >
           <div
-            class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+            class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
           >
             <div
-              class="styled__StyledWrapper-sc-162097f-0 jJTucK"
+              class="styled__StyledWrapper-sc-1ncpjaz-0 gbLdLO"
             >
               <div
-                class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+                class="styled__StyledTabs-sc-1ncpjaz-12 iMooPH"
               >
                 <div
-                  class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+                  class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF selected"
                 >
                   Special Offers
                 </div>
                 <div
-                  class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                  class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
                 >
                   Last Minute
                 </div>
                 <div
-                  class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                  class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
                 >
                   Flights
                 </div>
               </div>
               <div
-                class="styled__StyledCardsWrapper-sc-162097f-1 gtcRbh"
+                class="styled__StyledCardsWrapper-sc-1ncpjaz-1 izsZnN"
               >
                 <div
-                  class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                  class="styled__StyledCard-sc-1ncpjaz-2 etlZuU"
                 >
                   <div
-                    class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                    class="styled__StyledCardImageHolder-sc-1ncpjaz-3 jvBiIl"
                   >
                     <div
-                      class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                      class="styled__StyledCardImage-sc-1ncpjaz-4 hBDdhQ"
                       src="src"
                     />
                   </div>
                   <div
-                    class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                    class="styled__StyledFirstRow-sc-1ncpjaz-5 hWDORw"
                   >
                     <span
-                      class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                      class="styled__StyledLightLabel-sc-1ncpjaz-6 fhavew"
                     >
                       Relax
                     </span>
                     <span
-                      class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                      class="styled__StyledGrayLabel-sc-1ncpjaz-7 jycyrs"
                     >
                       7 days, breakfast
                     </span>
                     <span
-                      class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                      class="styled__SmallBookNow-sc-1ncpjaz-8 hgPPjz"
                     >
                       Book Now
                     </span>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       Gran Canaria
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       Tenerife
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       La Gomera
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                  class="styled__StyledCard-sc-1ncpjaz-2 etlZuU"
                 >
                   <div
-                    class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                    class="styled__StyledCardImageHolder-sc-1ncpjaz-3 jvBiIl"
                   >
                     <div
-                      class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                      class="styled__StyledCardImage-sc-1ncpjaz-4 hBDdhQ"
                       src="src"
                     />
                   </div>
                   <div
-                    class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                    class="styled__StyledFirstRow-sc-1ncpjaz-5 hWDORw"
                   >
                     <span
-                      class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                      class="styled__StyledLightLabel-sc-1ncpjaz-6 fhavew"
                     >
                       Relax
                     </span>
                     <span
-                      class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                      class="styled__StyledGrayLabel-sc-1ncpjaz-7 jycyrs"
                     >
                       7 days, breakfast
                     </span>
                     <span
-                      class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                      class="styled__SmallBookNow-sc-1ncpjaz-8 hgPPjz"
                     >
                       Book Now
                     </span>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       Gran Canaria
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       Tenerife
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       La Gomera
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                  class="styled__StyledCard-sc-1ncpjaz-2 etlZuU"
                 >
                   <div
-                    class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                    class="styled__StyledCardImageHolder-sc-1ncpjaz-3 jvBiIl"
                   >
                     <div
-                      class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                      class="styled__StyledCardImage-sc-1ncpjaz-4 hBDdhQ"
                       src="src"
                     />
                   </div>
                   <div
-                    class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                    class="styled__StyledFirstRow-sc-1ncpjaz-5 hWDORw"
                   >
                     <span
-                      class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                      class="styled__StyledLightLabel-sc-1ncpjaz-6 fhavew"
                     >
                       Relax
                     </span>
                     <span
-                      class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                      class="styled__StyledGrayLabel-sc-1ncpjaz-7 jycyrs"
                     >
                       7 days, breakfast
                     </span>
                     <span
-                      class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                      class="styled__SmallBookNow-sc-1ncpjaz-8 hgPPjz"
                     >
                       Book Now
                     </span>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       Gran Canaria
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       Tenerife
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
                   </div>
                   <div
-                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                    class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                   >
                     <div
-                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                      class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                     >
                       La Gomera
                     </div>
                     <div
-                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                      class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                     >
                       299$
                     </div>
@@ -535,7 +535,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__StyledSliderWrapper-sc-1oy4tom-0 hBlcNH"
+              class="styled__StyledSliderWrapper-sc-1cjbarr-0 hzBIit"
             >
               <div
                 aria-live="polite"
@@ -642,30 +642,30 @@ Object {
               />
             </div>
             <div
-              class="styled__StyledQuickAboutUs-sc-509o3b-0 jMKHEr"
+              class="styled__StyledQuickAboutUs-sc-ook8fz-0 bttvwS"
             >
               <div
-                class="styled__StyledQuickAboutUsImage-sc-509o3b-1 bgnWEj"
+                class="styled__StyledQuickAboutUsImage-sc-ook8fz-1 gjpyiS"
                 src="src"
               />
               <div
-                class="styled__StyledQuickAboutUsText-sc-509o3b-2 cGqlOz"
+                class="styled__StyledQuickAboutUsText-sc-ook8fz-2 dnEIgm"
                 src="src"
               >
                 <div
-                  class="styled__StyledTitle-sc-509o3b-3 kXLqLU"
+                  class="styled__StyledTitle-sc-ook8fz-3 kVyajl"
                 >
                   Travel Any Corner of The World With Us
                 </div>
                 <div
-                  class="styled__StyledDescription-sc-509o3b-4 fdrCqi"
+                  class="styled__StyledDescription-sc-ook8fz-4 kjsZNj"
                 >
                   Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
 
 Would you explore nature paradise in the world, let’s find the best destination in world with us.
                 </div>
                 <a
-                  class="styled__StyledContactBtn-sc-509o3b-5 yqTw"
+                  class="styled__StyledContactBtn-sc-ook8fz-5 cDDyIp"
                   href="/about-us"
                 >
                   Contact Us
@@ -673,190 +673,190 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
             <div
-              class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+              class="styled__StyledTabs-sc-1ncpjaz-12 iMooPH"
             >
               <div
-                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+                class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF selected"
               >
                 Popular
               </div>
               <div
-                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
               >
                 Adventure
               </div>
               <div
-                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
               >
                 Relax
               </div>
             </div>
             <div
-              class="styled__Wrapper-sc-huymx4-0 cVCcRa"
+              class="styled__Wrapper-sc-1idqlu5-0 dRawSO"
             >
               <div
-                class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+                class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
               >
                 <div
-                  class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                  class="styled__StyledStars-sc-1idqlu5-9 fxtbrh"
                 />
                 <div
-                  class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                  class="styled__StyledTitle-sc-1idqlu5-2 ifjvZM"
                 >
                   Hotel 1
                 </div>
                 <div
-                  class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                  class="styled__StyledLunch-sc-1idqlu5-3 lifIao"
                 >
                   Accommodation and full breakfast
 
                 </div>
                 <div
-                  class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                  class="styled__StyledDetails-sc-1idqlu5-4 jrrCPx"
                 >
                   Flight + Hotel 3 nights
 
                 </div>
                 <div
-                  class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                  class="styled__StyledPrice-sc-1idqlu5-5 slvDf"
                 >
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                  class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
                 >
                   Book Now
                 </a>
                 <div
-                  class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                  class="styled__StyledZoomImg-sc-1idqlu5-7 lgzXEh"
                   src="src"
                 >
                   <div
-                    class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                    class="styled__StyledZoomPopup-sc-1idqlu5-8 gfSvPG"
                     src="src"
                   />
                 </div>
               </div>
               <div
-                class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+                class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
               >
                 <div
-                  class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                  class="styled__StyledStars-sc-1idqlu5-9 fxtbrh"
                 />
                 <div
-                  class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                  class="styled__StyledTitle-sc-1idqlu5-2 ifjvZM"
                 >
                   Hotel 1
                 </div>
                 <div
-                  class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                  class="styled__StyledLunch-sc-1idqlu5-3 lifIao"
                 >
                   Accommodation and full breakfast
 
                 </div>
                 <div
-                  class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                  class="styled__StyledDetails-sc-1idqlu5-4 jrrCPx"
                 >
                   Flight + Hotel 3 nights
 
                 </div>
                 <div
-                  class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                  class="styled__StyledPrice-sc-1idqlu5-5 slvDf"
                 >
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                  class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
                 >
                   Book Now
                 </a>
                 <div
-                  class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                  class="styled__StyledZoomImg-sc-1idqlu5-7 lgzXEh"
                   src="src"
                 >
                   <div
-                    class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                    class="styled__StyledZoomPopup-sc-1idqlu5-8 gfSvPG"
                     src="src"
                   />
                 </div>
               </div>
               <div
-                class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+                class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
               >
                 <div
-                  class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                  class="styled__StyledStars-sc-1idqlu5-9 fxtbrh"
                 />
                 <div
-                  class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                  class="styled__StyledTitle-sc-1idqlu5-2 ifjvZM"
                 >
                   Hotel 1
                 </div>
                 <div
-                  class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                  class="styled__StyledLunch-sc-1idqlu5-3 lifIao"
                 >
                   Accommodation and full breakfast
 
                 </div>
                 <div
-                  class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                  class="styled__StyledDetails-sc-1idqlu5-4 jrrCPx"
                 >
                   Flight + Hotel 3 nights
 
                 </div>
                 <div
-                  class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                  class="styled__StyledPrice-sc-1idqlu5-5 slvDf"
                 >
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                  class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
                 >
                   Book Now
                 </a>
                 <div
-                  class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                  class="styled__StyledZoomImg-sc-1idqlu5-7 lgzXEh"
                   src="src"
                 >
                   <div
-                    class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                    class="styled__StyledZoomPopup-sc-1idqlu5-8 gfSvPG"
                     src="src"
                   />
                 </div>
               </div>
             </div>
             <div
-              class="styled__Wrapper-sc-1fozp84-0 imyQUG"
+              class="styled__Wrapper-sc-etxqrw-0 gvZmSl"
             >
               <div
-                class="styled__StyledTabs-sc-1fozp84-1 vSIuM"
+                class="styled__StyledTabs-sc-etxqrw-1 llUPaL"
               >
                 <div
-                  class="styled__StyledTab-sc-1fozp84-2 irVbfg selected"
+                  class="styled__StyledTab-sc-etxqrw-2 gKZwQX selected"
                 >
                   Flights + Hotels
                 </div>
                 <div
-                  class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                  class="styled__StyledTab-sc-etxqrw-2 gKZwQX"
                 >
                   Relax on the finest beaches
                 </div>
                 <div
-                  class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                  class="styled__StyledTab-sc-etxqrw-2 gKZwQX"
                 >
                   Fun water parks and zoos
                 </div>
               </div>
               <div
-                class="styled__StyledContent-sc-1fozp84-3 kyeoqL"
+                class="styled__StyledContent-sc-etxqrw-3 eCQSoo"
               >
                 <div>
                   <div
-                    class="styled__StyledTitle-sc-1fozp84-4 fOIVVA"
+                    class="styled__StyledTitle-sc-etxqrw-4 jjhCNP"
                   >
                     The complete package
                   </div>
                   <div
-                    class="styled__StyledSliderWrapper-sc-qj79ja-0 kHweLb"
+                    class="styled__StyledSliderWrapper-sc-1jcup0i-0 kThpOV"
                   >
                     <div
                       aria-live="polite"
@@ -963,43 +963,43 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                     />
                   </div>
                   <div
-                    class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                    class="styled__StyledContentWrapper-sc-etxqrw-5 fNoSXP"
                   >
                     <div
-                      class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                      class="styled__StyledContentTitle-sc-etxqrw-6 dPtwkz"
                     >
                       Cheap flights
                     </div>
                     <div
-                      class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                      class="styled__StyledContentSubtitle-sc-etxqrw-7 bDfyKm"
                     >
                       Find your desired plane ticket easily
                     </div>
                   </div>
                   <div
-                    class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                    class="styled__StyledContentWrapper-sc-etxqrw-5 fNoSXP"
                   >
                     <div
-                      class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                      class="styled__StyledContentTitle-sc-etxqrw-6 dPtwkz"
                     >
                       A diverse hotel selection
                     </div>
                     <div
-                      class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                      class="styled__StyledContentSubtitle-sc-etxqrw-7 bDfyKm"
                     >
                       You will find the perfect hotel for your dream vacation
                     </div>
                   </div>
                   <div
-                    class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                    class="styled__StyledContentWrapper-sc-etxqrw-5 fNoSXP"
                   >
                     <div
-                      class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                      class="styled__StyledContentTitle-sc-etxqrw-6 dPtwkz"
                     >
                       Put them all together
                     </div>
                     <div
-                      class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                      class="styled__StyledContentSubtitle-sc-etxqrw-7 bDfyKm"
                     >
                       Profit from our package deals with flights and hotel bookings
                     </div>
@@ -1008,7 +1008,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
             <div
-              class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
+              class="styled__FooterWrapper-sc-dckhzd-0 gXhUyQ"
             >
               <div>
                 <div>
@@ -1059,13 +1059,13 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               <div>
                 <div>
                   <div
-                    class="styled__StyledNewsletterTitle-sc-1xenngy-1"
+                    class="styled__StyledNewsletterTitle-sc-dckhzd-1"
                   >
                     Subscribe to our newsletter
                   </div>
                 </div>
                 <div
-                  class="styled__StyledNewsletterForm-sc-1xenngy-2 fluOne"
+                  class="styled__StyledNewsletterForm-sc-dckhzd-2 jnQhdu"
                 >
                   <input
                     placeholder="Email Address"
@@ -1084,65 +1084,65 @@ Would you explore nature paradise in the world, let’s find the best destinatio
   </body>,
   "container": <div>
     <div
-      class="styled__MainWrapper-sc-1c2vi5p-0 dkCVKL"
+      class="styled__MainWrapper-sc-1y5gkei-0 jmqgDE"
     >
       <div
-        class="styled__TopContentWrapper-sc-1c2vi5p-1 cQcVNk"
+        class="styled__TopContentWrapper-sc-1y5gkei-1 fYAIab"
       >
         <div
-          class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+          class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
         >
           <header
-            class="styled__HeaderWrapper-sc-1da3qfr-0 bDaAQD"
+            class="styled__HeaderWrapper-sc-ffk3hg-0 fsATDC"
             data-testid="header-wrapper"
           >
             <div
-              class="styled__LogoWrapper-sc-1da3qfr-1 eiMfpa"
+              class="styled__LogoWrapper-sc-ffk3hg-1 eqLETf"
             >
               <a
                 href="/"
               >
                 <div
-                  class="Logo__LogoWrapper-sc-1i3eazt-0 jNrxJa"
+                  class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
                 >
                   voila
                 </div>
               </a>
             </div>
             <div
-              class="styled__MenuWrapper-sc-1da3qfr-2 rWOHi"
+              class="styled__MenuWrapper-sc-ffk3hg-2 hXYOUr"
             >
               <div
-                class="styled__StyledMenuWrapper-sc-v8jcxf-0 eWoTlf"
+                class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
               >
                 <ul
-                  class="styled__StyledMenu-sc-v8jcxf-1 fgIbGf"
+                  class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
                 >
                   <li
-                    class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    class="styled__Item-sc-1nuctas-2 hZRbII"
                   >
                     <a
-                      class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
                       href="activities"
                     >
                       Activities
                     </a>
                   </li>
                   <li
-                    class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    class="styled__Item-sc-1nuctas-2 hZRbII"
                   >
                     <a
-                      class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
                       href="hotels"
                     >
                       Hotels
                     </a>
                   </li>
                   <li
-                    class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    class="styled__Item-sc-1nuctas-2 hZRbII"
                   >
                     <a
-                      class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
                       href="packages"
                     >
                       Packages
@@ -1152,13 +1152,13 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
             <div
-              class="styled__LanguagesWrapper-sc-1da3qfr-5 DvPAU"
+              class="styled__LanguagesWrapper-sc-ffk3hg-5 ixfByd"
             >
               <div
-                class="styled__Container-sc-1fbn5z7-1 bDVtyr"
+                class="styled__Container-sc-1be6fz4-1 bcyYaQ"
               >
                 <button
-                  class="styled__SelectedLanguage-sc-1fbn5z7-0 fgCMAp"
+                  class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
                 >
                    
                   <svg
@@ -1176,15 +1176,15 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </svg>
                 </button>
                 <div
-                  class="styled__LanguagesDropdown-sc-1fbn5z7-2 jCXLMk"
+                  class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
                 />
               </div>
             </div>
             <div
-              class="styled__SearchWrapper-sc-1da3qfr-3 hfqmmk"
+              class="styled__SearchWrapper-sc-ffk3hg-3 jlmBFt"
             >
               <input
-                class="styled__InputSearch-sc-1da3qfr-4 dNVEhL"
+                class="styled__InputSearch-sc-ffk3hg-4 lgxCoS"
                 data-testid="header-search-input"
                 placeholder="Search"
                 type="search"
@@ -1192,150 +1192,150 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </header>
           <div
-            class="styled__StyledHomeSearch-sc-1mi76mm-0 fqbcwf"
+            class="styled__StyledHomeSearch-sc-1s95kis-0 ecWoaw"
           >
             <div
-              class="styled__StyledSearchTabs-sc-1mi76mm-1 fDxYlE"
+              class="styled__StyledSearchTabs-sc-1s95kis-1 jGUKhf"
             >
               <div
-                class="styled__StyledSearchTab-sc-1mi76mm-2 jgXrbe selected"
+                class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt selected"
               >
                 Packages
               </div>
               <div
-                class="styled__StyledSearchTab-sc-1mi76mm-2 jgXrbe"
+                class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
               >
                 Hotels
               </div>
               <div
-                class="styled__StyledSearchTab-sc-1mi76mm-2 jgXrbe"
+                class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
               >
                 Flights
               </div>
             </div>
             <div
-              class="styled__StyledSearchInputHolder-sc-1mi76mm-3 kExbNA"
+              class="styled__StyledSearchInputHolder-sc-1s95kis-3 gbagwL"
             >
               <input
-                class="styled__StyledSearchInput-sc-1mi76mm-4 iEwVe"
+                class="styled__StyledSearchInput-sc-1s95kis-4 kNaoel"
                 placeholder="Search a destination or a hotel..."
                 value=""
               />
               <button
-                class="styled__StyledSearchButton-sc-1mi76mm-5 fEzIwk"
+                class="styled__StyledSearchButton-sc-1s95kis-5 fCmrRD"
               >
                 Find deals
               </button>
             </div>
             <div
-              class="styled__StyledSearchOptions-sc-1mi76mm-6 fTDsYW"
+              class="styled__StyledSearchOptions-sc-1s95kis-6 lgKxqJ"
             >
               <div
-                class="styled__StyledSearchCheckinGroup-sc-1mi76mm-11 bRwiYD"
+                class="styled__StyledSearchCheckinGroup-sc-1s95kis-11 hDNnSU"
               >
                 <span
-                  class="styled__StyledCheckIn-sc-1mi76mm-12 IAZxD"
+                  class="styled__StyledCheckIn-sc-1s95kis-12 bjltEk"
                 >
                   <label
-                    class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                   >
                     Staying from
                   </label>
                   <label
-                    class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                    class="styled__StyledValue-sc-1s95kis-9 iJKyzA"
                   >
                     Add date
                   </label>
                 </span>
                 <span
-                  class="styled__StyledCheckOut-sc-1mi76mm-13 cbwIvn"
+                  class="styled__StyledCheckOut-sc-1s95kis-13 fqlEzg"
                 >
                   <label
-                    class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                   >
                     Check out
                   </label>
                   <label
-                    class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                    class="styled__StyledValue-sc-1s95kis-9 iJKyzA"
                   >
                     Add date
                   </label>
                 </span>
               </div>
               <div
-                class="styled__StyledSearchOptionsGroup-sc-1mi76mm-14 jaHFpt"
+                class="styled__StyledSearchOptionsGroup-sc-1s95kis-14 ftSoDR"
               >
                 <div
-                  class="styled__StyledPerson-sc-1mi76mm-15 gkfxet"
+                  class="styled__StyledPerson-sc-1s95kis-15 diooxm"
                 >
                   <div
-                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                   >
                     <label
-                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                     >
                       voila
                       Adults
                     </label>
                     <div
-                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                     >
                       1
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__StyledChild-sc-1mi76mm-16 gxOsAp"
+                  class="styled__StyledChild-sc-1s95kis-16 jXHDQe"
                 >
                   <div
-                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                   >
                     <label
-                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                     >
                       voila
                       Children
                     </label>
                     <div
-                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                     >
                       0
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__StyledInfant-sc-1mi76mm-17 blYMOg"
+                  class="styled__StyledInfant-sc-1s95kis-17 jGHAJr"
                 >
                   <div
-                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                   >
                     <label
-                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                     >
                       voila
                       Infants
                     </label>
                     <div
-                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                     >
                       0
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__StyledStars-sc-1mi76mm-18 hoexoe"
+                  class="styled__StyledStars-sc-1s95kis-18 FjnIV"
                 >
                   <div
-                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
                   >
                     <label
-                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
                     >
                       voila
                       Category
                     </label>
                     <div
-                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      class="styled__StyledPrimaryValue-sc-1s95kis-10 bGWVxA"
                     >
                       4
                     </div>
@@ -1345,15 +1345,15 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </div>
           <div
-            class="styled__StyledMiddleText-sc-1c2vi5p-5 iKvAXz"
+            class="styled__StyledMiddleText-sc-1y5gkei-5 enbBnw"
           >
             <div
-              class="styled__StyledWebsiteName-sc-1c2vi5p-6 ckbofk"
+              class="styled__StyledWebsiteName-sc-1y5gkei-6 xxDCP"
             >
               Example website
             </div>
             <div
-              class="styled__StyledWebsiteSlogan-sc-1c2vi5p-7 hAWBjA"
+              class="styled__StyledWebsiteSlogan-sc-1y5gkei-7 kHNTMr"
             >
               Example website slogan
             </div>
@@ -1361,250 +1361,250 @@ Would you explore nature paradise in the world, let’s find the best destinatio
         </div>
       </div>
       <div
-        class="styled__PaperWrapper-sc-1c2vi5p-3 cYQptI"
+        class="styled__PaperWrapper-sc-1y5gkei-3 couEr"
       >
         <div
-          class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+          class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
         >
           <div
-            class="styled__StyledWrapper-sc-162097f-0 jJTucK"
+            class="styled__StyledWrapper-sc-1ncpjaz-0 gbLdLO"
           >
             <div
-              class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+              class="styled__StyledTabs-sc-1ncpjaz-12 iMooPH"
             >
               <div
-                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+                class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF selected"
               >
                 Special Offers
               </div>
               <div
-                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
               >
                 Last Minute
               </div>
               <div
-                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
               >
                 Flights
               </div>
             </div>
             <div
-              class="styled__StyledCardsWrapper-sc-162097f-1 gtcRbh"
+              class="styled__StyledCardsWrapper-sc-1ncpjaz-1 izsZnN"
             >
               <div
-                class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                class="styled__StyledCard-sc-1ncpjaz-2 etlZuU"
               >
                 <div
-                  class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                  class="styled__StyledCardImageHolder-sc-1ncpjaz-3 jvBiIl"
                 >
                   <div
-                    class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                    class="styled__StyledCardImage-sc-1ncpjaz-4 hBDdhQ"
                     src="src"
                   />
                 </div>
                 <div
-                  class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                  class="styled__StyledFirstRow-sc-1ncpjaz-5 hWDORw"
                 >
                   <span
-                    class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                    class="styled__StyledLightLabel-sc-1ncpjaz-6 fhavew"
                   >
                     Relax
                   </span>
                   <span
-                    class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                    class="styled__StyledGrayLabel-sc-1ncpjaz-7 jycyrs"
                   >
                     7 days, breakfast
                   </span>
                   <span
-                    class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                    class="styled__SmallBookNow-sc-1ncpjaz-8 hgPPjz"
                   >
                     Book Now
                   </span>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     Gran Canaria
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     Tenerife
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     La Gomera
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
               </div>
               <div
-                class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                class="styled__StyledCard-sc-1ncpjaz-2 etlZuU"
               >
                 <div
-                  class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                  class="styled__StyledCardImageHolder-sc-1ncpjaz-3 jvBiIl"
                 >
                   <div
-                    class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                    class="styled__StyledCardImage-sc-1ncpjaz-4 hBDdhQ"
                     src="src"
                   />
                 </div>
                 <div
-                  class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                  class="styled__StyledFirstRow-sc-1ncpjaz-5 hWDORw"
                 >
                   <span
-                    class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                    class="styled__StyledLightLabel-sc-1ncpjaz-6 fhavew"
                   >
                     Relax
                   </span>
                   <span
-                    class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                    class="styled__StyledGrayLabel-sc-1ncpjaz-7 jycyrs"
                   >
                     7 days, breakfast
                   </span>
                   <span
-                    class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                    class="styled__SmallBookNow-sc-1ncpjaz-8 hgPPjz"
                   >
                     Book Now
                   </span>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     Gran Canaria
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     Tenerife
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     La Gomera
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
               </div>
               <div
-                class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                class="styled__StyledCard-sc-1ncpjaz-2 etlZuU"
               >
                 <div
-                  class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                  class="styled__StyledCardImageHolder-sc-1ncpjaz-3 jvBiIl"
                 >
                   <div
-                    class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                    class="styled__StyledCardImage-sc-1ncpjaz-4 hBDdhQ"
                     src="src"
                   />
                 </div>
                 <div
-                  class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                  class="styled__StyledFirstRow-sc-1ncpjaz-5 hWDORw"
                 >
                   <span
-                    class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                    class="styled__StyledLightLabel-sc-1ncpjaz-6 fhavew"
                   >
                     Relax
                   </span>
                   <span
-                    class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                    class="styled__StyledGrayLabel-sc-1ncpjaz-7 jycyrs"
                   >
                     7 days, breakfast
                   </span>
                   <span
-                    class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                    class="styled__SmallBookNow-sc-1ncpjaz-8 hgPPjz"
                   >
                     Book Now
                   </span>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     Gran Canaria
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     Tenerife
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
                 </div>
                 <div
-                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  class="styled__StyledFeaturedPrices-sc-1ncpjaz-9 iueUJd"
                 >
                   <div
-                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    class="styled__StyledDestination-sc-1ncpjaz-10 erhZyk"
                   >
                     La Gomera
                   </div>
                   <div
-                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    class="styled__StyledPrice-sc-1ncpjaz-11 cyqdGh"
                   >
                     299$
                   </div>
@@ -1613,7 +1613,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </div>
           <div
-            class="styled__StyledSliderWrapper-sc-1oy4tom-0 hBlcNH"
+            class="styled__StyledSliderWrapper-sc-1cjbarr-0 hzBIit"
           >
             <div
               aria-live="polite"
@@ -1720,30 +1720,30 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             />
           </div>
           <div
-            class="styled__StyledQuickAboutUs-sc-509o3b-0 jMKHEr"
+            class="styled__StyledQuickAboutUs-sc-ook8fz-0 bttvwS"
           >
             <div
-              class="styled__StyledQuickAboutUsImage-sc-509o3b-1 bgnWEj"
+              class="styled__StyledQuickAboutUsImage-sc-ook8fz-1 gjpyiS"
               src="src"
             />
             <div
-              class="styled__StyledQuickAboutUsText-sc-509o3b-2 cGqlOz"
+              class="styled__StyledQuickAboutUsText-sc-ook8fz-2 dnEIgm"
               src="src"
             >
               <div
-                class="styled__StyledTitle-sc-509o3b-3 kXLqLU"
+                class="styled__StyledTitle-sc-ook8fz-3 kVyajl"
               >
                 Travel Any Corner of The World With Us
               </div>
               <div
-                class="styled__StyledDescription-sc-509o3b-4 fdrCqi"
+                class="styled__StyledDescription-sc-ook8fz-4 kjsZNj"
               >
                 Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
 
 Would you explore nature paradise in the world, let’s find the best destination in world with us.
               </div>
               <a
-                class="styled__StyledContactBtn-sc-509o3b-5 yqTw"
+                class="styled__StyledContactBtn-sc-ook8fz-5 cDDyIp"
                 href="/about-us"
               >
                 Contact Us
@@ -1751,190 +1751,190 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </div>
           <div
-            class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+            class="styled__StyledTabs-sc-1ncpjaz-12 iMooPH"
           >
             <div
-              class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+              class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF selected"
             >
               Popular
             </div>
             <div
-              class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+              class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
             >
               Adventure
             </div>
             <div
-              class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+              class="styled__StyledTabBtn-sc-1ncpjaz-13 eWRuFF"
             >
               Relax
             </div>
           </div>
           <div
-            class="styled__Wrapper-sc-huymx4-0 cVCcRa"
+            class="styled__Wrapper-sc-1idqlu5-0 dRawSO"
           >
             <div
-              class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+              class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
             >
               <div
-                class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                class="styled__StyledStars-sc-1idqlu5-9 fxtbrh"
               />
               <div
-                class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                class="styled__StyledTitle-sc-1idqlu5-2 ifjvZM"
               >
                 Hotel 1
               </div>
               <div
-                class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                class="styled__StyledLunch-sc-1idqlu5-3 lifIao"
               >
                 Accommodation and full breakfast
 
               </div>
               <div
-                class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                class="styled__StyledDetails-sc-1idqlu5-4 jrrCPx"
               >
                 Flight + Hotel 3 nights
 
               </div>
               <div
-                class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                class="styled__StyledPrice-sc-1idqlu5-5 slvDf"
               >
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
               >
                 Book Now
               </a>
               <div
-                class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                class="styled__StyledZoomImg-sc-1idqlu5-7 lgzXEh"
                 src="src"
               >
                 <div
-                  class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                  class="styled__StyledZoomPopup-sc-1idqlu5-8 gfSvPG"
                   src="src"
                 />
               </div>
             </div>
             <div
-              class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+              class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
             >
               <div
-                class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                class="styled__StyledStars-sc-1idqlu5-9 fxtbrh"
               />
               <div
-                class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                class="styled__StyledTitle-sc-1idqlu5-2 ifjvZM"
               >
                 Hotel 1
               </div>
               <div
-                class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                class="styled__StyledLunch-sc-1idqlu5-3 lifIao"
               >
                 Accommodation and full breakfast
 
               </div>
               <div
-                class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                class="styled__StyledDetails-sc-1idqlu5-4 jrrCPx"
               >
                 Flight + Hotel 3 nights
 
               </div>
               <div
-                class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                class="styled__StyledPrice-sc-1idqlu5-5 slvDf"
               >
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
               >
                 Book Now
               </a>
               <div
-                class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                class="styled__StyledZoomImg-sc-1idqlu5-7 lgzXEh"
                 src="src"
               >
                 <div
-                  class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                  class="styled__StyledZoomPopup-sc-1idqlu5-8 gfSvPG"
                   src="src"
                 />
               </div>
             </div>
             <div
-              class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+              class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
             >
               <div
-                class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                class="styled__StyledStars-sc-1idqlu5-9 fxtbrh"
               />
               <div
-                class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                class="styled__StyledTitle-sc-1idqlu5-2 ifjvZM"
               >
                 Hotel 1
               </div>
               <div
-                class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                class="styled__StyledLunch-sc-1idqlu5-3 lifIao"
               >
                 Accommodation and full breakfast
 
               </div>
               <div
-                class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                class="styled__StyledDetails-sc-1idqlu5-4 jrrCPx"
               >
                 Flight + Hotel 3 nights
 
               </div>
               <div
-                class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                class="styled__StyledPrice-sc-1idqlu5-5 slvDf"
               >
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
               >
                 Book Now
               </a>
               <div
-                class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                class="styled__StyledZoomImg-sc-1idqlu5-7 lgzXEh"
                 src="src"
               >
                 <div
-                  class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                  class="styled__StyledZoomPopup-sc-1idqlu5-8 gfSvPG"
                   src="src"
                 />
               </div>
             </div>
           </div>
           <div
-            class="styled__Wrapper-sc-1fozp84-0 imyQUG"
+            class="styled__Wrapper-sc-etxqrw-0 gvZmSl"
           >
             <div
-              class="styled__StyledTabs-sc-1fozp84-1 vSIuM"
+              class="styled__StyledTabs-sc-etxqrw-1 llUPaL"
             >
               <div
-                class="styled__StyledTab-sc-1fozp84-2 irVbfg selected"
+                class="styled__StyledTab-sc-etxqrw-2 gKZwQX selected"
               >
                 Flights + Hotels
               </div>
               <div
-                class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                class="styled__StyledTab-sc-etxqrw-2 gKZwQX"
               >
                 Relax on the finest beaches
               </div>
               <div
-                class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                class="styled__StyledTab-sc-etxqrw-2 gKZwQX"
               >
                 Fun water parks and zoos
               </div>
             </div>
             <div
-              class="styled__StyledContent-sc-1fozp84-3 kyeoqL"
+              class="styled__StyledContent-sc-etxqrw-3 eCQSoo"
             >
               <div>
                 <div
-                  class="styled__StyledTitle-sc-1fozp84-4 fOIVVA"
+                  class="styled__StyledTitle-sc-etxqrw-4 jjhCNP"
                 >
                   The complete package
                 </div>
                 <div
-                  class="styled__StyledSliderWrapper-sc-qj79ja-0 kHweLb"
+                  class="styled__StyledSliderWrapper-sc-1jcup0i-0 kThpOV"
                 >
                   <div
                     aria-live="polite"
@@ -2041,43 +2041,43 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   />
                 </div>
                 <div
-                  class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                  class="styled__StyledContentWrapper-sc-etxqrw-5 fNoSXP"
                 >
                   <div
-                    class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                    class="styled__StyledContentTitle-sc-etxqrw-6 dPtwkz"
                   >
                     Cheap flights
                   </div>
                   <div
-                    class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                    class="styled__StyledContentSubtitle-sc-etxqrw-7 bDfyKm"
                   >
                     Find your desired plane ticket easily
                   </div>
                 </div>
                 <div
-                  class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                  class="styled__StyledContentWrapper-sc-etxqrw-5 fNoSXP"
                 >
                   <div
-                    class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                    class="styled__StyledContentTitle-sc-etxqrw-6 dPtwkz"
                   >
                     A diverse hotel selection
                   </div>
                   <div
-                    class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                    class="styled__StyledContentSubtitle-sc-etxqrw-7 bDfyKm"
                   >
                     You will find the perfect hotel for your dream vacation
                   </div>
                 </div>
                 <div
-                  class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                  class="styled__StyledContentWrapper-sc-etxqrw-5 fNoSXP"
                 >
                   <div
-                    class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                    class="styled__StyledContentTitle-sc-etxqrw-6 dPtwkz"
                   >
                     Put them all together
                   </div>
                   <div
-                    class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                    class="styled__StyledContentSubtitle-sc-etxqrw-7 bDfyKm"
                   >
                     Profit from our package deals with flights and hotel bookings
                   </div>
@@ -2086,7 +2086,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </div>
           <div
-            class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
+            class="styled__FooterWrapper-sc-dckhzd-0 gXhUyQ"
           >
             <div>
               <div>
@@ -2137,13 +2137,13 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             <div>
               <div>
                 <div
-                  class="styled__StyledNewsletterTitle-sc-1xenngy-1"
+                  class="styled__StyledNewsletterTitle-sc-dckhzd-1"
                 >
                   Subscribe to our newsletter
                 </div>
               </div>
               <div
-                class="styled__StyledNewsletterForm-sc-1xenngy-2 fluOne"
+                class="styled__StyledNewsletterForm-sc-dckhzd-2 jnQhdu"
               >
                 <input
                   placeholder="Email Address"
