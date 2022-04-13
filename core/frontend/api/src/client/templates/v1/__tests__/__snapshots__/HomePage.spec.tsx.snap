@@ -12,7 +12,7 @@ Object {
           class="styled__TopContentWrapper-sc-1c2vi5p-1 cQcVNk"
         >
           <div
-            class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+            class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
           >
             <header
               class="styled__HeaderWrapper-sc-1da3qfr-0 bDaAQD"
@@ -156,12 +156,12 @@ Object {
                   class="styled__StyledSearchCheckinGroup-sc-1mi76mm-11 bRwiYD"
                 >
                   <span
-                    class="styled__StyledCheckIn-sc-1mi76mm-12 IAZxD"
+                    class="styled__StyledCheckIn-sc-1mi76mm-12 bvhbfs"
                   >
                     <label
                       class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
                     >
-                      Staying from
+                      Check in
                     </label>
                     <label
                       class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
@@ -170,7 +170,7 @@ Object {
                     </label>
                   </span>
                   <span
-                    class="styled__StyledCheckOut-sc-1mi76mm-13 cbwIvn"
+                    class="styled__StyledCheckOut-sc-1mi76mm-13 gzxXzk"
                   >
                     <label
                       class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
@@ -286,7 +286,7 @@ Object {
           class="styled__PaperWrapper-sc-1c2vi5p-3 cYQptI"
         >
           <div
-            class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+            class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
           >
             <div
               class="styled__StyledWrapper-sc-162097f-0 jJTucK"
@@ -649,23 +649,23 @@ Object {
                 src="src"
               />
               <div
-                class="styled__StyledQuickAboutUsText-sc-509o3b-2 cGqlOz"
+                class="styled__StyledQuickAboutUsText-sc-509o3b-2 doLPZv"
                 src="src"
               >
-                <div
-                  class="styled__StyledTitle-sc-509o3b-3 kXLqLU"
+                <h3
+                  class="styled__StyledTitle-sc-509o3b-3 gtpQdc"
                 >
                   Travel Any Corner of The World With Us
-                </div>
-                <div
+                </h3>
+                <article
                   class="styled__StyledDescription-sc-509o3b-4 fdrCqi"
                 >
                   Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
 
 Would you explore nature paradise in the world, let’s find the best destination in world with us.
-                </div>
+                </article>
                 <a
-                  class="styled__StyledContactBtn-sc-509o3b-5 yqTw"
+                  class="styled__StyledContactBtn-sc-509o3b-5 laOYLN"
                   href="/about-us"
                 >
                   Contact Us
@@ -692,7 +692,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
             <div
-              class="styled__Wrapper-sc-huymx4-0 cVCcRa"
+              class="styled__Wrapper-sc-huymx4-0 eFeMSk"
             >
               <div
                 class="styled__StyledCard-sc-huymx4-1 jiTjWf"
@@ -723,7 +723,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                  class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
                 >
                   Book Now
                 </a>
@@ -766,7 +766,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                  class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
                 >
                   Book Now
                 </a>
@@ -809,7 +809,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                  class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
                 >
                   Book Now
                 </a>
@@ -1007,7 +1007,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </div>
               </div>
             </div>
-            <div
+            <footer
               class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
             >
               <div>
@@ -1065,7 +1065,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </div>
                 </div>
                 <div
-                  class="styled__StyledNewsletterForm-sc-1xenngy-2 fluOne"
+                  class="styled__StyledNewsletterForm-sc-1xenngy-2 cZuPmT"
                 >
                   <input
                     placeholder="Email Address"
@@ -1076,7 +1076,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </button>
                 </div>
               </div>
-            </div>
+            </footer>
           </div>
         </div>
       </div>
@@ -1090,7 +1090,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
         class="styled__TopContentWrapper-sc-1c2vi5p-1 cQcVNk"
       >
         <div
-          class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+          class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
         >
           <header
             class="styled__HeaderWrapper-sc-1da3qfr-0 bDaAQD"
@@ -1234,12 +1234,12 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 class="styled__StyledSearchCheckinGroup-sc-1mi76mm-11 bRwiYD"
               >
                 <span
-                  class="styled__StyledCheckIn-sc-1mi76mm-12 IAZxD"
+                  class="styled__StyledCheckIn-sc-1mi76mm-12 bvhbfs"
                 >
                   <label
                     class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
                   >
-                    Staying from
+                    Check in
                   </label>
                   <label
                     class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
@@ -1248,7 +1248,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </label>
                 </span>
                 <span
-                  class="styled__StyledCheckOut-sc-1mi76mm-13 cbwIvn"
+                  class="styled__StyledCheckOut-sc-1mi76mm-13 gzxXzk"
                 >
                   <label
                     class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
@@ -1364,7 +1364,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
         class="styled__PaperWrapper-sc-1c2vi5p-3 cYQptI"
       >
         <div
-          class="styled__ContentWrapper-sc-1c2vi5p-2 liDlzZ"
+          class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
         >
           <div
             class="styled__StyledWrapper-sc-162097f-0 jJTucK"
@@ -1727,23 +1727,23 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               src="src"
             />
             <div
-              class="styled__StyledQuickAboutUsText-sc-509o3b-2 cGqlOz"
+              class="styled__StyledQuickAboutUsText-sc-509o3b-2 doLPZv"
               src="src"
             >
-              <div
-                class="styled__StyledTitle-sc-509o3b-3 kXLqLU"
+              <h3
+                class="styled__StyledTitle-sc-509o3b-3 gtpQdc"
               >
                 Travel Any Corner of The World With Us
-              </div>
-              <div
+              </h3>
+              <article
                 class="styled__StyledDescription-sc-509o3b-4 fdrCqi"
               >
                 Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
 
 Would you explore nature paradise in the world, let’s find the best destination in world with us.
-              </div>
+              </article>
               <a
-                class="styled__StyledContactBtn-sc-509o3b-5 yqTw"
+                class="styled__StyledContactBtn-sc-509o3b-5 laOYLN"
                 href="/about-us"
               >
                 Contact Us
@@ -1770,7 +1770,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </div>
           <div
-            class="styled__Wrapper-sc-huymx4-0 cVCcRa"
+            class="styled__Wrapper-sc-huymx4-0 eFeMSk"
           >
             <div
               class="styled__StyledCard-sc-huymx4-1 jiTjWf"
@@ -1801,7 +1801,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
               >
                 Book Now
               </a>
@@ -1844,7 +1844,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
               >
                 Book Now
               </a>
@@ -1887,7 +1887,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-huymx4-6 kwlgYi"
+                class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
               >
                 Book Now
               </a>
@@ -2085,7 +2085,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
           </div>
-          <div
+          <footer
             class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
           >
             <div>
@@ -2143,7 +2143,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </div>
               </div>
               <div
-                class="styled__StyledNewsletterForm-sc-1xenngy-2 fluOne"
+                class="styled__StyledNewsletterForm-sc-1xenngy-2 cZuPmT"
               >
                 <input
                   placeholder="Email Address"
@@ -2154,7 +2154,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </button>
               </div>
             </div>
-          </div>
+          </footer>
         </div>
       </div>
     </div>
