@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   @media (min-width: ${device.tablet}) {
     margin: 20px;
   }
-  @media (min-width: ${device.laptopL}) {
+  @media (min-width: ${device.laptop}) {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 `;
@@ -64,7 +64,8 @@ export const StyledActionButton = styled.a`
   margin-bottom: 10px;
 
   &:hover {
-    color: ${({theme}) => theme.colors.primaryLight};
+    color: ${({theme}) => theme.colors.white};
+    background: ${({theme}) => theme.colors.primaryLight};
   }
 `;
 
