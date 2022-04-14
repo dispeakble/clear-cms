@@ -47,6 +47,6 @@ jobs:
           tags: | 
             ${{ env.DOCKER_IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
           builder: ${{ steps.buildx.outputs.name }}
-          context: ./core/frontend/api
+          context: ${{ env.WORKING_DIR }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
