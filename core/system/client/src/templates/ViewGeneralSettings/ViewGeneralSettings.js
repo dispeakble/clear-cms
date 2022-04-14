@@ -43,7 +43,7 @@ class ViewGeneralSettings extends Component {
         emailSender : "",
         emailPassword: "",
         contactEmail: "",
-        selectedTheme: "V1",
+        selectedTheme: "v1",
         colorScheme: {
             primaryColor: {label: "Primary Color", value: "#DC6B03"},
             primaryColorRBG: {label: "Primary Color RBG", value: {r: 220, g: 107, b: 3}},
@@ -96,7 +96,7 @@ class ViewGeneralSettings extends Component {
         defaultFavicon: "",
         faviconName: "",
         includeWebsiteTitle: false,
-        themeVersions: ["V1", "V2"],
+        themeVersions: ["v1", "v2"],
         colorSchemeAccordionIsOpen: false,
         timezones: moment.tz.names()
     };
