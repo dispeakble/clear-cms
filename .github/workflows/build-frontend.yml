@@ -38,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          load: true
+          load: false
           tags: ${{ env.DOCKER_IMAGE }}:$(date +%s)
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
