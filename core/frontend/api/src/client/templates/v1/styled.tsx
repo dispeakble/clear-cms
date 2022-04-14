@@ -17,7 +17,7 @@ export const size = {
   laptop: "1024px",
   laptopL: "1440px",
   desktop: "1920px",
-  desktopL: "2560px"
+  desktopL: "2560px",
 };
 
 export const device = {
@@ -28,7 +28,7 @@ export const device = {
   laptop: `(min-width: ${size.laptop})`,
   laptopL: `(min-width: ${size.laptopL})`,
   desktop: `(min-width: ${size.desktop})`,
-  desktopL: `(min-width: ${size.desktopL})`
+  desktopL: `(min-width: ${size.desktopL})`,
 };
 
 export const MainWrapper = styled.div`
