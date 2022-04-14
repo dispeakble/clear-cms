@@ -1,8 +1,9 @@
 name: Build Frontend Api
 
 env:
-  DOCKER_IMAGE: 'dispeakble/crm-frontend-api:'
+  DOCKER_IMAGE: 'dispeakble/crm-frontend-api'
   WORKING_DIR: core/frontend/api
+  TIMESTAMP: $(date +%s)
 
 on:
   pull_request:
@@ -39,7 +40,7 @@ jobs:
         with:
           push: true
           load: false
-          tags: ${{ env.DOCKER_IMAGE }}:$(date +%s)
+          tags: ${{ env.DOCKER_IMAGE }}:$TIMESTAMP
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           context: .
