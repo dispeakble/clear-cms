@@ -10,7 +10,7 @@ import {
     HotelName,
     HotelRate,
     LeftSection,
-    MapSection,
+    MapSection, Ping,
     RightSection
 } from "./styled";
 import {Rate} from "antd";
@@ -55,15 +55,13 @@ const HotelAbout = () => {
                         {t("hotelAbout.hotel")}
                     </HotelName>
                     <HotelRate>
-                        <Star>
-                            <Rate disabled defaultValue={4}/>
-                            <span>
+                            <Ping style={{fontSize: '30px'}}  disabled defaultValue={4}/>
+                            <h3>
                             {t("hotelAbout.star")}
-                        </span>
-                        </Star>
+                        </h3>
                     </HotelRate>
                     <Description>
-                        <StyledDescription>
+                        <StyledDescription style={{paddingBottom: '20px'}}>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
                             incididunt ut labore et dolore magna aliqua.
                             labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna
@@ -76,7 +74,7 @@ const HotelAbout = () => {
                         </StyledDescription>
                         {show ? (
                             <StyledDescription>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
                                 incididunt ut labore et dolore magna aliqua.
                                 labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna
                                 aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -117,9 +115,9 @@ const HotelAbout = () => {
                         </Cardtitle>
                         <Feature>
                             {
-                                Features.map((value) => {
+                                Features.map((value, index) => {
                                     return (
-                                        <li><CheckedIcon/>{value}</li>
+                                        <li key={index}><CheckedIcon/>{value}</li>
                                     );
                                 })
                             }

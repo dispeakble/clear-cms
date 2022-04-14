@@ -38,7 +38,18 @@ import {
     ViewMap,
     ViewPrice,
     WhiteIcon,
-    Wrapper,DetailsCard,CardDesc,Person,BoxLeft,BoxRight,DetailTop,Quantity,PersonEntry,SubDetail,CloseIcon
+    Wrapper,
+    DetailsCard,
+    CardDesc,
+    Person,
+    BoxLeft,
+    BoxRight,
+    DetailTop,
+    Quantity,
+    PersonEntry,
+    SubDetail,
+    CloseIcon,
+    HotelCalendar, Ping,
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
@@ -66,7 +77,8 @@ const HotelDetail = ({
                          handleChildrenMinus,
                          handleChildrenPlus,
                          handleInfantsMinus,
-                         handleSearch
+                         handleSearch,
+
                      }: HotelDetailProps) => {
     const [show, setShow] = useState({
         checkin: false,
@@ -100,7 +112,7 @@ const HotelDetail = ({
     ];
     const customColors = ['#FFFFFF'];
     React.useEffect(() => {
-        /*const getHotel = arr.map((value: any) => {
+        const getHotel = arr.map((value: any) => {
             return value.location;
         });
         const uniqueChars = [...getHotel];
@@ -143,7 +155,7 @@ const HotelDetail = ({
             );
         });
         setBackUpData(mainFilter);
-        setMainValue(mainFilter);*/
+        setMainValue(mainFilter);
 
     }, []);
 
@@ -160,7 +172,6 @@ const HotelDetail = ({
             ...show,
             checkin: !show.checkin
         });
-
     };
 
     const handleShowCheckout = () => {
@@ -184,7 +195,7 @@ const HotelDetail = ({
         });
     };
     const onSearch = (searchText: string) => {
-        /*const str: string = String(searchText).toLowerCase();
+        const str: string = String(searchText).toLowerCase();
         const searchData = backUpData.map((valueMap) => {
             const SearchHotel = valueMap.options.filter((valuehotel: any) => {
                 const fildata = String(valuehotel?.value).toLowerCase();
@@ -207,12 +218,11 @@ const HotelDetail = ({
         const filtered = searchData.filter(function(x) {
             return x !== undefined;
         });
-        console.log(filtered);
-        setMainValue(filtered);*/
+        setMainValue(filtered);
     };
 
     const onSelect = (data: string) => {
-        //handleHotelSearch(data);
+        handleHotelSearch(data);
     };
 
     return (
@@ -227,7 +237,7 @@ const HotelDetail = ({
                       <AutoComplete
                         dropdownClassName="certain-category-search-dropdown"
                         dropdownStyle={{ backgroundColor: "white" }}
-                        dropdownMatchSelectWidth={500}
+                        dropdownMatchSelectWidth={250}
                         onSearch={onSearch}
                         onSelect={onSelect}
                         options={mainValue}
@@ -248,9 +258,12 @@ const HotelDetail = ({
                           <DateDiv>
                               <h4>Check-in date:</h4>
                               <HotelSearch>
-                                  <CalenderIcon></CalenderIcon>
-                                  <input placeholder={t("deals.checkin")}
-                                         value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} />
+                                  <CalenderIcon  onClick={() => {
+                                      handleShowCheckin();
+                                  }}/>
+                                  <input placeholder={t("deals.checkin") }
+                                         onChange={() => {}}
+                                         value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
 
                                   <DropdownIcon onClick={() => {
                                       handleShowCheckin();
@@ -259,7 +272,7 @@ const HotelDetail = ({
 
                               {show.checkin ? (
 
-                                <Calendar
+                                <HotelCalendar
                                   minDate={data.checkin}
                                   value={data.checkin}
 
@@ -280,9 +293,11 @@ const HotelDetail = ({
                           <DateDiv>
                               <h4>Check-out date:</h4>
                               <HotelSearch>
-                                  <CalenderIcon></CalenderIcon>
-                                  <input placeholder={t("deals.checkout")}
-                                         value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} />
+                                  <CalenderIcon onClick={() => {
+                                      handleShowCheckout();
+                                  }}/>
+                                  <input placeholder={t("deals.checkout")} onChange={() => {}}
+                                         value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly/>
                                   <DropdownIcon onClick={() => {
                                       handleShowCheckout();
                                   }} />
@@ -292,7 +307,7 @@ const HotelDetail = ({
 
                               {show.checkout ? (
 
-                                <Calendar
+                                <HotelCalendar
                                   minDate={new Date(moment(data.checkin).add(1, "d"))}
                                   value={new Date(data.checkout)}
                                   onChange={(value: any) => {
@@ -313,31 +328,37 @@ const HotelDetail = ({
                               <h4>Details:</h4>
                               <GuestType>
                                   <AdultBox>
-                                      <AdultIcon />
+                                      <AdultIcon onClick={() => handleShowPassanger()} />
                                       <AdultNumber>
                                           {t(`deals.detail.adult`)}{data.passanger.adults}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
-                                      <ChildIcon />
+                                      <ChildIcon onClick={() => handleShowPassanger()} />
                                       <AdultNumber>
                                           {t(`deals.detail.child`)}{data.passanger.children}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
-                                      <InfantIcon />
+                                      <InfantIcon onClick={() => handleShowPassanger()} />
                                       <AdultNumber>
                                           {t(`deals.detail.infant`)}{data.passanger.infants}
                                       </AdultNumber>
                                   </AdultBox>
-                                  <DropdownIcon onClick={() => handleShowPassanger()} />
+                                  <div style={{position:'relative', left: '7px'}}>
+                                      <DropdownIcon onClick={() => handleShowPassanger()} />
+                                  </div>
                               </GuestType>
                               {show.details ? (
                                   <DetailsCard>
                                       <DetailTop>
-                                          <CloseIcon/>
+                                          <CloseIcon onClick={()=>
+                                              setShow({
+                                              ...show,
+                                              details: false
+                                          })}/>
                                           Details
                                       </DetailTop>
                                       <PersonEntry>
@@ -349,9 +370,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <span>-</span>
-                                                  <h5>03</h5>
-                                                  <span>+</span>
+                                                  <span onClick={handleAdultMinus}>-</span>
+                                                  <h5>{data?.passanger.adults<10?`0${data?.passanger.adults}`:data?.passanger.adults}</h5>
+                                                  <span onClick={handleAdultPlus}>+</span>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -362,9 +383,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <span>-</span>
-                                                  <h5>02</h5>
-                                                  <span>+</span>
+                                                  <span onClick={handleChildrenMinus}>-</span>
+                                                  <h5>{data?.passanger.children<10 ? `0${data?.passanger.children}`:data?.passanger.children}</h5>
+                                                  <span onClick={handleChildrenPlus}>+</span>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -375,14 +396,18 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <span>-</span>
-                                                  <h5>00</h5>
-                                                  <span>+</span>
+                                                  <span onClick={handleInfantsMinus}>-</span>
+                                                  <h5>{data?.passanger.infants<10?`0${data?.passanger.infants}`:data?.passanger.infants}</h5>
+                                                  <span onClick={handleInfantsPlus}>+</span>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
                                       <SubDetail>
-                                          <button>Done</button>
+                                          <button onClick={()=>
+                                              setShow({
+                                                  ...show,
+                                                  details: false
+                                              })}>Done</button>
                                       </SubDetail>
                                       </PersonEntry>
                                   </DetailsCard>
@@ -393,7 +418,7 @@ const HotelDetail = ({
 
                   </Destination>
                   <NewSearch>
-                      <button><WhiteIcon /><span>New Search</span></button>
+                      <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>New Search</span></Link></button>
                   </NewSearch>
 
               </EditDeals>
@@ -403,7 +428,7 @@ const HotelDetail = ({
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
                       <Star>
-                          <Rate disabled defaultValue={4} />
+                          <Ping  style={{fontSize: '30px'}} disabled defaultValue={4} />
                       </Star>
                       <ShortDescription>
                           <HotelLocation>
@@ -414,6 +439,7 @@ const HotelDetail = ({
                   </LeftSide>
                   <ViewPrice>
                       <button>
+
                       {customColors.map(color => (
                           <Tooltip placement="bottom"
                                    title={t("tooltip.view_price")}
@@ -433,7 +459,7 @@ const HotelDetail = ({
                               <InfoIcon />
                           </Tooltip>
                           ))}
-                          <span>View Prices</span>
+                          <Link to="prices" spy={true} smooth={true}><span>View Prices</span></Link>
                       </button>
 
                   </ViewPrice>

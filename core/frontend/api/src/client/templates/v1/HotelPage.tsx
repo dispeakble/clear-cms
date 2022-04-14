@@ -34,7 +34,6 @@ const HotelPage = ({websiteName, websiteUrl, websiteSlogan}: HotelPageProps) => 
             ...data,
             [name]: value
         })
-
     }
     const handleAdultPlus = () => {
         setData({

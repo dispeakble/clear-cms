@@ -5,10 +5,18 @@ import refreshIcon from "../../assets/img/refresh-icon.svg"
 import orgInfoIcon from "../../assets/img/orginfo-icon.svg"
 import bedroomIcon from "../../assets/img/bedroom-icon.svg"
 import dropdownIcon from "../../assets/img/dropdown-icon.svg"
-import roomupIcon from "../../assets/img/roomDrop-icon.svg"
-import roomdownIcon from "../../assets/img/roomUp-icon.svg"
 import dropLightIcon from "../../assets/img/DropLight-icon.svg"
 import dropDarkIcon from "../../assets/img/DropDark-icon.svg"
+import checkInSvg from '../../assets/img/check-in.svg'
+import checkOutSvg from '../../assets/img/check-out.svg'
+import childIcon from '../../assets/img/child-icon.svg'
+import infantIcon from '../../assets/img/infant-icon.svg'
+
+
+
+
+
+import Calendar from "react-calendar";
 
 
 
@@ -26,7 +34,28 @@ export const QueryTitle = styled.div`
     padding: 1rem;
   }
 `
-
+export const CheckInSvg =styled.div`
+  background: url(${checkInSvg.src}) no-repeat left center;
+  cursor: pointer;
+  width: 20px;
+  height: 31px;
+`;
+export const ChildIcon =styled.div`
+  background: url(${childIcon.src}) no-repeat left center;
+  cursor: pointer;
+  width: 20px;
+`;
+export const InfantIcon =styled.div`
+  background: url(${infantIcon.src}) no-repeat left center;
+  cursor: pointer;
+  width: 12px;
+`;
+export const CheckOutSvg =styled.div`
+  background: url(${checkOutSvg.src}) no-repeat left center;
+  cursor: pointer;
+  width: 20px;
+  height: 31px;
+`;
 export const Wrapper = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
@@ -53,9 +82,15 @@ export const HotelCheck = styled.div`
   flex: 1;
   display: flex;
   gap: 20px;
+  width: 100%;
   @media only screen and (max-width: ${size.tablet}) {
     flex-direction: column;
   }
+  @media (min-width: ${size.laptop}){
+    gap: 10px;
+
+  }
+  
 
 `
 export const LeftSide = styled.div`
@@ -63,9 +98,7 @@ export const LeftSide = styled.div`
   border-radius: 16px;
   flex: 2;
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  padding: 10px 5px 0 5px;
   background: ${Colors.white};
 `
 export const RightSide = styled.div`
@@ -73,16 +106,17 @@ export const RightSide = styled.div`
   border-radius: 16px;
   flex: 5;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 10px 0 10px;
   background: ${Colors.white};
+  align-items: center;
+  background: #fff;
+  
 `
 export const DropdownIcon = styled.div`
-  width: 24px;
+  width: 20px;
+  height: 12px;
   position: relative;
-  top: 6px;
-  left: 0;
+  top: 5px;
+  left: 5px;
   background: url(${dropdownIcon.src}) no-repeat left center;
 
 `
@@ -174,7 +208,9 @@ export const Price = styled.div`
 `
 
 export const BookNow = styled.div`
-
+  @media (max-width: ${size.laptop}) {
+    display: none;
+  }
 `
 export const TableBody = styled.div`
   display: flex;
@@ -226,6 +262,14 @@ export const ColumnOne = styled.div`
   color: ${Colors.black};
   cursor: default;
   white-space: nowrap;
+  @media (min-width: ${size.laptop}){
+  font-size: 16px;
+
+  }
+  @media (max-width: ${size.mobileM}){
+    justify-content: center;
+
+  }
 `
 export const ColumnTwo = styled.div`
   font-weight: 500;
@@ -233,17 +277,22 @@ export const ColumnTwo = styled.div`
   color: ${Colors.black};
   cursor: default;
   white-space: nowrap;
+  text-align: center;
+
+  @media (min-width: ${size.laptop}){
+    font-size: 16px;
+  }
 `
 export const ColumnThree = styled.div`
   position: relative;
   display: flex;
-  justify-content: space-around;
-  width: 192px;
+  justify-content: space-between;
   height: 40px;
   background: #FFFFFF;
   border: 1px solid #DBDBDB;
   box-sizing: border-box;
   border-radius: 26px;
+  cursor: pointer;
   
   ul{
     display: flex;
@@ -254,7 +303,7 @@ export const ColumnThree = styled.div`
     input{
       position: absolute;
       top: 50%;
-      left: 61%;
+      left: 40%;
       width: 42%;
       transform: translate(-50%,-50%);
       z-index: 1;
@@ -262,15 +311,23 @@ export const ColumnThree = styled.div`
       outline: none;
       background: none;
       color: rgba(0, 0, 0, 0.66);;
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       line-height: 24px;
       cursor: pointer;
       text-align: left;
       transition: all 500ms ease-in-out;
+      
       :focus{
         outline: none;
         border: none;
+      }
+      @media (max-width: ${size.laptop}) {
+        left: 43%
+      }
+      @media (min-width: ${size.laptop}){
+        left: 48%;
+
       }
     }
     
@@ -281,16 +338,16 @@ export const ColumnThree = styled.div`
 
 
   @media (max-width: ${size.laptop}) {
-    width: 108px;
+    width: 175px;
     gap: 4px;
   }
 
 
 `
 export const LeftIcon = styled.div`
-  background: url(${bedroomIcon.src}) no-repeat 8px center ${Colors.white};
-  width: 36px;
-  height: 37px;
+  background: url(${bedroomIcon.src}) no-repeat 8px center;
+  width: 28px;
+  height: 38px;
   position: relative;
   left: 7px;
   align-items: center;
@@ -311,10 +368,26 @@ export const TopUp = styled.div`
   width: 10px;
   height: 18px;
   display: flex;
+  right: 10px;
   align-items: center;
   background: url(${dropLightIcon.src}) no-repeat left center;
   position: relative;
   top: 10px;
+  :hover{
+    background: url(${dropDarkIcon.src}) no-repeat left center;
+
+  }
+`;
+
+export const TopUpRooms = styled.div`
+  width: 10px;
+  height: 18px;
+  display: flex;
+  right: 10px;
+  align-items: center;
+  background: url(${dropLightIcon.src}) no-repeat left center;
+  position: relative;
+  top: 0px;
   :hover{
     background: url(${dropDarkIcon.src}) no-repeat left center;
 
@@ -330,10 +403,9 @@ export const InnerRoomList = styled.div`
   border-radius: 30px;
   left: 0px;
   border: 1px solid ${Colors.borderOutline};
-  visibility: hidden;
-  opacity: 0;
+  
   transition: all 100ms ease-in-out;
-  z-index: 1;
+  z-index: 2;
 
   li{ 
     position: relative;
@@ -346,7 +418,7 @@ export const InnerRoomList = styled.div`
     height: 40px;
     transition: all 100ms ease-in-out;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     :first-child{
       border-top-left-radius: 30px;
@@ -358,11 +430,28 @@ export const InnerRoomList = styled.div`
       border-Bottom-right-radius: 30px;
 
     }
+    h3{
+      color: rgba(107, 101, 101, 0.63);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      margin: 0;
+      margin-right: 90px;
+      :hover{
+        color: ${Colors.gray};
+      }
+      @media (max-width: ${size.laptop}){
+        margin-right: 50px;
+      }
+      @media (min-width: ${size.laptop}){
+        margin-right: 20px;
+      }
+    }
     :hover{
       background: ${Colors.white};
       border: 1px solid ${Colors.borderOutline};
       filter: drop-shadow(1px -2px 4px rgba(0,0,0,0.17));
-      color: ${Colors.gray};
+      
       border-radius: 30px;
       transition: all 100ms ease-in-out;
 
@@ -457,17 +546,37 @@ export const GuestNumber = styled.div`
 export const DivView = styled.div`
   position: relative;
   cursor: pointer;
-  width: 100%;
-  justify-content: space-between;
+  width: 100%;    
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const CalendarView = styled.div`
   position: absolute;
-  top: 50px;
-  left: 0px;
+  top: 60px;
+  left: -10px;
   bgcolor: background .paper;
-  z-index: 1;
-
+  z-index: 2;
+  @media (max-width: ${size.tablet}){
+    top: 52px
+  }
+  @media (max-width: ${size.laptop}){
+    top: 55px
+  }
+`
+export const CalendarViewCheckout = styled.div`
+  position: absolute;
+  top: 60px;
+  right: -7px;
+  bgcolor: background .paper;
+  z-index: 2;
+  @media (max-width: ${size.tablet}){
+    top: 52px
+  }
+  @media (max-width: ${size.laptop}){
+    top: 55px
+  }
 `
 
 export const PassangerView = styled.div`
@@ -476,8 +585,8 @@ export const PassangerView = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  top: 120%;
-  left: 50%;
+  top: 132%;
+  left: 54%;
   transform: translate(-50%, -10%);
   background-color: ${Colors.white};
   box-shadow: ${Shadows.primaryShadow};
@@ -486,6 +595,9 @@ export const PassangerView = styled.div`
   z-index: 1;
   border-radius: 25px;
   border: 1px solid ${Colors.borderOutline};
+  @media (max-width: ${size.laptop}){
+    top: 122%
+  }
 `
 
 
@@ -514,13 +626,214 @@ export const SpanDiv = styled.span`
 
 export const Passenger = styled.div`
   position: relative;
-  cursor: default;
+  cursor: pointer;
 `
 
 export const CheckBg = styled.div`
-  cursor: default;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  
+  
 `
 export const CheckTitle = styled.div`
   color: ${Colors.gray};
   font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
 `
+export const HotelCalendar = styled(Calendar)`
+  width: 255px;
+  padding: 0 12px 12px;
+  border: none;
+  border-radius: 12px;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  .react-calendar {
+    width: 318px;
+    max-width: 100%;
+    background: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    line-height: 1.125em;
+    border-radius: 9px;
+    padding: 0 8px 8px;
+    margin-top: 15px;
+  }
+  .react-calendar--doubleView {
+    width: 700px;
+  }
+  .react-calendar--doubleView .react-calendar__viewContainer {
+    display: flex;
+    margin: -0.5em;
+  }
+  .react-calendar--doubleView .react-calendar__viewContainer > * {
+    width: 50%;
+    margin: 0.5em;
+  }
+  .react-calendar,
+  .react-calendar *,
+  .react-calendar *:before,
+  .react-calendar *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  .react-calendar button {
+    margin: 0;
+    border: 0;
+    outline: none;
+  }
+  abbr[title] {
+    cursor: default;
+  }
+  .react-calendar button:enabled:hover {
+    cursor: pointer;
+  }
+  .react-calendar__navigation {
+    display: flex;
+    position: relative;
+    padding: 15px 0 20px;
+  }
+
+
+  .react-calendar__navigation button {
+    min-width: 44px;
+    background: none;
+  }
+  .react-calendar__navigation button span{
+    font-weight: 600;
+    font-size: 15.4984px;
+    line-height: 19px;
+    color: #828282;
+  
+  }
+  .react-calendar__navigation__prev-button:disabled {
+    background-color: #fff;
+    display: block;
+    cursor: pointer;
+  }
+  .react-calendar__navigation .react-calendar__navigation__next2-button:enabled:hover,
+  .react-calendar__navigation .react-calendar__navigation__prev2-button:enabled:focus {
+    background-color: #ff8427;
+    color: #fff;
+  }
+  .react-calendar__month-view__weekdays {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 14px;
+    padding-bottom: 5px;
+  }
+  .react-calendar__month-view__weekdays__weekday {
+    padding: 0.5em;
+  }
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+    color: #000;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 9.29902px;
+    line-height: 9px;
+    letter-spacing: 0.03em;
+
+  }
+  .react-calendar__month-view__weekNumbers .react-calendar__tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-bottom: 3px;
+  }
+  .react-calendar__month-view__days__day--weekend {
+    color: #000;
+  }
+  .react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575;
+  }
+  .react-calendar__year-view .react-calendar__tile,
+  .react-calendar__decade-view .react-calendar__tile,
+  .react-calendar__century-view .react-calendar__tile {
+    padding: 2em 0.5em;
+  }
+  .react-calendar__tile {
+    max-width: 100%;
+    padding: 10px 6.6667px;
+    background: none;
+    text-align: center;
+    line-height: 33px;
+    padding: 0px 0px;
+    border-radius: 25px;
+    background: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    color: #000000;
+  }
+  .react-calendar__tile:disabled {
+    background-color: #DBDBDB;
+  }
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    background-color: #F4AC67;
+    color: #fff;
+  }
+  .react-calendar__tile--now {
+    background: red;
+  }
+  .react-calendar__tile--now:enabled:hover,
+  .react-calendar__tile--now:enabled:focus {
+    background: red;
+  }
+  .react-calendar__tile--hasActive {
+    background: #ff8427;
+  }
+  .react-calendar__tile--active:enabled:focus{
+    background: #ff8427;
+  }
+  .react-calendar__tile--hasActive:enabled:hover,
+  .react-calendar__tile--hasActive:enabled:focus {
+    background: #a9d4ff;
+  }
+  .react-calendar__tile--active {
+    background: #ff8427;
+    color: #fff;
+  }
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: #ff8427;
+  }
+
+  .react-calendar__navigation__arrow.react-calendar__navigation__next-button, .react-calendar__navigation__arrow.react-calendar__navigation__prev-button {
+    display: block;
+    height: 22px;
+    font-size: 24px;
+  }
+  }
+
+
+
+  .react-calendar__navigation__arrow.react-calendar__navigation__prev2-button, .react-calendar__navigation__arrow.react-calendar__navigation__next2-button{ 
+    
+    display: none;}
+
+  .react-calendar__navigation__arrow.react-calendar__navigation__next2-button{left: inherit; right:5px;}
+  .react-calendar__navigation {
+    display: -moz-box;
+    display: flex;
+    height: 44px;
+    margin-bottom: 0em;
+  }
+  .react-calendar__navigation__label {
+  pointer-events: none;
+  }
+  .react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus {
+    background-color: #fff;
+  }
+  .react-calendar__month-view__days{
+    gap: 5px;
+  }
+ .react-calendar__navigation button {
+  min-width: 30px;
+  background: none;
+}
+`;

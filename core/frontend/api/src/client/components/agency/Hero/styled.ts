@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Colors, Shadows, Widths } from "../../../assets/design-set";
 import HeroBG from "../../../pages/agency/assets/hero-bg.jpg";
 import { Rate } from "antd";
+import {size} from "../../../templates/v1/styled";
 
 export const HeroWrapper = styled.div`
   background-image: url(${HeroBG.src});
@@ -101,12 +102,16 @@ export const StayingInfoWrapper = styled.div`
   display: flex;
   row-gap: 10px;
   justify-content: space-around;
-
+  align-items: center;
+  cursor: pointer;
   p {
     font-size: 12px;
     font-weight: 500;
     margin: 0px 0px 5px 0px;
     color: #333333;
+  }
+  @media (min-width: ${size.laptop}){
+    width: 115px;
   }
 `;
 
@@ -118,10 +123,37 @@ export const SearchImage = styled.img`
 export const PassengerWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  margin: auto 0;
+  margin: 0 0;
+  height: 100%;
+  justify-self: stretch;
+  flex: 1;
+  padding: 5px 0;
+  :first-child{
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    @media (max-width: ${size.tablet}){
+      padding: 10px 0 10px 0;
+    }
+    @media (min-width: ${size.laptop}){
+      padding: 10px 0px 10px 2px;
+    }
 
+  }
+  :last-child{
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    @media (max-width: ${size.tablet}){
+      padding: 10px 0 10px 0;
+    }
+    @media (min-width: ${size.laptop}){
+      padding: 10px 10px 10px 0px;
+    }
+  }
+  :hover{
+    background: #F6F0DF;
+  }
   span {
     margin-left: 8px;
   }
@@ -131,6 +163,59 @@ export const PassengerWrapper = styled.div`
     color: ${Colors.primaryColor};
     font-weight: 500;
     font-size: 16px;
+  }
+
+  div {
+    text-align: center;
+  }
+  @media (max-width: ${size.tablet}){
+    padding: 10px 0 10px 0;
+  }
+`;
+
+export const CalenderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 0;
+  height: 100%;
+  justify-self: stretch;
+  flex: 1;
+  :first-child{
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    @media (max-width: ${size.tablet}){
+      padding: 10px 0 10px 0;
+    }
+  }
+  :last-child{
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    padding-right: 8px;
+    padding-right: 8px;
+
+    @media (max-width: ${size.tablet}){
+      padding: 10px 0 10px 0;
+      
+    }
+  }
+  :hover{
+    background: #F6F0DF;
+  }
+  span {
+    margin-left: 8px;
+  }
+
+  p {
+    margin: 0;
+    color: ${Colors.black};
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
   }
 
   div {
