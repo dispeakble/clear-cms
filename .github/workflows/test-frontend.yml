@@ -18,12 +18,10 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Cache dependencies
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('yarn.lock.json') }}
-          restore-keys: npm-
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install modules
         working-directory: ${{ env.WORKING_DIR }}
         run: yarn
