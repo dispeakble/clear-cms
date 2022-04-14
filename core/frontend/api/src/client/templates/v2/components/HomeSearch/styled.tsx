@@ -1,13 +1,5 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
 
-import searchIcon from "../../assets/img/search-icon.svg";
-import checkIn from "../../assets/img/check-in.svg";
-import checkOut from "../../assets/img/check-out.svg";
-import person from "../../assets/img/person-icon.svg";
-import child from "../../assets/img/child-icon.svg";
-import infant from "../../assets/img/infant-icon.svg";
-import star from "../../assets/img/star-icon.svg";
 import { device, size } from "../../styled";
 
 interface IDateLabel {
@@ -49,13 +41,13 @@ export const StyledSearchTab = styled.div`
   background: white;
   cursor: pointer;
   &:hover {
-    background: ${Colors.primaryColorHover};
+    background: ${({theme}) => theme.colors.primaryColorHover};
   }
   &:hover, &.selected {
     color: white;
   }
   &.selected {
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
   }
 `;
@@ -68,7 +60,7 @@ export const StyledSearchInputHolder = styled.div`
   border-radius: 0 0 16px 16px;
   background: none;
   @media ${device.tablet} {
-    background: ${Colors.white};
+    background: ${({theme}) => theme.colors.white};
     flex-direction: row;
     border-radius: 0 16px 0 0;
   }
@@ -76,7 +68,7 @@ export const StyledSearchInputHolder = styled.div`
 
 export const StyledSearchInput = styled.input`
   flex: 1;
-  background: url(${searchIcon.src}) no-repeat 16px center white;
+  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center white;
   padding: 20px 0 20px 50px;
   width: 100%;
   outline: none;
@@ -87,9 +79,9 @@ export const StyledSearchInput = styled.input`
 `;
 
 export const StyledSearchButton = styled.button`
-  background: ${Colors.primaryColor};
+  background: ${({theme}) => theme.colors.primaryColor};
   &:hover {
-    background: ${Colors.primaryColorHover};
+    background: ${({theme}) => theme.colors.primaryColorHover};
   }
   color: white;
   border: none;
@@ -144,7 +136,7 @@ export const StyledValue = styled.label`
 export const StyledPrimaryValue = styled.div`
   font-weight: bold;
   font-size: 14px;
-  color: ${Colors.primaryColor};
+  color: ${({theme}) => theme.colors.primaryColor};
 `;
 
 export const StyledSearchCheckinGroup = styled.div`
@@ -156,7 +148,7 @@ export const StyledSearchCheckinGroup = styled.div`
     width: auto;
   }
   & > span:hover {
-    background-color: ${Colors.primaryLight};
+    background-color: ${({theme}) => theme.colors.primaryLight};
     & > * {
       color: #FFFFFF !important;
     }
@@ -166,7 +158,7 @@ export const StyledSearchCheckinGroup = styled.div`
 
 export const StyledCheckIn = styled.span`
   cursor: pointer;
-  background: url(${checkIn.src}) no-repeat 10px center;
+  background: url(${({theme}) => theme.icon('checkIn')}) no-repeat 10px center;
   padding: 20px 10px 20px 40px;
   border-radius: 8px 0 0 8px;
   flex: 1;
@@ -178,7 +170,7 @@ export const StyledCheckIn = styled.span`
 
 export const StyledCheckOut = styled.span`
   cursor: pointer;
-  background: url(${checkOut.src}) no-repeat 10px center;
+  background: url(${({theme}) => theme.icon('checkOut')}) no-repeat 10px center;
   padding: 20px 10px 20px 40px;
   border-radius: 0 8px 8px 0;
   flex: 1;
@@ -194,20 +186,20 @@ export const StyledSearchOptionsGroup = styled.div`
   border-radius: 10px;
   margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   @media ${device.tablet} {
     flex: 1;
     margin: 0 0 0 10px;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   }
   @media ${device.laptop} {
-    grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(98px, 1fr));
   }
   @media ${device.laptopL} {
-    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
   }
   & > div:hover {
-    background-color: ${Colors.primaryLight};
+    background-color: ${({theme}) => theme.colors.primaryLight};
     & > ${StyledCenterLabel} * {
       color: white !important;
     }
@@ -364,10 +356,10 @@ export const CalendarContainer = styled.div`
     font-weight: bold;
   }
   .react-calendar__month-view__days__day--weekend {
-    color: ${Colors.darkRed};
+    color: ${({theme}) => theme.colors.darkRed};
   }
   .react-calendar__month-view__days__day--neighboringMonth {
-    color: ${Colors.gray};
+    color: ${({theme}) => theme.colors.gray};
   }
   .react-calendar__year-view .react-calendar__tile,
   .react-calendar__decade-view .react-calendar__tile,
@@ -389,29 +381,29 @@ export const CalendarContainer = styled.div`
     background-color: #FFFFFF;
   }
   .react-calendar__tile--now {
-    background: ${Colors.mainBackground};
+    background: ${({theme}) => theme.colors.mainBackground};
   }
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: ${Colors.mainBackground};
+    background: ${({theme}) => theme.colors.mainBackground};
   }
   .react-calendar__tile--hasActive {
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
   }
   .react-calendar__tile--hasActive:enabled:hover,
   .react-calendar__tile--hasActive:enabled:focus {
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
   }
   .react-calendar__tile--active {
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
     color: white;
   }
   .react-calendar__tile--active:enabled:hover,
   .react-calendar__tile--active:enabled:focus {
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
   }
   .react-calendar--selectRange .react-calendar__tile--hover {
-    background-color: ${Colors.gray};
+    background-color: ${({theme}) => theme.colors.gray};
   }
 
 `;

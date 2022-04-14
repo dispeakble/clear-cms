@@ -47,7 +47,7 @@ type HotelDetailProps = {
     data: any;
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
-    handleHotelSearch: () => void;
+    handleHotelSearch: (hotelValue: string) => void;
     handleInfantsPlus: () => void;
     handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
@@ -66,7 +66,7 @@ const HotelDetail = ({
                          handleChildrenMinus,
                          handleChildrenPlus,
                          handleInfantsMinus,
-                         handleSearch
+                         handleSearch,
                      }: HotelDetailProps) => {
     const [show, setShow] = useState({
         checkin: false,
@@ -293,7 +293,7 @@ const HotelDetail = ({
                               {show.checkout ? (
 
                                 <Calendar
-                                  minDate={new Date(moment(data.checkin).add(1, "d"))}
+                                  minDate={new Date(String(moment(data.checkin).add(1, "d")))}
                                   value={new Date(data.checkout)}
                                   onChange={(value: any) => {
                                       handleChangeInput("checkout", value);

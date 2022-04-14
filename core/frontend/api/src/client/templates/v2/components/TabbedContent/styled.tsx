@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
 import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
-import checkSign from "../../assets/img/check-sign-gold.svg";
 import { size } from "../../styled";
 
 export const Wrapper = styled.div`
-  background: ${Colors.offWhite};
+  background: ${({theme}) => theme.colors.offWhite};
   display: block;
   @media (min-width: ${size.tablet}) {
     padding: 34px;
@@ -30,7 +28,7 @@ export const StyledTabs = styled.div`
 `;
 
 export const StyledTab = styled.div`
-  background: rgba(${Colors.primaryColorFadedRBG}, .7);
+  background: rgba(${({theme}) => theme.colors.primaryColorFadedRBG}, .7);
   flex: 1;
   display: flex;
   align-items: center;
@@ -48,7 +46,7 @@ export const StyledTab = styled.div`
   text-align: center;
   cursor: pointer;
   &:hover, &.selected {
-    background: rgba(${Colors.primaryColorRBG}, .7);
+    background: rgba(${({theme}) => theme.colors.primaryColorRBG}, .7);
     color: white;
   }
 `;
@@ -68,7 +66,7 @@ export const StyledContent = styled.div`
 export const StyledTitle = styled.div`
   margin: 20px 0;
   font-size: 44px;
-  color: ${Colors.primaryColor}
+  color: ${({theme}) => theme.colors.primaryColor}
 `;
 
 export const StyledContentWrapper = styled.div`
@@ -78,11 +76,11 @@ export const StyledContentWrapper = styled.div`
 export const StyledContentTitle = styled.div`
   font-size: 22px;
   color: #000000;
-  background: url(${checkSign.src}) no-repeat left 3px;
+  background: url(${({theme}) => theme.icon('checkSignGold')}) no-repeat left 3px;
   padding-left: 20px;
 `;
 export const StyledContentSubtitle = styled.div`
   padding-left: 20px;
   font-size: 16px;
-  color: ${Colors.primaryRed};
+  color: ${({theme}) => theme.colors.primaryRed};
 `;

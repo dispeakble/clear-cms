@@ -58,6 +58,10 @@ const generalSettingsPageStyle = {
     button: {
         cursor: "pointer",
     },
+    heading: {
+        textShadow: "1px 1px 2px rgba(0,0,0,0.3)",
+        color: "white"
+    }
 };
 
 export default generalSettingsPageStyle;

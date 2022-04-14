@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
 
 export const StyledValuePopup = styled.div`
   position: absolute;
   z-index: 20;
-  background: ${Colors.white};
-  border: 1px solid ${Colors.greyBorder};
+  background: ${({theme}) => theme.colors.white};
+  border: 1px solid ${({theme}) => theme.colors.greyBorder};
   border-radius: 10px;
-  color: ${Colors.black} !important;
+  color: ${({theme}) => theme.colors.black} !important;
   padding: 7px;
   display: flex;
   align-items: center;
@@ -19,12 +18,12 @@ export const StyledValuePopup = styled.div`
 export const StyledValue = styled.span`
   min-width: 30px;
   text-align: center;
-  color: ${Colors.black};
+  color: ${({theme}) => theme.colors.black};
 `;
 
 export const StyledButton = styled.button`
   border-radius: 50%;
-  border: 1px solid ${Colors.primaryColor};
+  border: 1px solid ${({theme}) => theme.colors.primaryColor};
   cursor: pointer;
-  color: ${Colors.primaryColor};
+  color: ${({theme}) => theme.colors.primaryColor};
 `;
