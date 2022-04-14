@@ -40,7 +40,7 @@ jobs:
         with:
           push: true
           load: false
-          tags: ${{ env.DOCKER_IMAGE }}:$TIMESTAMP
+          tags: '${{ env.DOCKER_IMAGE }}:$TIMESTAMP'
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           context: .
