@@ -2,7 +2,7 @@
 // Put this in src/client/next.config.js
 // This is so .next folder is in the root directory. Make sure to add .next to .gitignore
 
-const serverUrl = process.env.website_domain || 'http://localhost:9898';
+const serverUrl = `https://${process.env.website_domain}` || 'http://localhost:9898';
 
 module.exports = {
   reactStrictMode: true,
