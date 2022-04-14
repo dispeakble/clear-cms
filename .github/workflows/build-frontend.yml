@@ -44,11 +44,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          load: false
           tags: | 
             ${{ env.DOCKER_IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
           builder: ${{ steps.buildx.outputs.name }}
-          file: ./Dockerfile
-          context: .
+          context: ./core/frontend/api
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
