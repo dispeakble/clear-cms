@@ -27,9 +27,7 @@ const homePageProps: any = {
   websiteName: "Example website",
   websiteUrl: "example.com",
   websiteSlogan: "Example website slogan",
-  colorScheme: {
-
-  }
+  colorScheme: {}
 };
 
 const Wrapper = ({ ...props }: any) => {
