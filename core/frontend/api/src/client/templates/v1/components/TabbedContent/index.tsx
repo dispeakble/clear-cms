@@ -22,7 +22,7 @@ const TabbedContent = () => {
   return (<Wrapper>
     <StyledTabs>
       {slides.map((slide, index) => (
-        <StyledTab key={slide} onClick={() => setSelectedTab(index)}
+        <StyledTab key={slide} data-testid={`test-${slide}-tab-button`} onClick={() => setSelectedTab(index)}
                    className={selectedTab === index ? "selected" : ""}>{t(`home.tabbed.tabs.${slide}`)}</StyledTab>
       ))}
     </StyledTabs>

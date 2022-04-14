@@ -6,10 +6,11 @@ type valuePopupProps = {
   value: number;
   max: number;
   min: number;
+  dataTestId: string;
   onChange: (value: Record<string, number>) => void;
 }
 
-const ValuePopup = ({name, value, min, max, onChange}: valuePopupProps) => {
+const ValuePopup = ({name, value, min, max, dataTestId, onChange}: valuePopupProps) => {
 
   const [currentValue, setCurrentValue] = useState(value);
 
@@ -29,10 +30,10 @@ const ValuePopup = ({name, value, min, max, onChange}: valuePopupProps) => {
     setCurrentValue(newVal);
   }
 
-  return (<StyledValuePopup>
-    <StyledButton onClick={decreaseValue}>-</StyledButton>
-    <StyledValue>{currentValue}</StyledValue>
-    <StyledButton onClick={increaseValue}>+</StyledButton>
+  return (<StyledValuePopup data-testid={dataTestId}>
+    <StyledButton onClick={decreaseValue} data-testid="test-minus-handler">-</StyledButton>
+    <StyledValue data-testid="test-handler-value">{currentValue}</StyledValue>
+    <StyledButton onClick={increaseValue} data-testid="test-plus-handler">+</StyledButton>
   </StyledValuePopup>);
 }
 

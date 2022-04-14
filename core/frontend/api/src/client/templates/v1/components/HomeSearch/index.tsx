@@ -39,6 +39,10 @@ const HomeSearch = () => {
 
   const destinationRef = useRef(null);
 
+  function focusElement(elem: any){
+    elem.current.focus();
+  }
+
   const [checkInCalendarIsOpen, setCheckInCalendarIsOpen] = useState(false);
   const [checkOutCalendarIsOpen, setCheckOutCalendarIsOpen] = useState(false);
   const [checkInDate, setCheckInDate] = useState(null);
@@ -108,10 +112,11 @@ const HomeSearch = () => {
   const searchSubmitHandler = (e: any) => {
     e.preventDefault();
 
+
     if (destination.length === 0) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      destinationRef.current.focus();
+      focusElement(destinationRef)
     }
 
     if (!checkInDate) {
@@ -165,21 +170,22 @@ ${filterValues.stars}`
 
   return <StyledHomeSearch>
     <StyledSearchTabs>
-      <StyledSearchTab className="selected">{t("search.packages")}</StyledSearchTab>
-      <StyledSearchTab>{t("search.hotels")}</StyledSearchTab>
-      <StyledSearchTab>{t("search.flights")}</StyledSearchTab>
+      <StyledSearchTab data-testid='test-packages-search-tab' className="selected">{t("search.packages")}</StyledSearchTab>
+      <StyledSearchTab data-testid='test-hotels-search-tab' >{t("search.hotels")}</StyledSearchTab>
+      <StyledSearchTab data-testid='test-flights-search-tab' >{t("search.flights")}</StyledSearchTab>
     </StyledSearchTabs>
     <StyledSearchInputHolder>
       <StyledSearchInput
+        data-testid="test-hotels-packages-search-input"
         ref={destinationRef}
         placeholder={t("search.homeSearchPlaceholder")}
         value={destination}
         onChange={handleDestination} />
-      <StyledSearchButton onClick={searchSubmitHandler}>{t("search.searchButton")}</StyledSearchButton>
+      <StyledSearchButton onClick={searchSubmitHandler} data-testid="search-submit-btn" >{t("search.searchButton")}</StyledSearchButton>
     </StyledSearchInputHolder>
     <StyledSearchOptions>
       <StyledSearchCheckinGroup>
-        <StyledCheckIn onClick={openCheckInCalendar}>
+        <StyledCheckIn onClick={openCheckInCalendar} data-testid="test-checkIn-button" >
           <StyledLabel>{t("search.checkinDate")}</StyledLabel>
           <StyledValue>{
             checkInDate !== null ?
@@ -191,7 +197,7 @@ ${filterValues.stars}`
           {
             checkInCalendarIsOpen &&
             <>
-              <CalendarContainer id="checkIn">
+              <CalendarContainer id="checkIn" data-testid="test-checkIn-calendar">
                 <SearchLabel>{t("search.checkinDate")}</SearchLabel>
                 <Calendar
                   onChange={onCheckInChange}
@@ -214,9 +220,10 @@ ${filterValues.stars}`
           {
             checkOutCalendarIsOpen &&
             <>
-              <CalendarContainer id="checkOut">
+              <CalendarContainer id="checkOut" data-testid="test-checkOut-calendar">
                 <SearchLabel>{t("search.checkoutDate")}</SearchLabel>
                 <Calendar
+                    className="react-calendar checkIn-picker"
                   onChange={onCheckOutChange}
                   value={checkOutDate}
                   minDate={checkInDate as unknown as Date}
@@ -227,33 +234,33 @@ ${filterValues.stars}`
         </StyledCheckOut>
       </StyledSearchCheckinGroup>
       <StyledSearchOptionsGroup>
-        <StyledPerson onClick={() => toggleFilters('adults', true)}>
+        <StyledPerson onClick={() => toggleFilters('adults', true)} data-testid="test-open-adults-handler">
           <StyledCenterLabel>
             <StyledLabel><Image src={person.src} width={10} height={22}/>{t("search.adults")}</StyledLabel>
             <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
           </StyledCenterLabel>
-          { showFilter.adults && <ValuePopup name="adults" value={filterValues.adults} min={1} max={11} onChange={handleFilterChange} /> }
+          { showFilter.adults && <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={11} onChange={handleFilterChange} /> }
         </StyledPerson>
-        <StyledChild onClick={() => toggleFilters('children', true)}>
+        <StyledChild onClick={() => toggleFilters('children', true)} data-testid="test-open-children-handler">
           <StyledCenterLabel>
             <StyledLabel><Image src={child.src} width={18} height={18}/>{t("search.children")}</StyledLabel>
             <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
           </StyledCenterLabel>
-          { showFilter.children && <ValuePopup name="children" value={filterValues.children} min={0} max={11} onChange={handleFilterChange} /> }
+          { showFilter.children && <ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0} max={11} onChange={handleFilterChange} /> }
         </StyledChild>
-        <StyledInfant onClick={() => toggleFilters('infants', true)}>
+        <StyledInfant onClick={() => toggleFilters('infants', true)} data-testid="test-open-infants-handler">
           <StyledCenterLabel>
             <StyledLabel><Image src={infant.src} width={13} height={18}/>{t("search.infants")}</StyledLabel>
             <StyledPrimaryValue>{filterValues.infants}</StyledPrimaryValue>
           </StyledCenterLabel>
-          { showFilter.infants && <ValuePopup name="infants" value={filterValues.infants} min={0} max={11} onChange={handleFilterChange} /> }
+          { showFilter.infants && <ValuePopup dataTestId="test-infants-handler" name="infants" value={filterValues.infants} min={0} max={11} onChange={handleFilterChange} /> }
         </StyledInfant>
-        <StyledStars onClick={() => toggleFilters('stars', true)}>
+        <StyledStars onClick={() => toggleFilters('stars', true)} data-testid="test-open-stars-handler">
           <StyledCenterLabel>
             <StyledLabel><Image src={star.src} width={14} height={13}/>{t("search.hotel-stars")}</StyledLabel>
             <StyledPrimaryValue>{filterValues.stars}</StyledPrimaryValue>
           </StyledCenterLabel>
-          { showFilter.stars && <ValuePopup name="stars" value={filterValues.stars} min={1} max={5} onChange={handleFilterChange} /> }
+          { showFilter.stars && <ValuePopup dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1} max={5} onChange={handleFilterChange} /> }
         </StyledStars>
       </StyledSearchOptionsGroup>
     </StyledSearchOptions>
