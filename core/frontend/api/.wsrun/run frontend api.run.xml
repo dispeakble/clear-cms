@@ -12,7 +12,7 @@
       <env name="redis_port" value="6379" />
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="NODE_ENV" value="development" />
-      <env name="APP_DOMAIN" value="http://localhost:9898" />
+      <env name="website_domain" value="http://localhost:9898" />
       <env name="tpl_ver" value="v1" />
       <env name="app" value="marioviajes" />
     </envs>
