@@ -16,6 +16,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate build ID
+        id: prep
+        run: |
+          ts=$(date +%s)
+          echo "::set-output name=BUILD_ID::${ts}"
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -40,7 +45,8 @@ jobs:
         with:
           push: true
           load: false
-          tags: '${{ env.DOCKER_IMAGE }}:${{ env.TIMESTAMP }}'
+          tags: | 
+            ${{ env.DOCKER_IMAGE }}:${{ steps.prep.outputs.BUILD_ID }}
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           context: .
