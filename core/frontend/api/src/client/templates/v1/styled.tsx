@@ -34,7 +34,6 @@ export const device = {
 export const MainWrapper = styled.div`
   height: 100%;
   width: 100%;
-  
 `;
 
 export const TopContentWrapper = styled.div`
@@ -81,7 +80,6 @@ export const PaperWrapper = styled.div`
 export const StyledContentWrapper = styled.div`
   width: 100%;
   margin-top: 95px;
-
   background: ${({theme}) => theme.colors.offWhite};
   @media (min-width: ${size.tablet}) {
     padding: 0 40px;
@@ -118,5 +116,5 @@ export const StyledTermsOfUse = styled.div`
   text-align: justify;
   @media (min-width: ${size.tablet}) {
     padding: 20px 90px;
-
+  }
 `;
