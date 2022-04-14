@@ -1,7 +1,7 @@
 name: Build Frontend Proxy
 
 env:
-  DOCKER_IMAGE: 'dispeakble/crm-frontend-proxy:'
+  DOCKER_IMAGE: 'dispeakble/crm-frontend-proxy'
   WORKING_DIR: core/frontend/proxy
 
 on:

@@ -1,7 +1,7 @@
 name: Build Bucket Api
 
 env:
-  DOCKER_IMAGE: 'dispeakble/crm-bucket:'
+  DOCKER_IMAGE: 'dispeakble/crm-bucket'
   WORKING_DIR: plugins/dosido/bucket
 
 on:

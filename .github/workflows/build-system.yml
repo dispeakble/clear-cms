@@ -1,7 +1,7 @@
 name: Build System Api
 
 env:
-  DOCKER_IMAGE: 'dispeakble/crm-system:'
+  DOCKER_IMAGE: 'dispeakble/crm-system'
   WORKING_DIR: core/system
 
 on:

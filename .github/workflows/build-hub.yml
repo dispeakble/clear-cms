@@ -1,7 +1,7 @@
 name: Build Hub
 
 env:
-  DOCKER_IMAGE: 'dispeakble/crm-hub:'
+  DOCKER_IMAGE: 'dispeakble/crm-hub'
   WORKING_DIR: core/hub
 
 on:
