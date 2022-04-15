@@ -1,32 +1,58 @@
 import * as React from "react";
-import {useTranslations} from "next-intl";
+import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
+import { getIcon } from "./helpers/icons";
 
-import {MainWrapper, GlobalStyle, StyledWebsiteName, StyledMiddleText, StyledWebsiteSlogan} from "./styled";
-import HomeSearch from './components/HomeSearch'
+import {
+  ContentWrapper,
+  GlobalStyle,
+  MainWrapper, PaperWrapper,
+  StyledMiddleText,
+  StyledWebsiteName,
+  StyledWebsiteSlogan, TopContentWrapper
+} from "./styled";
+import HomeSearch from "./components/HomeSearch";
 import TopHotels from "./components/Promo/TopHotels";
 import VerticalPhotoSlider from "./components/VerticalPhotoSlider";
+import QuickAboutUs from "./components/QuickAboutUs";
+import Recommended from "./components/Recommended";
+import TabbedContent from "./components/TabbedContent";
+import Footer from "./components/Footer";
 
-export type HomePageProps = {
-    websiteName: string;
-    websiteUrl: string;
-    websiteSlogan: string;
-}
+const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
-const HomePage = ({websiteName, websiteUrl, websiteSlogan}: HomePageProps) => {
-    const t = useTranslations();
-    return <MainWrapper>
-        <GlobalStyle />
-        <Header websiteName={websiteName}/>
-        <HomeSearch/>
-        <StyledMiddleText>
-            <StyledWebsiteName>{websiteName}</StyledWebsiteName>
-            <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
-        </StyledMiddleText>
-        <TopHotels/>
-        <VerticalPhotoSlider/>
-        {websiteUrl}
-    </MainWrapper>;
+  const getIcons = (iconName: string) => {
+    return getIcon(iconName);
+  }
+
+  return (
+    <ThemeProvider theme={{colors: colorScheme, icon: getIcons}}>
+      <MainWrapper>
+        <TopContentWrapper>
+          <ContentWrapper>
+            <GlobalStyle />
+            <Header websiteName={websiteName} />
+            <HomeSearch />
+            <StyledMiddleText>
+              <StyledWebsiteName>{websiteName}</StyledWebsiteName>
+              <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
+            </StyledMiddleText>
+          </ContentWrapper>
+        </TopContentWrapper>
+        <PaperWrapper>
+          <ContentWrapper>
+            <TopHotels />
+            <VerticalPhotoSlider maxWidth="890px" maxHeight="370px" />
+            <QuickAboutUs />
+            <Recommended />
+            <TabbedContent />
+            <Footer />
+          </ContentWrapper>
+        </PaperWrapper>
+      </MainWrapper>
+    </ThemeProvider>
+
+  );
 };
 
 export default HomePage;

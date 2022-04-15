@@ -40,19 +40,19 @@ export const StyledMenu = styled.ul`
     & li {
       display: none;
       gap: 0;
-      background: rgba(0, 0, 0, 0.1);
+      background: ${({theme}) => theme.colors.primaryColor};
       padding: 15px 10px;
       color: #333;
 
       &:hover {
-        background: rgba(0, 0, 0, 0.3);
+        background: ${({theme}) => theme.colors.primaryColorHover};
       }
     }
   }
 `;
 
 export const Item = styled.li`
-  padding: 4px 0px;
+  padding: 4px 0;
 `;
 
 export const LinkItem = styled.a`

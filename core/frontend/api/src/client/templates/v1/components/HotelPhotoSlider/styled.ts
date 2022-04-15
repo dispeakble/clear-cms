@@ -3,54 +3,39 @@ import {device, size} from "../../styled";
 
 export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  & .swiper-button-prev {
-    left: 0;
-    @media ${device.tablet} {
-      left: 0;
-    }
+  width: 320px;
+  height: 270px;
+  margin-bottom: 20px;
+  @media (min-width: ${size.mobileS}) {
+    width: 320px;
   }
-  & .swiper-button-next {
-    right: 0;
-    @media ${device.tablet} {
-      right: 0;
-    }
+  @media (min-width: ${size.mobileM}) {
+    width: 375px;
   }
-
-  & .swiper-button-next, .swiper-button-prev {
-    color: #FFFFFF;
+  @media (min-width: ${size.mobileL}) {
+    width: 400px;
   }
-
-`;
-
-type StyledSliderImageProps = {
-  src: any;
-}
-
-export const StyledSliderImage = styled.div<StyledSliderImageProps>`
-  background: url(${({src}) => src}) no-repeat center center;
-  background-size: cover;
-  width: 620px;
-  height: 200px;
+  @media (min-width: ${size.tablet}) {
+    width: 620px;
+  }
   @media (min-width: ${size.laptop}) {
-    width: 438px;
-    height: 375px;
+    width: 520px;
   }
   @media (min-width: ${size.laptopL}) {
-    width: 818px;
-    height: 375px;
+    width: 750px;
   }
-  &.first {
+  & .image-gallery-icon {
+    color: ${({theme}) => theme.colors.white};
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
 
-  }
-  &.last {
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: ${({theme}) => theme.colors.primaryColorHover};
+      }
+    }
 
-  }
-  &.middle {
-    width: 397px;
-    height: 450px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    &:focus {
+      outline: none;
+    }
   }
 `;

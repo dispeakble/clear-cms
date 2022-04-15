@@ -9,7 +9,7 @@ import { ConfigService } from "@nestjs/config";
 export class AppController {
 
     private moduleConfig: ModuleInterface = {
-        name: 'db',
+        name: `${process.env.app}_db`,
         version: '20.11.17',
         description: 'db module',
         started: new Date(),

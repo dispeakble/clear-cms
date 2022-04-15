@@ -1,9 +1,5 @@
 import styled from "styled-components";
 import { device, size } from "../../styled";
-import { Colors } from "../../assets/design-set";
-import coldStar from "../../assets/img/cold-star.svg";
-import goldStar from "../../assets/img/gold-star.svg";
-import zoomIcon from "../../assets/img/zoom-icon.svg";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -14,7 +10,7 @@ export const Wrapper = styled.div`
   @media (min-width: ${device.tablet}) {
     margin: 20px;
   }
-  @media (min-width: ${device.laptopL}) {
+  @media (min-width: ${device.laptop}) {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
 `;
@@ -50,13 +46,13 @@ export const StyledDetails = styled.div`
 `;
 
 export const StyledPrice = styled.div`
-  color: ${Colors.darkRed};
+  color: ${({theme}) => theme.colors.darkRed};
   font-size: 26px;
   margin-bottom: 10px;
 `;
 
 export const StyledActionButton = styled.a`
-  background: ${Colors.primaryColor};
+  background: ${({theme}) => theme.colors.primaryColor};
   color: white;
   border-radius: 12px;
   text-align: center;
@@ -68,7 +64,8 @@ export const StyledActionButton = styled.a`
   margin-bottom: 10px;
 
   &:hover {
-    color: ${Colors.primaryLight};
+    color: ${({theme}) => theme.colors.white};
+    background: ${({theme}) => theme.colors.primaryLight};
   }
 `;
 
@@ -99,7 +96,7 @@ export const StyledZoomImg = styled.div<{ src: any }>`
     height: 26px;
     display: block;
     position: absolute;
-    background: url(${zoomIcon.src}) no-repeat left top;
+    background: url(${({theme}) => theme.icon('zoom')}) no-repeat left top;
   }
 
 `;
@@ -117,7 +114,7 @@ export const StyledZoomPopup = styled.div<{ src: any }>`
 `;
 export const StyledStars = styled.div<{ stars: number }>`
   height: 25px;
-  background: url(${coldStar.src}) space top left;
+  background: url(${({theme}) => theme.icon('coldStar')}) space top left;
   background-size: 25px 25px;
   width: 125px;
   @media ${device.tablet} {
@@ -136,7 +133,7 @@ export const StyledStars = styled.div<{ stars: number }>`
     left: 0;
     height: 25px;
     width: ${({ stars }) => stars * 25}px;
-    background: url(${goldStar.src}) space left center;
+    background: url(${({theme}) => theme.icon('goldStar')}) space left center;
     background-size: 25px 25px;
     @media ${device.tablet} {
       width: ${({ stars }) => stars * 50}px;

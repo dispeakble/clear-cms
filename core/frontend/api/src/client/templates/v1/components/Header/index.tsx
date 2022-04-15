@@ -29,7 +29,7 @@ const Header = (props: any) => {
         <Link href="/">
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a href="/">
-            <Logo/>
+            <Logo />
           </a>
         </Link>
 

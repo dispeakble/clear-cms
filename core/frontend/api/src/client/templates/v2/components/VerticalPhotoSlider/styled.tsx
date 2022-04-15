@@ -1,45 +1,21 @@
 import styled from "styled-components";
 
 export const StyledSliderWrapper = styled.div`
-  margin: 60px 0;
-  width: 870px;
-  display: flex;
-  align-items: center;
+  width: 100%;
+  height: 450px;
 
-  & .swiper-button-prev {
-    left: 29%;
-  }
+  & .image-gallery-icon {
+    color: ${({theme}) => theme.colors.white};
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
 
-  & .swiper-button-next {
-    right: 28%;
-  }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: ${({theme}) => theme.colors.primaryColorHover};
+      }
+    }
 
-  & .swiper-button-next, .swiper-button-prev {
-    color: #FFFFFF;
-  }
-`;
-
-type StyledSliderImageProps = {
-  src: any;
-}
-
-export const StyledSliderImage = styled.div<StyledSliderImageProps>`
-  background: url(${({ src }) => src}) no-repeat center center;
-  background-size: cover;
-  width: 300px;
-  height: 340px;
-
-  &.first {
-
-  }
-
-  &.last {
-
-  }
-
-  &.middle {
-    width: 397px;
-    height: 450px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    &:focus {
+      outline: none;
+    }
   }
 `;

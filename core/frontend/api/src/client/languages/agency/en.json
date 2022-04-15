@@ -1,9 +1,13 @@
 {
   "global": {
     "home" : "Home",
-    "search": "Search"
+    "search": "Search",
+    "pageTitle": "Hotels page :: {websiteName}"
   },
   "home": {
+    "seo": {
+      "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
+    },
     "info-box-title" : "Adventure",
     "info-box-description" : "Holidays and tours",
     "img-source" : "Image from",
@@ -90,9 +94,9 @@
     "searchButton" : "Find deals",
     "checkin": "Check in",
     "addDate": "Add date",
-    "checkinDate": "Staying from",
+    "checkinDate": "Check in",
     "checkout": "Check out",
-    "checkoutDate" : "Staying until",
+    "checkoutDate" : "Check out",
     "guests" : "Guests",
     "adults" : "Adults",
     "children" : "Children",
@@ -117,6 +121,14 @@
       "adult": "Adult-",
       "child": "Child-",
       "infant": "infant-"
+    }
+  },
+  "hotels": {
+    "seo": {
+      "main": {
+        "pageTitle": "Hotels :: {websiteName}",
+        "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
+      }
     }
   },
   "hotelAbout" : {

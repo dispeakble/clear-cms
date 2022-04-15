@@ -206,46 +206,4 @@ export class UploadInterceptor {
         }
 
     }
-}/*busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-                file.on('data', function(data) {
-                    handshakeResponse.thePusher.next({
-                        buffer: data
-                    });
-                    console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-                });
-
-                let handshake = this.protocolService.startHandshake({
-                    channel: 'system'
-                });
-
-                handshake.theObserver.subscribe(data => {
-                    console.log(data);
-                }, err => {
-                    console.log(err);
-                }, () => {
-                    console.log('upload complete');
-                })
-
-                const handshakeResponse = handshake.thePromise.then(handshakeResponse => {
-                    handshakeResponse.thePusher.next({
-                        type: 'init',
-                        payload: {
-                            path: JSON.stringify(context),
-                            fieldname, filename, encoding, mimetype
-                        }
-                    });
-
-                    file.on('end', function() {
-                        handshake.theObserver.unsubscribe();
-                        handshakeResponse.thePusher.complete();
-                        console.log('File [' + fieldname + '] Finished');
-                    });
-                });
-
-            });
-            busboy.on('finish', function() {
-                args[1].writeHead(HttpStatus.OK, {
-                    'Connection': 'close'
-                });
-                args[1].end("That's all folks!");
-            });*/
+}

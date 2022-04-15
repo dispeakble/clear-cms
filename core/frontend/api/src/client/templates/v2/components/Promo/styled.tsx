@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
 import { device } from "../../styled";
 
 export const StyledWrapper = styled.div`
@@ -8,6 +7,8 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-bottom: 60px;
+  margin-top: 60px;
 `;
 
 export const StyledCardsWrapper = styled.div`
@@ -76,7 +77,7 @@ export const StyledLightLabel = styled.span`
   height: 21px;
   background: #FF9F5A;
   padding: 0 10px;
-  color: ${Colors.primaryColor};
+  color: ${({theme}) => theme.colors.primaryColor};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,7 +93,7 @@ export const StyledGrayLabel = styled.span`
 
 export const SmallBookNow = styled.span`
   border-radius: 10px;
-  background: ${Colors.primaryColor};
+  background: ${({theme}) => theme.colors.primaryColor};
   padding: 0 10px;
   color: #FFFFFF;
   white-space: nowrap;
@@ -101,7 +102,7 @@ export const SmallBookNow = styled.span`
   cursor: pointer;
 
   &:hover {
-    background: ${Colors.primaryLight};
+    background: ${({theme}) => theme.colors.primaryLight};
   }
 `;
 
@@ -126,7 +127,8 @@ export const StyledTabs = styled.div`
   border-radius: 10px;
   padding: 10px;
   display: flex;
-  width: 600px;
+  max-width: 600px;
+  width: 100%;
   margin-bottom: 20px;
   gap: 10px;
 `;
@@ -134,21 +136,25 @@ export const StyledTabs = styled.div`
 export const StyledTabBtn = styled.div`
   flex: 1;
   background: #FFFFFF;
-  color: ${Colors.gray};
-  line-height: 42px;
-  padding: 0 10px;
+  color: ${({theme}) => theme.colors.gray};
+  padding: 15px;
   text-align: center;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 12px;
+  @media ${device.tablet} {
+    font-size: 18px;
+    padding: 0 10px;
+    line-height: 42px;
+  }
 
   &:hover {
-    background: ${Colors.primaryLight};
+    background: ${({theme}) => theme.colors.primaryLight};
     color: #FFFFFF;
     border-radius: 8px;
   }
 
   &.selected {
-    background: ${Colors.primaryColor};
+    background: ${({theme}) => theme.colors.primaryColor};
     color: #FFFFFF;
     border-radius: 8px;
   }

@@ -1,53 +1,21 @@
 import styled from "styled-components";
-import { device } from "../../styled";
 
-export const StyledSliderWrapper = styled.div<{ maxWidth: string }>`
+export const StyledSliderWrapper = styled.div`
   width: 100%;
-  overflow: hidden;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  & .swiper-button-prev {
-    left: 0;
-    @media ${device.tablet} {
-      left: 29%;
+  height: 450px;
+
+  & .image-gallery-icon {
+    color: ${({theme}) => theme.colors.white};
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        color: ${({theme}) => theme.colors.primaryColorHover};
+      }
     }
-  }
-  & .swiper-button-next {
-    right: 0;
-    @media ${device.tablet} {
-      right: 28%;
+
+    &:focus {
+      outline: none;
     }
-  }
-
-  & .swiper-button-next, .swiper-button-prev {
-    color: #FFFFFF;
-  }
-
-  @media ${device.laptop} {
-    width: ${({ maxWidth }) => maxWidth};
-  }
-`;
-
-type StyledSliderImageProps = {
-  src: any;
-  maxHeight: string;
-}
-
-export const StyledSliderImage = styled.div<StyledSliderImageProps>`
-  background: url(${({ src }) => src}) no-repeat center center;
-  background-size: cover;
-  width: 300px;
-  height: ${({ maxHeight }) => maxHeight};
-  &.first {
-
-  }
-  &.last {
-
-  }
-  &.middle {
-    width: 397px;
-    height: 450px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.3);
   }
 `;
