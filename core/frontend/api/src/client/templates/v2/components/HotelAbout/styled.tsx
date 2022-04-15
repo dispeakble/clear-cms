@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {size} from "../../styled";
-import hotel1 from "../../assets/img/hotels/small/hotel1.jpg"
-
+import hotel1 from "../../assets/img/hotels/small/hotel1.jpg";
+import { Rate } from 'antd';
 
 export const About = styled.div`
   margin-top: 37px;
@@ -23,14 +23,20 @@ export const LeftSection = styled.div`
 export const HotelName = styled.div`
   font-weight: 600;
   font-size: 32px;
-  line-height: 48px;
+  line-height: 30px;
   cursor: default;
 `
 export const HotelRate = styled.div`
-
-  span {
-    margin-left: 6px;
+  display: flex;
+padding: 5px 0;
+  h3 {
     cursor: default;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 6px 0 0 12px;
+    display: flex;
+    align-items: center;
   }
 `
 export const Description = styled.div`
@@ -85,6 +91,21 @@ export const Highlights = styled.div`
   padding: 20px 35px;
   cursor: default;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  position: relative;
+  ::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 20px;
+  }
   @media (min-width: ${size.laptopL}) {
     width: 497px;
   }
@@ -96,7 +117,9 @@ export const Cardtitle = styled.div`
   line-height: 50px;
   text-align: center;
   color: ${({theme}) => theme.colors.primaryColor};
-  text-shadow: 0px 4px 4px rgb(0 0 0 / 55%);
+  text-shadow: 0 4px 4px rgb(0 0 0 / 55%);
+  position: relative;
+  z-index: 2;
   @media only screen and (max-width:${size.tablet}){
     margin-bottom: 10px;
     line-height:1.1em;
@@ -116,13 +139,15 @@ export const Cardtitle = styled.div`
   }
 `
 export const Feature = styled.div`
+  position: relative;
+  z-index: 2;
   li {
     display: flex;
     gap: 5px;
     font-size: 23px;
     line-height: 34px;
     color: ${({theme}) => theme.colors.white};
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.55);
+    text-shadow: 0 4px 4px rgba(0, 0, 0, 0.55);
     list-style: none;
   }
 `
@@ -132,6 +157,10 @@ export const CheckedIcon = styled.div`
   position: relative;
   top: 8px;
   background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
+`;
 
-
-`
+export const Ping =styled(Rate)`
+.ant-rate-star-zero svg {
+  fill: #d9d9d9;
+}
+`;

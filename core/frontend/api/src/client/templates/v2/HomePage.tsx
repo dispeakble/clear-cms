@@ -6,10 +6,12 @@ import { getIcon } from "./helpers/icons";
 import {
   ContentWrapper,
   GlobalStyle,
-  MainWrapper, PaperWrapper,
+  MainWrapper,
+  PaperWrapper,
   StyledMiddleText,
   StyledWebsiteName,
-  StyledWebsiteSlogan, TopContentWrapper
+  StyledWebsiteSlogan,
+  TopContentWrapper
 } from "./styled";
 import HomeSearch from "./components/HomeSearch";
 import TopHotels from "./components/Promo/TopHotels";
@@ -23,14 +25,16 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   const getIcons = (iconName: string) => {
     return getIcon(iconName);
-  }
+  };
+
+  const myTheme: any = { colors: colorScheme, icon: getIcons };
 
   return (
-    <ThemeProvider theme={{colors: colorScheme, icon: getIcons}}>
+    <ThemeProvider theme={myTheme}>
+      <GlobalStyle />
       <MainWrapper>
         <TopContentWrapper>
           <ContentWrapper>
-            <GlobalStyle />
             <Header websiteName={websiteName} />
             <HomeSearch />
             <StyledMiddleText>
@@ -51,7 +55,6 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         </PaperWrapper>
       </MainWrapper>
     </ThemeProvider>
-
   );
 };
 

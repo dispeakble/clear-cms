@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import {StyledSliderWrapper} from "./styled";
+import {HotelPhotoSliderWrapper} from "./styled";
 import ReactImageMagnify from 'react-image-magnify';
 import ImageGallery from 'react-image-gallery';
 import { useMemo } from "react";
@@ -9,7 +9,7 @@ import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
 import hotel2 from "../../assets/img/hotels/small/hotel5.jpg";
 import hotel3 from "../../assets/img/hotels/small/hotel6.jpg";
 
-const VerticalPhotoSlider = () => {
+const HotelPhotoSlider = () => {
 
   const gallery = {
     showBullets: false,
@@ -98,12 +98,12 @@ const VerticalPhotoSlider = () => {
     },
   }), [gallery]);
 
-  return <StyledSliderWrapper>
+  return <HotelPhotoSliderWrapper>
     <ImageGallery
       {...galleryProps}
     />
     <div id={`vertical-slider-enlargeImage`}/>
-  </StyledSliderWrapper>;
+  </HotelPhotoSliderWrapper>;
 }
 
-export default VerticalPhotoSlider;
+export default HotelPhotoSlider;

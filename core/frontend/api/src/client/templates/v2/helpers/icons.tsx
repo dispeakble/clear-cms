@@ -1,6 +1,7 @@
+import adultsIcon from "../assets/img/adults-icon.svg";
 import bedroomIcon from "../assets/img/bedroom-icon.svg";
 import breadcrumbIcon from "../assets/img/breadcrumb-icon.svg";
-import calenderIcon from "../assets/img/calender-icon.svg";
+import calendarIcon from "../assets/img/calendar-icon.svg";
 import checkIcon from "../assets/img/check-icon.svg";
 import checkInIcon from "../assets/img/check-in-icon.svg";
 import checkOutIcon from "../assets/img/check-out-icon.svg";
@@ -8,9 +9,9 @@ import checkSignGoldIcon from "../assets/img/check-sign-gold-icon.svg";
 import childIcon from "../assets/img/child-icon.svg";
 import closeIcon from "../assets/img/close-icon.svg";
 import coldStarIcon from "../assets/img/cold-star-icon.svg";
-import dropDarkIcon from "../assets/img/dropDark-icon.svg";
+import dropDarkIcon from "../assets/img/list-dd-dark-icon.svg";
+import dropLightIcon from "../assets/img/list-dd-light-icon.svg";
 import dropdownIcon from "../assets/img/dropdown-icon.svg";
-import dropLightIcon from "../assets/img/dropLight-icon.svg";
 import goldStarIcon from "../assets/img/gold-star-icon.svg";
 import infantIcon from "../assets/img/infant-icon.svg";
 import infoIcon from "../assets/img/info-icon.svg";
@@ -25,9 +26,10 @@ import starIcon from "../assets/img/star-icon.svg";
 import zoomIcon from "../assets/img/zoom-icon.svg";
 
 const icons: Record<string, any> = {
+  adults: adultsIcon,
   bedroom: bedroomIcon,
   breadcrumb: breadcrumbIcon,
-  calender: calenderIcon,
+  calendar: calendarIcon,
   check: checkIcon,
   checkIn: checkInIcon,
   checkOut: checkOutIcon,
@@ -53,5 +55,12 @@ const icons: Record<string, any> = {
 }
 
 export const getIcon = (iconName: string) => {
-  return icons[iconName].src;
+  let icon;
+  try {
+    icon = icons[iconName].src;
+  } catch (err) {
+    console.log(iconName);
+    console.log(err);
+  }
+  return icon;
 }

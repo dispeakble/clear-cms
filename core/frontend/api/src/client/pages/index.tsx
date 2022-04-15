@@ -26,17 +26,11 @@ const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
 
     const Component = templates[version];
 
-    const homePagePayload: any = settings;
-
     return <>
         <Helmet>
             <title>{t("home.seo.pageTitle", { websiteName: settings.websiteName })}</title>
-            <link
-              href="https://fonts.googleapis.com/css2?family=Poppins"
-              rel="stylesheet"
-            />
         </Helmet>
-        <Component {...homePagePayload} />
+        <Component {...settings} />
     </>;
 };
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {device, size} from "../../styled";
 
-export const StyledSliderWrapper = styled.div`
+export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;
   width: 320px;
   height: 270px;

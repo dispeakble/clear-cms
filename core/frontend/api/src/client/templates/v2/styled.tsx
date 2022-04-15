@@ -1,7 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components";
 import headerBg from "./assets/img/header-bg.jpg";
+import { CustomTheme } from "../../modules";
 
-export const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle<{theme: CustomTheme}>`
   body, html {
     margin: 0;
     padding: 0;
@@ -32,13 +33,16 @@ export const device = {
 };
 
 export const MainWrapper = styled.div`
-  height: 100%;
   width: 100%;
-  
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const TopContentWrapper = styled.div`
-  background: url('${headerBg.src}') no-repeat center center ${({theme}) => theme.colors.mainBackground};
+  width: 100%;
+  background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
 
@@ -47,6 +51,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  max-width: 320px;
   @media ${device.mobileS} {
     max-width: 320px;
   }
@@ -74,16 +79,40 @@ export const ContentWrapper = styled.div`
 `;
 
 export const PaperWrapper = styled.div`
-  background: ${({theme}) => theme.colors.mainBackground};
+  width: 100%;
+  background: ${({ theme }) => theme.colors.mainBackground};
 `;
 
 export const StyledContentWrapper = styled.div`
   width: 100%;
-  margin-top: 95px;
-
+  margin: 95px auto 0;
   background: ${({theme}) => theme.colors.offWhite};
   @media (min-width: ${size.tablet}) {
     padding: 0 40px;
+  }
+  @media ${device.mobileS} {
+    max-width: 320px;
+  }
+  @media ${device.mobileM} {
+    max-width: 375px;
+  }
+  @media ${device.mobileL} {
+    max-width: 400px;
+  }
+  @media ${device.tablet} {
+    max-width: 720px;
+  }
+  @media ${device.laptop} {
+    max-width: 900px;
+  }
+  @media ${device.laptopL} {
+    max-width: 1280px;
+  }
+  @media ${device.desktop} {
+    max-width: 1440px;
+  }
+  @media ${device.desktopL} {
+    max-width: 1440px;
   }
 `;
 

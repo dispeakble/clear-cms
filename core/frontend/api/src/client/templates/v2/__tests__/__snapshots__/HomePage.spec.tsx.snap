@@ -6,131 +6,135 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="styled__MainWrapper-sc-1y5gkei-0 jmqgDE"
+        class="styled__MainWrapper-sc-1y5gkei-0 cFGPYi"
       >
         <div
-          class="styled__TopContentWrapper-sc-1y5gkei-1 fYAIab"
+          class="styled__TopContentWrapper-sc-1y5gkei-1 iPSYno"
         >
           <div
-            class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
+            class="styled__ContentWrapper-sc-1y5gkei-2 gnrCsV"
           >
             <header
-              class="styled__HeaderWrapper-sc-ffk3hg-0 fsATDC"
+              class="styled__HeaderWrapper-sc-ffk3hg-0 eONlUU"
               data-testid="header-wrapper"
             >
               <div
-                class="styled__LogoWrapper-sc-ffk3hg-1 eqLETf"
-              >
-                <a
-                  href="/"
-                >
-                  <div
-                    class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
-                  >
-                    voila
-                  </div>
-                </a>
-              </div>
-              <div
-                class="styled__MenuWrapper-sc-ffk3hg-2 hXYOUr"
+                class="styled__HeaderContent-sc-ffk3hg-1 XVuxU"
               >
                 <div
-                  class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+                  class="styled__LogoWrapper-sc-ffk3hg-2 fkPqly"
                 >
-                  <ul
-                    class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+                  <a
+                    href="/"
                   >
-                    <li
-                      class="styled__Item-sc-1nuctas-2 hZRbII"
+                    <div
+                      class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
                     >
-                      <a
-                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                        href="activities"
-                      >
-                        Activities
-                      </a>
-                    </li>
-                    <li
-                      class="styled__Item-sc-1nuctas-2 hZRbII"
-                    >
-                      <a
-                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                        href="hotels"
-                      >
-                        Hotels
-                      </a>
-                    </li>
-                    <li
-                      class="styled__Item-sc-1nuctas-2 hZRbII"
-                    >
-                      <a
-                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                        href="packages"
-                      >
-                        Packages
-                      </a>
-                    </li>
-                  </ul>
+                      voila
+                    </div>
+                  </a>
                 </div>
-              </div>
-              <div
-                class="styled__LanguagesWrapper-sc-ffk3hg-5 ixfByd"
-              >
                 <div
-                  class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+                  class="styled__MenuWrapper-sc-ffk3hg-3 iyQTAq"
                 >
-                  <button
-                    class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
-                  >
-                     
-                    <svg
-                      fill="currentColor"
-                      height="1em"
-                      stroke="currentColor"
-                      stroke-width="0"
-                      viewBox="0 0 24 24"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
-                      />
-                    </svg>
-                  </button>
                   <div
-                    class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+                    class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+                  >
+                    <ul
+                      class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+                    >
+                      <li
+                        class="styled__Item-sc-1nuctas-2 hZRbII"
+                      >
+                        <a
+                          class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                          href="activities"
+                        >
+                          Activities
+                        </a>
+                      </li>
+                      <li
+                        class="styled__Item-sc-1nuctas-2 hZRbII"
+                      >
+                        <a
+                          class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                          href="hotels"
+                        >
+                          Hotels
+                        </a>
+                      </li>
+                      <li
+                        class="styled__Item-sc-1nuctas-2 hZRbII"
+                      >
+                        <a
+                          class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                          href="packages"
+                        >
+                          Packages
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div
+                  class="styled__LanguagesWrapper-sc-ffk3hg-6 bfJVcy"
+                >
+                  <div
+                    class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+                  >
+                    <button
+                      class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
+                    >
+                       
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 24 24"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="styled__SearchWrapper-sc-ffk3hg-4 bnKAfK"
+                >
+                  <input
+                    class="styled__InputSearch-sc-ffk3hg-5 biDHav"
+                    data-testid="header-search-input"
+                    placeholder="Search"
+                    type="search"
                   />
                 </div>
-              </div>
-              <div
-                class="styled__SearchWrapper-sc-ffk3hg-3 jlmBFt"
-              >
-                <input
-                  class="styled__InputSearch-sc-ffk3hg-4 lgxCoS"
-                  data-testid="header-search-input"
-                  placeholder="Search"
-                  type="search"
-                />
               </div>
             </header>
             <div
               class="styled__StyledHomeSearch-sc-1s95kis-0 ecWoaw"
             >
               <div
-                class="styled__StyledSearchTabs-sc-1s95kis-1 jGUKhf"
+                class="styled__StyledSearchTabs-sc-1s95kis-1 eYCVgD"
               >
                 <div
-                  class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt selected"
+                  class="styled__StyledSearchTab-sc-1s95kis-2 cbACjE selected"
                 >
                   Packages
                 </div>
                 <div
-                  class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
+                  class="styled__StyledSearchTab-sc-1s95kis-2 cbACjE"
                 >
                   Hotels
                 </div>
                 <div
-                  class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
+                  class="styled__StyledSearchTab-sc-1s95kis-2 cbACjE"
                 >
                   Flights
                 </div>
@@ -156,7 +160,7 @@ Object {
                   class="styled__StyledSearchCheckinGroup-sc-1s95kis-11 hDNnSU"
                 >
                   <span
-                    class="styled__StyledCheckIn-sc-1s95kis-12 bjltEk"
+                    class="styled__StyledCheckIn-sc-1s95kis-12 fnsIyT"
                   >
                     <label
                       class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
@@ -170,7 +174,7 @@ Object {
                     </label>
                   </span>
                   <span
-                    class="styled__StyledCheckOut-sc-1s95kis-13 fqlEzg"
+                    class="styled__StyledCheckOut-sc-1s95kis-13 jcBdQn"
                   >
                     <label
                       class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
@@ -188,7 +192,7 @@ Object {
                   class="styled__StyledSearchOptionsGroup-sc-1s95kis-14 ftSoDR"
                 >
                   <div
-                    class="styled__StyledPerson-sc-1s95kis-15 diooxm"
+                    class="styled__StyledPerson-sc-1s95kis-15 bjgkeG"
                   >
                     <div
                       class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -207,7 +211,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__StyledChild-sc-1s95kis-16 jXHDQe"
+                    class="styled__StyledChild-sc-1s95kis-16 jopekm"
                   >
                     <div
                       class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -226,7 +230,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__StyledInfant-sc-1s95kis-17 jGHAJr"
+                    class="styled__StyledInfant-sc-1s95kis-17 jCXqxz"
                   >
                     <div
                       class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -245,7 +249,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__StyledStars-sc-1s95kis-18 FjnIV"
+                    class="styled__StyledStars-sc-1s95kis-18 ka-DPPl"
                   >
                     <div
                       class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -283,10 +287,10 @@ Object {
           </div>
         </div>
         <div
-          class="styled__PaperWrapper-sc-1y5gkei-3 couEr"
+          class="styled__PaperWrapper-sc-1y5gkei-3 iqtwQY"
         >
           <div
-            class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
+            class="styled__ContentWrapper-sc-1y5gkei-2 gnrCsV"
           >
             <div
               class="styled__StyledWrapper-sc-1ncpjaz-0 gbLdLO"
@@ -649,23 +653,23 @@ Object {
                 src="src"
               />
               <div
-                class="styled__StyledQuickAboutUsText-sc-ook8fz-2 dnEIgm"
+                class="styled__StyledQuickAboutUsText-sc-ook8fz-2 kRxWYK"
                 src="src"
               >
-                <div
-                  class="styled__StyledTitle-sc-ook8fz-3 kVyajl"
+                <h3
+                  class="styled__StyledTitle-sc-ook8fz-3 jyslKZ"
                 >
                   Travel Any Corner of The World With Us
-                </div>
-                <div
+                </h3>
+                <article
                   class="styled__StyledDescription-sc-ook8fz-4 kjsZNj"
                 >
                   Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
 
 Would you explore nature paradise in the world, let’s find the best destination in world with us.
-                </div>
+                </article>
                 <a
-                  class="styled__StyledContactBtn-sc-ook8fz-5 cDDyIp"
+                  class="styled__StyledContactBtn-sc-ook8fz-5 kMNZVQ"
                   href="/about-us"
                 >
                   Contact Us
@@ -692,7 +696,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
             <div
-              class="styled__Wrapper-sc-1idqlu5-0 dRawSO"
+              class="styled__Wrapper-sc-1idqlu5-0 eqpisw"
             >
               <div
                 class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
@@ -723,7 +727,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
+                  class="styled__StyledActionButton-sc-1idqlu5-6 XMnZm"
                 >
                   Book Now
                 </a>
@@ -766,7 +770,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
+                  class="styled__StyledActionButton-sc-1idqlu5-6 XMnZm"
                 >
                   Book Now
                 </a>
@@ -809,7 +813,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   199$
                 </div>
                 <a
-                  class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
+                  class="styled__StyledActionButton-sc-1idqlu5-6 XMnZm"
                 >
                   Book Now
                 </a>
@@ -847,7 +851,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </div>
               </div>
               <div
-                class="styled__StyledContent-sc-etxqrw-3 eCQSoo"
+                class="styled__StyledContent-sc-etxqrw-3 ifbdTA"
               >
                 <div>
                   <div
@@ -1007,7 +1011,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </div>
               </div>
             </div>
-            <div
+            <footer
               class="styled__FooterWrapper-sc-dckhzd-0 gXhUyQ"
             >
               <div>
@@ -1065,7 +1069,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </div>
                 </div>
                 <div
-                  class="styled__StyledNewsletterForm-sc-dckhzd-2 jnQhdu"
+                  class="styled__StyledNewsletterForm-sc-dckhzd-2 ejCqVz"
                 >
                   <input
                     placeholder="Email Address"
@@ -1076,7 +1080,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </button>
                 </div>
               </div>
-            </div>
+            </footer>
           </div>
         </div>
       </div>
@@ -1084,131 +1088,135 @@ Would you explore nature paradise in the world, let’s find the best destinatio
   </body>,
   "container": <div>
     <div
-      class="styled__MainWrapper-sc-1y5gkei-0 jmqgDE"
+      class="styled__MainWrapper-sc-1y5gkei-0 cFGPYi"
     >
       <div
-        class="styled__TopContentWrapper-sc-1y5gkei-1 fYAIab"
+        class="styled__TopContentWrapper-sc-1y5gkei-1 iPSYno"
       >
         <div
-          class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
+          class="styled__ContentWrapper-sc-1y5gkei-2 gnrCsV"
         >
           <header
-            class="styled__HeaderWrapper-sc-ffk3hg-0 fsATDC"
+            class="styled__HeaderWrapper-sc-ffk3hg-0 eONlUU"
             data-testid="header-wrapper"
           >
             <div
-              class="styled__LogoWrapper-sc-ffk3hg-1 eqLETf"
-            >
-              <a
-                href="/"
-              >
-                <div
-                  class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
-                >
-                  voila
-                </div>
-              </a>
-            </div>
-            <div
-              class="styled__MenuWrapper-sc-ffk3hg-2 hXYOUr"
+              class="styled__HeaderContent-sc-ffk3hg-1 XVuxU"
             >
               <div
-                class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+                class="styled__LogoWrapper-sc-ffk3hg-2 fkPqly"
               >
-                <ul
-                  class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+                <a
+                  href="/"
                 >
-                  <li
-                    class="styled__Item-sc-1nuctas-2 hZRbII"
+                  <div
+                    class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
                   >
-                    <a
-                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                      href="activities"
-                    >
-                      Activities
-                    </a>
-                  </li>
-                  <li
-                    class="styled__Item-sc-1nuctas-2 hZRbII"
-                  >
-                    <a
-                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                      href="hotels"
-                    >
-                      Hotels
-                    </a>
-                  </li>
-                  <li
-                    class="styled__Item-sc-1nuctas-2 hZRbII"
-                  >
-                    <a
-                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                      href="packages"
-                    >
-                      Packages
-                    </a>
-                  </li>
-                </ul>
+                    voila
+                  </div>
+                </a>
               </div>
-            </div>
-            <div
-              class="styled__LanguagesWrapper-sc-ffk3hg-5 ixfByd"
-            >
               <div
-                class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+                class="styled__MenuWrapper-sc-ffk3hg-3 iyQTAq"
               >
-                <button
-                  class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
-                >
-                   
-                  <svg
-                    fill="currentColor"
-                    height="1em"
-                    stroke="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 24 24"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
-                    />
-                  </svg>
-                </button>
                 <div
-                  class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+                  class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+                >
+                  <ul
+                    class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+                  >
+                    <li
+                      class="styled__Item-sc-1nuctas-2 hZRbII"
+                    >
+                      <a
+                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                        href="activities"
+                      >
+                        Activities
+                      </a>
+                    </li>
+                    <li
+                      class="styled__Item-sc-1nuctas-2 hZRbII"
+                    >
+                      <a
+                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                        href="hotels"
+                      >
+                        Hotels
+                      </a>
+                    </li>
+                    <li
+                      class="styled__Item-sc-1nuctas-2 hZRbII"
+                    >
+                      <a
+                        class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                        href="packages"
+                      >
+                        Packages
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="styled__LanguagesWrapper-sc-ffk3hg-6 bfJVcy"
+              >
+                <div
+                  class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+                >
+                  <button
+                    class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
+                  >
+                     
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 24 24"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+                  />
+                </div>
+              </div>
+              <div
+                class="styled__SearchWrapper-sc-ffk3hg-4 bnKAfK"
+              >
+                <input
+                  class="styled__InputSearch-sc-ffk3hg-5 biDHav"
+                  data-testid="header-search-input"
+                  placeholder="Search"
+                  type="search"
                 />
               </div>
-            </div>
-            <div
-              class="styled__SearchWrapper-sc-ffk3hg-3 jlmBFt"
-            >
-              <input
-                class="styled__InputSearch-sc-ffk3hg-4 lgxCoS"
-                data-testid="header-search-input"
-                placeholder="Search"
-                type="search"
-              />
             </div>
           </header>
           <div
             class="styled__StyledHomeSearch-sc-1s95kis-0 ecWoaw"
           >
             <div
-              class="styled__StyledSearchTabs-sc-1s95kis-1 jGUKhf"
+              class="styled__StyledSearchTabs-sc-1s95kis-1 eYCVgD"
             >
               <div
-                class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt selected"
+                class="styled__StyledSearchTab-sc-1s95kis-2 cbACjE selected"
               >
                 Packages
               </div>
               <div
-                class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
+                class="styled__StyledSearchTab-sc-1s95kis-2 cbACjE"
               >
                 Hotels
               </div>
               <div
-                class="styled__StyledSearchTab-sc-1s95kis-2 YbjGt"
+                class="styled__StyledSearchTab-sc-1s95kis-2 cbACjE"
               >
                 Flights
               </div>
@@ -1234,7 +1242,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 class="styled__StyledSearchCheckinGroup-sc-1s95kis-11 hDNnSU"
               >
                 <span
-                  class="styled__StyledCheckIn-sc-1s95kis-12 bjltEk"
+                  class="styled__StyledCheckIn-sc-1s95kis-12 fnsIyT"
                 >
                   <label
                     class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
@@ -1248,7 +1256,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </label>
                 </span>
                 <span
-                  class="styled__StyledCheckOut-sc-1s95kis-13 fqlEzg"
+                  class="styled__StyledCheckOut-sc-1s95kis-13 jcBdQn"
                 >
                   <label
                     class="styled__StyledLabel-sc-1s95kis-8 kOLhFo"
@@ -1266,7 +1274,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 class="styled__StyledSearchOptionsGroup-sc-1s95kis-14 ftSoDR"
               >
                 <div
-                  class="styled__StyledPerson-sc-1s95kis-15 diooxm"
+                  class="styled__StyledPerson-sc-1s95kis-15 bjgkeG"
                 >
                   <div
                     class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -1285,7 +1293,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </div>
                 </div>
                 <div
-                  class="styled__StyledChild-sc-1s95kis-16 jXHDQe"
+                  class="styled__StyledChild-sc-1s95kis-16 jopekm"
                 >
                   <div
                     class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -1304,7 +1312,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </div>
                 </div>
                 <div
-                  class="styled__StyledInfant-sc-1s95kis-17 jGHAJr"
+                  class="styled__StyledInfant-sc-1s95kis-17 jCXqxz"
                 >
                   <div
                     class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -1323,7 +1331,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                   </div>
                 </div>
                 <div
-                  class="styled__StyledStars-sc-1s95kis-18 FjnIV"
+                  class="styled__StyledStars-sc-1s95kis-18 ka-DPPl"
                 >
                   <div
                     class="styled__StyledCenterLabel-sc-1s95kis-7 kjgDfC"
@@ -1361,10 +1369,10 @@ Would you explore nature paradise in the world, let’s find the best destinatio
         </div>
       </div>
       <div
-        class="styled__PaperWrapper-sc-1y5gkei-3 couEr"
+        class="styled__PaperWrapper-sc-1y5gkei-3 iqtwQY"
       >
         <div
-          class="styled__ContentWrapper-sc-1y5gkei-2 eTXCSa"
+          class="styled__ContentWrapper-sc-1y5gkei-2 gnrCsV"
         >
           <div
             class="styled__StyledWrapper-sc-1ncpjaz-0 gbLdLO"
@@ -1727,23 +1735,23 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               src="src"
             />
             <div
-              class="styled__StyledQuickAboutUsText-sc-ook8fz-2 dnEIgm"
+              class="styled__StyledQuickAboutUsText-sc-ook8fz-2 kRxWYK"
               src="src"
             >
-              <div
-                class="styled__StyledTitle-sc-ook8fz-3 kVyajl"
+              <h3
+                class="styled__StyledTitle-sc-ook8fz-3 jyslKZ"
               >
                 Travel Any Corner of The World With Us
-              </div>
-              <div
+              </h3>
+              <article
                 class="styled__StyledDescription-sc-ook8fz-4 kjsZNj"
               >
                 Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
 
 Would you explore nature paradise in the world, let’s find the best destination in world with us.
-              </div>
+              </article>
               <a
-                class="styled__StyledContactBtn-sc-ook8fz-5 cDDyIp"
+                class="styled__StyledContactBtn-sc-ook8fz-5 kMNZVQ"
                 href="/about-us"
               >
                 Contact Us
@@ -1770,7 +1778,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
             </div>
           </div>
           <div
-            class="styled__Wrapper-sc-1idqlu5-0 dRawSO"
+            class="styled__Wrapper-sc-1idqlu5-0 eqpisw"
           >
             <div
               class="styled__StyledCard-sc-1idqlu5-1 egVfuX"
@@ -1801,7 +1809,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
+                class="styled__StyledActionButton-sc-1idqlu5-6 XMnZm"
               >
                 Book Now
               </a>
@@ -1844,7 +1852,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
+                class="styled__StyledActionButton-sc-1idqlu5-6 XMnZm"
               >
                 Book Now
               </a>
@@ -1887,7 +1895,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 199$
               </div>
               <a
-                class="styled__StyledActionButton-sc-1idqlu5-6 lmGRwm"
+                class="styled__StyledActionButton-sc-1idqlu5-6 XMnZm"
               >
                 Book Now
               </a>
@@ -1925,7 +1933,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
             <div
-              class="styled__StyledContent-sc-etxqrw-3 eCQSoo"
+              class="styled__StyledContent-sc-etxqrw-3 ifbdTA"
             >
               <div>
                 <div
@@ -2085,7 +2093,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
               </div>
             </div>
           </div>
-          <div
+          <footer
             class="styled__FooterWrapper-sc-dckhzd-0 gXhUyQ"
           >
             <div>
@@ -2143,7 +2151,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </div>
               </div>
               <div
-                class="styled__StyledNewsletterForm-sc-dckhzd-2 jnQhdu"
+                class="styled__StyledNewsletterForm-sc-dckhzd-2 ejCqVz"
               >
                 <input
                   placeholder="Email Address"
@@ -2154,7 +2162,7 @@ Would you explore nature paradise in the world, let’s find the best destinatio
                 </button>
               </div>
             </div>
-          </div>
+          </footer>
         </div>
       </div>
     </div>

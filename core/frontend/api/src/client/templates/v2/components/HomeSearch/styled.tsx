@@ -34,9 +34,15 @@ export const StyledSearchTabs = styled.div`
   & :last-child {
     border-radius: 0 16px 0 0;
   }
+
+  display: flex;
+  
+  
+  @media ${device.tablet} {
+    display: block;
+  }
 `;
 export const StyledSearchTab = styled.div`
-  display: inline-block;
   padding: 20px;
   background: white;
   cursor: pointer;
@@ -50,6 +56,15 @@ export const StyledSearchTab = styled.div`
     background: ${({theme}) => theme.colors.primaryColor};
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
   }
+
+  flex: 1;
+
+
+  @media ${device.tablet} {
+    display: inline-block;
+    flex: none;
+  }
+  
 `;
 
 export const StyledSearchInputHolder = styled.div`
@@ -163,9 +178,12 @@ export const StyledCheckIn = styled.span`
   border-radius: 8px 0 0 8px;
   flex: 1;
   min-height: 77px;
+  position: relative;
+  overflow: visible;
   & label {
     pointer-events: none;
   }
+ 
 `;
 
 export const StyledCheckOut = styled.span`
@@ -175,6 +193,8 @@ export const StyledCheckOut = styled.span`
   border-radius: 0 8px 8px 0;
   flex: 1;
   min-height: 77px;
+  position: relative;
+  overflow: visible;
   & label {
     pointer-events: none;
   }
@@ -209,7 +229,7 @@ export const StyledSearchOptionsGroup = styled.div`
 export const StyledPerson = styled.div<{onClick: () => void}>`
   display: inline-block;
   cursor: pointer;
-  padding: 20px 0px 20px;
+  padding: 20px 0 20px;
   min-width: 86px;
   min-height: 77px;
   border-radius: 8px 0 0 8px;
@@ -222,7 +242,7 @@ export const StyledPerson = styled.div<{onClick: () => void}>`
 export const StyledChild = styled.div`
   display: inline-block;
   cursor: pointer;
-  padding: 20px 0px 20px;
+  padding: 20px 0 20px;
   min-width: 86px;
   min-height: 77px;
   position: relative;
@@ -234,7 +254,7 @@ export const StyledChild = styled.div`
 export const StyledInfant = styled.div`
   display: inline-block;
   cursor: pointer;
-  padding: 20px 0px 20px;
+  padding: 20px 0 20px;
   min-width: 86px;
   min-height: 77px;
   position: relative;
@@ -246,7 +266,7 @@ export const StyledInfant = styled.div`
 export const StyledStars = styled.div`
   display: inline-block;
   cursor: pointer;
-  padding: 20px 0px 20px;
+  padding: 20px 0 20px;
   min-width: 86px;
   min-height: 77px;
   position: relative;
@@ -275,7 +295,16 @@ export const DateLabel = styled.label<IDateLabel>`
 export const CalendarContainer = styled.div`
   position: absolute;
   height: auto;
-  margin: 40px 0 0 -50px;
+  margin-top: 40px;
+  
+  &#checkOut {
+    right: 0;
+  }
+
+  &#checkIn {
+    left: 0;
+  }
+  
   max-width: 290px;
   z-index: 20;
   padding: 30px 10px;
@@ -408,11 +437,12 @@ export const CalendarContainer = styled.div`
 
 `;
 
-export const Overlay = styled.div`
+export const Overlay = styled.a`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 15;
+  cursor: default;
 `;
