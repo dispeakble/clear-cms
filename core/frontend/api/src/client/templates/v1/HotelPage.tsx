@@ -122,8 +122,8 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   return (
     <ThemeProvider theme={myTheme}>
+      <GlobalStyle />
       <MainWrapper data-testid="hotel-page-wrapper">
-        <GlobalStyle />
         <Header websiteName={websiteName} />
         <StyledContentWrapper>
           <Breadcrumbs />

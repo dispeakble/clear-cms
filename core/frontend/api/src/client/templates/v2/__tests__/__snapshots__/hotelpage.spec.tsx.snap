@@ -6,110 +6,114 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="styled__MainWrapper-sc-1y5gkei-0 gBiybv"
+        class="styled__MainWrapper-sc-1y5gkei-0 cFGPYi"
         data-testid="hotel-page-wrapper"
       >
         <header
-          class="styled__HeaderWrapper-sc-ffk3hg-0 fsATDC"
+          class="styled__HeaderWrapper-sc-ffk3hg-0 eONlUU"
           data-testid="header-wrapper"
         >
           <div
-            class="styled__LogoWrapper-sc-ffk3hg-1 eqLETf"
-          >
-            <a
-              href="/"
-            >
-              <div
-                class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
-              >
-                voila
-              </div>
-            </a>
-          </div>
-          <div
-            class="styled__MenuWrapper-sc-ffk3hg-2 hXYOUr"
+            class="styled__HeaderContent-sc-ffk3hg-1 XVuxU"
           >
             <div
-              class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+              class="styled__LogoWrapper-sc-ffk3hg-2 fkPqly"
             >
-              <ul
-                class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+              <a
+                href="/"
               >
-                <li
-                  class="styled__Item-sc-1nuctas-2 hZRbII"
+                <div
+                  class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
                 >
-                  <a
-                    class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                    href="activities"
-                  >
-                    Activities
-                  </a>
-                </li>
-                <li
-                  class="styled__Item-sc-1nuctas-2 hZRbII"
-                >
-                  <a
-                    class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                    href="hotels"
-                  >
-                    Hotels
-                  </a>
-                </li>
-                <li
-                  class="styled__Item-sc-1nuctas-2 hZRbII"
-                >
-                  <a
-                    class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                    href="packages"
-                  >
-                    Packages
-                  </a>
-                </li>
-              </ul>
+                  voila
+                </div>
+              </a>
             </div>
-          </div>
-          <div
-            class="styled__LanguagesWrapper-sc-ffk3hg-5 ixfByd"
-          >
             <div
-              class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+              class="styled__MenuWrapper-sc-ffk3hg-3 iyQTAq"
             >
-              <button
-                class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
-              >
-                 
-                <svg
-                  fill="currentColor"
-                  height="1em"
-                  stroke="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 24 24"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
-                  />
-                </svg>
-              </button>
               <div
-                class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+                class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+              >
+                <ul
+                  class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+                >
+                  <li
+                    class="styled__Item-sc-1nuctas-2 hZRbII"
+                  >
+                    <a
+                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                      href="activities"
+                    >
+                      Activities
+                    </a>
+                  </li>
+                  <li
+                    class="styled__Item-sc-1nuctas-2 hZRbII"
+                  >
+                    <a
+                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                      href="hotels"
+                    >
+                      Hotels
+                    </a>
+                  </li>
+                  <li
+                    class="styled__Item-sc-1nuctas-2 hZRbII"
+                  >
+                    <a
+                      class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                      href="packages"
+                    >
+                      Packages
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="styled__LanguagesWrapper-sc-ffk3hg-6 bfJVcy"
+            >
+              <div
+                class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+              >
+                <button
+                  class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
+                >
+                   
+                  <svg
+                    fill="currentColor"
+                    height="1em"
+                    stroke="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 24 24"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+                />
+              </div>
+            </div>
+            <div
+              class="styled__SearchWrapper-sc-ffk3hg-4 bnKAfK"
+            >
+              <input
+                class="styled__InputSearch-sc-ffk3hg-5 biDHav"
+                data-testid="header-search-input"
+                placeholder="Search"
+                type="search"
               />
             </div>
           </div>
-          <div
-            class="styled__SearchWrapper-sc-ffk3hg-3 jlmBFt"
-          >
-            <input
-              class="styled__InputSearch-sc-ffk3hg-4 lgxCoS"
-              data-testid="header-search-input"
-              placeholder="Search"
-              type="search"
-            />
-          </div>
         </header>
         <div
-          class="styled__StyledContentWrapper-sc-1y5gkei-4 fyVpY"
+          class="styled__StyledContentWrapper-sc-1y5gkei-4 clwcSf"
         >
           <div
             class="styled__StyledBreadcrumbs-sc-5eekhe-0 dwQcVB"
@@ -1709,110 +1713,114 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="styled__MainWrapper-sc-1y5gkei-0 gBiybv"
+      class="styled__MainWrapper-sc-1y5gkei-0 cFGPYi"
       data-testid="hotel-page-wrapper"
     >
       <header
-        class="styled__HeaderWrapper-sc-ffk3hg-0 fsATDC"
+        class="styled__HeaderWrapper-sc-ffk3hg-0 eONlUU"
         data-testid="header-wrapper"
       >
         <div
-          class="styled__LogoWrapper-sc-ffk3hg-1 eqLETf"
-        >
-          <a
-            href="/"
-          >
-            <div
-              class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
-            >
-              voila
-            </div>
-          </a>
-        </div>
-        <div
-          class="styled__MenuWrapper-sc-ffk3hg-2 hXYOUr"
+          class="styled__HeaderContent-sc-ffk3hg-1 XVuxU"
         >
           <div
-            class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+            class="styled__LogoWrapper-sc-ffk3hg-2 fkPqly"
           >
-            <ul
-              class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+            <a
+              href="/"
             >
-              <li
-                class="styled__Item-sc-1nuctas-2 hZRbII"
+              <div
+                class="Logo__LogoWrapper-sc-nlo935-0 ezUWJJ"
               >
-                <a
-                  class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                  href="activities"
-                >
-                  Activities
-                </a>
-              </li>
-              <li
-                class="styled__Item-sc-1nuctas-2 hZRbII"
-              >
-                <a
-                  class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                  href="hotels"
-                >
-                  Hotels
-                </a>
-              </li>
-              <li
-                class="styled__Item-sc-1nuctas-2 hZRbII"
-              >
-                <a
-                  class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
-                  href="packages"
-                >
-                  Packages
-                </a>
-              </li>
-            </ul>
+                voila
+              </div>
+            </a>
           </div>
-        </div>
-        <div
-          class="styled__LanguagesWrapper-sc-ffk3hg-5 ixfByd"
-        >
           <div
-            class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+            class="styled__MenuWrapper-sc-ffk3hg-3 iyQTAq"
           >
-            <button
-              class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
-            >
-               
-              <svg
-                fill="currentColor"
-                height="1em"
-                stroke="currentColor"
-                stroke-width="0"
-                viewBox="0 0 24 24"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
-                />
-              </svg>
-            </button>
             <div
-              class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+              class="styled__StyledMenuWrapper-sc-1nuctas-0 laKFKN"
+            >
+              <ul
+                class="styled__StyledMenu-sc-1nuctas-1 gobSNx"
+              >
+                <li
+                  class="styled__Item-sc-1nuctas-2 hZRbII"
+                >
+                  <a
+                    class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                    href="activities"
+                  >
+                    Activities
+                  </a>
+                </li>
+                <li
+                  class="styled__Item-sc-1nuctas-2 hZRbII"
+                >
+                  <a
+                    class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                    href="hotels"
+                  >
+                    Hotels
+                  </a>
+                </li>
+                <li
+                  class="styled__Item-sc-1nuctas-2 hZRbII"
+                >
+                  <a
+                    class="styled__LinkItem-sc-1nuctas-3 iBYDOL"
+                    href="packages"
+                  >
+                    Packages
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="styled__LanguagesWrapper-sc-ffk3hg-6 bfJVcy"
+          >
+            <div
+              class="styled__Container-sc-1be6fz4-1 bcyYaQ"
+            >
+              <button
+                class="styled__SelectedLanguage-sc-1be6fz4-0 iYurQK"
+              >
+                 
+                <svg
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 24 24"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                  />
+                </svg>
+              </button>
+              <div
+                class="styled__LanguagesDropdown-sc-1be6fz4-2 fjJxkH"
+              />
+            </div>
+          </div>
+          <div
+            class="styled__SearchWrapper-sc-ffk3hg-4 bnKAfK"
+          >
+            <input
+              class="styled__InputSearch-sc-ffk3hg-5 biDHav"
+              data-testid="header-search-input"
+              placeholder="Search"
+              type="search"
             />
           </div>
         </div>
-        <div
-          class="styled__SearchWrapper-sc-ffk3hg-3 jlmBFt"
-        >
-          <input
-            class="styled__InputSearch-sc-ffk3hg-4 lgxCoS"
-            data-testid="header-search-input"
-            placeholder="Search"
-            type="search"
-          />
-        </div>
       </header>
       <div
-        class="styled__StyledContentWrapper-sc-1y5gkei-4 fyVpY"
+        class="styled__StyledContentWrapper-sc-1y5gkei-4 clwcSf"
       >
         <div
           class="styled__StyledBreadcrumbs-sc-5eekhe-0 dwQcVB"

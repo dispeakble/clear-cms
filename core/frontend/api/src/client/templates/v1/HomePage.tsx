@@ -31,10 +31,10 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   return (
     <ThemeProvider theme={myTheme}>
+      <GlobalStyle />
       <MainWrapper>
         <TopContentWrapper>
           <ContentWrapper>
-            <GlobalStyle />
             <Header websiteName={websiteName} />
             <HomeSearch />
             <StyledMiddleText>

@@ -34,9 +34,15 @@ export const StyledSearchTabs = styled.div`
   & :last-child {
     border-radius: 0 16px 0 0;
   }
+
+  display: flex;
+  
+  
+  @media ${device.tablet} {
+    display: block;
+  }
 `;
 export const StyledSearchTab = styled.div`
-  display: inline-block;
   padding: 20px;
   background: white;
   cursor: pointer;
@@ -50,6 +56,15 @@ export const StyledSearchTab = styled.div`
     background: ${({theme}) => theme.colors.primaryColor};
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
   }
+
+  flex: 1;
+
+
+  @media ${device.tablet} {
+    display: inline-block;
+    flex: none;
+  }
+  
 `;
 
 export const StyledSearchInputHolder = styled.div`
