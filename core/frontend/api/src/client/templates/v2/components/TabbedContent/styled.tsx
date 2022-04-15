@@ -59,7 +59,7 @@ export const StyledContent = styled.div`
   text-align: center;
   
   @media (min-width: ${size.tablet}) {
-    padding: 20px 0px 20px 20px;
+    padding: 20px 0 20px 20px;
   }
 `;
 

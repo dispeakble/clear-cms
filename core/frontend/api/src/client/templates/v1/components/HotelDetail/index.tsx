@@ -58,7 +58,7 @@ type HotelDetailProps = {
     data: any;
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
-    handleHotelSearch: () => void;
+    handleHotelSearch: (data: string) => void;
     handleInfantsPlus: () => void;
     handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
@@ -86,8 +86,8 @@ const HotelDetail = ({
         details: false
     });
 
-    const [mainValue, setMainValue] = React.useState([]);
-    const [backUpData, setBackUpData] = useState([]);
+    const [mainValue, setMainValue] = React.useState<any[]>([]);
+    const [backUpData, setBackUpData] = useState<any[]>([]);
     const arr = [
         {
             hotel: "Aroma",
@@ -180,7 +180,7 @@ const HotelDetail = ({
             checkout: !show.checkout
         });
     };
-    const handleShowPassanger = () => {
+    const handleShowPassenger = () => {
         setShow({
             ...show,
             details: !show.details
@@ -244,7 +244,7 @@ const HotelDetail = ({
                         style={{ width: "100%" }}
                       >
                           <HotelSearch>
-                              <SearchIcon></SearchIcon>
+                              <SearchIcon/>
                               <input value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
                                   onSearch(e.target.value);
                                   handleSearch(e.target.value);
@@ -308,7 +308,7 @@ const HotelDetail = ({
                               {show.checkout ? (
 
                                 <HotelCalendar
-                                  minDate={new Date(moment(data.checkin).add(1, "d"))}
+                                  minDate={new Date(String(moment(data.checkin).add(1, "d")))}
                                   value={new Date(data.checkout)}
                                   onChange={(value: any) => {
                                       handleChangeInput("checkout", value);
@@ -328,27 +328,27 @@ const HotelDetail = ({
                               <h4>Details:</h4>
                               <GuestType>
                                   <AdultBox>
-                                      <AdultIcon onClick={() => handleShowPassanger()} />
+                                      <AdultIcon onClick={() => handleShowPassenger()} />
                                       <AdultNumber>
-                                          {t(`deals.detail.adult`)}{data.passanger.adults}
+                                          {t(`deals.detail.adult`)}{data.passenger.adults}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
-                                      <ChildIcon onClick={() => handleShowPassanger()} />
+                                      <ChildIcon onClick={() => handleShowPassenger()} />
                                       <AdultNumber>
-                                          {t(`deals.detail.child`)}{data.passanger.children}
+                                          {t(`deals.detail.child`)}{data.passenger.children}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
-                                      <InfantIcon onClick={() => handleShowPassanger()} />
+                                      <InfantIcon onClick={() => handleShowPassenger()} />
                                       <AdultNumber>
-                                          {t(`deals.detail.infant`)}{data.passanger.infants}
+                                          {t(`deals.detail.infant`)}{data.passenger.infants}
                                       </AdultNumber>
                                   </AdultBox>
                                   <div style={{position:'relative', left: '7px'}}>
-                                      <DropdownIcon onClick={() => handleShowPassanger()} />
+                                      <DropdownIcon onClick={() => handleShowPassenger()} />
                                   </div>
                               </GuestType>
                               {show.details ? (
@@ -371,7 +371,7 @@ const HotelDetail = ({
                                           <BoxRight>
                                               <Quantity>
                                                   <span onClick={handleAdultMinus}>-</span>
-                                                  <h5>{data?.passanger.adults<10?`0${data?.passanger.adults}`:data?.passanger.adults}</h5>
+                                                  <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
                                                   <span onClick={handleAdultPlus}>+</span>
                                               </Quantity>
                                           </BoxRight>
@@ -384,7 +384,7 @@ const HotelDetail = ({
                                           <BoxRight>
                                               <Quantity>
                                                   <span onClick={handleChildrenMinus}>-</span>
-                                                  <h5>{data?.passanger.children<10 ? `0${data?.passanger.children}`:data?.passanger.children}</h5>
+                                                  <h5>{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
                                                   <span onClick={handleChildrenPlus}>+</span>
                                               </Quantity>
                                           </BoxRight>
@@ -397,7 +397,7 @@ const HotelDetail = ({
                                           <BoxRight>
                                               <Quantity>
                                                   <span onClick={handleInfantsMinus}>-</span>
-                                                  <h5>{data?.passanger.infants<10?`0${data?.passanger.infants}`:data?.passanger.infants}</h5>
+                                                  <h5>{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
                                                   <span onClick={handleInfantsPlus}>+</span>
                                               </Quantity>
                                           </BoxRight>

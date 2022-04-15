@@ -27,8 +27,10 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     return getIcon(iconName);
   };
 
+  const myTheme: any = { colors: colorScheme, icon: getIcons };
+
   return (
-    <ThemeProvider theme={{ colors: colorScheme, icon: getIcons }}>
+    <ThemeProvider theme={myTheme}>
       <MainWrapper>
         <TopContentWrapper>
           <ContentWrapper>

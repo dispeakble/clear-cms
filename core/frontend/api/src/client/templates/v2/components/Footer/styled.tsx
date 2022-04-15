@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { size } from "../../styled";
 
-export const FooterWrapper = styled.div`
+export const FooterWrapper = styled.footer`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -54,6 +54,10 @@ export const StyledNewsletterForm = styled.div`
     border-radius: 11px 0 0 11px;
     flex: 1;
     width: 190px;
+    line-height: 60px;
+    &::placeholder {
+      font-size: 16px;
+    } 
   }
   
   & button {

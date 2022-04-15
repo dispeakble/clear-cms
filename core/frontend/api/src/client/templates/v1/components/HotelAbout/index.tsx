@@ -18,7 +18,7 @@ import {Star, StyledDescription} from "../HotelDetail/styled";
 import GoogleMapReact from "google-map-react";
 import {useState} from "react";
 
-const AnyReactComponent = ({text}) => <div>{text}</div>;
+const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 
 
 const HotelAbout = () => {

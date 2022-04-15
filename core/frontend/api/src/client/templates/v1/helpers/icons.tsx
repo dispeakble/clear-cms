@@ -1,6 +1,7 @@
+import adultsIcon from "../assets/img/adults-icon.svg";
 import bedroomIcon from "../assets/img/bedroom-icon.svg";
 import breadcrumbIcon from "../assets/img/breadcrumb-icon.svg";
-import calenderIcon from "../assets/img/calender-icon.svg";
+import calendarIcon from "../assets/img/calendar-icon.svg";
 import checkIcon from "../assets/img/check-icon.svg";
 import checkInIcon from "../assets/img/check-in-icon.svg";
 import checkOutIcon from "../assets/img/check-out-icon.svg";
@@ -25,9 +26,10 @@ import starIcon from "../assets/img/star-icon.svg";
 import zoomIcon from "../assets/img/zoom-icon.svg";
 
 const icons: Record<string, any> = {
+  adults: adultsIcon,
   bedroom: bedroomIcon,
   breadcrumb: breadcrumbIcon,
-  calender: calenderIcon,
+  calendar: calendarIcon,
   check: checkIcon,
   checkIn: checkInIcon,
   checkOut: checkOutIcon,
@@ -53,5 +55,12 @@ const icons: Record<string, any> = {
 }
 
 export const getIcon = (iconName: string) => {
-  return icons[iconName].src;
+  let icon;
+  try {
+    icon = icons[iconName].src;
+  } catch (err) {
+    console.log(iconName);
+    console.log(err);
+  }
+  return icon;
 }

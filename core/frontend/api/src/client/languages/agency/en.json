@@ -125,10 +125,8 @@
   },
   "hotels": {
     "seo": {
-      "main": {
-        "pageTitle": "Hotels :: {websiteName}",
-        "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
-      }
+      "pageTitle": "Hotels :: {websiteName}",
+      "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
     }
   },
   "hotelAbout" : {
