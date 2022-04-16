@@ -97,10 +97,7 @@ services:
       - postgres
       - redis
       - cms-hub
-    volumes:
-      - postgresdata:/var/lib/postgresql
     environment:
-      - app=${APP_NAME}
       - redis_server=172.28.1.1
       - redis_port=6379
       - redis_password=${REDIS_DEFAULT_PASSWORD}
@@ -110,7 +107,7 @@ services:
       - pg_password=${POSTGRES_DEFAULT_PASSWORD}
       - pg_db=${POSTGRES_DEFAULT_DB}
       - pg_connections=${POSTGRES_DEFAULT_CONNECTIONS}
-      - dev=true
+      - app=${APP_NAME}
     networks:
       node_net:
         ipv4_address: 172.28.1.11

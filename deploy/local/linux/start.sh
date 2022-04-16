@@ -3,55 +3,87 @@
 DOCKERHUB_USERNAME="cmsbot"
 DOCKERHUB_PASS="uB8V7B6IR5ll"
 
-INIT_VERSION="v0.0.1"
 INIT_APP_NAME="marioviajes"
-INIT_APP_DOMAIN="marioviajes.com"
+INIT_APP_VERSION="1.5.0"
+INIT_WEBSITE_NAME="Mario Viajes"
+INIT_WEBSITE_EMAIL="contact@marioviajes.com"
+INIT_ADMIN_FNAME="Mario"
+INIT_ADMIN_LNAME="Viajes"
+INIT_WEBSITE_DOMAIN="marioviajes.com"
+INIT_DEFAULT_EMAIL="admin@localhost.local"
+INIT_DEFAULT_PASSWORD="1qaz"
+INIT_TPL_VER="v1"
 
 #TODO MOVE TO AN ENV FILE
 INIT_POSTGRES_DEFAULT_USER=cms
 INIT_POSTGRES_DEFAULT_PASSWORD=1qaz
-POSTGRES_DEFAULT_CONNECTIONS=main,agency
-INIT_PGADMIN_DEFAULT_EMAIL=admin@localhost.local
+INIT_POSTGRES_DEFAULT_DB=main
+INIT_POSTGRES_DEFAULT_CONNECTIONS="main,agency"
+INIT_PGADMIN_DEFAULT_EMAIL="admin@localhost.local"
 INIT_PGADMIN_DEFAULT_PASSWORD=1qaz
 INIT_REDIS_DEFAULT_PASSWORD=1gzHwbgfwR
 
-USER_VERSION=$(promptText "Installation revision (Enter for default: $INIT_VERSION)")
-USER_APP_NAME=$(promptText "App name (Enter for default: $INIT_APP_NAME)")
-USER_APP_DOMAIN=$(promptText "App domain E.G. example.com (Enter for default: $INIT_APP_DOMAIN)")
+#cms
+USER_APP_NAME=$(promptText "App name (Enter for default:  $INIT_APP_NAME)")
+USER_APP_VERSION=$(promptText "App version (Enter for default:  $INIT_APP_VERSION)")
+USER_DEFAULT_EMAIL=$(promptText "Admin Email (Enter for default: $INIT_DEFAULT_EMAIL)")
+USER_DEFAULT_PASSWORD=$(promptText "Admin Password (Enter for default: $INIT_DEFAULT_PASSWORD)")
+USER_WEBSITE_NAME=$(promptText "Website name (Enter for default: $INIT_WEBSITE_NAME)")
+USER_WEBSITE_EMAIL=$(promptText "Website email (Enter for default: $INIT_WEBSITE_EMAIL)")
+USER_ADMIN_FNAME=$(promptText "Admin first name (Enter for default: $INIT_ADMIN_FNAME)")
+USER_ADMIN_LNAME=$(promptText "Admin last name (Enter for default: $INIT_ADMIN_LNAME)")
+USER_WEBSITE_DOMAIN=$(promptText "Website domain (Enter for default: $INIT_WEBSITE_DOMAIN)")
+USER_TPL_VER=$(promptText "App template E.G. v1 (Enter for default:  $INIT_TPL_VER)")
+
+#infra
 USER_REDIS_DEFAULT_PASSWORD=$(promptSecret "Redis password (Enter for default: $INIT_REDIS_DEFAULT_PASSWORD)")
 echo -e "\n*** Secret stored ***\n"
 USER_POSTGRES_DEFAULT_USER=$(promptText "Postgres user (Enter for default: $INIT_POSTGRES_DEFAULT_USER)")
 USER_POSTGRES_DEFAULT_PASSWORD=$(promptSecret "Postgres password (Enter for default: $INIT_POSTGRES_DEFAULT_PASSWORD)")
 echo -e "\n*** Secret stored ***\n"
+USER_POSTGRES_DEFAULT_DB=$(promptSecret "Postgres database (Enter for default: $INIT_POSTGRES_DEFAULT_DB)")
 USER_POSTGRES_DEFAULT_CONNECTIONS=$(promptText "Postgres Database names (Enter for default: $INIT_POSTGRES_DEFAULT_CONNECTIONS)")
 USER_PGADMIN_DEFAULT_EMAIL=$(promptText "PgAdmin email (Enter for default: $INIT_PGADMIN_DEFAULT_EMAIL)")
 USER_PGADMIN_DEFAULT_PASSWORD=$(promptSecret "PgAdmin password (Enter for default: $INIT_PGADMIN_DEFAULT_PASSWORD)")
 echo -e "\n*** Secret stored ***\n"
 
-export DEFAULT_VERSION=$([[ -z $USER_VERSION ]] && echo $INIT_VERSION || echo $USER_VERSION)
 export APP_NAME=$([[ -z $USER_APP_NAME ]] && echo $INIT_APP_NAME || echo $USER_APP_NAME)
+export APP_VERSION=$([[ -z $USER_APP_VERSION ]] && echo $INIT_APP_VERSION || echo $USER_APP_VERSION)
+export DEFAULT_EMAIL=$([[ -z $USER_DEFAULT_EMAIL ]] && echo $INIT_DEFAULT_EMAIL || echo $USER_DEFAULT_EMAIL)
+export DEFAULT_PASSWORD=$([[ -z $USER_DEFAULT_PASSWORD ]] && echo $INIT_DEFAULT_PASSWORD || echo $USER_DEFAULT_PASSWORD)
+export WEBSITE_NAME=$([[ -z $USER_WEBSITE_NAME ]] && echo $INIT_WEBSITE_NAME || echo $USER_WEBSITE_NAME)
+export WEBSITE_EMAIL=$([[ -z $USER_WEBSITE_EMAIL ]] && echo $INIT_WEBSITE_EMAIL || echo $USER_WEBSITE_EMAIL)
+export ADMIN_FNAME=$([[ -z $USER_ADMIN_FNAME ]] && echo $INIT_ADMIN_FNAME || echo $USER_ADMIN_FNAME)
+export ADMIN_LNAME=$([[ -z $USER_ADMIN_LNAME ]] && echo $INIT_ADMIN_LNAME || echo $USER_ADMIN_LNAME)
+export WEBSITE_DOMAIN=$([[ -z $USER_WEBSITE_DOMAIN ]] && echo $INIT_WEBSITE_DOMAIN || echo $USER_WEBSITE_DOMAIN)
 export APP_DOMAIN=$([[ -z $USER_APP_DOMAIN ]] && echo $INIT_APP_DOMAIN || echo $USER_APP_DOMAIN)
+export TPL_VER=$([[ -z $USER_TPL_VER ]] && echo $INIT_TPL_VER || echo $USER_TPL_VER)
+
 export REDIS_DEFAULT_PASSWORD=$([[ -z $USER_REDIS_DEFAULT_PASSWORD ]] && echo $INIT_REDIS_DEFAULT_PASSWORD || echo $USER_REDIS_DEFAULT_PASSWORD)
+
 export POSTGRES_DEFAULT_USER=$([[ -z $USER_POSTGRES_DEFAULT_USER ]] && echo $INIT_POSTGRES_DEFAULT_USER || echo $USER_POSTGRES_DEFAULT_USER)
 export POSTGRES_DEFAULT_PASSWORD=$([[ -z $USER_POSTGRES_DEFAULT_PASSWORD ]] && echo $INIT_POSTGRES_DEFAULT_PASSWORD || echo $USER_POSTGRES_DEFAULT_PASSWORD)
-export POSTGRES_DEFAULT_DB=$([[ -z $USER_USER_POSTGRES_DEFAULT_DB ]] && echo $INIT_USER_POSTGRES_DEFAULT_DB || echo $USER_USER_POSTGRES_DEFAULT_DB)
-export POSTGRES_DEFAULT_CONNECTIONS=$([[ -z $USER_USER_POSTGRES_DEFAULT_CONNECTIONS ]] && echo $INIT_USER_POSTGRES_DEFAULT_CONNECTIONS || echo $USER_USER_POSTGRES_DEFAULT_CONNECTIONS)
+export POSTGRES_DEFAULT_DB=$([[ -z $USER_POSTGRES_DEFAULT_DB ]] && echo $INIT_POSTGRES_DEFAULT_DB || echo $USER_POSTGRES_DEFAULT_DB)
+export POSTGRES_DEFAULT_CONNECTIONS=$([[ -z $USER_POSTGRES_DEFAULT_CONNECTIONS ]] && echo $INIT_POSTGRES_DEFAULT_CONNECTIONS || echo $USER_POSTGRES_DEFAULT_CONNECTIONS)
+
 export PGADMIN_DEFAULT_EMAIL=$([[ -z $USER_PGADMIN_DEFAULT_EMAIL ]] && echo $INIT_PGADMIN_DEFAULT_EMAIL || echo $USER_PGADMIN_DEFAULT_EMAIL)
 export PGADMIN_DEFAULT_PASSWORD=$([[ -z $USER_PGADMIN_DEFAULT_PASSWORD ]] && echo $INIT_PGADMIN_DEFAULT_PASSWORD || echo $USER_PGADMIN_DEFAULT_PASSWORD)
-export CMS_HUB_VERSION=1650071015
-export CMS_DB_VERSION=1650071015
-export CMS_BUCKET_VERSION=1650071015
-export CMS_ADMIN_PROXY_VERSION=1650071015
-export CMS_FRONTEND_PROXY_VERSION=1650071015
-export CMS_FRONTEND_VERSION=1650071015
+
+export CMS_HUB_VERSION=1650147824
+export CMS_DB_VERSION=1650147824
+export CMS_BUCKET_VERSION=1650147824
+export CMS_ADMIN_PROXY_VERSION=1650147824
+export CMS_ADMIN_SYSTEM_VERSION=1650147824
+export CMS_FRONTEND_PROXY_VERSION=1650147824
+export CMS_FRONTEND_VERSION=1650147824
 
 echo "**************** Starting Services *****************"
 
 echo -e "\n"
 
-echo "../versions/$DEFAULT_VERSION/base.yaml"
+echo "../versions/v0.0.1/base.yaml"
 
-docker-compose -f "../versions/$DEFAULT_VERSION/base.yaml" up -d
+docker-compose -f "../versions/v0.0.1/base.yaml" up -d
 
 echo -e "\n"
 
