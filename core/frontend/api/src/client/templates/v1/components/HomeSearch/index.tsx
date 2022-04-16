@@ -187,7 +187,7 @@ ${filterValues.stars}`
       <StyledSearchCheckinGroup>
         <StyledCheckIn onClick={openCheckInCalendar} data-testid="test-checkIn-button" >
           <StyledLabel>{t("search.checkinDate")}</StyledLabel>
-          <StyledValue>{
+          <StyledValue data-testid="test-checkIn-date-value">{
             checkInDate !== null ?
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
@@ -208,9 +208,9 @@ ${filterValues.stars}`
             </>
           }
         </StyledCheckIn>
-        <StyledCheckOut onClick={openCheckOutCalendar}>
+        <StyledCheckOut onClick={openCheckOutCalendar} data-testid="test-checkOut-button">
           <StyledLabel>{t("search.checkout")}</StyledLabel>
-          <StyledValue>{
+          <StyledValue data-testid="test-checkOut-date-value">{
             checkOutDate !== null ?
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
@@ -223,7 +223,7 @@ ${filterValues.stars}`
               <CalendarContainer id="checkOut" data-testid="test-checkOut-calendar">
                 <SearchLabel>{t("search.checkoutDate")}</SearchLabel>
                 <Calendar
-                    className="react-calendar checkIn-picker"
+                  className="react-calendar checkIn-picker"
                   onChange={onCheckOutChange}
                   value={checkOutDate}
                   minDate={checkInDate as unknown as Date}

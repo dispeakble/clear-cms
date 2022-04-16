@@ -24,6 +24,7 @@ jest.mock('next/image', () => ({
 }));
 
 afterEach(() => cleanup())
+beforeEach(() => cleanup())
 
 const messages = require("../../../languages/agency/en.json");
 
@@ -39,6 +40,14 @@ const Wrapper = ({ ...props }: HomePageProps) => {
       <HomePage {...props} />
     </IntlProvider>
   );
+};
+
+const formatDate = (date: any) => {
+  return Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "2-digit",
+    year: "2-digit"
+  }).format(date);
 };
 
 describe("Home Page Suite", () => {
@@ -88,11 +97,34 @@ describe("Home Page Suite", () => {
       expect(homePage.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
     })
 
-    fireEvent.change(
-        homePage.getByTestId(/test-checkIn-calendar/).children[1],
-        {target: {value: today}},
+    fireEvent.click(
+        homePage.getByText(today.getDate().toString())
     )
 
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkIn-date-value/).textContent).toBe(formatDate(today).toString());
+    })
+  })
+
+  it("Should change check out date picker value", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+    const today = new Date();
+
+    fireEvent.click(
+        homePage.getByTestId(/test-checkOut-button/)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument();
+    })
+
+    fireEvent.click(
+        homePage.getByText(today.getDate() + 1)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkOut-date-value/).textContent).toBe(formatDate(today.setDate(today.getDate() + 1)).toString());
+    })
   })
 
   it("Should update guests (adults) number", async () => {
