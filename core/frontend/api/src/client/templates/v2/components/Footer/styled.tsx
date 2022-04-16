@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
 import { size } from "../../styled";
 
 export const FooterWrapper = styled.div`
@@ -10,13 +9,13 @@ export const FooterWrapper = styled.div`
     flex: 1;
   }
   
-  background: ${Colors.mainBackground};
+  background: ${({theme}) => theme.colors.mainBackground};
   padding: 0;
   line-height: 200%;
   font-size: 16px;
-  color: ${Colors.footerLinks};
+  color: ${({theme}) => theme.colors.footerLinks};
   & a {
-    color: ${Colors.footerLinks};
+    color: ${({theme}) => theme.colors.footerLinks};
     
     &:hover {
       text-decoration: underline;
@@ -41,7 +40,7 @@ export const StyledNewsletterTitle = styled.div`
 
 export const StyledNewsletterForm = styled.div`
   margin-top: 10px;
-  border: 1px solid ${Colors.primaryColor};
+  border: 1px solid ${({theme}) => theme.colors.primaryColor};
   display: flex;
   border-radius: 12px;
   & input, & button {
@@ -60,10 +59,10 @@ export const StyledNewsletterForm = styled.div`
   & button {
     border-radius: 0 10px 10px 0;
     cursor: pointer;
-    background: ${Colors.primaryColor};
-    color: ${Colors.white};
+    background: ${({theme}) => theme.colors.primaryColor};
+    color: ${({theme}) => theme.colors.white};
     &:hover {
-      background: ${Colors.primaryColorHover};
+      background: ${({theme}) => theme.colors.primaryColorHover};
     }
   }
 `;

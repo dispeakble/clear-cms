@@ -9,70 +9,70 @@
     "info-box-description" : "Vacaciones y excursiones",
     "img-source" : "Imagen de",
     "promo": {
-      "special-offers": "Special Offers",
-      "last-minute": "Last Minute",
-      "flights": "Flights"
+      "special-offers": "Ofertas",
+      "last-minute": "Último minuto",
+      "flights": "Vuelos"
     },
     "about-us": {
-      "title": "Travel Any Corner of The World With Us",
-      "description": "Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.\n\nWould you explore nature paradise in the world, let’s find the best destination in world with us.",
-      "contact-us": "Contact Us"
+      "title": "Viaja a cualquier rincón del mundo con nosotros",
+      "description": "Explorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros. Explorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros. Explorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros.\n\nExplorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros.",
+      "contact-us": "Contacto"
     },
     "recommended": {
-      "title": "Recommended Destination",
-      "book-now": "Book Now",
+      "title": "Destino recomendado",
+      "book-now": "Reservar ahora",
       "tabs": {
         "popular": "Popular",
-        "adventure": "Adventure",
+        "adventure": "Aventura",
         "relax": "Relax",
-        "see-prices": "See prices"
+        "see-prices": "Ver precios"
       }
     },
     "tabbed" : {
       "tabs": {
-        "first": "Flights + Hotels",
-        "second": "Relax on the finest beaches",
-        "third": "Fun water parks and zoos"
+        "first": "Vuelos + Hoteles",
+        "second": "Relájate en las mejores playas",
+        "third": "Divertidos parques acuáticos y zoológicos"
       },
       "first": {
-        "title": "The complete package",
+        "title": "El paquete completo",
         "first": {
-          "subtitle": "Cheap flights",
-          "content": "Find your desired plane ticket easily"
+          "subtitle": "Vuelos baratos",
+          "content": "Encuentra fácilmente tu billete de avión deseado"
         },
         "second": {
-          "subtitle": "A diverse hotel selection",
-          "content": "You will find the perfect hotel for your dream vacation"
+          "subtitle": "Una diversa selección de hoteles",
+          "content": "Encontrarás el hotel perfecto para tus vacaciones soñadas"
         },
         "third": {
-          "subtitle": "Put them all together",
-          "content": "Profit from our package deals with flights and hotel bookings"
+          "subtitle": "Ponerlos todos juntos",
+          "content": "Benefíciese de nuestros paquetes de vuelos y reservas de hotel"
         }
       },
       "second": {
-        "title": "Fun at the beach",
+        "title": "Diversión en la playa",
         "first": {
-          "subtitle": "Things to do",
-          "content": "You can choose between a surf beach on one side and a gentle harbour swim"
+          "subtitle": "Cosas para hacer",
+          "content": "Puedes elegir entre una playa de surf a un lado y un baño suave en el puerto"
         },
         "second": {
-          "subtitle": "Have a snack",
-          "content": "Feast on fresh seafood marinated in chili and lime"
+          "subtitle": "Tomar un bocadillo",
+          "content": "Deléitese con mariscos frescos marinados en chile y lima."
         },
         "third": {
-          "subtitle": "Sunset magic",
-          "content": "Lantern-lit beach huts make a memorable setting to watch the sun go down"
+          "subtitle": "Magia del atardecer",
+          "content": "Las cabañas de playa iluminadas con faroles son un escenario memorable para ver la puesta de sol."
         }
       },
       "third": {
-        "title": "Fun at the Zoo",
+        "title": "Diversión en el zoológico",
         "first": {
-          "subtitle": "Watch exotic birds",
-          "content": "Friendly birds are always happy to see you"
+          "subtitle": "Observa aves exóticas",
+          "content": "Los pájaros amistosos siempre están felices de verte."
         },
         "second": {
-          "subtitle": "Dolphins show",
-          "content": "Watch the dolphins perform the wildest tricks"
+          "subtitle": "Espectáculo de delfines",
+          "content": "Mira a los delfines realizar los trucos más salvajes."
         },
         "third": {
           "subtitle": "Huge Aquarium",
@@ -81,7 +81,7 @@
       }
     },
     "terms-and-conditions": {
-      "title": "Terms and conditions",
+      "title": "Términos y condiciones",
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla sapien libero, non malesuada nisi lacinia vel. Nam euvarius justo. Phaselluslaoreet sapien augue, a accumsan turpis dapibus vitae. Curabitur ac nibh felis. Sed eu metus quis erosegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttitor lor sit ametsegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttit"
     }
   },
@@ -112,33 +112,33 @@
   "deals" : {
     "hotel": "Hotel Victoria",
     "location": "Bischofshofen, 4, 38660 Adeje, Spain",
-    "checkin": "Saturday, 12 March...",
-    "checkout": "Saturday, 13 March...",
+    "checkin": "sábado, 12 de marzo...",
+    "checkout": "sábado, 13 marzo...",
     "detail": {
-      "adult": "Adult-",
-      "child": "Child-",
-      "infant": "infant-"
+      "adult": "Adulto-",
+      "child": "Niñas-",
+      "infant": "Infantes-"
     }
   },
   "hotelAbout" : {
-    "hotel": "Hotel Victoria, Adeje, Spain ",
-    "star": "(4 Stars)",
-    "cardTitle": "Hotel Victoria Highlights"
+    "hotel": "Hotel Victoria, Adeje, España ",
+    "star": "(4 Estrellas)",
+    "cardTitle": "Hotel Victoria Destacados"
   },
   "hotelAvailable" : {
-    "selectRoom": "2 Rooms"
+    "selectRoom": "2 Habitaciones"
   },
   "footer": {
     "links": {
-      "about-us": "About Us",
-      "contact": "Contact",
-      "disclaimer": "Disclaimer",
-      "useful-information": "Useful Information",
-      "file-a-complaint": "File a complaint",
-      "working-hours": "Working Hours"
+      "about-us": "Sobre nosotros",
+      "contact": "Contacto",
+      "disclaimer": "Descargo de responsabilidad",
+      "useful-information": "Información útil",
+      "file-a-complaint": "Presentar una queja",
+      "working-hours": "Horas Laborales"
     },
-    "email-address": "Email Address",
-    "subscribe-title": "Subscribe to our newsletter",
-    "subscribe": "Subscribe"
+    "email-address": "Dirección de correo electrónico",
+    "subscribe-title": "Suscríbete a nuestro boletín",
+    "subscribe": "Suscribir"
   }
 }

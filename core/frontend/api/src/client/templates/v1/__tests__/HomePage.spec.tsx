@@ -1,5 +1,6 @@
 import {cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
+
 import HomePage, { HomePageProps } from "../HomePage";
 import {configure} from 'enzyme';
 import { IntlProvider } from 'next-intl';
@@ -28,13 +29,14 @@ beforeEach(() => cleanup())
 
 const messages = require("../../../languages/agency/en.json");
 
-const homePageProps: HomePageProps = {
+const homePageProps: any = {
   websiteName: "Example website",
   websiteUrl: "example.com",
-  websiteSlogan: "Example website slogan"
+  websiteSlogan: "Example website slogan",
+  colorScheme: {}
 };
 
-const Wrapper = ({ ...props }: HomePageProps) => {
+const Wrapper = ({ ...props }: any) => {
   return (
     <IntlProvider locale="en" messages={messages}>
       <HomePage {...props} />
@@ -55,7 +57,6 @@ describe("Home Page Suite", () => {
   it("Should render the home page", () => {
 
     render(<Wrapper {...homePageProps} />);
-
     expect(screen.getByText(/Travel Any Corner of The World With Us/)).toBeInTheDocument();
   });
 

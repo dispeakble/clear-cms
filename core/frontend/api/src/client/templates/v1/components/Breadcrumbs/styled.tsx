@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import { Colors } from "../../assets/design-set";
-import breadcrumbIcon from "../../assets/img/breadcrumb-icon.svg";
 import { size } from "../../styled";
 
 export const StyledBreadcrumbs = styled.div`
-  background: ${Colors.primaryColor}; 
+  background: ${({theme}) => theme.colors.primaryColor}; 
   color: white;
   border-radius: 10px;
   box-shadow: 0 4px 4px rgba(0,0,0,0.25);
@@ -24,14 +22,14 @@ export const StyledBreadcrumbLink = styled.a`
   font-size: 11px;
   white-space: nowrap;
   &:hover {
-    color: ${Colors.primaryLight};
+    color: ${({theme}) => theme.colors.primaryLight};
   }
 
   @media (min-width: ${size.tablet}) {
     font-size: 16px;
     padding: 16px 26px 16px 5px;
     &:not(:last-of-type) {
-      background: url(${breadcrumbIcon.src}) no-repeat right center;
+      background: url(${({theme}) => theme.icon('breadcrumb')}) no-repeat right center;
     }
   }
 

@@ -1,14 +1,10 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { Colors } from "./assets/design-set";
 import headerBg from "./assets/img/header-bg.jpg";
-
 
 export const GlobalStyle = createGlobalStyle`
   body, html {
     margin: 0;
     padding: 0;
-    background: url('${headerBg.src}') no-repeat center top ${Colors.mainBackground};
-    background-size: 100%;
     font-family: "Poppins", Arial, sans-serif, serif;
   }
 `;
@@ -38,10 +34,19 @@ export const device = {
 export const MainWrapper = styled.div`
   height: 100%;
   width: 100%;
-  margin: 0 auto;
+  
+`;
+
+export const TopContentWrapper = styled.div`
+  background: url('${headerBg.src}') no-repeat center center ${({theme}) => theme.colors.mainBackground};
+  background-size: cover;
+`;
+
+export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 auto;
   @media ${device.mobileS} {
     max-width: 320px;
   }
@@ -67,11 +72,16 @@ export const MainWrapper = styled.div`
     max-width: 1440px;
   }
 `;
+
+export const PaperWrapper = styled.div`
+  background: ${({theme}) => theme.colors.mainBackground};
+`;
+
 export const StyledContentWrapper = styled.div`
   width: 100%;
   margin-top: 95px;
 
-  background: ${Colors.offWhite};
+  background: ${({theme}) => theme.colors.offWhite};
   @media (min-width: ${size.tablet}) {
     padding: 0 40px;
   }
@@ -100,8 +110,8 @@ export const StyledWebsiteSlogan = styled.div`
 `;
 
 export const StyledTermsOfUse = styled.div`
-  background: ${Colors.primaryColor};
-  color: ${Colors.white};
+  background: ${({theme}) => theme.colors.primaryColor};
+  color: ${({theme}) => theme.colors.white};
   line-height: 200%;
   padding: 10px;
   text-align: justify;

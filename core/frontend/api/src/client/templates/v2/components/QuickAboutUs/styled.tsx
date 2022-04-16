@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { device } from "../../styled";
-import { Colors } from "../../assets/design-set";
 
 export const StyledQuickAboutUs = styled.div`
   width: 100%;
@@ -33,7 +32,7 @@ export const StyledTitle = styled.div`
 
 export const StyledDescription = styled.div`
   font-size: 20px;
-  color: ${Colors.gray};
+  color: ${({theme}) => theme.colors.gray};
   line-height: 200%;
 `;
 
@@ -41,7 +40,7 @@ export const StyledContactBtn = styled.a`
   font-size: 20px;
   color: #FFFFFF;
   line-height: 75px;
-  background-color: ${Colors.primaryColor};
+  background-color: ${({theme}) => theme.colors.primaryColor};
   cursor: pointer;
   border-radius: 8px;
   padding: 0 16px;
@@ -49,13 +48,13 @@ export const StyledContactBtn = styled.a`
   margin-top: 6%;
 
   &:hover {
-    color: ${Colors.primaryLight};
+    color: ${({theme}) => theme.colors.primaryLight};
   }
 `;
 
 export const StyledFloatingPrice = styled.div`
   background: #FFFFFF;
-  color: ${Colors.primaryColor};
+  color: ${({theme}) => theme.colors.primaryColor};
   padding: 30%;
   text-align: center;
   font-size: 36px;

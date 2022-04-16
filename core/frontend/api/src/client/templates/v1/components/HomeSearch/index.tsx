@@ -22,14 +22,12 @@ import {
   StyledSearchTab,
   StyledSearchTabs,
   StyledStars,
+  SearchLabel,
   StyledValue
 } from "./styled";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
-import {
-  SearchLabel
-} from "../../../../components/agency/SearchComponent/styled";
 import Calendar from "react-calendar";
 import ValuePopup from "./valuePopup";
 

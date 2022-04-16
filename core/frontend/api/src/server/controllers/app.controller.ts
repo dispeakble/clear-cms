@@ -20,17 +20,13 @@ export class AppController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
-        name: 'frontend',
-        version: '21.08.04',
+        name: `${process.env.app}_frontend`,
+        version: '22.04.12',
         description: 'Frontend Module',
         started: new Date(),
         config: {
-            channel: `${process.env.app}_frontend`,
-            permissions: {
-                stop: false,
-                restart: true,
-                ports: [80]
-            }
+            restart: true,
+            stop: false
         },
         dependencies: [{
             name: `${process.env.app}_hub`,
@@ -75,25 +71,7 @@ export class AppController {
     async onApplicationBootstrap() {
         await this.protocolService.start();
 
-        const payload: ModuleInterface = {
-            name: 'frontend',
-            version: '21.08.28',
-            description: 'the frontend api and client',
-            started: new Date(),
-            config: {
-                restart: true,
-                stop: false
-            },
-            dependencies: [{
-                name: `${process.env.app}_hub`,
-                version: 'latest'
-            },{
-                name: `${process.env.app}_frontendproxy`,
-                version: 'latest'
-            }]
-        };
-
-        const reg_msg = await this.systemService.registerModule(payload);
+        const reg_msg = await this.systemService.registerModule(this.moduleConfig);
         this.logger.log(reg_msg);
         const port_map_msg = await this.protocolService.sendMessage({
             channel: `${process.env.app}_hub`,
