@@ -34,11 +34,10 @@ export const device = {
 export const MainWrapper = styled.div`
   height: 100%;
   width: 100%;
-  
 `;
 
 export const TopContentWrapper = styled.div`
-  background: url('${headerBg.src}') no-repeat center center ${({theme}) => theme.colors.mainBackground};
+  background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
 
@@ -47,6 +46,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  max-width: 320px;
   @media ${device.mobileS} {
     max-width: 320px;
   }
@@ -74,14 +74,13 @@ export const ContentWrapper = styled.div`
 `;
 
 export const PaperWrapper = styled.div`
-  background: ${({theme}) => theme.colors.mainBackground};
+  background: ${({ theme }) => theme.colors.mainBackground};
 `;
 
 export const StyledContentWrapper = styled.div`
   width: 100%;
   margin-top: 95px;
-
-  background: ${({theme}) => theme.colors.offWhite};
+  background: ${({ theme }) => theme.colors.offWhite};
   @media (min-width: ${size.tablet}) {
     padding: 0 40px;
   }
@@ -109,13 +108,14 @@ export const StyledWebsiteSlogan = styled.div`
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
+/*
 export const StyledTermsOfUse = styled.div`
-  background: ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.white};
   line-height: 200%;
   padding: 10px;
   text-align: justify;
   @media (min-width: ${size.tablet}) {
     padding: 20px 90px;
-
-`;
+  }
+`;*/

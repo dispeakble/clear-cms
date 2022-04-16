@@ -163,9 +163,12 @@ export const StyledCheckIn = styled.span`
   border-radius: 8px 0 0 8px;
   flex: 1;
   min-height: 77px;
+  position: relative;
+  overflow: visible;
   & label {
     pointer-events: none;
   }
+ 
 `;
 
 export const StyledCheckOut = styled.span`
@@ -175,6 +178,8 @@ export const StyledCheckOut = styled.span`
   border-radius: 0 8px 8px 0;
   flex: 1;
   min-height: 77px;
+  position: relative;
+  overflow: visible;
   & label {
     pointer-events: none;
   }
@@ -275,7 +280,16 @@ export const DateLabel = styled.label<IDateLabel>`
 export const CalendarContainer = styled.div`
   position: absolute;
   height: auto;
-  margin: 40px 0 0 -50px;
+  margin-top: 40px;
+  
+  &#checkOut {
+    right: 0;
+  }
+
+  &#checkIn {
+    left: 0;
+  }
+  
   max-width: 290px;
   z-index: 20;
   padding: 30px 10px;

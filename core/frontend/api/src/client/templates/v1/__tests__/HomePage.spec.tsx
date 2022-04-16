@@ -1,18 +1,22 @@
-import {cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-import HomePage, { HomePageProps } from "../HomePage";
-import {configure} from 'enzyme';
+import HomePage from "../HomePage";
 import { IntlProvider } from 'next-intl';
 
+let location = "";
 
 jest.mock("next/router", () => ({
   useRouter() {
     return {
+      push: (url: any) => {
+        location = url.pathname;
+      },
       route: "/",
       pathname: "",
       query: "",
       asPath: "",
+      locales: ["en", "es"]
     };
   },
 }));
@@ -54,15 +58,21 @@ const formatDate = (date: any) => {
 
 describe("Home Page Suite", () => {
 
+
+  beforeEach(() => {
+    location = "";
+  })
+
   it("Should render the home page", () => {
 
     render(<Wrapper {...homePageProps} />);
+    fireEvent.scroll(window, { target: { scrollY: 500 } });
+    fireEvent.scroll(window, { target: { scrollY: 0 } });
     expect(screen.getByText(/Travel Any Corner of The World With Us/)).toBeInTheDocument();
   });
 
   it("Should perform Search with no data", async () => {
    render(<Wrapper {...homePageProps} />);
-
 
     fireEvent.click(
         screen.getByTestId(/search-submit-btn/)
@@ -73,6 +83,50 @@ describe("Home Page Suite", () => {
       expect(screen.getByTestId(/test-hotels-packages-search-input/)).toHaveFocus();
     })
 
+  })
+
+  it("Should perform Search with data", async () => {
+
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.change(
+        screen.getByTestId(/test-hotels-packages-search-input/),
+        {target: {value: 'New destination'}},
+    )
+
+    const today = new Date();
+
+    fireEvent.click(
+        homePage.getByTestId(/test-checkIn-button/),
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
+    })
+
+    fireEvent.click(
+        homePage.getByText(today.getDate().toString())
+    )
+
+    fireEvent.click(
+        homePage.getByTestId(/test-checkOut-button/)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument();
+    })
+
+    fireEvent.click(
+        homePage.getByText(today.getDate() + 1)
+    )
+
+    fireEvent.click(
+        screen.getByTestId(/search-submit-btn/)
+    )
+
+    await waitFor(() => {
+      expect(location).toContain('/agency/search')
+    })
   })
 
   it("Should change packages search input value", () => {
@@ -94,17 +148,29 @@ describe("Home Page Suite", () => {
         homePage.getByTestId(/test-checkIn-button/),
     )
 
+    fireEvent.click(
+        homePage.getByTestId('home-search-overlay')
+    )
+
+    fireEvent.click(
+        homePage.getByTestId(/test-checkIn-button/),
+    )
+
     await waitFor(() => {
       expect(homePage.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
     })
 
-    fireEvent.click(
-        homePage.getByText(today.getDate().toString())
-    )
+    act(() => {
+      fireEvent.click(
+          homePage.getByText(today.getDate().toString())
+      )
+    })
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-checkIn-date-value/).textContent).toBe(formatDate(today).toString());
     })
+
+
   })
 
   it("Should change check out date picker value", async () => {
@@ -115,17 +181,29 @@ describe("Home Page Suite", () => {
         homePage.getByTestId(/test-checkOut-button/)
     )
 
+    fireEvent.click(
+        homePage.getByTestId('home-search-overlay')
+    )
+
+    fireEvent.click(
+        homePage.getByTestId(/test-checkOut-button/)
+    )
+
     await waitFor(() => {
       expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument();
     })
 
-    fireEvent.click(
-        homePage.getByText(today.getDate() + 1)
-    )
+    act(() => {
+      fireEvent.click(
+          homePage.getByText(today.getDate() + 1)
+      )
+    })
+
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-checkOut-date-value/).textContent).toBe(formatDate(today.setDate(today.getDate() + 1)).toString());
     })
+
   })
 
   it("Should update guests (adults) number", async () => {

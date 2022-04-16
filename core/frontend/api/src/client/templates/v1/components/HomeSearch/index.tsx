@@ -269,7 +269,7 @@ ${filterValues.stars}`
       || showFilter.stars
       || checkInCalendarIsOpen
       || checkOutCalendarIsOpen
-    ) && <Overlay onClick={closeModals} />}
+    ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
   </StyledHomeSearch>;
 };
 
