@@ -4,7 +4,7 @@ RUN mkdir -p /usr/src/api
 
 WORKDIR /usr/src/api
 
-RUN yarn global add @nestjs/cli
+RUN npm i -g @nestjs/cli
 
 COPY ./package.json /usr/src/api/
 COPY ./yarn.lock /usr/src/api/
