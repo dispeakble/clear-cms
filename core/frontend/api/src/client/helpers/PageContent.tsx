@@ -84,11 +84,6 @@ class PageContent {
                         <link rel="canonical" href={`${typeof window!=='undefined' ? window.location.href : ""}`} />
                     }
                     <meta charSet="UTF-8" />
-                    <link
-                        rel="stylesheet"
-                        type="text/css"
-                        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"
-                    />
                 </Head>
                 {
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

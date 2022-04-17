@@ -1,7 +1,15 @@
 import Logo from "./Logo";
 import Link from "next/link";
 
-import { HeaderWrapper, InputSearch, LanguagesWrapper, LogoWrapper, MenuWrapper, SearchWrapper } from "./styled";
+import {
+  HeaderContent,
+  HeaderWrapper,
+  InputSearch,
+  LanguagesWrapper,
+  LogoWrapper,
+  MenuWrapper,
+  SearchWrapper
+} from "./styled";
 import Languages from "./Languages";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -25,24 +33,27 @@ const Header = (props: any) => {
 
   return (
     <HeaderWrapper data-testid="header-wrapper" className={fixedHeader ? "fixedHeader" : ""}>
-      <LogoWrapper>
-        <Link href="/">
-          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href="/">
-            <Logo />
-          </a>
-        </Link>
+      <HeaderContent>
+        <LogoWrapper>
+          <Link href="/">
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a href="/">
+              <Logo />
+            </a>
+          </Link>
 
-      </LogoWrapper>
-      <MenuWrapper>
-        <Menu links={links} />
-      </MenuWrapper>
-      <LanguagesWrapper>
-        <Languages />
-      </LanguagesWrapper>
-      <SearchWrapper>
-        <InputSearch data-testid="header-search-input" type="search" placeholder={t("global.search")} />
-      </SearchWrapper>
+        </LogoWrapper>
+        <MenuWrapper>
+          <Menu links={links} />
+        </MenuWrapper>
+        <LanguagesWrapper>
+          <Languages />
+        </LanguagesWrapper>
+        <SearchWrapper>
+          <InputSearch data-testid="header-search-input" type="search" placeholder={t("global.search")} />
+        </SearchWrapper>
+      </HeaderContent>
+
     </HeaderWrapper>
   );
 };

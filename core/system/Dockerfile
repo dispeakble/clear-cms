@@ -17,7 +17,7 @@ COPY ./client/jsconfig.json /usr/src/client/jsconfig.json
 WORKDIR /usr/src/client
 RUN yarn install
 
-RUN npm run build
+RUN yarn run build
 RUN rm -fr node_modules
 WORKDIR /usr/src
 RUN rm -fr ./client
@@ -37,9 +37,9 @@ COPY ./api/nest-cli.json /usr/src/api/nest-cli.json
 COPY ./api/tsconfig.build.json /usr/src/api/tsconfig.build.json
 COPY ./api/tsconfig.json /usr/src/api/tsconfig.json
 
-RUN npm run build
+RUN yarn run build
 
-CMD ["rm", "-fr", "src"]
+RUN rm -fr src
 RUN rm -fr node_modules
 RUN yarn install --production
-CMD ["npm","run","start:prod"]
+CMD ["yarn","run","start:prod"]

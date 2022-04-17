@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import { device, size } from "../../styled";
 
 type HeaderWrapperProps = {
@@ -9,14 +8,14 @@ type HeaderWrapperProps = {
 export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  
   align-items: center;
   background: rgba(0,0,0,0);
   position: fixed;
   z-index: 9999;
   top: 0;
-  margin: 0 auto;
-  padding: 20px;
+  
+  
 
   -webkit-transition: background-color 1000ms linear;
   -ms-transition: background-color 1000ms linear;
@@ -25,8 +24,17 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   &.fixedHeader {
     z-index: 999;
     background: ${({theme}) => theme.colors.primaryColor};
+    box-shadow: 0 10px 10px -4px rgba(0,0,0,0.3);
   }
+`;
 
+export const HeaderContent = styled.div`
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
   @media (max-width: ${size.laptop}) {
     padding: 0;
   }
@@ -56,7 +64,9 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   }
 `;
 
+
 export const LogoWrapper = styled.div`
+  filter: drop-shadow(0px 0px 4px rgba(255,255,255,0.7));
   order: 1;
   @media (max-width: ${size.laptop}) {
     order: 2;
