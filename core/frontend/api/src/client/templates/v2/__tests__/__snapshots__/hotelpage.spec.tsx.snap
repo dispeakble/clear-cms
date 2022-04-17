@@ -226,7 +226,7 @@ Object {
                       <input
                         placeholder="Saturday, 12 March..."
                         readonly=""
-                        value="Saturday, 16 April, 2022"
+                        value="Sunday, 17 April, 2022"
                       />
                       <div
                         class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
@@ -252,7 +252,7 @@ Object {
                       <input
                         placeholder="Saturday, 13 March..."
                         readonly=""
-                        value="Sunday, 17 April, 2022"
+                        value="Monday, 18 April, 2022"
                       />
                       <div
                         class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
@@ -1230,9 +1230,9 @@ Object {
               class="styled__QueryTitle-sc-1kznkl4-0 hZPayD"
             >
               Available Rooms for 
-              Sat 16 Apr
+              Sun 17 Apr
                - 
-              Sun 17 Apr,
+              Mon 18 Apr,
                
               1
                adults, 
@@ -1274,7 +1274,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              16 Apr , Sat
+                              17 Apr , Sun
                                 
                             </strong>
                           </p>
@@ -1306,7 +1306,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              17 Apr , Sun
+                              18 Apr , Mon
                                
                             </strong>
                           </p>
@@ -1933,7 +1933,7 @@ Object {
                     <input
                       placeholder="Saturday, 12 March..."
                       readonly=""
-                      value="Saturday, 16 April, 2022"
+                      value="Sunday, 17 April, 2022"
                     />
                     <div
                       class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
@@ -1959,7 +1959,7 @@ Object {
                     <input
                       placeholder="Saturday, 13 March..."
                       readonly=""
-                      value="Sunday, 17 April, 2022"
+                      value="Monday, 18 April, 2022"
                     />
                     <div
                       class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
@@ -2937,9 +2937,9 @@ Object {
             class="styled__QueryTitle-sc-1kznkl4-0 hZPayD"
           >
             Available Rooms for 
-            Sat 16 Apr
+            Sun 17 Apr
              - 
-            Sun 17 Apr,
+            Mon 18 Apr,
              
             1
              adults, 
@@ -2981,7 +2981,7 @@ Object {
                         </div>
                         <p>
                           <strong>
-                            16 Apr , Sat
+                            17 Apr , Sun
                               
                           </strong>
                         </p>
@@ -3013,7 +3013,7 @@ Object {
                         </div>
                         <p>
                           <strong>
-                            17 Apr , Sun
+                            18 Apr , Mon
                              
                           </strong>
                         </p>
