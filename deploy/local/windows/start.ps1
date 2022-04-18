@@ -1,4 +1,5 @@
 #!/usr/bin/env powershell
+$INIT_INSTALL_VERSION="v0.0.1"
 $INIT_APP_NAME = "marioviajes"
 $INIT_APP_VERSION = "1.5.0"
 $INIT_WEBSITE_NAME = "Mario Viajes"
@@ -16,15 +17,16 @@ $INIT_POSTGRES_DEFAULT_CONNECTIONS = "main,agency"
 $INIT_PGADMIN_DEFAULT_EMAIL = "admin@localhost.local"
 $INIT_PGADMIN_DEFAULT_PASSWORD = "1qaz"
 $INIT_REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
-$CMS_HUB_VERSION="1650147824"
-$CMS_DB_VERSION="1650130876"
-$CMS_BUCKET_VERSION="1650147824"
-$CMS_FRONTEND_PROXY_VERSION="1650147824"
-$CMS_FRONTEND_VERSION="1650147824"
-$CMS_ADMIN_PROXY_VERSION="1650147824"
-$CMS_ADMIN_SYSTEM_VERSION="1650147824"
+$CMS_HUB_VERSION="1650274457"
+$CMS_DB_VERSION="1650274457"
+$CMS_BUCKET_VERSION="1650274457"
+$CMS_FRONTEND_PROXY_VERSION="1650274457"
+$CMS_FRONTEND_VERSION="1650274457"
+$CMS_ADMIN_PROXY_VERSION="1650274457"
+$CMS_ADMIN_SYSTEM_VERSION="1650274457"
 $PWD=$pwd.Path
 
+if (($INSTALL_VERSION = Read-Host "Install version (Enter for default:  $INIT_INSTALL_VERSION)") -eq '') { $INSTALL_VERSION = $INIT_INSTALL_VERSION }
 if (($APP_NAME = Read-Host "App name (Enter for default:  $INIT_APP_NAME)") -eq '') { $APP_NAME = $INIT_APP_NAME }
 if (($APP_VERSION = Read-Host "App version (Enter for default:  $INIT_APP_VERSION)") -eq '') { $APP_VERSION = $INIT_APP_VERSION }
 if (($DEFAULT_EMAIL = Read-Host "Admin Email (Enter for default: $INIT_DEFAULT_EMAIL)") -eq '') { $DEFAULT_EMAIL = $INIT_DEFAULT_EMAIL }
@@ -46,6 +48,7 @@ if (($PGADMIN_DEFAULT_EMAIL = Read-Host "PgAdmin email (Enter for default: $INIT
 if (($PGADMIN_DEFAULT_PASSWORD = Read-Host "PgAdmin password (Enter for default: $INIT_PGADMIN_DEFAULT_PASSWORD)") -eq '') { $PGADMIN_DEFAULT_PASSWORD = $INIT_PGADMIN_DEFAULT_PASSWORD }
 
 $env:APP_NAME=$APP_NAME
+$env:INSTALL_VERSION=$INSTALL_VERSION
 $env:APP_VERSION=$APP_VERSION
 $env:DEFAULT_EMAIL=$DEFAULT_EMAIL
 $env:DEFAULT_PASSWORD=$DEFAULT_PASSWORD
@@ -79,7 +82,7 @@ $env:PWD=$PWD
 
 echo $PWD
 
-echo "$VERSION"
+echo "$INSTALL_VERSION"
 echo "$APP_NAME"
 echo "$APP_VERSION"
 echo "$DEFAULT_EMAIL"
@@ -112,8 +115,8 @@ Write-Output "Login in to docker"
 
 Get-Content ../secrets/dockerpass.txt | docker login --username cmsbot --password-stdin
 
-echo "..\versions\$VERSION\base.yaml"
+echo "..\versions\$INSTALL_VERSION\base.yaml"
 
-"docker-compose -f ..\versions\$VERSION\base.yaml up -d" | cmd
+"docker-compose -f ..\versions\$INSTALL_VERSION\base.yaml up -d" | cmd
 
 echo "**************** Services Started *****************"
