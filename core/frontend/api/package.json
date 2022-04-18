@@ -132,6 +132,8 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
+    "babel-plugin-styled-components": "^2.0.7",
     "dts-css-modules-loader": "^1.2.4",
     "eslint": "7.32.0",
     "eslint-config-next": "11.1.2",

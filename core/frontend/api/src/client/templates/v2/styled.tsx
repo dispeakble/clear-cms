@@ -138,13 +138,14 @@ export const StyledWebsiteSlogan = styled.div`
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
+/*
 export const StyledTermsOfUse = styled.div`
-  background: ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.white};
   line-height: 200%;
   padding: 10px;
   text-align: justify;
   @media (min-width: ${size.tablet}) {
     padding: 20px 90px;
-
-`;
+  }
+`;*/
