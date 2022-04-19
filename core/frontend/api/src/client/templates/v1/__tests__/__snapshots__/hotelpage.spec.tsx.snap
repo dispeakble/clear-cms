@@ -17,7 +17,7 @@ Object {
             class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
           >
             <div
-              class="styled__LogoWrapper-sc-1da3qfr-2 gMozhL"
+              class="styled__LogoWrapper-sc-1da3qfr-2 gZXSiZ"
             >
               <a
                 href="/"
@@ -226,7 +226,7 @@ Object {
                       <input
                         placeholder="Saturday, 12 March..."
                         readonly=""
-                        value="Sunday, 17 April, 2022"
+                        value="Tuesday, 19 April, 2022"
                       />
                       <div
                         class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
@@ -252,7 +252,7 @@ Object {
                       <input
                         placeholder="Saturday, 13 March..."
                         readonly=""
-                        value="Monday, 18 April, 2022"
+                        value="Wednesday, 20 April, 2022"
                       />
                       <div
                         class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
@@ -1230,9 +1230,9 @@ Object {
               class="styled__QueryTitle-sc-1fefmyk-0 dTRNNp"
             >
               Available Rooms for 
-              Sun 17 Apr
+              Tue 19 Apr
                - 
-              Mon 18 Apr,
+              Wed 20 Apr,
                
               1
                adults, 
@@ -1274,7 +1274,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              17 Apr , Sun
+                              19 Apr , Tue
                                 
                             </strong>
                           </p>
@@ -1306,7 +1306,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              18 Apr , Mon
+                              20 Apr , Wed
                                
                             </strong>
                           </p>
@@ -1724,7 +1724,7 @@ Object {
           class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
         >
           <div
-            class="styled__LogoWrapper-sc-1da3qfr-2 gMozhL"
+            class="styled__LogoWrapper-sc-1da3qfr-2 gZXSiZ"
           >
             <a
               href="/"
@@ -1933,7 +1933,7 @@ Object {
                     <input
                       placeholder="Saturday, 12 March..."
                       readonly=""
-                      value="Sunday, 17 April, 2022"
+                      value="Tuesday, 19 April, 2022"
                     />
                     <div
                       class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
@@ -1959,7 +1959,7 @@ Object {
                     <input
                       placeholder="Saturday, 13 March..."
                       readonly=""
-                      value="Monday, 18 April, 2022"
+                      value="Wednesday, 20 April, 2022"
                     />
                     <div
                       class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
@@ -2937,9 +2937,9 @@ Object {
             class="styled__QueryTitle-sc-1fefmyk-0 dTRNNp"
           >
             Available Rooms for 
-            Sun 17 Apr
+            Tue 19 Apr
              - 
-            Mon 18 Apr,
+            Wed 20 Apr,
              
             1
              adults, 
@@ -2981,7 +2981,7 @@ Object {
                         </div>
                         <p>
                           <strong>
-                            17 Apr , Sun
+                            19 Apr , Tue
                               
                           </strong>
                         </p>
@@ -3013,7 +3013,7 @@ Object {
                         </div>
                         <p>
                           <strong>
-                            18 Apr , Mon
+                            20 Apr , Wed
                              
                           </strong>
                         </p>

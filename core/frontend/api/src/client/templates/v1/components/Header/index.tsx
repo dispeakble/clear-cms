@@ -23,7 +23,7 @@ const Header = (props: any) => {
 
   useEffect(() => {
     window.addEventListener("scroll", (evt) => {
-      if (window.pageYOffset > 50) {
+      if (window.scrollY > 50) {
         setFixedHeader(true);
       } else {
         setFixedHeader(false);
