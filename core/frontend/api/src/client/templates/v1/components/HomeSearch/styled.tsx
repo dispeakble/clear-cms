@@ -11,6 +11,8 @@ export const StyledHomeSearch = styled.div`
   margin-bottom: 20px;
   padding: 114px 0 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
   @media ${device.tablet} {
     max-width: 720px;
   }
@@ -42,10 +44,13 @@ export const StyledSearchTabs = styled.div`
     display: block;
   }
 `;
-export const StyledSearchTab = styled.div`
+export const StyledSearchTab = styled.a`
+  display: block;
+  text-align: center;
   padding: 20px;
   background: white;
   cursor: pointer;
+  user-select: none;
   &:hover {
     background: ${({theme}) => theme.colors.primaryColorHover};
   }
@@ -56,15 +61,42 @@ export const StyledSearchTab = styled.div`
     background: ${({theme}) => theme.colors.primaryColor};
     box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
   }
-
   flex: 1;
-
 
   @media ${device.tablet} {
     display: inline-block;
     flex: none;
   }
   
+`;
+
+export const StyledSearchInput = styled.input`
+  flex: 1;
+  background: url(${({theme}) => theme.icon('departure')}) no-repeat 16px center white;
+  padding: 20px 0 20px 64px;
+  width: 100%;
+  outline: none;
+  border: none;
+  &::placeholder{
+    color: rgba(0,0,0,0.6);
+  }
+`;
+
+export const StyledSearchDestinationInput = styled.input`
+  flex: 1;
+  background: url(${({theme}) => theme.icon('arrival')}) no-repeat 16px center white;
+  padding: 20px 0 20px 64px;
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  border: none;
+  margin-top: 5px;
+  &::placeholder{
+    color: rgba(0,0,0,0.6);
+  }
+  @media ${device.tablet} {
+    margin-top: 0;
+  }
 `;
 
 export const StyledSearchInputHolder = styled.div`
@@ -74,22 +106,20 @@ export const StyledSearchInputHolder = styled.div`
   
   border-radius: 0 0 16px 16px;
   background: none;
+  
   @media ${device.tablet} {
     background: ${({theme}) => theme.colors.white};
+    &.flights {
+      background: rgb(255,255,255);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 75%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
+      & ${StyledSearchDestinationInput} {
+        @media ${device.tablet} {
+          margin: 0 0 0 5px;
+        }
+      }
+    }
     flex-direction: row;
     border-radius: 0 16px 0 0;
-  }
-`;
-
-export const StyledSearchInput = styled.input`
-  flex: 1;
-  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center white;
-  padding: 20px 0 20px 50px;
-  width: 100%;
-  outline: none;
-  border: none;
-  &::placeholder{
-    color: rgba(0,0,0,0.6);
   }
 `;
 
@@ -101,12 +131,14 @@ export const StyledSearchButton = styled.button`
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 16px;
+  user-select: none;
+  border-radius: 8px;
   padding: 20px;
-  margin-top: 5px;
+
+  margin: 10px 0 0 0;
+  
   @media ${device.tablet} {
-    margin-top: 0;
-    border-radius: 0 16px 0 16px;
+    margin: 0 0 0 10px;
   }
 `;
 
@@ -115,9 +147,11 @@ export const StyledSearchOptions = styled.div`
   padding: 10px;
   border-radius: 0 0 16px 16px;
   background: white;
-  display: block;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   @media ${device.tablet} {
-    display: flex;
+    flex-direction: row;
   }
 `;
 
@@ -158,13 +192,12 @@ export const StyledSearchCheckinGroup = styled.div`
   border: 2px solid #EFEFEF;
   border-radius: 10px;
   display: flex;
-  width: 100%;
   @media ${device.tablet} {
     width: auto;
   }
   & > span:hover {
     background-color: ${({theme}) => theme.colors.primaryLight};
-    & > * {
+    & > label {
       color: #FFFFFF !important;
     }
 
@@ -173,11 +206,11 @@ export const StyledSearchCheckinGroup = styled.div`
 
 export const StyledCheckIn = styled.span`
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('checkIn')}) no-repeat 10px center;
-  padding: 20px 10px 20px 40px;
+  user-select: none;
+  background: url(${({theme}) => theme.icon('checkIn')}) no-repeat 5px center;
+  padding: 10px 10px 10px 35px;
   border-radius: 8px 0 0 8px;
   flex: 1;
-  min-height: 77px;
   position: relative;
   overflow: visible;
   & label {
@@ -188,15 +221,26 @@ export const StyledCheckIn = styled.span`
 
 export const StyledCheckOut = styled.span`
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('checkOut')}) no-repeat 10px center;
-  padding: 20px 10px 20px 40px;
+  user-select: none;
+  background: url(${({theme}) => theme.icon('checkOut')}) no-repeat 5px center;
+  padding: 10px 10px 10px 35px;
   border-radius: 0 8px 8px 0;
   flex: 1;
-  min-height: 77px;
   position: relative;
   overflow: visible;
   & label {
     pointer-events: none;
+    user-select: none;
+  }
+  
+`;
+
+export const StyledFilterWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  @media ${device.tablet} {
+    flex-direction: row;
   }
 `;
 
@@ -210,15 +254,16 @@ export const StyledSearchOptionsGroup = styled.div`
   @media ${device.tablet} {
     flex: 1;
     margin: 0 0 0 10px;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
   @media ${device.laptop} {
-    grid-template-columns: repeat(auto-fit, minmax(98px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
   @media ${device.laptopL} {
-    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   }
-  & > div:hover {
+  & label:hover {
+    cursor: pointer;
     background-color: ${({theme}) => theme.colors.primaryLight};
     & > ${StyledCenterLabel} * {
       color: white !important;
@@ -226,57 +271,67 @@ export const StyledSearchOptionsGroup = styled.div`
   }
 `;
 
-export const StyledPerson = styled.div<{onClick: () => void}>`
-  display: inline-block;
+export const StyledPerson = styled.label`
   cursor: pointer;
-  padding: 20px 0 20px;
-  min-width: 86px;
-  min-height: 77px;
+  user-select: none;
+  display: inline-block;
+  padding: 10px 0 10px 10px;
   border-radius: 8px 0 0 8px;
   position: relative;
+  background: url(${({theme}) => theme.icon('person')}) no-repeat 10px 10px;
   @media (max-width: ${size.mobileL}) {
     border-radius: 8px 0 0 0;
   }
+  @media ${device.laptopL} {
+    background-position: 55px 12px;
+  }
 `;
 
-export const StyledChild = styled.div`
-  display: inline-block;
+export const StyledChild = styled.label`
   cursor: pointer;
-  padding: 20px 0 20px;
-  min-width: 86px;
-  min-height: 77px;
+  user-select: none;
+  display: inline-block;
+  padding: 10px 0 10px 10px;
   position: relative;
+  background: url(${({theme}) => theme.icon('child')}) no-repeat 10px 10px;
   @media (max-width: ${size.mobileL}) {
     border-radius: 0 8px 0 0;
   }
-`;
-
-export const StyledInfant = styled.div`
-  display: inline-block;
-  cursor: pointer;
-  padding: 20px 0 20px;
-  min-width: 86px;
-  min-height: 77px;
-  position: relative;
-  @media (max-width: ${size.mobileL}) {
-    border-radius: 0 0 0 8px;
+  @media ${device.laptopL} {
+    background-position: 55px 12px;
   }
 `;
 
-export const StyledStars = styled.div`
-  display: inline-block;
+export const StyledStars = styled.label`
   cursor: pointer;
-  padding: 20px 0 20px;
-  min-width: 86px;
-  min-height: 77px;
+  user-select: none;
+  display: inline-block;
+  padding: 10px 0 10px 10px;
   position: relative;
   border-radius: 0 8px 8px 0;
+  background: url(${({theme}) => theme.icon('star')}) no-repeat 0 12px;
   @media (max-width: ${size.mobileL}) {
     border-radius: 0 0 8px 0;
   }
-  
+  @media ${device.laptopL} {
+    background-position: 45px 12px;
+  }
 `;
 
+export const StyledOneWay = styled.label`
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  padding: 10px 0 10px 10px;
+  position: relative;
+  border-radius: 0 8px 8px 0;
+  & input {
+    cursor: pointer;
+  }
+  @media (max-width: ${size.mobileL}) {
+    border-radius: 0 0 8px 0;
+  }
+`;
 export const SearchLabel = styled.label`
   font-size: 12px;
   font-weight: 800;
@@ -307,7 +362,7 @@ export const CalendarContainer = styled.div`
   
   max-width: 290px;
   z-index: 20;
-  padding: 30px 10px;
+  padding: 10px;
   background: white;
   border-radius: 16px;
   box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
