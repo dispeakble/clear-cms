@@ -30,7 +30,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
 
 export const HeaderContent = styled.div`
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 0px;
   display: flex;
   width: 100%;
   align-items: center;

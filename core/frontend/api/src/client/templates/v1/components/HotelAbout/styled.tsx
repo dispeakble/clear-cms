@@ -4,10 +4,12 @@ import hotel1 from "../../assets/img/hotels/small/hotel1.jpg";
 import { Rate } from 'antd';
 
 export const About = styled.div`
-  margin-top: 37px;
   @media (min-width: ${size.laptopL}) {
     display: flex;
     gap: 20px;
+    padding: 37px 42px;
+  }
+  @media (max-width: ${size.laptopL}) {
     padding: 37px 42px;
   }
 `
@@ -64,8 +66,11 @@ export const RightSection = styled.div`
   flex-direction: column;
   gap: 20px;
   @media only screen and (max-width:${size.tablet}){
-    padding:10px;
+   
     
+  }
+  @media (max-width: ${size.laptopL}) {
+    margin-top: 15px;
   }
 `
 export const MapSection = styled.div`

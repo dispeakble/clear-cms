@@ -119,14 +119,35 @@
     "activities" : "Activities"
   },
   "deals" : {
+    "hotelTitle": "Destination or Hotel:",
     "hotel": "Hotel Victoria",
     "location": "Bischofshofen, 4, 38660 Adeje, Spain",
+    "showMap": "Show Map",
+    "viewPrice": "View Prices",
+    "newSearch": "New Search",
     "checkin": "Saturday, 12 March...",
     "checkout": "Saturday, 13 March...",
-    "detail": {
+    "title": "Find Deals",
+    "checkIn": "Check-in date:",
+    "checkOut": "Check-out date:",
+    "detailTitle": "Details:",
+    "detailPerson": {
       "adult": "Adult-",
       "child": "Child-",
       "infant": "infant-"
+    },
+    "personEntry": {
+      "detailTop": "Details",
+      "cardDesc": "Add Numbers of Persons",
+      "adult": "Adults",
+      "adultDesc": "12Yrs & above on the day of travel",
+      "child": "Children",
+      "childDesc": "2-12yrs on the day of travel",
+      "infant": "Infants",
+      "infantDesc": "Under 2yrs on the day of travel",
+      "done": "Done"
+
+
     }
   },
   "hotels": {
@@ -138,14 +159,50 @@
   "hotelAbout" : {
     "hotel": "Hotel Victoria, Adeje, Spain ",
     "star": "(4 Stars)",
-    "cardTitle": "Hotel Victoria Highlights"
+    "cardTitle": "Hotel Victoria Highlights",
+    "firstHalfDesc": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
+    "secondHalfDesc" : " Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore",
+    "readLess": "read less...",
+    "readMore": "read less..."
+
+
+
   },
-  "hotelAvailable" : {
+  "hotelRoomAvailable" : {
     "selectRoom": "2 Rooms"
   },
   "tooltip" : {
     "view_price" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
     "room_type" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
+  },
+  "hotelAvailable":{
+    "queryTitle": "Available Rooms for ",
+    "adult": "adults",
+    "child": "children",
+    "infant": "infants",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "refreshPrice": "Refresh Prices",
+    "submit": "Book Now",
+    "selectPerson": {
+      "adult": "Adults",
+      "child": "Children",
+      "infant": "Infants"
+    },
+    "tableHead": {
+      "roomType": "Room Type",
+      "meal": "Meals",
+      "room": "Rooms",
+      "price": "Price"
+
+    }
+  },
+  "breadcrumsb": {
+    "home": "Home",
+    "spain": "Spain",
+    "tenerife": "Tenerife",
+    "adeje": "Adeje",
+    "hotel": "Hotel Victoria (Hotel)"
   },
   "footer": {
     "links": {

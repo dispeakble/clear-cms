@@ -8,12 +8,19 @@ import { useMemo } from "react";
 import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
 import hotel2 from "../../assets/img/hotels/small/hotel5.jpg";
 import hotel3 from "../../assets/img/hotels/small/hotel6.jpg";
+import hotel4 from "../../assets/img/hotels/small/hotel4.jpg";
+import hotel5 from "../../assets/img/hotels/small/hotel5.jpg";
+import hotel6 from "../../assets/img/hotels/small/hotel6.jpg";
+import hotel7 from "../../assets/img/hotels/small/hotel4.jpg";
+import hotel8 from "../../assets/img/hotels/small/hotel5.jpg";
+import hotel9 from "../../assets/img/hotels/small/hotel6.jpg";
+
 
 const HotelPhotoSlider = () => {
 
   const gallery = {
     showBullets: false,
-    showThumbnails: false,
+    showThumbnails: true,
     infinite: true,
     showFullscreenButton: false,
     zoom: false,
@@ -24,6 +31,7 @@ const HotelPhotoSlider = () => {
     slideOnThumbnailOver: false,
     slideInterval: 5000,
     slideDuration: 300,
+
   };
 
   const imgSources = [{
@@ -32,7 +40,21 @@ const HotelPhotoSlider = () => {
     src: hotel2.src
   },{
     src: hotel3.src
-  }];
+  },{
+    src: hotel4.src
+  },{
+    src: hotel5.src
+  },{
+    src: hotel6.src
+  },{
+    src: hotel7.src
+  },{
+    src: hotel8.src
+  },{
+    src: hotel9.src
+  }
+
+  ];
 
   const images = imgSources.map((img) => {
     try {
@@ -46,7 +68,7 @@ const HotelPhotoSlider = () => {
           background: `url(${item.original}) no-repeat center center`,
           backgroundSize: 'cover',
           display: 'block',
-          height: '100%'
+          height: '100%',
         };
 
         return <div style={style}>&nbsp;</div>
@@ -98,11 +120,11 @@ const HotelPhotoSlider = () => {
     },
   }), [gallery]);
 
-  return <HotelPhotoSliderWrapper>
+  return <HotelPhotoSliderWrapper style={{width: '100%'}}>
     <ImageGallery
       {...galleryProps}
     />
-    <div id={`vertical-slider-enlargeImage`}/>
+    <div id={`vertical-slider-enlargeImage`}></div>
   </HotelPhotoSliderWrapper>;
 }
 

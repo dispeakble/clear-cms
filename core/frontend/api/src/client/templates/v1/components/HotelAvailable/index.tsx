@@ -63,7 +63,8 @@ type HotelAvailableProps = {
   handleAdultPlus: () => void;
   handleAdultMinus: () => void;
   handleInfantsPlus: () => void;
-  handleChangeInput: (name: string, value: any) => void;
+  handleChangeInputCheckIn:(value: any) => void;
+  handleChangeInputCheckOut:(value: any) => void;
   handleChildrenMinus: () => void;
   handleChildrenPlus: () => void;
   handleInfantsMinus: () => void;
@@ -74,10 +75,13 @@ const HotelAvailable = ({
                           handleAdultPlus,
                           handleAdultMinus,
                           handleInfantsPlus,
-                          handleChangeInput,
                           handleChildrenMinus,
                           handleChildrenPlus,
-                          handleInfantsMinus
+                          handleInfantsMinus,
+                          handleChangeInputCheckIn,
+                          handleChangeInputCheckOut
+
+
                         }: HotelAvailableProps) => {
   const [show, setShow] = useState("");
   const [showRoom, setShowRoom] = useState("");
@@ -141,8 +145,8 @@ const HotelAvailable = ({
 
   return (
     <Wrapper>
-      <QueryTitle>Available Rooms
-        for {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} adults, {data.passenger.children} children, {data.passenger.infants} infants </QueryTitle>
+      <QueryTitle>{t("hotelAvailable.queryTitle")}
+        {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("hotelAvailable.adult")}, {data.passenger.children} {t("hotelAvailable.child")} , {data.passenger.infants} {t("hotelAvailable.infant")}  </QueryTitle>
       <Modifier>
         <HotelCheck>
           <LeftSide>
@@ -153,7 +157,7 @@ const HotelAvailable = ({
                     <CheckInSvg onClick={handleShowCheckin} />
                   </div>
                   <CheckBg>
-                    <CheckTitle>Check-in</CheckTitle>
+                    <CheckTitle>{t("hotelAvailable.checkIn")}</CheckTitle>
                     <p>
                       <strong>{moment(data.checkin).format("DD MMM , ddd")}  </strong>
                     </p>
@@ -163,9 +167,9 @@ const HotelAvailable = ({
                   <CalendarView>
                     <HotelCalendar
                       onChange={(value: any) => {
-                        handleChangeInput("checkin", value);
+                        handleChangeInputCheckIn( value);
                       }}
-                      minDate={data.checkin}
+                      minDate={new Date()}
                       value={data.checkin}
                     />
                   </CalendarView>
@@ -179,7 +183,7 @@ const HotelAvailable = ({
                     <CheckOutSvg onClick={handleShowCheckout} />
                   </div>
                   <CheckBg>
-                    <CheckTitle>Check-out</CheckTitle>
+                    <CheckTitle>{t("hotelAvailable.checkOut")}</CheckTitle>
                     <p>
                       <strong>{moment(data.checkout).format("DD MMM , ddd")} </strong>
                     </p>
@@ -189,9 +193,9 @@ const HotelAvailable = ({
                   <CalendarViewCheckout>
                     <HotelCalendar
                       onChange={(value: any) => {
-                        handleChangeInput("checkout", value);
+                        handleChangeInputCheckOut( value);
                       }}
-                      minDate={new Date(String(moment(data.checkin).add(1, "d")))}
+                      minDate={new Date(String(moment(data.checkin)))}
                       value={new Date(data.checkout)}
                     />
                   </CalendarViewCheckout>
@@ -205,7 +209,7 @@ const HotelAvailable = ({
                 <Passenger onClick={handleShowAdults}>
                   <PassengerDetailsWrapper onClick={handleShowAdults}>
                     <Image src={adultsIcon.src} width={9} height={22} />
-                    <SpanDiv>Adults</SpanDiv>
+                    <SpanDiv>{t("hotelAvailable.selectPerson.adult")}</SpanDiv>
                     <DropdownIcon />
                   </PassengerDetailsWrapper>
                   <GuestNumber>{data?.passenger.adults}</GuestNumber>
@@ -234,7 +238,7 @@ const HotelAvailable = ({
                 <Passenger onClick={handleShowChildren}>
                   <PassengerDetailsWrapper onClick={handleShowChildren}>
                     <ChildIcon />
-                    <SpanDiv>Children</SpanDiv>
+                    <SpanDiv>{t("hotelAvailable.selectPerson.child")}</SpanDiv>
                     <DropdownIcon />
 
                   </PassengerDetailsWrapper>
@@ -261,7 +265,7 @@ const HotelAvailable = ({
                 <Passenger onClick={handleShowInfants}>
                   <PassengerDetailsWrapper onClick={handleShowInfants}>
                     <InfantIcon />
-                    <SpanDiv>Infants</SpanDiv>
+                    <SpanDiv>{t("hotelAvailable.selectPerson.infant")}</SpanDiv>
                     <DropdownIcon />
 
                   </PassengerDetailsWrapper>
@@ -289,15 +293,15 @@ const HotelAvailable = ({
 
           <button>
             <RefreshIcon />
-            <span>Refresh Prices</span></button>
+            <span>{t("hotelAvailable.refreshPrice")}</span></button>
         </RefreshPrice>
       </Modifier>
       <RoomTable>
         <TableHead>
-          <RoomType>Room Type</RoomType>
-          <Meal>Meals</Meal>
-          <SelectRoom>Rooms</SelectRoom>
-          <Price>Price</Price>
+          <RoomType>{t("hotelAvailable.tableHead.roomType")}</RoomType>
+          <Meal>{t("hotelAvailable.tableHead.meal")}</Meal>
+          <SelectRoom>{t("hotelAvailable.tableHead.room")}</SelectRoom>
+          <Price>{t("hotelAvailable.tableHead.price")}</Price>
           <BookNow> </BookNow>
         </TableHead>
         {/*<RowView>*/}
@@ -339,8 +343,7 @@ const HotelAvailable = ({
                     {/*}} placeholder={t('hotelAvailable.selectRoom')}></input>*/}
                     <LeftIcon />
                     <ul>
-                      <input type="text" placeholder="3 Rooms" readOnly
-                             value={RoomsNumber[index]} />
+                      <span>{t("hotelRoomAvailable.selectRoom")}</span>
                     </ul>
                     <RightIcon>
                       <TopUp />
@@ -375,7 +378,7 @@ const HotelAvailable = ({
                 <ColumnFour>{Number(w.hotelPrice) * Number(w.hotelRoom)}{" \u20AC"}</ColumnFour>
                 <ColumnBreak />
                 <ColumnFive>
-                  <button>Book Now</button>
+                  <button>{t("hotelAvailable.submit")}</button>
                 </ColumnFive>
               </TableBody>
             );

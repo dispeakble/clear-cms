@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
+import { size} from "../../styled";
 
 export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;
   width: 320px;
   height: 270px;
-  margin-bottom: 20px;
   @media (min-width: ${size.mobileS}) {
     width: 320px;
   }

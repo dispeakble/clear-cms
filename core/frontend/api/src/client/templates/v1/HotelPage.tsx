@@ -27,13 +27,35 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     }
 
   });
+  const handleChangeInputCheckIn = ( value: any) => {
+    const checkin=moment(new Date(value)).format("YYYY-MM-DD");
+    const checkout=moment(new Date(data.checkout)).format("YYYY-MM-DD");
 
-  const handleChangeInput = (name: string, value: any) => {
+
+    if(!moment(checkout).isAfter(checkin)) {
+      setData({
+        ...data,
+        checkout: moment(new Date(value)).add(1, "d"),
+        checkin: value
+      });
+    }else{
+      setData({
+        ...data,
+        checkin: value
+      });
+    }
+
+  };
+
+  const handleChangeInputCheckOut = ( value: any) => {
     setData({
       ...data,
-      [name]: value
+      checkout: value
     });
+
+
   };
+
   const handleAdultPlus = () => {
     setData({
       ...data,
@@ -133,11 +155,13 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
             handleChildrenPlus={handleChildrenPlus}
             handleInfantsMinus={handleInfantsMinus}
             handleInfantsPlus={handleInfantsPlus}
-            handleChangeInput={handleChangeInput}
             handleAdultPlus={handleAdultPlus}
             handleAdultMinus={handleAdultMinus}
             handleSearch={handleSearch}
             handleHotelSearch={handleHotelSearch}
+            handleChangeInputCheckIn={handleChangeInputCheckIn}
+            handleChangeInputCheckOut={handleChangeInputCheckOut}
+
           />
           <HotelAbout />
           <HotelAvailable
@@ -146,7 +170,8 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
             handleChildrenPlus={handleChildrenPlus}
             handleInfantsMinus={handleInfantsMinus}
             handleInfantsPlus={handleInfantsPlus}
-            handleChangeInput={handleChangeInput}
+            handleChangeInputCheckIn={handleChangeInputCheckIn}
+            handleChangeInputCheckOut={handleChangeInputCheckOut}
             handleAdultPlus={handleAdultPlus}
             handleAdultMinus={handleAdultMinus}
           />
