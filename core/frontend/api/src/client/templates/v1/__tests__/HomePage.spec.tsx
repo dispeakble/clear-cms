@@ -63,12 +63,9 @@ describe("Home Page Suite", () => {
     location = "";
   })
 
-  it("Should render the home page", () => {
-
-    render(<Wrapper {...homePageProps} />);
-    fireEvent.scroll(window, { target: { scrollY: 500 } });
-    fireEvent.scroll(window, { target: { scrollY: 0 } });
-    expect(screen.getByText(/Travel Any Corner of The World With Us/)).toBeInTheDocument();
+  it("Should render the home page", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+    expect(homePage).toMatchSnapshot();
   });
 
   it("Should perform Search with no data", async () => {

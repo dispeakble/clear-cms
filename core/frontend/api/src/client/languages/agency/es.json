@@ -140,5 +140,29 @@
     "email-address": "Dirección de correo electrónico",
     "subscribe-title": "Suscríbete a nuestro boletín",
     "subscribe": "Suscribir"
+  },
+  "custom404": {
+    "header" : "¿Va a alguna parte? Has llegado a una página muy perdida.",
+    "links" : "Haga clic en los siguientes enlaces",
+    "return" : "O volver a la página de inicio",
+    "goBackHome" : "Vuelve a home"
+  },
+  "links": {
+    "home" : "Home",
+    "contact" : "Contactar con",
+    "hotels" :  "Hoteles",
+    "flights" : "Vuelos",
+    "packages" :  "Paquetes",
+      "latestSearches" : "Últimas búsquedas",
+    "lastMinute" :  "Último minuto"
+  },
+  "custom300" : {
+      "header": "Su página se redirigirá pronto."
+  },
+  "custom401" : {
+    "header": "Se le ha dado de baja."
+  },
+  "custom500" : {
+    "header": "Por el momento nuestros servicios están en mantenimiento."
   }
 }
