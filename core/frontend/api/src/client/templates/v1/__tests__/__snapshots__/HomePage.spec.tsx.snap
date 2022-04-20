@@ -1,0 +1,2276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home Page Suite Should render the home page 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="styled__MainWrapper-sc-1c2vi5p-0 isTwKx"
+      >
+        <div
+          class="styled__TopContentWrapper-sc-1c2vi5p-1 fKixqf"
+        >
+          <div
+            class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
+          >
+            <header
+              class="styled__HeaderWrapper-sc-1da3qfr-0 GHrcR"
+              data-testid="header-wrapper"
+            >
+              <div
+                class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
+              >
+                <div
+                  class="styled__LogoWrapper-sc-1da3qfr-2 gMozhL"
+                >
+                  <a
+                    href="/"
+                  >
+                    <div
+                      class="Logo__LogoWrapper-sc-1i3eazt-0 jNrxJa"
+                    >
+                      voila
+                    </div>
+                  </a>
+                </div>
+                <div
+                  class="styled__MenuWrapper-sc-1da3qfr-3 kmokYv"
+                >
+                  <div
+                    class="styled__StyledMenuWrapper-sc-v8jcxf-0 eWoTlf"
+                  >
+                    <ul
+                      class="styled__StyledMenu-sc-v8jcxf-1 fgIbGf"
+                    >
+                      <li
+                        class="styled__Item-sc-v8jcxf-2 csBYlq"
+                      >
+                        <a
+                          class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                          href="activities"
+                        >
+                          Activities
+                        </a>
+                      </li>
+                      <li
+                        class="styled__Item-sc-v8jcxf-2 csBYlq"
+                      >
+                        <a
+                          class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                          href="hotels"
+                        >
+                          Hotels
+                        </a>
+                      </li>
+                      <li
+                        class="styled__Item-sc-v8jcxf-2 csBYlq"
+                      >
+                        <a
+                          class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                          href="packages"
+                        >
+                          Packages
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div
+                  class="styled__LanguagesWrapper-sc-1da3qfr-6 iUywfH"
+                >
+                  <div
+                    class="styled__Container-sc-1fbn5z7-1 bDVtyr"
+                  >
+                    <button
+                      class="styled__SelectedLanguage-sc-1fbn5z7-0 fgCMAp"
+                    >
+                       
+                      <svg
+                        fill="currentColor"
+                        height="1em"
+                        stroke="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 24 24"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      class="styled__LanguagesDropdown-sc-1fbn5z7-2 jCXLMk"
+                    >
+                      <a
+                        href="/"
+                      >
+                        ENG
+                      </a>
+                      <a
+                        href="/"
+                      >
+                        ESP
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="styled__SearchWrapper-sc-1da3qfr-4 kUJmtb"
+                >
+                  <input
+                    class="styled__InputSearch-sc-1da3qfr-5 jjpwKa"
+                    data-testid="header-search-input"
+                    placeholder="Search"
+                    type="search"
+                  />
+                </div>
+              </div>
+            </header>
+            <div
+              class="styled__StyledHomeSearch-sc-1mi76mm-0 fqbcwf"
+            >
+              <div
+                class="styled__StyledSearchTabs-sc-1mi76mm-1 diiZzk"
+              >
+                <div
+                  class="styled__StyledSearchTab-sc-1mi76mm-2 bEMoFT selected"
+                  data-testid="test-packages-search-tab"
+                >
+                  Packages
+                </div>
+                <div
+                  class="styled__StyledSearchTab-sc-1mi76mm-2 bEMoFT"
+                  data-testid="test-hotels-search-tab"
+                >
+                  Hotels
+                </div>
+                <div
+                  class="styled__StyledSearchTab-sc-1mi76mm-2 bEMoFT"
+                  data-testid="test-flights-search-tab"
+                >
+                  Flights
+                </div>
+              </div>
+              <div
+                class="styled__StyledSearchInputHolder-sc-1mi76mm-3 kExbNA"
+              >
+                <input
+                  class="styled__StyledSearchInput-sc-1mi76mm-4 iEwVe"
+                  data-testid="test-hotels-packages-search-input"
+                  placeholder="Search a destination or a hotel..."
+                  value=""
+                />
+                <button
+                  class="styled__StyledSearchButton-sc-1mi76mm-5 fEzIwk"
+                  data-testid="search-submit-btn"
+                >
+                  Find deals
+                </button>
+              </div>
+              <div
+                class="styled__StyledSearchOptions-sc-1mi76mm-6 fTDsYW"
+              >
+                <div
+                  class="styled__StyledSearchCheckinGroup-sc-1mi76mm-11 bRwiYD"
+                >
+                  <span
+                    class="styled__StyledCheckIn-sc-1mi76mm-12 bvhbfs"
+                    data-testid="test-checkIn-button"
+                  >
+                    <label
+                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    >
+                      Check in
+                    </label>
+                    <label
+                      class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                      data-testid="test-checkIn-date-value"
+                    >
+                      Add date
+                    </label>
+                  </span>
+                  <span
+                    class="styled__StyledCheckOut-sc-1mi76mm-13 gzxXzk"
+                    data-testid="test-checkOut-button"
+                  >
+                    <label
+                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    >
+                      Check out
+                    </label>
+                    <label
+                      class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                      data-testid="test-checkOut-date-value"
+                    >
+                      Add date
+                    </label>
+                  </span>
+                </div>
+                <div
+                  class="styled__StyledSearchOptionsGroup-sc-1mi76mm-14 jaHFpt"
+                >
+                  <div
+                    class="styled__StyledPerson-sc-1mi76mm-15 eqjcMd"
+                    data-testid="test-open-adults-handler"
+                  >
+                    <div
+                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    >
+                      <label
+                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      >
+                        voila
+                        Adults
+                      </label>
+                      <div
+                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      >
+                        1
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledChild-sc-1mi76mm-16 uYvOp"
+                    data-testid="test-open-children-handler"
+                  >
+                    <div
+                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    >
+                      <label
+                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      >
+                        voila
+                        Children
+                      </label>
+                      <div
+                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      >
+                        0
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledInfant-sc-1mi76mm-17 bhviOU"
+                    data-testid="test-open-infants-handler"
+                  >
+                    <div
+                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    >
+                      <label
+                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      >
+                        voila
+                        Infants
+                      </label>
+                      <div
+                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      >
+                        0
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledStars-sc-1mi76mm-18 dtsjOu"
+                    data-testid="test-open-stars-handler"
+                  >
+                    <div
+                      class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                    >
+                      <label
+                        class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                      >
+                        voila
+                        Category
+                      </label>
+                      <div
+                        class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                      >
+                        4
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="styled__StyledMiddleText-sc-1c2vi5p-5 iKvAXz"
+            >
+              <div
+                class="styled__StyledWebsiteName-sc-1c2vi5p-6 ckbofk"
+              >
+                Example website
+              </div>
+              <div
+                class="styled__StyledWebsiteSlogan-sc-1c2vi5p-7 hAWBjA"
+              >
+                Example website slogan
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="styled__PaperWrapper-sc-1c2vi5p-3 JwxhH"
+        >
+          <div
+            class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
+          >
+            <div
+              class="styled__StyledWrapper-sc-162097f-0 jJTucK"
+            >
+              <div
+                class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+              >
+                <div
+                  class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+                >
+                  Special Offers
+                </div>
+                <div
+                  class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                >
+                  Last Minute
+                </div>
+                <div
+                  class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+                >
+                  Flights
+                </div>
+              </div>
+              <div
+                class="styled__StyledCardsWrapper-sc-162097f-1 gtcRbh"
+              >
+                <div
+                  class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                >
+                  <div
+                    class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                  >
+                    <div
+                      class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                      src="src"
+                    />
+                  </div>
+                  <div
+                    class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                  >
+                    <span
+                      class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                    >
+                      Relax
+                    </span>
+                    <span
+                      class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                    >
+                      7 days, breakfast
+                    </span>
+                    <span
+                      class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                    >
+                      Book Now
+                    </span>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      Gran Canaria
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      Tenerife
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      La Gomera
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                >
+                  <div
+                    class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                  >
+                    <div
+                      class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                      src="src"
+                    />
+                  </div>
+                  <div
+                    class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                  >
+                    <span
+                      class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                    >
+                      Relax
+                    </span>
+                    <span
+                      class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                    >
+                      7 days, breakfast
+                    </span>
+                    <span
+                      class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                    >
+                      Book Now
+                    </span>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      Gran Canaria
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      Tenerife
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      La Gomera
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledCard-sc-162097f-2 eugwbQ"
+                >
+                  <div
+                    class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                  >
+                    <div
+                      class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                      src="src"
+                    />
+                  </div>
+                  <div
+                    class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                  >
+                    <span
+                      class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                    >
+                      Relax
+                    </span>
+                    <span
+                      class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                    >
+                      7 days, breakfast
+                    </span>
+                    <span
+                      class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                    >
+                      Book Now
+                    </span>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      Gran Canaria
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      Tenerife
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                  >
+                    <div
+                      class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                    >
+                      La Gomera
+                    </div>
+                    <div
+                      class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                    >
+                      299$
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="styled__StyledSliderWrapper-sc-1oy4tom-0 hBlcNH"
+            >
+              <div
+                aria-live="polite"
+                class="image-gallery"
+              >
+                <div
+                  class="image-gallery-content bottom"
+                >
+                  <div
+                    class="image-gallery-slide-wrapper bottom"
+                  >
+                    <button
+                      aria-label="Previous Slide"
+                      class="image-gallery-icon image-gallery-left-nav"
+                      type="button"
+                    >
+                      <svg
+                        class="image-gallery-svg"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1"
+                        viewBox="6 0 12 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <polyline
+                          points="15 18 9 12 15 6"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      aria-label="Next Slide"
+                      class="image-gallery-icon image-gallery-right-nav"
+                      type="button"
+                    >
+                      <svg
+                        class="image-gallery-svg"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1"
+                        viewBox="6 0 12 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <polyline
+                          points="9 18 15 12 9 6"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      class="image-gallery-swipe"
+                    >
+                      <div
+                        class="image-gallery-slides"
+                      >
+                        <div
+                          aria-label="Go to Slide 1"
+                          class="image-gallery-slide  center "
+                          role="button"
+                          style="display: inherit; transform: translate3d(0%, 0, 0);"
+                          tabindex="-1"
+                        >
+                          <div
+                            style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                          >
+                             
+                          </div>
+                        </div>
+                        <div
+                          aria-label="Go to Slide 2"
+                          class="image-gallery-slide  right "
+                          role="button"
+                          style="display: inherit; transform: translate3d(100%, 0, 0);"
+                          tabindex="-1"
+                        >
+                          <div
+                            style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                          >
+                             
+                          </div>
+                        </div>
+                        <div
+                          aria-label="Go to Slide 3"
+                          class="image-gallery-slide  left "
+                          role="button"
+                          style="display: inherit; transform: translate3d(-100%, 0, 0);"
+                          tabindex="-1"
+                        >
+                          <div
+                            style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                          >
+                             
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                id="vertical-slider-enlargeImage"
+              />
+            </div>
+            <div
+              class="styled__StyledQuickAboutUs-sc-509o3b-0 jMKHEr"
+            >
+              <div
+                class="styled__StyledQuickAboutUsImage-sc-509o3b-1 bgnWEj"
+                src="src"
+              />
+              <div
+                class="styled__StyledQuickAboutUsText-sc-509o3b-2 doLPZv"
+                src="src"
+              >
+                <h3
+                  class="styled__StyledTitle-sc-509o3b-3 gtpQdc"
+                >
+                  Travel Any Corner of The World With Us
+                </h3>
+                <article
+                  class="styled__StyledDescription-sc-509o3b-4 fdrCqi"
+                >
+                  Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
+
+Would you explore nature paradise in the world, let’s find the best destination in world with us.
+                </article>
+                <a
+                  class="styled__StyledContactBtn-sc-509o3b-5 laOYLN"
+                  href="/about-us"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+            <div
+              class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+            >
+              <div
+                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+              >
+                Popular
+              </div>
+              <div
+                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+              >
+                Adventure
+              </div>
+              <div
+                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+              >
+                Relax
+              </div>
+            </div>
+            <div
+              class="styled__Wrapper-sc-huymx4-0 eFeMSk"
+            >
+              <div
+                class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+              >
+                <div
+                  class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                />
+                <div
+                  class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                >
+                  Hotel 1
+                </div>
+                <div
+                  class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                >
+                  Accommodation and full breakfast
+
+                </div>
+                <div
+                  class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                >
+                  Flight + Hotel 3 nights
+
+                </div>
+                <div
+                  class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                >
+                  199$
+                </div>
+                <a
+                  class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
+                >
+                  Book Now
+                </a>
+                <div
+                  class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                  src="src"
+                >
+                  <div
+                    class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                    src="src"
+                  />
+                </div>
+              </div>
+              <div
+                class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+              >
+                <div
+                  class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                />
+                <div
+                  class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                >
+                  Hotel 1
+                </div>
+                <div
+                  class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                >
+                  Accommodation and full breakfast
+
+                </div>
+                <div
+                  class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                >
+                  Flight + Hotel 3 nights
+
+                </div>
+                <div
+                  class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                >
+                  199$
+                </div>
+                <a
+                  class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
+                >
+                  Book Now
+                </a>
+                <div
+                  class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                  src="src"
+                >
+                  <div
+                    class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                    src="src"
+                  />
+                </div>
+              </div>
+              <div
+                class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+              >
+                <div
+                  class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+                />
+                <div
+                  class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+                >
+                  Hotel 1
+                </div>
+                <div
+                  class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+                >
+                  Accommodation and full breakfast
+
+                </div>
+                <div
+                  class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+                >
+                  Flight + Hotel 3 nights
+
+                </div>
+                <div
+                  class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+                >
+                  199$
+                </div>
+                <a
+                  class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
+                >
+                  Book Now
+                </a>
+                <div
+                  class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                  src="src"
+                >
+                  <div
+                    class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                    src="src"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="styled__Wrapper-sc-1fozp84-0 imyQUG"
+            >
+              <div
+                class="styled__StyledTabs-sc-1fozp84-1 vSIuM"
+              >
+                <div
+                  class="styled__StyledTab-sc-1fozp84-2 irVbfg selected"
+                  data-testid="test-first-tab-button"
+                >
+                  Flights + Hotels
+                </div>
+                <div
+                  class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                  data-testid="test-second-tab-button"
+                >
+                  Relax on the finest beaches
+                </div>
+                <div
+                  class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                  data-testid="test-third-tab-button"
+                >
+                  Fun water parks and zoos
+                </div>
+              </div>
+              <div
+                class="styled__StyledContent-sc-1fozp84-3 fRXcov"
+              >
+                <div>
+                  <div
+                    class="styled__StyledTitle-sc-1fozp84-4 fOIVVA"
+                  >
+                    The complete package
+                  </div>
+                  <div
+                    class="styled__StyledSliderWrapper-sc-qj79ja-0 kHweLb"
+                  >
+                    <div
+                      aria-live="polite"
+                      class="image-gallery"
+                    >
+                      <div
+                        class="image-gallery-content bottom"
+                      >
+                        <div
+                          class="image-gallery-slide-wrapper bottom"
+                        >
+                          <button
+                            aria-label="Previous Slide"
+                            class="image-gallery-icon image-gallery-left-nav"
+                            type="button"
+                          >
+                            <svg
+                              class="image-gallery-svg"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="1"
+                              viewBox="6 0 12 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polyline
+                                points="15 18 9 12 15 6"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            aria-label="Next Slide"
+                            class="image-gallery-icon image-gallery-right-nav"
+                            type="button"
+                          >
+                            <svg
+                              class="image-gallery-svg"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="1"
+                              viewBox="6 0 12 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polyline
+                                points="9 18 15 12 9 6"
+                              />
+                            </svg>
+                          </button>
+                          <div
+                            class="image-gallery-swipe"
+                          >
+                            <div
+                              class="image-gallery-slides"
+                            >
+                              <div
+                                aria-label="Go to Slide 1"
+                                class="image-gallery-slide  center "
+                                role="button"
+                                style="display: inherit; transform: translate3d(0%, 0, 0);"
+                                tabindex="-1"
+                              >
+                                <div
+                                  style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                                >
+                                   
+                                </div>
+                              </div>
+                              <div
+                                aria-label="Go to Slide 2"
+                                class="image-gallery-slide  right "
+                                role="button"
+                                style="display: inherit; transform: translate3d(100%, 0, 0);"
+                                tabindex="-1"
+                              >
+                                <div
+                                  style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                                >
+                                   
+                                </div>
+                              </div>
+                              <div
+                                aria-label="Go to Slide 3"
+                                class="image-gallery-slide  left "
+                                role="button"
+                                style="display: inherit; transform: translate3d(-100%, 0, 0);"
+                                tabindex="-1"
+                              >
+                                <div
+                                  style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                                >
+                                   
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      id="vertical-slider-enlargeImage"
+                    />
+                  </div>
+                  <div
+                    class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                  >
+                    <div
+                      class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                    >
+                      Cheap flights
+                    </div>
+                    <div
+                      class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                    >
+                      Find your desired plane ticket easily
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                  >
+                    <div
+                      class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                    >
+                      A diverse hotel selection
+                    </div>
+                    <div
+                      class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                    >
+                      You will find the perfect hotel for your dream vacation
+                    </div>
+                  </div>
+                  <div
+                    class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                  >
+                    <div
+                      class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                    >
+                      Put them all together
+                    </div>
+                    <div
+                      class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                    >
+                      Profit from our package deals with flights and hotel bookings
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <footer
+              class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
+            >
+              <div>
+                <div>
+                  <a
+                    href="/about-us"
+                  >
+                    About Us
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href="/contact"
+                  >
+                    Contact
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href="/disclaimer"
+                  >
+                    Disclaimer
+                  </a>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <a
+                    href="/useful-information"
+                  >
+                    Useful Information
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href="/file-a-complaint"
+                  >
+                    File a complaint
+                  </a>
+                </div>
+                <div>
+                  <a
+                    href="/working-hours"
+                  >
+                    Working Hours
+                  </a>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div
+                    class="styled__StyledNewsletterTitle-sc-1xenngy-1"
+                  >
+                    Subscribe to our newsletter
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledNewsletterForm-sc-1xenngy-2 cZuPmT"
+                >
+                  <input
+                    placeholder="Email Address"
+                    type="email"
+                  />
+                  <button>
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="styled__MainWrapper-sc-1c2vi5p-0 isTwKx"
+    >
+      <div
+        class="styled__TopContentWrapper-sc-1c2vi5p-1 fKixqf"
+      >
+        <div
+          class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
+        >
+          <header
+            class="styled__HeaderWrapper-sc-1da3qfr-0 GHrcR"
+            data-testid="header-wrapper"
+          >
+            <div
+              class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
+            >
+              <div
+                class="styled__LogoWrapper-sc-1da3qfr-2 gMozhL"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="Logo__LogoWrapper-sc-1i3eazt-0 jNrxJa"
+                  >
+                    voila
+                  </div>
+                </a>
+              </div>
+              <div
+                class="styled__MenuWrapper-sc-1da3qfr-3 kmokYv"
+              >
+                <div
+                  class="styled__StyledMenuWrapper-sc-v8jcxf-0 eWoTlf"
+                >
+                  <ul
+                    class="styled__StyledMenu-sc-v8jcxf-1 fgIbGf"
+                  >
+                    <li
+                      class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    >
+                      <a
+                        class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                        href="activities"
+                      >
+                        Activities
+                      </a>
+                    </li>
+                    <li
+                      class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    >
+                      <a
+                        class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                        href="hotels"
+                      >
+                        Hotels
+                      </a>
+                    </li>
+                    <li
+                      class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    >
+                      <a
+                        class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                        href="packages"
+                      >
+                        Packages
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="styled__LanguagesWrapper-sc-1da3qfr-6 iUywfH"
+              >
+                <div
+                  class="styled__Container-sc-1fbn5z7-1 bDVtyr"
+                >
+                  <button
+                    class="styled__SelectedLanguage-sc-1fbn5z7-0 fgCMAp"
+                  >
+                     
+                    <svg
+                      fill="currentColor"
+                      height="1em"
+                      stroke="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 24 24"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="styled__LanguagesDropdown-sc-1fbn5z7-2 jCXLMk"
+                  >
+                    <a
+                      href="/"
+                    >
+                      ENG
+                    </a>
+                    <a
+                      href="/"
+                    >
+                      ESP
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="styled__SearchWrapper-sc-1da3qfr-4 kUJmtb"
+              >
+                <input
+                  class="styled__InputSearch-sc-1da3qfr-5 jjpwKa"
+                  data-testid="header-search-input"
+                  placeholder="Search"
+                  type="search"
+                />
+              </div>
+            </div>
+          </header>
+          <div
+            class="styled__StyledHomeSearch-sc-1mi76mm-0 fqbcwf"
+          >
+            <div
+              class="styled__StyledSearchTabs-sc-1mi76mm-1 diiZzk"
+            >
+              <div
+                class="styled__StyledSearchTab-sc-1mi76mm-2 bEMoFT selected"
+                data-testid="test-packages-search-tab"
+              >
+                Packages
+              </div>
+              <div
+                class="styled__StyledSearchTab-sc-1mi76mm-2 bEMoFT"
+                data-testid="test-hotels-search-tab"
+              >
+                Hotels
+              </div>
+              <div
+                class="styled__StyledSearchTab-sc-1mi76mm-2 bEMoFT"
+                data-testid="test-flights-search-tab"
+              >
+                Flights
+              </div>
+            </div>
+            <div
+              class="styled__StyledSearchInputHolder-sc-1mi76mm-3 kExbNA"
+            >
+              <input
+                class="styled__StyledSearchInput-sc-1mi76mm-4 iEwVe"
+                data-testid="test-hotels-packages-search-input"
+                placeholder="Search a destination or a hotel..."
+                value=""
+              />
+              <button
+                class="styled__StyledSearchButton-sc-1mi76mm-5 fEzIwk"
+                data-testid="search-submit-btn"
+              >
+                Find deals
+              </button>
+            </div>
+            <div
+              class="styled__StyledSearchOptions-sc-1mi76mm-6 fTDsYW"
+            >
+              <div
+                class="styled__StyledSearchCheckinGroup-sc-1mi76mm-11 bRwiYD"
+              >
+                <span
+                  class="styled__StyledCheckIn-sc-1mi76mm-12 bvhbfs"
+                  data-testid="test-checkIn-button"
+                >
+                  <label
+                    class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                  >
+                    Check in
+                  </label>
+                  <label
+                    class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                    data-testid="test-checkIn-date-value"
+                  >
+                    Add date
+                  </label>
+                </span>
+                <span
+                  class="styled__StyledCheckOut-sc-1mi76mm-13 gzxXzk"
+                  data-testid="test-checkOut-button"
+                >
+                  <label
+                    class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                  >
+                    Check out
+                  </label>
+                  <label
+                    class="styled__StyledValue-sc-1mi76mm-9 hmgJNP"
+                    data-testid="test-checkOut-date-value"
+                  >
+                    Add date
+                  </label>
+                </span>
+              </div>
+              <div
+                class="styled__StyledSearchOptionsGroup-sc-1mi76mm-14 jaHFpt"
+              >
+                <div
+                  class="styled__StyledPerson-sc-1mi76mm-15 eqjcMd"
+                  data-testid="test-open-adults-handler"
+                >
+                  <div
+                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                  >
+                    <label
+                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    >
+                      voila
+                      Adults
+                    </label>
+                    <div
+                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                    >
+                      1
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledChild-sc-1mi76mm-16 uYvOp"
+                  data-testid="test-open-children-handler"
+                >
+                  <div
+                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                  >
+                    <label
+                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    >
+                      voila
+                      Children
+                    </label>
+                    <div
+                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledInfant-sc-1mi76mm-17 bhviOU"
+                  data-testid="test-open-infants-handler"
+                >
+                  <div
+                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                  >
+                    <label
+                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    >
+                      voila
+                      Infants
+                    </label>
+                    <div
+                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                    >
+                      0
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledStars-sc-1mi76mm-18 dtsjOu"
+                  data-testid="test-open-stars-handler"
+                >
+                  <div
+                    class="styled__StyledCenterLabel-sc-1mi76mm-7 esTWod"
+                  >
+                    <label
+                      class="styled__StyledLabel-sc-1mi76mm-8 bWXobT"
+                    >
+                      voila
+                      Category
+                    </label>
+                    <div
+                      class="styled__StyledPrimaryValue-sc-1mi76mm-10 biABmD"
+                    >
+                      4
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="styled__StyledMiddleText-sc-1c2vi5p-5 iKvAXz"
+          >
+            <div
+              class="styled__StyledWebsiteName-sc-1c2vi5p-6 ckbofk"
+            >
+              Example website
+            </div>
+            <div
+              class="styled__StyledWebsiteSlogan-sc-1c2vi5p-7 hAWBjA"
+            >
+              Example website slogan
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="styled__PaperWrapper-sc-1c2vi5p-3 JwxhH"
+      >
+        <div
+          class="styled__ContentWrapper-sc-1c2vi5p-2 cayqlu"
+        >
+          <div
+            class="styled__StyledWrapper-sc-162097f-0 jJTucK"
+          >
+            <div
+              class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+            >
+              <div
+                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+              >
+                Special Offers
+              </div>
+              <div
+                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+              >
+                Last Minute
+              </div>
+              <div
+                class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+              >
+                Flights
+              </div>
+            </div>
+            <div
+              class="styled__StyledCardsWrapper-sc-162097f-1 gtcRbh"
+            >
+              <div
+                class="styled__StyledCard-sc-162097f-2 eugwbQ"
+              >
+                <div
+                  class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                >
+                  <div
+                    class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                    src="src"
+                  />
+                </div>
+                <div
+                  class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                >
+                  <span
+                    class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                  >
+                    Relax
+                  </span>
+                  <span
+                    class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                  >
+                    7 days, breakfast
+                  </span>
+                  <span
+                    class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                  >
+                    Book Now
+                  </span>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    Gran Canaria
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    Tenerife
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    La Gomera
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+              </div>
+              <div
+                class="styled__StyledCard-sc-162097f-2 eugwbQ"
+              >
+                <div
+                  class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                >
+                  <div
+                    class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                    src="src"
+                  />
+                </div>
+                <div
+                  class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                >
+                  <span
+                    class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                  >
+                    Relax
+                  </span>
+                  <span
+                    class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                  >
+                    7 days, breakfast
+                  </span>
+                  <span
+                    class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                  >
+                    Book Now
+                  </span>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    Gran Canaria
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    Tenerife
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    La Gomera
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+              </div>
+              <div
+                class="styled__StyledCard-sc-162097f-2 eugwbQ"
+              >
+                <div
+                  class="styled__StyledCardImageHolder-sc-162097f-3 gSPRGZ"
+                >
+                  <div
+                    class="styled__StyledCardImage-sc-162097f-4 eKZOjc"
+                    src="src"
+                  />
+                </div>
+                <div
+                  class="styled__StyledFirstRow-sc-162097f-5 fNFMvE"
+                >
+                  <span
+                    class="styled__StyledLightLabel-sc-162097f-6 efeyig"
+                  >
+                    Relax
+                  </span>
+                  <span
+                    class="styled__StyledGrayLabel-sc-162097f-7 hmpIdA"
+                  >
+                    7 days, breakfast
+                  </span>
+                  <span
+                    class="styled__SmallBookNow-sc-162097f-8 jvBeVH"
+                  >
+                    Book Now
+                  </span>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    Gran Canaria
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    Tenerife
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledFeaturedPrices-sc-162097f-9 rncQh"
+                >
+                  <div
+                    class="styled__StyledDestination-sc-162097f-10 cKZlxU"
+                  >
+                    La Gomera
+                  </div>
+                  <div
+                    class="styled__StyledPrice-sc-162097f-11 gNAAfd"
+                  >
+                    299$
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="styled__StyledSliderWrapper-sc-1oy4tom-0 hBlcNH"
+          >
+            <div
+              aria-live="polite"
+              class="image-gallery"
+            >
+              <div
+                class="image-gallery-content bottom"
+              >
+                <div
+                  class="image-gallery-slide-wrapper bottom"
+                >
+                  <button
+                    aria-label="Previous Slide"
+                    class="image-gallery-icon image-gallery-left-nav"
+                    type="button"
+                  >
+                    <svg
+                      class="image-gallery-svg"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1"
+                      viewBox="6 0 12 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <polyline
+                        points="15 18 9 12 15 6"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    aria-label="Next Slide"
+                    class="image-gallery-icon image-gallery-right-nav"
+                    type="button"
+                  >
+                    <svg
+                      class="image-gallery-svg"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1"
+                      viewBox="6 0 12 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <polyline
+                        points="9 18 15 12 9 6"
+                      />
+                    </svg>
+                  </button>
+                  <div
+                    class="image-gallery-swipe"
+                  >
+                    <div
+                      class="image-gallery-slides"
+                    >
+                      <div
+                        aria-label="Go to Slide 1"
+                        class="image-gallery-slide  center "
+                        role="button"
+                        style="display: inherit; transform: translate3d(0%, 0, 0);"
+                        tabindex="-1"
+                      >
+                        <div
+                          style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                        >
+                           
+                        </div>
+                      </div>
+                      <div
+                        aria-label="Go to Slide 2"
+                        class="image-gallery-slide  right "
+                        role="button"
+                        style="display: inherit; transform: translate3d(100%, 0, 0);"
+                        tabindex="-1"
+                      >
+                        <div
+                          style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                        >
+                           
+                        </div>
+                      </div>
+                      <div
+                        aria-label="Go to Slide 3"
+                        class="image-gallery-slide  left "
+                        role="button"
+                        style="display: inherit; transform: translate3d(-100%, 0, 0);"
+                        tabindex="-1"
+                      >
+                        <div
+                          style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                        >
+                           
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              id="vertical-slider-enlargeImage"
+            />
+          </div>
+          <div
+            class="styled__StyledQuickAboutUs-sc-509o3b-0 jMKHEr"
+          >
+            <div
+              class="styled__StyledQuickAboutUsImage-sc-509o3b-1 bgnWEj"
+              src="src"
+            />
+            <div
+              class="styled__StyledQuickAboutUsText-sc-509o3b-2 doLPZv"
+              src="src"
+            >
+              <h3
+                class="styled__StyledTitle-sc-509o3b-3 gtpQdc"
+              >
+                Travel Any Corner of The World With Us
+              </h3>
+              <article
+                class="styled__StyledDescription-sc-509o3b-4 fdrCqi"
+              >
+                Would you explore nature paradise in the world, let’s find the best destination in world with us, Would you explore nature paradise in the world, let’s find the best destination in world with us. Would you explore nature paradise in the world, let’s find the best destination in world with us.
+
+Would you explore nature paradise in the world, let’s find the best destination in world with us.
+              </article>
+              <a
+                class="styled__StyledContactBtn-sc-509o3b-5 laOYLN"
+                href="/about-us"
+              >
+                Contact Us
+              </a>
+            </div>
+          </div>
+          <div
+            class="styled__StyledTabs-sc-162097f-12 hUZSbr"
+          >
+            <div
+              class="styled__StyledTabBtn-sc-162097f-13 gKYPlV selected"
+            >
+              Popular
+            </div>
+            <div
+              class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+            >
+              Adventure
+            </div>
+            <div
+              class="styled__StyledTabBtn-sc-162097f-13 gKYPlV"
+            >
+              Relax
+            </div>
+          </div>
+          <div
+            class="styled__Wrapper-sc-huymx4-0 eFeMSk"
+          >
+            <div
+              class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+            >
+              <div
+                class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+              />
+              <div
+                class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+              >
+                Hotel 1
+              </div>
+              <div
+                class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+              >
+                Accommodation and full breakfast
+
+              </div>
+              <div
+                class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+              >
+                Flight + Hotel 3 nights
+
+              </div>
+              <div
+                class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+              >
+                199$
+              </div>
+              <a
+                class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
+              >
+                Book Now
+              </a>
+              <div
+                class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                src="src"
+              >
+                <div
+                  class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                  src="src"
+                />
+              </div>
+            </div>
+            <div
+              class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+            >
+              <div
+                class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+              />
+              <div
+                class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+              >
+                Hotel 1
+              </div>
+              <div
+                class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+              >
+                Accommodation and full breakfast
+
+              </div>
+              <div
+                class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+              >
+                Flight + Hotel 3 nights
+
+              </div>
+              <div
+                class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+              >
+                199$
+              </div>
+              <a
+                class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
+              >
+                Book Now
+              </a>
+              <div
+                class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                src="src"
+              >
+                <div
+                  class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                  src="src"
+                />
+              </div>
+            </div>
+            <div
+              class="styled__StyledCard-sc-huymx4-1 jiTjWf"
+            >
+              <div
+                class="styled__StyledStars-sc-huymx4-9 bhkAAN"
+              />
+              <div
+                class="styled__StyledTitle-sc-huymx4-2 kXdKXc"
+              >
+                Hotel 1
+              </div>
+              <div
+                class="styled__StyledLunch-sc-huymx4-3 dsveWQ"
+              >
+                Accommodation and full breakfast
+
+              </div>
+              <div
+                class="styled__StyledDetails-sc-huymx4-4 hzElVt"
+              >
+                Flight + Hotel 3 nights
+
+              </div>
+              <div
+                class="styled__StyledPrice-sc-huymx4-5 cdzcFr"
+              >
+                199$
+              </div>
+              <a
+                class="styled__StyledActionButton-sc-huymx4-6 hsHaJa"
+              >
+                Book Now
+              </a>
+              <div
+                class="styled__StyledZoomImg-sc-huymx4-7 jJAKQJ"
+                src="src"
+              >
+                <div
+                  class="styled__StyledZoomPopup-sc-huymx4-8 ddCJEy"
+                  src="src"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="styled__Wrapper-sc-1fozp84-0 imyQUG"
+          >
+            <div
+              class="styled__StyledTabs-sc-1fozp84-1 vSIuM"
+            >
+              <div
+                class="styled__StyledTab-sc-1fozp84-2 irVbfg selected"
+                data-testid="test-first-tab-button"
+              >
+                Flights + Hotels
+              </div>
+              <div
+                class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                data-testid="test-second-tab-button"
+              >
+                Relax on the finest beaches
+              </div>
+              <div
+                class="styled__StyledTab-sc-1fozp84-2 irVbfg"
+                data-testid="test-third-tab-button"
+              >
+                Fun water parks and zoos
+              </div>
+            </div>
+            <div
+              class="styled__StyledContent-sc-1fozp84-3 fRXcov"
+            >
+              <div>
+                <div
+                  class="styled__StyledTitle-sc-1fozp84-4 fOIVVA"
+                >
+                  The complete package
+                </div>
+                <div
+                  class="styled__StyledSliderWrapper-sc-qj79ja-0 kHweLb"
+                >
+                  <div
+                    aria-live="polite"
+                    class="image-gallery"
+                  >
+                    <div
+                      class="image-gallery-content bottom"
+                    >
+                      <div
+                        class="image-gallery-slide-wrapper bottom"
+                      >
+                        <button
+                          aria-label="Previous Slide"
+                          class="image-gallery-icon image-gallery-left-nav"
+                          type="button"
+                        >
+                          <svg
+                            class="image-gallery-svg"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1"
+                            viewBox="6 0 12 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <polyline
+                              points="15 18 9 12 15 6"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          aria-label="Next Slide"
+                          class="image-gallery-icon image-gallery-right-nav"
+                          type="button"
+                        >
+                          <svg
+                            class="image-gallery-svg"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1"
+                            viewBox="6 0 12 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <polyline
+                              points="9 18 15 12 9 6"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          class="image-gallery-swipe"
+                        >
+                          <div
+                            class="image-gallery-slides"
+                          >
+                            <div
+                              aria-label="Go to Slide 1"
+                              class="image-gallery-slide  center "
+                              role="button"
+                              style="display: inherit; transform: translate3d(0%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 2"
+                              class="image-gallery-slide  right "
+                              role="button"
+                              style="display: inherit; transform: translate3d(100%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 3"
+                              class="image-gallery-slide  left "
+                              role="button"
+                              style="display: inherit; transform: translate3d(-100%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    id="vertical-slider-enlargeImage"
+                  />
+                </div>
+                <div
+                  class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                >
+                  <div
+                    class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                  >
+                    Cheap flights
+                  </div>
+                  <div
+                    class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                  >
+                    Find your desired plane ticket easily
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                >
+                  <div
+                    class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                  >
+                    A diverse hotel selection
+                  </div>
+                  <div
+                    class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                  >
+                    You will find the perfect hotel for your dream vacation
+                  </div>
+                </div>
+                <div
+                  class="styled__StyledContentWrapper-sc-1fozp84-5 ftZqJc"
+                >
+                  <div
+                    class="styled__StyledContentTitle-sc-1fozp84-6 cwlLxM"
+                  >
+                    Put them all together
+                  </div>
+                  <div
+                    class="styled__StyledContentSubtitle-sc-1fozp84-7 nrrJt"
+                  >
+                    Profit from our package deals with flights and hotel bookings
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer
+            class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
+          >
+            <div>
+              <div>
+                <a
+                  href="/about-us"
+                >
+                  About Us
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/contact"
+                >
+                  Contact
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/disclaimer"
+                >
+                  Disclaimer
+                </a>
+              </div>
+            </div>
+            <div>
+              <div>
+                <a
+                  href="/useful-information"
+                >
+                  Useful Information
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/file-a-complaint"
+                >
+                  File a complaint
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/working-hours"
+                >
+                  Working Hours
+                </a>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div
+                  class="styled__StyledNewsletterTitle-sc-1xenngy-1"
+                >
+                  Subscribe to our newsletter
+                </div>
+              </div>
+              <div
+                class="styled__StyledNewsletterForm-sc-1xenngy-2 cZuPmT"
+              >
+                <input
+                  placeholder="Email Address"
+                  type="email"
+                />
+                <button>
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
