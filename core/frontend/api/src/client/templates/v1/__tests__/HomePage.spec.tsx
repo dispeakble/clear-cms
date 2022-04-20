@@ -58,7 +58,6 @@ const formatDate = (date: any) => {
 
 describe("Home Page Suite", () => {
 
-
   beforeEach(() => {
     location = "";
   })
@@ -68,7 +67,7 @@ describe("Home Page Suite", () => {
     expect(homePage).toMatchSnapshot();
   });
 
-  it("Should perform Search with no data", async () => {
+  it("Should not perform Search with no data", async () => {
    render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(
@@ -77,7 +76,7 @@ describe("Home Page Suite", () => {
 
     await waitFor(async () => {
       expect(screen.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
-      expect(screen.getByTestId(/test-hotels-packages-search-input/)).toHaveFocus();
+      expect(screen.getByTestId(/test-destination-search-input/)).toHaveFocus();
     })
 
   })
@@ -87,7 +86,7 @@ describe("Home Page Suite", () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
     fireEvent.change(
-        screen.getByTestId(/test-hotels-packages-search-input/),
+        screen.getByTestId(/test-destination-search-input/),
         {target: {value: 'New destination'}},
     )
 
@@ -101,40 +100,47 @@ describe("Home Page Suite", () => {
       expect(homePage.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
     })
 
+    const checkInDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate() + 1)))}"]`);
+
     fireEvent.click(
-        homePage.getByText(today.getDate().toString())
+      checkInDateInCalendar
     )
 
-    fireEvent.click(
-        homePage.getByTestId(/test-checkOut-button/)
+    await waitFor(() =>
+      expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument()
     )
 
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument();
-    })
+
+    const checkOutDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate() + 2)))}"]`);
 
     fireEvent.click(
-        homePage.getByText(today.getDate() + 1)
+      checkOutDateInCalendar
     )
 
     fireEvent.click(
         screen.getByTestId(/search-submit-btn/)
     )
 
-    await waitFor(() => {
-      expect(location).toContain('/agency/search')
-    })
+    await waitFor(() => expect(location).toContain('/agency/search') )
   })
 
   it("Should change packages search input value", () => {
     render(<Wrapper {...homePageProps} />);
     
     fireEvent.change(
-        screen.getByTestId(/test-hotels-packages-search-input/),
+        screen.getByTestId(/test-destination-search-input/),
         {target: {value: 'New destination'}},
     )
 
-    expect(screen.getByTestId(/test-hotels-packages-search-input/)).toHaveValue('New destination');
+    expect(screen.getByTestId(/test-destination-search-input/)).toHaveValue('New destination');
   })
 
   it("Should change check in date picker value", async () => {
@@ -242,36 +248,6 @@ describe("Home Page Suite", () => {
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
-    })
-
-    for(let i =0; i < 13; i++){
-      fireEvent.click(
-          homePage.getByTestId(/test-minus-handler/)
-      )
-    }
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-handler-value/).textContent).toBe('0')
-    })
-
-    for(let i =0; i < 13; i++){
-      fireEvent.click(homePage.getByTestId(/test-plus-handler/))
-    }
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-handler-value/).textContent).toBe('11')
-    })
-  })
-
-  it("Should update guests (infants) number", async () => {
-    const homePage = render(<Wrapper {...homePageProps} />);
-
-    fireEvent.click(
-        homePage.getByTestId(/test-open-infants-handler/)
-    )
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-infants-handler/)).toBeInTheDocument()
     })
 
     for(let i =0; i < 13; i++){

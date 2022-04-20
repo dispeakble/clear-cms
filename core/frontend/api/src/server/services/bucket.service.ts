@@ -6,9 +6,6 @@ import {Observable} from "rxjs";
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
 import path from "path";
-import {
-    GotService
-} from "@t00nday/nestjs-got";
 
 @Injectable()
 export class BucketService {
@@ -18,7 +15,7 @@ export class BucketService {
     private defaultPath = 'index.html';
 
 
-    constructor(@Inject('ProtocolService') private protocolService, private gotService: GotService) {
+    constructor(@Inject('ProtocolService') private protocolService) {
     }
 
     private info(params: any, options: any) {
