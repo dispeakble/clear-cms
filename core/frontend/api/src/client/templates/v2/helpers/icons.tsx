@@ -24,6 +24,8 @@ import searchIcon from "../assets/img/search-icon.svg";
 import searchWhiteIcon from "../assets/img/search-white-icon.svg";
 import starIcon from "../assets/img/star-icon.svg";
 import zoomIcon from "../assets/img/zoom-icon.svg";
+import departureIcon from "../assets/img/departure-icon.svg";
+import arrivalIcon from "../assets/img/arrival-icon.svg";
 
 const icons: Record<string, any> = {
   adults: adultsIcon,
@@ -52,6 +54,8 @@ const icons: Record<string, any> = {
   searchWhite: searchWhiteIcon,
   star: starIcon,
   zoom: zoomIcon,
+  departure: departureIcon,
+  arrival: arrivalIcon,
 }
 
 export const getIcon = (iconName: string) => {

@@ -166,5 +166,29 @@
     "email-address": "Email Address",
     "subscribe-title": "Subscribe to our newsletter",
     "subscribe": "Subscribe"
+  },
+  "custom404": {
+    "header" : "Going somewhere? You have reached a very lost page.",
+    "links" : "Please click on the below links",
+    "return" : "Or return to the home page",
+    "goBackHome" : "Go back home"
+  },
+  "links": {
+    "home" : "Home",
+    "contact" : "Contact",
+    "hotels" :  "Hotels",
+    "flights" : "Flights",
+    "packages" :  "Packages",
+    "latestSearches" : "Latest searches",
+    "lastMinute" :  "Last minute"
+  },
+  "custom300" : {
+    "header": "Your page will redirect soon"
+  },
+  "custom401" : {
+    "header": "You have been signed out."
+  },
+  "custom500" : {
+    "header": "For the moment our services are under maintenance"
   }
 }
