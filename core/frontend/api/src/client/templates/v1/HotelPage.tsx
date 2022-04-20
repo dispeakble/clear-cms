@@ -28,14 +28,14 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   });
   const handleChangeInputCheckIn = ( value: any) => {
-    const checkin=moment(new Date(value)).format("YYYY-MM-DD");
-    const checkout=moment(new Date(data.checkout)).format("YYYY-MM-DD");
+    const checkin=moment(String(new Date(value))).format("YYYY-MM-DD");
+    const checkout=data.checkout
 
 
     if(!moment(checkout).isAfter(checkin)) {
       setData({
         ...data,
-        checkout: moment(new Date(value)).add(1, "d"),
+        checkout: moment(String(new Date(value))).add(1, "d"),
         checkin: value
       });
     }else{
