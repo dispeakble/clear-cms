@@ -58,9 +58,7 @@ export const getIcon = (iconName: string) => {
   let icon;
   try {
     icon = icons[iconName].src;
-  } catch (err) {
-    console.log(iconName);
-    console.log(err);
+  } catch {
   }
   return icon;
 }

@@ -32,7 +32,7 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   return (
     <ThemeProvider theme={myTheme}>
       <GlobalStyle />
-      <MainWrapper>
+      <MainWrapper data-testid="home-main-wrapper">
         <TopContentWrapper>
           <ContentWrapper>
             <Header websiteName={websiteName} />

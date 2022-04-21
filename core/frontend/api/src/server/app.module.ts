@@ -9,7 +9,6 @@ import {BucketService} from "./services/bucket.service";
 import {AgencyService} from './services/agency.service'
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import * as redisStore from 'cache-manager-redis-store';
-import { GotModule, GotModuleOptions } from '@t00nday/nestjs-got';
 import {ViewService} from "./services/view.service";
 import { ConfigService } from '@nestjs/config';
 import {AppService} from "./services/app.service";
@@ -17,9 +16,6 @@ import {AppService} from "./services/app.service";
 
 @Module({
   imports: [
-    GotModule.registerAsync({
-      useFactory: (): GotModuleOptions => ({}),
-    }),
     CacheModule.register({
       store: redisStore,
       url: 'redis://' + process.env.redis_server,
