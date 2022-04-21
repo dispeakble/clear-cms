@@ -2,9 +2,13 @@
   "global": {
     "home" : "Home",
 
-    "search": "Búsqueda"
+    "search": "Búsqueda",
+    "pageTitle": "Hotels page :: {websiteName}"
   },
   "home" : {
+    "seo": {
+      "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
+    },
     "info-box-title" : "Aventuras",
     "info-box-description" : "Vacaciones y excursiones",
     "img-source" : "Imagen de",
@@ -88,7 +92,9 @@
   "search": {
     "destination": "Destino",
     "input-placeholder" : "¿Adónde vas?",
-    "searchButton" : "Encuentra ofertas",
+    "searchPackagesButton" : "Find deals",
+    "searchHotelsButton" : "Find hotels",
+    "searchFlightsButton" : "Find tickets",
     "checkin": "Llegada",
     "addDate": "Añadir fecha",
     "checkinDate": "Fecha de registro",
@@ -98,11 +104,22 @@
     "adults" : "Adultos",
     "children" : "Niños",
     "infants" : "Bebés",
+    "oneway" : "One way",
     "adults-age" : "13 años o más.",
     "children-age" : "De 2 a 12 años.",
     "infants-age" : "Menos de 2.",
     "search-btn" : "Buscar",
-    "homeSearchPlaceholder": "Buscar un destino o un hotel...",
+    "homeSearchPackageDeparturePlaceholder": "Departure",
+    "homeSearchPackageDestinationPlaceholder": "Destination",
+    "homeSearchFlightDeparturePlaceholder": "Departure",
+    "homeSearchFlightDestinationPlaceholder": "Destination",
+    "homeSearchHotelDestinationPlaceholder": "Search for a destination or a hotel",
+    "flightsDeparturePlaceholder": "Flight departure",
+    "flightsDestinationPlaceholder": "Flight destination",
+    "departure" : "Departure",
+    "return" : "Return",
+    "departureDate" : "Departure date",
+    "returnDate": "Return date",
     "hotels" : "Hoteles",
     "packages" : "Paquetes",
     "flights" : "Vuelos",
@@ -139,6 +156,12 @@
       "done": "Done"
     }
   },
+  "hotels": {
+    "seo": {
+      "pageTitle": "Hotels :: {websiteName}",
+      "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
+    }
+  },
   "hotelAbout" : {
     "hotel": "Hotel Victoria, Adeje, España ",
     "star": "(4 Estrellas)",
@@ -155,7 +178,6 @@
   "hotelRoomAvailable" : {
     "selectRoom": "2 Habitaciones"
   },
-
   "hotelAvailable":{
     "queryTitle": "Available Rooms for ",
     "adult": "adults",
@@ -184,6 +206,10 @@
     "tenerife": "Tenerife",
     "adeje": "Adeje",
     "hotel": "Hotel Victoria (Hotel)"
+  },
+  "tooltip" : {
+    "view_price" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
+    "room_type" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
   },
   "footer": {
     "links": {

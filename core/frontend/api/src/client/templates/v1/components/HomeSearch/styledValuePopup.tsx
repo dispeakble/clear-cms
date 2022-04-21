@@ -13,12 +13,14 @@ export const StyledValuePopup = styled.div`
   justify-content: space-between;
   left: 0;
   right: 0;
+  user-select: none;
 `;
 
 export const StyledValue = styled.span`
   min-width: 30px;
   text-align: center;
   color: ${({theme}) => theme.colors.black};
+  user-select: none;
 `;
 
 export const StyledButton = styled.button`
@@ -26,4 +28,5 @@ export const StyledButton = styled.button`
   border: 1px solid ${({theme}) => theme.colors.primaryColor};
   cursor: pointer;
   color: ${({theme}) => theme.colors.primaryColor};
+  user-select: none;
 `;

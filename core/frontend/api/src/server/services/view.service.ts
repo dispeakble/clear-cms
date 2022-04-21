@@ -2,13 +2,15 @@ import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
 import {UrlWithParsedQuery} from "url";
+import { AppService } from "./app.service";
+import { ConfigService } from "@nestjs/config";
 
 
 @Injectable()
 export class ViewService implements OnModuleInit {
-  private server: NextServer;
+  private server!: NextServer;
 
-  constructor(@Inject('AppService') private appService, @Inject('ConfigService') private configService) {
+  constructor(@Inject('AppService') private appService: AppService, @Inject('ConfigService') private configService: ConfigService) {
 
   }
 
@@ -33,17 +35,9 @@ export class ViewService implements OnModuleInit {
   }
 
   handler(req: any, res: any, url?: UrlWithParsedQuery) {
-    req.apiHub = (params) => {
+    req.apiHub = (params: any) => {
       return this.apiHub(params);
     };
-
-    /*res.end = (html) => {
-      //todo write the page in the cache
-    }
-
-    res.send = (html) => {
-      //todo write the page in the cache
-    }*/
 
     return this.server.getRequestHandler()(req, res, url);
   }
