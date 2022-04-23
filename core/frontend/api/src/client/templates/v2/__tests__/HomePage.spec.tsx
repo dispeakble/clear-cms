@@ -64,7 +64,6 @@ describe("Home Page Suite", () => {
   })
 
   it("Should render the home page", async () => {
-
     const homePage = render(<Wrapper {...homePageProps} />);
     fireEvent.scroll(window, { target: { scrollY: 500 } });
     fireEvent.scroll(window, { target: { scrollY: 0 } });
