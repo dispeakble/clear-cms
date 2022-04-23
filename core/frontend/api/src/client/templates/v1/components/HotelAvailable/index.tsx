@@ -9,7 +9,7 @@ import {
   CheckOutSvg,
   CheckTitle,
   ChildIcon,
-  ColumnBreak,
+  ColumnBreak, ColumnDiv,
   ColumnFive,
   ColumnFour,
   ColumnOne,
@@ -86,7 +86,8 @@ const HotelAvailable = ({
   const [show, setShow] = useState("");
   const [showRoom, setShowRoom] = useState("");
   const [RoomsNumber] = useState([]);
-  const [forArray] = useState([
+
+  const [forArray , setForArray] = useState([
     {
       hotelPrice: 122,
       hotelRoom: 1,
@@ -111,7 +112,7 @@ const HotelAvailable = ({
 
   ]);
   const customColors = ["#FFFFFF"];
-  const allRooms = ["1 Rooms", "2 Rooms", "3 Rooms", "4 Rooms", "5 Rooms"];
+  const allRooms = [1,2,3,4,5];
   const t = useTranslations();
 
 
@@ -183,7 +184,7 @@ const HotelAvailable = ({
                     <CheckOutSvg onClick={handleShowCheckout} />
                   </div>
                   <CheckBg>
-                    <CheckTitle>{t("hotelAvailable.checkOut")}</CheckTitle>
+                    <CheckTitle> {t("hotelAvailable.checkOut")}</CheckTitle>
                     <p>
                       <strong>{moment(data.checkout).format("DD MMM , ddd")} </strong>
                     </p>
@@ -324,7 +325,8 @@ const HotelAvailable = ({
                                cursor: "default",
                                boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
                                borderRadius: "12px",
-                               padding: "13px 18px"
+                               padding: "13px 18px",
+                               userSelect: "none",
                              }}
                              overlayStyle={{}}
                     >
@@ -334,7 +336,7 @@ const HotelAvailable = ({
                   Premium Family Room {index + 1}
                 </ColumnOne>
                 <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
-                <div style={{ position: "relative" }}>
+                <ColumnDiv style={{ position: "relative" }}>
                   <ColumnThree onClick={() => handleShowRoomList(w.name)}>
                     {/*<input type="number" min='1' value={w.hotelRoom} max='100' onChange={(e) => {*/}
                     {/*    const value = [...forArray]*/}
@@ -343,7 +345,7 @@ const HotelAvailable = ({
                     {/*}} placeholder={t('hotelAvailable.selectRoom')}></input>*/}
                     <LeftIcon />
                     <ul>
-                      <span>{t("hotelRoomAvailable.selectRoom")}</span>
+                      <span> {w?.hotelRoom} {t("hotelRoomAvailable.selectRoom")}</span>
                     </ul>
                     <RightIcon>
                       <TopUp />
@@ -358,12 +360,15 @@ const HotelAvailable = ({
                         padding: "0px"
                       }}>
                         {
-                          allRooms.map((w) => <li key={w} onClick={() => {
+                          allRooms.map((w,i) => <li key={w} onClick={() => {
                             setShowRoom("");
+                            const RoomArray=[...forArray]
+                            RoomArray[index].hotelRoom=w
+                            setForArray(RoomArray)
                           }}>
                             <LeftIcon />
                             <h3>
-                              {w}
+                              {w} {t("hotelRoomAvailable.selectRoom")}
                             </h3>
                           </li>)
                         }
@@ -373,7 +378,7 @@ const HotelAvailable = ({
 
                     </InnerRoomList>
                   ) : null}
-                </div>
+                </ColumnDiv>
 
                 <ColumnFour>{Number(w.hotelPrice) * Number(w.hotelRoom)}{" \u20AC"}</ColumnFour>
                 <ColumnBreak />

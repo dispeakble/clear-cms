@@ -259,17 +259,15 @@ const HotelDetail = ({
                   </Destination>
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
-                          <DateDiv>
+                          <DateDiv onClick={() => {
+                              handleShowCheckin();
+                          }}>
                               <h4>{t("deals.checkIn")}</h4>
                               <HotelSearch>
-                                  <CalenderIcon  onClick={() => {
-                                      handleShowCheckin();
-                                  }}/>
+                                  <CalenderIcon />
                                   <span placeholder={t("deals.checkin") }>{moment(data.checkin).format("dddd, DD MMMM, YYYY")}</span>
 
-                                  <DropdownIcon onClick={() => {
-                                      handleShowCheckin();
-                                  }} />
+                                  <DropdownIcon/>
                               </HotelSearch>
 
                               {show.checkin ? (
@@ -292,16 +290,14 @@ const HotelDetail = ({
                   <Destination>
 
                       <ClickAwayListener onClickAway={() => handleClickAway("checkout")}>
-                          <DateDiv>
+                          <DateDiv onClick={() => {
+                              handleShowCheckout();
+                          }}>
                               <h4>{t("deals.checkOut")}</h4>
                               <HotelSearch>
-                                  <CalenderIcon onClick={() => {
-                                      handleShowCheckout();
-                                  }}/>
+                                  <CalenderIcon />
                                   <span placeholder={t("deals.checkout")}>{moment(data.checkout).format("dddd, DD MMMM, YYYY")}</span>
-                                  <DropdownIcon onClick={() => {
-                                      handleShowCheckout();
-                                  }} />
+                                  <DropdownIcon  />
 
                               </HotelSearch>
 
@@ -327,29 +323,29 @@ const HotelDetail = ({
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
                           <DateDiv>
                               <h4>{t("deals.detailTitle")}</h4>
-                              <GuestType>
-                                  <AdultBox>
-                                      <AdultIcon onClick={() => handleShowPassenger()} />
+                              <GuestType onClick={() => handleShowPassenger()}>
+                                  <AdultBox  >
+                                      <AdultIcon />
                                       <AdultNumber>
                                           {t(`deals.detailPerson.adult`)}{data.passenger.adults}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
-                                      <ChildIcon onClick={() => handleShowPassenger()} />
+                                      <ChildIcon />
                                       <AdultNumber>
                                           {t(`deals.detailPerson.child`)}{data.passenger.children}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
-                                      <InfantIcon onClick={() => handleShowPassenger()} />
+                                      <InfantIcon />
                                       <AdultNumber>
                                           {t(`deals.detailPerson.infant`)}{data.passenger.infants}
                                       </AdultNumber>
                                   </AdultBox>
                                   <div style={{position:'relative', left: '7px'}}>
-                                      <DropdownIcon onClick={() => handleShowPassenger()} />
+                                      <DropdownIcon />
                                   </div>
                               </GuestType>
                               {show.details ? (
@@ -453,7 +449,9 @@ const HotelDetail = ({
                                        cursor: "default",
                                        boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
                                        borderRadius: "12px",
-                                       padding: "13px 18px"
+                                       padding: "13px 18px",
+                                       userSelect: "none",
+
                                    }}
                                    overlayStyle={{}}
                           >

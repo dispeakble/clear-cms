@@ -38,6 +38,9 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: ${({theme}) => theme.colors.offWhite};
+
+
 `;
 
 export const TopContentWrapper = styled.div`

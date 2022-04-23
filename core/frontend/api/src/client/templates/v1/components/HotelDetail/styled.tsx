@@ -4,10 +4,12 @@ import { Shadows } from "../../../../assets/design-set";
 import Calendar from "react-calendar";
 import { Rate } from "antd";
 
+
 export const Wrapper = styled.div`
   margin-top: 30px;
   gap: 20px;
   cursor: default;
+  user-select: none;
   @media (min-width: ${size.laptop}) {
     display: flex;
     flex: 1 1;
@@ -80,6 +82,7 @@ export const HotelSearch = styled.div`
     line-height: 24px;
     display: flex;
     align-items: center;
+    cursor: pointer;
 
   }
 `;
@@ -157,6 +160,7 @@ export const GuestType = styled.div`
   box-sizing: border-box;
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
+  cursor: pointer;
 
 `;
 export const AdultBox = styled.div`
@@ -311,8 +315,17 @@ export const ViewMap = styled.div`
 
 export const SliderSection = styled.div`
   position: relative;
-  height: 100%;
+  height: 400px;
   display: flex;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.25);
+  
+  @media (min-width: ${size.laptop}) {
+    height: 357px;
+  }
+  @media (min-width: ${size.laptopL}) {
+    height: 426px;
+  }
+
 `;
 export const DateDiv = styled.div`
   position: relative;

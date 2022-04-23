@@ -10,7 +10,8 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   display: flex;
   
   align-items: center;
-  background: rgba(0,0,0,0);
+  //background: rgba(0,0,0,0);
+  background: grey;
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -123,6 +124,7 @@ export const InputSearch = styled.input`
     width: 100%;
     &::placeholder {
       color: inherit;
+      
     }
   }
 `;

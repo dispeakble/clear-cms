@@ -37,7 +37,7 @@ const HotelAbout = () => {
   const t = useTranslations();
 
   const Features = [
-    "Breakfast info Continental, Buffet",
+    "Breakfast",
     "Sea view",
     "Garden view",
     "Terrace",
@@ -62,29 +62,14 @@ const HotelAbout = () => {
           </HotelRate>
           <Description>
             <StyledDescription style={{paddingBottom: '20px'}}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-              incididunt ut labore et dolore magna aliqua.
-              labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna
-              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet,
-              consectetur
-              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
-              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore
+              {t("hotelAbout.firstHalfDesc")}
             </StyledDescription>
             {show ? (
               <StyledDescription>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.
-                labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna
-                aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet,
-                consectetur
-                adipisicing elit, sed do eiusmod tempor.
-                labore et dolore.
+                {t("hotelAbout.secondHalfDesc")}
               </StyledDescription>
             ) : null}
-            <span onClick={HandleToggle}>{show ? 'read less...' : 'read more...'}</span>
+            <span onClick={HandleToggle}>{show ? `${t("hotelAbout.readLess")}` : `${t("hotelAbout.readMore")}`}</span>
           </Description>
         </LeftSection>
         <RightSection>

@@ -60,11 +60,12 @@ type HotelDetailProps = {
     handleAdultMinus: () => void;
     handleHotelSearch: (data: string) => void;
     handleInfantsPlus: () => void;
-    handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
     handleChildrenPlus: () => void;
     handleInfantsMinus: () => void;
     handleSearch: (data: string) => void;
+    handleChangeInputCheckIn:(value: any) => void;
+    handleChangeInputCheckOut:(value: any) => void;
 }
 
 const HotelDetail = ({
@@ -73,11 +74,13 @@ const HotelDetail = ({
                          handleAdultMinus,
                          handleHotelSearch,
                          handleInfantsPlus,
-                         handleChangeInput,
                          handleChildrenMinus,
                          handleChildrenPlus,
                          handleInfantsMinus,
                          handleSearch,
+                         handleChangeInputCheckIn,
+                         handleChangeInputCheckOut
+
 
                      }: HotelDetailProps) => {
     const [show, setShow] = useState({
@@ -172,6 +175,7 @@ const HotelDetail = ({
             ...show,
             checkin: !show.checkin
         });
+
     };
 
     const handleShowCheckout = () => {
@@ -229,11 +233,11 @@ const HotelDetail = ({
       <Wrapper>
           <DealCard>
               <CardHead>
-                  Find Deals
+                  {t("deals.title")}
               </CardHead>
               <EditDeals>
                   <Destination>
-                      <h4>Destination or Hotel:</h4>
+                      <h4>{t("deals.hotelTitle")}</h4>
                       <AutoComplete
                         dropdownClassName="certain-category-search-dropdown"
                         dropdownStyle={{ backgroundColor: "white" }}
@@ -256,14 +260,12 @@ const HotelDetail = ({
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
                           <DateDiv>
-                              <h4>Check-in date:</h4>
+                              <h4>{t("deals.checkIn")}</h4>
                               <HotelSearch>
                                   <CalenderIcon  onClick={() => {
                                       handleShowCheckin();
                                   }}/>
-                                  <input placeholder={t("deals.checkin") }
-                                         onChange={() => {}}
-                                         value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
+                                  <span placeholder={t("deals.checkin") }>{moment(data.checkin).format("dddd, DD MMMM, YYYY")}</span>
 
                                   <DropdownIcon onClick={() => {
                                       handleShowCheckin();
@@ -273,11 +275,11 @@ const HotelDetail = ({
                               {show.checkin ? (
 
                                 <HotelCalendar
-                                  minDate={data.checkin}
+                                  minDate={new Date()}
                                   value={data.checkin}
 
                                   onChange={(value: any) => {
-                                      handleChangeInput("checkin", value);
+                                      handleChangeInputCheckIn(value);
                                       handleDateAway("checkin");
                                   }}
                                 />
@@ -291,13 +293,12 @@ const HotelDetail = ({
 
                       <ClickAwayListener onClickAway={() => handleClickAway("checkout")}>
                           <DateDiv>
-                              <h4>Check-out date:</h4>
+                              <h4>{t("deals.checkOut")}</h4>
                               <HotelSearch>
                                   <CalenderIcon onClick={() => {
                                       handleShowCheckout();
                                   }}/>
-                                  <input placeholder={t("deals.checkout")} onChange={() => {}}
-                                         value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly/>
+                                  <span placeholder={t("deals.checkout")}>{moment(data.checkout).format("dddd, DD MMMM, YYYY")}</span>
                                   <DropdownIcon onClick={() => {
                                       handleShowCheckout();
                                   }} />
@@ -308,10 +309,10 @@ const HotelDetail = ({
                               {show.checkout ? (
 
                                 <HotelCalendar
-                                  minDate={new Date(String(moment(data.checkin).add(1, "d")))}
+                                  minDate={new Date(String(moment(data.checkin)))}
                                   value={new Date(data.checkout)}
                                   onChange={(value: any) => {
-                                      handleChangeInput("checkout", value);
+                                      handleChangeInputCheckOut( value);
                                       handleDateAway("checkout");
                                   }}
                                 />
@@ -325,26 +326,26 @@ const HotelDetail = ({
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
                           <DateDiv>
-                              <h4>Details:</h4>
+                              <h4>{t("deals.detailTitle")}</h4>
                               <GuestType>
                                   <AdultBox>
                                       <AdultIcon onClick={() => handleShowPassenger()} />
                                       <AdultNumber>
-                                          {t(`deals.detail.adult`)}{data.passenger.adults}
+                                          {t(`deals.detailPerson.adult`)}{data.passenger.adults}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
                                       <ChildIcon onClick={() => handleShowPassenger()} />
                                       <AdultNumber>
-                                          {t(`deals.detail.child`)}{data.passenger.children}
+                                          {t(`deals.detailPerson.child`)}{data.passenger.children}
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox>
                                       <InfantIcon onClick={() => handleShowPassenger()} />
                                       <AdultNumber>
-                                          {t(`deals.detail.infant`)}{data.passenger.infants}
+                                          {t(`deals.detailPerson.infant`)}{data.passenger.infants}
                                       </AdultNumber>
                                   </AdultBox>
                                   <div style={{position:'relative', left: '7px'}}>
@@ -359,14 +360,14 @@ const HotelDetail = ({
                                               ...show,
                                               details: false
                                           })}/>
-                                          Details
+                                          {t(`deals.personEntry.detailTop`)}
                                       </DetailTop>
                                       <PersonEntry>
-                                      <CardDesc>Add Numbers of Persons</CardDesc>
+                                      <CardDesc>{t(`deals.personEntry.cardDesc`)}</CardDesc>
                                       <Person>
                                           <BoxLeft>
-                                              <h3>Adults</h3>
-                                              <p>12Yrs & above on the day of travel</p>
+                                              <h3>{t(`deals.personEntry.adult`)}</h3>
+                                              <p>{t(`deals.personEntry.adultDesc`)}</p>
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
@@ -378,8 +379,8 @@ const HotelDetail = ({
                                       </Person>
                                       <Person>
                                           <BoxLeft>
-                                              <h3>Children</h3>
-                                              <p>2-12 yrs on the day of travel</p>
+                                              <h3>{t(`deals.personEntry.child`)}</h3>
+                                              <p>{t(`deals.personEntry.childDesc`)}</p>
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
@@ -391,8 +392,8 @@ const HotelDetail = ({
                                       </Person>
                                       <Person>
                                           <BoxLeft>
-                                              <h3>Infants</h3>
-                                              <p>Under 2 yrs on the day of travel</p>
+                                              <h3>{t(`deals.personEntry.infant`)}</h3>
+                                              <p>{t(`deals.personEntry.infantDesc`)}</p>
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
@@ -407,7 +408,7 @@ const HotelDetail = ({
                                               setShow({
                                                   ...show,
                                                   details: false
-                                              })}>Done</button>
+                                              })}>{t(`deals.personEntry.done`)}   </button>
                                       </SubDetail>
                                       </PersonEntry>
                                   </DetailsCard>
@@ -418,7 +419,7 @@ const HotelDetail = ({
 
                   </Destination>
                   <NewSearch>
-                      <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>New Search</span></Link></button>
+                      <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>{t(`deals.newSearch`)}</span></Link></button>
                   </NewSearch>
 
               </EditDeals>
@@ -426,7 +427,7 @@ const HotelDetail = ({
           <HotelView>
               <HotelInfo>
                   <LeftSide>
-                      <HotelName>Hotel Victoria</HotelName>
+                      <HotelName>{t(`deals.hotel`)}</HotelName>
                       <Star>
                           <Ping  style={{fontSize: '30px'}} disabled defaultValue={4} />
                       </Star>
@@ -434,7 +435,7 @@ const HotelDetail = ({
                           <HotelLocation>
                               {t("deals.location")}
                           </HotelLocation>
-                          <ViewMap><Link to="showmap" spy={true} smooth={true}>Show Map</Link></ViewMap>
+                          <ViewMap><Link to="showmap" spy={true} smooth={true}>{t("deals.showMap")}</Link></ViewMap>
                       </ShortDescription>
                   </LeftSide>
                   <ViewPrice>
@@ -456,10 +457,10 @@ const HotelDetail = ({
                                    }}
                                    overlayStyle={{}}
                           >
-                              <InfoIcon />
+                              <Link to="prices" spy={true} smooth={true}><InfoIcon /></Link>
                           </Tooltip>
                           ))}
-                          <Link to="prices" spy={true} smooth={true}><span>View Prices</span></Link>
+                          <Link to="prices" spy={true} smooth={true}><span>{t("deals.viewPrice")}</span></Link>
                       </button>
 
                   </ViewPrice>

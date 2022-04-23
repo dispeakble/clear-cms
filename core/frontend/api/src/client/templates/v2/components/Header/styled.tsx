@@ -30,7 +30,7 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
 
 export const HeaderContent = styled.div`
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 0px;
   display: flex;
   width: 100%;
   align-items: center;
@@ -68,6 +68,7 @@ export const HeaderContent = styled.div`
 export const LogoWrapper = styled.div`
   filter: drop-shadow(0px 0px 4px rgba(255,255,255,0.7));
   order: 1;
+  margin: 0 5px;
   @media (max-width: ${size.laptop}) {
     order: 2;
     flex: 1;

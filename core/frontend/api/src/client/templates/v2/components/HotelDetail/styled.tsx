@@ -70,6 +70,16 @@ export const HotelSearch = styled.div`
     font-size: 16px;
     line-height: 24px;
     cursor: default;
+  }
+  span {
+    border: none;
+    width: 82%;
+    margin-left: 18px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
 
   }
 `;
@@ -193,17 +203,30 @@ export const HotelView = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
-  @media (min-width: ${size.laptop}) {
-    width: 379px;
+  @media (max-width: ${size.laptop}) {
+    //width: 379px;
     padding: 0;
+  }
+  @media (max-width: ${size.laptop}) {
+    padding: 20px 0;
   }
 `;
 export const HotelInfo = styled.div`
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
   @media (min-width: ${size.laptopL}) {
     display: flex;
     justify-content: space-between;
+  }
+  @media (min-width: ${size.laptop}) {
+    gap: 5px;
+  }
+  @media (min-width: ${size.laptop}) {
+  }
+  @media (max-width: ${size.tablet}) {
+    gap: 5px;
   }
 `;
 export const HotelName = styled.div`
@@ -245,9 +268,10 @@ export const ViewPrice = styled.div`
       width: 268px;
     }
   }
+  
 `;
 export const InfoIcon = styled.span`
-  display: inline-block;
+  display: flex;
   height: 32px;
   width: 32px;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
@@ -261,8 +285,12 @@ export const Star = styled.div`
 `;
 export const ShortDescription = styled.div`
   display: flex;
-  width: 360px;
   justify-content: space-between;
+  gap: 15px;
+  @media (min-width: ${size.laptop}){
+    width: 100%;
+    gap: 15px;
+  }
 
 `;
 export const HotelLocation = styled.div`
@@ -392,7 +420,7 @@ export const StyledDescriptionMore = styled.a`
 
 export const DetailsCard = styled.div`
   position: absolute;
-  z-index: 2;
+  z-index: 5;
   width: 320px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 12px;
@@ -463,7 +491,7 @@ export const BoxLeft = styled.div`
   p {
     font-weight: 500;
     font-size: 12px;
-    line-height: 10px;
+    line-height: 16px;
     color: ${({ theme }) => theme.colors.gray};
   }
 `;
@@ -496,7 +524,7 @@ export const Quantity = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  align-items: center;
+  align-items: baseline;
   width: 82px;
   height: 38px;
   border-radius: 12px;
@@ -508,6 +536,7 @@ export const Quantity = styled.div`
     line-height: 38px;
     color: ${({ theme }) => theme.colors.black};
     cursor: pointer;
+    user-select: none;
   }
 
   h5 {
@@ -668,7 +697,7 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile:disabled {
-    background-color: #DBDBDB;
+    background-color: #fff;
   }
 
   .react-calendar__tile:enabled:hover,
@@ -678,12 +707,13 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--now {
-    background: red;
+    background: #fff;
   }
 
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: red;
+    background: #F4AC67;
+  
   }
 
   .react-calendar__tile--hasActive {
@@ -738,7 +768,8 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus {
-    background-color: #fff;
+    background-color: #F4AC67;
+    color: #fff;  
   }
 
   .react-calendar__month-view__days {
@@ -748,6 +779,11 @@ export const HotelCalendar = styled(Calendar)`
   .react-calendar__navigation button {
     min-width: 30px;
     background: none;
+  }
+
+  .react-calendar--selectRange .react-calendar__tile--hover {
+    background-color: #F4AC67;
+    color: #fff;
   }
 
 `;

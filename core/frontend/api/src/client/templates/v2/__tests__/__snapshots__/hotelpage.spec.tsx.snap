@@ -14,10 +14,10 @@ Object {
           data-testid="header-wrapper"
         >
           <div
-            class="styled__HeaderContent-sc-ffk3hg-1 XVuxU"
+            class="styled__HeaderContent-sc-ffk3hg-1 dAhDaY"
           >
             <div
-              class="styled__LogoWrapper-sc-ffk3hg-2 fkPqly"
+              class="styled__LogoWrapper-sc-ffk3hg-2 gXbfHc"
             >
               <a
                 href="/"
@@ -113,7 +113,7 @@ Object {
           </div>
         </header>
         <div
-          class="styled__StyledContentWrapper-sc-1y5gkei-4 clwcSf"
+          class="styled__StyledContentWrapper-sc-1y5gkei-4 flMMSr"
         >
           <div
             class="styled__StyledBreadcrumbs-sc-5eekhe-0 dwQcVB"
@@ -186,7 +186,7 @@ Object {
                           aria-haspopup="listbox"
                           aria-owns="rc_select_TEST_OR_SSR_list"
                           autocomplete="off"
-                          class="styled__HotelSearch-sc-1nkmtjh-5 ggRUmn ant-select-selection-search-input"
+                          class="styled__HotelSearch-sc-1nkmtjh-5 dDrsqC ant-select-selection-search-input"
                           id="rc_select_TEST_OR_SSR"
                           role="combobox"
                           type="search"
@@ -218,16 +218,16 @@ Object {
                       Check-in date:
                     </h4>
                     <div
-                      class="styled__HotelSearch-sc-1nkmtjh-5 ggRUmn"
+                      class="styled__HotelSearch-sc-1nkmtjh-5 dDrsqC"
                     >
                       <div
                         class="styled__CalenderIcon-sc-1nkmtjh-7 eKHhao"
                       />
-                      <input
+                      <span
                         placeholder="Saturday, 12 March..."
-                        readonly=""
-                        value="Tuesday, 19 April, 2022"
-                      />
+                      >
+                        Saturday, 23 April, 2022
+                      </span>
                       <div
                         class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
                       />
@@ -244,16 +244,16 @@ Object {
                       Check-out date:
                     </h4>
                     <div
-                      class="styled__HotelSearch-sc-1nkmtjh-5 ggRUmn"
+                      class="styled__HotelSearch-sc-1nkmtjh-5 dDrsqC"
                     >
                       <div
                         class="styled__CalenderIcon-sc-1nkmtjh-7 eKHhao"
                       />
-                      <input
+                      <span
                         placeholder="Saturday, 13 March..."
-                        readonly=""
-                        value="Wednesday, 20 April, 2022"
-                      />
+                      >
+                        Sunday, 24 April, 2022
+                      </span>
                       <div
                         class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
                       />
@@ -338,10 +338,10 @@ Object {
               </div>
             </div>
             <div
-              class="styled__HotelView-sc-1nkmtjh-17 bOEYAW"
+              class="styled__HotelView-sc-1nkmtjh-17 fQdgdn"
             >
               <div
-                class="styled__HotelInfo-sc-1nkmtjh-18 hnKPiO"
+                class="styled__HotelInfo-sc-1nkmtjh-18 dpjmrv"
               >
                 <div
                   class="styled__LeftSide-sc-1nkmtjh-22"
@@ -653,7 +653,7 @@ Object {
                     </ul>
                   </div>
                   <div
-                    class="styled__ShortDescription-sc-1nkmtjh-24 jHmshb"
+                    class="styled__ShortDescription-sc-1nkmtjh-24 eqSuOq"
                   >
                     <div
                       class="styled__HotelLocation-sc-1nkmtjh-25 jmjJxS"
@@ -673,9 +673,11 @@ Object {
                   class="styled__ViewPrice-sc-1nkmtjh-20 llTGed"
                 >
                   <button>
-                    <span
-                      class="styled__InfoIcon-sc-1nkmtjh-21 MPOUA"
-                    />
+                    <a>
+                      <span
+                        class="styled__InfoIcon-sc-1nkmtjh-21 fxKmpC"
+                      />
+                    </a>
                     <a>
                       <span>
                         View Prices
@@ -688,7 +690,8 @@ Object {
                 class="styled__SliderSection-sc-1nkmtjh-27 ykrdw"
               >
                 <div
-                  class="styled__HotelPhotoSliderWrapper-sc-nv2z5u-0 kykSLQ"
+                  class="styled__HotelPhotoSliderWrapper-sc-nv2z5u-0 dJQkpn"
+                  style="width: 100%;"
                 >
                   <div
                     aria-live="polite"
@@ -774,6 +777,84 @@ Object {
                             </div>
                             <div
                               aria-label="Go to Slide 3"
+                              class="image-gallery-slide  "
+                              role="button"
+                              style="display: inherit; transform: translate3d(200%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 4"
+                              class="image-gallery-slide  "
+                              role="button"
+                              style="display: inherit; transform: translate3d(300%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 5"
+                              class="image-gallery-slide  "
+                              role="button"
+                              style="display: inherit; transform: translate3d(400%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 6"
+                              class="image-gallery-slide  "
+                              role="button"
+                              style="display: inherit; transform: translate3d(500%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 7"
+                              class="image-gallery-slide  "
+                              role="button"
+                              style="display: inherit; transform: translate3d(600%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 8"
+                              class="image-gallery-slide  "
+                              role="button"
+                              style="display: inherit; transform: translate3d(700%, 0, 0);"
+                              tabindex="-1"
+                            >
+                              <div
+                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                              >
+                                 
+                              </div>
+                            </div>
+                            <div
+                              aria-label="Go to Slide 9"
                               class="image-gallery-slide  left "
                               role="button"
                               style="display: inherit; transform: translate3d(-100%, 0, 0);"
@@ -788,6 +869,164 @@ Object {
                           </div>
                         </div>
                       </div>
+                      <div
+                        class="image-gallery-thumbnails-wrapper bottom thumbnails-swipe-horizontal"
+                      >
+                        <div
+                          class="image-gallery-thumbnails"
+                        >
+                          <div
+                            aria-label="Thumbnail Navigation"
+                            class="image-gallery-thumbnails-container"
+                            style="transform: translate3d(0px, 0, 0); transition: all 300ms ease-out;"
+                          >
+                            <button
+                              aria-label="Go to Slide 1"
+                              aria-pressed="true"
+                              class="image-gallery-thumbnail active"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 2"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 3"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 4"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 5"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 6"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 7"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 8"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 9"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -798,7 +1037,7 @@ Object {
             </div>
           </div>
           <div
-            class="styled__About-sc-4qlb13-0 gaQJhc"
+            class="styled__About-sc-4qlb13-0 hzxGdv"
           >
             <div
               class="styled__LeftSection-sc-4qlb13-1 cffUpO"
@@ -1119,11 +1358,7 @@ Object {
                   class="styled__StyledDescription-sc-1nkmtjh-41 cEkJte"
                   style="padding-bottom: 20px;"
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
-                  <br />
-                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-                  <br />
-                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                 </div>
                 <span>
                   read more...
@@ -1131,7 +1366,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__RightSection-sc-4qlb13-5 cUhOKm"
+              class="styled__RightSection-sc-4qlb13-5 PZDSy"
             >
               <div
                 class="styled__MapSection-sc-4qlb13-6 dajAoo"
@@ -1175,7 +1410,7 @@ Object {
                     <div
                       class="styled__CheckedIcon-sc-4qlb13-10 iEEgQI"
                     />
-                    Breakfast info Continental, Buffet
+                    Breakfast
                   </li>
                   <li>
                     <div
@@ -1230,16 +1465,22 @@ Object {
               class="styled__QueryTitle-sc-1kznkl4-0 hZPayD"
             >
               Available Rooms for 
-              Tue 19 Apr
+              Sat 23 Apr
                - 
-              Wed 20 Apr,
+              Sun 24 Apr,
                
               1
-               adults, 
+               
+              adults
+              , 
               0
-               children, 
+               
+              children
+               , 
               0
-               infants 
+               
+              infants
+                
             </div>
             <div
               class="styled__Modifier-sc-1kznkl4-6 ccnpth"
@@ -1274,7 +1515,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              19 Apr , Tue
+                              23 Apr , Sat
                                 
                             </strong>
                           </p>
@@ -1306,7 +1547,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              20 Apr , Wed
+                              24 Apr , Sun
                                
                             </strong>
                           </p>
@@ -1319,7 +1560,7 @@ Object {
                   class="styled__RightSide-sc-1kznkl4-9 lelYjA"
                 >
                   <div
-                    class="styled__PassengerWrapper-sc-1kznkl4-49 kCuLBk"
+                    class="styled__PassengerWrapper-sc-1kznkl4-49 buPkjm"
                   >
                     <div
                       class="styled__DivView-sc-1kznkl4-37 fAXXhY"
@@ -1337,7 +1578,7 @@ Object {
                             Adults
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1kznkl4-10 igDkND"
+                            class="styled__DropdownIcon-sc-1kznkl4-10 ceVeTd"
                           />
                         </div>
                         <div
@@ -1349,7 +1590,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__PassengerWrapper-sc-1kznkl4-49 kCuLBk"
+                    class="styled__PassengerWrapper-sc-1kznkl4-49 buPkjm"
                   >
                     <div
                       class="styled__DivView-sc-1kznkl4-37 fAXXhY"
@@ -1369,7 +1610,7 @@ Object {
                             Children
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1kznkl4-10 igDkND"
+                            class="styled__DropdownIcon-sc-1kznkl4-10 ceVeTd"
                           />
                         </div>
                         <div
@@ -1381,7 +1622,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__PassengerWrapper-sc-1kznkl4-49 kCuLBk"
+                    class="styled__PassengerWrapper-sc-1kznkl4-49 buPkjm"
                   >
                     <div
                       class="styled__DivView-sc-1kznkl4-37 fAXXhY"
@@ -1401,7 +1642,7 @@ Object {
                             Infants
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1kznkl4-10 igDkND"
+                            class="styled__DropdownIcon-sc-1kznkl4-10 ceVeTd"
                           />
                         </div>
                         <div
@@ -1432,10 +1673,10 @@ Object {
               class="styled__RoomTable-sc-1kznkl4-13 hzPOPA"
             >
               <div
-                class="styled__TableHead-sc-1kznkl4-14 lhRTmT"
+                class="styled__TableHead-sc-1kznkl4-14 kJsLGr"
               >
                 <div
-                  class="styled__RoomType-sc-1kznkl4-15 gHUKjO"
+                  class="styled__RoomType-sc-1kznkl4-15 lidjhS"
                 >
                   Room Type
                 </div>
@@ -1482,18 +1723,15 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                    class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                      class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                        Rooms
+                      </span>
                     </ul>
                     <div
                       class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -1543,18 +1781,15 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                    class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                      class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                        Rooms
+                      </span>
                     </ul>
                     <div
                       class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -1604,18 +1839,15 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                    class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                      class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                        Rooms
+                      </span>
                     </ul>
                     <div
                       class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -1665,18 +1897,15 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                    class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                      class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                        Rooms
+                      </span>
                     </ul>
                     <div
                       class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -1721,10 +1950,10 @@ Object {
         data-testid="header-wrapper"
       >
         <div
-          class="styled__HeaderContent-sc-ffk3hg-1 XVuxU"
+          class="styled__HeaderContent-sc-ffk3hg-1 dAhDaY"
         >
           <div
-            class="styled__LogoWrapper-sc-ffk3hg-2 fkPqly"
+            class="styled__LogoWrapper-sc-ffk3hg-2 gXbfHc"
           >
             <a
               href="/"
@@ -1820,7 +2049,7 @@ Object {
         </div>
       </header>
       <div
-        class="styled__StyledContentWrapper-sc-1y5gkei-4 clwcSf"
+        class="styled__StyledContentWrapper-sc-1y5gkei-4 flMMSr"
       >
         <div
           class="styled__StyledBreadcrumbs-sc-5eekhe-0 dwQcVB"
@@ -1893,7 +2122,7 @@ Object {
                         aria-haspopup="listbox"
                         aria-owns="rc_select_TEST_OR_SSR_list"
                         autocomplete="off"
-                        class="styled__HotelSearch-sc-1nkmtjh-5 ggRUmn ant-select-selection-search-input"
+                        class="styled__HotelSearch-sc-1nkmtjh-5 dDrsqC ant-select-selection-search-input"
                         id="rc_select_TEST_OR_SSR"
                         role="combobox"
                         type="search"
@@ -1925,16 +2154,16 @@ Object {
                     Check-in date:
                   </h4>
                   <div
-                    class="styled__HotelSearch-sc-1nkmtjh-5 ggRUmn"
+                    class="styled__HotelSearch-sc-1nkmtjh-5 dDrsqC"
                   >
                     <div
                       class="styled__CalenderIcon-sc-1nkmtjh-7 eKHhao"
                     />
-                    <input
+                    <span
                       placeholder="Saturday, 12 March..."
-                      readonly=""
-                      value="Tuesday, 19 April, 2022"
-                    />
+                    >
+                      Saturday, 23 April, 2022
+                    </span>
                     <div
                       class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
                     />
@@ -1951,16 +2180,16 @@ Object {
                     Check-out date:
                   </h4>
                   <div
-                    class="styled__HotelSearch-sc-1nkmtjh-5 ggRUmn"
+                    class="styled__HotelSearch-sc-1nkmtjh-5 dDrsqC"
                   >
                     <div
                       class="styled__CalenderIcon-sc-1nkmtjh-7 eKHhao"
                     />
-                    <input
+                    <span
                       placeholder="Saturday, 13 March..."
-                      readonly=""
-                      value="Wednesday, 20 April, 2022"
-                    />
+                    >
+                      Sunday, 24 April, 2022
+                    </span>
                     <div
                       class="styled__DropdownIcon-sc-1nkmtjh-8 chJJzJ"
                     />
@@ -2045,10 +2274,10 @@ Object {
             </div>
           </div>
           <div
-            class="styled__HotelView-sc-1nkmtjh-17 bOEYAW"
+            class="styled__HotelView-sc-1nkmtjh-17 fQdgdn"
           >
             <div
-              class="styled__HotelInfo-sc-1nkmtjh-18 hnKPiO"
+              class="styled__HotelInfo-sc-1nkmtjh-18 dpjmrv"
             >
               <div
                 class="styled__LeftSide-sc-1nkmtjh-22"
@@ -2360,7 +2589,7 @@ Object {
                   </ul>
                 </div>
                 <div
-                  class="styled__ShortDescription-sc-1nkmtjh-24 jHmshb"
+                  class="styled__ShortDescription-sc-1nkmtjh-24 eqSuOq"
                 >
                   <div
                     class="styled__HotelLocation-sc-1nkmtjh-25 jmjJxS"
@@ -2380,9 +2609,11 @@ Object {
                 class="styled__ViewPrice-sc-1nkmtjh-20 llTGed"
               >
                 <button>
-                  <span
-                    class="styled__InfoIcon-sc-1nkmtjh-21 MPOUA"
-                  />
+                  <a>
+                    <span
+                      class="styled__InfoIcon-sc-1nkmtjh-21 fxKmpC"
+                    />
+                  </a>
                   <a>
                     <span>
                       View Prices
@@ -2395,7 +2626,8 @@ Object {
               class="styled__SliderSection-sc-1nkmtjh-27 ykrdw"
             >
               <div
-                class="styled__HotelPhotoSliderWrapper-sc-nv2z5u-0 kykSLQ"
+                class="styled__HotelPhotoSliderWrapper-sc-nv2z5u-0 dJQkpn"
+                style="width: 100%;"
               >
                 <div
                   aria-live="polite"
@@ -2481,6 +2713,84 @@ Object {
                           </div>
                           <div
                             aria-label="Go to Slide 3"
+                            class="image-gallery-slide  "
+                            role="button"
+                            style="display: inherit; transform: translate3d(200%, 0, 0);"
+                            tabindex="-1"
+                          >
+                            <div
+                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                            >
+                               
+                            </div>
+                          </div>
+                          <div
+                            aria-label="Go to Slide 4"
+                            class="image-gallery-slide  "
+                            role="button"
+                            style="display: inherit; transform: translate3d(300%, 0, 0);"
+                            tabindex="-1"
+                          >
+                            <div
+                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                            >
+                               
+                            </div>
+                          </div>
+                          <div
+                            aria-label="Go to Slide 5"
+                            class="image-gallery-slide  "
+                            role="button"
+                            style="display: inherit; transform: translate3d(400%, 0, 0);"
+                            tabindex="-1"
+                          >
+                            <div
+                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                            >
+                               
+                            </div>
+                          </div>
+                          <div
+                            aria-label="Go to Slide 6"
+                            class="image-gallery-slide  "
+                            role="button"
+                            style="display: inherit; transform: translate3d(500%, 0, 0);"
+                            tabindex="-1"
+                          >
+                            <div
+                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                            >
+                               
+                            </div>
+                          </div>
+                          <div
+                            aria-label="Go to Slide 7"
+                            class="image-gallery-slide  "
+                            role="button"
+                            style="display: inherit; transform: translate3d(600%, 0, 0);"
+                            tabindex="-1"
+                          >
+                            <div
+                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                            >
+                               
+                            </div>
+                          </div>
+                          <div
+                            aria-label="Go to Slide 8"
+                            class="image-gallery-slide  "
+                            role="button"
+                            style="display: inherit; transform: translate3d(700%, 0, 0);"
+                            tabindex="-1"
+                          >
+                            <div
+                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                            >
+                               
+                            </div>
+                          </div>
+                          <div
+                            aria-label="Go to Slide 9"
                             class="image-gallery-slide  left "
                             role="button"
                             style="display: inherit; transform: translate3d(-100%, 0, 0);"
@@ -2495,6 +2805,164 @@ Object {
                         </div>
                       </div>
                     </div>
+                    <div
+                      class="image-gallery-thumbnails-wrapper bottom thumbnails-swipe-horizontal"
+                    >
+                      <div
+                        class="image-gallery-thumbnails"
+                      >
+                        <div
+                          aria-label="Thumbnail Navigation"
+                          class="image-gallery-thumbnails-container"
+                          style="transform: translate3d(0px, 0, 0); transition: all 300ms ease-out;"
+                        >
+                          <button
+                            aria-label="Go to Slide 1"
+                            aria-pressed="true"
+                            class="image-gallery-thumbnail active"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 2"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 3"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 4"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 5"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 6"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 7"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 8"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 9"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -2505,7 +2973,7 @@ Object {
           </div>
         </div>
         <div
-          class="styled__About-sc-4qlb13-0 gaQJhc"
+          class="styled__About-sc-4qlb13-0 hzxGdv"
         >
           <div
             class="styled__LeftSection-sc-4qlb13-1 cffUpO"
@@ -2826,11 +3294,7 @@ Object {
                 class="styled__StyledDescription-sc-1nkmtjh-41 cEkJte"
                 style="padding-bottom: 20px;"
               >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
-                <br />
-                 magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-                <br />
-                 magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
               </div>
               <span>
                 read more...
@@ -2838,7 +3302,7 @@ Object {
             </div>
           </div>
           <div
-            class="styled__RightSection-sc-4qlb13-5 cUhOKm"
+            class="styled__RightSection-sc-4qlb13-5 PZDSy"
           >
             <div
               class="styled__MapSection-sc-4qlb13-6 dajAoo"
@@ -2882,7 +3346,7 @@ Object {
                   <div
                     class="styled__CheckedIcon-sc-4qlb13-10 iEEgQI"
                   />
-                  Breakfast info Continental, Buffet
+                  Breakfast
                 </li>
                 <li>
                   <div
@@ -2937,16 +3401,22 @@ Object {
             class="styled__QueryTitle-sc-1kznkl4-0 hZPayD"
           >
             Available Rooms for 
-            Tue 19 Apr
+            Sat 23 Apr
              - 
-            Wed 20 Apr,
+            Sun 24 Apr,
              
             1
-             adults, 
+             
+            adults
+            , 
             0
-             children, 
+             
+            children
+             , 
             0
-             infants 
+             
+            infants
+              
           </div>
           <div
             class="styled__Modifier-sc-1kznkl4-6 ccnpth"
@@ -2981,7 +3451,7 @@ Object {
                         </div>
                         <p>
                           <strong>
-                            19 Apr , Tue
+                            23 Apr , Sat
                               
                           </strong>
                         </p>
@@ -3013,7 +3483,7 @@ Object {
                         </div>
                         <p>
                           <strong>
-                            20 Apr , Wed
+                            24 Apr , Sun
                              
                           </strong>
                         </p>
@@ -3026,7 +3496,7 @@ Object {
                 class="styled__RightSide-sc-1kznkl4-9 lelYjA"
               >
                 <div
-                  class="styled__PassengerWrapper-sc-1kznkl4-49 kCuLBk"
+                  class="styled__PassengerWrapper-sc-1kznkl4-49 buPkjm"
                 >
                   <div
                     class="styled__DivView-sc-1kznkl4-37 fAXXhY"
@@ -3044,7 +3514,7 @@ Object {
                           Adults
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1kznkl4-10 igDkND"
+                          class="styled__DropdownIcon-sc-1kznkl4-10 ceVeTd"
                         />
                       </div>
                       <div
@@ -3056,7 +3526,7 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__PassengerWrapper-sc-1kznkl4-49 kCuLBk"
+                  class="styled__PassengerWrapper-sc-1kznkl4-49 buPkjm"
                 >
                   <div
                     class="styled__DivView-sc-1kznkl4-37 fAXXhY"
@@ -3076,7 +3546,7 @@ Object {
                           Children
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1kznkl4-10 igDkND"
+                          class="styled__DropdownIcon-sc-1kznkl4-10 ceVeTd"
                         />
                       </div>
                       <div
@@ -3088,7 +3558,7 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__PassengerWrapper-sc-1kznkl4-49 kCuLBk"
+                  class="styled__PassengerWrapper-sc-1kznkl4-49 buPkjm"
                 >
                   <div
                     class="styled__DivView-sc-1kznkl4-37 fAXXhY"
@@ -3108,7 +3578,7 @@ Object {
                           Infants
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1kznkl4-10 igDkND"
+                          class="styled__DropdownIcon-sc-1kznkl4-10 ceVeTd"
                         />
                       </div>
                       <div
@@ -3139,10 +3609,10 @@ Object {
             class="styled__RoomTable-sc-1kznkl4-13 hzPOPA"
           >
             <div
-              class="styled__TableHead-sc-1kznkl4-14 lhRTmT"
+              class="styled__TableHead-sc-1kznkl4-14 kJsLGr"
             >
               <div
-                class="styled__RoomType-sc-1kznkl4-15 gHUKjO"
+                class="styled__RoomType-sc-1kznkl4-15 lidjhS"
               >
                 Room Type
               </div>
@@ -3189,18 +3659,15 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                  class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                    class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                      Rooms
+                    </span>
                   </ul>
                   <div
                     class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -3250,18 +3717,15 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                  class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                    class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                      Rooms
+                    </span>
                   </ul>
                   <div
                     class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -3311,18 +3775,15 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                  class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                    class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                      Rooms
+                    </span>
                   </ul>
                   <div
                     class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"
@@ -3372,18 +3833,15 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1kznkl4-24 cNGjZg"
+                  class="styled__ColumnThree-sc-1kznkl4-24 hMxKYN"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1kznkl4-25 jFJmSn"
+                    class="styled__LeftIcon-sc-1kznkl4-25 kDtOQJ"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                      Rooms
+                    </span>
                   </ul>
                   <div
                     class="styled__RightIcon-sc-1kznkl4-26 lgRXtS"

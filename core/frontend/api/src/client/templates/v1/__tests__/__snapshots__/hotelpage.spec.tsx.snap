@@ -6,15 +6,15 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="styled__MainWrapper-sc-1c2vi5p-0 isTwKx"
+        class="styled__MainWrapper-sc-1c2vi5p-0 bRPxBF"
         data-testid="hotel-page-wrapper"
       >
         <header
-          class="styled__HeaderWrapper-sc-1da3qfr-0 GHrcR"
+          class="styled__HeaderWrapper-sc-1da3qfr-0 dPUtdL"
           data-testid="header-wrapper"
         >
           <div
-            class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
+            class="styled__HeaderContent-sc-1da3qfr-1 ibNPkF"
           >
             <div
               class="styled__LogoWrapper-sc-1da3qfr-2 gZXSiZ"
@@ -113,7 +113,7 @@ Object {
           </div>
         </header>
         <div
-          class="styled__StyledContentWrapper-sc-1c2vi5p-4 engwwA"
+          class="styled__StyledContentWrapper-sc-1c2vi5p-4 dthqTc"
         >
           <div
             class="styled__StyledBreadcrumbs-sc-l5f0v7-0 jWxkAY"
@@ -150,7 +150,7 @@ Object {
             </a>
           </div>
           <div
-            class="styled__Wrapper-sc-1qh2pme-0 kwPRHQ"
+            class="styled__Wrapper-sc-1qh2pme-0 hyKXjn"
           >
             <div
               class="styled__DealCard-sc-1qh2pme-1 ekFrxv"
@@ -186,7 +186,7 @@ Object {
                           aria-haspopup="listbox"
                           aria-owns="rc_select_TEST_OR_SSR_list"
                           autocomplete="off"
-                          class="styled__HotelSearch-sc-1qh2pme-5 idqjYy ant-select-selection-search-input"
+                          class="styled__HotelSearch-sc-1qh2pme-5 oiddv ant-select-selection-search-input"
                           id="rc_select_TEST_OR_SSR"
                           role="combobox"
                           type="search"
@@ -218,16 +218,16 @@ Object {
                       Check-in date:
                     </h4>
                     <div
-                      class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                      class="styled__HotelSearch-sc-1qh2pme-5 oiddv"
                     >
                       <div
                         class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
                       />
-                      <input
+                      <span
                         placeholder="Saturday, 12 March..."
-                        readonly=""
-                        value="Tuesday, 19 April, 2022"
-                      />
+                      >
+                        Saturday, 23 April, 2022
+                      </span>
                       <div
                         class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
                       />
@@ -244,16 +244,16 @@ Object {
                       Check-out date:
                     </h4>
                     <div
-                      class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                      class="styled__HotelSearch-sc-1qh2pme-5 oiddv"
                     >
                       <div
                         class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
                       />
-                      <input
+                      <span
                         placeholder="Saturday, 13 March..."
-                        readonly=""
-                        value="Wednesday, 20 April, 2022"
-                      />
+                      >
+                        Sunday, 24 April, 2022
+                      </span>
                       <div
                         class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
                       />
@@ -270,7 +270,7 @@ Object {
                       Details:
                     </h4>
                     <div
-                      class="styled__GuestType-sc-1qh2pme-11 eoCORC"
+                      class="styled__GuestType-sc-1qh2pme-11 jgciwW"
                     >
                       <div
                         class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
@@ -338,10 +338,10 @@ Object {
               </div>
             </div>
             <div
-              class="styled__HotelView-sc-1qh2pme-17 iPhIbb"
+              class="styled__HotelView-sc-1qh2pme-17 eyvrgC"
             >
               <div
-                class="styled__HotelInfo-sc-1qh2pme-18 ciPMRz"
+                class="styled__HotelInfo-sc-1qh2pme-18 cjJqQC"
               >
                 <div
                   class="styled__LeftSide-sc-1qh2pme-22"
@@ -653,7 +653,7 @@ Object {
                     </ul>
                   </div>
                   <div
-                    class="styled__ShortDescription-sc-1qh2pme-24 hYOVjC"
+                    class="styled__ShortDescription-sc-1qh2pme-24 kPJImn"
                   >
                     <div
                       class="styled__HotelLocation-sc-1qh2pme-25 iJxznX"
@@ -673,9 +673,11 @@ Object {
                   class="styled__ViewPrice-sc-1qh2pme-20 khjMUg"
                 >
                   <button>
-                    <span
-                      class="styled__InfoIcon-sc-1qh2pme-21 eYXJZZ"
-                    />
+                    <a>
+                      <span
+                        class="styled__InfoIcon-sc-1qh2pme-21 fOwjDX"
+                      />
+                    </a>
                     <a>
                       <span>
                         View Prices
@@ -685,10 +687,11 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__SliderSection-sc-1qh2pme-27 gLZxLB"
+                class="styled__SliderSection-sc-1qh2pme-27 eqVMfS"
               >
                 <div
-                  class="styled__HotelPhotoSliderWrapper-sc-k0u5eu-0 iJFiYT"
+                  class="styled__HotelPhotoSliderWrapper-sc-k0u5eu-0 garLOY"
+                  style="width: 100%; height: 100%;"
                 >
                   <div
                     aria-live="polite"
@@ -753,11 +756,17 @@ Object {
                               style="display: inherit; transform: translate3d(0%, 0, 0);"
                               tabindex="-1"
                             >
-                              <div
-                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                              >
-                                 
-                              </div>
+                              <img
+                                alt=""
+                                class="image-gallery-image"
+                                height=""
+                                sizes=""
+                                src="src"
+                                srcset=""
+                                title=""
+                                width=""
+                              />
+                              
                             </div>
                             <div
                               aria-label="Go to Slide 2"
@@ -766,11 +775,17 @@ Object {
                               style="display: inherit; transform: translate3d(100%, 0, 0);"
                               tabindex="-1"
                             >
-                              <div
-                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                              >
-                                 
-                              </div>
+                              <img
+                                alt=""
+                                class="image-gallery-image"
+                                height=""
+                                sizes=""
+                                src="src"
+                                srcset=""
+                                title=""
+                                width=""
+                              />
+                              
                             </div>
                             <div
                               aria-label="Go to Slide 3"
@@ -779,12 +794,100 @@ Object {
                               style="display: inherit; transform: translate3d(-100%, 0, 0);"
                               tabindex="-1"
                             >
-                              <div
-                                style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                              >
-                                 
-                              </div>
+                              <img
+                                alt=""
+                                class="image-gallery-image"
+                                height=""
+                                sizes=""
+                                src="src"
+                                srcset=""
+                                title=""
+                                width=""
+                              />
+                              
                             </div>
+                          </div>
+                        </div>
+                        <button
+                          aria-label="Open Fullscreen"
+                          class="image-gallery-icon image-gallery-fullscreen-button"
+                          type="button"
+                        >
+                          <svg
+                            class="image-gallery-svg"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        class="image-gallery-thumbnails-wrapper bottom thumbnails-swipe-horizontal"
+                      >
+                        <div
+                          class="image-gallery-thumbnails"
+                        >
+                          <div
+                            aria-label="Thumbnail Navigation"
+                            class="image-gallery-thumbnails-container"
+                            style="transform: translate3d(0px, 0, 0); transition: all 300ms ease-out;"
+                          >
+                            <button
+                              aria-label="Go to Slide 1"
+                              aria-pressed="true"
+                              class="image-gallery-thumbnail active"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 2"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
+                            <button
+                              aria-label="Go to Slide 3"
+                              aria-pressed="false"
+                              class="image-gallery-thumbnail"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span
+                                class="image-gallery-thumbnail-inner"
+                              >
+                                <img
+                                  class="image-gallery-thumbnail-image"
+                                  src="src"
+                                />
+                              </span>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -798,7 +901,7 @@ Object {
             </div>
           </div>
           <div
-            class="styled__About-sc-1snydq3-0 fqxjue"
+            class="styled__About-sc-1snydq3-0 eJfcPa"
           >
             <div
               class="styled__LeftSection-sc-1snydq3-1 cyVJdc"
@@ -1119,11 +1222,7 @@ Object {
                   class="styled__StyledDescription-sc-1qh2pme-41 joUPdr"
                   style="padding-bottom: 20px;"
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
-                  <br />
-                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-                  <br />
-                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                 </div>
                 <span>
                   read more...
@@ -1131,7 +1230,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__RightSection-sc-1snydq3-5 kwWEaM"
+              class="styled__RightSection-sc-1snydq3-5 jHpVRw"
             >
               <div
                 class="styled__MapSection-sc-1snydq3-6 aCgji"
@@ -1164,18 +1263,18 @@ Object {
                 class="styled__Highlights-sc-1snydq3-7 bWFduw"
               >
                 <div
-                  class="styled__Cardtitle-sc-1snydq3-8 iJIapP"
+                  class="styled__Cardtitle-sc-1snydq3-8 dXmOCs"
                 >
                   Hotel Victoria Highlights
                 </div>
                 <div
-                  class="styled__Feature-sc-1snydq3-9 bMaLLO"
+                  class="styled__Feature-sc-1snydq3-9 lnJotH"
                 >
                   <li>
                     <div
                       class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
                     />
-                    Breakfast info Continental, Buffet
+                    Breakfast
                   </li>
                   <li>
                     <div
@@ -1224,22 +1323,28 @@ Object {
             </div>
           </div>
           <div
-            class="styled__Wrapper-sc-1fefmyk-5 eERfEF"
+            class="styled__Wrapper-sc-1fefmyk-5 iEdtLe"
           >
             <div
-              class="styled__QueryTitle-sc-1fefmyk-0 dTRNNp"
+              class="styled__QueryTitle-sc-1fefmyk-0 fzhQnq"
             >
               Available Rooms for 
-              Tue 19 Apr
+              Sat 23 Apr
                - 
-              Wed 20 Apr,
+              Sun 24 Apr,
                
               1
-               adults, 
+               
+              adults
+              , 
               0
-               children, 
+               
+              children
+               , 
               0
-               infants 
+               
+              infants
+                
             </div>
             <div
               class="styled__Modifier-sc-1fefmyk-6 gsqAbX"
@@ -1251,13 +1356,13 @@ Object {
                   class="styled__LeftSide-sc-1fefmyk-8 fhYMUx"
                 >
                   <div
-                    class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                    class="styled__CalenderWrapper-sc-1fefmyk-52 VcKaP"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                     >
                       <div
-                        class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                        class="styled__StayingInfoWrapper-sc-1fefmyk-49 pJTGw"
                       >
                         <div>
                           <div
@@ -1265,16 +1370,16 @@ Object {
                           />
                         </div>
                         <div
-                          class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                          class="styled__CheckBg-sc-1fefmyk-46 khJRrP"
                         >
                           <div
-                            class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                            class="styled__CheckTitle-sc-1fefmyk-47 gXalie"
                           >
                             Check-in
                           </div>
                           <p>
                             <strong>
-                              19 Apr , Tue
+                              23 Apr , Sat
                                 
                             </strong>
                           </p>
@@ -1283,13 +1388,13 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                    class="styled__CalenderWrapper-sc-1fefmyk-52 VcKaP"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                     >
                       <div
-                        class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                        class="styled__StayingInfoWrapper-sc-1fefmyk-49 pJTGw"
                       >
                         <div>
                           <div
@@ -1297,16 +1402,17 @@ Object {
                           />
                         </div>
                         <div
-                          class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                          class="styled__CheckBg-sc-1fefmyk-46 khJRrP"
                         >
                           <div
-                            class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                            class="styled__CheckTitle-sc-1fefmyk-47 gXalie"
                           >
+                             
                             Check-out
                           </div>
                           <p>
                             <strong>
-                              20 Apr , Wed
+                              24 Apr , Sun
                                
                             </strong>
                           </p>
@@ -1319,29 +1425,29 @@ Object {
                   class="styled__RightSide-sc-1fefmyk-9 gqcFVC"
                 >
                   <div
-                    class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                    class="styled__PassengerWrapper-sc-1fefmyk-50 bsAwzk"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                     >
                       <div
-                        class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                        class="styled__Passenger-sc-1fefmyk-45 cWktbo"
                       >
                         <div
-                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-51 cqLtIU"
                         >
                           voila
                           <span
-                            class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                            class="styled__SpanDiv-sc-1fefmyk-44 MCjei"
                           >
                             Adults
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                            class="styled__DropdownIcon-sc-1fefmyk-10 gAQMqr"
                           />
                         </div>
                         <div
-                          class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                          class="styled__GuestNumber-sc-1fefmyk-37 kNFfRR"
                         >
                           1
                         </div>
@@ -1349,31 +1455,31 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                    class="styled__PassengerWrapper-sc-1fefmyk-50 bsAwzk"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                     >
                       <div
-                        class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                        class="styled__Passenger-sc-1fefmyk-45 cWktbo"
                       >
                         <div
-                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-51 cqLtIU"
                         >
                           <div
                             class="styled__ChildIcon-sc-1fefmyk-2 cRKAPq"
                           />
                           <span
-                            class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                            class="styled__SpanDiv-sc-1fefmyk-44 MCjei"
                           >
                             Children
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                            class="styled__DropdownIcon-sc-1fefmyk-10 gAQMqr"
                           />
                         </div>
                         <div
-                          class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                          class="styled__GuestNumber-sc-1fefmyk-37 kNFfRR"
                         >
                           0
                         </div>
@@ -1381,31 +1487,31 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                    class="styled__PassengerWrapper-sc-1fefmyk-50 bsAwzk"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                     >
                       <div
-                        class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                        class="styled__Passenger-sc-1fefmyk-45 cWktbo"
                       >
                         <div
-                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-51 cqLtIU"
                         >
                           <div
                             class="styled__InfantIcon-sc-1fefmyk-3 gEhqyu"
                           />
                           <span
-                            class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                            class="styled__SpanDiv-sc-1fefmyk-44 MCjei"
                           >
                             Infants
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                            class="styled__DropdownIcon-sc-1fefmyk-10 gAQMqr"
                           />
                         </div>
                         <div
-                          class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                          class="styled__GuestNumber-sc-1fefmyk-37 kNFfRR"
                         >
                           0
                         </div>
@@ -1432,10 +1538,10 @@ Object {
               class="styled__RoomTable-sc-1fefmyk-13 dzXFbu"
             >
               <div
-                class="styled__TableHead-sc-1fefmyk-14 jfxjtp"
+                class="styled__TableHead-sc-1fefmyk-14 gDhWeN"
               >
                 <div
-                  class="styled__RoomType-sc-1fefmyk-15 ldSViA"
+                  class="styled__RoomType-sc-1fefmyk-15 jktddY"
                 >
                   Room Type
                 </div>
@@ -1445,12 +1551,12 @@ Object {
                   Meals
                 </div>
                 <div
-                  class="styled__SelectRoom-sc-1fefmyk-17 itFnii"
+                  class="styled__SelectRoom-sc-1fefmyk-17 kmqBuQ"
                 >
                   Rooms
                 </div>
                 <div
-                  class="styled__Price-sc-1fefmyk-18 fvNgbz"
+                  class="styled__Price-sc-1fefmyk-18 lkmoMq"
                 >
                   Price
                 </div>
@@ -1461,7 +1567,7 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
               >
                 <div
                   class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -1473,48 +1579,49 @@ Object {
                   1
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
                 >
                   Breakfast included 
                   1
                 </div>
                 <div
+                  class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                         
+                        1
+                         
+                        Rooms
+                      </span>
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
                 >
                   122
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
                 >
                   <button>
                     Book Now
@@ -1522,7 +1629,7 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
               >
                 <div
                   class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -1534,48 +1641,49 @@ Object {
                   2
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
                 >
                   Breakfast included 
                   2
                 </div>
                 <div
+                  class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                         
+                        1
+                         
+                        Rooms
+                      </span>
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
                 >
                   220
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
                 >
                   <button>
                     Book Now
@@ -1583,7 +1691,7 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
               >
                 <div
                   class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -1595,48 +1703,49 @@ Object {
                   3
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
                 >
                   Breakfast included 
                   3
                 </div>
                 <div
+                  class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                         
+                        1
+                         
+                        Rooms
+                      </span>
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
                 >
                   322
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
                 >
                   <button>
                     Book Now
@@ -1644,7 +1753,7 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
               >
                 <div
                   class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -1656,48 +1765,49 @@ Object {
                   4
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
                 >
                   Breakfast included 
                   4
                 </div>
                 <div
+                  class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                     />
                     <ul>
-                      <input
-                        placeholder="3 Rooms"
-                        readonly=""
-                        type="text"
-                        value=""
-                      />
+                      <span>
+                         
+                        1
+                         
+                        Rooms
+                      </span>
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
                 >
                   342
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
                 >
                   <button>
                     Book Now
@@ -1707,21 +1817,91 @@ Object {
             </div>
             
           </div>
+          <footer
+            class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
+          >
+            <div>
+              <div>
+                <a
+                  href="/about-us"
+                >
+                  About Us
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/contact"
+                >
+                  Contact
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/disclaimer"
+                >
+                  Disclaimer
+                </a>
+              </div>
+            </div>
+            <div>
+              <div>
+                <a
+                  href="/useful-information"
+                >
+                  Useful Information
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/file-a-complaint"
+                >
+                  File a complaint
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/working-hours"
+                >
+                  Working Hours
+                </a>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div
+                  class="styled__StyledNewsletterTitle-sc-1xenngy-1"
+                >
+                  Subscribe to our newsletter
+                </div>
+              </div>
+              <div
+                class="styled__StyledNewsletterForm-sc-1xenngy-2 cZuPmT"
+              >
+                <input
+                  placeholder="Email Address"
+                  type="email"
+                />
+                <button>
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>
   </body>,
   "container": <div>
     <div
-      class="styled__MainWrapper-sc-1c2vi5p-0 isTwKx"
+      class="styled__MainWrapper-sc-1c2vi5p-0 bRPxBF"
       data-testid="hotel-page-wrapper"
     >
       <header
-        class="styled__HeaderWrapper-sc-1da3qfr-0 GHrcR"
+        class="styled__HeaderWrapper-sc-1da3qfr-0 dPUtdL"
         data-testid="header-wrapper"
       >
         <div
-          class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
+          class="styled__HeaderContent-sc-1da3qfr-1 ibNPkF"
         >
           <div
             class="styled__LogoWrapper-sc-1da3qfr-2 gZXSiZ"
@@ -1820,7 +2000,7 @@ Object {
         </div>
       </header>
       <div
-        class="styled__StyledContentWrapper-sc-1c2vi5p-4 engwwA"
+        class="styled__StyledContentWrapper-sc-1c2vi5p-4 dthqTc"
       >
         <div
           class="styled__StyledBreadcrumbs-sc-l5f0v7-0 jWxkAY"
@@ -1857,7 +2037,7 @@ Object {
           </a>
         </div>
         <div
-          class="styled__Wrapper-sc-1qh2pme-0 kwPRHQ"
+          class="styled__Wrapper-sc-1qh2pme-0 hyKXjn"
         >
           <div
             class="styled__DealCard-sc-1qh2pme-1 ekFrxv"
@@ -1893,7 +2073,7 @@ Object {
                         aria-haspopup="listbox"
                         aria-owns="rc_select_TEST_OR_SSR_list"
                         autocomplete="off"
-                        class="styled__HotelSearch-sc-1qh2pme-5 idqjYy ant-select-selection-search-input"
+                        class="styled__HotelSearch-sc-1qh2pme-5 oiddv ant-select-selection-search-input"
                         id="rc_select_TEST_OR_SSR"
                         role="combobox"
                         type="search"
@@ -1925,16 +2105,16 @@ Object {
                     Check-in date:
                   </h4>
                   <div
-                    class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                    class="styled__HotelSearch-sc-1qh2pme-5 oiddv"
                   >
                     <div
                       class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
                     />
-                    <input
+                    <span
                       placeholder="Saturday, 12 March..."
-                      readonly=""
-                      value="Tuesday, 19 April, 2022"
-                    />
+                    >
+                      Saturday, 23 April, 2022
+                    </span>
                     <div
                       class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
                     />
@@ -1951,16 +2131,16 @@ Object {
                     Check-out date:
                   </h4>
                   <div
-                    class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                    class="styled__HotelSearch-sc-1qh2pme-5 oiddv"
                   >
                     <div
                       class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
                     />
-                    <input
+                    <span
                       placeholder="Saturday, 13 March..."
-                      readonly=""
-                      value="Wednesday, 20 April, 2022"
-                    />
+                    >
+                      Sunday, 24 April, 2022
+                    </span>
                     <div
                       class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
                     />
@@ -1977,7 +2157,7 @@ Object {
                     Details:
                   </h4>
                   <div
-                    class="styled__GuestType-sc-1qh2pme-11 eoCORC"
+                    class="styled__GuestType-sc-1qh2pme-11 jgciwW"
                   >
                     <div
                       class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
@@ -2045,10 +2225,10 @@ Object {
             </div>
           </div>
           <div
-            class="styled__HotelView-sc-1qh2pme-17 iPhIbb"
+            class="styled__HotelView-sc-1qh2pme-17 eyvrgC"
           >
             <div
-              class="styled__HotelInfo-sc-1qh2pme-18 ciPMRz"
+              class="styled__HotelInfo-sc-1qh2pme-18 cjJqQC"
             >
               <div
                 class="styled__LeftSide-sc-1qh2pme-22"
@@ -2360,7 +2540,7 @@ Object {
                   </ul>
                 </div>
                 <div
-                  class="styled__ShortDescription-sc-1qh2pme-24 hYOVjC"
+                  class="styled__ShortDescription-sc-1qh2pme-24 kPJImn"
                 >
                   <div
                     class="styled__HotelLocation-sc-1qh2pme-25 iJxznX"
@@ -2380,9 +2560,11 @@ Object {
                 class="styled__ViewPrice-sc-1qh2pme-20 khjMUg"
               >
                 <button>
-                  <span
-                    class="styled__InfoIcon-sc-1qh2pme-21 eYXJZZ"
-                  />
+                  <a>
+                    <span
+                      class="styled__InfoIcon-sc-1qh2pme-21 fOwjDX"
+                    />
+                  </a>
                   <a>
                     <span>
                       View Prices
@@ -2392,10 +2574,11 @@ Object {
               </div>
             </div>
             <div
-              class="styled__SliderSection-sc-1qh2pme-27 gLZxLB"
+              class="styled__SliderSection-sc-1qh2pme-27 eqVMfS"
             >
               <div
-                class="styled__HotelPhotoSliderWrapper-sc-k0u5eu-0 iJFiYT"
+                class="styled__HotelPhotoSliderWrapper-sc-k0u5eu-0 garLOY"
+                style="width: 100%; height: 100%;"
               >
                 <div
                   aria-live="polite"
@@ -2460,11 +2643,17 @@ Object {
                             style="display: inherit; transform: translate3d(0%, 0, 0);"
                             tabindex="-1"
                           >
-                            <div
-                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                            >
-                               
-                            </div>
+                            <img
+                              alt=""
+                              class="image-gallery-image"
+                              height=""
+                              sizes=""
+                              src="src"
+                              srcset=""
+                              title=""
+                              width=""
+                            />
+                            
                           </div>
                           <div
                             aria-label="Go to Slide 2"
@@ -2473,11 +2662,17 @@ Object {
                             style="display: inherit; transform: translate3d(100%, 0, 0);"
                             tabindex="-1"
                           >
-                            <div
-                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                            >
-                               
-                            </div>
+                            <img
+                              alt=""
+                              class="image-gallery-image"
+                              height=""
+                              sizes=""
+                              src="src"
+                              srcset=""
+                              title=""
+                              width=""
+                            />
+                            
                           </div>
                           <div
                             aria-label="Go to Slide 3"
@@ -2486,12 +2681,100 @@ Object {
                             style="display: inherit; transform: translate3d(-100%, 0, 0);"
                             tabindex="-1"
                           >
-                            <div
-                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                            >
-                               
-                            </div>
+                            <img
+                              alt=""
+                              class="image-gallery-image"
+                              height=""
+                              sizes=""
+                              src="src"
+                              srcset=""
+                              title=""
+                              width=""
+                            />
+                            
                           </div>
+                        </div>
+                      </div>
+                      <button
+                        aria-label="Open Fullscreen"
+                        class="image-gallery-icon image-gallery-fullscreen-button"
+                        type="button"
+                      >
+                        <svg
+                          class="image-gallery-svg"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="image-gallery-thumbnails-wrapper bottom thumbnails-swipe-horizontal"
+                    >
+                      <div
+                        class="image-gallery-thumbnails"
+                      >
+                        <div
+                          aria-label="Thumbnail Navigation"
+                          class="image-gallery-thumbnails-container"
+                          style="transform: translate3d(0px, 0, 0); transition: all 300ms ease-out;"
+                        >
+                          <button
+                            aria-label="Go to Slide 1"
+                            aria-pressed="true"
+                            class="image-gallery-thumbnail active"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 2"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
+                          <button
+                            aria-label="Go to Slide 3"
+                            aria-pressed="false"
+                            class="image-gallery-thumbnail"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span
+                              class="image-gallery-thumbnail-inner"
+                            >
+                              <img
+                                class="image-gallery-thumbnail-image"
+                                src="src"
+                              />
+                            </span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -2505,7 +2788,7 @@ Object {
           </div>
         </div>
         <div
-          class="styled__About-sc-1snydq3-0 fqxjue"
+          class="styled__About-sc-1snydq3-0 eJfcPa"
         >
           <div
             class="styled__LeftSection-sc-1snydq3-1 cyVJdc"
@@ -2826,11 +3109,7 @@ Object {
                 class="styled__StyledDescription-sc-1qh2pme-41 joUPdr"
                 style="padding-bottom: 20px;"
               >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
-                <br />
-                 magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-                <br />
-                 magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
               </div>
               <span>
                 read more...
@@ -2838,7 +3117,7 @@ Object {
             </div>
           </div>
           <div
-            class="styled__RightSection-sc-1snydq3-5 kwWEaM"
+            class="styled__RightSection-sc-1snydq3-5 jHpVRw"
           >
             <div
               class="styled__MapSection-sc-1snydq3-6 aCgji"
@@ -2871,18 +3150,18 @@ Object {
               class="styled__Highlights-sc-1snydq3-7 bWFduw"
             >
               <div
-                class="styled__Cardtitle-sc-1snydq3-8 iJIapP"
+                class="styled__Cardtitle-sc-1snydq3-8 dXmOCs"
               >
                 Hotel Victoria Highlights
               </div>
               <div
-                class="styled__Feature-sc-1snydq3-9 bMaLLO"
+                class="styled__Feature-sc-1snydq3-9 lnJotH"
               >
                 <li>
                   <div
                     class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
                   />
-                  Breakfast info Continental, Buffet
+                  Breakfast
                 </li>
                 <li>
                   <div
@@ -2931,22 +3210,28 @@ Object {
           </div>
         </div>
         <div
-          class="styled__Wrapper-sc-1fefmyk-5 eERfEF"
+          class="styled__Wrapper-sc-1fefmyk-5 iEdtLe"
         >
           <div
-            class="styled__QueryTitle-sc-1fefmyk-0 dTRNNp"
+            class="styled__QueryTitle-sc-1fefmyk-0 fzhQnq"
           >
             Available Rooms for 
-            Tue 19 Apr
+            Sat 23 Apr
              - 
-            Wed 20 Apr,
+            Sun 24 Apr,
              
             1
-             adults, 
+             
+            adults
+            , 
             0
-             children, 
+             
+            children
+             , 
             0
-             infants 
+             
+            infants
+              
           </div>
           <div
             class="styled__Modifier-sc-1fefmyk-6 gsqAbX"
@@ -2958,13 +3243,13 @@ Object {
                 class="styled__LeftSide-sc-1fefmyk-8 fhYMUx"
               >
                 <div
-                  class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                  class="styled__CalenderWrapper-sc-1fefmyk-52 VcKaP"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                   >
                     <div
-                      class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                      class="styled__StayingInfoWrapper-sc-1fefmyk-49 pJTGw"
                     >
                       <div>
                         <div
@@ -2972,16 +3257,16 @@ Object {
                         />
                       </div>
                       <div
-                        class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                        class="styled__CheckBg-sc-1fefmyk-46 khJRrP"
                       >
                         <div
-                          class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                          class="styled__CheckTitle-sc-1fefmyk-47 gXalie"
                         >
                           Check-in
                         </div>
                         <p>
                           <strong>
-                            19 Apr , Tue
+                            23 Apr , Sat
                               
                           </strong>
                         </p>
@@ -2990,13 +3275,13 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                  class="styled__CalenderWrapper-sc-1fefmyk-52 VcKaP"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                   >
                     <div
-                      class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                      class="styled__StayingInfoWrapper-sc-1fefmyk-49 pJTGw"
                     >
                       <div>
                         <div
@@ -3004,16 +3289,17 @@ Object {
                         />
                       </div>
                       <div
-                        class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                        class="styled__CheckBg-sc-1fefmyk-46 khJRrP"
                       >
                         <div
-                          class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                          class="styled__CheckTitle-sc-1fefmyk-47 gXalie"
                         >
+                           
                           Check-out
                         </div>
                         <p>
                           <strong>
-                            20 Apr , Wed
+                            24 Apr , Sun
                              
                           </strong>
                         </p>
@@ -3026,29 +3312,29 @@ Object {
                 class="styled__RightSide-sc-1fefmyk-9 gqcFVC"
               >
                 <div
-                  class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                  class="styled__PassengerWrapper-sc-1fefmyk-50 bsAwzk"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                   >
                     <div
-                      class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                      class="styled__Passenger-sc-1fefmyk-45 cWktbo"
                     >
                       <div
-                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-51 cqLtIU"
                       >
                         voila
                         <span
-                          class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                          class="styled__SpanDiv-sc-1fefmyk-44 MCjei"
                         >
                           Adults
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                          class="styled__DropdownIcon-sc-1fefmyk-10 gAQMqr"
                         />
                       </div>
                       <div
-                        class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                        class="styled__GuestNumber-sc-1fefmyk-37 kNFfRR"
                       >
                         1
                       </div>
@@ -3056,31 +3342,31 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                  class="styled__PassengerWrapper-sc-1fefmyk-50 bsAwzk"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                   >
                     <div
-                      class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                      class="styled__Passenger-sc-1fefmyk-45 cWktbo"
                     >
                       <div
-                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-51 cqLtIU"
                       >
                         <div
                           class="styled__ChildIcon-sc-1fefmyk-2 cRKAPq"
                         />
                         <span
-                          class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                          class="styled__SpanDiv-sc-1fefmyk-44 MCjei"
                         >
                           Children
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                          class="styled__DropdownIcon-sc-1fefmyk-10 gAQMqr"
                         />
                       </div>
                       <div
-                        class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                        class="styled__GuestNumber-sc-1fefmyk-37 kNFfRR"
                       >
                         0
                       </div>
@@ -3088,31 +3374,31 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                  class="styled__PassengerWrapper-sc-1fefmyk-50 bsAwzk"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="styled__DivView-sc-1fefmyk-38 cHrhvd"
                   >
                     <div
-                      class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                      class="styled__Passenger-sc-1fefmyk-45 cWktbo"
                     >
                       <div
-                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-51 cqLtIU"
                       >
                         <div
                           class="styled__InfantIcon-sc-1fefmyk-3 gEhqyu"
                         />
                         <span
-                          class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                          class="styled__SpanDiv-sc-1fefmyk-44 MCjei"
                         >
                           Infants
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                          class="styled__DropdownIcon-sc-1fefmyk-10 gAQMqr"
                         />
                       </div>
                       <div
-                        class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                        class="styled__GuestNumber-sc-1fefmyk-37 kNFfRR"
                       >
                         0
                       </div>
@@ -3139,10 +3425,10 @@ Object {
             class="styled__RoomTable-sc-1fefmyk-13 dzXFbu"
           >
             <div
-              class="styled__TableHead-sc-1fefmyk-14 jfxjtp"
+              class="styled__TableHead-sc-1fefmyk-14 gDhWeN"
             >
               <div
-                class="styled__RoomType-sc-1fefmyk-15 ldSViA"
+                class="styled__RoomType-sc-1fefmyk-15 jktddY"
               >
                 Room Type
               </div>
@@ -3152,12 +3438,12 @@ Object {
                 Meals
               </div>
               <div
-                class="styled__SelectRoom-sc-1fefmyk-17 itFnii"
+                class="styled__SelectRoom-sc-1fefmyk-17 kmqBuQ"
               >
                 Rooms
               </div>
               <div
-                class="styled__Price-sc-1fefmyk-18 fvNgbz"
+                class="styled__Price-sc-1fefmyk-18 lkmoMq"
               >
                 Price
               </div>
@@ -3168,7 +3454,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
             >
               <div
                 class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -3180,48 +3466,49 @@ Object {
                 1
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
               >
                 Breakfast included 
                 1
               </div>
               <div
+                class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                       
+                      1
+                       
+                      Rooms
+                    </span>
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
               >
                 122
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
               >
                 <button>
                   Book Now
@@ -3229,7 +3516,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
             >
               <div
                 class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -3241,48 +3528,49 @@ Object {
                 2
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
               >
                 Breakfast included 
                 2
               </div>
               <div
+                class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                       
+                      1
+                       
+                      Rooms
+                    </span>
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
               >
                 220
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
               >
                 <button>
                   Book Now
@@ -3290,7 +3578,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
             >
               <div
                 class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -3302,48 +3590,49 @@ Object {
                 3
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
               >
                 Breakfast included 
                 3
               </div>
               <div
+                class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                       
+                      1
+                       
+                      Rooms
+                    </span>
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
               >
                 322
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
               >
                 <button>
                   Book Now
@@ -3351,7 +3640,7 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="styled__TableBody-sc-1fefmyk-20 cWNKjB"
             >
               <div
                 class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
@@ -3363,48 +3652,49 @@ Object {
                 4
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="styled__ColumnTwo-sc-1fefmyk-23 gtjdqy"
               >
                 Breakfast included 
                 4
               </div>
               <div
+                class="styled__ColumnDiv-sc-1fefmyk-24 gXGlDO"
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="styled__ColumnThree-sc-1fefmyk-25 ijlajs"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="styled__LeftIcon-sc-1fefmyk-26 kiqdvk"
                   />
                   <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
+                    <span>
+                       
+                      1
+                       
+                      Rooms
+                    </span>
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="styled__RightIcon-sc-1fefmyk-27 kcUKAh"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="styled__TopUp-sc-1fefmyk-29 iGwQqi"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="styled__ColumnFour-sc-1fefmyk-32 jFJYGI"
               >
                 342
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="styled__ColumnBreak-sc-1fefmyk-34 gjCLXQ"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="styled__ColumnFive-sc-1fefmyk-33 fYinYs"
               >
                 <button>
                   Book Now
@@ -3414,6 +3704,76 @@ Object {
           </div>
           
         </div>
+        <footer
+          class="styled__FooterWrapper-sc-1xenngy-0 elPKyc"
+        >
+          <div>
+            <div>
+              <a
+                href="/about-us"
+              >
+                About Us
+              </a>
+            </div>
+            <div>
+              <a
+                href="/contact"
+              >
+                Contact
+              </a>
+            </div>
+            <div>
+              <a
+                href="/disclaimer"
+              >
+                Disclaimer
+              </a>
+            </div>
+          </div>
+          <div>
+            <div>
+              <a
+                href="/useful-information"
+              >
+                Useful Information
+              </a>
+            </div>
+            <div>
+              <a
+                href="/file-a-complaint"
+              >
+                File a complaint
+              </a>
+            </div>
+            <div>
+              <a
+                href="/working-hours"
+              >
+                Working Hours
+              </a>
+            </div>
+          </div>
+          <div>
+            <div>
+              <div
+                class="styled__StyledNewsletterTitle-sc-1xenngy-1"
+              >
+                Subscribe to our newsletter
+              </div>
+            </div>
+            <div
+              class="styled__StyledNewsletterForm-sc-1xenngy-2 cZuPmT"
+            >
+              <input
+                placeholder="Email Address"
+                type="email"
+              />
+              <button>
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   </div>,

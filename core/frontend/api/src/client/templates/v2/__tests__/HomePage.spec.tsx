@@ -58,7 +58,6 @@ const formatDate = (date: any) => {
 
 describe("Home Page Suite", () => {
 
-
   beforeEach(() => {
     location = "";
   })
@@ -78,7 +77,7 @@ describe("Home Page Suite", () => {
 
     await waitFor(async () => {
       expect(screen.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
-      expect(screen.getByTestId(/test-hotels-packages-search-input/)).toHaveFocus();
+      expect(screen.getByTestId(/test-destination-search-input/)).toHaveFocus();
     })
 
   })
@@ -88,7 +87,7 @@ describe("Home Page Suite", () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
     fireEvent.change(
-        screen.getByTestId(/test-hotels-packages-search-input/),
+        screen.getByTestId(/test-destination-search-input/),
         {target: {value: 'New destination'}},
     )
 
@@ -111,6 +110,7 @@ describe("Home Page Suite", () => {
     fireEvent.click(
       checkInDateInCalendar
     )
+
     await waitFor(() =>
       expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument()
     )
@@ -137,11 +137,11 @@ describe("Home Page Suite", () => {
     render(<Wrapper {...homePageProps} />);
     
     fireEvent.change(
-        screen.getByTestId(/test-hotels-packages-search-input/),
+        screen.getByTestId(/test-destination-search-input/),
         {target: {value: 'New destination'}},
     )
 
-    expect(screen.getByTestId(/test-hotels-packages-search-input/)).toHaveValue('New destination');
+    expect(screen.getByTestId(/test-destination-search-input/)).toHaveValue('New destination');
   })
 
   it("Should change check in date picker value", async () => {
@@ -249,36 +249,6 @@ describe("Home Page Suite", () => {
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
-    })
-
-    for(let i =0; i < 13; i++){
-      fireEvent.click(
-          homePage.getByTestId(/test-minus-handler/)
-      )
-    }
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-handler-value/).textContent).toBe('0')
-    })
-
-    for(let i =0; i < 13; i++){
-      fireEvent.click(homePage.getByTestId(/test-plus-handler/))
-    }
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-handler-value/).textContent).toBe('11')
-    })
-  })
-
-  it("Should update guests (infants) number", async () => {
-    const homePage = render(<Wrapper {...homePageProps} />);
-
-    fireEvent.click(
-        homePage.getByTestId(/test-open-infants-handler/)
-    )
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-infants-handler/)).toBeInTheDocument()
     })
 
     for(let i =0; i < 13; i++){

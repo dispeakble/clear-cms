@@ -88,7 +88,7 @@ export const StyledContentWrapper = styled.div`
   margin: 95px auto 0;
   background: ${({theme}) => theme.colors.offWhite};
   @media (min-width: ${size.tablet}) {
-    padding: 0 40px;
+    padding: 0 0px;
   }
   @media ${device.mobileS} {
     max-width: 320px;

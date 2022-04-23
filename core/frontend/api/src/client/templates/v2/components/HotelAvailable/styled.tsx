@@ -84,11 +84,11 @@ export const RightSide = styled.div`
   background: #fff;
 `;
 export const DropdownIcon = styled.div`
-  width: 20px;
+  width: 18px;
   height: 12px;
   position: relative;
   top: 5px;
-  left: 5px;
+  left: 0px;
   background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
 `;
 export const RefreshPrice = styled.div`
@@ -159,11 +159,24 @@ export const TableHead = styled.div`
   @media (max-width: ${size.tablet}) {
     display: none;
   }
+  @media (min-width: ${size.laptop}) {
+    //padding-left: 55px;
+  }
+  @media (max-width: ${size.laptop}) {
+    padding-left: 0px;
+  }
 `;
 export const RoomType = styled.div`
   display: flex;
   justify-content: center;
+  @media(min-width: ${size.laptop}){
+    margin-left: 60px;
+  }
+  @media(min-width: ${size.laptopL}){
+    margin-left: 0px;
+  }
 `;
+
 export const Meal = styled.div`
   display: flex;
   justify-content: center;
@@ -262,7 +275,7 @@ export const ColumnThree = styled.div`
     margin: 0;
     padding: 0;
 
-    input {
+    span {
       position: absolute;
       top: 50%;
       left: 40%;
@@ -288,7 +301,9 @@ export const ColumnThree = styled.div`
         left: 43%
       }
       @media (min-width: ${size.laptop}) {
-        left: 48%;
+        left: 50%;
+        width: 48%;
+
 
       }
     }
@@ -305,11 +320,15 @@ export const ColumnThree = styled.div`
 `;
 export const LeftIcon = styled.div`
   background: url(${({ theme }) => theme.icon("bedroom")}) no-repeat 8px center;
-  width: 28px;
+  width: 42px;
   height: 38px;
   position: relative;
   left: 7px;
   align-items: center;
+  @media (min-width: ${size.laptopL}){
+    width: 65px;
+
+  }
 `;
 export const RightIcon = styled.div`
   display: flex;
@@ -375,6 +394,7 @@ export const InnerRoomList = styled.div`
     align-items: center;
     border-radius: 30px;
     border: 1px solid transparent;
+    justify-content: flex-start;
 
     :first-child {
       border-top-left-radius: 30px;
@@ -392,6 +412,7 @@ export const InnerRoomList = styled.div`
       font-size: 14px;
       line-height: 24px;
       margin: 0 90px 0 0;
+      
       :hover {
         color: ${({ theme }) => theme.colors.gray};
       }
@@ -505,7 +526,6 @@ export const CalendarView = styled.div`
   position: absolute;
   top: 60px;
   left: -10px;
-  background: ${({ theme }) => theme.colors.mainBackground};
   z-index: 20;
   @media (max-width: ${size.tablet}) {
     top: 52px
@@ -555,10 +575,10 @@ export const CounterDiv = styled.div`
   justify-content: space-between;
 `;
 export const CounterBtn = styled.div`
-  font-size: 12px;
+  font-size: 14px;
   background-color: ${({ theme }) => theme.colors.offWhite};
   cursor: pointer;
-  width: 20px;
+  width: 22px;
   border-radius: 100%;
   box-shadow: ${Shadows.primaryShadow};
 
@@ -592,6 +612,7 @@ export const HotelCalendar = styled(Calendar)`
   border: none;
   border-radius: 12px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  
 
   .react-calendar {
     width: 318px;
@@ -647,6 +668,7 @@ export const HotelCalendar = styled(Calendar)`
     padding: 15px 0 20px;
   }
 
+
   .react-calendar__navigation button {
     min-width: 44px;
     background: none;
@@ -657,6 +679,7 @@ export const HotelCalendar = styled(Calendar)`
     font-size: 15.4984px;
     line-height: 19px;
     color: #828282;
+
   }
 
   .react-calendar__navigation__prev-button:disabled {
@@ -691,6 +714,7 @@ export const HotelCalendar = styled(Calendar)`
     font-size: 9.29902px;
     line-height: 9px;
     letter-spacing: 0.03em;
+
   }
 
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
@@ -720,8 +744,8 @@ export const HotelCalendar = styled(Calendar)`
     max-width: 100%;
     background: none;
     text-align: center;
-    line-height: 33px;
-    padding: 0 0;
+    line-height: 32px;
+    padding: 0;
     border-radius: 25px;
     background: #fff;
     font-weight: 500;
@@ -730,7 +754,7 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile:disabled {
-    background-color: #DBDBDB;
+    background-color: #fff;
   }
 
   .react-calendar__tile:enabled:hover,
@@ -740,12 +764,13 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--now {
-    background: red;
+    background: #fff;
   }
 
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: red;
+    background: #F4AC67;
+
   }
 
   .react-calendar__tile--hasActive {
@@ -777,7 +802,9 @@ export const HotelCalendar = styled(Calendar)`
     font-size: 24px;
   }
 
+
   .react-calendar__navigation__arrow.react-calendar__navigation__prev2-button, .react-calendar__navigation__arrow.react-calendar__navigation__next2-button {
+
     display: none;
   }
 
@@ -798,7 +825,8 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus {
-    background-color: #fff;
+    background-color: #F4AC67;
+    color: #fff;
   }
 
   .react-calendar__month-view__days {
@@ -809,6 +837,12 @@ export const HotelCalendar = styled(Calendar)`
     min-width: 30px;
     background: none;
   }
+
+  .react-calendar--selectRange .react-calendar__tile--hover {
+    background-color: #F4AC67;
+    color: #fff;
+  }
+
 `;
 
 export const StayingInfoWrapper = styled.div`
@@ -839,7 +873,7 @@ export const PassengerWrapper = styled.div`
   height: 100%;
   justify-self: stretch;
   flex: 1;
-  padding: 5px 0;
+  padding: 12px 0;
   :first-child{
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;

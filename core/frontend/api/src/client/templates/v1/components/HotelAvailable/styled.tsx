@@ -9,6 +9,8 @@ export const QueryTitle = styled.div`
   line-height: 33px;
   color: ${({ theme }) => theme.colors.black};
   margin-bottom: 10px;
+  user-select: none;
+
   @media only screen and (max-width: ${size.laptop}) {
     text-align: center;
     padding: 1rem;
@@ -40,6 +42,8 @@ export const Wrapper = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
   cursor: default;
+  user-select: none;
+
 `;
 export const Modifier = styled.div`
   display: flex;
@@ -184,10 +188,18 @@ export const Meal = styled.div`
 export const SelectRoom = styled.div`
   display: flex;
   justify-content: center;
+  @media (max-width: ${size.laptopL}) {
+    justify-content: flex-end;
+  }
 `;
 export const Price = styled.div`
   display: flex;
   justify-content: center;
+  @media (max-width: ${size.laptopL}) {
+  justify-content: flex-end;
+    padding-right: 20px;
+  }
+  
 `;
 export const BookNow = styled.div`
   @media (max-width: ${size.laptop}) {
@@ -196,7 +208,8 @@ export const BookNow = styled.div`
 `;
 export const TableBody = styled.div`
   display: flex;
-  flex-flow: row wrap;
+  //flex-flow: row wrap;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
   width: 100%;
@@ -213,6 +226,11 @@ export const TableBody = styled.div`
   & > div {
     flex: 1;
   }
+  @media (max-width: ${size.mobileL}) {
+    padding: 5px;
+    gap: 10px;
+  }
+
 `;
 export const OrgInfoIcon = styled.div`
   margin: 5px 10px;
@@ -257,7 +275,18 @@ export const ColumnTwo = styled.div`
   @media (min-width: ${size.laptop}) {
     font-size: 16px;
   }
+  @media (max-width: ${size.mobileL}) {
+    width: 45%;
+
+  }
 `;
+export const ColumnDiv =styled.div`
+
+  @media (max-width: ${size.mobileL}) {
+    display: flex;
+
+  }
+`
 export const ColumnThree = styled.div`
   position: relative;
   display: flex;
@@ -296,6 +325,14 @@ export const ColumnThree = styled.div`
         outline: none;
         border: none;
       }
+      @media (max-width: ${size.laptop}) and (min-width: ${size.mobileL}){
+        width: 48%;
+
+      }
+      @media (max-width: ${size.mobileL}) {
+        width: 48%;
+
+      }
 
       @media (max-width: ${size.laptop}) {
         left: 43%
@@ -303,8 +340,10 @@ export const ColumnThree = styled.div`
       @media (min-width: ${size.laptop}) {
         left: 50%;
         width: 48%;
-
-
+      }
+     
+      @media (max-width: ${size.mobileL}) {
+        left: 50%
       }
     }
 
@@ -313,10 +352,30 @@ export const ColumnThree = styled.div`
     }
   }
 
-  @media (max-width: ${size.laptop}) {
-    width: 175px;
-    gap: 4px;
+  // @media (max-width: ${size.laptop}) {
+  //   width: 175px;
+  //   gap: 4px;
+  // }
+ 
+  @media (max-width: ${size.mobileL}) {
+    width: 155px;
+    
+
+
   }
+  @media (max-width: ${size.laptopL}) and (min-width: ${size.laptop}){
+    width: 220px;
+
+  }
+  @media (max-width: ${size.laptop}) and (min-width: ${size.mobileL}){
+    width: 220px;
+
+  }
+  @media (max-width: ${size.mobileL}) {
+    width: 220px;
+
+  }
+ 
 `;
 export const LeftIcon = styled.div`
   background: url(${({ theme }) => theme.icon("bedroom")}) no-repeat 8px center;
@@ -330,6 +389,7 @@ export const LeftIcon = styled.div`
 
   }
 `;
+
 export const RightIcon = styled.div`
   display: flex;
   flex-direction: column;
@@ -422,6 +482,10 @@ export const InnerRoomList = styled.div`
       }
       @media (min-width: ${size.laptop}) {
         margin-right: 20px;
+        padding-left: 12px;
+      }
+      @media (min-width: ${size.laptopL}) {
+        padding-left: 0px;
       }
     }
 
@@ -429,7 +493,6 @@ export const InnerRoomList = styled.div`
       background: ${({ theme }) => theme.colors.white};
       border: 1px solid ${({ theme }) => theme.colors.borderOutline};
       filter: drop-shadow(1px -2px 4px rgba(0, 0, 0, 0.17));
-
       transition: all 100ms ease-in-out;
 
     }
@@ -444,9 +507,16 @@ export const ColumnFour = styled.div`
   font-size: 27px;
   display: flex;
   justify-content: center;
+  //display: block;
+  //width: 0px;
   @media (max-width: ${size.tablet}) {
     font-size: 24px;
   }
+  @media (max-width: ${size.tablet}) {
+    display: block;
+    width: 32px;
+  }
+
 `;
 export const ColumnFive = styled.div`
   font-weight: 500;
@@ -459,6 +529,11 @@ export const ColumnFive = styled.div`
     padding: 0;
     flex: 0 !important;
   }
+  @media (max-width: ${size.tablet}) {
+    width: 100%;
+
+  }
+
 
   button {
     width: 100%;
@@ -478,6 +553,10 @@ export const ColumnFive = styled.div`
 
     &:hover {
       background: linear-gradient(180deg, #FDB773 0%, #E19046 100%);
+    }
+    @media (max-width: ${size.tablet}) {
+      width: 100%;
+
     }
 
   }

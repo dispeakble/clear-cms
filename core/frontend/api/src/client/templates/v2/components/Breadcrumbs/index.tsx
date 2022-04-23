@@ -5,11 +5,11 @@ const Breadcrumbs = () => {
   const t = useTranslations();
 
   return (<StyledBreadcrumbs>
-    <StyledBreadcrumbLink href="#">{t("global.home")}</StyledBreadcrumbLink>
-    <StyledBreadcrumbLink href="#">Spain</StyledBreadcrumbLink>
-    <StyledBreadcrumbLink href="#">Tenerife</StyledBreadcrumbLink>
-    <StyledBreadcrumbLink href="#">Adeje</StyledBreadcrumbLink>
-    <StyledBreadcrumbLink href="#">Hotel Victoria (Hotel)</StyledBreadcrumbLink>
+    <StyledBreadcrumbLink href="#">{t("breadcrumsb.home")}</StyledBreadcrumbLink>
+    <StyledBreadcrumbLink href="#">{t("breadcrumsb.spain")}</StyledBreadcrumbLink>
+    <StyledBreadcrumbLink href="#">{t("breadcrumsb.tenerife")}</StyledBreadcrumbLink>
+    <StyledBreadcrumbLink href="#">{t("breadcrumsb.adeje")}</StyledBreadcrumbLink>
+    <StyledBreadcrumbLink href="#">{t("breadcrumsb.hotel")}</StyledBreadcrumbLink>
   </StyledBreadcrumbs>);
 };
 

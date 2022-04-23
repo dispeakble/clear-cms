@@ -1,19 +1,12 @@
 import * as React from "react";
-
+import { useMemo } from "react";
 import {HotelPhotoSliderWrapper} from "./styled";
 import ReactImageMagnify from 'react-image-magnify';
 import ImageGallery from 'react-image-gallery';
-import { useMemo } from "react";
 
 import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
 import hotel2 from "../../assets/img/hotels/small/hotel5.jpg";
 import hotel3 from "../../assets/img/hotels/small/hotel6.jpg";
-import hotel4 from "../../assets/img/hotels/small/hotel4.jpg";
-import hotel5 from "../../assets/img/hotels/small/hotel5.jpg";
-import hotel6 from "../../assets/img/hotels/small/hotel6.jpg";
-import hotel7 from "../../assets/img/hotels/small/hotel4.jpg";
-import hotel8 from "../../assets/img/hotels/small/hotel5.jpg";
-import hotel9 from "../../assets/img/hotels/small/hotel6.jpg";
 
 
 const HotelPhotoSlider = () => {
@@ -21,8 +14,9 @@ const HotelPhotoSlider = () => {
   const gallery = {
     showBullets: false,
     showThumbnails: true,
+    thumbnailPosition: 'bottom',
     infinite: true,
-    showFullscreenButton: false,
+    showFullscreenButton: true,
     zoom: false,
     autoPlay: true,
     showPlayButton: false,
@@ -40,18 +34,6 @@ const HotelPhotoSlider = () => {
     src: hotel2.src
   },{
     src: hotel3.src
-  },{
-    src: hotel4.src
-  },{
-    src: hotel5.src
-  },{
-    src: hotel6.src
-  },{
-    src: hotel7.src
-  },{
-    src: hotel8.src
-  },{
-    src: hotel9.src
   }
 
   ];
@@ -82,30 +64,34 @@ const HotelPhotoSlider = () => {
 
   });
 
-  const renderZoom = (args: any) => {
-    return (
-      <ReactImageMagnify
-        {...{
-          smallImage: {
-            alt: args.title,
-            isFluidWidth: true,
-            src: `${args.thumbnail}`
-          },
-          largeImage: {
-            width: 300,
-            height: 300,
-            src: `${args.original}`
-          },
-          enlargedImagePortalId: `vertical-slider-enlargeImage`
-        }}
-      />
-    );
-  };
+  // const renderZoom = (args: any) => {
+  //   return (
+  //     <ReactImageMagnify
+  //       {...{
+  //         smallImage: {
+  //           alt: args.title,
+  //           isFluidWidth: true,
+  //           src: `${args.thumbnail}`
+  //         },
+  //         largeImage: {
+  //           width: 300,
+  //           height: 300,
+  //           src: `${args.original}`
+  //         },
+  //         enlargedImagePortalId: `vertical-slider-enlargeImage`
+  //       }}
+  //     />
+  //   );
+  // };
+
+
+
 
   const galleryProps = useMemo(() => ({
     autoPlay: gallery.autoPlay,
     showBullets: gallery.showBullets,
     showThumbnails: gallery.showThumbnails,
+    thumbnailPosition: gallery.thumbnailPosition,
     infinite: gallery.infinite,
     showFullscreenButton: gallery.showFullscreenButton,
     showPlayButton: gallery.showPlayButton,
@@ -114,13 +100,26 @@ const HotelPhotoSlider = () => {
     slideOnThumbnailOver: gallery.slideOnThumbnailOver,
     slideInterval: gallery.slideInterval,
     slideDuration: gallery.slideDuration,
-    items: images,
-    renderItem: (...args: any[]) => {
-      return renderZoom(args[0]);
-    },
+    items: [
+      {
+        original: hotel1.src,
+        thumbnail: hotel1.src
+      },
+      {
+        original: hotel2.src,
+        thumbnail: hotel2.src
+      },
+      {
+        original: hotel3.src,
+        thumbnail:hotel3.src
+      }
+    ],
+    // renderItem: (...args: any[]) => {
+    //   return renderZoom(args[0]);
+    // },
   }), [gallery]);
 
-  return <HotelPhotoSliderWrapper style={{width: '100%'}}>
+  return <HotelPhotoSliderWrapper style={{width: '100%', height: '100%'}}>
     <ImageGallery
       {...galleryProps}
     />

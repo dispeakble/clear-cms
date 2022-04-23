@@ -4,6 +4,8 @@ import hotel1 from "../../assets/img/hotels/small/hotel1.jpg";
 import { Rate } from 'antd';
 
 export const About = styled.div`
+  user-select: none;
+
   @media (min-width: ${size.laptopL}) {
     display: flex;
     gap: 20px;
@@ -114,6 +116,7 @@ export const Highlights = styled.div`
   @media (min-width: ${size.laptopL}) {
     width: 497px;
   }
+  
 `
 
 export const Cardtitle = styled.div`
@@ -128,6 +131,9 @@ export const Cardtitle = styled.div`
   @media only screen and (max-width:${size.tablet}){
     margin-bottom: 10px;
     line-height:1.1em;
+  }
+  @media (max-width: ${size.mobileL}) {
+    font-size: 22px;
   }
   
   ::after {
@@ -154,6 +160,9 @@ export const Feature = styled.div`
     color: ${({theme}) => theme.colors.white};
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.55);
     list-style: none;
+    @media (max-width: ${size.mobileL}) {
+      font-size: 18px;
+    }
   }
 `
 export const CheckedIcon = styled.div`
