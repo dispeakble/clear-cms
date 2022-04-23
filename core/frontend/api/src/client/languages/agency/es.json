@@ -178,7 +178,6 @@
   "hotelRoomAvailable" : {
     "selectRoom": "Habitaciones"
   },
-
   "hotelAvailable":{
     "queryTitle": "Available Rooms for ",
     "adult": "adults",
@@ -207,6 +206,10 @@
     "tenerife": "Tenerife",
     "adeje": "Adeje",
     "hotel": "Hotel Victoria (Hotel)"
+  },
+  "tooltip" : {
+    "view_price" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
+    "room_type" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
   },
   "footer": {
     "links": {
