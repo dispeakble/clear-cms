@@ -31,6 +31,7 @@
     "src/server"
   ],
   "exclude": [
-    "src/client"
+    "src/client",
+    "dist"
   ]
 }

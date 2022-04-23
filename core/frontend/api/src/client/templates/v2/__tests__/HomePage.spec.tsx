@@ -63,7 +63,7 @@ describe("Home Page Suite", () => {
     location = "";
   })
 
-  it("Should render the home page", () => {
+  it("Should render the home page", async () => {
 
     const homePage = render(<Wrapper {...homePageProps} />);
     fireEvent.scroll(window, { target: { scrollY: 500 } });
@@ -71,7 +71,7 @@ describe("Home Page Suite", () => {
     expect(homePage).toMatchSnapshot();
   });
 
-  it("Should perform Search with no data", async () => {
+  it("Should not perform Search with no data", async () => {
    render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(
@@ -104,29 +104,35 @@ describe("Home Page Suite", () => {
       expect(homePage.getByTestId(/test-checkIn-calendar/)).toBeInTheDocument();
     })
 
+    const checkInDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate() + 1)))}"]`);
+
     fireEvent.click(
-        homePage.getByText(today.getDate().toString())
+      checkInDateInCalendar
+    )
+    await waitFor(() =>
+      expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument()
     )
 
-    fireEvent.click(
-        homePage.getByTestId(/test-checkOut-button/)
-    )
 
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-checkOut-calendar/)).toBeInTheDocument();
-    })
+    const checkOutDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate() + 2)))}"]`);
 
     fireEvent.click(
-        homePage.getByText(today.getDate() + 1)
+      checkOutDateInCalendar
     )
 
     fireEvent.click(
         screen.getByTestId(/search-submit-btn/)
     )
 
-    await waitFor(() => {
-      expect(location).toContain('/agency/search')
-    })
+    await waitFor(() => expect(location).toContain('/agency/search') )
   })
 
   it("Should change packages search input value", () => {

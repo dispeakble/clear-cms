@@ -68,6 +68,7 @@ const HomeSearch = () => {
   const onCheckInChange = (date: any) => {
     setCheckInDate(date);
     setCheckInCalendarIsOpen(false);
+    setCheckOutCalendarIsOpen(true);
   };
 
   const onCheckOutChange = (date: any) => {
@@ -87,7 +88,7 @@ const HomeSearch = () => {
     if (e.currentTarget === e.target) {
       setCheckOutCalendarIsOpen(false);
       setGuestsIsOpen(false);
-      setCheckInCalendarIsOpen(!checkInCalendarIsOpen);
+      setCheckInCalendarIsOpen(true);
     }
   };
 
@@ -95,7 +96,7 @@ const HomeSearch = () => {
     if (e.currentTarget === e.target) {
       setCheckInCalendarIsOpen(false);
       setGuestsIsOpen(false);
-      setCheckOutCalendarIsOpen(!checkOutCalendarIsOpen);
+      setCheckOutCalendarIsOpen(true);
     }
   };
 
@@ -119,11 +120,6 @@ const HomeSearch = () => {
 
     if (!checkInDate) {
       setCheckInCalendarIsOpen(true);
-    }
-
-    if (checkInDate && !checkOutDate) {
-      setCheckInCalendarIsOpen(false);
-      setCheckOutCalendarIsOpen(true);
     }
 
     if (destination.length > 0
