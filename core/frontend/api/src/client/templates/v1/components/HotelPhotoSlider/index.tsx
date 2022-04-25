@@ -14,7 +14,6 @@ const HotelPhotoSlider = () => {
   const gallery = {
     showBullets: false,
     showThumbnails: true,
-    thumbnailPosition: 'bottom',
     infinite: true,
     showFullscreenButton: true,
     zoom: false,
@@ -91,7 +90,6 @@ const HotelPhotoSlider = () => {
     autoPlay: gallery.autoPlay,
     showBullets: gallery.showBullets,
     showThumbnails: gallery.showThumbnails,
-    thumbnailPosition: gallery.thumbnailPosition,
     infinite: gallery.infinite,
     showFullscreenButton: gallery.showFullscreenButton,
     showPlayButton: gallery.showPlayButton,
