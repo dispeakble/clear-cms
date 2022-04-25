@@ -1,7 +1,5 @@
-// @ts-ignore
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
-// @ts-ignore
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
 
@@ -10,13 +8,12 @@ export class CategoriesService {
 
     private methods = ["list"];
 
-    // @ts-ignore
     constructor(@Inject('ProtocolService') private protocolService) {
 
     }
 
     public list (params: any){
-        return new Observable((subscriber: any) => {
+        return new Observable(subscriber => {
             (async () => {
 
                 try{
@@ -49,7 +46,6 @@ export class CategoriesService {
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
-            // @ts-ignore
             return this[data.act](data.payload, config);
         } else {
             // eslint-disable-next-line no-console

@@ -1,4 +1,3 @@
-// @ts-ignore
 import {Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -16,7 +15,6 @@ export class SystemService {
 
     public perform(data: any) {
         if (this.methods.includes(data.act)) {
-            // @ts-ignore
             return this[data.act].call(Object.assign({}, data.payload));
         } else {
             // eslint-disable-next-line no-console
@@ -25,7 +23,7 @@ export class SystemService {
         return null;
     }
 
-    private checkService(params: any) {
+    private checkService(params) {
         return new Promise((resolve, reject) => {
             const payload: payloadInterface = {
                 channel: params.channel,
@@ -34,7 +32,7 @@ export class SystemService {
                 payload: null
             };
             const serviceReq = this.protocolService.sendMessage(payload);
-            serviceReq.subscribe((response: any) => {
+            serviceReq.subscribe(response => {
                 if ('pong' === response.data) {
                     clearTimeout(rejectTimeout);
                     resolve(true);
@@ -51,7 +49,7 @@ export class SystemService {
 
     }
 
-    private async waitForService(params: any) {
+    private async waitForService(params) {
         return new Promise((resolve) => {
             const checkInterval = setInterval(async () => {
                 try {
@@ -89,9 +87,9 @@ export class SystemService {
                 payload: data
             };
             const registerSub = this.protocolService.sendMessage(payload);
-            registerSub.subscribe((data: any) => {
+            registerSub.subscribe(data => {
                 resolve_register(data);
-            }, (err: any) => {
+            }, err => {
                 resolve_register(err);
             }, () => {
                 resolve_register(null);

@@ -1,9 +1,7 @@
 import {ClientProxy} from "@nestjs/microservices";
-// @ts-ignore
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
-// @ts-ignore
 import {Observable} from "rxjs";
 
 
@@ -66,7 +64,7 @@ export class ProtocolService {
     }
 
     /*-- Start Redis subscriber bidirectional lock --*/
-    public startHandshake(params: any, config: any) {
+    public startHandshake(params, config) {
         const myId = Math.round(Math.random() * 1000000);
         return {
             thePromise: new Promise((resolve) => {
@@ -90,8 +88,8 @@ export class ProtocolService {
         }
     }
 
-    public requestHandshake(params: any, config: any) {
-        return new Observable((subscriber: any) => {
+    public requestHandshake(params, config) {
+        return new Observable(subscriber => {
             const myId = Math.round(Math.random() * 1000000);//TODO use UUID
             subscriber.next({
                 responderId: myId,
@@ -116,9 +114,9 @@ export class ProtocolService {
                 payload: {
                     initiator: initiator
                 }
-            }).subscribe((response: any) => {
+            }).subscribe((response) => {
                 subscriber.next(response);
-            }, (errResponse: any) => {
+            }, (errResponse) => {
                 subscriber.error(errResponse);
             }, () => {
                 //nothing
@@ -127,8 +125,8 @@ export class ProtocolService {
         })
     }
 
-    public confirmHandshake(params:any) {
-        return new Observable((subscriber:any) => {
+    public confirmHandshake(params) {
+        return new Observable(subscriber => {
             try {
                 if (!this.handhakes.hasOwnProperty(params.callerId)) {
                     subscriber.complete();
@@ -167,7 +165,6 @@ export class ProtocolService {
 
     public perform(params: any, config?: ModuleInterface) {
         if (this.methods.includes(params.act)) {
-            // @ts-ignore
             return this[params.act](params.payload, config);
         } else {
             // eslint-disable-next-line no-console

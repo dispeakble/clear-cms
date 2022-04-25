@@ -1,8 +1,6 @@
-// @ts-ignore
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
-// @ts-ignore
 import {Observable} from "rxjs";
 
 @Injectable()
@@ -10,7 +8,6 @@ export class PublicThemesService {
 
     private methods = ["get", "list", "add", "set", "rem"];
 
-    // @ts-ignore
     constructor(@Inject('ProtocolService') private protocolService) {
 
     }
@@ -20,7 +17,7 @@ export class PublicThemesService {
     }
 
     public async list() {
-        return new Observable((subscriber: any) => {
+        return new Observable((subscriber) => {
             (async () => {
                 try {
                     const payload: payloadInterface = {
@@ -58,8 +55,8 @@ export class PublicThemesService {
 
     }
 
-    public async get(params: any) {
-        return new Observable((subscriber: any) => {
+    public async get(params) {
+        return new Observable((subscriber) => {
             (async () => {
                 try {
                     const payload: payloadInterface = {
@@ -112,8 +109,8 @@ export class PublicThemesService {
 
     }
 
-    public async set(params: any) {
-        return new Observable((subscriber: any) => {
+    public async set(params) {
+        return new Observable((subscriber) => {
             (async () => {
                 try {
                     if(params.data.isDefault){
@@ -177,8 +174,8 @@ export class PublicThemesService {
         })
     }
 
-    public async add(params: any) {
-        return new Observable((subscriber: any) => {
+    public async add(params) {
+        return new Observable((subscriber) => {
             (async () => {
                 try {
 
@@ -236,8 +233,8 @@ export class PublicThemesService {
         })
     }
 
-    public async rem(params: any) {
-        return new Observable((subscriber: any) => {
+    public async rem(params) {
+        return new Observable((subscriber) => {
             (async () => {
                try {
                    const request: payloadInterface = {
@@ -267,7 +264,6 @@ export class PublicThemesService {
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
-            // @ts-ignore
             return this[data.act](data.payload, config);
         } else {
             // eslint-disable-next-line no-console

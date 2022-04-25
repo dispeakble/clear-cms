@@ -1,4 +1,3 @@
-// @ts-ignore
 import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import createServer from 'next';
 import { NextServer } from 'next/dist/server/next';
@@ -28,7 +27,7 @@ export class ViewService implements OnModuleInit {
     }
   }
 
-  async apiHub(params: any) {
+  async apiHub(params) {
     return (await this.appService.perform({
       act: 'protocolCall',
       payload: params

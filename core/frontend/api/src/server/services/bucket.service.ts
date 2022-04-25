@@ -1,11 +1,8 @@
-// @ts-ignore
 import {HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
 import mime from "mime";
-// @ts-ignore
 import {Observable} from "rxjs";
-// @ts-ignore
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
 import path from "path";
@@ -18,7 +15,6 @@ export class BucketService {
     private defaultPath = 'index.html';
 
 
-    // @ts-ignore
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
@@ -34,21 +30,21 @@ export class BucketService {
                     }
                 };
 
-                const resolve_info = (data: any, file_name: any) => {
+                const resolve_info = (data, file_name) => {
                     const etagId = etag.default(Buffer.from(JSON.stringify(data)));
                     resolve({modified: data.mtimeMs, size: data.size, "etagId": etagId, file_name: file_name});
                 }
 
-                this.protocolService.sendMessage(metaPayload).subscribe((data: any) => {
+                this.protocolService.sendMessage(metaPayload).subscribe((data) => {
                     if(data.content_type === '404' && options.defaultFileName){
                         metaPayload.payload.path = path.join('/frontend/api/.out/', options.defaultFileName);
-                        this.protocolService.sendMessage(metaPayload).subscribe((data: any) => {
+                        this.protocolService.sendMessage(metaPayload).subscribe((data) => {
                             resolve_info(data, options.defaultFileName);
                         });
                     } else {
                         resolve_info(data, params.path);
                     }
-                }, (err: any) => {
+                }, (err) => {
                     resolve(err);
                 }, () => {
                     // do nothing
@@ -141,7 +137,7 @@ export class BucketService {
         });
     }
 
-    private _getBucketMeta(params: any) {
+    private _getBucketMeta(params) {
         return new Promise((resolve) => {
             const path_parts = params.path.split('/');
             this.protocolService.sendMessage({
@@ -151,7 +147,7 @@ export class BucketService {
                 payload: {
                     path: '/' + path_parts.slice(1).join('/')
                 }
-            }).subscribe((response: any) => {
+            }).subscribe(response => {
                 try {
                     resolve({
                         type: 'object',
@@ -172,7 +168,7 @@ export class BucketService {
                     })
                 }
 
-            }, (err: any) => {
+            }, err => {
                 resolve(err);
             }, () => {
                 // do nothing
@@ -230,23 +226,23 @@ export class BucketService {
             payload: {
                 path: '/' + path_parts.slice(1).join('/')
             }
-        }).subscribe((data: any) => {
+        }).subscribe(data => {
             params.observer.next(data);
-        }, (err: any) => {
+        }, err => {
             params.observer.error(err);
         }, () => {
             params.observer.complete();
         })
     }
 
-    private _isBucket(params:any) {
+    private _isBucket(params) {
         const path_parts = params.path.split('/');
         return (path_parts[0] === 'files')
     }
 
 
     public get(data: any) {
-        return new Observable((observer:any) => {
+        return new Observable((observer) => {
             let complete_path = this.defaultPath;
 
             if (data.params[0] && data.params[0].length && data.params[0].indexOf('.') > -1) {
@@ -291,7 +287,7 @@ export class BucketService {
     }
 
     public list (params: any){
-        return new Observable((subscriber: any) => {
+        return new Observable(subscriber => {
             const payload: payloadInterface = {
                 channel: `${process.env.app}_bucket`,
                 api: 'fs',
@@ -300,9 +296,9 @@ export class BucketService {
                     path: params.path
                 }
             };
-            this.protocolService.sendMessage(payload).subscribe((data: any) => {
+            this.protocolService.sendMessage(payload).subscribe(data => {
                 subscriber.next(data);
-            }, (err: any) => {
+            }, err => {
                 subscriber.error(err);
             }, () => {
                 subscriber.complete();
@@ -311,7 +307,7 @@ export class BucketService {
     }
 
     public completePath (params: any){
-        return new Observable((subscriber: any) => {
+        return new Observable(subscriber => {
             const payload: payloadInterface = {
                 channel: `${process.env.app}_bucket`,
                 api: 'fs',
@@ -320,9 +316,9 @@ export class BucketService {
                     path: params.path
                 }
             };
-            this.protocolService.sendMessage(payload).subscribe((data: any) => {
+            this.protocolService.sendMessage(payload).subscribe(data => {
                 subscriber.next(data);
-            }, (err: any) => {
+            }, err => {
                 subscriber.error(err);
             }, () => {
                 subscriber.complete();
@@ -331,7 +327,7 @@ export class BucketService {
     }
 
     public download (params: any){
-        return new Observable((subscriber: any) => {
+        return new Observable(subscriber => {
 
             const payload: payloadInterface = {
                 channel: `${process.env.app}_bucket`,
@@ -341,9 +337,9 @@ export class BucketService {
                     path: path.join(params.source_path, params.src)
                 }
             };
-            this.protocolService.sendMessage(payload).subscribe((data: any) => {
+            this.protocolService.sendMessage(payload).subscribe(data => {
                 subscriber.next(data);
-            }, (err: any) => {
+            }, err => {
                 subscriber.error(err);
             }, () => {
                 subscriber.complete();
@@ -353,7 +349,6 @@ export class BucketService {
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
-            // @ts-ignore
             return this[data.act](data.payload, config);
         } else {
             // eslint-disable-next-line no-console
