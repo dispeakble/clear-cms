@@ -132,7 +132,7 @@ export class AppController {
             content_type: ''
         };
 
-        getSubscriber.subscribe((data: FsResponse) => {
+        getSubscriber.subscribe((data: any) => {
             try {
                 switch (data.type) {
                     case "meta":
@@ -208,7 +208,7 @@ export class AppController {
     }
 
     @Get('api/results-data')
-    public async resultsData(@Res() res: Response, @Body() body: Body){
+    public async resultsData(@Res() res: Response, @Body() body: any){
         const {page} = body
         const dummy = [[
             {
