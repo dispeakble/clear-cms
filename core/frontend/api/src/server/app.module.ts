@@ -19,7 +19,7 @@ import {AppService} from "./services/app.service";
 @Module({
   imports: [
     CacheModule.register({
-      store: redisStore,
+      store: redisStore as any,
       url: 'redis://' + process.env.redis_server,
       port: +(process && process.env.redis_port as string),
       password: process.env.redis_password,
