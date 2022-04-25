@@ -1,5 +1,7 @@
+// @ts-ignore
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
+// @ts-ignore
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
 
@@ -7,11 +9,12 @@ import {payloadInterface} from "../interfaces/payload.interface";
 export class AgencyService {
     private methods = ["get", "getTemplateVersion"];
 
+    // @ts-ignore
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
     public get() {
-        return new Observable((subscriber) => {
+        return new Observable((subscriber: any) => {
             (async () => {
                 try {
                     const payload: payloadInterface = {
@@ -62,7 +65,7 @@ export class AgencyService {
     }
 
     getSettings() {
-        return new Observable((subscriber) => {
+        return new Observable((subscriber: any) => {
             (async () => {
                 try {
                     /*const payload: payloadInterface = {
@@ -104,6 +107,7 @@ export class AgencyService {
 
     public perform(data: any, config?: ModuleInterface) {
         if (this.methods.includes(data.act)) {
+            // @ts-ignore
             return this[data.act](data.payload, config);
         } else {
             // eslint-disable-next-line no-console

@@ -1,3 +1,4 @@
+// @ts-ignore
 import {Module, CacheModule, Logger} from '@nestjs/common';
 import {AppController} from "./controllers/app.controller";
 import {ProtocolService} from "./services/protocol.service";
@@ -14,12 +15,13 @@ import { ConfigService } from '@nestjs/config';
 import {AppService} from "./services/app.service";
 
 
+
 @Module({
   imports: [
     CacheModule.register({
       store: redisStore,
       url: 'redis://' + process.env.redis_server,
-      port: +process.env.redis_port,
+      port: process.env.redis_port,
       password: process.env.redis_password,
       retryAttempts: 20,
       retryDelay: 3000,
@@ -35,7 +37,7 @@ import {AppService} from "./services/app.service";
         transport: Transport.REDIS,
         options: {
           url: 'redis://' + process.env.redis_server,
-          port: +process.env.redis_port,
+          port: +(process && process.env.redis_port as string) ,
           password: process.env.redis_password,
           retryAttempts: 20,
           retryDelay: 3000,

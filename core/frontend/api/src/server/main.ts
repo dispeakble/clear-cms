@@ -1,3 +1,4 @@
+// @ts-ignore
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import compression from 'compression';
@@ -16,7 +17,7 @@ async function bootstrap() {
       options: {
         detect_buffers: true,
         url: 'redis://' + process.env.redis_server,
-        port: +process.env.redis_port,
+        port: process?.env?.redis_port,
         password: process.env.redis_password,
         disable_resubscribing: false,
         max_attempts: 30,
