@@ -1,4 +1,3 @@
-// @ts-ignore
 import {Body, Controller, Get, HttpStatus, Inject, Logger, Req, Res} from '@nestjs/common';
 import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
@@ -7,7 +6,6 @@ import {FsResponse} from "../interfaces/fs.interface";
 import {ViewService} from '../services/view.service';
 import {Request, Response} from "express";
 import {parse} from "url";
-// @ts-ignore
 import {Observable} from "rxjs";
 import {ProtocolService} from "../services/protocol.service";
 import {SystemService} from "../services/system.service";
@@ -132,7 +130,7 @@ export class AppController {
             content_type: ''
         };
 
-        getSubscriber.subscribe((data: any) => {
+        getSubscriber.subscribe((data: FsResponse) => {
             try {
                 switch (data.type) {
                     case "meta":
@@ -151,7 +149,7 @@ export class AppController {
                 console.log(err);
             }
 
-        }, (error: any) => {
+        }, (error) => {
             this.logger.log(error);
             res.status(HttpStatus.INTERNAL_SERVER_ERROR);
         }, () => {
@@ -208,7 +206,7 @@ export class AppController {
     }
 
     @Get('api/results-data')
-    public async resultsData(@Res() res: Response, @Body() body: any){
+    public async resultsData(@Res() res: Response, @Body() body){
         const {page} = body
         const dummy = [[
             {
@@ -282,7 +280,7 @@ export class AppController {
         return res.status(HttpStatus.OK).json(ret)
     }
 
-    private static filesResponse(params: any) {
+    private static filesResponse(params) {
         const { res, file, fileStats } = params;
         res.set("Content-Type", file.content_type);
         res.set("Content-Length", file.content_length);
@@ -299,7 +297,7 @@ export class AppController {
         }
     }
 
-    private static apiResponse(params: any) {
+    private static apiResponse(params) {
         const { res, data } = params;
         res.set("Content-Type", "application/json");
         res.set("Content-Length", params.data.length);
@@ -322,19 +320,18 @@ export class AppController {
         try {
 
             if(!this.state.ready) {
-                return new Observable((subscriber: any) => {
+                return new Observable((subscriber) => {
                     subscriber.next({
                         data: 'not ready'
                     });
                 });
             }
 
-            const callback = (response:any) => {
+            const callback = (response) => {
                 return this.perform(response)
             }
 
             params.payload = Object.assign({}, params.payload, {perform: callback})
-            // @ts-ignore
             return this[params.api + 'Service'].perform(params, this.moduleConfig);
 
         } catch (ex) {
