@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useTranslations } from "next-intl";
+import React from "react";
 import { withRouter } from "next/router";
 import { NextPage } from "next";
-import { Helmet } from "react-helmet-async";
 import dynamic from "next/dynamic";
 import { NextRouter } from "next/dist/shared/lib/router/router";
+import { CommonHelper } from "../helpers/common";
+
 
 interface WithRouterProps {
   router: NextRouter;
@@ -22,24 +22,8 @@ const templates: any = {
 
 const PageComponent: NextPage<ComponentProps> = () => {
 
-  const [ settings, setSettings ] = useState({
-    websiteName: "404",
-    version: 'v1'
-  });
-
-  const t = useTranslations();
-
-  const Component = templates[settings.version];
-
   return (
-    <>
-      <Helmet>
-        <title>{t("hotels.seo.pageTitle", { websiteName: settings.websiteName })}</title>
-
-      </Helmet>
-
-      <Component {...settings} />
-    </>
+    <CommonHelper templates={templates} />
   );
 };
 

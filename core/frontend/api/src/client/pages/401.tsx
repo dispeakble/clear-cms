@@ -1,39 +1,30 @@
 import React from "react";
-import {useTranslations} from "next-intl";
-import {withRouter} from "next/router";
-import {NextPage} from "next";
-import {Helmet} from "react-helmet-async";
+import { withRouter } from "next/router";
+import { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { NextRouter } from "next/dist/shared/lib/router/router";
+import { CommonHelper } from "../helpers/common";
+
 
 interface WithRouterProps {
-    router: NextRouter;
+  router: NextRouter;
 }
 
 interface ComponentProps extends WithRouterProps {
-    version: string;
-    settings: Record<string, string>;
+  version: string;
+  settings: Record<string, string>;
 }
 
 const templates: any = {
-    v1: dynamic(() => import("../templates/v1/401")),
-    v2: dynamic(() => import("../templates/v2/401"))
+  v1: dynamic(() => import("../templates/v1/401")),
+  v2: dynamic(() => import("../templates/v2/401"))
 };
 
-const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
+const PageComponent: NextPage<ComponentProps> = () => {
 
-    const t = useTranslations()
+  return (
+    <CommonHelper templates={templates} />
+  );
+};
 
-    const Component = templates[version];
-
-    return(
-        <>
-            <Helmet>
-                <title>{t("hotels.seo.pageTitle", { websiteName: settings.websiteName })}</title>
-            </Helmet>
-            <Component {...settings} />
-        </>
-    )
-}
-
-export default withRouter(PageComponent)
+export default withRouter(PageComponent);
