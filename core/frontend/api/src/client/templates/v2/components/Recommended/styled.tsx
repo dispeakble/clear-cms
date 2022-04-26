@@ -5,11 +5,8 @@ export const Wrapper = styled.div`
   width: 100%;
   display: grid;
   grid-gap: 30px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 
-  @media (min-width: ${device.tablet}) {
-    margin: 20px;
-  }
   @media (min-width: ${device.laptop}) {
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   }
@@ -23,7 +20,6 @@ export const StyledCard = styled.div`
   flex-direction: column;
   padding: 10px;
   @media (min-width: ${size.tablet}) {
-    margin: 20px;
     padding: 20px;
   }
 `;

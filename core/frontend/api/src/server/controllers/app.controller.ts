@@ -1,4 +1,4 @@
-import {Body, Controller, Get, HttpStatus, Inject, Logger, Req, Res} from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Inject, Logger, Post, Req, Res } from "@nestjs/common";
 import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
@@ -158,39 +158,27 @@ export class AppController {
         });
     }
 
-    @Get('api/agency/hotel')
-    public async hotels(@Req() req: Request, @Res() res: Response) {
-        try{
-
-            const data = await this.agencyService.getHotels()
-            return res.json(data)
-        }catch(err){
-            // eslint-disable-next-line no-console
-            console.log(err)
-        }
-    }
-
     @Get('api/*')
-    public async api(@Req() req: Request) {
+    public async apiGet(@Req() req: Request) {
         //TODO get the db from a
-        const parts = req.url.split('/');
+        const parts = req.url.slice(1).split('/');
         return await this.perform({
-            channel: `${process.env.app}_db`,
-            api: 'sql',
-            act: 'get',
-            payload: {
-                db: parts[2],
-                channel: `${process.env.app}_frontend`,
-                data: {
-                    what: parts[3],
-                }
-            }
+            channel: `${process.env.app}_frontend`,
+            api: parts[1],
+            act: parts[2]
         }).toPromise();
     }
 
-
-
-
+    @Post('api/*')
+    public async apiPost(@Req() req: Request) {
+        const parts = req.url.slice(1).split('/');
+        return await this.perform({
+            channel: `${process.env.app}_frontend`,
+            api: parts[1],
+            act: parts[2],
+            payload: req.body
+        }).toPromise();
+    }
 
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
@@ -203,81 +191,6 @@ export class AppController {
             params: req.params
         }
         await this.viewService.handler(mockRequest, res, url);
-    }
-
-    @Get('api/results-data')
-    public async resultsData(@Res() res: Response, @Body() body){
-        const {page} = body
-        const dummy = [[
-            {
-            itemTitle: "Lorem ipsum - page1",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-            },
-            {
-                itemTitle: "Lorem ipsum",
-                itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-            },
-            {
-                itemTitle: "Lorem ipsum",
-                itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-            },
-            {
-                itemTitle: "Lorem ipsum",
-                itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-            },
-            {
-                itemTitle: "Lorem ipsum",
-                itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-            }],
-        [
-            {
-            itemTitle: "Lorem ipsum - page2",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        }],
-        [
-            {
-            itemTitle: "Lorem ipsum - page 3",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        },
-        {
-            itemTitle: "Lorem ipsum",
-            itemDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-        }]]
-        const ret = {
-            "results": dummy.slice((page-1), page),
-            "page": page,
-            "hasMore": page<dummy.length,
-
-        }
-        return res.status(HttpStatus.OK).json(ret)
     }
 
     private static filesResponse(params) {
