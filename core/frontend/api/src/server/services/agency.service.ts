@@ -2,96 +2,63 @@ import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
+import {promises as fsPromises} from "fs";
+import path from "path";
 
 @Injectable()
 export class AgencyService {
-    private methods = ["get", "getTemplateVersion"];
+    private methods = ["getSettings", "getTranslations"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
-    public get() {
+    getTranslations(params: any) {
         return new Observable((subscriber) => {
             (async () => {
-                try {
-                    const payload: payloadInterface = {
-                    channel: `${process.env.app}_db`,
-                        api: 'sql',
-                        act: 'get',
-                        payload: {
-                            db: 'agency',
-                            channel: `${process.env.app}_frontend`,
-                            data: {
-                                what: 'hotel',
-                            }
-                        }
-                    };
-
-                    const res = await this.protocolService.sendMessage(payload).toPromise();
-                    subscriber.next({type: 'Theme received', data: res});
-                    subscriber.complete();
-                    return res;
-                } catch (err) {
-                    subscriber.error(err);
-                    subscriber.complete();
-                }
+                const json_data = await fsPromises.readFile( path.join(__dirname, '../../src/client/languages/agency', `${params.language}.json`), {
+                    encoding: 'utf-8'
+                } );
+                subscriber.next(json_data);
+                subscriber.complete();
             })()
-        })
-
-    }
-
-    public async getHotels() {
-        try {
-            const payload: payloadInterface = {
-                channel: `${process.env.app}_db`,
-                api: 'sql',
-                act: 'list',
-                payload: {
-                    db: 'agency',
-                    channel: `${process.env.app}_frontend`,
-                    data: {
-                        what: 'hotel',
-                    }
-                }
-            };
-
-            return await this.protocolService.sendMessage(payload).toPromise();
-        } catch (err) {
-            return err
-        }
+        });
     }
 
     getSettings() {
         return new Observable((subscriber) => {
             (async () => {
                 try {
-                    /*const payload: payloadInterface = {
+                    const payload: payloadInterface = {
                         channel: `${process.env.app}_db`,
-                        api: 'sql',
-                        act: 'get',
+                        api: "sql",
+                        act: "get",
                         payload: {
-                            db: 'agency',
-                            channel: 'frontend',
+                            db: "main",
+                            channel: `${process.env.app}_frontend`,
                             data: {
-                                what: 'hotel',
+                                what: "setting",
+                                limit: [0, 1]
                             }
                         }
                     };
 
-                    const res = await this.protocolService.sendMessage(payload).toPromise();*/
-                    //TODO GET FROM DB SETTINGS INSTEAD OF HARD CODING
-                    subscriber.next({
-                        type: 'settings',
-                        data: {
-                            template: {
-                                version: 'v2',
-                                pallete: {
-                                    primary: '#F00',
-                                    secondary: '#0F0'
-                                }
-                            }
-                        }
-                    });
+                    const result = {};
+
+                    try {
+                        const res = await this.protocolService.sendMessage(payload).toPromise();
+                        const data = JSON.parse(res.data);
+
+                        result['websiteName'] = data['websiteName'];
+                        result['applicationVersion'] = data['applicationVersion'];
+                        result['selectedTheme'] = data['selectedTheme'];
+                        result['colorScheme'] = data['colorScheme'];
+
+                    } catch (err) {
+                        // eslint-disable-next-line no-console
+                        console.log(err);
+                    }
+
+                    subscriber.next(result);
                     subscriber.complete();
                     return true;
                 } catch (err) {
