@@ -365,7 +365,7 @@ export class ModuleService {
 
     addThemes();
 
-    const getValues = [[1, "Espana", "Spain", null, "Spain", null, null, 1, null, null, null],
+    const geoValues = [[1, "Espana", "Spain", null, "Spain", null, null, 1, null, null, null],
       [2, "Islas Canarias", "Canary Islands", null, "Canary Islands", null, 1, 1, null, null, null],
       [3, "Tenerife", "Tenerife", null, "Tenerife", null, 2, 1, null, null, null],
       [4, "Adeje", "Adeje", null, "Adeje", null, 3, 1, null, null, null],
@@ -411,7 +411,7 @@ export class ModuleService {
 
     }
 
-    await Promise.all(getValues.map(geo => {
+    await Promise.all(geoValues.map(geo => {
       return addGeography(geo);
     }));
 
@@ -477,6 +477,69 @@ export class ModuleService {
 
     await Promise.all(packageSearchValues.map(data => {
       return addPackageSearch(data);
+    }));
+
+    const hotelSearchValues = [
+      [1,	2,	"2022-05-30 22:34:32.043192+00",],
+      [2,	3,	"2022-05-30 22:34:32.043192+00",],
+      [3,	4,	"2022-05-30 22:34:32.043192+00",],
+      [4,	5,	"2022-05-30 22:34:32.043192+00",],
+      [5,	1,	"2022-05-30 22:34:32.043192+00",],
+      [6,	3,	"2022-05-30 22:34:32.043192+00",],
+      [7,	4,	"2022-05-30 22:34:32.043192+00",],
+      [8,	5,	"2022-05-30 22:34:32.043192+00",],
+      [9,	1,	"2022-05-30 22:34:32.043192+00",],
+      [10,	2,	"2022-05-30 22:34:32.043192+00",],
+      [11,	4,	"2022-05-30 22:34:32.043192+00",],
+      [12,	5,	"2022-05-30 22:34:32.043192+00",],
+      [13,	1,	"2022-05-30 22:34:32.043192+00",],
+      [14,	2,	"2022-05-30 22:34:32.043192+00",],
+      [15,	3,	"2022-05-30 22:34:32.043192+00",],
+      [16,	5,	"2022-05-30 22:34:32.043192+00",],
+      [17,	1,	"2022-05-30 22:34:32.043192+00",],
+      [18,	2,	"2022-05-30 22:34:32.043192+00",],
+      [19,	3,	"2022-05-30 22:34:32.043192+00",],
+      [20,	4,	"2022-05-30 22:34:32.043192+00",],
+    ];
+
+    const addHotelSearch = async (data) => {
+      const cols = {
+        "Id":"",
+        "Destination":"",
+        "DepartureDate":"",
+        "ReturnDate":"",
+      };
+
+      Object.keys(cols).map((col, index) => {
+        cols[col] = data[index];
+      });
+
+      const hotelSearchPayload = {
+        channel: `${process.env.app}_db`,
+        payload: {
+          api: "sql",
+          act: "add",
+          payload: {
+            db: 'agency',
+            data: {
+              what: 'hotelsCache',
+              data: cols
+            }
+          }
+        }
+      };
+
+      try {
+        const newHotelSearchResponse = await this.protocolService.sendMessage(hotelSearchPayload);
+        return newHotelSearchResponse;
+      } catch (err) {
+        console.log(err);
+      }
+
+    }
+
+    await Promise.all(hotelSearchValues.map(data => {
+      return addHotelSearch(data);
     }));
 
   }

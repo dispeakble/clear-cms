@@ -1,6 +1,7 @@
 import { BelongsTo, BelongsToMany, Column, ForeignKey, HasOne, Model, Sequelize, Table } from "sequelize-typescript";
 import { DataTypes } from 'sequelize';
 import { PackagesCache } from "../search/packages.cache.model";
+import { HotelsCache } from "../search/hotels.cache.model";
 
 @Table
 export class Geography extends Model {
@@ -57,5 +58,8 @@ can be used in web pages*/
 
   @BelongsTo(() => PackagesCache, { foreignKey: 'Id', targetKey: 'Destination', constraints: false})
   PackagesCacheDestination: PackagesCache
+
+  @BelongsTo(() => HotelsCache, { foreignKey: 'Id', targetKey: 'Destination', constraints: false})
+  HotelsCacheDestination: HotelsCache
 
 }

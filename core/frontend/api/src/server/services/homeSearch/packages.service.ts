@@ -1,17 +1,16 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
-import { ModuleInterface } from "../interfaces/module.interface";
+import { ModuleInterface } from "../../interfaces/module.interface";
 import { Observable } from "rxjs";
 
 @Injectable()
-export class HomeSearchService {
+export class HomeSearchPackagesService {
   private methods = ["packages"];
 
   constructor(@Inject('ProtocolService') private protocolService) {
   }
 
   /*
-  1. Main search ( top right single search bar )
-  2. Packages filters
+  Packages filters
 
   INPUT:
       1 nothing (initial search call for the departure destinations)
@@ -29,18 +28,11 @@ export class HomeSearchService {
         destination: number
       }
 
-      5 dateReturn: {
-        departure: number
-        destination: number
-        dateLeave: date
-      }
-
   OUTPUT:
       1 departure result = departure[]
       2 destination result = destination[]
       3 dateLeave: = dateLeave[]
       4 dateReturn: = dateReturn[]
-      5 first 10 results if cached
   * */
 
   private searchInit = async () => {
