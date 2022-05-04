@@ -33,7 +33,7 @@ export const StyledCardsWrapper = styled.div`
 `;
 
 export const StyledCard = styled.div`
-  background: #FFFFFF;
+  background:  ${({theme}) => theme.colors.white};
   border-radius: 22px;
   padding: 20px 35px;
 `;
@@ -75,7 +75,7 @@ export const StyledLightLabel = styled.span`
   max-width: 25%;
   border-radius: 10px;
   height: 21px;
-  background: #FF9F5A;
+  background:  ${({theme}) => theme.colors.primaryLight};
   padding: 0 10px;
   color: ${({theme}) => theme.colors.primaryColor};
   display: flex;
@@ -95,7 +95,7 @@ export const SmallBookNow = styled.span`
   border-radius: 10px;
   background: ${({theme}) => theme.colors.primaryColor};
   padding: 0 10px;
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   white-space: nowrap;
   line-height: 21px;
   height: 21px;
@@ -109,7 +109,7 @@ export const SmallBookNow = styled.span`
 export const StyledFeaturedPrices = styled.div`
   display: flex;
   font-weight: bold;
-  color: #000000;
+  color:  ${({theme}) => theme.colors.black};
   font-size: 12px;
   line-height: 27px;
 `;
@@ -123,7 +123,7 @@ export const StyledPrice = styled.div`
 `;
 
 export const StyledTabs = styled.div`
-  background: #FFFFFF;
+  background:  ${({theme}) => theme.colors.white};
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -135,7 +135,7 @@ export const StyledTabs = styled.div`
 
 export const StyledTabBtn = styled.div`
   flex: 1;
-  background: #FFFFFF;
+  background:  ${({theme}) => theme.colors.white};
   color: ${({theme}) => theme.colors.gray};
   padding: 15px;
   text-align: center;
@@ -149,13 +149,13 @@ export const StyledTabBtn = styled.div`
 
   &:hover {
     background: ${({theme}) => theme.colors.primaryLight};
-    color: #FFFFFF;
+    color:  ${({theme}) => theme.colors.white};
     border-radius: 8px;
   }
 
   &.selected {
     background: ${({theme}) => theme.colors.primaryColor};
-    color: #FFFFFF;
+    color:  ${({theme}) => theme.colors.white};
     border-radius: 8px;
   }
 `;

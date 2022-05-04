@@ -139,6 +139,7 @@ ${filterValues.stars}`
   return (<>
       <StyledSearchInputHolder>
         <StyledSearchDestinationInput
+          className="singleInput"
           data-testid="test-destination-search-input"
           ref={destinationRef}
           placeholder={t("search.homeSearchHotelDestinationPlaceholder")}

@@ -32,7 +32,6 @@ const Recommended = () => {
                       className={selectedTab === 2 ? "selected" : ""}>{t("home.recommended.tabs.relax")}</StyledTabBtn>
       </StyledTabs>
       <Wrapper>
-
         <Card {...cardProps} />
         <Card {...cardProps} />
         <Card {...cardProps} />

@@ -34,7 +34,7 @@ export class PagesService {
                         payload.payload.data.where = params.where;
                     }
 
-                    const res = await this.protocolService.sendMessage(payload).toPromise();
+                    const res: any = await this.protocolService.sendMessage(payload).toPromise();
 
                     let results = null
                     if(res && res.hasOwnProperty('rows')){
@@ -87,7 +87,7 @@ export class PagesService {
                         pageReq.payload.data.where = params.body.where;
                     }
 
-                    const page = await this.protocolService.sendMessage(pageReq).toPromise();
+                    const page: any = await this.protocolService.sendMessage(pageReq).toPromise();
 
                     if(!page) {
                         subscriber.error({
@@ -111,7 +111,7 @@ export class PagesService {
                         }
                     };
 
-                    const settings =  await this.protocolService.sendMessage(settingPayload).toPromise();
+                    const settings: any =  await this.protocolService.sendMessage(settingPayload).toPromise();
 
                     const formattedPage = {
                         id: page.id,

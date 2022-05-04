@@ -78,7 +78,6 @@ export async function getServerSideProps(context: any) {
         websiteData["websiteAdminEmail"] = dbWebsiteData["websiteAdminEmail"];
         websiteData["websiteDomain"] = dbWebsiteData["websiteDomain"];
         websiteData["websiteName"] = dbWebsiteData["websiteName"];
-        websiteData["selectedTheme"] = dbWebsiteData["selectedTheme"];
     } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);

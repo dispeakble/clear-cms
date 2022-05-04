@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "target": "ESNext",
+    "lib": ["es5", "es6", "ES2021", "dom", "es2015.collection"]
+  },
+  "include": [
+    "src",
+    "modules.d.ts",
+    "typings.d.ts",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}

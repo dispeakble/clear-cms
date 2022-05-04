@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ThemeProvider } from "styled-components";
+
 import Header from "./components/Header";
 import { getIcon } from "./helpers/icons";
 

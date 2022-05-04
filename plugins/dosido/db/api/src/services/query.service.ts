@@ -1,12 +1,24 @@
 import {Injectable} from '@nestjs/common';
 import {Op} from "sequelize";
 import {Observable} from "rxjs";
+import { Sequelize } from "sequelize-typescript";
 
 @Injectable()
 export class QueryService {
     private methods = ["list", "get", "add", "addBulk", "set", "rem"];
 
     constructor() {
+    }
+
+    private convertAttributes(params: any[]) {
+        return params.map((p: any, i: number) => {
+            if(p && p instanceof Array) {
+                if(p[0].indexOf('fn.') > -1) {
+                    p = [Sequelize.fn(p[0].replaceAll('fn.', ''), p[1], p[2])]
+                }
+            }
+            return p;
+        });
     }
 
     private convertInclude(params: any) {
@@ -70,69 +82,66 @@ export class QueryService {
     list(params: any) {
         return new Observable(subscriber => {
             (async () => {
-
-                if (undefined === params.data.count) {
-                    params.data.count = true;
-                }
-
-                const model = params.getModel(params.data.what);
-
-                if (!model) {
-                    subscriber.error(`Model ${params.data.what} not found. Please define it.`);
-                    subscriber.complete();
-                    return;
-                }
-
-                const payload: any = {};
-
-                if (params.data.fields) {
-                    payload.attributes = params.data.fields;
-                }
-
-                if (params.data.where) {
-                    payload.where = this.convertWhereOp(params.data.where);
-                }
-
-                if (params.data.order) {
-                    const orderArray = [];
-
-                    Object.keys(params.data.order).map(key => {
-                        orderArray.push([key, params.data.order[key]]);
-                    });
-
-                    payload.order = orderArray;
-                }
-
-                if (params.data.limit) {
-                    payload.limit = params.data.limit[1];
-                    payload.offset = params.data.limit[0];
-                }
-
-                if (params.data.include) {
-                    payload.include = this.convertInclude({
-                        getModel: params.getModel,
-                        model: params.data.what,
-                        data: params.data.include
-                    });
-                }
-
                 try {
-                    let result = null;
-                    if (params.data.count) {
-                        result = await model.findAndCountAll(payload);
-                    } else {
-                        result = await model.findAll(payload);
+
+                    if (undefined === params.data.count) {
+                        params.data.count = true;
                     }
+
+                    const model = params.getModel(params.data.what);
+
+                    if (!model) {
+                        subscriber.error(`Model ${params.data.what} not found. Please define it.`);
+                        subscriber.complete();
+                        return;
+                    }
+
+                    const payload: any = {};
+
+                    if(params.data.as) {
+                        payload.as = params.data.as;
+                    }
+
+                    if (params.data.attributes) {
+                        payload.attributes = this.convertAttributes(params.data.attributes);
+                    }
+
+                    if (params.data.include) {
+                        payload.include = this.convertInclude({
+                            getModel: params.getModel,
+                            data: params.data.include
+                        });
+                    }
+
+                    if (params.data.where) {
+                        payload.where = this.convertWhereOp(params.data.where);
+                    }
+
+                    if (params.data.order) {
+                        payload.order = params.data.order;
+                    }
+
+                    if(params.data.group) {
+                        payload.group = params.data.group;
+                    }
+
+                    if (params.data.limit) {
+                        payload.limit = params.data.limit[1];
+                        payload.offset = params.data.limit[0];
+                    }
+
+                    const result = params.data.count
+                      ? await model.findAndCountAll(payload)
+                      : await model.findAll(payload);
 
                     //will receive {count: Number, rows: []}
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
-                    console.log(payload);
+                    console.log(params);
                     subscriber.error(err.message);
                     subscriber.complete();
                 }
-
             })()
         });
 
@@ -141,49 +150,56 @@ export class QueryService {
     get(params: any) {
         return new Observable(subscriber => {
             (async () => {
-
-                const model = params.getModel(params.data.what);
-
-                if (!model) {
-                    subscriber.error(`Model ${params.data.what} not found. Please define it.`);
-                    subscriber.complete();
-                    return;
-                }
-
-                const payload: any = {};
-
-                if (params.data.fields) {
-                    payload.attributes = params.data.fields;
-                }
-
-                if (params.data.where) {
-                    payload.where = this.convertWhereOp(params.data.where);
-                }
-
-                if (params.data.order) {
-                    const orderArray = [];
-
-                    Object.keys(params.data.order).map(key => {
-                        orderArray.push([key, params.data.order[key]]);
-                    });
-                    payload.order = orderArray;
-                }
-
-                if (params.data.include) {
-                    payload.include = this.convertInclude({
-                        getModel: params.getModel,
-                        model: params.data.what,
-                        data: params.data.include
-                    });
-                }
-
                 try {
+                    const model = params.getModel(params.data.what);
+
+                    if (!model) {
+                        subscriber.error(`Model ${params.data.what} not found. Please define it.`);
+                        subscriber.complete();
+                        return;
+                    }
+
+                    const payload: any = {};
+
+                    if(params.data.as) {
+                        payload.as = params.data.as;
+                    }
+
+                    if (params.data.attributes) {
+                        payload.attributes = this.convertAttributes(params.data.attributes);
+                    }
+
+                    if (params.data.include) {
+                        payload.include = this.convertInclude({
+                            getModel: params.getModel,
+                            data: params.data.include
+                        });
+                    }
+
+                    if (params.data.where) {
+                        payload.where = this.convertWhereOp(params.data.where);
+                    }
+
+                    if (params.data.order) {
+                        const orderArray = [];
+
+                        Object.keys(params.data.order).map(key => {
+                            orderArray.push([key, params.data.order[key]]);
+                        });
+
+                        payload.order = orderArray;
+                    }
+
+                    if(params.data.group) {
+                        payload.group = params.data.group;
+                    }
+
                     const result = await model.findOne(payload);
-                    //will receive the requested fields
+                    //will receive the requested attributes
                     subscriber.next(result);
                     subscriber.complete();
                 } catch (err) {
-                    console.log(payload);
+                    console.log(params);
                     subscriber.error(err.message);
                     subscriber.complete();
                 }
@@ -234,7 +250,7 @@ export class QueryService {
                     const result = await model.bulkCreate(params.data.records, {
                         returning: params.data.returning || false,
                         validate: params.data.validate || false,
-                        fields: params.data.fields,
+                        attributes: params.data.attributes,
                         ignoreDuplicates: params.data.ignoreDuplicates || false
                     });
 

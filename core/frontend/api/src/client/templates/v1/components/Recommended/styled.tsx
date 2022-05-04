@@ -3,17 +3,20 @@ import { device, size } from "../../styled";
 
 export const Wrapper = styled.div`
   width: 100%;
+  margin-bottom: 30px;
   display: grid;
   grid-gap: 30px;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 
-  @media (min-width: ${device.laptop}) {
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  @media (min-width: ${size.laptopL}) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    padding: 160px;
   }
+
 `;
 
 export const StyledCard = styled.div`
-  background: white;
+  background: ${({theme}) => theme.colors.white};
   box-shadow: 0 4px 25px rgba(0, 0, 0, .1);
   cursor: pointer;
   display: flex;
@@ -49,14 +52,14 @@ export const StyledPrice = styled.div`
 
 export const StyledActionButton = styled.a`
   background: ${({theme}) => theme.colors.primaryColor};
-  color: white;
+  color: ${({theme}) => theme.colors.white};
   border-radius: 12px;
   text-align: center;
   width: 100%;
   cursor: pointer;
   display: block;
   padding: 16px;
-  font-size: 28px;
+  font-size: 22px;
   margin-bottom: 10px;
 
   &:hover {
@@ -85,7 +88,7 @@ export const StyledZoomImg = styled.div<{ src: any }>`
   align-items: flex-end;
   justify-content: flex-end;
   position: relative;
-
+/*
   &:after {
     content: " ";
     width: 26px;
@@ -93,7 +96,7 @@ export const StyledZoomImg = styled.div<{ src: any }>`
     display: block;
     position: absolute;
     background: url(${({theme}) => theme.icon('zoom')}) no-repeat left top;
-  }
+  }*/
 
 `;
 

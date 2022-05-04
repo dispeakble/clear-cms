@@ -6,63 +6,63 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        class="styled__MainWrapper-sc-1c2vi5p-0 isTwKx"
+        class="sc-gsDKAQ jrzzWD"
         data-testid="hotel-page-wrapper"
       >
         <header
-          class="styled__HeaderWrapper-sc-1da3qfr-0 GHrcR"
+          class="sc-pVTFL dzrkqC"
           data-testid="header-wrapper"
         >
           <div
-            class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
+            class="sc-jrQzAO bIrpKo"
           >
             <div
-              class="styled__LogoWrapper-sc-1da3qfr-2 gZXSiZ"
+              class="sc-kDTinF deNQkW"
             >
               <a
                 href="/"
               >
                 <div
-                  class="Logo__LogoWrapper-sc-1i3eazt-0 jNrxJa"
+                  class="sc-bdvvtL eukWAO"
                 >
                   voila
                 </div>
               </a>
             </div>
             <div
-              class="styled__MenuWrapper-sc-1da3qfr-3 kmokYv"
+              class="sc-iqseJM fAlRWg"
             >
               <div
-                class="styled__StyledMenuWrapper-sc-v8jcxf-0 eWoTlf"
+                class="sc-fFeiMQ bVsXo"
               >
                 <ul
-                  class="styled__StyledMenu-sc-v8jcxf-1 fgIbGf"
+                  class="sc-bkkeKt boZemS"
                 >
                   <li
-                    class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    class="sc-ieecCq kyyBnL"
                   >
                     <a
-                      class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                      class="sc-dJjYzT kpLWKL"
                       href="activities"
                     >
                       Activities
                     </a>
                   </li>
                   <li
-                    class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    class="sc-ieecCq kyyBnL"
                   >
                     <a
-                      class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                      class="sc-dJjYzT kpLWKL"
                       href="hotels"
                     >
                       Hotels
                     </a>
                   </li>
                   <li
-                    class="styled__Item-sc-v8jcxf-2 csBYlq"
+                    class="sc-ieecCq kyyBnL"
                   >
                     <a
-                      class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                      class="sc-dJjYzT kpLWKL"
                       href="packages"
                     >
                       Packages
@@ -72,13 +72,13 @@ Object {
               </div>
             </div>
             <div
-              class="styled__LanguagesWrapper-sc-1da3qfr-6 iUywfH"
+              class="sc-bqiRlB kULby"
             >
               <div
-                class="styled__Container-sc-1fbn5z7-1 bDVtyr"
+                class="sc-hBUSln jiiKuZ"
               >
                 <button
-                  class="styled__SelectedLanguage-sc-1fbn5z7-0 fgCMAp"
+                  class="sc-ksdxgE iikZMh"
                 >
                    
                   <svg
@@ -96,15 +96,15 @@ Object {
                   </svg>
                 </button>
                 <div
-                  class="styled__LanguagesDropdown-sc-1fbn5z7-2 jCXLMk"
+                  class="sc-fotOHu izcTzM"
                 />
               </div>
             </div>
             <div
-              class="styled__SearchWrapper-sc-1da3qfr-4 kUJmtb"
+              class="sc-crHmcD lgHdyQ"
             >
               <input
-                class="styled__InputSearch-sc-1da3qfr-5 jjpwKa"
+                class="sc-egiyK dSgPyp"
                 data-testid="header-search-input"
                 placeholder="Search"
                 type="search"
@@ -113,58 +113,58 @@ Object {
           </div>
         </header>
         <div
-          class="styled__StyledContentWrapper-sc-1c2vi5p-4 engwwA"
+          class="sc-jRQBWg kCTgbP"
         >
           <div
-            class="styled__StyledBreadcrumbs-sc-l5f0v7-0 jWxkAY"
+            class="sc-dFtzxp kTqCii"
           >
             <a
-              class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+              class="sc-brSvTw bEgKRu"
               href="#"
             >
               Home
             </a>
             <a
-              class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+              class="sc-brSvTw bEgKRu"
               href="#"
             >
               Spain
             </a>
             <a
-              class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+              class="sc-brSvTw bEgKRu"
               href="#"
             >
               Tenerife
             </a>
             <a
-              class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+              class="sc-brSvTw bEgKRu"
               href="#"
             >
               Adeje
             </a>
             <a
-              class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+              class="sc-brSvTw bEgKRu"
               href="#"
             >
               Hotel Victoria (Hotel)
             </a>
           </div>
           <div
-            class="styled__Wrapper-sc-1qh2pme-0 kwPRHQ"
+            class="sc-hGPBjI DGsrU"
           >
             <div
-              class="styled__DealCard-sc-1qh2pme-1 ekFrxv"
+              class="sc-dlVxhl gLZaFv"
             >
               <div
-                class="styled__CardHead-sc-1qh2pme-2 boWYhl"
+                class="sc-kfPuZi edWysR"
               >
                 Find Deals
               </div>
               <div
-                class="styled__EditDeals-sc-1qh2pme-3 kZTazn"
+                class="sc-fKVqWL halGUz"
               >
                 <div
-                  class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                  class="sc-bBHxTw hduzup"
                 >
                   <h4>
                     Destination or Hotel:
@@ -186,14 +186,14 @@ Object {
                           aria-haspopup="listbox"
                           aria-owns="rc_select_TEST_OR_SSR_list"
                           autocomplete="off"
-                          class="styled__HotelSearch-sc-1qh2pme-5 idqjYy ant-select-selection-search-input"
+                          class="sc-iwjdpV jgByqC ant-select-selection-search-input"
                           id="rc_select_TEST_OR_SSR"
                           role="combobox"
                           type="search"
                           value=""
                         >
                           <div
-                            class="styled__SearchIcon-sc-1qh2pme-6 fmOODu"
+                            class="sc-cxpSdN knJMtS"
                           />
                           <input
                             placeholder="Hotel Victoria"
@@ -209,103 +209,103 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                  class="sc-bBHxTw hduzup"
                 >
                   <div
-                    class="styled__DateDiv-sc-1qh2pme-28 cXAYHr"
+                    class="sc-cNKqjZ hWBRrY"
                   >
                     <h4>
                       Check-in date:
                     </h4>
                     <div
-                      class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                      class="sc-iwjdpV jgByqC"
                     >
                       <div
-                        class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
+                        class="sc-llYSUQ dPKHkU"
                       />
                       <input
                         placeholder="Saturday, 12 March..."
                         readonly=""
-                        value="Tuesday, 26 April, 2022"
+                        value="Wednesday, 04 May, 2022"
                       />
                       <div
-                        class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
+                        class="sc-iJKOTD eKjfKo"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                  class="sc-bBHxTw hduzup"
                 >
                   <div
-                    class="styled__DateDiv-sc-1qh2pme-28 cXAYHr"
+                    class="sc-cNKqjZ hWBRrY"
                   >
                     <h4>
                       Check-out date:
                     </h4>
                     <div
-                      class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                      class="sc-iwjdpV jgByqC"
                     >
                       <div
-                        class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
+                        class="sc-llYSUQ dPKHkU"
                       />
                       <input
                         placeholder="Saturday, 13 March..."
                         readonly=""
-                        value="Wednesday, 27 April, 2022"
+                        value="Thursday, 05 May, 2022"
                       />
                       <div
-                        class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
+                        class="sc-iJKOTD eKjfKo"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                  class="sc-bBHxTw hduzup"
                 >
                   <div
-                    class="styled__DateDiv-sc-1qh2pme-28 cXAYHr"
+                    class="sc-cNKqjZ hWBRrY"
                   >
                     <h4>
                       Details:
                     </h4>
                     <div
-                      class="styled__GuestType-sc-1qh2pme-11 eoCORC"
+                      class="sc-bYoBSM gIltlx"
                     >
                       <div
-                        class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
+                        class="sc-kLwhqv jMdBzE"
                       >
                         <div
-                          class="styled__AdultIcon-sc-1qh2pme-13 xPVwW"
+                          class="sc-ikJyIC gNIFwX"
                         />
                         <div
-                          class="styled__AdultNumber-sc-1qh2pme-14 jmOavk"
+                          class="sc-jJoQJp jOYlip"
                         >
                           Adult-
                           1
                         </div>
                       </div>
                       <div
-                        class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
+                        class="sc-kLwhqv jMdBzE"
                       >
                         <div
-                          class="styled__ChildIcon-sc-1qh2pme-15 AozDR"
+                          class="sc-hiCibw cIBIdJ"
                         />
                         <div
-                          class="styled__AdultNumber-sc-1qh2pme-14 jmOavk"
+                          class="sc-jJoQJp jOYlip"
                         >
                           Child-
                           0
                         </div>
                       </div>
                       <div
-                        class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
+                        class="sc-kLwhqv jMdBzE"
                       >
                         <div
-                          class="styled__InfantIcon-sc-1qh2pme-16 igNNTw"
+                          class="sc-gWXbKe dfECYH"
                         />
                         <div
-                          class="styled__AdultNumber-sc-1qh2pme-14 jmOavk"
+                          class="sc-jJoQJp jOYlip"
                         >
                           infant-
                           0
@@ -315,18 +315,18 @@ Object {
                         style="position: relative; left: 7px;"
                       >
                         <div
-                          class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
+                          class="sc-iJKOTD eKjfKo"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__NewSearch-sc-1qh2pme-9 erogPa"
+                  class="sc-giYglK bGzjUR"
                 >
                   <button>
                     <div
-                      class="styled__WhiteIcon-sc-1qh2pme-10 AKvTb"
+                      class="sc-ezbkAF gMIGEa"
                     />
                     <a>
                       <span>
@@ -338,24 +338,24 @@ Object {
               </div>
             </div>
             <div
-              class="styled__HotelView-sc-1qh2pme-17 iPhIbb"
+              class="sc-cCcXHH cAFTPG"
             >
               <div
-                class="styled__HotelInfo-sc-1qh2pme-18 ciPMRz"
+                class="sc-cidDSM hKAbun"
               >
                 <div
-                  class="styled__LeftSide-sc-1qh2pme-22"
+                  class="sc-iAKWXU"
                 >
                   <div
-                    class="styled__HotelName-sc-1qh2pme-19 iDbYim"
+                    class="sc-jcFjpl kezLMj"
                   >
                     Hotel Victoria
                   </div>
                   <div
-                    class="styled__Star-sc-1qh2pme-23"
+                    class="sc-efQSVx dwIeHE"
                   >
                     <ul
-                      class="ant-rate ant-rate-disabled styled__Ping-sc-1qh2pme-54 iCNiwn"
+                      class="ant-rate ant-rate-disabled sc-bTfYFJ glmrnm"
                       role="radiogroup"
                       style="font-size: 30px;"
                       tabindex="-1"
@@ -653,15 +653,15 @@ Object {
                     </ul>
                   </div>
                   <div
-                    class="styled__ShortDescription-sc-1qh2pme-24 hYOVjC"
+                    class="sc-cTAqQK gbYKra"
                   >
                     <div
-                      class="styled__HotelLocation-sc-1qh2pme-25 iJxznX"
+                      class="sc-jObWnj kThCKA"
                     >
                       Bischofshofen, 4, 38660 Adeje, Spain
                     </div>
                     <div
-                      class="styled__ViewMap-sc-1qh2pme-26 hoJafk"
+                      class="sc-dPiLbb dmjdoj"
                     >
                       <a>
                         Show Map
@@ -670,11 +670,11 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__ViewPrice-sc-1qh2pme-20 khjMUg"
+                  class="sc-caiLqq kySYtU"
                 >
                   <button>
                     <span
-                      class="styled__InfoIcon-sc-1qh2pme-21 eYXJZZ"
+                      class="sc-iUKqMP fVXedx"
                     />
                     <a>
                       <span>
@@ -685,10 +685,10 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__SliderSection-sc-1qh2pme-27 gLZxLB"
+                class="sc-bBHHxi hA-Dnns"
               >
                 <div
-                  class="styled__HotelPhotoSliderWrapper-sc-k0u5eu-0 iJFiYT"
+                  class="sc-kHOZwM houbOl"
                 >
                   <div
                     aria-live="polite"
@@ -798,21 +798,21 @@ Object {
             </div>
           </div>
           <div
-            class="styled__About-sc-1snydq3-0 fqxjue"
+            class="sc-hOGkXu fhsUuf"
           >
             <div
-              class="styled__LeftSection-sc-1snydq3-1 cyVJdc"
+              class="sc-dtMgUX hZKvmW"
             >
               <div
-                class="styled__HotelName-sc-1snydq3-2 eYvmFs"
+                class="sc-cZMNgc bbQJPb"
               >
                 Hotel Victoria, Adeje, Spain 
               </div>
               <div
-                class="styled__HotelRate-sc-1snydq3-3 hYzDha"
+                class="sc-jUosCB dkuRlj"
               >
                 <ul
-                  class="ant-rate ant-rate-disabled styled__Ping-sc-1snydq3-11 hPcSuf"
+                  class="ant-rate ant-rate-disabled sc-ctqQKy gcvIIy"
                   role="radiogroup"
                   style="font-size: 30px;"
                   tabindex="-1"
@@ -1113,10 +1113,10 @@ Object {
                 </h3>
               </div>
               <div
-                class="styled__Description-sc-1snydq3-4 gPDeRn"
+                class="sc-jQrDum ffnrQm"
               >
                 <div
-                  class="styled__StyledDescription-sc-1qh2pme-41 joUPdr"
+                  class="sc-lcepkR kuLHKF"
                   style="padding-bottom: 20px;"
                 >
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
@@ -1131,10 +1131,10 @@ Object {
               </div>
             </div>
             <div
-              class="styled__RightSection-sc-1snydq3-5 kwWEaM"
+              class="sc-fvxzrP eUjcPw"
             >
               <div
-                class="styled__MapSection-sc-1snydq3-6 aCgji"
+                class="sc-fbyfCU bFPOBC"
                 id="showmap"
               >
                 <div
@@ -1161,61 +1161,61 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__Highlights-sc-1snydq3-7 bWFduw"
+                class="sc-GEbAx iRrTbn"
               >
                 <div
-                  class="styled__Cardtitle-sc-1snydq3-8 iJIapP"
+                  class="sc-gsNilK dnQOin"
                 >
                   Hotel Victoria Highlights
                 </div>
                 <div
-                  class="styled__Feature-sc-1snydq3-9 bMaLLO"
+                  class="sc-bXTejn ctNYlI"
                 >
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Breakfast info Continental, Buffet
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Sea view
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Garden view
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Terrace
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Pool view
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Quiet street view
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     Free parking
                   </li>
                   <li>
                     <div
-                      class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                      class="sc-eGRUor iyvsVz"
                     />
                     ATM Exchange
                   </li>
@@ -1224,15 +1224,15 @@ Object {
             </div>
           </div>
           <div
-            class="styled__Wrapper-sc-1fefmyk-5 eERfEF"
+            class="sc-XxNYO bNbHSb"
           >
             <div
-              class="styled__QueryTitle-sc-1fefmyk-0 dTRNNp"
+              class="sc-gIDmLj fCjEqi"
             >
               Available Rooms for 
-              Tue 26 Apr
+              Wed 04 May
                - 
-              Wed 27 Apr,
+              Thu 05 May,
                
               1
                adults, 
@@ -1242,39 +1242,39 @@ Object {
                infants 
             </div>
             <div
-              class="styled__Modifier-sc-1fefmyk-6 gsqAbX"
+              class="sc-ilfuhL geLcAg"
             >
               <div
-                class="styled__HotelCheck-sc-1fefmyk-7 gamFvw"
+                class="sc-uojGG cdvStN"
               >
                 <div
-                  class="styled__LeftSide-sc-1fefmyk-8 fhYMUx"
+                  class="sc-bilyIR iKLVvm"
                 >
                   <div
-                    class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                    class="sc-iWVNaa caJakx"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="sc-kTLmzF ggbTws"
                     >
                       <div
-                        class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                        class="sc-djWRfJ hHwcOC"
                       >
                         <div>
                           <div
-                            class="styled__CheckInSvg-sc-1fefmyk-1 emHrHT"
+                            class="sc-evcjhq jnJyBw"
                           />
                         </div>
                         <div
-                          class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                          class="sc-avest lmioUZ"
                         >
                           <div
-                            class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                            class="sc-kmQMED bcbHGO"
                           >
                             Check-in
                           </div>
                           <p>
                             <strong>
-                              26 Apr , Tue
+                              04 May , Wed
                                 
                             </strong>
                           </p>
@@ -1283,30 +1283,30 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                    class="sc-iWVNaa caJakx"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="sc-kTLmzF ggbTws"
                     >
                       <div
-                        class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                        class="sc-djWRfJ hHwcOC"
                       >
                         <div>
                           <div
-                            class="styled__CheckOutSvg-sc-1fefmyk-4 iOyDLj"
+                            class="sc-dkYRCH eXACRI"
                           />
                         </div>
                         <div
-                          class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                          class="sc-avest lmioUZ"
                         >
                           <div
-                            class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                            class="sc-kmQMED bcbHGO"
                           >
                             Check-out
                           </div>
                           <p>
                             <strong>
-                              27 Apr , Wed
+                              05 May , Thu
                                
                             </strong>
                           </p>
@@ -1316,32 +1316,32 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__RightSide-sc-1fefmyk-9 gqcFVC"
+                  class="sc-eGPXGI iQIWUo"
                 >
                   <div
-                    class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                    class="sc-gIBqdA lphjsM"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="sc-kTLmzF ggbTws"
                     >
                       <div
-                        class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                        class="sc-gslxeA fwdMRZ"
                       >
                         <div
-                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                          class="sc-fyrocj keOayG"
                         >
                           voila
                           <span
-                            class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                            class="sc-iIUQWv jKciXo"
                           >
                             Adults
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                            class="sc-hAcGzb kSmRSj"
                           />
                         </div>
                         <div
-                          class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                          class="sc-eWfVMQ drScTc"
                         >
                           1
                         </div>
@@ -1349,31 +1349,31 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                    class="sc-gIBqdA lphjsM"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="sc-kTLmzF ggbTws"
                     >
                       <div
-                        class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                        class="sc-gslxeA fwdMRZ"
                       >
                         <div
-                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                          class="sc-fyrocj keOayG"
                         >
                           <div
-                            class="styled__ChildIcon-sc-1fefmyk-2 cRKAPq"
+                            class="sc-fHeRUh epXjcZ"
                           />
                           <span
-                            class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                            class="sc-iIUQWv jKciXo"
                           >
                             Children
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                            class="sc-hAcGzb kSmRSj"
                           />
                         </div>
                         <div
-                          class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                          class="sc-eWfVMQ drScTc"
                         >
                           0
                         </div>
@@ -1381,31 +1381,31 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                    class="sc-gIBqdA lphjsM"
                   >
                     <div
-                      class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                      class="sc-kTLmzF ggbTws"
                     >
                       <div
-                        class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                        class="sc-gslxeA fwdMRZ"
                       >
                         <div
-                          class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                          class="sc-fyrocj keOayG"
                         >
                           <div
-                            class="styled__InfantIcon-sc-1fefmyk-3 gEhqyu"
+                            class="sc-dtDOqo qScWR"
                           />
                           <span
-                            class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                            class="sc-iIUQWv jKciXo"
                           >
                             Infants
                           </span>
                           <div
-                            class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                            class="sc-hAcGzb kSmRSj"
                           />
                         </div>
                         <div
-                          class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                          class="sc-eWfVMQ drScTc"
                         >
                           0
                         </div>
@@ -1415,12 +1415,12 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__RefreshPrice-sc-1fefmyk-11 vXPPv"
+                class="sc-kYHfwS aBiIB"
                 id="prices"
               >
                 <button>
                   <div
-                    class="styled__RefreshIcon-sc-1fefmyk-12 cJMnNr"
+                    class="sc-xiLah bueSkm"
                   />
                   <span>
                     Refresh Prices
@@ -1429,51 +1429,51 @@ Object {
               </div>
             </div>
             <div
-              class="styled__RoomTable-sc-1fefmyk-13 dzXFbu"
+              class="sc-dVNjXY fuwRMm"
             >
               <div
-                class="styled__TableHead-sc-1fefmyk-14 jfxjtp"
+                class="sc-jHkVzv egBQhx"
               >
                 <div
-                  class="styled__RoomType-sc-1fefmyk-15 ldSViA"
+                  class="sc-bQtKYq kPenox"
                 >
                   Room Type
                 </div>
                 <div
-                  class="styled__Meal-sc-1fefmyk-16 ccVaEt"
+                  class="sc-fXEqDS kxOQew"
                 >
                   Meals
                 </div>
                 <div
-                  class="styled__SelectRoom-sc-1fefmyk-17 itFnii"
+                  class="sc-FNXRL hnTOtz"
                 >
                   Rooms
                 </div>
                 <div
-                  class="styled__Price-sc-1fefmyk-18 fvNgbz"
+                  class="sc-jWUzzU ceLlCg"
                 >
                   Price
                 </div>
                 <div
-                  class="styled__BookNow-sc-1fefmyk-19 cyKaZn"
+                  class="sc-eFegNN jYvKFB"
                 >
                    
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="sc-fmBCVi eZUYnf"
               >
                 <div
-                  class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                  class="sc-jlRLRk gsToss"
                 >
                   <div
-                    class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                    class="sc-lkgTHX hOzdGd"
                   />
                   Premium Family Room 
                   1
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="sc-dUbtfd jIJepN"
                 >
                   Breakfast included 
                   1
@@ -1482,10 +1482,10 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="sc-htJRVC jEwRaP"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="sc-cbTzjv kvbCfz"
                     />
                     <ul>
                       <input
@@ -1496,25 +1496,25 @@ Object {
                       />
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="sc-hjGZqJ fVHHoV"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="sc-fXeWAj hPPEPe"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="sc-gjNHFA beuPvt"
                 >
                   122
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="sc-eXlEPa bbMAVl"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="sc-fmciRz clJMDc"
                 >
                   <button>
                     Book Now
@@ -1522,19 +1522,19 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="sc-fmBCVi eZUYnf"
               >
                 <div
-                  class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                  class="sc-jlRLRk gsToss"
                 >
                   <div
-                    class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                    class="sc-lkgTHX hOzdGd"
                   />
                   Premium Family Room 
                   2
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="sc-dUbtfd jIJepN"
                 >
                   Breakfast included 
                   2
@@ -1543,10 +1543,10 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="sc-htJRVC jEwRaP"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="sc-cbTzjv kvbCfz"
                     />
                     <ul>
                       <input
@@ -1557,25 +1557,25 @@ Object {
                       />
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="sc-hjGZqJ fVHHoV"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="sc-fXeWAj hPPEPe"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="sc-gjNHFA beuPvt"
                 >
                   220
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="sc-eXlEPa bbMAVl"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="sc-fmciRz clJMDc"
                 >
                   <button>
                     Book Now
@@ -1583,19 +1583,19 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="sc-fmBCVi eZUYnf"
               >
                 <div
-                  class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                  class="sc-jlRLRk gsToss"
                 >
                   <div
-                    class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                    class="sc-lkgTHX hOzdGd"
                   />
                   Premium Family Room 
                   3
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="sc-dUbtfd jIJepN"
                 >
                   Breakfast included 
                   3
@@ -1604,10 +1604,10 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="sc-htJRVC jEwRaP"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="sc-cbTzjv kvbCfz"
                     />
                     <ul>
                       <input
@@ -1618,25 +1618,25 @@ Object {
                       />
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="sc-hjGZqJ fVHHoV"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="sc-fXeWAj hPPEPe"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="sc-gjNHFA beuPvt"
                 >
                   322
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="sc-eXlEPa bbMAVl"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="sc-fmciRz clJMDc"
                 >
                   <button>
                     Book Now
@@ -1644,19 +1644,19 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+                class="sc-fmBCVi eZUYnf"
               >
                 <div
-                  class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                  class="sc-jlRLRk gsToss"
                 >
                   <div
-                    class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                    class="sc-lkgTHX hOzdGd"
                   />
                   Premium Family Room 
                   4
                 </div>
                 <div
-                  class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                  class="sc-dUbtfd jIJepN"
                 >
                   Breakfast included 
                   4
@@ -1665,10 +1665,10 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                    class="sc-htJRVC jEwRaP"
                   >
                     <div
-                      class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                      class="sc-cbTzjv kvbCfz"
                     />
                     <ul>
                       <input
@@ -1679,25 +1679,25 @@ Object {
                       />
                     </ul>
                     <div
-                      class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                      class="sc-hjGZqJ fVHHoV"
                     >
                       <div
-                        class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                        class="sc-fXeWAj hPPEPe"
                       />
                     </div>
                   </div>
                 </div>
                 <div
-                  class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                  class="sc-gjNHFA beuPvt"
                 >
                   342
                    €
                 </div>
                 <div
-                  class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                  class="sc-eXlEPa bbMAVl"
                 />
                 <div
-                  class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                  class="sc-fmciRz clJMDc"
                 >
                   <button>
                     Book Now
@@ -1713,63 +1713,63 @@ Object {
   </body>,
   "container": <div>
     <div
-      class="styled__MainWrapper-sc-1c2vi5p-0 isTwKx"
+      class="sc-gsDKAQ jrzzWD"
       data-testid="hotel-page-wrapper"
     >
       <header
-        class="styled__HeaderWrapper-sc-1da3qfr-0 GHrcR"
+        class="sc-pVTFL dzrkqC"
         data-testid="header-wrapper"
       >
         <div
-          class="styled__HeaderContent-sc-1da3qfr-1 hTheUx"
+          class="sc-jrQzAO bIrpKo"
         >
           <div
-            class="styled__LogoWrapper-sc-1da3qfr-2 gZXSiZ"
+            class="sc-kDTinF deNQkW"
           >
             <a
               href="/"
             >
               <div
-                class="Logo__LogoWrapper-sc-1i3eazt-0 jNrxJa"
+                class="sc-bdvvtL eukWAO"
               >
                 voila
               </div>
             </a>
           </div>
           <div
-            class="styled__MenuWrapper-sc-1da3qfr-3 kmokYv"
+            class="sc-iqseJM fAlRWg"
           >
             <div
-              class="styled__StyledMenuWrapper-sc-v8jcxf-0 eWoTlf"
+              class="sc-fFeiMQ bVsXo"
             >
               <ul
-                class="styled__StyledMenu-sc-v8jcxf-1 fgIbGf"
+                class="sc-bkkeKt boZemS"
               >
                 <li
-                  class="styled__Item-sc-v8jcxf-2 csBYlq"
+                  class="sc-ieecCq kyyBnL"
                 >
                   <a
-                    class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                    class="sc-dJjYzT kpLWKL"
                     href="activities"
                   >
                     Activities
                   </a>
                 </li>
                 <li
-                  class="styled__Item-sc-v8jcxf-2 csBYlq"
+                  class="sc-ieecCq kyyBnL"
                 >
                   <a
-                    class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                    class="sc-dJjYzT kpLWKL"
                     href="hotels"
                   >
                     Hotels
                   </a>
                 </li>
                 <li
-                  class="styled__Item-sc-v8jcxf-2 csBYlq"
+                  class="sc-ieecCq kyyBnL"
                 >
                   <a
-                    class="styled__LinkItem-sc-v8jcxf-3 iaQpOZ"
+                    class="sc-dJjYzT kpLWKL"
                     href="packages"
                   >
                     Packages
@@ -1779,13 +1779,13 @@ Object {
             </div>
           </div>
           <div
-            class="styled__LanguagesWrapper-sc-1da3qfr-6 iUywfH"
+            class="sc-bqiRlB kULby"
           >
             <div
-              class="styled__Container-sc-1fbn5z7-1 bDVtyr"
+              class="sc-hBUSln jiiKuZ"
             >
               <button
-                class="styled__SelectedLanguage-sc-1fbn5z7-0 fgCMAp"
+                class="sc-ksdxgE iikZMh"
               >
                  
                 <svg
@@ -1803,15 +1803,15 @@ Object {
                 </svg>
               </button>
               <div
-                class="styled__LanguagesDropdown-sc-1fbn5z7-2 jCXLMk"
+                class="sc-fotOHu izcTzM"
               />
             </div>
           </div>
           <div
-            class="styled__SearchWrapper-sc-1da3qfr-4 kUJmtb"
+            class="sc-crHmcD lgHdyQ"
           >
             <input
-              class="styled__InputSearch-sc-1da3qfr-5 jjpwKa"
+              class="sc-egiyK dSgPyp"
               data-testid="header-search-input"
               placeholder="Search"
               type="search"
@@ -1820,58 +1820,58 @@ Object {
         </div>
       </header>
       <div
-        class="styled__StyledContentWrapper-sc-1c2vi5p-4 engwwA"
+        class="sc-jRQBWg kCTgbP"
       >
         <div
-          class="styled__StyledBreadcrumbs-sc-l5f0v7-0 jWxkAY"
+          class="sc-dFtzxp kTqCii"
         >
           <a
-            class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+            class="sc-brSvTw bEgKRu"
             href="#"
           >
             Home
           </a>
           <a
-            class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+            class="sc-brSvTw bEgKRu"
             href="#"
           >
             Spain
           </a>
           <a
-            class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+            class="sc-brSvTw bEgKRu"
             href="#"
           >
             Tenerife
           </a>
           <a
-            class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+            class="sc-brSvTw bEgKRu"
             href="#"
           >
             Adeje
           </a>
           <a
-            class="styled__StyledBreadcrumbLink-sc-l5f0v7-1 biYchh"
+            class="sc-brSvTw bEgKRu"
             href="#"
           >
             Hotel Victoria (Hotel)
           </a>
         </div>
         <div
-          class="styled__Wrapper-sc-1qh2pme-0 kwPRHQ"
+          class="sc-hGPBjI DGsrU"
         >
           <div
-            class="styled__DealCard-sc-1qh2pme-1 ekFrxv"
+            class="sc-dlVxhl gLZaFv"
           >
             <div
-              class="styled__CardHead-sc-1qh2pme-2 boWYhl"
+              class="sc-kfPuZi edWysR"
             >
               Find Deals
             </div>
             <div
-              class="styled__EditDeals-sc-1qh2pme-3 kZTazn"
+              class="sc-fKVqWL halGUz"
             >
               <div
-                class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                class="sc-bBHxTw hduzup"
               >
                 <h4>
                   Destination or Hotel:
@@ -1893,14 +1893,14 @@ Object {
                         aria-haspopup="listbox"
                         aria-owns="rc_select_TEST_OR_SSR_list"
                         autocomplete="off"
-                        class="styled__HotelSearch-sc-1qh2pme-5 idqjYy ant-select-selection-search-input"
+                        class="sc-iwjdpV jgByqC ant-select-selection-search-input"
                         id="rc_select_TEST_OR_SSR"
                         role="combobox"
                         type="search"
                         value=""
                       >
                         <div
-                          class="styled__SearchIcon-sc-1qh2pme-6 fmOODu"
+                          class="sc-cxpSdN knJMtS"
                         />
                         <input
                           placeholder="Hotel Victoria"
@@ -1916,103 +1916,103 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                class="sc-bBHxTw hduzup"
               >
                 <div
-                  class="styled__DateDiv-sc-1qh2pme-28 cXAYHr"
+                  class="sc-cNKqjZ hWBRrY"
                 >
                   <h4>
                     Check-in date:
                   </h4>
                   <div
-                    class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                    class="sc-iwjdpV jgByqC"
                   >
                     <div
-                      class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
+                      class="sc-llYSUQ dPKHkU"
                     />
                     <input
                       placeholder="Saturday, 12 March..."
                       readonly=""
-                      value="Tuesday, 26 April, 2022"
+                      value="Wednesday, 04 May, 2022"
                     />
                     <div
-                      class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
+                      class="sc-iJKOTD eKjfKo"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                class="sc-bBHxTw hduzup"
               >
                 <div
-                  class="styled__DateDiv-sc-1qh2pme-28 cXAYHr"
+                  class="sc-cNKqjZ hWBRrY"
                 >
                   <h4>
                     Check-out date:
                   </h4>
                   <div
-                    class="styled__HotelSearch-sc-1qh2pme-5 idqjYy"
+                    class="sc-iwjdpV jgByqC"
                   >
                     <div
-                      class="styled__CalenderIcon-sc-1qh2pme-7 iHnVRN"
+                      class="sc-llYSUQ dPKHkU"
                     />
                     <input
                       placeholder="Saturday, 13 March..."
                       readonly=""
-                      value="Wednesday, 27 April, 2022"
+                      value="Thursday, 05 May, 2022"
                     />
                     <div
-                      class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
+                      class="sc-iJKOTD eKjfKo"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__Destination-sc-1qh2pme-4 kCUDwD"
+                class="sc-bBHxTw hduzup"
               >
                 <div
-                  class="styled__DateDiv-sc-1qh2pme-28 cXAYHr"
+                  class="sc-cNKqjZ hWBRrY"
                 >
                   <h4>
                     Details:
                   </h4>
                   <div
-                    class="styled__GuestType-sc-1qh2pme-11 eoCORC"
+                    class="sc-bYoBSM gIltlx"
                   >
                     <div
-                      class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
+                      class="sc-kLwhqv jMdBzE"
                     >
                       <div
-                        class="styled__AdultIcon-sc-1qh2pme-13 xPVwW"
+                        class="sc-ikJyIC gNIFwX"
                       />
                       <div
-                        class="styled__AdultNumber-sc-1qh2pme-14 jmOavk"
+                        class="sc-jJoQJp jOYlip"
                       >
                         Adult-
                         1
                       </div>
                     </div>
                     <div
-                      class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
+                      class="sc-kLwhqv jMdBzE"
                     >
                       <div
-                        class="styled__ChildIcon-sc-1qh2pme-15 AozDR"
+                        class="sc-hiCibw cIBIdJ"
                       />
                       <div
-                        class="styled__AdultNumber-sc-1qh2pme-14 jmOavk"
+                        class="sc-jJoQJp jOYlip"
                       >
                         Child-
                         0
                       </div>
                     </div>
                     <div
-                      class="styled__AdultBox-sc-1qh2pme-12 cyeBgk"
+                      class="sc-kLwhqv jMdBzE"
                     >
                       <div
-                        class="styled__InfantIcon-sc-1qh2pme-16 igNNTw"
+                        class="sc-gWXbKe dfECYH"
                       />
                       <div
-                        class="styled__AdultNumber-sc-1qh2pme-14 jmOavk"
+                        class="sc-jJoQJp jOYlip"
                       >
                         infant-
                         0
@@ -2022,18 +2022,18 @@ Object {
                       style="position: relative; left: 7px;"
                     >
                       <div
-                        class="styled__DropdownIcon-sc-1qh2pme-8 ZpXxU"
+                        class="sc-iJKOTD eKjfKo"
                       />
                     </div>
                   </div>
                 </div>
               </div>
               <div
-                class="styled__NewSearch-sc-1qh2pme-9 erogPa"
+                class="sc-giYglK bGzjUR"
               >
                 <button>
                   <div
-                    class="styled__WhiteIcon-sc-1qh2pme-10 AKvTb"
+                    class="sc-ezbkAF gMIGEa"
                   />
                   <a>
                     <span>
@@ -2045,24 +2045,24 @@ Object {
             </div>
           </div>
           <div
-            class="styled__HotelView-sc-1qh2pme-17 iPhIbb"
+            class="sc-cCcXHH cAFTPG"
           >
             <div
-              class="styled__HotelInfo-sc-1qh2pme-18 ciPMRz"
+              class="sc-cidDSM hKAbun"
             >
               <div
-                class="styled__LeftSide-sc-1qh2pme-22"
+                class="sc-iAKWXU"
               >
                 <div
-                  class="styled__HotelName-sc-1qh2pme-19 iDbYim"
+                  class="sc-jcFjpl kezLMj"
                 >
                   Hotel Victoria
                 </div>
                 <div
-                  class="styled__Star-sc-1qh2pme-23"
+                  class="sc-efQSVx dwIeHE"
                 >
                   <ul
-                    class="ant-rate ant-rate-disabled styled__Ping-sc-1qh2pme-54 iCNiwn"
+                    class="ant-rate ant-rate-disabled sc-bTfYFJ glmrnm"
                     role="radiogroup"
                     style="font-size: 30px;"
                     tabindex="-1"
@@ -2360,15 +2360,15 @@ Object {
                   </ul>
                 </div>
                 <div
-                  class="styled__ShortDescription-sc-1qh2pme-24 hYOVjC"
+                  class="sc-cTAqQK gbYKra"
                 >
                   <div
-                    class="styled__HotelLocation-sc-1qh2pme-25 iJxznX"
+                    class="sc-jObWnj kThCKA"
                   >
                     Bischofshofen, 4, 38660 Adeje, Spain
                   </div>
                   <div
-                    class="styled__ViewMap-sc-1qh2pme-26 hoJafk"
+                    class="sc-dPiLbb dmjdoj"
                   >
                     <a>
                       Show Map
@@ -2377,11 +2377,11 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__ViewPrice-sc-1qh2pme-20 khjMUg"
+                class="sc-caiLqq kySYtU"
               >
                 <button>
                   <span
-                    class="styled__InfoIcon-sc-1qh2pme-21 eYXJZZ"
+                    class="sc-iUKqMP fVXedx"
                   />
                   <a>
                     <span>
@@ -2392,10 +2392,10 @@ Object {
               </div>
             </div>
             <div
-              class="styled__SliderSection-sc-1qh2pme-27 gLZxLB"
+              class="sc-bBHHxi hA-Dnns"
             >
               <div
-                class="styled__HotelPhotoSliderWrapper-sc-k0u5eu-0 iJFiYT"
+                class="sc-kHOZwM houbOl"
               >
                 <div
                   aria-live="polite"
@@ -2505,21 +2505,21 @@ Object {
           </div>
         </div>
         <div
-          class="styled__About-sc-1snydq3-0 fqxjue"
+          class="sc-hOGkXu fhsUuf"
         >
           <div
-            class="styled__LeftSection-sc-1snydq3-1 cyVJdc"
+            class="sc-dtMgUX hZKvmW"
           >
             <div
-              class="styled__HotelName-sc-1snydq3-2 eYvmFs"
+              class="sc-cZMNgc bbQJPb"
             >
               Hotel Victoria, Adeje, Spain 
             </div>
             <div
-              class="styled__HotelRate-sc-1snydq3-3 hYzDha"
+              class="sc-jUosCB dkuRlj"
             >
               <ul
-                class="ant-rate ant-rate-disabled styled__Ping-sc-1snydq3-11 hPcSuf"
+                class="ant-rate ant-rate-disabled sc-ctqQKy gcvIIy"
                 role="radiogroup"
                 style="font-size: 30px;"
                 tabindex="-1"
@@ -2820,10 +2820,10 @@ Object {
               </h3>
             </div>
             <div
-              class="styled__Description-sc-1snydq3-4 gPDeRn"
+              class="sc-jQrDum ffnrQm"
             >
               <div
-                class="styled__StyledDescription-sc-1qh2pme-41 joUPdr"
+                class="sc-lcepkR kuLHKF"
                 style="padding-bottom: 20px;"
               >
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
@@ -2838,10 +2838,10 @@ Object {
             </div>
           </div>
           <div
-            class="styled__RightSection-sc-1snydq3-5 kwWEaM"
+            class="sc-fvxzrP eUjcPw"
           >
             <div
-              class="styled__MapSection-sc-1snydq3-6 aCgji"
+              class="sc-fbyfCU bFPOBC"
               id="showmap"
             >
               <div
@@ -2868,61 +2868,61 @@ Object {
               </div>
             </div>
             <div
-              class="styled__Highlights-sc-1snydq3-7 bWFduw"
+              class="sc-GEbAx iRrTbn"
             >
               <div
-                class="styled__Cardtitle-sc-1snydq3-8 iJIapP"
+                class="sc-gsNilK dnQOin"
               >
                 Hotel Victoria Highlights
               </div>
               <div
-                class="styled__Feature-sc-1snydq3-9 bMaLLO"
+                class="sc-bXTejn ctNYlI"
               >
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Breakfast info Continental, Buffet
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Sea view
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Garden view
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Terrace
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Pool view
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Quiet street view
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   Free parking
                 </li>
                 <li>
                   <div
-                    class="styled__CheckedIcon-sc-1snydq3-10 Pvgci"
+                    class="sc-eGRUor iyvsVz"
                   />
                   ATM Exchange
                 </li>
@@ -2931,15 +2931,15 @@ Object {
           </div>
         </div>
         <div
-          class="styled__Wrapper-sc-1fefmyk-5 eERfEF"
+          class="sc-XxNYO bNbHSb"
         >
           <div
-            class="styled__QueryTitle-sc-1fefmyk-0 dTRNNp"
+            class="sc-gIDmLj fCjEqi"
           >
             Available Rooms for 
-            Tue 26 Apr
+            Wed 04 May
              - 
-            Wed 27 Apr,
+            Thu 05 May,
              
             1
              adults, 
@@ -2949,39 +2949,39 @@ Object {
              infants 
           </div>
           <div
-            class="styled__Modifier-sc-1fefmyk-6 gsqAbX"
+            class="sc-ilfuhL geLcAg"
           >
             <div
-              class="styled__HotelCheck-sc-1fefmyk-7 gamFvw"
+              class="sc-uojGG cdvStN"
             >
               <div
-                class="styled__LeftSide-sc-1fefmyk-8 fhYMUx"
+                class="sc-bilyIR iKLVvm"
               >
                 <div
-                  class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                  class="sc-iWVNaa caJakx"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="sc-kTLmzF ggbTws"
                   >
                     <div
-                      class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                      class="sc-djWRfJ hHwcOC"
                     >
                       <div>
                         <div
-                          class="styled__CheckInSvg-sc-1fefmyk-1 emHrHT"
+                          class="sc-evcjhq jnJyBw"
                         />
                       </div>
                       <div
-                        class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                        class="sc-avest lmioUZ"
                       >
                         <div
-                          class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                          class="sc-kmQMED bcbHGO"
                         >
                           Check-in
                         </div>
                         <p>
                           <strong>
-                            26 Apr , Tue
+                            04 May , Wed
                               
                           </strong>
                         </p>
@@ -2990,30 +2990,30 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__CalenderWrapper-sc-1fefmyk-51 cLhqOk"
+                  class="sc-iWVNaa caJakx"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="sc-kTLmzF ggbTws"
                   >
                     <div
-                      class="styled__StayingInfoWrapper-sc-1fefmyk-48 fwCfoF"
+                      class="sc-djWRfJ hHwcOC"
                     >
                       <div>
                         <div
-                          class="styled__CheckOutSvg-sc-1fefmyk-4 iOyDLj"
+                          class="sc-dkYRCH eXACRI"
                         />
                       </div>
                       <div
-                        class="styled__CheckBg-sc-1fefmyk-45 jyqRBI"
+                        class="sc-avest lmioUZ"
                       >
                         <div
-                          class="styled__CheckTitle-sc-1fefmyk-46 dwQVvb"
+                          class="sc-kmQMED bcbHGO"
                         >
                           Check-out
                         </div>
                         <p>
                           <strong>
-                            27 Apr , Wed
+                            05 May , Thu
                              
                           </strong>
                         </p>
@@ -3023,32 +3023,32 @@ Object {
                 </div>
               </div>
               <div
-                class="styled__RightSide-sc-1fefmyk-9 gqcFVC"
+                class="sc-eGPXGI iQIWUo"
               >
                 <div
-                  class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                  class="sc-gIBqdA lphjsM"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="sc-kTLmzF ggbTws"
                   >
                     <div
-                      class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                      class="sc-gslxeA fwdMRZ"
                     >
                       <div
-                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                        class="sc-fyrocj keOayG"
                       >
                         voila
                         <span
-                          class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                          class="sc-iIUQWv jKciXo"
                         >
                           Adults
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                          class="sc-hAcGzb kSmRSj"
                         />
                       </div>
                       <div
-                        class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                        class="sc-eWfVMQ drScTc"
                       >
                         1
                       </div>
@@ -3056,31 +3056,31 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                  class="sc-gIBqdA lphjsM"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="sc-kTLmzF ggbTws"
                   >
                     <div
-                      class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                      class="sc-gslxeA fwdMRZ"
                     >
                       <div
-                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                        class="sc-fyrocj keOayG"
                       >
                         <div
-                          class="styled__ChildIcon-sc-1fefmyk-2 cRKAPq"
+                          class="sc-fHeRUh epXjcZ"
                         />
                         <span
-                          class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                          class="sc-iIUQWv jKciXo"
                         >
                           Children
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                          class="sc-hAcGzb kSmRSj"
                         />
                       </div>
                       <div
-                        class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                        class="sc-eWfVMQ drScTc"
                       >
                         0
                       </div>
@@ -3088,31 +3088,31 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="styled__PassengerWrapper-sc-1fefmyk-49 bCfGuW"
+                  class="sc-gIBqdA lphjsM"
                 >
                   <div
-                    class="styled__DivView-sc-1fefmyk-37 hKNqHe"
+                    class="sc-kTLmzF ggbTws"
                   >
                     <div
-                      class="styled__Passenger-sc-1fefmyk-44 dEcAiZ"
+                      class="sc-gslxeA fwdMRZ"
                     >
                       <div
-                        class="styled__PassengerDetailsWrapper-sc-1fefmyk-50 iiMJjJ"
+                        class="sc-fyrocj keOayG"
                       >
                         <div
-                          class="styled__InfantIcon-sc-1fefmyk-3 gEhqyu"
+                          class="sc-dtDOqo qScWR"
                         />
                         <span
-                          class="styled__SpanDiv-sc-1fefmyk-43 jOpVPR"
+                          class="sc-iIUQWv jKciXo"
                         >
                           Infants
                         </span>
                         <div
-                          class="styled__DropdownIcon-sc-1fefmyk-10 eeBipZ"
+                          class="sc-hAcGzb kSmRSj"
                         />
                       </div>
                       <div
-                        class="styled__GuestNumber-sc-1fefmyk-36 bKeNag"
+                        class="sc-eWfVMQ drScTc"
                       >
                         0
                       </div>
@@ -3122,12 +3122,12 @@ Object {
               </div>
             </div>
             <div
-              class="styled__RefreshPrice-sc-1fefmyk-11 vXPPv"
+              class="sc-kYHfwS aBiIB"
               id="prices"
             >
               <button>
                 <div
-                  class="styled__RefreshIcon-sc-1fefmyk-12 cJMnNr"
+                  class="sc-xiLah bueSkm"
                 />
                 <span>
                   Refresh Prices
@@ -3136,51 +3136,51 @@ Object {
             </div>
           </div>
           <div
-            class="styled__RoomTable-sc-1fefmyk-13 dzXFbu"
+            class="sc-dVNjXY fuwRMm"
           >
             <div
-              class="styled__TableHead-sc-1fefmyk-14 jfxjtp"
+              class="sc-jHkVzv egBQhx"
             >
               <div
-                class="styled__RoomType-sc-1fefmyk-15 ldSViA"
+                class="sc-bQtKYq kPenox"
               >
                 Room Type
               </div>
               <div
-                class="styled__Meal-sc-1fefmyk-16 ccVaEt"
+                class="sc-fXEqDS kxOQew"
               >
                 Meals
               </div>
               <div
-                class="styled__SelectRoom-sc-1fefmyk-17 itFnii"
+                class="sc-FNXRL hnTOtz"
               >
                 Rooms
               </div>
               <div
-                class="styled__Price-sc-1fefmyk-18 fvNgbz"
+                class="sc-jWUzzU ceLlCg"
               >
                 Price
               </div>
               <div
-                class="styled__BookNow-sc-1fefmyk-19 cyKaZn"
+                class="sc-eFegNN jYvKFB"
               >
                  
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="sc-fmBCVi eZUYnf"
             >
               <div
-                class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                class="sc-jlRLRk gsToss"
               >
                 <div
-                  class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                  class="sc-lkgTHX hOzdGd"
                 />
                 Premium Family Room 
                 1
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="sc-dUbtfd jIJepN"
               >
                 Breakfast included 
                 1
@@ -3189,10 +3189,10 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="sc-htJRVC jEwRaP"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="sc-cbTzjv kvbCfz"
                   />
                   <ul>
                     <input
@@ -3203,25 +3203,25 @@ Object {
                     />
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="sc-hjGZqJ fVHHoV"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="sc-fXeWAj hPPEPe"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="sc-gjNHFA beuPvt"
               >
                 122
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="sc-eXlEPa bbMAVl"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="sc-fmciRz clJMDc"
               >
                 <button>
                   Book Now
@@ -3229,19 +3229,19 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="sc-fmBCVi eZUYnf"
             >
               <div
-                class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                class="sc-jlRLRk gsToss"
               >
                 <div
-                  class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                  class="sc-lkgTHX hOzdGd"
                 />
                 Premium Family Room 
                 2
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="sc-dUbtfd jIJepN"
               >
                 Breakfast included 
                 2
@@ -3250,10 +3250,10 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="sc-htJRVC jEwRaP"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="sc-cbTzjv kvbCfz"
                   />
                   <ul>
                     <input
@@ -3264,25 +3264,25 @@ Object {
                     />
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="sc-hjGZqJ fVHHoV"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="sc-fXeWAj hPPEPe"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="sc-gjNHFA beuPvt"
               >
                 220
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="sc-eXlEPa bbMAVl"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="sc-fmciRz clJMDc"
               >
                 <button>
                   Book Now
@@ -3290,19 +3290,19 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="sc-fmBCVi eZUYnf"
             >
               <div
-                class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                class="sc-jlRLRk gsToss"
               >
                 <div
-                  class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                  class="sc-lkgTHX hOzdGd"
                 />
                 Premium Family Room 
                 3
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="sc-dUbtfd jIJepN"
               >
                 Breakfast included 
                 3
@@ -3311,10 +3311,10 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="sc-htJRVC jEwRaP"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="sc-cbTzjv kvbCfz"
                   />
                   <ul>
                     <input
@@ -3325,25 +3325,25 @@ Object {
                     />
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="sc-hjGZqJ fVHHoV"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="sc-fXeWAj hPPEPe"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="sc-gjNHFA beuPvt"
               >
                 322
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="sc-eXlEPa bbMAVl"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="sc-fmciRz clJMDc"
               >
                 <button>
                   Book Now
@@ -3351,19 +3351,19 @@ Object {
               </div>
             </div>
             <div
-              class="styled__TableBody-sc-1fefmyk-20 iKDvBw"
+              class="sc-fmBCVi eZUYnf"
             >
               <div
-                class="styled__ColumnOne-sc-1fefmyk-22 cKrEdF"
+                class="sc-jlRLRk gsToss"
               >
                 <div
-                  class="styled__OrgInfoIcon-sc-1fefmyk-21 kmmZgR"
+                  class="sc-lkgTHX hOzdGd"
                 />
                 Premium Family Room 
                 4
               </div>
               <div
-                class="styled__ColumnTwo-sc-1fefmyk-23 dJuWAT"
+                class="sc-dUbtfd jIJepN"
               >
                 Breakfast included 
                 4
@@ -3372,10 +3372,10 @@ Object {
                 style="position: relative;"
               >
                 <div
-                  class="styled__ColumnThree-sc-1fefmyk-24 cLFaWK"
+                  class="sc-htJRVC jEwRaP"
                 >
                   <div
-                    class="styled__LeftIcon-sc-1fefmyk-25 kUUXFp"
+                    class="sc-cbTzjv kvbCfz"
                   />
                   <ul>
                     <input
@@ -3386,25 +3386,25 @@ Object {
                     />
                   </ul>
                   <div
-                    class="styled__RightIcon-sc-1fefmyk-26 bkTYts"
+                    class="sc-hjGZqJ fVHHoV"
                   >
                     <div
-                      class="styled__TopUp-sc-1fefmyk-28 kfkPUb"
+                      class="sc-fXeWAj hPPEPe"
                     />
                   </div>
                 </div>
               </div>
               <div
-                class="styled__ColumnFour-sc-1fefmyk-31 dCqYWj"
+                class="sc-gjNHFA beuPvt"
               >
                 342
                  €
               </div>
               <div
-                class="styled__ColumnBreak-sc-1fefmyk-33 hEiOhD"
+                class="sc-eXlEPa bbMAVl"
               />
               <div
-                class="styled__ColumnFive-sc-1fefmyk-32 kiHPQe"
+                class="sc-fmciRz clJMDc"
               >
                 <button>
                   Book Now

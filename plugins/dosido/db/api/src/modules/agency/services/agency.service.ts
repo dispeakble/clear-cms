@@ -26,6 +26,7 @@ import {PriceInfo} from "../models/packages/price.info.model";
 import {PriceSet} from "../models/packages/price.set.model";
 import {Room} from "../models/packages/room.model";
 import {SpecialOffer} from "../models/packages/special.offer.model";
+import { PackagesCache } from "../models/search/packages.cache.model";
 
 @Injectable()
 export class AgencyService {
@@ -68,6 +69,8 @@ export class AgencyService {
     @InjectModel(PriceSet, 'agency') private priceSetModel: PriceSet,
     @InjectModel(Room, 'agency') private roomModel: Room,
     @InjectModel(SpecialOffer, 'agency') private specialOfferModel: SpecialOffer,
+    //caches
+    @InjectModel(PackagesCache, 'agency') private packagesCacheModel: PackagesCache,
 
     //services
     @Inject('QueryService') private queryService: QueryService
@@ -77,7 +80,6 @@ export class AgencyService {
   public getModel(modelName: string) {
     return this[`${modelName}Model`];
   }
-
 
   public perform(data: any) {
     try {

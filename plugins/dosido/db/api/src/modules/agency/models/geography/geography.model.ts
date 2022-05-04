@@ -1,5 +1,6 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, BelongsToMany, Column, ForeignKey, HasOne, Model, Sequelize, Table } from "sequelize-typescript";
 import { DataTypes } from 'sequelize';
+import { PackagesCache } from "../search/packages.cache.model";
 
 @Table
 export class Geography extends Model {
@@ -45,9 +46,16 @@ can be used in web pages*/
   @Column({ type: DataTypes.DATE, allowNull: true })
   accessedAt: number;
 
-  @Column({ type: DataTypes.DATE, defaultValue: DataTypes.NOW })
+  @Column({ type: DataTypes.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')})
   createdAt: number;
 
-  @Column({ type: DataTypes.DATE, defaultValue: DataTypes.NOW })
+  @Column({ type: DataTypes.DATE, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')})
   updatedAt: number;
+
+  @BelongsTo(() => PackagesCache, { foreignKey: 'Id', targetKey: 'Departure', constraints: false})
+  PackagesCacheDeparture: PackagesCache
+
+  @BelongsTo(() => PackagesCache, { foreignKey: 'Id', targetKey: 'Destination', constraints: false})
+  PackagesCacheDestination: PackagesCache
+
 }

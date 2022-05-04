@@ -1,5 +1,5 @@
 import { StyledButton, StyledValue, StyledValuePopup } from "./styledValuePopup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type valuePopupProps = {
   name: string;
@@ -13,6 +13,14 @@ type valuePopupProps = {
 const ValuePopup = ({name, value, min, max, dataTestId, onChange}: valuePopupProps) => {
 
   const [currentValue, setCurrentValue] = useState(value);
+
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVisible(true);
+    }, 30);
+  }, [])
 
   const decreaseValue = () => {
     const newVal = currentValue - 1 >= min ? currentValue - 1 : currentValue;
@@ -30,11 +38,11 @@ const ValuePopup = ({name, value, min, max, dataTestId, onChange}: valuePopupPro
     setCurrentValue(newVal);
   }
 
-  return (<StyledValuePopup data-testid={dataTestId}>
+  return visible ? <StyledValuePopup data-testid={dataTestId}>
     <StyledButton onClick={decreaseValue} data-testid="test-minus-handler">-</StyledButton>
     <StyledValue data-testid="test-handler-value">{currentValue}</StyledValue>
     <StyledButton onClick={increaseValue} data-testid="test-plus-handler">+</StyledButton>
-  </StyledValuePopup>);
+  </StyledValuePopup> : <></>;
 }
 
 export default ValuePopup;

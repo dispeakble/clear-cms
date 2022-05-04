@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "useUnknownInCatchVariables": false,
-    "target": "es2017",
+    "target": "es5",
     "sourceMap": true,
     "outDir": "./dist",
     "incremental": true,
@@ -16,7 +16,8 @@
     "jsx": "preserve"
   },
   "include": [
-    "src/server"
+    "src/server",
+    "modules.d.ts"
   ],
   "exclude": [
     "src/client",

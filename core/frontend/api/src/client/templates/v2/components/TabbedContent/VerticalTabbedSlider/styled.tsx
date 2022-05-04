@@ -22,7 +22,10 @@ export const StyledSliderWrapper = styled.div`
     width: 520px;
   }
   @media (min-width: ${size.laptopL}) {
-    width: 750px;
+    width: 850px;
+  }
+  @media (min-width: ${size.desktop}) {
+    width: 1000px;
   }
   & .image-gallery-icon {
     color: ${({theme}) => theme.colors.white};

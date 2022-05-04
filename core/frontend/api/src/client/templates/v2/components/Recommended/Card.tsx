@@ -22,7 +22,9 @@ const Card = ({ title, meal, details, price, img }: any) => {
       <StyledPrice>{price}</StyledPrice>
       <StyledActionButton>{t("home.recommended.book-now")}</StyledActionButton>
       <StyledZoomImg src={img}>
+{/*
         <StyledZoomPopup src={img} />
+*/}
       </StyledZoomImg>
     </StyledCard>
   );

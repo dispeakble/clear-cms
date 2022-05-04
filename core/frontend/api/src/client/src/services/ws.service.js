@@ -45,8 +45,6 @@ class WsService {
 
     ondisconnect(params) {
         this.isConnected = false;
-        // eslint-disable-next-line no-console
-        console.log(params);
     }
 
     emit(params){

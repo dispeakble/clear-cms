@@ -1,4 +1,3 @@
-import mime from "mime";
 
 export interface FsResponse {
     type: string

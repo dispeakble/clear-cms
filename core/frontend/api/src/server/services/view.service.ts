@@ -1,14 +1,16 @@
 import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import createServer from 'next';
-import { NextServer } from 'next/dist/server/next';
+import { NextServer, RequestHandler } from "next/dist/server/next";
 import {UrlWithParsedQuery} from "url";
 import { AppService } from "./app.service";
 import { ConfigService } from "@nestjs/config";
+import { NextUrlWithParsedQuery } from "next/dist/server/request-meta";
 
 
 @Injectable()
 export class ViewService implements OnModuleInit {
   private server!: NextServer;
+  private nextJsHandler!: RequestHandler;
 
   constructor(@Inject('AppService') private appService: AppService, @Inject('ConfigService') private configService: ConfigService) {
 
@@ -21,6 +23,7 @@ export class ViewService implements OnModuleInit {
         dir: './src/client'
       });
       await this.server.prepare();
+      this.nextJsHandler = this.server.getRequestHandler();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
@@ -34,11 +37,17 @@ export class ViewService implements OnModuleInit {
     })).toPromise();
   }
 
-  handler(req: any, res: any, url?: UrlWithParsedQuery) {
+  handler(req: any, res: any, url?: NextUrlWithParsedQuery) {
     req.apiHub = (params: any) => {
       return this.apiHub(params);
     };
 
-    return this.server.getRequestHandler()(req, res, url);
+    try {
+      return this.nextJsHandler(req, res, url);
+    } catch (e) {
+      'noop';
+      return null;
+    }
+
   }
 }

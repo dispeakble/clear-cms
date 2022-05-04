@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
+import {size} from "../../styled";
 
 export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;

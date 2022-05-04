@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
-import {Colors} from "../../assets/design-set";
-import coldStar from "../../assets/img/cold-star.svg";
-import goldStar from "../../assets/img/gold-star.svg";
+import {device} from "../../styled";
+import coldStar from "../../assets/img/cold-star-icon.svg";
+import goldStar from "../../assets/img/gold-star-icon.svg";
 import zoomIcon from "../../assets/img/zoom-icon.svg";
 
 export const Wrapper = styled.div`
@@ -19,7 +18,7 @@ export const Wrapper = styled.div`
 
 export const StyledCard = styled.div`
   margin: 20px;
-  background: white;
+  background: ${({theme}) => theme.colors.white};
   box-shadow: 0 4px 25px rgba(0,0,0,.1);
   padding: 20px;
   cursor: pointer;
@@ -45,14 +44,14 @@ export const StyledDetails = styled.div`
 `;
 
 export const StyledPrice = styled.div`
-  color: ${Colors.darkRed};
+  color: ${({theme}) => theme.colors.darkRed};
   font-size: 26px;
   margin-bottom: 10px;
 `;
 
 export const StyledActionButton = styled.a`
-  background: ${Colors.primaryColor};
-  color: white;
+  background: ${({theme}) => theme.colors.primaryColor};
+  color: ${({theme}) => theme.colors.white};
   border-radius: 12px;
   text-align: center;
   width: 100%;
@@ -62,7 +61,7 @@ export const StyledActionButton = styled.a`
   font-size: 28px;
   margin-bottom: 10px;
   &:hover {
-    color: ${Colors.primaryLight};
+    color: ${({theme}) => theme.colors.primaryLight};
   }
 `;
 

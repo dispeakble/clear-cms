@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 export const SelectedLanguage = styled.button`
   background-color: transparent;
-  color: white;
+  color: ${({theme}) => theme.colors.white};
+  text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
   font-size: 16px;
   border: none;
   cursor: pointer;
@@ -34,7 +35,8 @@ export const LanguagesDropdown = styled.div`
   }
 
   a {
-    color: white;
+    color: ${({theme}) => theme.colors.white};
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
     padding: 12px 16px;
     text-decoration: none;
     display: block;

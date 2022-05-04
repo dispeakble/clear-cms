@@ -25,7 +25,7 @@ export const CommonHelper = ({ templates }: any) => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("/api/agency/getSettings");
+      const response = await fetch("/api/settings/getSettings");
       const data = await response.json();
 
       Object.keys(data["colorScheme"]).map(color => {
@@ -37,9 +37,11 @@ export const CommonHelper = ({ templates }: any) => {
         }
       });
 
-      setSettings(prevState => ({ ...prevState, ...data }));
+      setSettings(prevState => {
+        return { ...prevState, ...data }
+      });
 
-      const language_response = await fetch("/api/agency/getTranslations", {
+      const language_response = await fetch("/api/settings/getTranslations", {
         method: "POST",
         mode: "same-origin",
         cache: "no-cache",
@@ -54,7 +56,9 @@ export const CommonHelper = ({ templates }: any) => {
         })
       });
       const language_data = await language_response.json();
-      setSettings(prevState => ({ ...prevState, translations: language_data }));
+      setSettings(prevState => {
+        return { ...prevState, translations: language_data }
+      });
     })();
 
   }, []);

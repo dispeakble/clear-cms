@@ -2,6 +2,8 @@ import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import HotelPage from "../HotelPage";
 import { IntlProvider } from "next-intl";
+import { AppContextProvider } from "../../../context/AppContext";
+import { WsContextProvider } from "../../../context/SocketContext";
 
 jest.mock("next/router", () => ({
     useRouter() {
@@ -23,7 +25,7 @@ jest.mock("next/image", () => ({
 
 const messages = require("../../../languages/agency/en.json");
 
-const hotelPageProps: any = {
+const hotelPageProps = {
     websiteName: "Example website",
     websiteUrl: "example.com",
     websiteSlogan: "Example website slogan",
@@ -32,9 +34,11 @@ const hotelPageProps: any = {
 
 const Wrapper = ({ ...props }: any) => {
     return (
-      <IntlProvider locale="en" messages={messages}>
-          <HotelPage {...props} />
-      </IntlProvider>
+      <WsContextProvider settings={{}}>
+          <IntlProvider locale="en" messages={messages}>
+              <HotelPage {...props} />
+          </IntlProvider>
+      </WsContextProvider>
     );
 };
 

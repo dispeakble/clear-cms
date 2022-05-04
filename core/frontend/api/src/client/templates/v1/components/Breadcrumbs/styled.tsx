@@ -3,7 +3,7 @@ import { size } from "../../styled";
 
 export const StyledBreadcrumbs = styled.div`
   background: ${({theme}) => theme.colors.primaryColor}; 
-  color: white;
+  color: ${({theme}) => theme.colors.white};
   border-radius: 10px;
   box-shadow: 0 4px 4px rgba(0,0,0,0.25);
   width: 100%;
@@ -12,7 +12,7 @@ export const StyledBreadcrumbs = styled.div`
 `;
 
 export const StyledBreadcrumbLink = styled.a`
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   font-weight: 500;
   padding: 5px;
   line-height: 40px;

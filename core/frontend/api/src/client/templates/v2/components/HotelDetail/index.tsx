@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import "antd/dist/antd.css";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import { AutoComplete, Rate, Tooltip } from "antd";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Link } from "react-scroll";
 import {

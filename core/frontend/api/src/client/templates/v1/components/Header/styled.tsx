@@ -91,7 +91,7 @@ export const MenuWrapper = styled.div`
 export const SearchWrapper = styled.div`
   border: 1px solid ${({theme}) => theme.colors.primaryColor};
   position: relative;
-  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center #FFFFFF;
+  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center  ${({theme}) => theme.colors.white};
   order: 4;
   margin-left: 10px;
   @media (max-width: ${size.laptop}) {

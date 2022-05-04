@@ -10,6 +10,7 @@ export class ProtocolService {
 
     private methods = ["start", "sendMessage", "emitMessage", "registerModule", "ping", "startHandshake", "requestHandshake", "confirmHandshake", "sendGet"];
     private handhakes: any = {};
+    private channelPrefix = process.env.app;
 
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy,
@@ -143,25 +144,6 @@ export class ProtocolService {
     }
 
     /*-- End Redis subscriber bidirectional lock --*/
-
-    public sendGet(data: any) {
-        const payload = {
-            api: 'bucket',
-            act: 'get',
-            payload: data.payload
-        };
-        return this.redisService.send({message: data.channel}, payload);
-    }
-
-    public getMeta(data: any){
-        const payload = {
-            api: 'bucket',
-            act: 'getMeta',
-            payload: data.payload
-        };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
-    }
-
 
     public perform(params: any, config?: ModuleInterface) {
         if (this.methods.includes(params.act)) {

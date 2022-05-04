@@ -43,7 +43,7 @@ export const StyledDescription = styled.article`
 
 export const StyledContactBtn = styled.a`
   font-size: 20px;
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   line-height: 75px;
   background-color: ${({theme}) => theme.colors.primaryColor};
   cursor: pointer;
@@ -60,7 +60,7 @@ export const StyledContactBtn = styled.a`
 `;
 
 export const StyledFloatingPrice = styled.div`
-  background: #FFFFFF;
+  background:  ${({theme}) => theme.colors.white};
   color: ${({theme}) => theme.colors.primaryColor};
   padding: 30%;
   text-align: center;
@@ -68,7 +68,7 @@ export const StyledFloatingPrice = styled.div`
 
   & span {
     text-transform: uppercase;
-    color: black;
+    color: ${({theme}) => theme.colors.black};
     font-size: 18px;
   }
 `;
