@@ -1,7 +1,7 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
-import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class CategoriesService {
@@ -26,7 +26,7 @@ export class CategoriesService {
                             channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'category',
-                                fields: ["id", "title", "description", "backgroundImage", "parentId"],
+                                attributes: ["id", "title", "description", "backgroundImage", "parentId"],
                                 where: params?.where
                             }
                         }

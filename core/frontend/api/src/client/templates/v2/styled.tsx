@@ -17,7 +17,7 @@ export const size = {
   tablet: "768px",
   laptop: "1024px",
   laptopL: "1440px",
-  desktop: "1920px",
+  desktop: "1919px",
   desktopL: "2560px"
 };
 
@@ -127,14 +127,14 @@ export const StyledMiddleText = styled.div`
 export const StyledWebsiteName = styled.div`
   font-size: 80px;
   text-align: center;
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
 export const StyledWebsiteSlogan = styled.div`
   font-size: 24px;
   text-align: center;
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 

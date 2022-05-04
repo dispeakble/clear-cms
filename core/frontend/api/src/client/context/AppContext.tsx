@@ -13,7 +13,7 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
 
   React.useEffect(() => {
     setSettings(props.settings)
-  }, []);
+  }, [props.settings]);
 
   const values = React.useMemo(() => ({
       settings, setSettings

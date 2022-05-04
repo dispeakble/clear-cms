@@ -29,12 +29,12 @@ export class PublicThemesService {
                             channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
-                                fields: ["id", "title", "isDefault", "thumbnail"]
+                                attributes: ["id", "title", "isDefault", "thumbnail"]
                             }
                         }
                     };
 
-                    const res = await this.protocolService.sendMessage(payload).toPromise();
+                    const res: any = await this.protocolService.sendMessage(payload).toPromise();
 
                     let results = null
 
@@ -68,7 +68,7 @@ export class PublicThemesService {
                             channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
-                                fields: [
+                                attributes: [
                                     "id",
                                     "title",
                                     "data",
@@ -80,7 +80,7 @@ export class PublicThemesService {
                         }
                     };
 
-                    const res = await this.protocolService.sendMessage(payload).toPromise();
+                    const res: any = await this.protocolService.sendMessage(payload).toPromise();
                     const results = {
                         id: res.id,
                         title: res.title,
@@ -147,7 +147,7 @@ export class PublicThemesService {
                             data: {
                                 what: 'publicTheme',
                                 where: params.where,
-                                fields: [
+                                attributes: [
                                     "title",
                                     "data",
                                     "isDefault",

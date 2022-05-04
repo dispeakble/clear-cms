@@ -2,16 +2,18 @@ import {Module, CacheModule, Logger} from '@nestjs/common';
 import {AppController} from "./controllers/app.controller";
 import {ProtocolService} from "./services/protocol.service";
 import {SystemService} from "./services/system.service";
+import {SettingsService} from "./services/settings.service";
 import {PublicThemesService} from "./services/publicThemes.service";
 import {CategoriesService} from "./services/categories.service";
 import {PagesService} from "./services/pages.service";
 import {BucketService} from "./services/bucket.service";
-import {AgencyService} from './services/agency.service'
+import {HomeSearchService} from './services/home.search.service'
 import {ClientsModule, Transport} from "@nestjs/microservices";
 import * as redisStore from 'cache-manager-redis-store';
 import {ViewService} from "./services/view.service";
 import { ConfigService } from '@nestjs/config';
 import {AppService} from "./services/app.service";
+import { WsGateway } from './gateways/ws.gateway';
 
 
 @Module({
@@ -51,6 +53,7 @@ import {AppService} from "./services/app.service";
   controllers: [AppController],
   providers: [ProtocolService,
     SystemService,
+    SettingsService,
     Logger,
     PublicThemesService,
     CategoriesService,
@@ -59,7 +62,8 @@ import {AppService} from "./services/app.service";
     AppService,
     ViewService,
     ConfigService,
-    AgencyService
+    HomeSearchService,
+    WsGateway
   ]
 })
 

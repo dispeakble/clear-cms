@@ -9,7 +9,6 @@ import {connect} from "react-redux";
 import getConfig from 'next/config'
 import BoxModal from "../../components/BoxModal/BoxModal";
 import GoogleFontLoader from 'react-google-font-loader';
-import ActivityService from "../../services/activity.service";
 
 //const { publicRuntimeConfig } = getConfig();
 
@@ -100,11 +99,6 @@ class ViewPage extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.isDev) {
-            const activityService = new ActivityService();
-
-            activityService.start();//TODO ONLY FOR DEV
-        }
     }
 
     switchBoxModalState = (el) => {

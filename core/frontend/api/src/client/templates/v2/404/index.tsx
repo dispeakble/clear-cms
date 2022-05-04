@@ -3,6 +3,7 @@ import { ThemeProvider } from "styled-components";
 import {ContentWrapper, GlobalStyle, MainWrapper} from "../styled";
 import {getIcon} from "../helpers/icons";
 import Header from "../components/Header";
+import { Helmet } from "react-helmet-async";
 import Footer from "../components/Footer";
 import Image from "next/image"
 import Img404 from "../assets/img/image404.jpg"
@@ -61,6 +62,9 @@ const Custom404 = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
     return(
         <ThemeProvider theme={myTheme}>
+            <Helmet>
+                <title>{websiteName} :: 404 not found</title>
+            </Helmet>
             <GlobalStyle />
             <MainWrapper data-testid="custom404-page-wrapper">
                 <TopContentWrapper>
@@ -85,7 +89,7 @@ const Custom404 = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                                 {
                                     (links && links.length) &&
                                     links.map((link : {label: string, link: string}) =>
-                                        <StyledLinkItem>
+                                        <StyledLinkItem key={link.label}>
                                             <StyledLink href={link.link}>
                                                 {link.label}
                                             </StyledLink>

@@ -9,7 +9,6 @@ export class SystemService {
     private methods = ["registerModule"];
 
 
-
     constructor(private protocolService: ProtocolService) {
     }
 

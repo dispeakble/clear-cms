@@ -35,7 +35,7 @@ export const StyledTab = styled.div`
   align-content: center;
   justify-content: center;
   font-size: 18px;
-  color: black;
+  color: ${({theme}) => theme.colors.black};
   text-shadow: 0 4px 4px rgba(0,0,0,0.25);
   max-width: 440px;
   padding: 10px;
@@ -47,7 +47,7 @@ export const StyledTab = styled.div`
   cursor: pointer;
   &:hover, &.selected {
     background: rgba(${({theme}) => theme.colors.primaryColorRBG}, .7);
-    color: white;
+    color: ${({theme}) => theme.colors.white};
   }
 `;
 
@@ -75,7 +75,7 @@ export const StyledContentWrapper = styled.div`
 `;
 export const StyledContentTitle = styled.div`
   font-size: 22px;
-  color: #000000;
+  color:  ${({theme}) => theme.colors.black};
   background: url(${({theme}) => theme.icon('checkSignGold')}) no-repeat left 3px;
   padding-left: 20px;
 `;

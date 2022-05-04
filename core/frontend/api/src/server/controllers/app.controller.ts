@@ -1,19 +1,20 @@
-import { Body, Controller, Get, HttpStatus, Inject, Logger, Post, Req, Res } from "@nestjs/common";
-import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
-import {ModuleInterface} from "../interfaces/module.interface";
-import {payloadInterface} from "../interfaces/payload.interface";
-import {FsResponse} from "../interfaces/fs.interface";
-import {ViewService} from '../services/view.service';
-import {Request, Response} from "express";
-import {parse} from "url";
-import {Observable} from "rxjs";
-import {ProtocolService} from "../services/protocol.service";
-import {SystemService} from "../services/system.service";
-import {PublicThemesService} from "../services/publicThemes.service";
-import {CategoriesService} from "../services/categories.service";
-import {PagesService} from "../services/pages.service";
-import {BucketService} from "../services/bucket.service";
-import {AgencyService} from "../services/agency.service";
+import { Controller, Get, HttpStatus, Inject, Logger, Post, Req, Res } from "@nestjs/common";
+import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
+import { ModuleInterface } from "../interfaces/module.interface";
+import { payloadInterface } from "../interfaces/payload.interface";
+import { FsResponse } from "../interfaces/fs.interface";
+import { ViewService } from "../services/view.service";
+import { Request, Response } from "express";
+import { parse } from "url";
+import { ProtocolService } from "../services/protocol.service";
+import { SystemService } from "../services/system.service";
+import { PublicThemesService } from "../services/publicThemes.service";
+import { CategoriesService } from "../services/categories.service";
+import { PagesService } from "../services/pages.service";
+import { BucketService } from "../services/bucket.service";
+import { HomeSearchService } from "../services/home.search.service";
+import { Observable } from "rxjs";
+import { SettingsService } from "../services/settings.service";
 
 @Controller('/')
 export class AppController {
@@ -44,27 +45,28 @@ export class AppController {
     private mainService;
 
     constructor(
-        @Inject('ProtocolService') private protocolService: ProtocolService,
-        @Inject('SystemService') private systemService: SystemService,
-        @Inject('PublicThemesService') private publicThemesService: PublicThemesService,
-        @Inject('CategoriesService') private categoriesService: CategoriesService,
-        @Inject('PagesService') private pagesService: PagesService,
-        @Inject('BucketService') private bucketService: BucketService,
-        @Inject('AgencyService') private agencyService: AgencyService,
-
-        private viewService: ViewService
+      @Inject("ProtocolService") private protocolService: ProtocolService,
+      @Inject("SystemService") private systemService: SystemService,
+      @Inject("SettingsService") private settingsService: SettingsService,
+      @Inject("PublicThemesService") private publicThemesService: PublicThemesService,
+      @Inject("CategoriesService") private categoriesService: CategoriesService,
+      @Inject("PagesService") private pagesService: PagesService,
+      @Inject("BucketService") private bucketService: BucketService,
+      @Inject("HomeSearchService") private homeSearchService: HomeSearchService,
+      @Inject('WsGateway') private wsGateway,
+      private viewService: ViewService
     ) {
         this.state.ready = true;
         this.mainService = this;
     }
 
-    @MessagePattern({message: `${process.env.app}_frontend`})
-    public onMessage(@Payload() data: payloadInterface) {
+    @MessagePattern({ message: `${process.env.app}_frontend` })
+    public onRedisMessage(@Payload() data: payloadInterface) {
         return this.perform(data);
     }
 
-    @EventPattern({event: `${process.env.app}_frontend`})
-    public onEvent(@Payload() payload: payloadInterface) {
+    @EventPattern({ event: `${process.env.app}_frontend` })
+    public onRedisEvent(@Payload() payload: payloadInterface) {
         return this.perform(payload);
     }
 
@@ -89,10 +91,26 @@ export class AppController {
 
         this.logger.log(port_map_msg);
 
-        this.logger.log('Frontend api application started');
+        this.wsGateway.registerCallbacks({
+            callbacks: {
+                "onMessage": async (params) => {
+                    const response = await this.onWsMessage(params.data);
+                    return response;
+                }
+            }
+        });
+
+        this.logger.log("Frontend api application started");
     }
 
-
+    private onWsMessage(params) {
+        try {
+            return this.perform(params.data).toPromise();
+        } catch (err) {
+            this.logger.log(err);
+            return null;
+        }
+    }
 
     @Get('_next*')
     public async assets(@Req() req: Request, @Res() res: Response) {
@@ -183,14 +201,15 @@ export class AppController {
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
         const url = parse(req.url, true);
-        const mockRequest = {
+/*        const mockRequest = {//I don't remember why I did this.
             headers: {
 
             },
+            originalRequest: req,
             url: req.url,
             params: req.params
-        }
-        await this.viewService.handler(mockRequest, res, url);
+        }*/
+        await this.viewService.handler(req, res, url);
     }
 
     private static filesResponse(params) {
@@ -209,25 +228,25 @@ export class AppController {
             res.end();
         }
     }
-
+/*
     private static apiResponse(params) {
         const { res, data } = params;
         res.set("Content-Type", "application/json");
         res.set("Content-Length", params.data.length);
-        res.set('Content-Security-Policy', "img-src 'self'; default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'");
-        res.set('X-Frame-Options', 'SAMEORIGIN');
-        res.set('X-Content-Type-Options', 'nosniff');
-        res.set('Strict-Transport-Security', 'max-age=0; includeSubDomains; preload');
-        res.set('Cache-Control', 'no-cache, private, must-revalidate, max-stale=0, post-check=0, pre-check=0 no-store');
-        res.set('Pragma', 'no-cache');
-        res.set('Expires', 'Sat, 26 Jul 1997 05:00:00 GMT');
+        res.set("Content-Security-Policy", "img-src 'self'; default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'");
+        res.set("X-Frame-Options", "SAMEORIGIN");
+        res.set("X-Content-Type-Options", "nosniff");
+        res.set("Strict-Transport-Security", "max-age=0; includeSubDomains; preload");
+        res.set("Cache-Control", "no-cache, private, must-revalidate, max-stale=0, post-check=0, pre-check=0 no-store");
+        res.set("Pragma", "no-cache");
+        res.set("Expires", "Sat, 26 Jul 1997 05:00:00 GMT");
 
         res.status(HttpStatus.OK);
-        if(params.finish) {
+        if (params.finish) {
             res.write(Buffer.from(data));
             res.end();
         }
-    }
+    }*/
 
     private perform(params: payloadInterface) {
         try {

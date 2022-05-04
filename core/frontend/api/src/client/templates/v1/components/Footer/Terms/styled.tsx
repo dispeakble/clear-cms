@@ -2,7 +2,7 @@ import styled from "styled-components"
 import {device, size} from "../../../styled";
 
 export const TermsContainer = styled.div`
-    background: #DC6B03;
+    background: ${({theme}) => theme.colors.primaryColor};
     width: 100vw;
     margin: 0;
     display: flex;
@@ -44,13 +44,13 @@ export const TermsContainer = styled.div`
 `
 
 export const StyledTermsHeading = styled.h4`
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   font-size:18px;
   font-weight: 600;
 `
 
 export const StyledTermsText = styled.p`
-  color: #FFFFFF;
+  color:  ${({theme}) => theme.colors.white};
   font-size: 16px;
   font-weight: 500;
   //readable line height

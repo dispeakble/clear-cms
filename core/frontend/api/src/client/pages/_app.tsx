@@ -3,17 +3,20 @@ import { HelmetProvider } from "react-helmet-async";
 import * as React from "react";
 import { NextIntlProvider } from "next-intl";
 import { AppContextProvider } from "../context/AppContext";
+import { WsContextProvider } from "../context/SocketContext";
 
 const MyApp = ({ Component, pageProps }: { Component: React.ComponentType, pageProps: any }) => {
-    return (
-      <HelmetProvider>
+  return (
+    <HelmetProvider>
+      <WsContextProvider settings={pageProps.settings}>
         <AppContextProvider settings={pageProps.settings}>
           <NextIntlProvider messages={pageProps.messages}>
             <Component {...pageProps} />
           </NextIntlProvider>
         </AppContextProvider>
-      </HelmetProvider>
-    );
+      </WsContextProvider>
+    </HelmetProvider>
+  );
 };
 
 export default MyApp;

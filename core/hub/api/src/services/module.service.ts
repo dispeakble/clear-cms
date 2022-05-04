@@ -200,8 +200,8 @@ export class ModuleService {
         api: "sql",
         act: "add",
         payload: {
+          db: 'main',
           data: {
-            db: 'main',
             what: "auth",
             data: {
               fullname: `${process.env.admin_fname} ${process.env.admin_lname}`,
@@ -260,8 +260,8 @@ export class ModuleService {
         api: "sql",
         act: "add",
         payload: {
+          db: 'main',
           data: {
-            db: 'main',
             what: "setting",
             data: {
               isDefault: 1,
@@ -294,8 +294,8 @@ export class ModuleService {
           api: "sql",
           act: "add",
           payload: {
+            db: 'main',
             data: {
-              db: 'main',
               what: 'dashboardBox',
               data: {
                 id: box[0],
@@ -339,8 +339,8 @@ export class ModuleService {
             api: "sql",
             act: "add",
             payload: {
+              db: 'main',
               data: {
-                db: 'main',
                 what: "adminTheme",
                 data: {
                   isDefault: 1,
@@ -365,7 +365,119 @@ export class ModuleService {
 
     addThemes();
 
+    const getValues = [[1, "Espana", "Spain", null, "Spain", null, null, 1, null, null, null],
+      [2, "Islas Canarias", "Canary Islands", null, "Canary Islands", null, 1, 1, null, null, null],
+      [3, "Tenerife", "Tenerife", null, "Tenerife", null, 2, 1, null, null, null],
+      [4, "Adeje", "Adeje", null, "Adeje", null, 3, 1, null, null, null],
+      [5, "Los Cristianos", "Los Cristianos", null, "Los Cristianos", null, 4, 1, null, null, null]];
+    
+    const addGeography = async (geo) => {
+      const geoCols = {
+        "Id":"",
+        "Name":"",
+        "IntName":"",
+        "ChildLabel":"",
+        "Description":"",
+        "Image":"",
+        "ParentId":"",
+        "active":"",
+      };
+      
+      Object.keys(geoCols).map((col, index) => {
+        geoCols[col] = geo[index];
+      });
 
+      const geoPayload = {
+        channel: `${process.env.app}_db`,
+        payload: {
+          api: "sql",
+          act: "add",
+          payload: {
+            db: 'agency',
+            data: {
+              what: 'geography',
+              data: geoCols
+            }
+          }
+        }
+      };
+
+      try {
+        const newGeoResponse = await this.protocolService.sendMessage(geoPayload);
+        return newGeoResponse;
+      } catch (err) {
+        console.log(err);
+      }
+
+    }
+
+    await Promise.all(getValues.map(geo => {
+      return addGeography(geo);
+    }));
+
+    const packageSearchValues = [
+      [1,	1,	2,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [2,	1,	3,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [3,	1,	4,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [4,	1,	5,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [5,	2,	1,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [6,	2,	3,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [7,	2,	4,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [8,	2,	5,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [9,	3,	1,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [10,	3,	2,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [11,	3,	4,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [12,	3,	5,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [13,	4,	1,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [14,	4,	2,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [15,	4,	3,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [16,	4,	5,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [17,	5,	1,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [18,	5,	2,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [19,	5,	3,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+      [20,	5,	4,	"2022-04-30 22:34:32.043192+00",	"2022-05-30 22:34:32.043192+00",],
+    ];
+
+    const addPackageSearch = async (data) => {
+      const cols = {
+        "Id":"",
+        "Departure":"",
+        "Destination":"",
+        "DepartureDate":"",
+        "ReturnDate":"",
+      };
+
+      Object.keys(cols).map((col, index) => {
+        cols[col] = data[index];
+      });
+
+      const geoPayload = {
+        channel: `${process.env.app}_db`,
+        payload: {
+          api: "sql",
+          act: "add",
+          payload: {
+            db: 'agency',
+            data: {
+              what: 'packagesCache',
+              data: cols
+            }
+          }
+        }
+      };
+
+      try {
+        const newGeoResponse = await this.protocolService.sendMessage(geoPayload);
+        return newGeoResponse;
+      } catch (err) {
+        console.log(err);
+      }
+
+    }
+
+    await Promise.all(packageSearchValues.map(data => {
+      return addPackageSearch(data);
+    }));
 
   }
 
@@ -387,10 +499,10 @@ export class ModuleService {
   }
 
   async getPortByChannel(data: any) {
-    let p_string = await this.cacheService.get("ports");
-    let ports = JSON.parse(p_string);
+    const p_string = await this.cacheService.get("ports");
+    const ports = JSON.parse(p_string);
     if (ports) {
-      for (let port in ports) {
+      for (const port in ports) {
         if (ports[port] === data.channel) {
           return +port;
         }
@@ -400,8 +512,8 @@ export class ModuleService {
   }
 
   async getPortByPort(data: any) {
-    let p_string = await this.cacheService.get("ports");
-    let ports = JSON.parse(p_string);
+    const p_string = await this.cacheService.get("ports");
+    const ports = JSON.parse(p_string);
     if (ports) {
       return ports[data.port];
     }

@@ -8,7 +8,7 @@ export class AppService {
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
-    private async protocolCall(params) {
+    private protocolCall(params) {
 
         const payload = {
             act: params.protocolMethod,
