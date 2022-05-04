@@ -27,6 +27,7 @@ import {PriceSet} from "../models/packages/price.set.model";
 import {Room} from "../models/packages/room.model";
 import {SpecialOffer} from "../models/packages/special.offer.model";
 import { PackagesCache } from "../models/search/packages.cache.model";
+import { HotelsCache } from "../models/search/hotels.cache.model";
 
 @Injectable()
 export class AgencyService {
@@ -71,6 +72,7 @@ export class AgencyService {
     @InjectModel(SpecialOffer, 'agency') private specialOfferModel: SpecialOffer,
     //caches
     @InjectModel(PackagesCache, 'agency') private packagesCacheModel: PackagesCache,
+    @InjectModel(HotelsCache, 'agency') private hotelsCacheModel: HotelsCache,
 
     //services
     @Inject('QueryService') private queryService: QueryService

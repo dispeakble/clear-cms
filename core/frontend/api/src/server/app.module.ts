@@ -1,26 +1,27 @@
-import {Module, CacheModule, Logger} from '@nestjs/common';
-import {AppController} from "./controllers/app.controller";
-import {ProtocolService} from "./services/protocol.service";
-import {SystemService} from "./services/system.service";
-import {SettingsService} from "./services/settings.service";
-import {PublicThemesService} from "./services/publicThemes.service";
-import {CategoriesService} from "./services/categories.service";
-import {PagesService} from "./services/pages.service";
-import {BucketService} from "./services/bucket.service";
-import {HomeSearchService} from './services/home.search.service'
-import {ClientsModule, Transport} from "@nestjs/microservices";
-import * as redisStore from 'cache-manager-redis-store';
-import {ViewService} from "./services/view.service";
-import { ConfigService } from '@nestjs/config';
-import {AppService} from "./services/app.service";
-import { WsGateway } from './gateways/ws.gateway';
+import { CacheModule, Logger, Module } from "@nestjs/common";
+import { AppController } from "./controllers/app.controller";
+import { ProtocolService } from "./services/protocol.service";
+import { SystemService } from "./services/system.service";
+import { SettingsService } from "./services/settings.service";
+import { PublicThemesService } from "./services/publicThemes.service";
+import { CategoriesService } from "./services/categories.service";
+import { PagesService } from "./services/pages.service";
+import { BucketService } from "./services/bucket.service";
+import { HomeSearchPackagesService } from "./services/homeSearch/packages.service";
+import { HomeSearchHotelsService } from "./services/homeSearch/hotels.service";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import * as redisStore from "cache-manager-redis-store";
+import { ViewService } from "./services/view.service";
+import { ConfigService } from "@nestjs/config";
+import { AppService } from "./services/app.service";
+import { WsGateway } from "./gateways/ws.gateway";
 
 
 @Module({
   imports: [
     CacheModule.register({
       store: redisStore,
-      url: 'redis://' + process.env.redis_server,
+      url: "redis://" + process.env.redis_server,
       port: +process.env.redis_port,
       password: process.env.redis_password,
       retryAttempts: 20,
@@ -33,10 +34,10 @@ import { WsGateway } from './gateways/ws.gateway';
     }),
     ClientsModule.register([
       {
-        name: 'REDIS_SERVICE',
+        name: "REDIS_SERVICE",
         transport: Transport.REDIS,
         options: {
-          url: 'redis://' + process.env.redis_server,
+          url: "redis://" + process.env.redis_server,
           port: +process.env.redis_port,
           password: process.env.redis_password,
           retryAttempts: 20,
@@ -47,7 +48,7 @@ import { WsGateway } from './gateways/ws.gateway';
           retry_max_delay: 1000,
           retry_strategy: 1000
         }
-      },
+      }
     ])
   ],
   controllers: [AppController],
@@ -62,7 +63,8 @@ import { WsGateway } from './gateways/ws.gateway';
     AppService,
     ViewService,
     ConfigService,
-    HomeSearchService,
+    HomeSearchPackagesService,
+    HomeSearchHotelsService,
     WsGateway
   ]
 })

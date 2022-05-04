@@ -12,7 +12,8 @@ import { PublicThemesService } from "../services/publicThemes.service";
 import { CategoriesService } from "../services/categories.service";
 import { PagesService } from "../services/pages.service";
 import { BucketService } from "../services/bucket.service";
-import { HomeSearchService } from "../services/home.search.service";
+import { HomeSearchPackagesService } from "../services/homeSearch/packages.service";
+import { HomeSearchHotelsService } from "../services/homeSearch/hotels.service";
 import { Observable } from "rxjs";
 import { SettingsService } from "../services/settings.service";
 
@@ -52,7 +53,8 @@ export class AppController {
       @Inject("CategoriesService") private categoriesService: CategoriesService,
       @Inject("PagesService") private pagesService: PagesService,
       @Inject("BucketService") private bucketService: BucketService,
-      @Inject("HomeSearchService") private homeSearchService: HomeSearchService,
+      @Inject("HomeSearchPackagesService") private homeSearchPackagesService: HomeSearchPackagesService,
+      @Inject("HomeSearchHotelsService") private homeSearchHotelsService: HomeSearchHotelsService,
       @Inject('WsGateway') private wsGateway,
       private viewService: ViewService
     ) {
