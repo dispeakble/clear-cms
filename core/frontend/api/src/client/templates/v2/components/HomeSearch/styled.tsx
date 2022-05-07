@@ -91,21 +91,27 @@ export const StyledSearchInput = styled.input`
 
 export const AutocompleteList = styled.ul`
   position: absolute;
-  width: 100%;
   z-index: 20;
   background: ${({theme}) => theme.colors.white};
   border: 1px solid ${({theme}) => theme.colors.primaryColor};
   color: ${({theme}) => theme.colors.jetBlack};
   list-style: none;
   margin: 64px 0 0;
+  
   padding: 0;
   box-shadow: 4px 4px 15px rgb(0 0 0 / 25%);
+  width: 100%;
+
+  @media ${device.tablet} {
+    width: calc(50% - 3px);
+  }
   
   &.destination {
     margin-top: 126px;
     @media ${device.tablet} {
       margin-top: 64px;
     }
+    right: 0;
   }
 `;
 
@@ -122,7 +128,7 @@ export const AutocompleteItem = styled.li`
 
 export const StyledSearchDestinationInput = styled.input`
   flex: 1;
-  background: url(${({theme}) => theme.icon('arrival')}) no-repeat 16px center white;
+  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center white;
   padding: 20px 0 20px 64px;
   box-sizing: border-box;
   width: 100%;
@@ -595,5 +601,4 @@ export const Overlay = styled.a`
   right: 0;
   bottom: 0;
   z-index: 15;
-  cursor: default;
 `;

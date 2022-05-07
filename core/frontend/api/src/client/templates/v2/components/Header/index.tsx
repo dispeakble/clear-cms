@@ -61,12 +61,16 @@ const Header = (props: any) => {
 Header.defaultProps = {
   links: [
     {
-      linkText: "home",
+      linkText: "activities",
       linkSlug: "activities"
     },
     {
       linkText: "hotels",
       linkSlug: "hotels"
+    },
+    {
+      linkText: "flights",
+      linkSlug: "flights"
     },
     {
       linkText: "packages",

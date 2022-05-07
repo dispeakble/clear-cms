@@ -601,5 +601,4 @@ export const Overlay = styled.a`
   right: 0;
   bottom: 0;
   z-index: 15;
-  cursor: default;
 `;

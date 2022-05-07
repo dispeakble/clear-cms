@@ -22,6 +22,7 @@ export const StyledMenu = styled.ul`
       color: ${({theme}) => theme.colors.white};
       width: 52px;
       height: 52px;
+      line-height: 52px;
       background: rgba(0, 0, 0, 0.1);
       font-size: 43px;
       text-align: center;

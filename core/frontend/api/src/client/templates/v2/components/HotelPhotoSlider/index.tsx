@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {HotelPhotoSliderWrapper} from "./styled";
 import ReactImageMagnify from 'react-image-magnify';
 import ImageGallery from 'react-image-gallery';

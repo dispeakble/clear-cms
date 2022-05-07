@@ -44,7 +44,7 @@ export const Packages = () => {
 
   const showDepartureList = async () => {
     const response = await ws.sendMessage({
-      api: "homeSearch",
+      api: "homeSearchPackages",
       act: "packages",
       payload: {
         type: "init",
@@ -80,7 +80,7 @@ export const Packages = () => {
 
   const searchDepartureByName = async (value: string) => {
     const response = await ws.sendMessage({
-      api: "homeSearch",
+      api: "homeSearchPackages",
       act: "packages",
       payload: {
         type: "departure",
@@ -99,7 +99,7 @@ export const Packages = () => {
 
   const searchDestinationByName = async (value: string) => {
     const response = await ws.sendMessage({
-      api: "homeSearch",
+      api: "homeSearchPackages",
       act: "packages",
       payload: {
         type: "destination",
@@ -120,7 +120,7 @@ export const Packages = () => {
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
-      api: "homeSearch",
+      api: "homeSearchPackages",
       act: "packages",
       payload: {
         type: "dates",

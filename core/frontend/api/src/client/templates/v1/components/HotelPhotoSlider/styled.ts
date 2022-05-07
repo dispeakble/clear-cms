@@ -6,23 +6,9 @@ export const HotelPhotoSliderWrapper = styled.div`
   width: 100%;
   height: 270px;
   margin-bottom: 20px;
-  @media (min-width: ${size.mobileS}) {
-    width: 320px;
-  }
-  @media (min-width: ${size.mobileM}) {
-    width: 375px;
-  }
-  @media (min-width: ${size.mobileL}) {
-    width: 400px;
-  }
-  @media (min-width: ${size.tablet}) {
-    width: 620px;
-  }
+  
   @media (min-width: ${size.laptop}) {
-    width: 520px;
-  }
-  @media (min-width: ${size.laptopL}) {
-    width: 100%;
+    width: calc(100% - 20px);
   }
   & .image-gallery-icon {
     color: ${({theme}) => theme.colors.white};

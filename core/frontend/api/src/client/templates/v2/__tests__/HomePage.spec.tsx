@@ -3,7 +3,6 @@ import "@testing-library/jest-dom";
 
 import HomePage from "../HomePage";
 import { IntlProvider } from 'next-intl';
-import { AppContextProvider } from "../../../context/AppContext";
 import { WsContextProvider } from "../../../context/SocketContext";
 
 let location = "";

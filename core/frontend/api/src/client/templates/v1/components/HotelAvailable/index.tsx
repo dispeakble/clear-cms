@@ -1,4 +1,4 @@
-import {useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 import {
     BookNow,
     CalendarView,
@@ -37,7 +37,6 @@ import {
     QueryTitle,
     RefreshIcon,
     RefreshPrice,
-    RightIcon,
     RightSide,
     RoomTable,
     RoomType,
@@ -47,16 +46,15 @@ import {
     TableBody,
     TableHead,
     TopUp,
-    TopUpRooms,
     Wrapper
 } from "./styled";
 
 import moment from "moment";
-import React, {useEffect, useState} from "react";
-import {Tooltip} from "antd";
+import React, { useEffect, useState } from "react";
+import { Tooltip } from "antd";
 import Image from "next/image";
 import adultsIcon from "../../assets/img/adults-icon.svg";
-import {Overlay} from "../HomeSearch/styled";
+import { Overlay } from "../HomeSearch/styled";
 
 type HotelAvailableProps = {
     data: any;
@@ -81,7 +79,11 @@ const HotelAvailable = ({
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
     const [showRoom, setShowRoom] = useState("");
-    const [selectedRoom, setSelectedRoom] = useState<{room: string, price: number}[]>([{room:'Room 0', price: 10}, {room:'Room 1', price: 10}, {room:'Room 2', price: 10} , {room:'Room 3', price: 10}]);
+
+    const [selectedRoom, setSelectedRoom] = useState<{ room: string, price: number }[]>([{
+        room: "1 Room",
+        price: 10
+    }, { room: "2 Rooms", price: 10 }, { room: "3 Rooms", price: 10 }, { room: "4 Rooms", price: 10 }, { room: "5 Rooms", price: 10 }]);
     const [forArray] = useState([
         {
             hotelPrice: 122,
@@ -107,17 +109,8 @@ const HotelAvailable = ({
 
     ]);
     const customColors = ["#FFFFFF"];
-    const allRooms = ["1 Rooms", "2 Rooms", "3 Rooms", "4 Rooms", "5 Rooms"];
+    const allRooms = ["1 Room", "2 Rooms", "3 Rooms", "4 Rooms", "5 Rooms"];
     const t = useTranslations();
-
-    const RoomsNumber: { [key in number]: string } = {
-        0: 'Room 1',
-        1: 'Room 2',
-        2: 'Room 3',
-        3: 'Room 3',
-
-    }
-
 
     const handleClickAway = () => {
         setShow("");
@@ -306,13 +299,12 @@ const HotelAvailable = ({
                     <Meal>Meals</Meal>
                     <SelectRoom>Rooms</SelectRoom>
                     <Price>Price</Price>
-                    <BookNow> </BookNow>
                 </TableHead>
                 {/*<RowView>*/}
                 {
                     forArray?.map((w, index) => {
                         const roomUnitPrice = selectedRoom[index].room.match(/\d/g);
-                        // @ts-ignore
+
                         return (
                             <TableBody key={index}>
                                 <ColumnOne>
@@ -341,13 +333,11 @@ const HotelAvailable = ({
                                 <div style={{position: "relative"}}>
                                     <ColumnThree onClick={() => handleShowRoomList(w.name)}>
                                         <LeftIcon/>
-                                        <ul>
+                                        <span>
                                             <input type="text" placeholder="1 Rooms" readOnly
                                                    value={selectedRoom[index].room}/>
-                                        </ul>
-                                        <RightIcon>
-                                            <TopUp/>
-                                        </RightIcon>
+                                        </span>
+                                        <TopUp/>
                                     </ColumnThree>
 
                                     {showRoom === w.name ? (
@@ -360,7 +350,7 @@ const HotelAvailable = ({
                                                 {
                                                     allRooms.map((w) => <li key={w} onClick={() => {
                                                         setShowRoom("");
-                                                        setSelectedRoom(rooms=> rooms.map((s, i)=> {
+                                                        setSelectedRoom(rooms => rooms.map((s, i)=> {
                                                             if(index === i) {
                                                                 s.room = w;
                                                             }

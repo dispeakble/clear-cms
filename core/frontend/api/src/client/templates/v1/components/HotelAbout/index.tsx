@@ -106,6 +106,46 @@ const HotelAbout = () => {
               usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
               aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
               usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
 
             </StyledDescription>
@@ -143,7 +183,7 @@ const HotelAbout = () => {
               {
                 Features.map((value, index) => {
                   return (
-                    <li key={index}><CheckedIcon/>{value}</li>
+                    <li key={index}><CheckedIcon/><span>{value}</span></li>
                   );
                 })
               }
