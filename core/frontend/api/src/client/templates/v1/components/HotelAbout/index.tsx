@@ -16,12 +16,13 @@ import {
 import {Rate} from "antd";
 import {Star, StyledDescription} from "../HotelDetail/styled";
 import GoogleMapReact from "google-map-react";
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 
 
 const HotelAbout = () => {
+  const ref = useRef<HTMLDivElement>(null);
   const [mapData] = useState({
     center: {
       lat: 30.738270,
@@ -47,6 +48,7 @@ const HotelAbout = () => {
     "ATM Exchange"
   ];
 
+  const currentNode = ref.current;
   return (
     <>
       <About>
@@ -61,30 +63,56 @@ const HotelAbout = () => {
             </h3>
           </HotelRate>
           <Description>
-            <StyledDescription style={{paddingBottom: '20px'}}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+            <StyledDescription style={{paddingBottom: '20px'}} ref={ref} readMore={show}>
+              Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
               incididunt ut labore et dolore magna aliqua.
               labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna
               aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet,
-              consectetur
               adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
               aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+
             </StyledDescription>
-            {show ? (
-              <StyledDescription>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.
-                labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna
-                aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet,
-                consectetur
-                adipisicing elit, sed do eiusmod tempor.
-                labore et dolore.
-              </StyledDescription>
-            ) : null}
-            <span onClick={HandleToggle}>{show ? 'read less...' : 'read more...'}</span>
+            {/*{show ? (*/}
+            {/*  <StyledDescription>*/}
+            {/*    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor*/}
+            {/*    incididunt ut labore et dolore magna aliqua.*/}
+            {/*    labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna*/}
+            {/*    aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod*/}
+            {/*    tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet,*/}
+            {/*    consectetur*/}
+            {/*    adipisicing elit, sed do eiusmod tempor.*/}
+            {/*    labore et dolore.*/}
+            {/*  </StyledDescription>*/}
+            {/*) : null}*/}
+
+            {currentNode && currentNode?.clientHeight >= 600 &&  <span onClick={HandleToggle}>{show ? 'read less...' : 'read more...'}</span>}
           </Description>
         </LeftSection>
         <RightSection>

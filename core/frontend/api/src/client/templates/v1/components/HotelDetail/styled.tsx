@@ -32,6 +32,7 @@ export const CardHead = styled.div`
   align-items: center;
   padding: 18px 0 18px 32px;
   font-weight: 400;
+  cursor: text;
 `;
 
 export const EditDeals = styled.div`
@@ -59,7 +60,7 @@ export const HotelSearch = styled.div`
   box-sizing: border-box;
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
-  cursor: default;
+  cursor: pointer;
 
   input {
     border: none;
@@ -155,6 +156,7 @@ export const AdultBox = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
+  cursor: pointer;
 `;
 export const AdultIcon = styled.div`
   position: relative;
@@ -211,7 +213,7 @@ export const HotelName = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   font-weight: 400;
   line-height: 30px;
-  cursor: default;
+  cursor: text;
 `;
 export const ViewPrice = styled.div`
   position: relative;
@@ -257,11 +259,10 @@ export const InfoIcon = styled.span`
 `;
 export const LeftSide = styled.div``;
 export const Star = styled.div`
-
 `;
 export const ShortDescription = styled.div`
   display: flex;
-  width: 360px;
+  width: 400px;
   justify-content: space-between;
 
 `;
@@ -269,7 +270,7 @@ export const HotelLocation = styled.div`
   font-weight: 500;
   font-size: 16px;
   color: #0009;
-  cursor: default;
+  cursor: text;
 `;
 export const ViewMap = styled.div`
   a {
@@ -373,11 +374,13 @@ export const ImageCount = styled.div`
   margin-top: 10px;
 `;
 
-export const StyledDescription = styled.div`
+export const StyledDescription = styled.div<{readMore: boolean}>`
   width: 100%;
+  
+  max-height: ${props=> props.readMore ? ' ' : '600px'};
+  overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
   font-size: 20px;
   color: rgba(0, 0, 0, 0.5);
-  display: inline;
   @media only screen and (max-width: ${size.tablet}) {
     font-size: 18px;
     margin-top: 10px;
@@ -754,5 +757,15 @@ export const HotelCalendar = styled(Calendar)`
 export const Ping = styled(Rate)`
   .ant-rate-star-zero svg {
     fill: #d9d9d9;
+    cursor: pointer;
   }
+
 `;
+
+export const H4 = styled("h4")`
+  cursor: text;
+`
+
+export const SPAN = styled("span")`
+user-select: none;
+`

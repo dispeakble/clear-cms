@@ -9,6 +9,7 @@ export const QueryTitle = styled.div`
   line-height: 33px;
   color: ${({ theme }) => theme.colors.black};
   margin-bottom: 10px;
+  cursor: text;
   @media only screen and (max-width: ${size.laptop}) {
     text-align: center;
     padding: 1rem;
@@ -137,7 +138,6 @@ export const RoomTable = styled.div`
 `;
 export const TableHead = styled.div`
   display: flex;
-
   & > div {
     flex: 1;
   }
@@ -163,18 +163,24 @@ export const TableHead = styled.div`
 export const RoomType = styled.div`
   display: flex;
   justify-content: center;
+  cursor: text;
 `;
 export const Meal = styled.div`
   display: flex;
   justify-content: center;
+  cursor: text;
 `;
 export const SelectRoom = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: center;  
+  cursor: text;
+
 `;
 export const Price = styled.div`
   display: flex;
   justify-content: center;
+  cursor: text;
+
 `;
 export const BookNow = styled.div`
   @media (max-width: ${size.laptop}) {
@@ -225,7 +231,7 @@ export const ColumnOne = styled.div`
   font-weight: 500;
   line-height: 30px;
   color: ${({ theme }) => theme.colors.black};
-  cursor: default;
+  cursor: text;
   white-space: nowrap;
   @media (min-width: ${size.laptop}) {
     font-size: 16px;
@@ -238,7 +244,7 @@ export const ColumnTwo = styled.div`
   font-weight: 500;
   line-height: 30px;
   color: ${({ theme }) => theme.colors.black};
-  cursor: default;
+  cursor: text;
   white-space: nowrap;
   text-align: center;
   @media (min-width: ${size.laptop}) {
@@ -418,7 +424,7 @@ export const ColumnFour = styled.div`
   font-weight: bold;
   line-height: 30px;
   color: ${({ theme }) => theme.colors.secondaryColor};
-  cursor: default;
+  cursor: text;
   white-space: nowrap;
   font-size: 27px;
   display: flex;
@@ -503,7 +509,7 @@ export const DivView = styled.div`
 `;
 export const CalendarView = styled.div`
   position: absolute;
-  top: 60px;
+  top: 80px;
   left: -10px;
   background: ${({ theme }) => theme.colors.mainBackground};
   z-index: 20;
@@ -516,7 +522,7 @@ export const CalendarView = styled.div`
 `;
 export const CalendarViewCheckout = styled.div`
   position: absolute;
-  top: 60px;
+  top: 80px;
   right: -7px;
   ${({ theme }) => theme.colors.mainBackground};
   z-index: 20;
@@ -534,7 +540,7 @@ export const PassengerView = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  top: 132%;
+  top: 170%;
   left: 54%;
   transform: translate(-50%, -10%);
   background-color: ${({ theme }) => theme.colors.white};

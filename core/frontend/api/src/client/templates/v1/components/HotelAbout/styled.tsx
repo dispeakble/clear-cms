@@ -19,18 +19,19 @@ export const LeftSection = styled.div`
   @media only screen and (max-width:${size.tablet}){
     padding:10px;
   }
+  
 `
 export const HotelName = styled.div`
   font-weight: 600;
   font-size: 32px;
   line-height: 30px;
-  cursor: default;
+  cursor: text;
 `
 export const HotelRate = styled.div`
   display: flex;
 padding: 5px 0;
   h3 {
-    cursor: default;
+    cursor: text;
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;

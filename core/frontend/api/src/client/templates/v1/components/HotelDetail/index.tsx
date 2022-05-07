@@ -48,7 +48,7 @@ import {
     PersonEntry,
     SubDetail,
     CloseIcon,
-    HotelCalendar, Ping,
+    HotelCalendar, Ping, H4, SPAN,
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
@@ -232,7 +232,7 @@ const HotelDetail = ({
               </CardHead>
               <EditDeals>
                   <Destination>
-                      <h4>Destination or Hotel:</h4>
+                      <H4>Destination or Hotel:</H4>
                       <AutoComplete
                         dropdownClassName="certain-category-search-dropdown"
                         dropdownStyle={{ backgroundColor: "white" }}
@@ -255,18 +255,17 @@ const HotelDetail = ({
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
                           <DateDiv>
-                              <h4>Check-in date:</h4>
-                              <HotelSearch>
-                                  <CalenderIcon  onClick={() => {
-                                      handleShowCheckin();
-                                  }}/>
+                              <H4>Check-in date:</H4>
+                              <HotelSearch onClick={() => {
+                                  handleShowCheckin();
+                              }}>
+                                  <CalenderIcon  />
                                   <input placeholder={t("deals.checkin") }
                                          onChange={() => {}}
+                                         style={{cursor: 'pointer'}}
                                          value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
 
-                                  <DropdownIcon onClick={() => {
-                                      handleShowCheckin();
-                                  }} />
+                                  <DropdownIcon />
                               </HotelSearch>
 
                               {show.checkin ? (
@@ -289,17 +288,17 @@ const HotelDetail = ({
                   <Destination>
 
                       <ClickAwayListener onClickAway={() => handleClickAway("checkout")}>
-                          <DateDiv>
-                              <h4>Check-out date:</h4>
+                          <DateDiv onClick={() => {
+                              handleShowCheckout();
+                          }}>
+                              <H4>Check-out date:</H4>
                               <HotelSearch>
-                                  <CalenderIcon onClick={() => {
-                                      handleShowCheckout();
-                                  }}/>
+                                  <CalenderIcon />
                                   <input placeholder={t("deals.checkout")} onChange={() => {}}
-                                         value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly/>
-                                  <DropdownIcon onClick={() => {
-                                      handleShowCheckout();
-                                  }} />
+                                         value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
+                                  style={{cursor: 'pointer'}}
+                                  />
+                                  <DropdownIcon />
 
                               </HotelSearch>
 
@@ -324,24 +323,24 @@ const HotelDetail = ({
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
                           <DateDiv>
-                              <h4>Details:</h4>
+                              <H4>Details:</H4>
                               <GuestType>
-                                  <AdultBox>
-                                      <AdultIcon onClick={() => handleShowPassenger()} />
+                                  <AdultBox onClick={() => handleShowPassenger()}>
+                                      <AdultIcon  />
                                       <AdultNumber>
                                           {t(`deals.detail.adult`)}{data.passenger.adults}
 
                                       </AdultNumber>
                                   </AdultBox>
-                                  <AdultBox>
-                                      <ChildIcon onClick={() => handleShowPassenger()} />
+                                  <AdultBox onClick={() => handleShowPassenger()}>
+                                      <ChildIcon  />
                                       <AdultNumber>
                                           {t(`deals.detail.child`)}{data.passenger.children}
 
                                       </AdultNumber>
                                   </AdultBox>
-                                  <AdultBox>
-                                      <InfantIcon onClick={() => handleShowPassenger()} />
+                                  <AdultBox onClick={() => handleShowPassenger()}>
+                                      <InfantIcon  />
                                       <AdultNumber>
                                           {t(`deals.detail.infant`)}{data.passenger.infants}
                                       </AdultNumber>
@@ -369,9 +368,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <span onClick={handleAdultMinus}>-</span>
+                                                  <SPAN onClick={handleAdultMinus} style={{userSelect: 'none'}}>-</SPAN>
                                                   <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
-                                                  <span onClick={handleAdultPlus}>+</span>
+                                                  <SPAN onClick={handleAdultPlus}>+</SPAN>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -382,9 +381,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <span onClick={handleChildrenMinus}>-</span>
+                                                  <SPAN onClick={handleChildrenMinus}>-</SPAN>
                                                   <h5>{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
-                                                  <span onClick={handleChildrenPlus}>+</span>
+                                                  <SPAN onClick={handleChildrenPlus}>+</SPAN>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -395,9 +394,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <span onClick={handleInfantsMinus}>-</span>
+                                                  <SPAN onClick={handleInfantsMinus}>-</SPAN>
                                                   <h5>{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                  <span onClick={handleInfantsPlus}>+</span>
+                                                  <SPAN onClick={handleInfantsPlus}>+</SPAN>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -427,7 +426,7 @@ const HotelDetail = ({
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
                       <Star>
-                          <Ping  style={{fontSize: '30px'}} disabled defaultValue={4} />
+                          <Ping  style={{fontSize: '30px', cursor: 'pointer'}} disabled defaultValue={4} />
                       </Star>
                       <ShortDescription>
                           <HotelLocation>
