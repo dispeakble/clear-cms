@@ -200,7 +200,7 @@ export const TableBody = styled.div`
   padding: 10px;
   gap: 10px;
   @media (max-width: ${size.laptop}) {
-    font-size: 14px;
+    font-size: 14.3px;
   }
 
   & > div {

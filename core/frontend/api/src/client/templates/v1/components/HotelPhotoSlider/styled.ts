@@ -3,7 +3,7 @@ import {size} from "../../styled";
 
 export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;
-  width: 320px;
+  width: 100%;
   height: 270px;
   margin-bottom: 20px;
   @media (min-width: ${size.mobileS}) {
@@ -22,7 +22,7 @@ export const HotelPhotoSliderWrapper = styled.div`
     width: 520px;
   }
   @media (min-width: ${size.laptopL}) {
-    width: 750px;
+    width: 100%;
   }
   & .image-gallery-icon {
     color: ${({theme}) => theme.colors.white};
