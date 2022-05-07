@@ -9,7 +9,6 @@ export const QueryTitle = styled.div`
   line-height: 33px;
   color: ${({ theme }) => theme.colors.black};
   margin-bottom: 10px;
-  cursor: text;
   @media only screen and (max-width: ${size.laptop}) {
     text-align: center;
     padding: 1rem;
@@ -40,7 +39,6 @@ export const CheckOutSvg = styled.div`
 export const Wrapper = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
-  cursor: default;
 `;
 export const Modifier = styled.div`
   display: flex;
@@ -163,7 +161,6 @@ export const TableHead = styled.div`
 export const RoomType = styled.div`
   display: flex;
   justify-content: center;
-  cursor: text;
 `;
 export const Meal = styled.div`
   display: flex;
@@ -200,7 +197,7 @@ export const TableBody = styled.div`
   padding: 10px;
   gap: 10px;
   @media (max-width: ${size.laptop}) {
-    font-size: 14.3px;
+    font-size: 14.6px;
   }
 
   & > div {
@@ -430,7 +427,7 @@ export const ColumnFour = styled.div`
   display: flex;
   justify-content: center;
   @media (max-width: ${size.tablet}) {
-    font-size: 24px;
+    font-size: 24.3px;
   }
 `;
 export const ColumnFive = styled.div`
@@ -551,7 +548,7 @@ export const PassengerView = styled.div`
   border-radius: 25px;
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   @media (max-width: ${size.laptop}) {
-    top: 122%
+    top: 160%
   }
 `;
 export const CounterDiv = styled.div`
@@ -565,9 +562,12 @@ export const CounterBtn = styled.div`
   background-color: ${({ theme }) => theme.colors.offWhite};
   cursor: pointer;
   width: 20px;
+  user-select: none;
   border-radius: 100%;
   box-shadow: ${Shadows.primaryShadow};
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   :hover {
     background-color: ${({ theme }) => theme.colors.primaryColor};
     color: ${({ theme }) => theme.colors.white};
@@ -845,6 +845,7 @@ export const PassengerWrapper = styled.div`
   height: 100%;
   justify-self: stretch;
   flex: 1;
+  cursor: pointer;
   padding: 5px 0;
   :first-child{
     border-top-left-radius: 16px;
@@ -903,6 +904,7 @@ export const CalenderWrapper = styled.div`
   height: 100%;
   justify-self: stretch;
   flex: 1;
+  cursor: pointer;
   :first-child{
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;

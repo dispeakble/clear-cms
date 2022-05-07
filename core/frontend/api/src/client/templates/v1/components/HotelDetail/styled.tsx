@@ -2,12 +2,10 @@ import styled from "styled-components";
 import { size } from "../../styled";
 import { Shadows } from "../../../../assets/design-set";
 import Calendar from "react-calendar";
-import { Rate } from "antd";
 
 export const Wrapper = styled.div`
   margin-top: 30px;
   gap: 20px;
-  cursor: default;
   @media (min-width: ${size.laptop}) {
     display: flex;
     flex: 1 1;
@@ -18,7 +16,6 @@ export const DealCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 7px 0 rgb(0 0 0 / 17%);
   height: max-content;
-  cursor: default;
 `;
 export const CardHead = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
@@ -213,7 +210,6 @@ export const HotelName = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   font-weight: 400;
   line-height: 30px;
-  cursor: text;
 `;
 export const ViewPrice = styled.div`
   position: relative;
@@ -264,13 +260,14 @@ export const ShortDescription = styled.div`
   display: flex;
   width: 400px;
   justify-content: space-between;
-
+  @media only screen and (max-width: ${size.tablet}) {
+    display: block;
+  }
 `;
 export const HotelLocation = styled.div`
   font-weight: 500;
   font-size: 16px;
   color: #0009;
-  cursor: text;
 `;
 export const ViewMap = styled.div`
   a {
@@ -754,14 +751,6 @@ export const HotelCalendar = styled(Calendar)`
   }
 
 `;
-export const Ping = styled(Rate)`
-  .ant-rate-star-zero svg {
-    fill: #d9d9d9;
-    cursor: pointer;
-  }
-
-`;
-
 export const H4 = styled("h4")`
   cursor: text;
 `

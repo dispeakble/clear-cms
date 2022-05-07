@@ -25,13 +25,11 @@ export const HotelName = styled.div`
   font-weight: 600;
   font-size: 32px;
   line-height: 30px;
-  cursor: text;
 `
 export const HotelRate = styled.div`
   display: flex;
 padding: 5px 0;
   h3 {
-    cursor: text;
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;

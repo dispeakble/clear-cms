@@ -97,20 +97,18 @@ const HotelAbout = () => {
               aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore
               usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
+              adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
 
             </StyledDescription>
-            {/*{show ? (*/}
-            {/*  <StyledDescription>*/}
-            {/*    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor*/}
-            {/*    incididunt ut labore et dolore magna aliqua.*/}
-            {/*    labore et dolore <br/> magna aliqua. Lorem ipsum dolore magna*/}
-            {/*    aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod*/}
-            {/*    tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet,*/}
-            {/*    consectetur*/}
-            {/*    adipisicing elit, sed do eiusmod tempor.*/}
-            {/*    labore et dolore.*/}
-            {/*  </StyledDescription>*/}
-            {/*) : null}*/}
 
             {currentNode && currentNode?.clientHeight >= 600 &&  <span onClick={HandleToggle}>{show ? 'read less...' : 'read more...'}</span>}
           </Description>

@@ -81,8 +81,7 @@ const HotelAvailable = ({
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
     const [showRoom, setShowRoom] = useState("");
-    const [selectedRoom, setSelectedRoom] = useState<string[]>(['Room 0', 'Room 1', 'Room 2' , 'Room 3'
-    ]);
+    const [selectedRoom, setSelectedRoom] = useState<{room: string, price: number}[]>([{room:'Room 0', price: 10}, {room:'Room 1', price: 10}, {room:'Room 2', price: 10} , {room:'Room 3', price: 10}]);
     const [forArray] = useState([
         {
             hotelPrice: 122,
@@ -155,8 +154,8 @@ const HotelAvailable = ({
             <Modifier>
                 <HotelCheck>
                     <LeftSide>
-                        <CalenderWrapper>
-                            <DivView>
+                        <CalenderWrapper onClick={handleShowCheckin}>
+                            <DivView onClick={handleShowCheckin}>
                                 <StayingInfoWrapper onClick={handleShowCheckin}>
                                     <div>
                                         <CheckInSvg onClick={handleShowCheckin}/>
@@ -181,7 +180,7 @@ const HotelAvailable = ({
                                 ) : null}
                             </DivView>
                         </CalenderWrapper>
-                        <CalenderWrapper>
+                        <CalenderWrapper onClick={handleShowCheckout}>
                             <DivView>
                                 <StayingInfoWrapper onClick={handleShowCheckout}>
                                     <div>
@@ -209,7 +208,7 @@ const HotelAvailable = ({
                         </CalenderWrapper>
                     </LeftSide>
                     <RightSide>
-                        <PassengerWrapper>
+                        <PassengerWrapper onClick={handleShowAdults}>
                             <DivView>
                                 <Passenger onClick={handleShowAdults}>
                                     <PassengerDetailsWrapper onClick={handleShowAdults}>
@@ -238,7 +237,7 @@ const HotelAvailable = ({
 
 
                         </PassengerWrapper>
-                        <PassengerWrapper>
+                        <PassengerWrapper onClick={handleShowChildren}>
                             <DivView>
                                 <Passenger onClick={handleShowChildren}>
                                     <PassengerDetailsWrapper onClick={handleShowChildren}>
@@ -265,7 +264,7 @@ const HotelAvailable = ({
                             </DivView>
 
                         </PassengerWrapper>
-                        <PassengerWrapper>
+                        <PassengerWrapper onClick={handleShowInfants}>
                             <DivView>
                                 <Passenger onClick={handleShowInfants}>
                                     <PassengerDetailsWrapper onClick={handleShowInfants}>
@@ -312,7 +311,7 @@ const HotelAvailable = ({
                 {/*<RowView>*/}
                 {
                     forArray?.map((w, index) => {
-
+                        const roomUnitPrice = selectedRoom[index].room.match(/\d/g);
                         // @ts-ignore
                         return (
                             <TableBody key={index}>
@@ -341,15 +340,10 @@ const HotelAvailable = ({
                                 <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
                                 <div style={{position: "relative"}}>
                                     <ColumnThree onClick={() => handleShowRoomList(w.name)}>
-                                        {/*<input type="number" min='1' value={w.hotelRoom} max='100' onChange={(e) => {*/}
-                                        {/*    const value = [...forArray]*/}
-                                        {/*    value[index].hotelRoom = Number(e.target.value)*/}
-                                        {/*    // seyForArray(value)*/}
-                                        {/*}} placeholder={t('hotelAvailable.selectRoom')}></input>*/}
                                         <LeftIcon/>
                                         <ul>
                                             <input type="text" placeholder="1 Rooms" readOnly
-                                                   value={selectedRoom[index]}/>
+                                                   value={selectedRoom[index].room}/>
                                         </ul>
                                         <RightIcon>
                                             <TopUp/>
@@ -368,7 +362,7 @@ const HotelAvailable = ({
                                                         setShowRoom("");
                                                         setSelectedRoom(rooms=> rooms.map((s, i)=> {
                                                             if(index === i) {
-                                                                s = w;
+                                                                s.room = w;
                                                             }
                                                             return s
                                                         }))
@@ -387,7 +381,7 @@ const HotelAvailable = ({
                                     ) : null}
                                 </div>
 
-                                <ColumnFour>{Number(w.hotelPrice) * Number(w.hotelRoom)}{" \u20AC"}</ColumnFour>
+                                <ColumnFour>{Number(selectedRoom[index].price) * Number(roomUnitPrice)}{" \u20AC"}</ColumnFour>
                                 <ColumnBreak/>
                                 <ColumnFive>
                                     <button>Book Now</button>

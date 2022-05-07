@@ -48,7 +48,7 @@ import {
     PersonEntry,
     SubDetail,
     CloseIcon,
-    HotelCalendar, Ping, H4, SPAN,
+    HotelCalendar, H4, SPAN,
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
@@ -368,7 +368,7 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <SPAN onClick={handleAdultMinus} style={{userSelect: 'none'}}>-</SPAN>
+                                                  <SPAN onClick={handleAdultMinus}>-</SPAN>
                                                   <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
                                                   <SPAN onClick={handleAdultPlus}>+</SPAN>
                                               </Quantity>
@@ -426,7 +426,9 @@ const HotelDetail = ({
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
                       <Star>
-                          <Ping  style={{fontSize: '30px', cursor: 'pointer'}} disabled defaultValue={4} />
+                          <Rate
+                              style={{fontSize: '30px'}}
+                              disabled defaultValue={4} />
                       </Star>
                       <ShortDescription>
                           <HotelLocation>
