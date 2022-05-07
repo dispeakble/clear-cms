@@ -39,7 +39,7 @@ export const CheckOutSvg = styled.div`
 export const Wrapper = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
-  cursor: default;
+  width: 100%;
 `;
 export const Modifier = styled.div`
   display: flex;
@@ -136,13 +136,11 @@ export const RoomTable = styled.div`
   gap: 36px;
 `;
 export const TableHead = styled.div`
-  display: flex;
-
+  display: none;
   & > div {
-    flex: 1;
+    text-align: left;
   }
 
-  justify-content: space-evenly;
   width: 100%;
   height: 65px;
   font-weight: 500;
@@ -156,25 +154,49 @@ export const TableHead = styled.div`
   @media (max-width: ${size.tablet}) {
     font-size: 16px;
   }
-  @media (max-width: ${size.tablet}) {
-    display: none;
+  @media (min-width: ${size.laptop}) {
+    display: flex;
   }
 `;
 export const RoomType = styled.div`
   display: flex;
-  justify-content: center;
+  padding-left: 35px;
+  min-width: 240px;
+  @media (min-width: ${size.laptopL}) {
+    min-width: 300px;
+  }
+  @media (min-width: ${size.desktop}) {
+    min-width: 345px;
+  }
 `;
 export const Meal = styled.div`
   display: flex;
-  justify-content: center;
+  min-width: 175px;
+  @media (min-width: ${size.laptopL}) {
+    min-width: 220px;
+  }
+  @media (min-width: ${size.desktop}) {
+    min-width: 236px;
+  }
 `;
 export const SelectRoom = styled.div`
   display: flex;
-  justify-content: center;
+  min-width: 245px;
+  @media (min-width: ${size.laptopL}) {
+    min-width: 336px;
+  }
+  @media (min-width: ${size.desktop}) {
+    min-width: 390px;
+  }
+
 `;
 export const Price = styled.div`
   display: flex;
-  justify-content: center;
+  min-width: 100px;
+  flex: 0 !important;
+  @media (min-width: ${size.laptopL}) {
+    min-width: 100px;
+  }
 `;
 export const BookNow = styled.div`
   @media (max-width: ${size.laptop}) {
@@ -194,7 +216,7 @@ export const TableBody = styled.div`
   padding: 10px;
   gap: 10px;
   @media (max-width: ${size.laptop}) {
-    font-size: 14px;
+    font-size: 14.6px;
   }
 
   & > div {
@@ -225,7 +247,6 @@ export const ColumnOne = styled.div`
   font-weight: 500;
   line-height: 30px;
   color: ${({ theme }) => theme.colors.black};
-  cursor: default;
   white-space: nowrap;
   @media (min-width: ${size.laptop}) {
     font-size: 16px;
@@ -238,7 +259,6 @@ export const ColumnTwo = styled.div`
   font-weight: 500;
   line-height: 30px;
   color: ${({ theme }) => theme.colors.black};
-  cursor: default;
   white-space: nowrap;
   text-align: center;
   @media (min-width: ${size.laptop}) {
@@ -256,18 +276,13 @@ export const ColumnThree = styled.div`
   border-radius: 26px;
   cursor: pointer;
 
-  ul {
+  span {
     display: flex;
     align-items: center;
     margin: 0;
     padding: 0;
-
+    flex: 1;
     input {
-      position: absolute;
-      top: 50%;
-      left: 40%;
-      width: 42%;
-      transform: translate(-50%, -50%);
       border: none;
       outline: none;
       background: none;
@@ -275,21 +290,13 @@ export const ColumnThree = styled.div`
       font-size: 14px;
       font-weight: 600;
       line-height: 24px;
-      cursor: pointer;
       text-align: left;
       transition: all 500ms ease-in-out;
-
+      cursor: pointer;
+      padding-left: 10px;
       :focus {
         outline: none;
         border: none;
-      }
-
-      @media (max-width: ${size.laptop}) {
-        left: 43%
-      }
-      @media (min-width: ${size.laptop}) {
-        left: 48%;
-
       }
     }
 
@@ -297,29 +304,18 @@ export const ColumnThree = styled.div`
       list-style-type: none;
     }
   }
-
-  @media (max-width: ${size.laptop}) {
-    width: 175px;
-    gap: 4px;
-  }
+  min-width: 155px;
 `;
 export const LeftIcon = styled.div`
   background: url(${({ theme }) => theme.icon("bedroom")}) no-repeat 8px center;
   width: 28px;
   height: 38px;
   position: relative;
-  left: 7px;
   align-items: center;
 `;
 export const RightIcon = styled.div`
   display: flex;
   flex-direction: column;
-`;
-export const OptionRightIcon = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: -7px;
 `;
 export const TopUp = styled.div`
   width: 10px;
@@ -371,7 +367,6 @@ export const InnerRoomList = styled.div`
     line-height: 24px;
     height: 40px;
     transition: all 100ms ease-in-out;
-    justify-content: space-between;
     align-items: center;
     border-radius: 30px;
     border: 1px solid transparent;
@@ -390,18 +385,8 @@ export const InnerRoomList = styled.div`
       color: rgba(107, 101, 101, 0.63);
       font-weight: 500;
       font-size: 14px;
-      line-height: 24px;
-      margin: 0 90px 0 0;
-      :hover {
-        color: ${({ theme }) => theme.colors.gray};
-      }
-
-      @media (max-width: ${size.laptop}) {
-        margin-right: 50px;
-      }
-      @media (min-width: ${size.laptop}) {
-        margin-right: 20px;
-      }
+      line-height: 40px;
+      margin: 0 0 0 10px;
     }
 
     :hover {
@@ -410,6 +395,10 @@ export const InnerRoomList = styled.div`
       filter: drop-shadow(1px -2px 4px rgba(0, 0, 0, 0.17));
 
       transition: all 100ms ease-in-out;
+      
+      & h3 {
+        color: ${({ theme }) => theme.colors.gray};
+      }
 
     }
   }
@@ -418,13 +407,12 @@ export const ColumnFour = styled.div`
   font-weight: bold;
   line-height: 30px;
   color: ${({ theme }) => theme.colors.secondaryColor};
-  cursor: default;
   white-space: nowrap;
   font-size: 27px;
   display: flex;
   justify-content: center;
   @media (max-width: ${size.tablet}) {
-    font-size: 24px;
+    font-size: 24.3px;
   }
 `;
 export const ColumnFive = styled.div`
@@ -503,29 +491,16 @@ export const DivView = styled.div`
 `;
 export const CalendarView = styled.div`
   position: absolute;
-  top: 60px;
+  top: 76px;
   left: -10px;
-  background: ${({ theme }) => theme.colors.mainBackground};
   z-index: 20;
-  @media (max-width: ${size.tablet}) {
-    top: 52px
-  }
-  @media (max-width: ${size.laptop}) {
-    top: 55px
-  }
+  
 `;
 export const CalendarViewCheckout = styled.div`
   position: absolute;
-  top: 60px;
+  top: 76px;
   right: -7px;
-  ${({ theme }) => theme.colors.mainBackground};
   z-index: 20;
-  @media (max-width: ${size.tablet}) {
-    top: 52px
-  }
-  @media (max-width: ${size.laptop}) {
-    top: 55px
-  }
 `;
 
 export const PassengerView = styled.div`
@@ -534,7 +509,7 @@ export const PassengerView = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  top: 132%;
+  top: 78px;
   left: 54%;
   transform: translate(-50%, -10%);
   background-color: ${({ theme }) => theme.colors.white};
@@ -544,9 +519,6 @@ export const PassengerView = styled.div`
   z-index: 20;
   border-radius: 25px;
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  @media (max-width: ${size.laptop}) {
-    top: 122%
-  }
 `;
 export const CounterDiv = styled.div`
   display: flex;
@@ -559,9 +531,12 @@ export const CounterBtn = styled.div`
   background-color: ${({ theme }) => theme.colors.offWhite};
   cursor: pointer;
   width: 20px;
+  user-select: none;
   border-radius: 100%;
   box-shadow: ${Shadows.primaryShadow};
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   :hover {
     background-color: ${({ theme }) => theme.colors.primaryColor};
     color: ${({ theme }) => theme.colors.white};
@@ -634,7 +609,6 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   abbr[title] {
-    cursor: default;
   }
 
   .react-calendar button:enabled:hover {
@@ -839,6 +813,7 @@ export const PassengerWrapper = styled.div`
   height: 100%;
   justify-self: stretch;
   flex: 1;
+  cursor: pointer;
   padding: 5px 0;
   :first-child{
     border-top-left-radius: 16px;
@@ -897,6 +872,7 @@ export const CalenderWrapper = styled.div`
   height: 100%;
   justify-self: stretch;
   flex: 1;
+  cursor: pointer;
   :first-child{
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;

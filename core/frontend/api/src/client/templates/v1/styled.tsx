@@ -42,6 +42,7 @@ export const MainWrapper = styled.div`
 
 export const TopContentWrapper = styled.div`
   width: 100%;
+  padding: 114px 0 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;

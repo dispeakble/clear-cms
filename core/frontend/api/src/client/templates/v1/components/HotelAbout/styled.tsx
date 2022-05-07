@@ -8,7 +8,7 @@ export const About = styled.div`
   @media (min-width: ${size.laptopL}) {
     display: flex;
     gap: 20px;
-    padding: 37px 42px;
+    padding: 37px 34px;
   }
 `
 
@@ -19,18 +19,17 @@ export const LeftSection = styled.div`
   @media only screen and (max-width:${size.tablet}){
     padding:10px;
   }
+  
 `
 export const HotelName = styled.div`
   font-weight: 600;
   font-size: 32px;
   line-height: 30px;
-  cursor: default;
 `
 export const HotelRate = styled.div`
   display: flex;
 padding: 5px 0;
   h3 {
-    cursor: default;
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
@@ -45,7 +44,6 @@ export const Description = styled.div`
     font-size: 20px;
     line-height: 40px;
     color: rgba(0, 0, 0, 0.5);
-    cursor: default;
   }
 
   span {
@@ -89,7 +87,6 @@ export const Highlights = styled.div`
   background-size: cover;
   border-radius: 20px;
   padding: 20px 35px;
-  cursor: default;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   position: relative;
   ::before{
@@ -149,13 +146,16 @@ export const Feature = styled.div`
     color: ${({theme}) => theme.colors.white};
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.55);
     list-style: none;
+    & span {
+      flex: 1;
+    }
   }
 `
 export const CheckedIcon = styled.div`
-  width: 26.98px;
-  height: 23.51px;
+  width: 29px;
+  height: 28px;
   position: relative;
-  top: 8px;
+  margin-top: 5px;
   background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
 `;
 

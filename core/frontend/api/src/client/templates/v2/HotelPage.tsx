@@ -1,10 +1,17 @@
 import * as React from "react";
-import { ThemeProvider } from "styled-components";
 import { useState } from "react";
+import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import HotelDetail from "./components/HotelDetail";
 import HotelAbout from "./components/HotelAbout";
-import { GlobalStyle, MainWrapper, StyledContentWrapper } from "./styled";
+import {
+  ContentWrapper,
+  GlobalStyle,
+  MainWrapper,
+  PaperWrapper,
+  StyledContentWrapper,
+  TopContentWrapper
+} from "./styled";
 import Breadcrumbs from "./components/Breadcrumbs";
 import HotelAvailable from "./components/HotelAvailable";
 import moment from "moment";
@@ -125,32 +132,40 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       <GlobalStyle />
       <MainWrapper data-testid="hotel-page-wrapper">
         <Header websiteName={websiteName} />
-        <StyledContentWrapper>
-          <Breadcrumbs />
-          <HotelDetail
-            data={data}
-            handleChildrenMinus={handleChildrenMinus}
-            handleChildrenPlus={handleChildrenPlus}
-            handleInfantsMinus={handleInfantsMinus}
-            handleInfantsPlus={handleInfantsPlus}
-            handleChangeInput={handleChangeInput}
-            handleAdultPlus={handleAdultPlus}
-            handleAdultMinus={handleAdultMinus}
-            handleSearch={handleSearch}
-            handleHotelSearch={handleHotelSearch}
-          />
-          <HotelAbout />
-          <HotelAvailable
-            data={data}
-            handleChildrenMinus={handleChildrenMinus}
-            handleChildrenPlus={handleChildrenPlus}
-            handleInfantsMinus={handleInfantsMinus}
-            handleInfantsPlus={handleInfantsPlus}
-            handleChangeInput={handleChangeInput}
-            handleAdultPlus={handleAdultPlus}
-            handleAdultMinus={handleAdultMinus}
-          />
-        </StyledContentWrapper>
+        <TopContentWrapper>
+          <ContentWrapper>
+            <Breadcrumbs />
+            <HotelDetail
+              data={data}
+              handleChildrenMinus={handleChildrenMinus}
+              handleChildrenPlus={handleChildrenPlus}
+              handleInfantsMinus={handleInfantsMinus}
+              handleInfantsPlus={handleInfantsPlus}
+              handleChangeInput={handleChangeInput}
+              handleAdultPlus={handleAdultPlus}
+              handleAdultMinus={handleAdultMinus}
+              handleSearch={handleSearch}
+              handleHotelSearch={handleHotelSearch}
+            />
+          </ContentWrapper>
+        </TopContentWrapper>
+        <PaperWrapper>
+          <ContentWrapper>
+            <HotelAbout />
+            <HotelAvailable
+              data={data}
+              handleChildrenMinus={handleChildrenMinus}
+              handleChildrenPlus={handleChildrenPlus}
+              handleInfantsMinus={handleInfantsMinus}
+              handleInfantsPlus={handleInfantsPlus}
+              handleChangeInput={handleChangeInput}
+              handleAdultPlus={handleAdultPlus}
+              handleAdultMinus={handleAdultMinus}
+            />
+          </ContentWrapper>
+
+        </PaperWrapper>
+
       </MainWrapper>
     </ThemeProvider>
   );

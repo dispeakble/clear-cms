@@ -36,7 +36,7 @@ Object {
                 class="sc-fFeiMQ bVsXo"
               >
                 <ul
-                  class="sc-bkkeKt boZemS"
+                  class="sc-bkkeKt gbNcS"
                 >
                   <li
                     class="sc-ieecCq kyyBnL"
@@ -56,6 +56,16 @@ Object {
                       href="hotels"
                     >
                       Hotels
+                    </a>
+                  </li>
+                  <li
+                    class="sc-ieecCq kyyBnL"
+                  >
+                    <a
+                      class="sc-dJjYzT kpLWKL"
+                      href="flights"
+                    >
+                      Flights
                     </a>
                   </li>
                   <li
@@ -113,50 +123,1846 @@ Object {
           </div>
         </header>
         <div
-          class="sc-jRQBWg kCTgbP"
+          class="sc-dkPtRN bxHwAf"
         >
           <div
-            class="sc-dFtzxp kTqCii"
+            class="sc-hKwDye gICoIp"
+          >
+            <div
+              class="sc-brSvTw gOGIqA"
+            >
+              <a
+                class="sc-gIDmLj jcTjmN"
+                href="#"
+              >
+                Home
+              </a>
+              <a
+                class="sc-gIDmLj jcTjmN"
+                href="#"
+              >
+                Spain
+              </a>
+              <a
+                class="sc-gIDmLj jcTjmN"
+                href="#"
+              >
+                Tenerife
+              </a>
+              <a
+                class="sc-gIDmLj jcTjmN"
+                href="#"
+              >
+                Adeje
+              </a>
+              <a
+                class="sc-gIDmLj jcTjmN"
+                href="#"
+              >
+                Hotel Victoria (Hotel)
+              </a>
+            </div>
+            <div
+              class="sc-hGPBjI gUrYSJ"
+            >
+              <div
+                class="sc-dlVxhl gaAXMd"
+              >
+                <div
+                  class="sc-kfPuZi jIyBzn"
+                >
+                  Find Deals
+                </div>
+                <div
+                  class="sc-fKVqWL halGUz"
+                >
+                  <div
+                    class="sc-bBHxTw hduzup"
+                  >
+                    <h4
+                      class="sc-bTfYFJ cbIkvu"
+                    >
+                      Destination or Hotel:
+                    </h4>
+                    <div
+                      class="ant-select ant-select-auto-complete ant-select-single ant-select-customize-input ant-select-show-search"
+                      style="width: 100%;"
+                    >
+                      <div
+                        class="ant-select-selector"
+                      >
+                        <span
+                          class="ant-select-selection-search"
+                        >
+                          <div
+                            aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
+                            aria-autocomplete="list"
+                            aria-controls="rc_select_TEST_OR_SSR_list"
+                            aria-haspopup="listbox"
+                            aria-owns="rc_select_TEST_OR_SSR_list"
+                            autocomplete="off"
+                            class="sc-iwjdpV gYJTsn ant-select-selection-search-input"
+                            id="rc_select_TEST_OR_SSR"
+                            role="combobox"
+                            type="search"
+                            value=""
+                          >
+                            <div
+                              class="sc-cxpSdN gmTYOC"
+                            />
+                            <input
+                              placeholder="Hotel Victoria"
+                              type="search"
+                              value=""
+                            />
+                          </div>
+                        </span>
+                        <span
+                          class="ant-select-selection-placeholder"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sc-bBHxTw hduzup"
+                  >
+                    <div
+                      class="sc-cNKqjZ hWBRrY"
+                    >
+                      <h4
+                        class="sc-bTfYFJ cbIkvu"
+                      >
+                        Check-in date:
+                      </h4>
+                      <div
+                        class="sc-iwjdpV gYJTsn"
+                      >
+                        <div
+                          class="sc-llYSUQ jNtYvj"
+                        />
+                        <input
+                          placeholder="Saturday, 12 March..."
+                          readonly=""
+                          style="cursor: pointer;"
+                          value="Saturday, 07 May, 2022"
+                        />
+                        <div
+                          class="sc-iJKOTD eKjfKo"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sc-bBHxTw hduzup"
+                  >
+                    <div
+                      class="sc-cNKqjZ hWBRrY"
+                    >
+                      <h4
+                        class="sc-bTfYFJ cbIkvu"
+                      >
+                        Check-out date:
+                      </h4>
+                      <div
+                        class="sc-iwjdpV gYJTsn"
+                      >
+                        <div
+                          class="sc-llYSUQ jNtYvj"
+                        />
+                        <input
+                          placeholder="Saturday, 13 March..."
+                          readonly=""
+                          style="cursor: pointer;"
+                          value="Sunday, 08 May, 2022"
+                        />
+                        <div
+                          class="sc-iJKOTD eKjfKo"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sc-bBHxTw hduzup"
+                  >
+                    <div
+                      class="sc-cNKqjZ hWBRrY"
+                    >
+                      <h4
+                        class="sc-bTfYFJ cbIkvu"
+                      >
+                        Details:
+                      </h4>
+                      <div
+                        class="sc-bYoBSM fuPsFS"
+                      >
+                        <div
+                          class="sc-kLwhqv iQEZZC"
+                        >
+                          <div
+                            class="sc-ikJyIC gNIFwX"
+                          />
+                          <div
+                            class="sc-jJoQJp jUWPqW"
+                          >
+                            Adult-
+                            1
+                          </div>
+                        </div>
+                        <div
+                          class="sc-kLwhqv iQEZZC"
+                        >
+                          <div
+                            class="sc-hiCibw cIBIdJ"
+                          />
+                          <div
+                            class="sc-jJoQJp jUWPqW"
+                          >
+                            Child-
+                            0
+                          </div>
+                        </div>
+                        <div
+                          class="sc-kLwhqv iQEZZC"
+                        >
+                          <div
+                            class="sc-gWXbKe dfECYH"
+                          />
+                          <div
+                            class="sc-jJoQJp jUWPqW"
+                          >
+                            infant-
+                            0
+                          </div>
+                        </div>
+                        <div
+                          style="position: relative; left: 7px;"
+                        >
+                          <div
+                            class="sc-iJKOTD eKjfKo"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sc-giYglK bGzjUR"
+                  >
+                    <button>
+                      <div
+                        class="sc-ezbkAF gMIGEa"
+                      />
+                      <a>
+                        <span>
+                          New Search
+                        </span>
+                      </a>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="sc-cCcXHH cAFTPG"
+              >
+                <div
+                  class="sc-cidDSM iNvNzh"
+                >
+                  <div
+                    class="sc-iAKWXU"
+                  >
+                    <div
+                      class="sc-jcFjpl iNrIOj"
+                    >
+                      Hotel Victoria
+                    </div>
+                    <div
+                      class="sc-efQSVx ciloyy"
+                    >
+                      <ul
+                        class="ant-rate ant-rate-disabled"
+                        role="radiogroup"
+                        style="font-size: 30px;"
+                        tabindex="-1"
+                      >
+                        <li
+                          class="ant-rate-star ant-rate-star-full"
+                        >
+                          <div
+                            aria-checked="true"
+                            aria-posinset="1"
+                            aria-setsize="5"
+                            role="radio"
+                            tabindex="-1"
+                          >
+                            <div
+                              class="ant-rate-star-first"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                            <div
+                              class="ant-rate-star-second"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                        <li
+                          class="ant-rate-star ant-rate-star-full"
+                        >
+                          <div
+                            aria-checked="true"
+                            aria-posinset="2"
+                            aria-setsize="5"
+                            role="radio"
+                            tabindex="-1"
+                          >
+                            <div
+                              class="ant-rate-star-first"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                            <div
+                              class="ant-rate-star-second"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                        <li
+                          class="ant-rate-star ant-rate-star-full"
+                        >
+                          <div
+                            aria-checked="true"
+                            aria-posinset="3"
+                            aria-setsize="5"
+                            role="radio"
+                            tabindex="-1"
+                          >
+                            <div
+                              class="ant-rate-star-first"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                            <div
+                              class="ant-rate-star-second"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                        <li
+                          class="ant-rate-star ant-rate-star-full"
+                        >
+                          <div
+                            aria-checked="true"
+                            aria-posinset="4"
+                            aria-setsize="5"
+                            role="radio"
+                            tabindex="-1"
+                          >
+                            <div
+                              class="ant-rate-star-first"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                            <div
+                              class="ant-rate-star-second"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                        <li
+                          class="ant-rate-star ant-rate-star-zero"
+                        >
+                          <div
+                            aria-checked="false"
+                            aria-posinset="5"
+                            aria-setsize="5"
+                            role="radio"
+                            tabindex="-1"
+                          >
+                            <div
+                              class="ant-rate-star-first"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                            <div
+                              class="ant-rate-star-second"
+                            >
+                              <span
+                                aria-label="star"
+                                class="anticon anticon-star"
+                                role="img"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  data-icon="star"
+                                  fill="currentColor"
+                                  focusable="false"
+                                  height="1em"
+                                  viewBox="64 64 896 896"
+                                  width="1em"
+                                >
+                                  <path
+                                    d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                                  />
+                                </svg>
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="sc-cTAqQK cKUaHS"
+                    >
+                      <div
+                        class="sc-jObWnj jPMGuq"
+                      >
+                        Bischofshofen, 4, 38660 Adeje, Spain
+                      </div>
+                      <div
+                        class="sc-dPiLbb dmjdoj"
+                      >
+                        <a>
+                          Show Map
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sc-caiLqq kaaEEG"
+                  >
+                    <button>
+                      <span
+                        class="sc-iUKqMP fVXedx"
+                      />
+                      <a>
+                        <span>
+                          View Prices
+                        </span>
+                      </a>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="sc-bBHHxi hA-Dnns"
+                >
+                  <div
+                    class="sc-hOGkXu eAViTg"
+                  >
+                    <div
+                      aria-live="polite"
+                      class="image-gallery"
+                    >
+                      <div
+                        class="image-gallery-content bottom"
+                      >
+                        <div
+                          class="image-gallery-slide-wrapper bottom"
+                        >
+                          <button
+                            aria-label="Previous Slide"
+                            class="image-gallery-icon image-gallery-left-nav"
+                            type="button"
+                          >
+                            <svg
+                              class="image-gallery-svg"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="1"
+                              viewBox="6 0 12 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polyline
+                                points="15 18 9 12 15 6"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            aria-label="Next Slide"
+                            class="image-gallery-icon image-gallery-right-nav"
+                            type="button"
+                          >
+                            <svg
+                              class="image-gallery-svg"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="1"
+                              viewBox="6 0 12 24"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <polyline
+                                points="9 18 15 12 9 6"
+                              />
+                            </svg>
+                          </button>
+                          <div
+                            class="image-gallery-swipe"
+                          >
+                            <div
+                              class="image-gallery-slides"
+                            >
+                              <div
+                                aria-label="Go to Slide 1"
+                                class="image-gallery-slide  center "
+                                role="button"
+                                style="display: inherit; transform: translate3d(0%, 0, 0);"
+                                tabindex="-1"
+                              >
+                                <div
+                                  style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                                >
+                                   
+                                </div>
+                              </div>
+                              <div
+                                aria-label="Go to Slide 2"
+                                class="image-gallery-slide  right "
+                                role="button"
+                                style="display: inherit; transform: translate3d(100%, 0, 0);"
+                                tabindex="-1"
+                              >
+                                <div
+                                  style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                                >
+                                   
+                                </div>
+                              </div>
+                              <div
+                                aria-label="Go to Slide 3"
+                                class="image-gallery-slide  left "
+                                role="button"
+                                style="display: inherit; transform: translate3d(-100%, 0, 0);"
+                                tabindex="-1"
+                              >
+                                <div
+                                  style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
+                                >
+                                   
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      id="vertical-slider-enlargeImage"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="sc-eCImPb gGDGYW"
+        >
+          <div
+            class="sc-hKwDye gICoIp"
+          >
+            <div
+              class="sc-dtMgUX cJGfrH"
+            >
+              <div
+                class="sc-cZMNgc kgutWd"
+              >
+                <div
+                  class="sc-jUosCB fJYmZx"
+                >
+                  Hotel Victoria, Adeje, Spain 
+                </div>
+                <div
+                  class="sc-jQrDum eUcPCi"
+                >
+                  <ul
+                    class="ant-rate ant-rate-disabled sc-dFtzxp cwpWWb"
+                    role="radiogroup"
+                    style="font-size: 30px;"
+                    tabindex="-1"
+                  >
+                    <li
+                      class="ant-rate-star ant-rate-star-full"
+                    >
+                      <div
+                        aria-checked="true"
+                        aria-posinset="1"
+                        aria-setsize="5"
+                        role="radio"
+                        tabindex="-1"
+                      >
+                        <div
+                          class="ant-rate-star-first"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div
+                          class="ant-rate-star-second"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="ant-rate-star ant-rate-star-full"
+                    >
+                      <div
+                        aria-checked="true"
+                        aria-posinset="2"
+                        aria-setsize="5"
+                        role="radio"
+                        tabindex="-1"
+                      >
+                        <div
+                          class="ant-rate-star-first"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div
+                          class="ant-rate-star-second"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="ant-rate-star ant-rate-star-full"
+                    >
+                      <div
+                        aria-checked="true"
+                        aria-posinset="3"
+                        aria-setsize="5"
+                        role="radio"
+                        tabindex="-1"
+                      >
+                        <div
+                          class="ant-rate-star-first"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div
+                          class="ant-rate-star-second"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="ant-rate-star ant-rate-star-full"
+                    >
+                      <div
+                        aria-checked="true"
+                        aria-posinset="4"
+                        aria-setsize="5"
+                        role="radio"
+                        tabindex="-1"
+                      >
+                        <div
+                          class="ant-rate-star-first"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div
+                          class="ant-rate-star-second"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li
+                      class="ant-rate-star ant-rate-star-zero"
+                    >
+                      <div
+                        aria-checked="false"
+                        aria-posinset="5"
+                        aria-setsize="5"
+                        role="radio"
+                        tabindex="-1"
+                      >
+                        <div
+                          class="ant-rate-star-first"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                        <div
+                          class="ant-rate-star-second"
+                        >
+                          <span
+                            aria-label="star"
+                            class="anticon anticon-star"
+                            role="img"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              data-icon="star"
+                              fill="currentColor"
+                              focusable="false"
+                              height="1em"
+                              viewBox="64 64 896 896"
+                              width="1em"
+                            >
+                              <path
+                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
+                              />
+                            </svg>
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <h3>
+                    (4 Stars)
+                  </h3>
+                </div>
+                <div
+                  class="sc-fvxzrP kJolCl"
+                >
+                  <div
+                    class="sc-lcepkR ZZznt"
+                    style="padding-bottom: 20px;"
+                  >
+                    Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                    <br />
+                     magna liqua. Lorem ipsum dolore magn
+                  </div>
+                </div>
+              </div>
+              <div
+                class="sc-fbyfCU ixMlXZ"
+              >
+                <div
+                  class="sc-GEbAx lnlTSS"
+                  id="showmap"
+                >
+                  <div
+                    style="width: 100%; height: 100%; margin: 0px; padding: 0px; position: relative;"
+                  >
+                    <div
+                      style="width: 100%; height: 100%; left: 0px; top: 0px; margin: 0px; padding: 0px; position: absolute;"
+                    />
+                    <div
+                      style="width: 50%; height: 50%; left: 50%; top: 50%; margin: 0px; padding: 0px; position: absolute;"
+                    >
+                      <div
+                        style="width: 100%; height: 100%; left: 0px; top: 0px; margin: 0px; padding: 0px; position: absolute;"
+                      >
+                        <div
+                          style="width: 0px; height: 0px; left: 0px; top: 0px; background-color: transparent; position: absolute;"
+                        >
+                          <div>
+                            🔴
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="sc-gsNilK kvXGFk"
+                >
+                  <div
+                    class="sc-bXTejn hFuNXs"
+                  >
+                    Hotel Victoria Highlights
+                  </div>
+                  <div
+                    class="sc-eGRUor dYUQEW"
+                  >
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Breakfast info Continental, Buffet
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Sea view
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Garden view
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Terrace
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Pool view
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Quiet street view
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        Free parking
+                      </span>
+                    </li>
+                    <li>
+                      <div
+                        class="sc-ctqQKy khdcUp"
+                      />
+                      <span>
+                        ATM Exchange
+                      </span>
+                    </li>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="sc-ilfuhL kBalRS"
+            >
+              <div
+                class="sc-evcjhq jLqORU"
+              >
+                Available Rooms for 
+                Sat 07 May
+                 - 
+                Sun 08 May,
+                 
+                1
+                 adults, 
+                0
+                 children, 
+                0
+                 infants 
+              </div>
+              <div
+                class="sc-uojGG ccgsVG"
+              >
+                <div
+                  class="sc-bilyIR iduGAo"
+                >
+                  <div
+                    class="sc-eGPXGI fnSwzn"
+                  >
+                    <div
+                      class="sc-iWVNaa dMwoHX"
+                    >
+                      <div
+                        class="sc-kTLmzF ggbTws"
+                      >
+                        <div
+                          class="sc-djWRfJ hHwcOC"
+                        >
+                          <div>
+                            <div
+                              class="sc-fHeRUh dBIPZj"
+                            />
+                          </div>
+                          <div
+                            class="sc-avest lmioUZ"
+                          >
+                            <div
+                              class="sc-kmQMED bcbHGO"
+                            >
+                              Check-in
+                            </div>
+                            <p>
+                              <strong>
+                                07 May , Sat
+                                  
+                              </strong>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="sc-iWVNaa dMwoHX"
+                    >
+                      <div
+                        class="sc-kTLmzF ggbTws"
+                      >
+                        <div
+                          class="sc-djWRfJ hHwcOC"
+                        >
+                          <div>
+                            <div
+                              class="sc-XxNYO ivTjTv"
+                            />
+                          </div>
+                          <div
+                            class="sc-avest lmioUZ"
+                          >
+                            <div
+                              class="sc-kmQMED bcbHGO"
+                            >
+                              Check-out
+                            </div>
+                            <p>
+                              <strong>
+                                08 May , Sun
+                                 
+                              </strong>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="sc-hAcGzb gtacPd"
+                  >
+                    <div
+                      class="sc-gIBqdA jlVzme"
+                    >
+                      <div
+                        class="sc-kTLmzF ggbTws"
+                      >
+                        <div
+                          class="sc-gslxeA fwdMRZ"
+                        >
+                          <div
+                            class="sc-fyrocj keOayG"
+                          >
+                            voila
+                            <span
+                              class="sc-iIUQWv jKciXo"
+                            >
+                              Adults
+                            </span>
+                            <div
+                              class="sc-kYHfwS kmTRXa"
+                            />
+                          </div>
+                          <div
+                            class="sc-eWfVMQ drScTc"
+                          >
+                            1
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="sc-gIBqdA jlVzme"
+                    >
+                      <div
+                        class="sc-kTLmzF ggbTws"
+                      >
+                        <div
+                          class="sc-gslxeA fwdMRZ"
+                        >
+                          <div
+                            class="sc-fyrocj keOayG"
+                          >
+                            <div
+                              class="sc-dtDOqo hqAsOQ"
+                            />
+                            <span
+                              class="sc-iIUQWv jKciXo"
+                            >
+                              Children
+                            </span>
+                            <div
+                              class="sc-kYHfwS kmTRXa"
+                            />
+                          </div>
+                          <div
+                            class="sc-eWfVMQ drScTc"
+                          >
+                            0
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="sc-gIBqdA jlVzme"
+                    >
+                      <div
+                        class="sc-kTLmzF ggbTws"
+                      >
+                        <div
+                          class="sc-gslxeA fwdMRZ"
+                        >
+                          <div
+                            class="sc-fyrocj keOayG"
+                          >
+                            <div
+                              class="sc-dkYRCH la-DkuX"
+                            />
+                            <span
+                              class="sc-iIUQWv jKciXo"
+                            >
+                              Infants
+                            </span>
+                            <div
+                              class="sc-kYHfwS kmTRXa"
+                            />
+                          </div>
+                          <div
+                            class="sc-eWfVMQ drScTc"
+                          >
+                            0
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="sc-xiLah bPjRxt"
+                  id="prices"
+                >
+                  <button>
+                    <div
+                      class="sc-dVNjXY iCzNex"
+                    />
+                    <span>
+                      Refresh Prices
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="sc-jHkVzv fEskDm"
+              >
+                <div
+                  class="sc-bQtKYq gcpQbN"
+                >
+                  <div
+                    class="sc-fXEqDS dQCRVI"
+                  >
+                    Room Type
+                  </div>
+                  <div
+                    class="sc-FNXRL dCBuNa"
+                  >
+                    Meals
+                  </div>
+                  <div
+                    class="sc-jWUzzU gYSJVI"
+                  >
+                    Rooms
+                  </div>
+                  <div
+                    class="sc-eFegNN cjpAOj"
+                  >
+                    Price
+                  </div>
+                </div>
+                <div
+                  class="sc-lkgTHX bWyOCq"
+                >
+                  <div
+                    class="sc-dUbtfd jCgEVO"
+                  >
+                    <div
+                      class="sc-jlRLRk gvYohQ"
+                    />
+                    Premium Family Room 
+                    1
+                  </div>
+                  <div
+                    class="sc-htJRVC eaWYDP"
+                  >
+                    Breakfast included 
+                    1
+                  </div>
+                  <div
+                    style="position: relative;"
+                  >
+                    <div
+                      class="sc-cbTzjv dCVZqU"
+                    >
+                      <div
+                        class="sc-hjGZqJ QUyPr"
+                      />
+                      <span>
+                        <input
+                          placeholder="1 Rooms"
+                          readonly=""
+                          type="text"
+                          value="1 Room"
+                        />
+                      </span>
+                      <div
+                        class="sc-fXeWAj hPPEPe"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="sc-gjNHFA bqrfPm"
+                  >
+                    10
+                     €
+                  </div>
+                  <div
+                    class="sc-eXlEPa bbMAVl"
+                  />
+                  <div
+                    class="sc-fmciRz clJMDc"
+                  >
+                    <button>
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="sc-lkgTHX bWyOCq"
+                >
+                  <div
+                    class="sc-dUbtfd jCgEVO"
+                  >
+                    <div
+                      class="sc-jlRLRk gvYohQ"
+                    />
+                    Premium Family Room 
+                    2
+                  </div>
+                  <div
+                    class="sc-htJRVC eaWYDP"
+                  >
+                    Breakfast included 
+                    2
+                  </div>
+                  <div
+                    style="position: relative;"
+                  >
+                    <div
+                      class="sc-cbTzjv dCVZqU"
+                    >
+                      <div
+                        class="sc-hjGZqJ QUyPr"
+                      />
+                      <span>
+                        <input
+                          placeholder="1 Rooms"
+                          readonly=""
+                          type="text"
+                          value="2 Rooms"
+                        />
+                      </span>
+                      <div
+                        class="sc-fXeWAj hPPEPe"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="sc-gjNHFA bqrfPm"
+                  >
+                    20
+                     €
+                  </div>
+                  <div
+                    class="sc-eXlEPa bbMAVl"
+                  />
+                  <div
+                    class="sc-fmciRz clJMDc"
+                  >
+                    <button>
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="sc-lkgTHX bWyOCq"
+                >
+                  <div
+                    class="sc-dUbtfd jCgEVO"
+                  >
+                    <div
+                      class="sc-jlRLRk gvYohQ"
+                    />
+                    Premium Family Room 
+                    3
+                  </div>
+                  <div
+                    class="sc-htJRVC eaWYDP"
+                  >
+                    Breakfast included 
+                    3
+                  </div>
+                  <div
+                    style="position: relative;"
+                  >
+                    <div
+                      class="sc-cbTzjv dCVZqU"
+                    >
+                      <div
+                        class="sc-hjGZqJ QUyPr"
+                      />
+                      <span>
+                        <input
+                          placeholder="1 Rooms"
+                          readonly=""
+                          type="text"
+                          value="3 Rooms"
+                        />
+                      </span>
+                      <div
+                        class="sc-fXeWAj hPPEPe"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="sc-gjNHFA bqrfPm"
+                  >
+                    30
+                     €
+                  </div>
+                  <div
+                    class="sc-eXlEPa bbMAVl"
+                  />
+                  <div
+                    class="sc-fmciRz clJMDc"
+                  >
+                    <button>
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+                <div
+                  class="sc-lkgTHX bWyOCq"
+                >
+                  <div
+                    class="sc-dUbtfd jCgEVO"
+                  >
+                    <div
+                      class="sc-jlRLRk gvYohQ"
+                    />
+                    Premium Family Room 
+                    4
+                  </div>
+                  <div
+                    class="sc-htJRVC eaWYDP"
+                  >
+                    Breakfast included 
+                    4
+                  </div>
+                  <div
+                    style="position: relative;"
+                  >
+                    <div
+                      class="sc-cbTzjv dCVZqU"
+                    >
+                      <div
+                        class="sc-hjGZqJ QUyPr"
+                      />
+                      <span>
+                        <input
+                          placeholder="1 Rooms"
+                          readonly=""
+                          type="text"
+                          value="4 Rooms"
+                        />
+                      </span>
+                      <div
+                        class="sc-fXeWAj hPPEPe"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="sc-gjNHFA bqrfPm"
+                  >
+                    40
+                     €
+                  </div>
+                  <div
+                    class="sc-eXlEPa bbMAVl"
+                  />
+                  <div
+                    class="sc-fmciRz clJMDc"
+                  >
+                    <button>
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="sc-gsDKAQ jrzzWD"
+      data-testid="hotel-page-wrapper"
+    >
+      <header
+        class="sc-pVTFL dzrkqC"
+        data-testid="header-wrapper"
+      >
+        <div
+          class="sc-jrQzAO bIrpKo"
+        >
+          <div
+            class="sc-kDTinF deNQkW"
           >
             <a
-              class="sc-brSvTw bEgKRu"
+              href="/"
+            >
+              <div
+                class="sc-bdvvtL eukWAO"
+              >
+                voila
+              </div>
+            </a>
+          </div>
+          <div
+            class="sc-iqseJM fAlRWg"
+          >
+            <div
+              class="sc-fFeiMQ bVsXo"
+            >
+              <ul
+                class="sc-bkkeKt gbNcS"
+              >
+                <li
+                  class="sc-ieecCq kyyBnL"
+                >
+                  <a
+                    class="sc-dJjYzT kpLWKL"
+                    href="activities"
+                  >
+                    Activities
+                  </a>
+                </li>
+                <li
+                  class="sc-ieecCq kyyBnL"
+                >
+                  <a
+                    class="sc-dJjYzT kpLWKL"
+                    href="hotels"
+                  >
+                    Hotels
+                  </a>
+                </li>
+                <li
+                  class="sc-ieecCq kyyBnL"
+                >
+                  <a
+                    class="sc-dJjYzT kpLWKL"
+                    href="flights"
+                  >
+                    Flights
+                  </a>
+                </li>
+                <li
+                  class="sc-ieecCq kyyBnL"
+                >
+                  <a
+                    class="sc-dJjYzT kpLWKL"
+                    href="packages"
+                  >
+                    Packages
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="sc-bqiRlB kULby"
+          >
+            <div
+              class="sc-hBUSln jiiKuZ"
+            >
+              <button
+                class="sc-ksdxgE iikZMh"
+              >
+                 
+                <svg
+                  fill="currentColor"
+                  height="1em"
+                  stroke="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 24 24"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
+                  />
+                </svg>
+              </button>
+              <div
+                class="sc-fotOHu izcTzM"
+              />
+            </div>
+          </div>
+          <div
+            class="sc-crHmcD lgHdyQ"
+          >
+            <input
+              class="sc-egiyK dSgPyp"
+              data-testid="header-search-input"
+              placeholder="Search"
+              type="search"
+            />
+          </div>
+        </div>
+      </header>
+      <div
+        class="sc-dkPtRN bxHwAf"
+      >
+        <div
+          class="sc-hKwDye gICoIp"
+        >
+          <div
+            class="sc-brSvTw gOGIqA"
+          >
+            <a
+              class="sc-gIDmLj jcTjmN"
               href="#"
             >
               Home
             </a>
             <a
-              class="sc-brSvTw bEgKRu"
+              class="sc-gIDmLj jcTjmN"
               href="#"
             >
               Spain
             </a>
             <a
-              class="sc-brSvTw bEgKRu"
+              class="sc-gIDmLj jcTjmN"
               href="#"
             >
               Tenerife
             </a>
             <a
-              class="sc-brSvTw bEgKRu"
+              class="sc-gIDmLj jcTjmN"
               href="#"
             >
               Adeje
             </a>
             <a
-              class="sc-brSvTw bEgKRu"
+              class="sc-gIDmLj jcTjmN"
               href="#"
             >
               Hotel Victoria (Hotel)
             </a>
           </div>
           <div
-            class="sc-hGPBjI DGsrU"
+            class="sc-hGPBjI gUrYSJ"
           >
             <div
-              class="sc-dlVxhl gLZaFv"
+              class="sc-dlVxhl gaAXMd"
             >
               <div
-                class="sc-kfPuZi edWysR"
+                class="sc-kfPuZi jIyBzn"
               >
                 Find Deals
               </div>
@@ -166,7 +1972,9 @@ Object {
                 <div
                   class="sc-bBHxTw hduzup"
                 >
-                  <h4>
+                  <h4
+                    class="sc-bTfYFJ cbIkvu"
+                  >
                     Destination or Hotel:
                   </h4>
                   <div
@@ -186,14 +1994,14 @@ Object {
                           aria-haspopup="listbox"
                           aria-owns="rc_select_TEST_OR_SSR_list"
                           autocomplete="off"
-                          class="sc-iwjdpV jgByqC ant-select-selection-search-input"
+                          class="sc-iwjdpV gYJTsn ant-select-selection-search-input"
                           id="rc_select_TEST_OR_SSR"
                           role="combobox"
                           type="search"
                           value=""
                         >
                           <div
-                            class="sc-cxpSdN knJMtS"
+                            class="sc-cxpSdN gmTYOC"
                           />
                           <input
                             placeholder="Hotel Victoria"
@@ -214,19 +2022,22 @@ Object {
                   <div
                     class="sc-cNKqjZ hWBRrY"
                   >
-                    <h4>
+                    <h4
+                      class="sc-bTfYFJ cbIkvu"
+                    >
                       Check-in date:
                     </h4>
                     <div
-                      class="sc-iwjdpV jgByqC"
+                      class="sc-iwjdpV gYJTsn"
                     >
                       <div
-                        class="sc-llYSUQ dPKHkU"
+                        class="sc-llYSUQ jNtYvj"
                       />
                       <input
                         placeholder="Saturday, 12 March..."
                         readonly=""
-                        value="Wednesday, 04 May, 2022"
+                        style="cursor: pointer;"
+                        value="Saturday, 07 May, 2022"
                       />
                       <div
                         class="sc-iJKOTD eKjfKo"
@@ -240,19 +2051,22 @@ Object {
                   <div
                     class="sc-cNKqjZ hWBRrY"
                   >
-                    <h4>
+                    <h4
+                      class="sc-bTfYFJ cbIkvu"
+                    >
                       Check-out date:
                     </h4>
                     <div
-                      class="sc-iwjdpV jgByqC"
+                      class="sc-iwjdpV gYJTsn"
                     >
                       <div
-                        class="sc-llYSUQ dPKHkU"
+                        class="sc-llYSUQ jNtYvj"
                       />
                       <input
                         placeholder="Saturday, 13 March..."
                         readonly=""
-                        value="Thursday, 05 May, 2022"
+                        style="cursor: pointer;"
+                        value="Sunday, 08 May, 2022"
                       />
                       <div
                         class="sc-iJKOTD eKjfKo"
@@ -266,46 +2080,48 @@ Object {
                   <div
                     class="sc-cNKqjZ hWBRrY"
                   >
-                    <h4>
+                    <h4
+                      class="sc-bTfYFJ cbIkvu"
+                    >
                       Details:
                     </h4>
                     <div
-                      class="sc-bYoBSM gIltlx"
+                      class="sc-bYoBSM fuPsFS"
                     >
                       <div
-                        class="sc-kLwhqv jMdBzE"
+                        class="sc-kLwhqv iQEZZC"
                       >
                         <div
                           class="sc-ikJyIC gNIFwX"
                         />
                         <div
-                          class="sc-jJoQJp jOYlip"
+                          class="sc-jJoQJp jUWPqW"
                         >
                           Adult-
                           1
                         </div>
                       </div>
                       <div
-                        class="sc-kLwhqv jMdBzE"
+                        class="sc-kLwhqv iQEZZC"
                       >
                         <div
                           class="sc-hiCibw cIBIdJ"
                         />
                         <div
-                          class="sc-jJoQJp jOYlip"
+                          class="sc-jJoQJp jUWPqW"
                         >
                           Child-
                           0
                         </div>
                       </div>
                       <div
-                        class="sc-kLwhqv jMdBzE"
+                        class="sc-kLwhqv iQEZZC"
                       >
                         <div
                           class="sc-gWXbKe dfECYH"
                         />
                         <div
-                          class="sc-jJoQJp jOYlip"
+                          class="sc-jJoQJp jUWPqW"
                         >
                           infant-
                           0
@@ -341,21 +2157,21 @@ Object {
               class="sc-cCcXHH cAFTPG"
             >
               <div
-                class="sc-cidDSM hKAbun"
+                class="sc-cidDSM iNvNzh"
               >
                 <div
                   class="sc-iAKWXU"
                 >
                   <div
-                    class="sc-jcFjpl kezLMj"
+                    class="sc-jcFjpl iNrIOj"
                   >
                     Hotel Victoria
                   </div>
                   <div
-                    class="sc-efQSVx dwIeHE"
+                    class="sc-efQSVx ciloyy"
                   >
                     <ul
-                      class="ant-rate ant-rate-disabled sc-bTfYFJ glmrnm"
+                      class="ant-rate ant-rate-disabled"
                       role="radiogroup"
                       style="font-size: 30px;"
                       tabindex="-1"
@@ -653,10 +2469,10 @@ Object {
                     </ul>
                   </div>
                   <div
-                    class="sc-cTAqQK gbYKra"
+                    class="sc-cTAqQK cKUaHS"
                   >
                     <div
-                      class="sc-jObWnj kThCKA"
+                      class="sc-jObWnj jPMGuq"
                     >
                       Bischofshofen, 4, 38660 Adeje, Spain
                     </div>
@@ -670,7 +2486,7 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="sc-caiLqq kySYtU"
+                  class="sc-caiLqq kaaEEG"
                 >
                   <button>
                     <span
@@ -688,7 +2504,7 @@ Object {
                 class="sc-bBHHxi hA-Dnns"
               >
                 <div
-                  class="sc-kHOZwM houbOl"
+                  class="sc-hOGkXu eAViTg"
                 >
                   <div
                     aria-live="polite"
@@ -797,22 +2613,30 @@ Object {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div
+        class="sc-eCImPb gGDGYW"
+      >
+        <div
+          class="sc-hKwDye gICoIp"
+        >
           <div
-            class="sc-hOGkXu fhsUuf"
+            class="sc-dtMgUX cJGfrH"
           >
             <div
-              class="sc-dtMgUX hZKvmW"
+              class="sc-cZMNgc kgutWd"
             >
               <div
-                class="sc-cZMNgc bbQJPb"
+                class="sc-jUosCB fJYmZx"
               >
                 Hotel Victoria, Adeje, Spain 
               </div>
               <div
-                class="sc-jUosCB dkuRlj"
+                class="sc-jQrDum eUcPCi"
               >
                 <ul
-                  class="ant-rate ant-rate-disabled sc-ctqQKy gcvIIy"
+                  class="ant-rate ant-rate-disabled sc-dFtzxp cwpWWb"
                   role="radiogroup"
                   style="font-size: 30px;"
                   tabindex="-1"
@@ -1113,28 +2937,87 @@ Object {
                 </h3>
               </div>
               <div
-                class="sc-jQrDum ffnrQm"
+                class="sc-fvxzrP kJolCl"
               >
                 <div
-                  class="sc-lcepkR kuLHKF"
+                  class="sc-lcepkR ZZznt"
                   style="padding-bottom: 20px;"
                 >
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
+                  Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
                   <br />
-                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor.
                   <br />
-                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn adipisicing elit, sed do eiusmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore usmod tempor.
+                  <br />
+                   magna liqua. Lorem ipsum dolore magn
                 </div>
-                <span>
-                  read more...
-                </span>
               </div>
             </div>
             <div
-              class="sc-fvxzrP eUjcPw"
+              class="sc-fbyfCU ixMlXZ"
             >
               <div
-                class="sc-fbyfCU bFPOBC"
+                class="sc-GEbAx lnlTSS"
                 id="showmap"
               >
                 <div
@@ -1161,78 +3044,94 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-GEbAx iRrTbn"
+                class="sc-gsNilK kvXGFk"
               >
                 <div
-                  class="sc-gsNilK dnQOin"
+                  class="sc-bXTejn hFuNXs"
                 >
                   Hotel Victoria Highlights
                 </div>
                 <div
-                  class="sc-bXTejn ctNYlI"
+                  class="sc-eGRUor dYUQEW"
                 >
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Breakfast info Continental, Buffet
+                    <span>
+                      Breakfast info Continental, Buffet
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Sea view
+                    <span>
+                      Sea view
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Garden view
+                    <span>
+                      Garden view
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Terrace
+                    <span>
+                      Terrace
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Pool view
+                    <span>
+                      Pool view
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Quiet street view
+                    <span>
+                      Quiet street view
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    Free parking
+                    <span>
+                      Free parking
+                    </span>
                   </li>
                   <li>
                     <div
-                      class="sc-eGRUor iyvsVz"
+                      class="sc-ctqQKy khdcUp"
                     />
-                    ATM Exchange
+                    <span>
+                      ATM Exchange
+                    </span>
                   </li>
                 </div>
               </div>
             </div>
           </div>
           <div
-            class="sc-XxNYO bNbHSb"
+            class="sc-ilfuhL kBalRS"
           >
             <div
-              class="sc-gIDmLj fCjEqi"
+              class="sc-evcjhq jLqORU"
             >
               Available Rooms for 
-              Wed 04 May
+              Sat 07 May
                - 
-              Thu 05 May,
+              Sun 08 May,
                
               1
                adults, 
@@ -1242,16 +3141,16 @@ Object {
                infants 
             </div>
             <div
-              class="sc-ilfuhL geLcAg"
+              class="sc-uojGG ccgsVG"
             >
               <div
-                class="sc-uojGG cdvStN"
+                class="sc-bilyIR iduGAo"
               >
                 <div
-                  class="sc-bilyIR iKLVvm"
+                  class="sc-eGPXGI fnSwzn"
                 >
                   <div
-                    class="sc-iWVNaa caJakx"
+                    class="sc-iWVNaa dMwoHX"
                   >
                     <div
                       class="sc-kTLmzF ggbTws"
@@ -1261,7 +3160,7 @@ Object {
                       >
                         <div>
                           <div
-                            class="sc-evcjhq jnJyBw"
+                            class="sc-fHeRUh dBIPZj"
                           />
                         </div>
                         <div
@@ -1274,7 +3173,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              04 May , Wed
+                              07 May , Sat
                                 
                             </strong>
                           </p>
@@ -1283,7 +3182,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="sc-iWVNaa caJakx"
+                    class="sc-iWVNaa dMwoHX"
                   >
                     <div
                       class="sc-kTLmzF ggbTws"
@@ -1293,7 +3192,7 @@ Object {
                       >
                         <div>
                           <div
-                            class="sc-dkYRCH eXACRI"
+                            class="sc-XxNYO ivTjTv"
                           />
                         </div>
                         <div
@@ -1306,7 +3205,7 @@ Object {
                           </div>
                           <p>
                             <strong>
-                              05 May , Thu
+                              08 May , Sun
                                
                             </strong>
                           </p>
@@ -1316,10 +3215,10 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="sc-eGPXGI iQIWUo"
+                  class="sc-hAcGzb gtacPd"
                 >
                   <div
-                    class="sc-gIBqdA lphjsM"
+                    class="sc-gIBqdA jlVzme"
                   >
                     <div
                       class="sc-kTLmzF ggbTws"
@@ -1337,7 +3236,7 @@ Object {
                             Adults
                           </span>
                           <div
-                            class="sc-hAcGzb kSmRSj"
+                            class="sc-kYHfwS kmTRXa"
                           />
                         </div>
                         <div
@@ -1349,7 +3248,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="sc-gIBqdA lphjsM"
+                    class="sc-gIBqdA jlVzme"
                   >
                     <div
                       class="sc-kTLmzF ggbTws"
@@ -1361,7 +3260,7 @@ Object {
                           class="sc-fyrocj keOayG"
                         >
                           <div
-                            class="sc-fHeRUh epXjcZ"
+                            class="sc-dtDOqo hqAsOQ"
                           />
                           <span
                             class="sc-iIUQWv jKciXo"
@@ -1369,7 +3268,7 @@ Object {
                             Children
                           </span>
                           <div
-                            class="sc-hAcGzb kSmRSj"
+                            class="sc-kYHfwS kmTRXa"
                           />
                         </div>
                         <div
@@ -1381,7 +3280,7 @@ Object {
                     </div>
                   </div>
                   <div
-                    class="sc-gIBqdA lphjsM"
+                    class="sc-gIBqdA jlVzme"
                   >
                     <div
                       class="sc-kTLmzF ggbTws"
@@ -1393,7 +3292,7 @@ Object {
                           class="sc-fyrocj keOayG"
                         >
                           <div
-                            class="sc-dtDOqo qScWR"
+                            class="sc-dkYRCH la-DkuX"
                           />
                           <span
                             class="sc-iIUQWv jKciXo"
@@ -1401,7 +3300,7 @@ Object {
                             Infants
                           </span>
                           <div
-                            class="sc-hAcGzb kSmRSj"
+                            class="sc-kYHfwS kmTRXa"
                           />
                         </div>
                         <div
@@ -1415,12 +3314,12 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kYHfwS aBiIB"
+                class="sc-xiLah bPjRxt"
                 id="prices"
               >
                 <button>
                   <div
-                    class="sc-xiLah bueSkm"
+                    class="sc-dVNjXY iCzNex"
                   />
                   <span>
                     Refresh Prices
@@ -1429,51 +3328,46 @@ Object {
               </div>
             </div>
             <div
-              class="sc-dVNjXY fuwRMm"
+              class="sc-jHkVzv fEskDm"
             >
               <div
-                class="sc-jHkVzv egBQhx"
+                class="sc-bQtKYq gcpQbN"
               >
                 <div
-                  class="sc-bQtKYq kPenox"
+                  class="sc-fXEqDS dQCRVI"
                 >
                   Room Type
                 </div>
                 <div
-                  class="sc-fXEqDS kxOQew"
+                  class="sc-FNXRL dCBuNa"
                 >
                   Meals
                 </div>
                 <div
-                  class="sc-FNXRL hnTOtz"
+                  class="sc-jWUzzU gYSJVI"
                 >
                   Rooms
                 </div>
                 <div
-                  class="sc-jWUzzU ceLlCg"
+                  class="sc-eFegNN cjpAOj"
                 >
                   Price
                 </div>
-                <div
-                  class="sc-eFegNN jYvKFB"
-                >
-                   
-                </div>
               </div>
               <div
-                class="sc-fmBCVi eZUYnf"
+                class="sc-lkgTHX bWyOCq"
               >
                 <div
-                  class="sc-jlRLRk gsToss"
+                  class="sc-dUbtfd jCgEVO"
                 >
                   <div
-                    class="sc-lkgTHX hOzdGd"
+                    class="sc-jlRLRk gvYohQ"
                   />
                   Premium Family Room 
                   1
                 </div>
                 <div
-                  class="sc-dUbtfd jIJepN"
+                  class="sc-htJRVC eaWYDP"
                 >
                   Breakfast included 
                   1
@@ -1482,32 +3376,28 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="sc-htJRVC jEwRaP"
+                    class="sc-cbTzjv dCVZqU"
                   >
                     <div
-                      class="sc-cbTzjv kvbCfz"
+                      class="sc-hjGZqJ QUyPr"
                     />
-                    <ul>
+                    <span>
                       <input
-                        placeholder="3 Rooms"
+                        placeholder="1 Rooms"
                         readonly=""
                         type="text"
-                        value=""
+                        value="1 Room"
                       />
-                    </ul>
+                    </span>
                     <div
-                      class="sc-hjGZqJ fVHHoV"
-                    >
-                      <div
-                        class="sc-fXeWAj hPPEPe"
-                      />
-                    </div>
+                      class="sc-fXeWAj hPPEPe"
+                    />
                   </div>
                 </div>
                 <div
-                  class="sc-gjNHFA beuPvt"
+                  class="sc-gjNHFA bqrfPm"
                 >
-                  122
+                  10
                    €
                 </div>
                 <div
@@ -1522,19 +3412,19 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-fmBCVi eZUYnf"
+                class="sc-lkgTHX bWyOCq"
               >
                 <div
-                  class="sc-jlRLRk gsToss"
+                  class="sc-dUbtfd jCgEVO"
                 >
                   <div
-                    class="sc-lkgTHX hOzdGd"
+                    class="sc-jlRLRk gvYohQ"
                   />
                   Premium Family Room 
                   2
                 </div>
                 <div
-                  class="sc-dUbtfd jIJepN"
+                  class="sc-htJRVC eaWYDP"
                 >
                   Breakfast included 
                   2
@@ -1543,32 +3433,28 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="sc-htJRVC jEwRaP"
+                    class="sc-cbTzjv dCVZqU"
                   >
                     <div
-                      class="sc-cbTzjv kvbCfz"
+                      class="sc-hjGZqJ QUyPr"
                     />
-                    <ul>
+                    <span>
                       <input
-                        placeholder="3 Rooms"
+                        placeholder="1 Rooms"
                         readonly=""
                         type="text"
-                        value=""
+                        value="2 Rooms"
                       />
-                    </ul>
+                    </span>
                     <div
-                      class="sc-hjGZqJ fVHHoV"
-                    >
-                      <div
-                        class="sc-fXeWAj hPPEPe"
-                      />
-                    </div>
+                      class="sc-fXeWAj hPPEPe"
+                    />
                   </div>
                 </div>
                 <div
-                  class="sc-gjNHFA beuPvt"
+                  class="sc-gjNHFA bqrfPm"
                 >
-                  220
+                  20
                    €
                 </div>
                 <div
@@ -1583,19 +3469,19 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-fmBCVi eZUYnf"
+                class="sc-lkgTHX bWyOCq"
               >
                 <div
-                  class="sc-jlRLRk gsToss"
+                  class="sc-dUbtfd jCgEVO"
                 >
                   <div
-                    class="sc-lkgTHX hOzdGd"
+                    class="sc-jlRLRk gvYohQ"
                   />
                   Premium Family Room 
                   3
                 </div>
                 <div
-                  class="sc-dUbtfd jIJepN"
+                  class="sc-htJRVC eaWYDP"
                 >
                   Breakfast included 
                   3
@@ -1604,32 +3490,28 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="sc-htJRVC jEwRaP"
+                    class="sc-cbTzjv dCVZqU"
                   >
                     <div
-                      class="sc-cbTzjv kvbCfz"
+                      class="sc-hjGZqJ QUyPr"
                     />
-                    <ul>
+                    <span>
                       <input
-                        placeholder="3 Rooms"
+                        placeholder="1 Rooms"
                         readonly=""
                         type="text"
-                        value=""
+                        value="3 Rooms"
                       />
-                    </ul>
+                    </span>
                     <div
-                      class="sc-hjGZqJ fVHHoV"
-                    >
-                      <div
-                        class="sc-fXeWAj hPPEPe"
-                      />
-                    </div>
+                      class="sc-fXeWAj hPPEPe"
+                    />
                   </div>
                 </div>
                 <div
-                  class="sc-gjNHFA beuPvt"
+                  class="sc-gjNHFA bqrfPm"
                 >
-                  322
+                  30
                    €
                 </div>
                 <div
@@ -1644,19 +3526,19 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-fmBCVi eZUYnf"
+                class="sc-lkgTHX bWyOCq"
               >
                 <div
-                  class="sc-jlRLRk gsToss"
+                  class="sc-dUbtfd jCgEVO"
                 >
                   <div
-                    class="sc-lkgTHX hOzdGd"
+                    class="sc-jlRLRk gvYohQ"
                   />
                   Premium Family Room 
                   4
                 </div>
                 <div
-                  class="sc-dUbtfd jIJepN"
+                  class="sc-htJRVC eaWYDP"
                 >
                   Breakfast included 
                   4
@@ -1665,32 +3547,28 @@ Object {
                   style="position: relative;"
                 >
                   <div
-                    class="sc-htJRVC jEwRaP"
+                    class="sc-cbTzjv dCVZqU"
                   >
                     <div
-                      class="sc-cbTzjv kvbCfz"
+                      class="sc-hjGZqJ QUyPr"
                     />
-                    <ul>
+                    <span>
                       <input
-                        placeholder="3 Rooms"
+                        placeholder="1 Rooms"
                         readonly=""
                         type="text"
-                        value=""
+                        value="4 Rooms"
                       />
-                    </ul>
+                    </span>
                     <div
-                      class="sc-hjGZqJ fVHHoV"
-                    >
-                      <div
-                        class="sc-fXeWAj hPPEPe"
-                      />
-                    </div>
+                      class="sc-fXeWAj hPPEPe"
+                    />
                   </div>
                 </div>
                 <div
-                  class="sc-gjNHFA beuPvt"
+                  class="sc-gjNHFA bqrfPm"
                 >
-                  342
+                  40
                    €
                 </div>
                 <div
@@ -1707,1712 +3585,6 @@ Object {
             </div>
             
           </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <div
-      class="sc-gsDKAQ jrzzWD"
-      data-testid="hotel-page-wrapper"
-    >
-      <header
-        class="sc-pVTFL dzrkqC"
-        data-testid="header-wrapper"
-      >
-        <div
-          class="sc-jrQzAO bIrpKo"
-        >
-          <div
-            class="sc-kDTinF deNQkW"
-          >
-            <a
-              href="/"
-            >
-              <div
-                class="sc-bdvvtL eukWAO"
-              >
-                voila
-              </div>
-            </a>
-          </div>
-          <div
-            class="sc-iqseJM fAlRWg"
-          >
-            <div
-              class="sc-fFeiMQ bVsXo"
-            >
-              <ul
-                class="sc-bkkeKt boZemS"
-              >
-                <li
-                  class="sc-ieecCq kyyBnL"
-                >
-                  <a
-                    class="sc-dJjYzT kpLWKL"
-                    href="activities"
-                  >
-                    Activities
-                  </a>
-                </li>
-                <li
-                  class="sc-ieecCq kyyBnL"
-                >
-                  <a
-                    class="sc-dJjYzT kpLWKL"
-                    href="hotels"
-                  >
-                    Hotels
-                  </a>
-                </li>
-                <li
-                  class="sc-ieecCq kyyBnL"
-                >
-                  <a
-                    class="sc-dJjYzT kpLWKL"
-                    href="packages"
-                  >
-                    Packages
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="sc-bqiRlB kULby"
-          >
-            <div
-              class="sc-hBUSln jiiKuZ"
-            >
-              <button
-                class="sc-ksdxgE iikZMh"
-              >
-                 
-                <svg
-                  fill="currentColor"
-                  height="1em"
-                  stroke="currentColor"
-                  stroke-width="0"
-                  viewBox="0 0 24 24"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.293 9.293 12 13.586 7.707 9.293l-1.414 1.414L12 16.414l5.707-5.707z"
-                  />
-                </svg>
-              </button>
-              <div
-                class="sc-fotOHu izcTzM"
-              />
-            </div>
-          </div>
-          <div
-            class="sc-crHmcD lgHdyQ"
-          >
-            <input
-              class="sc-egiyK dSgPyp"
-              data-testid="header-search-input"
-              placeholder="Search"
-              type="search"
-            />
-          </div>
-        </div>
-      </header>
-      <div
-        class="sc-jRQBWg kCTgbP"
-      >
-        <div
-          class="sc-dFtzxp kTqCii"
-        >
-          <a
-            class="sc-brSvTw bEgKRu"
-            href="#"
-          >
-            Home
-          </a>
-          <a
-            class="sc-brSvTw bEgKRu"
-            href="#"
-          >
-            Spain
-          </a>
-          <a
-            class="sc-brSvTw bEgKRu"
-            href="#"
-          >
-            Tenerife
-          </a>
-          <a
-            class="sc-brSvTw bEgKRu"
-            href="#"
-          >
-            Adeje
-          </a>
-          <a
-            class="sc-brSvTw bEgKRu"
-            href="#"
-          >
-            Hotel Victoria (Hotel)
-          </a>
-        </div>
-        <div
-          class="sc-hGPBjI DGsrU"
-        >
-          <div
-            class="sc-dlVxhl gLZaFv"
-          >
-            <div
-              class="sc-kfPuZi edWysR"
-            >
-              Find Deals
-            </div>
-            <div
-              class="sc-fKVqWL halGUz"
-            >
-              <div
-                class="sc-bBHxTw hduzup"
-              >
-                <h4>
-                  Destination or Hotel:
-                </h4>
-                <div
-                  class="ant-select ant-select-auto-complete ant-select-single ant-select-customize-input ant-select-show-search"
-                  style="width: 100%;"
-                >
-                  <div
-                    class="ant-select-selector"
-                  >
-                    <span
-                      class="ant-select-selection-search"
-                    >
-                      <div
-                        aria-activedescendant="rc_select_TEST_OR_SSR_list_0"
-                        aria-autocomplete="list"
-                        aria-controls="rc_select_TEST_OR_SSR_list"
-                        aria-haspopup="listbox"
-                        aria-owns="rc_select_TEST_OR_SSR_list"
-                        autocomplete="off"
-                        class="sc-iwjdpV jgByqC ant-select-selection-search-input"
-                        id="rc_select_TEST_OR_SSR"
-                        role="combobox"
-                        type="search"
-                        value=""
-                      >
-                        <div
-                          class="sc-cxpSdN knJMtS"
-                        />
-                        <input
-                          placeholder="Hotel Victoria"
-                          type="search"
-                          value=""
-                        />
-                      </div>
-                    </span>
-                    <span
-                      class="ant-select-selection-placeholder"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-bBHxTw hduzup"
-              >
-                <div
-                  class="sc-cNKqjZ hWBRrY"
-                >
-                  <h4>
-                    Check-in date:
-                  </h4>
-                  <div
-                    class="sc-iwjdpV jgByqC"
-                  >
-                    <div
-                      class="sc-llYSUQ dPKHkU"
-                    />
-                    <input
-                      placeholder="Saturday, 12 March..."
-                      readonly=""
-                      value="Wednesday, 04 May, 2022"
-                    />
-                    <div
-                      class="sc-iJKOTD eKjfKo"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-bBHxTw hduzup"
-              >
-                <div
-                  class="sc-cNKqjZ hWBRrY"
-                >
-                  <h4>
-                    Check-out date:
-                  </h4>
-                  <div
-                    class="sc-iwjdpV jgByqC"
-                  >
-                    <div
-                      class="sc-llYSUQ dPKHkU"
-                    />
-                    <input
-                      placeholder="Saturday, 13 March..."
-                      readonly=""
-                      value="Thursday, 05 May, 2022"
-                    />
-                    <div
-                      class="sc-iJKOTD eKjfKo"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-bBHxTw hduzup"
-              >
-                <div
-                  class="sc-cNKqjZ hWBRrY"
-                >
-                  <h4>
-                    Details:
-                  </h4>
-                  <div
-                    class="sc-bYoBSM gIltlx"
-                  >
-                    <div
-                      class="sc-kLwhqv jMdBzE"
-                    >
-                      <div
-                        class="sc-ikJyIC gNIFwX"
-                      />
-                      <div
-                        class="sc-jJoQJp jOYlip"
-                      >
-                        Adult-
-                        1
-                      </div>
-                    </div>
-                    <div
-                      class="sc-kLwhqv jMdBzE"
-                    >
-                      <div
-                        class="sc-hiCibw cIBIdJ"
-                      />
-                      <div
-                        class="sc-jJoQJp jOYlip"
-                      >
-                        Child-
-                        0
-                      </div>
-                    </div>
-                    <div
-                      class="sc-kLwhqv jMdBzE"
-                    >
-                      <div
-                        class="sc-gWXbKe dfECYH"
-                      />
-                      <div
-                        class="sc-jJoQJp jOYlip"
-                      >
-                        infant-
-                        0
-                      </div>
-                    </div>
-                    <div
-                      style="position: relative; left: 7px;"
-                    >
-                      <div
-                        class="sc-iJKOTD eKjfKo"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-giYglK bGzjUR"
-              >
-                <button>
-                  <div
-                    class="sc-ezbkAF gMIGEa"
-                  />
-                  <a>
-                    <span>
-                      New Search
-                    </span>
-                  </a>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            class="sc-cCcXHH cAFTPG"
-          >
-            <div
-              class="sc-cidDSM hKAbun"
-            >
-              <div
-                class="sc-iAKWXU"
-              >
-                <div
-                  class="sc-jcFjpl kezLMj"
-                >
-                  Hotel Victoria
-                </div>
-                <div
-                  class="sc-efQSVx dwIeHE"
-                >
-                  <ul
-                    class="ant-rate ant-rate-disabled sc-bTfYFJ glmrnm"
-                    role="radiogroup"
-                    style="font-size: 30px;"
-                    tabindex="-1"
-                  >
-                    <li
-                      class="ant-rate-star ant-rate-star-full"
-                    >
-                      <div
-                        aria-checked="true"
-                        aria-posinset="1"
-                        aria-setsize="5"
-                        role="radio"
-                        tabindex="-1"
-                      >
-                        <div
-                          class="ant-rate-star-first"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                        <div
-                          class="ant-rate-star-second"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="ant-rate-star ant-rate-star-full"
-                    >
-                      <div
-                        aria-checked="true"
-                        aria-posinset="2"
-                        aria-setsize="5"
-                        role="radio"
-                        tabindex="-1"
-                      >
-                        <div
-                          class="ant-rate-star-first"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                        <div
-                          class="ant-rate-star-second"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="ant-rate-star ant-rate-star-full"
-                    >
-                      <div
-                        aria-checked="true"
-                        aria-posinset="3"
-                        aria-setsize="5"
-                        role="radio"
-                        tabindex="-1"
-                      >
-                        <div
-                          class="ant-rate-star-first"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                        <div
-                          class="ant-rate-star-second"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="ant-rate-star ant-rate-star-full"
-                    >
-                      <div
-                        aria-checked="true"
-                        aria-posinset="4"
-                        aria-setsize="5"
-                        role="radio"
-                        tabindex="-1"
-                      >
-                        <div
-                          class="ant-rate-star-first"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                        <div
-                          class="ant-rate-star-second"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                    <li
-                      class="ant-rate-star ant-rate-star-zero"
-                    >
-                      <div
-                        aria-checked="false"
-                        aria-posinset="5"
-                        aria-setsize="5"
-                        role="radio"
-                        tabindex="-1"
-                      >
-                        <div
-                          class="ant-rate-star-first"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                        <div
-                          class="ant-rate-star-second"
-                        >
-                          <span
-                            aria-label="star"
-                            class="anticon anticon-star"
-                            role="img"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              data-icon="star"
-                              fill="currentColor"
-                              focusable="false"
-                              height="1em"
-                              viewBox="64 64 896 896"
-                              width="1em"
-                            >
-                              <path
-                                d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                              />
-                            </svg>
-                          </span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div
-                  class="sc-cTAqQK gbYKra"
-                >
-                  <div
-                    class="sc-jObWnj kThCKA"
-                  >
-                    Bischofshofen, 4, 38660 Adeje, Spain
-                  </div>
-                  <div
-                    class="sc-dPiLbb dmjdoj"
-                  >
-                    <a>
-                      Show Map
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-caiLqq kySYtU"
-              >
-                <button>
-                  <span
-                    class="sc-iUKqMP fVXedx"
-                  />
-                  <a>
-                    <span>
-                      View Prices
-                    </span>
-                  </a>
-                </button>
-              </div>
-            </div>
-            <div
-              class="sc-bBHHxi hA-Dnns"
-            >
-              <div
-                class="sc-kHOZwM houbOl"
-              >
-                <div
-                  aria-live="polite"
-                  class="image-gallery"
-                >
-                  <div
-                    class="image-gallery-content bottom"
-                  >
-                    <div
-                      class="image-gallery-slide-wrapper bottom"
-                    >
-                      <button
-                        aria-label="Previous Slide"
-                        class="image-gallery-icon image-gallery-left-nav"
-                        type="button"
-                      >
-                        <svg
-                          class="image-gallery-svg"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="1"
-                          viewBox="6 0 12 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <polyline
-                            points="15 18 9 12 15 6"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        aria-label="Next Slide"
-                        class="image-gallery-icon image-gallery-right-nav"
-                        type="button"
-                      >
-                        <svg
-                          class="image-gallery-svg"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="1"
-                          viewBox="6 0 12 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <polyline
-                            points="9 18 15 12 9 6"
-                          />
-                        </svg>
-                      </button>
-                      <div
-                        class="image-gallery-swipe"
-                      >
-                        <div
-                          class="image-gallery-slides"
-                        >
-                          <div
-                            aria-label="Go to Slide 1"
-                            class="image-gallery-slide  center "
-                            role="button"
-                            style="display: inherit; transform: translate3d(0%, 0, 0);"
-                            tabindex="-1"
-                          >
-                            <div
-                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                            >
-                               
-                            </div>
-                          </div>
-                          <div
-                            aria-label="Go to Slide 2"
-                            class="image-gallery-slide  right "
-                            role="button"
-                            style="display: inherit; transform: translate3d(100%, 0, 0);"
-                            tabindex="-1"
-                          >
-                            <div
-                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                            >
-                               
-                            </div>
-                          </div>
-                          <div
-                            aria-label="Go to Slide 3"
-                            class="image-gallery-slide  left "
-                            role="button"
-                            style="display: inherit; transform: translate3d(-100%, 0, 0);"
-                            tabindex="-1"
-                          >
-                            <div
-                              style="background: url(src) no-repeat center; background-size: cover; display: block; height: 100%;"
-                            >
-                               
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  id="vertical-slider-enlargeImage"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="sc-hOGkXu fhsUuf"
-        >
-          <div
-            class="sc-dtMgUX hZKvmW"
-          >
-            <div
-              class="sc-cZMNgc bbQJPb"
-            >
-              Hotel Victoria, Adeje, Spain 
-            </div>
-            <div
-              class="sc-jUosCB dkuRlj"
-            >
-              <ul
-                class="ant-rate ant-rate-disabled sc-ctqQKy gcvIIy"
-                role="radiogroup"
-                style="font-size: 30px;"
-                tabindex="-1"
-              >
-                <li
-                  class="ant-rate-star ant-rate-star-full"
-                >
-                  <div
-                    aria-checked="true"
-                    aria-posinset="1"
-                    aria-setsize="5"
-                    role="radio"
-                    tabindex="-1"
-                  >
-                    <div
-                      class="ant-rate-star-first"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <div
-                      class="ant-rate-star-second"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </li>
-                <li
-                  class="ant-rate-star ant-rate-star-full"
-                >
-                  <div
-                    aria-checked="true"
-                    aria-posinset="2"
-                    aria-setsize="5"
-                    role="radio"
-                    tabindex="-1"
-                  >
-                    <div
-                      class="ant-rate-star-first"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <div
-                      class="ant-rate-star-second"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </li>
-                <li
-                  class="ant-rate-star ant-rate-star-full"
-                >
-                  <div
-                    aria-checked="true"
-                    aria-posinset="3"
-                    aria-setsize="5"
-                    role="radio"
-                    tabindex="-1"
-                  >
-                    <div
-                      class="ant-rate-star-first"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <div
-                      class="ant-rate-star-second"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </li>
-                <li
-                  class="ant-rate-star ant-rate-star-full"
-                >
-                  <div
-                    aria-checked="true"
-                    aria-posinset="4"
-                    aria-setsize="5"
-                    role="radio"
-                    tabindex="-1"
-                  >
-                    <div
-                      class="ant-rate-star-first"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <div
-                      class="ant-rate-star-second"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </li>
-                <li
-                  class="ant-rate-star ant-rate-star-zero"
-                >
-                  <div
-                    aria-checked="false"
-                    aria-posinset="5"
-                    aria-setsize="5"
-                    role="radio"
-                    tabindex="-1"
-                  >
-                    <div
-                      class="ant-rate-star-first"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                    <div
-                      class="ant-rate-star-second"
-                    >
-                      <span
-                        aria-label="star"
-                        class="anticon anticon-star"
-                        role="img"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          data-icon="star"
-                          fill="currentColor"
-                          focusable="false"
-                          height="1em"
-                          viewBox="64 64 896 896"
-                          width="1em"
-                        >
-                          <path
-                            d="M908.1 353.1l-253.9-36.9L540.7 86.1c-3.1-6.3-8.2-11.4-14.5-14.5-15.8-7.8-35-1.3-42.9 14.5L369.8 316.2l-253.9 36.9c-7 1-13.4 4.3-18.3 9.3a32.05 32.05 0 00.6 45.3l183.7 179.1-43.4 252.9a31.95 31.95 0 0046.4 33.7L512 754l227.1 119.4c6.2 3.3 13.4 4.4 20.3 3.2 17.4-3 29.1-19.5 26.1-36.9l-43.4-252.9 183.7-179.1c5-4.9 8.3-11.3 9.3-18.3 2.7-17.5-9.5-33.7-27-36.3z"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-              <h3>
-                (4 Stars)
-              </h3>
-            </div>
-            <div
-              class="sc-jQrDum ffnrQm"
-            >
-              <div
-                class="sc-lcepkR kuLHKF"
-                style="padding-bottom: 20px;"
-              >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore 
-                <br />
-                 magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.
-                <br />
-                 magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-              </div>
-              <span>
-                read more...
-              </span>
-            </div>
-          </div>
-          <div
-            class="sc-fvxzrP eUjcPw"
-          >
-            <div
-              class="sc-fbyfCU bFPOBC"
-              id="showmap"
-            >
-              <div
-                style="width: 100%; height: 100%; margin: 0px; padding: 0px; position: relative;"
-              >
-                <div
-                  style="width: 100%; height: 100%; left: 0px; top: 0px; margin: 0px; padding: 0px; position: absolute;"
-                />
-                <div
-                  style="width: 50%; height: 50%; left: 50%; top: 50%; margin: 0px; padding: 0px; position: absolute;"
-                >
-                  <div
-                    style="width: 100%; height: 100%; left: 0px; top: 0px; margin: 0px; padding: 0px; position: absolute;"
-                  >
-                    <div
-                      style="width: 0px; height: 0px; left: 0px; top: 0px; background-color: transparent; position: absolute;"
-                    >
-                      <div>
-                        🔴
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="sc-GEbAx iRrTbn"
-            >
-              <div
-                class="sc-gsNilK dnQOin"
-              >
-                Hotel Victoria Highlights
-              </div>
-              <div
-                class="sc-bXTejn ctNYlI"
-              >
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Breakfast info Continental, Buffet
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Sea view
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Garden view
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Terrace
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Pool view
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Quiet street view
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  Free parking
-                </li>
-                <li>
-                  <div
-                    class="sc-eGRUor iyvsVz"
-                  />
-                  ATM Exchange
-                </li>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="sc-XxNYO bNbHSb"
-        >
-          <div
-            class="sc-gIDmLj fCjEqi"
-          >
-            Available Rooms for 
-            Wed 04 May
-             - 
-            Thu 05 May,
-             
-            1
-             adults, 
-            0
-             children, 
-            0
-             infants 
-          </div>
-          <div
-            class="sc-ilfuhL geLcAg"
-          >
-            <div
-              class="sc-uojGG cdvStN"
-            >
-              <div
-                class="sc-bilyIR iKLVvm"
-              >
-                <div
-                  class="sc-iWVNaa caJakx"
-                >
-                  <div
-                    class="sc-kTLmzF ggbTws"
-                  >
-                    <div
-                      class="sc-djWRfJ hHwcOC"
-                    >
-                      <div>
-                        <div
-                          class="sc-evcjhq jnJyBw"
-                        />
-                      </div>
-                      <div
-                        class="sc-avest lmioUZ"
-                      >
-                        <div
-                          class="sc-kmQMED bcbHGO"
-                        >
-                          Check-in
-                        </div>
-                        <p>
-                          <strong>
-                            04 May , Wed
-                              
-                          </strong>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="sc-iWVNaa caJakx"
-                >
-                  <div
-                    class="sc-kTLmzF ggbTws"
-                  >
-                    <div
-                      class="sc-djWRfJ hHwcOC"
-                    >
-                      <div>
-                        <div
-                          class="sc-dkYRCH eXACRI"
-                        />
-                      </div>
-                      <div
-                        class="sc-avest lmioUZ"
-                      >
-                        <div
-                          class="sc-kmQMED bcbHGO"
-                        >
-                          Check-out
-                        </div>
-                        <p>
-                          <strong>
-                            05 May , Thu
-                             
-                          </strong>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-eGPXGI iQIWUo"
-              >
-                <div
-                  class="sc-gIBqdA lphjsM"
-                >
-                  <div
-                    class="sc-kTLmzF ggbTws"
-                  >
-                    <div
-                      class="sc-gslxeA fwdMRZ"
-                    >
-                      <div
-                        class="sc-fyrocj keOayG"
-                      >
-                        voila
-                        <span
-                          class="sc-iIUQWv jKciXo"
-                        >
-                          Adults
-                        </span>
-                        <div
-                          class="sc-hAcGzb kSmRSj"
-                        />
-                      </div>
-                      <div
-                        class="sc-eWfVMQ drScTc"
-                      >
-                        1
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="sc-gIBqdA lphjsM"
-                >
-                  <div
-                    class="sc-kTLmzF ggbTws"
-                  >
-                    <div
-                      class="sc-gslxeA fwdMRZ"
-                    >
-                      <div
-                        class="sc-fyrocj keOayG"
-                      >
-                        <div
-                          class="sc-fHeRUh epXjcZ"
-                        />
-                        <span
-                          class="sc-iIUQWv jKciXo"
-                        >
-                          Children
-                        </span>
-                        <div
-                          class="sc-hAcGzb kSmRSj"
-                        />
-                      </div>
-                      <div
-                        class="sc-eWfVMQ drScTc"
-                      >
-                        0
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="sc-gIBqdA lphjsM"
-                >
-                  <div
-                    class="sc-kTLmzF ggbTws"
-                  >
-                    <div
-                      class="sc-gslxeA fwdMRZ"
-                    >
-                      <div
-                        class="sc-fyrocj keOayG"
-                      >
-                        <div
-                          class="sc-dtDOqo qScWR"
-                        />
-                        <span
-                          class="sc-iIUQWv jKciXo"
-                        >
-                          Infants
-                        </span>
-                        <div
-                          class="sc-hAcGzb kSmRSj"
-                        />
-                      </div>
-                      <div
-                        class="sc-eWfVMQ drScTc"
-                      >
-                        0
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="sc-kYHfwS aBiIB"
-              id="prices"
-            >
-              <button>
-                <div
-                  class="sc-xiLah bueSkm"
-                />
-                <span>
-                  Refresh Prices
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            class="sc-dVNjXY fuwRMm"
-          >
-            <div
-              class="sc-jHkVzv egBQhx"
-            >
-              <div
-                class="sc-bQtKYq kPenox"
-              >
-                Room Type
-              </div>
-              <div
-                class="sc-fXEqDS kxOQew"
-              >
-                Meals
-              </div>
-              <div
-                class="sc-FNXRL hnTOtz"
-              >
-                Rooms
-              </div>
-              <div
-                class="sc-jWUzzU ceLlCg"
-              >
-                Price
-              </div>
-              <div
-                class="sc-eFegNN jYvKFB"
-              >
-                 
-              </div>
-            </div>
-            <div
-              class="sc-fmBCVi eZUYnf"
-            >
-              <div
-                class="sc-jlRLRk gsToss"
-              >
-                <div
-                  class="sc-lkgTHX hOzdGd"
-                />
-                Premium Family Room 
-                1
-              </div>
-              <div
-                class="sc-dUbtfd jIJepN"
-              >
-                Breakfast included 
-                1
-              </div>
-              <div
-                style="position: relative;"
-              >
-                <div
-                  class="sc-htJRVC jEwRaP"
-                >
-                  <div
-                    class="sc-cbTzjv kvbCfz"
-                  />
-                  <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
-                  </ul>
-                  <div
-                    class="sc-hjGZqJ fVHHoV"
-                  >
-                    <div
-                      class="sc-fXeWAj hPPEPe"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-gjNHFA beuPvt"
-              >
-                122
-                 €
-              </div>
-              <div
-                class="sc-eXlEPa bbMAVl"
-              />
-              <div
-                class="sc-fmciRz clJMDc"
-              >
-                <button>
-                  Book Now
-                </button>
-              </div>
-            </div>
-            <div
-              class="sc-fmBCVi eZUYnf"
-            >
-              <div
-                class="sc-jlRLRk gsToss"
-              >
-                <div
-                  class="sc-lkgTHX hOzdGd"
-                />
-                Premium Family Room 
-                2
-              </div>
-              <div
-                class="sc-dUbtfd jIJepN"
-              >
-                Breakfast included 
-                2
-              </div>
-              <div
-                style="position: relative;"
-              >
-                <div
-                  class="sc-htJRVC jEwRaP"
-                >
-                  <div
-                    class="sc-cbTzjv kvbCfz"
-                  />
-                  <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
-                  </ul>
-                  <div
-                    class="sc-hjGZqJ fVHHoV"
-                  >
-                    <div
-                      class="sc-fXeWAj hPPEPe"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-gjNHFA beuPvt"
-              >
-                220
-                 €
-              </div>
-              <div
-                class="sc-eXlEPa bbMAVl"
-              />
-              <div
-                class="sc-fmciRz clJMDc"
-              >
-                <button>
-                  Book Now
-                </button>
-              </div>
-            </div>
-            <div
-              class="sc-fmBCVi eZUYnf"
-            >
-              <div
-                class="sc-jlRLRk gsToss"
-              >
-                <div
-                  class="sc-lkgTHX hOzdGd"
-                />
-                Premium Family Room 
-                3
-              </div>
-              <div
-                class="sc-dUbtfd jIJepN"
-              >
-                Breakfast included 
-                3
-              </div>
-              <div
-                style="position: relative;"
-              >
-                <div
-                  class="sc-htJRVC jEwRaP"
-                >
-                  <div
-                    class="sc-cbTzjv kvbCfz"
-                  />
-                  <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
-                  </ul>
-                  <div
-                    class="sc-hjGZqJ fVHHoV"
-                  >
-                    <div
-                      class="sc-fXeWAj hPPEPe"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-gjNHFA beuPvt"
-              >
-                322
-                 €
-              </div>
-              <div
-                class="sc-eXlEPa bbMAVl"
-              />
-              <div
-                class="sc-fmciRz clJMDc"
-              >
-                <button>
-                  Book Now
-                </button>
-              </div>
-            </div>
-            <div
-              class="sc-fmBCVi eZUYnf"
-            >
-              <div
-                class="sc-jlRLRk gsToss"
-              >
-                <div
-                  class="sc-lkgTHX hOzdGd"
-                />
-                Premium Family Room 
-                4
-              </div>
-              <div
-                class="sc-dUbtfd jIJepN"
-              >
-                Breakfast included 
-                4
-              </div>
-              <div
-                style="position: relative;"
-              >
-                <div
-                  class="sc-htJRVC jEwRaP"
-                >
-                  <div
-                    class="sc-cbTzjv kvbCfz"
-                  />
-                  <ul>
-                    <input
-                      placeholder="3 Rooms"
-                      readonly=""
-                      type="text"
-                      value=""
-                    />
-                  </ul>
-                  <div
-                    class="sc-hjGZqJ fVHHoV"
-                  >
-                    <div
-                      class="sc-fXeWAj hPPEPe"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="sc-gjNHFA beuPvt"
-              >
-                342
-                 €
-              </div>
-              <div
-                class="sc-eXlEPa bbMAVl"
-              />
-              <div
-                class="sc-fmciRz clJMDc"
-              >
-                <button>
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-          
         </div>
       </div>
     </div>
