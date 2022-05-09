@@ -175,6 +175,7 @@ category-${filterValues.stars}`
   return (<>
       <StyledSearchInputHolder className="flights">
         <StyledSearchDestinationInput
+          className="singleInput"
           ref={destinationRef}
           data-testid="test-destination-search-input"
           placeholder={t("search.homeSearchHotelDestinationPlaceholder")}
