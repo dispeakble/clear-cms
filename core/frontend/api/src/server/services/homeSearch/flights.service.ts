@@ -116,7 +116,7 @@ export class HomeSearchFlightsService {
                     data: {
                         count: false,
                         what: 'flightsCache',
-                        as: 'flightsCache',
+                        as: 'FlightsCache',
                         attributes: ['DestinationGeography.Id', 'DestinationGeography.Name', 'DestinationGeography.IntName'],
                         include: [{
                             required: true,

@@ -114,6 +114,7 @@ export const Flights = () => {
         }
       }
     });
+    
     if (response && response.destination && response.destination.length) {
       setDestinationList(response.destination);
       setShowDestinations(true);
