@@ -30,8 +30,8 @@ export class FlightsCache extends Model {
     ReturnDate: string;
 
     /*One Way*/
-    @Column({ type: DataTypes.BOOLEAN })
-    IsOneWay: boolean;
+    @Column({ type: DataTypes.SMALLINT })
+    IsOneWay: number;
 
     @Column({ type: DataTypes.DATE, allowNull: true })
     accessedAt: number;
