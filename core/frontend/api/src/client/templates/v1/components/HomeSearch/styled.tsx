@@ -401,7 +401,6 @@ export const StyledOneWay = styled.label`
   cursor: pointer;
   user-select: none;
   display: inline-block;
-  padding: 10px 0 10px 10px;
   position: relative;
   border-radius: 0 8px 8px 0;
   & input {
