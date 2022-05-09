@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run BACK-END proxy" type="js.build_tools.npm">
+  <configuration default="false" name="BACK-END proxy" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/core/proxy/api/package.json" />
     <command value="run" />
     <scripts>
