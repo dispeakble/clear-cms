@@ -10,13 +10,13 @@ import {
   HotelName,
   HotelRate,
   LeftSection,
-  MapSection, Ping,
+  MapSection,
   RightSection
 } from "./styled";
-import {Rate} from "antd";
-import {Star, StyledDescription} from "../HotelDetail/styled";
+import {StyledDescription} from "../HotelDetail/styled";
 import GoogleMapReact from "google-map-react";
 import {useRef, useState} from "react";
+import { StyledStars } from "../BottomCards/styled";
 
 const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 
@@ -57,7 +57,7 @@ const HotelAbout = () => {
             {t("hotelAbout.hotel")}
           </HotelName>
           <HotelRate>
-            <Ping style={{fontSize: '30px'}}  disabled defaultValue={4}/>
+            <StyledStars stars={3}/>
             <h3>
               {t("hotelAbout.star")}
             </h3>

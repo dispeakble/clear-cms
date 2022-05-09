@@ -242,18 +242,18 @@ export const Packages = () => {
       && guestsCount() > 0) {
       router.push({
         pathname: `/packages/search/
-${destination}/
-from-${formatDateSearch(checkInDate)}/
-to-${formatDateSearch(checkOutDate)}/
-adults-${filterValues.adults}/
-children-${filterValues.children}/
-category-${filterValues.stars}`
+        ${destination}/
+        from-${formatDateSearch(checkInDate)}/
+        to-${formatDateSearch(checkOutDate)}/
+        adults-${filterValues.adults}/
+        children-${filterValues.children}/
+        category-${filterValues.stars}`
       });
     }
   };
 
   return (<>
-      <StyledSearchInputHolder className="flights">
+      <StyledSearchInputHolder className="packages">
         <StyledSearchInput
           data-testid="test-departure-search-input"
           ref={departureRef}
