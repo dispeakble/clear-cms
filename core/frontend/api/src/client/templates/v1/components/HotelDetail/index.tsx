@@ -228,12 +228,13 @@ const HotelDetail = ({
       <Wrapper>
           <DealCard>
               <CardHead>
-                  Find Deals
+                  Find
               </CardHead>
               <EditDeals>
                   <Destination>
                       <H4>Destination or Hotel:</H4>
                       <AutoComplete
+                          data-testid="autocomplete"
                         dropdownClassName="certain-category-search-dropdown"
                         dropdownStyle={{ backgroundColor: "white" }}
                         dropdownMatchSelectWidth={250}
@@ -244,7 +245,7 @@ const HotelDetail = ({
                       >
                           <HotelSearch>
                               <SearchIcon/>
-                              <input value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
+                              <input value={data.hotel} type="search" data-testid="hotel" placeholder={t("deals.hotel")} onChange={(e) => {
                                   onSearch(e.target.value);
                                   handleSearch(e.target.value);
                               }} />
@@ -262,6 +263,7 @@ const HotelDetail = ({
                                   <CalenderIcon  />
                                   <input placeholder={t("deals.checkin") }
                                          onChange={() => {}}
+                                         data-testid={"checkInDateInput"}
                                          style={{cursor: 'pointer'}}
                                          value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
 
@@ -269,16 +271,18 @@ const HotelDetail = ({
                               </HotelSearch>
 
                               {show.checkin ? (
+                                <div data-testid="checkInDateCont">
+                                    <HotelCalendar
 
-                                <HotelCalendar
-                                  minDate={data.checkin}
-                                  value={data.checkin}
+                                        minDate={data.checkin}
+                                        value={data.checkin}
 
-                                  onChange={(value: any) => {
-                                      handleChangeInput("checkin", value);
-                                      handleDateAway("checkin");
-                                  }}
-                                />
+                                        onChange={(value: any) => {
+                                            handleChangeInput("checkin", value);
+                                            handleDateAway("checkin");
+                                        }}
+                                    />
+                                </div>
 
                               ) : null}
                           </DateDiv>
@@ -292,15 +296,17 @@ const HotelDetail = ({
                               handleShowCheckout();
                           }}>
                               <H4>Check-out date:</H4>
+                              <div data-testid="checkOutDateCont">
                               <HotelSearch>
                                   <CalenderIcon />
-                                  <input placeholder={t("deals.checkout")} onChange={() => {}}
+                                  <input placeholder={t("deals.checkout")} data-testid="checkOutDateInput" onChange={() => {}}
                                          value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
                                   style={{cursor: 'pointer'}}
                                   />
                                   <DropdownIcon />
 
                               </HotelSearch>
+                              </div>
 
 
                               {show.checkout ? (
@@ -324,11 +330,11 @@ const HotelDetail = ({
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
                           <DateDiv>
                               <H4>Details:</H4>
-                              <GuestType>
+                              <GuestType  data-testid="detailsInput">
                                   <AdultBox onClick={() => handleShowPassenger()}>
                                       <AdultIcon  />
                                       <AdultNumber>
-                                          {t(`deals.detail.adult`)}{data.passenger.adults}
+                                          {t(`deals.detail.adult`)}<span data-testid="adultNumber">{data.passenger.adults}</span>
 
                                       </AdultNumber>
                                   </AdultBox>
@@ -350,7 +356,7 @@ const HotelDetail = ({
                                   </div>
                               </GuestType>
                               {show.details ? (
-                                  <DetailsCard>
+                                  <DetailsCard data-testid="detailsContainer">
                                       <DetailTop>
                                           <CloseIcon onClick={()=>
                                               setShow({
@@ -369,7 +375,7 @@ const HotelDetail = ({
                                           <BoxRight>
                                               <Quantity>
                                                   <SPAN onClick={handleAdultMinus}>-</SPAN>
-                                                  <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
+                                                  <h5 data-testid='adultNumberChoosed'>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
                                                   <SPAN onClick={handleAdultPlus}>+</SPAN>
                                               </Quantity>
                                           </BoxRight>

@@ -150,7 +150,7 @@ const HotelAbout = () => {
 
             </StyledDescription>
 
-            {currentNode && currentNode?.clientHeight >= 600 &&  <span onClick={HandleToggle}>{show ? 'read less...' : 'read more...'}</span>}
+            {currentNode && currentNode?.clientHeight >= 600 &&  <span onClick={HandleToggle} data-testid="readMore-readLess__button">{show ? 'read less...' : 'read more...'}</span>}
           </Description>
         </LeftSection>
         <RightSection>
