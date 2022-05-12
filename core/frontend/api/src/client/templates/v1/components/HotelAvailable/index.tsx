@@ -46,15 +46,17 @@ import {
     TableBody,
     TableHead,
     TopUp,
-    Wrapper
+    Wrapper,
+    StyledTooltipWrapper
 } from "./styled";
 
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Tooltip } from "antd";
 import Image from "next/image";
 import adultsIcon from "../../assets/img/adults-icon.svg";
 import { Overlay } from "../HomeSearch/styled";
+import ReactTooltip from "react-tooltip";
+import { InfoIcon } from "../HotelDetail/styled";
 
 type HotelAvailableProps = {
     data: any;
@@ -310,25 +312,11 @@ const HotelAvailable = ({
                         return (
                             <TableBody key={index}>
                                 <ColumnOne>
-                                    {customColors.map(color => (
-                                        <Tooltip placement="bottom"
-                                                 title={t("tooltip.view_price")}
-                                                 color={color} key={color}
-                                                 overlayInnerStyle={{
-                                                     color: "#00000080",
-                                                     fontSize: "15px",
-                                                     lineHeight: "20px",
-                                                     width: "300px",
-                                                     cursor: "default",
-                                                     boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
-                                                     borderRadius: "12px",
-                                                     padding: "13px 18px"
-                                                 }}
-                                                 overlayStyle={{}}
-                                        >
-                                            <OrgInfoIcon/>
-                                        </Tooltip>
-                                    ))}
+                                    <OrgInfoIcon
+                                      data-for="mainTooltip"
+                                      data-tip={t("tooltip.view_price")}
+                                      data-iscapture="true"
+                                    />
                                     Premium Family Room {index + 1}
                                 </ColumnOne>
                                 <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
@@ -385,6 +373,14 @@ const HotelAvailable = ({
                 }
             </RoomTable>
             {(show.length || showRoom.length) ? <Overlay onClick={handleClickAway}/> : ""}
+            <StyledTooltipWrapper>
+                <ReactTooltip
+                  id="mainTooltip"
+                  place="top"
+                  effect="solid"
+                  multiline={true}
+                />
+            </StyledTooltipWrapper>
         </Wrapper>
     );
 };

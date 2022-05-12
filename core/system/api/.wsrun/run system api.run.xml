@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run system api" type="js.build_tools.npm">
+  <configuration default="false" name="system api" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/core/system/api/package.json" />
     <command value="run" />
     <scripts>

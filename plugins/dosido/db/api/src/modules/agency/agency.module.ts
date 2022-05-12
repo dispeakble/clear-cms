@@ -33,6 +33,7 @@ import { SpecialOffer } from "./models/packages/special.offer.model";
 //search
 import { PackagesCache } from "./models/search/packages.cache.model";
 import { HotelsCache } from "./models/search/hotels.cache.model";
+import { FlightsCache } from "./models/search/flights.cache.model"
 
 @Module({
     imports: [SequelizeModule.forFeature([
@@ -76,7 +77,8 @@ import { HotelsCache } from "./models/search/hotels.cache.model";
 
         //search and cache
         PackagesCache,
-        HotelsCache
+        HotelsCache,
+        FlightsCache
 
     ], `agency`)],
     providers: [AgencyService, QueryService],

@@ -1,8 +1,6 @@
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import "antd/dist/antd.css";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
-import { AutoComplete, Rate, Tooltip } from "antd";
 import "react-calendar/dist/Calendar.css";
 import { Link } from "react-scroll";
 import {
@@ -12,7 +10,6 @@ import {
     CalenderIcon,
     CardHead,
     ChildIcon,
-    CounterBtn,
     DateDiv,
     DealCard,
     Destination,
@@ -27,9 +24,7 @@ import {
     InfantIcon,
     InfoIcon,
     LeftSide,
-    MemberBox,
     NewSearch,
-    PersonBox,
     SearchIcon,
     ShortDescription,
     SliderSection,
@@ -48,10 +43,12 @@ import {
     PersonEntry,
     SubDetail,
     CloseIcon,
-    HotelCalendar, H4, SPAN,
+    HotelCalendar, H4, SPAN, StyledButton, StyledTooltipWrapper
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
+import { StyledStarsSmall } from "../Styled/stars";
+import ReactTooltip from "react-tooltip";
 
 type HotelDetailProps = {
     data: any;
@@ -109,7 +106,7 @@ const HotelDetail = ({
             location: "Mohali"
         }
     ];
-    const customColors = ['#FFFFFF'];
+
     React.useEffect(() => {
         const getHotel = arr.map((value: any) => {
             return value.location;
@@ -234,24 +231,13 @@ const HotelDetail = ({
               <EditDeals>
                   <Destination>
                       <H4>Destination or Hotel:</H4>
-                      <AutoComplete
-                        dropdownClassName="certain-category-search-dropdown"
-                        dropdownStyle={{ backgroundColor: "white" }}
-                        dropdownMatchSelectWidth={250}
-                        onSearch={onSearch}
-                        onSelect={onSelect}
-                        options={mainValue}
-                        style={{ width: "100%" }}
-                      >
-                          <HotelSearch>
-                              <SearchIcon/>
-                              <input value={data.hotel} type="search" data-testid="hotelInput" placeholder={t("deals.hotel")} onChange={(e) => {
-                                  onSearch(e.target.value);
-                                  handleSearch(e.target.value);
-                              }} />
-                          </HotelSearch>
-                      </AutoComplete>
-
+                      <HotelSearch>
+                          <SearchIcon/>
+                          <input value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
+                              onSearch(e.target.value);
+                              handleSearch(e.target.value);
+                          }} />
+                      </HotelSearch>
                   </Destination>
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
@@ -436,9 +422,7 @@ const HotelDetail = ({
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
                       <Star>
-                          <Rate
-                              style={{fontSize: '30px'}}
-                              disabled defaultValue={4} />
+                          <StyledStarsSmall stars={3}></StyledStarsSmall>
                       </Star>
                       <ShortDescription>
                           <HotelLocation>
@@ -448,36 +432,31 @@ const HotelDetail = ({
                       </ShortDescription>
                   </LeftSide>
                   <ViewPrice>
-                      <button>
-
-                      {customColors.map(color => (
-                          <Tooltip placement="bottom"
-                                   title={t("tooltip.view_price")}
-                                   color={color} key={color}
-                                   overlayInnerStyle={{
-                                       color:"#00000080",
-                                       fontSize: "15px",
-                                       lineHeight: "20px",
-                                       width: "300px",
-                                       cursor: "default",
-                                       boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
-                                       borderRadius: "12px",
-                                       padding: "13px 18px"
-                                   }}
-                                   overlayStyle={{}}
-                          >
-                              <InfoIcon />
-                          </Tooltip>
-                          ))}
+                      <StyledButton>
+                          <InfoIcon
+                            data-for="mainTooltip"
+                            data-tip="Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore
+magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor.
+magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod"
+                            data-iscapture="true"
+                          />
                           <Link to="prices" spy={true} smooth={true}><span>View Prices</span></Link>
-                      </button>
-
+                      </StyledButton>
                   </ViewPrice>
               </HotelInfo>
               <SliderSection>
                   <HotelPhotoSlider />
               </SliderSection>
           </HotelView>
+          <StyledTooltipWrapper>
+              <ReactTooltip
+                id="mainTooltip"
+                place="top"
+                effect="solid"
+                multiline={true}
+              />
+          </StyledTooltipWrapper>
+
       </Wrapper>
     );
 };

@@ -14,6 +14,7 @@ import { PagesService } from "../services/pages.service";
 import { BucketService } from "../services/bucket.service";
 import { HomeSearchPackagesService } from "../services/homeSearch/packages.service";
 import { HomeSearchHotelsService } from "../services/homeSearch/hotels.service";
+import { HomeSearchFlightsService } from "../services/homeSearch/flights.service";
 import { Observable } from "rxjs";
 import { SettingsService } from "../services/settings.service";
 
@@ -54,6 +55,7 @@ export class AppController {
       @Inject("PagesService") private pagesService: PagesService,
       @Inject("BucketService") private bucketService: BucketService,
       @Inject("HomeSearchPackagesService") private homeSearchPackagesService: HomeSearchPackagesService,
+      @Inject("HomeSearchFlightsService") private homeSearchFlightsService: HomeSearchFlightsService,
       @Inject("HomeSearchHotelsService") private homeSearchHotelsService: HomeSearchHotelsService,
       @Inject('WsGateway') private wsGateway,
       private viewService: ViewService

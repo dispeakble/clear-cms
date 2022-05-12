@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import {size} from "../../styled";
 import hotel1 from "../../assets/img/hotels/small/hotel1.jpg";
-import { Rate } from 'antd';
 
 export const About = styled.div`
   margin-top: 37px;
@@ -157,10 +156,4 @@ export const CheckedIcon = styled.div`
   position: relative;
   margin-top: 5px;
   background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
-`;
-
-export const Ping =styled(Rate)`
-.ant-rate-star-zero svg {
-  fill: #d9d9d9;
-}
 `;

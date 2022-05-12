@@ -134,9 +134,7 @@ export const StyledSearchDestinationInput = styled.input`
   width: 100%;
   outline: none;
   border: none;
-  &:not(.singleInput) {
-    margin-top: 5px;
-  }  
+  
   &::placeholder{
     color: rgba(0,0,0,0.6);
   }
@@ -146,7 +144,10 @@ export const StyledSearchDestinationInput = styled.input`
     }
   }
   @media ${device.tablet} {
-    margin-top: 0;
+    &:not(.singleInput) {
+      margin: 0 0 0 5px !important;
+    }
+    
   }
 `;
 
@@ -160,16 +161,6 @@ export const StyledSearchInputHolder = styled.div`
   background: none;
   
   @media ${device.tablet} {
-    background: ${({theme}) => theme.colors.white};
-    &.flights {
-      background: rgb(255,255,255);
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 75%, rgba(255,255,255,1) 75%, rgba(255,255,255,1) 100%);
-      & ${StyledSearchDestinationInput} {
-        @media ${device.tablet} {
-          margin: 0 0 0 5px;
-        }
-      }
-    }
     flex-direction: row;
     border-radius: 0 16px 0 0;
   }
@@ -401,7 +392,6 @@ export const StyledOneWay = styled.label`
   cursor: pointer;
   user-select: none;
   display: inline-block;
-  padding: 10px 0 10px 10px;
   position: relative;
   border-radius: 0 8px 8px 0;
   & input {
