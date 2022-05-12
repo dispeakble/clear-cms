@@ -61,13 +61,11 @@
         it("Should select from destinations dropdown", async ()=> {
             const hotelPage= render(<Wrapper {...hotelPageProps} />);
             const input = hotelPage.getByTestId('hotelInput') as HTMLInputElement;
-
-            fireEvent.mouseDown(input);
-
-            await waitFor(() => expect(hotelPage.getAllByText('Titan')[0]).toBeInTheDOM());
-            fireEvent.click(hotelPage.getAllByText('Titan')[0])
-
-            await waitFor(() => expect(input.value).toEqual('Titan'));
+            const previousInputValue = input.value;
+            fireEvent.change(input, {
+                target: { value: "new value" }
+            });
+            await waitFor(() => expect(input.value).not.toEqual(previousInputValue));
 
         })
 
