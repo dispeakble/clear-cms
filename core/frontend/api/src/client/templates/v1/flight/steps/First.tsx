@@ -44,7 +44,7 @@ const FirstStep = ({flightData}: IProps) => {
     return(
         <Flights>
             {
-                flightData.map((flight, index) => {
+                flightData.map((flight: any, index: number) => {
                     return(
                         <FlightDetailsWrapper>
                             <FlightDetails>

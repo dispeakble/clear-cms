@@ -28,7 +28,7 @@ const Cart = ({flightData}: IProps) => {
             </CartHeaderWrapper>
             <CartItemContainer>
                 {
-                    flightData.map((flight) => {
+                    flightData.map((flight: any) => {
                         return(
                             <CartFlightInfo>
                                 <FlightCartItem>
