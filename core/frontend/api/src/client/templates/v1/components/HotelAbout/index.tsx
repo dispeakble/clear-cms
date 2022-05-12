@@ -141,16 +141,24 @@ const HotelAbout = () => {
               tempor incididunt ut labore
               usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
               adipisicing elit, sed do eiusmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+
               aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore
               usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
               aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore
               usmod tempor.<br/> magna liqua. Lorem ipsum dolore magn
-
+              iqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore
+              usmod tempor.<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labo<br/> magna aliqua. Lorem ipsum dolore magna
+              aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labo
             </StyledDescription>
 
-            {currentNode && currentNode?.clientHeight >= 600 &&  <span onClick={HandleToggle} data-testid="readMore-readLess__button">{show ? 'read less...' : 'read more...'}</span>}
+            <span onClick={HandleToggle} data-testid="readButton">{show ? 'read less...' : 'read more...'}</span>
+            {/*currentNode && currentNode?.clientHeight >= 600 && <span onClick={HandleToggle} data-testid="readButton">{show ? 'read less...' : 'read more...'}</span>*/}
           </Description>
         </LeftSection>
         <RightSection>
