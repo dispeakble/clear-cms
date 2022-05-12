@@ -224,7 +224,6 @@ const HotelDetail = ({
         handleHotelSearch(data);
     };
 
-    const [searchHotelSelect, setSearchHotelSelect] = useState(false);
 
     return (
       <Wrapper>

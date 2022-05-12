@@ -57,17 +57,12 @@
              expect(screen.getByText('Hotel Victoria')).toBeInTheDocument();
          });
 
-         /*
+
         it("Should select from destinations dropdown", async ()=> {
             const hotelPage= render(<Wrapper {...hotelPageProps} />);
             const input = hotelPage.getByTestId('hotelInput') as HTMLInputElement;
 
-
-            const select = document.querySelector(
-                '[data-testid=autocomplete] .ant-select-selector'
-            );
-
-            fireEvent.mouseDown(select);
+            fireEvent.mouseDown(input);
 
             await waitFor(() => expect(hotelPage.getAllByText('Titan')[0]).toBeInTheDOM());
             fireEvent.click(hotelPage.getAllByText('Titan')[0])
@@ -75,7 +70,6 @@
             await waitFor(() => expect(input.value).toEqual('Titan'));
 
         })
-*/
 
         it("Should select from check in date dropdown", async ()=> {
             const hotelPage = render(<Wrapper {...hotelPageProps} />);
@@ -458,10 +452,10 @@
 
         it('Should match (In Available Section) adult number with chosen child number', async () => {
             const hotelPage = render(<Wrapper {...hotelPageProps} />);
-            const numberChosen = hotelPage.getByTestId('avail-childNumberChosen');
+            const numberChosen = hotelPage.getByTestId('avail-adultNumberChosen');
 
             fireEvent.click(
-                hotelPage.getByTestId('avail-childNumberInput'),
+                hotelPage.getByTestId('avail-adultNumberInput'),
             )
             await waitFor(() => {
                 expect(hotelPage.getByTestId('avail-adultNumberCont')).toBeInTheDocument();
@@ -480,6 +474,14 @@
             )
 
             await waitFor(() => expect(numberChosen.innerHTML).toEqual(numberFromDropdown.innerHTML));
+        })
+
+        it("should render read less... on clicking on read more...", async () => {
+            const hotelPage = render(<Wrapper {...hotelPageProps} />);
+
+            fireEvent.click(hotelPage.getByTestId('readButton'));
+
+            await waitFor(() => expect(hotelPage.getByTestId('readButton')).toHaveTextContent('read less...'))
         })
 
     });
