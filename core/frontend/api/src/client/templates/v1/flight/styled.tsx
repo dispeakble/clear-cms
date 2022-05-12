@@ -1,0 +1,430 @@
+import styled from "styled-components";
+import Image from "next/image"
+interface IStep{
+    currentStep?: boolean;
+}
+
+interface IFlightsDetails{
+    expand?: boolean;
+}
+
+export const size = {
+    mobileS: "320px",
+    mobileM: "375px",
+    mobileL: "425px",
+    tablet: "768px",
+    laptop: "1024px",
+    laptopL: "1440px",
+    desktop: "1919px",
+    desktopL: "2560px"
+};
+
+export const DetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 17px;
+  margin-top: 53px;
+  
+  @media(max-width: ${size.laptop}){
+    flex-direction: column;
+    padding: 20px;
+  }
+`
+
+export const CartWrapper = styled.div`
+  flex: 1;
+  max-width: 433px;
+  max-height: 560px;
+  background: #FFFFFF;
+  @media(max-width: ${size.laptop}){
+    max-width: 100%;
+  }
+`
+
+export const FlightsWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+export const FlightDetails = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 21px;
+`
+
+export const PricingRules = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+`
+
+export const PricingText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: #FF840D;
+`
+
+export const Flight = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 60%;
+  
+`
+
+export const Flights = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+
+
+export const FlightTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 21px;
+`
+
+export const FlightLocationsText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  color: #000000;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 0;
+`
+
+export const FlightDuration = styled.p`
+  font-family: 'Poppins', sans-serif;
+  color: #000000;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+`
+
+export const FlightsHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 24px 33px;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  background: #ffffff;
+`
+
+export const FlightsHeader = styled.h2`
+  font-family: "Poppins", sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  color: #434343;
+  line-height:1.5;
+  margin: 0;
+`
+
+export const CartHeaderWrapper = styled.div`
+  padding: 25px 31px;
+  border-bottom: 1px dashed #A29E9E;
+  display: flex;
+  align-items: center;
+`
+
+export const CartHeader = styled.h2`
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #434343;
+  line-height:1.5;
+  margin: 0;
+`
+
+export const FLightProviderImg = styled(Image)`
+  height: 20px !important;
+`
+
+export const CartItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+  border-bottom: 1px dashed #A29E9E;
+  padding: 24px 20px;
+`
+
+export const CartFlightInfo = styled.div`
+`
+
+export const CartStepsWrapper = styled.div`
+  display: flex;
+  position: relative;
+  gap: 20px;
+`
+export const StepWrapper = styled.div<IStep>`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  position: relative;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  
+  border: 1px solid #FF8C1D;
+  
+  background: ${({currentStep}) => currentStep ? "#FF8C1D" : "#FFFFFF"};
+  color:  ${({currentStep}) => currentStep ? "#FFFFFF" : "#FF8C1D"};
+  
+  border-radius:50%;
+  
+  &:not(:last-child)::after{
+    content: "";
+    position: absolute;
+    right: -21px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    width: 20px;
+    border-bottom: 1px dashed #A29E9E;
+  }
+`
+
+export const FlightCartItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+`
+
+export const FlightTimeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const TimeText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000000;
+  line-height: 1.5;
+  margin: 0;
+  
+`
+
+export const DateText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #707070;
+  line-height: 1.5;
+  margin: 0;
+  
+`
+
+export const DepartureDestinationText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000000;
+  line-height: 1.5;
+  margin: 0;
+`
+
+export const DepartureDestinationTextWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`
+
+export const FlightExpandDetails = styled.div<IFlightsDetails>`
+  border-top: 1px solid #FF840D;
+  padding: 10px;
+  display: ${({expand}) => expand ? "block" : "none"};
+  transition: height .5s ease-in-out;
+  overflow: hidden;
+`
+
+export const FlightDescriptionContainer = styled.div`
+  padding: 25px 0;
+  border-bottom: 1px solid #FF840D;
+  margin-bottom: 5px;
+`
+
+export const FlightDetailsWrapper = styled.div`
+  border-radius: 10px;
+  border: 1px solid #FF840D;
+  background: #FFFFFF;
+`
+
+export const FlightDescription = styled.p`
+  font-family: 'Poppins', sans-serif;
+  color: rgba(86, 82, 82, 0.97);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+`
+
+export const FlightStopoverContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+`
+
+export const FlightStopoverItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const FlightStopoverDate = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #707070;
+  margin: 0;
+`
+
+export const FlightStopoverDateTimeWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+`
+
+export const FlightStopoverDateLocationWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`
+
+export const FlightStopoverTime = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000000;
+  margin: 0;
+`
+
+export const FlightStopoverLocationText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+
+  color: #707070;
+  margin: 0;
+  
+  span{
+    font-weight: 500;
+    margin: 0;
+  }
+`
+export const FlightAircraft = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+
+  color: #707070;
+  margin: 0;
+
+  span{
+    font-weight: 700;
+    margin: 0;
+  }
+`
+
+export const Stopover = styled.div`
+  width: 100%;
+  background: #FFF3E8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px;
+  border-radius:5px;
+  gap: 8px;
+`
+
+export const StopoverText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  margin:0;
+
+  color: #818181;
+  
+  span{
+    font-weight: 700;
+  }
+  
+  span:first-child{
+     color: #FF8C1D;
+   }
+`
+
+export const CartTicketsWrapper = styled.div`
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 18px 20px;
+`
+
+export const TicketItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const TicketText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #000000;
+`
+
+export const CartFooterWrapper = styled.div`
+  padding: 25px 31px;
+  border-top: 1px dashed #A29E9E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const TotalText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #434343;
+`
+
+export const TotalPrice = styled.h2`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #434343;
+`
+

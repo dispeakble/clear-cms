@@ -190,5 +190,16 @@
   },
   "custom500" : {
     "header": "For the moment our services are under maintenance"
+  },
+  "flightsCheckout" : {
+    "cart" : {
+      "header" : "Your Shopping Cart",
+      "tax": "Service tax",
+      "total": "Total price"
+    },
+    "flights": {
+      "header" : "Flight Details",
+      "pricingRules": "Pricing rules"
+    }
   }
 }

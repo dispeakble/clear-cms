@@ -191,5 +191,16 @@
   },
   "custom500" : {
     "header": "Por el momento nuestros servicios están en mantenimiento."
+  },
+  "flightsCheckout" : {
+    "cart" : {
+      "header" : "Su cesta de la compra",
+      "tax" : "Impuesto sobre los servicios",
+      "total": "Precio total"
+    },
+    "flights": {
+      "header" : "Detalles del vuelo",
+      "pricingRules": "Normas de fijación de precios"
+    }
   }
 }
