@@ -8,14 +8,14 @@ import {
     FlightExpandDetails,
     FlightLocationsText, FLightProviderImg,
     Flights,
-    FlightStopoverContainer, FlightStopoverDate,
-    FlightStopoverDateLocationWrapper,
-    FlightStopoverDateTimeWrapper,
-    FlightStopoverItem, FlightStopoverLocationText, FlightStopoverTime,
+    FlightInfosContainer, FlightInfosDate,
+    FlightInfosDateLocationWrapper,
+    FlighInfosDateTimeWrapper,
+    FlightInfosItem, FlightInfosLocationText, FlightInfosTime,
     FlightTextContainer,
     PricingRules,
     PricingText,
-    Stopover, StopoverText
+    Stopover, StopoverText, FlightInfosDurationAircraftWrapper
 } from "../styled";
 import Image from "next/image";
 import DepartureIcon from "../../assets/img/departure-icon.svg";
@@ -88,26 +88,91 @@ const FirstStep = ({flightData}: IProps) => {
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.
                                     </FlightDescription>
                                 </FlightDescriptionContainer>
-                                <FlightStopoverContainer>
-                                    <FlightStopoverItem>
-                                        <FlightStopoverDateLocationWrapper>
-                                            <FlightStopoverDateTimeWrapper>
-                                                <FlightStopoverDate>
-                                                    {flight.departureDate}
-                                                </FlightStopoverDate>
-                                                <FlightStopoverTime>
-                                                    {flight.departureTime}
-                                                </FlightStopoverTime>
-                                            </FlightStopoverDateTimeWrapper>
-                                            <FlightStopoverLocationText>
-                                                {flight.departure}, <span>{flight.departureShort}</span>
-                                            </FlightStopoverLocationText>
-                                        </FlightStopoverDateLocationWrapper>
+                            </FlightExpandDetails>
+                            <FlightInfosContainer>
+                                <FlightInfosItem>
+                                    <FlightInfosDateLocationWrapper>
+                                        <FlighInfosDateTimeWrapper>
+                                            <FlightInfosDate>
+                                                {flight.departureDate}
+                                            </FlightInfosDate>
+                                            <FlightInfosTime>
+                                                {flight.departureTime}
+                                            </FlightInfosTime>
+                                        </FlighInfosDateTimeWrapper>
+                                        <FlightInfosLocationText>
+                                            {flight.departure}, <span>{flight.departureShort}</span>
+                                        </FlightInfosLocationText>
+                                    </FlightInfosDateLocationWrapper>
 
-                                        <FlightStopoverDateLocationWrapper>
-                                            <FlightStopoverTime>
+                                    <FlightInfosDurationAircraftWrapper>
+                                        <FlightInfosTime>
+                                            {flight.duration}
+                                        </FlightInfosTime>
+                                        <FlightAircraft>
+                                            {flight.aircraft} <span>{flight.aircraftRef}</span>
+                                        </FlightAircraft>
+                                        <FLightProviderImg
+                                            src={flight.flightProviderIMG}
+                                            alt="flightProvider"
+                                            height={20}
+                                            width={67}
+                                        />
+                                    </FlightInfosDurationAircraftWrapper>
+
+                                    <FlightInfosDateLocationWrapper>
+                                        <FlighInfosDateTimeWrapper>
+                                            <FlightInfosDate>
+                                                {flight.stopover ? flight.stopover.date : flight.destinationDate}
+                                            </FlightInfosDate>
+                                            <FlightInfosTime>
+                                                {flight.stopover ? flight.stopover.departure : flight.departureTime}
+                                            </FlightInfosTime>
+                                        </FlighInfosDateTimeWrapper>
+                                        <FlightInfosLocationText>
+                                            {flight.stopover ? flight.stopover.city : flight.destination}, <span>{flight.stopover ? flight.stopover.short : flight.destinationShort}</span>
+                                        </FlightInfosLocationText>
+                                    </FlightInfosDateLocationWrapper>
+
+                                </FlightInfosItem>
+
+                                {
+                                    (flight.stopover) &&
+                                    <Stopover>
+                                        <Image
+                                            src={StopoverIcon}
+                                            width={22}
+                                            height={18}
+                                            alt="stopoverIMG"
+                                        />
+                                        <StopoverText>
+                                            Stopover in <span>{flight.stopover.city}</span> for <span>{flight.stopover.duration}</span>
+                                        </StopoverText>
+                                    </Stopover>
+                                }
+
+                                {
+                                    flight.stopover &&
+                                    <FlightInfosItem>
+
+                                        <FlightInfosDateLocationWrapper>
+                                            <FlighInfosDateTimeWrapper>
+                                                <FlightInfosDate>
+                                                    {flight.stopover.date}
+                                                </FlightInfosDate>
+                                                <FlightInfosTime>
+                                                    {flight.stopover.departure}
+                                                </FlightInfosTime>
+                                            </FlighInfosDateTimeWrapper>
+                                            <FlightInfosLocationText>
+                                                {flight.stopover.city}, <span>{flight.stopover.short}</span>
+                                            </FlightInfosLocationText>
+                                        </FlightInfosDateLocationWrapper>
+
+                                        <FlightInfosDurationAircraftWrapper>
+                                            <FlightInfosTime>
                                                 {flight.duration}
-                                            </FlightStopoverTime>
+                                            </FlightInfosTime>
                                             <FlightAircraft>
                                                 {flight.aircraft} <span>{flight.aircraftRef}</span>
                                             </FlightAircraft>
@@ -117,92 +182,27 @@ const FirstStep = ({flightData}: IProps) => {
                                                 height={20}
                                                 width={67}
                                             />
-                                        </FlightStopoverDateLocationWrapper>
+                                        </FlightInfosDurationAircraftWrapper>
 
-                                        <FlightStopoverDateLocationWrapper>
-                                            <FlightStopoverDateTimeWrapper>
-                                                <FlightStopoverDate>
-                                                    {flight.stopover ? flight.stopover.date : flight.destinationDate}
-                                                </FlightStopoverDate>
-                                                <FlightStopoverTime>
-                                                    {flight.stopover ? flight.stopover.departure : flight.departureTime}
-                                                </FlightStopoverTime>
-                                            </FlightStopoverDateTimeWrapper>
-                                            <FlightStopoverLocationText>
-                                                {flight.stopover ? flight.stopover.city : flight.destination}, <span>{flight.stopover ? flight.stopover.short : flight.destinationShort}</span>
-                                            </FlightStopoverLocationText>
-                                        </FlightStopoverDateLocationWrapper>
-
-                                    </FlightStopoverItem>
-
-                                    {
-                                        (flight.stopover) &&
-                                        <Stopover>
-                                            <Image
-                                                src={StopoverIcon}
-                                                width={22}
-                                                height={18}
-                                                alt="stopoverIMG"
-                                            />
-                                            <StopoverText>
-                                                Stopover in <span>{flight.stopover.city}</span> for <span>{flight.stopover.duration}</span>
-                                            </StopoverText>
-                                        </Stopover>
-                                    }
-
-                                    {
-                                        flight.stopover &&
-                                        <FlightStopoverItem>
-
-                                            <FlightStopoverDateLocationWrapper>
-                                                <FlightStopoverDateTimeWrapper>
-                                                    <FlightStopoverDate>
-                                                        {flight.stopover.date}
-                                                    </FlightStopoverDate>
-                                                    <FlightStopoverTime>
-                                                        {flight.stopover.departure}
-                                                    </FlightStopoverTime>
-                                                </FlightStopoverDateTimeWrapper>
-                                                <FlightStopoverLocationText>
-                                                    {flight.stopover.city}, <span>{flight.stopover.short}</span>
-                                                </FlightStopoverLocationText>
-                                            </FlightStopoverDateLocationWrapper>
-
-                                            <FlightStopoverDateLocationWrapper>
-                                                <FlightStopoverTime>
-                                                    {flight.duration}
-                                                </FlightStopoverTime>
-                                                <FlightAircraft>
-                                                    {flight.aircraft} <span>{flight.aircraftRef}</span>
-                                                </FlightAircraft>
-                                                <FLightProviderImg
-                                                    src={flight.flightProviderIMG}
-                                                    alt="flightProvider"
-                                                    height={20}
-                                                    width={67}
-                                                />
-                                            </FlightStopoverDateLocationWrapper>
-
-                                            <FlightStopoverDateLocationWrapper>
-                                                <FlightStopoverDateTimeWrapper>
-                                                    <FlightStopoverDate>
-                                                        {flight.destinationDate}
-                                                    </FlightStopoverDate>
-                                                    <FlightStopoverTime>
-                                                        {flight.arrivalTime}
-                                                    </FlightStopoverTime>
-                                                </FlightStopoverDateTimeWrapper>
-                                                <FlightStopoverLocationText>
-                                                    {flight.destination}, <span>{flight.destinationShort}</span>
-                                                </FlightStopoverLocationText>
-                                            </FlightStopoverDateLocationWrapper>
+                                        <FlightInfosDateLocationWrapper>
+                                            <FlighInfosDateTimeWrapper>
+                                                <FlightInfosDate>
+                                                    {flight.destinationDate}
+                                                </FlightInfosDate>
+                                                <FlightInfosTime>
+                                                    {flight.arrivalTime}
+                                                </FlightInfosTime>
+                                            </FlighInfosDateTimeWrapper>
+                                            <FlightInfosLocationText>
+                                                {flight.destination}, <span>{flight.destinationShort}</span>
+                                            </FlightInfosLocationText>
+                                        </FlightInfosDateLocationWrapper>
 
 
 
-                                        </FlightStopoverItem>
-                                    }
-                                </FlightStopoverContainer>
-                            </FlightExpandDetails>
+                                    </FlightInfosItem>
+                                }
+                            </FlightInfosContainer>
                         </FlightDetailsWrapper>
                     )
                 })

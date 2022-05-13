@@ -37,6 +37,8 @@ export const CartWrapper = styled.div`
   max-width: 433px;
   max-height: 560px;
   background: #FFFFFF;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px;
   @media(max-width: ${size.laptop}){
     max-width: 100%;
   }
@@ -53,6 +55,7 @@ export const FlightDetails = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 16px 21px;
+  border-bottom: 1px solid #FF840D;
 `
 
 export const PricingRules = styled.div`
@@ -60,6 +63,10 @@ export const PricingRules = styled.div`
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  
+  @media screen and (max-width: 480px){
+    display: none;
+  }
 `
 
 export const PricingText = styled.p`
@@ -77,6 +84,14 @@ export const Flight = styled.div`
   justify-content: space-between;
   min-width: 60%;
   
+  @media screen and (max-width: ${size.laptop}) {
+    min-width: 70%;
+  }
+  
+  @media screen and (max-width: 480px){
+    width: 100%;
+  }
+  
 `
 
 export const Flights = styled.div`
@@ -91,6 +106,12 @@ export const FlightTextContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 21px;
+
+  @media screen and (max-width: ${size.laptop}) {
+    span{
+      display: none !important;
+    }
+  }
 `
 
 export const FlightLocationsText = styled.p`
@@ -120,11 +141,17 @@ export const FlightsHeaderWrapper = styled.div`
   border: 1px solid #DBDBDB;
   border-radius: 10px;
   background: #ffffff;
+  
+  @media screen and (max-width: 480px){
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
 `
 
 export const FlightsHeader = styled.h2`
   font-family: "Poppins", sans-serif;
-  font-size: 36px;
+  font-size: clamp(18px, 3vw, 36px);
   font-weight: 400;
   color: #434343;
   line-height:1.5;
@@ -140,7 +167,7 @@ export const CartHeaderWrapper = styled.div`
 
 export const CartHeader = styled.h2`
   font-family: "Poppins", sans-serif;
-  font-size: 32px;
+  font-size: clamp(18px, 4vw, 32px);
   font-weight: 400;
   color: #434343;
   line-height:1.5;
@@ -166,6 +193,10 @@ export const CartStepsWrapper = styled.div`
   display: flex;
   position: relative;
   gap: 20px;
+  
+  @media screen and (max-width: 1200px){
+    gap: 15px;
+  }
 `
 export const StepWrapper = styled.div<IStep>`
   font-family: 'Poppins', sans-serif;
@@ -197,6 +228,26 @@ export const StepWrapper = styled.div<IStep>`
     width: 20px;
     border-bottom: 1px dashed #A29E9E;
   }
+  
+  @media screen and (max-width: 1200px){
+    height: 30px;
+    width: 30px;
+    
+    font-size: 16px;
+
+    &:not(:last-child)::after{
+      content: "";
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 1px;
+      width: 15px;
+      border-bottom: 1px dashed #A29E9E;
+    }
+  }
+  
+  
 `
 
 export const FlightCartItem = styled.div`
@@ -248,7 +299,6 @@ export const DepartureDestinationTextWrapper = styled.div`
 `
 
 export const FlightExpandDetails = styled.div<IFlightsDetails>`
-  border-top: 1px solid #FF840D;
   padding: 10px;
   display: ${({expand}) => expand ? "block" : "none"};
   transition: height .5s ease-in-out;
@@ -276,19 +326,20 @@ export const FlightDescription = styled.p`
   margin: 0;
 `
 
-export const FlightStopoverContainer = styled.div`
+export const FlightInfosContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  padding: 20px;
 `
 
-export const FlightStopoverItem = styled.div`
+export const FlightInfosItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `
 
-export const FlightStopoverDate = styled.p`
+export const FlightInfosDate = styled.p`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -296,20 +347,35 @@ export const FlightStopoverDate = styled.p`
   line-height: 1.5;
   color: #707070;
   margin: 0;
+  
+  @media screen and (max-width: 480px){
+    font-size: 14px;
+  }
 `
 
-export const FlightStopoverDateTimeWrapper = styled.div`
+export const FlighInfosDateTimeWrapper = styled.div`
   display: flex;
   gap: 8px;
+
+  @media screen and (max-width: 480px){
+    flex-direction: column;
+  }
 `
 
-export const FlightStopoverDateLocationWrapper = styled.div`
+export const FlightInfosDateLocationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
 `
 
-export const FlightStopoverTime = styled.p`
+export const FlightInfosDurationAircraftWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+`
+
+export const FlightInfosTime = styled.p`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 500;
@@ -317,9 +383,13 @@ export const FlightStopoverTime = styled.p`
   line-height: 1.5;
   color: #000000;
   margin: 0;
+  
+  @media screen and (max-width: 480px){
+    font-size: 14px;
+  }
 `
 
-export const FlightStopoverLocationText = styled.p`
+export const FlightInfosLocationText = styled.p`
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 16px;
@@ -331,6 +401,10 @@ export const FlightStopoverLocationText = styled.p`
   span{
     font-weight: 500;
     margin: 0;
+  }
+
+  @media screen and (max-width: 480px){
+    font-size: 14px;
   }
 `
 export const FlightAircraft = styled.p`
@@ -375,6 +449,10 @@ export const StopoverText = styled.p`
   span:first-child{
      color: #FF8C1D;
    }
+  
+  @media screen and (max-width: 480px){
+    font-size: 14px;
+  }
 `
 
 export const CartTicketsWrapper = styled.div`
