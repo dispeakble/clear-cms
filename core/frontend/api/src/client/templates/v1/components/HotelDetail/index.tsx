@@ -244,7 +244,7 @@ const HotelDetail = ({
                       >
                           <HotelSearch>
                               <SearchIcon/>
-                              <input value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
+                              <input value={data.hotel} type="search" data-testid="hotelInput" placeholder={t("deals.hotel")} onChange={(e) => {
                                   onSearch(e.target.value);
                                   handleSearch(e.target.value);
                               }} />

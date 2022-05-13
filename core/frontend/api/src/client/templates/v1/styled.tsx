@@ -38,14 +38,16 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #E5E5E5
 `;
 
 export const TopContentWrapper = styled.div`
   width: 100%;
-  padding: 114px 0 0;
+  padding: 114px 0 32px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
+
 
 export const ContentWrapper = styled.div`
   display: flex;
@@ -77,6 +79,17 @@ export const ContentWrapper = styled.div`
   @media ${device.desktopL} {
     max-width: 1440px;
   }
+`;
+
+export const ContentWrapperForPackageDetail = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+
+export const ServiceAndMapWrapper = styled.div`
+  width: 35%;
 `;
 
 export const PaperWrapper = styled.div`
@@ -139,6 +152,7 @@ export const StyledWebsiteSlogan = styled.div`
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
+
 /*
 export const StyledTermsOfUse = styled.div`
   background: ${({theme}) => theme.colors.primaryColor};
@@ -150,3 +164,23 @@ export const StyledTermsOfUse = styled.div`
     padding: 20px 90px;
 
 `;*/
+
+export const BottomContentWrapper = styled.div`
+  width: 100%;
+  padding: 32px 0 32px 0;
+  display: flex;
+  gap: 8px;
+`;
+
+export const PackageDetailMainContent = styled.div`
+  width: 100%;
+  padding: 0 1rem;
+`;
+
+export const BreadcrumbsContainer = styled.div`
+  width: 100%;
+  margin: 120px 0px 0px 0px;
+  padding: 1rem;
+`
+
+
