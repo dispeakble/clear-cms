@@ -121,6 +121,22 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 departure: "18:20",
             }
         },
+        {
+            typeIMG: DepartureIcon,
+            flightProviderIMG: FlightImg,
+            type: "departure",
+            departure: "Bucharest",
+            departureShort: "OTP",
+            departureDate: "Monday, 10 iun.",
+            departureTime: "00:20",
+            destination: "Tenerife",
+            destinationShort: "TFS",
+            destinationDate: "Monday, 10 iun.",
+            arrivalTime: "06:20",
+            duration: "7h 30m",
+            aircraft: "Wizz Air",
+            aircraftRef: "W12345"
+        },
     ]
 
     const displayStep = () => {

@@ -22,6 +22,7 @@ export const size = {
 export const DetailsWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   width: 100%;
   gap: 17px;
   margin-top: 53px;
@@ -35,7 +36,7 @@ export const DetailsWrapper = styled.div`
 export const CartWrapper = styled.div`
   flex: 1;
   max-width: 433px;
-  max-height: 560px;
+  height: auto;
   background: #FFFFFF;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 8px;
