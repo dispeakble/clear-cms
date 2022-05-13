@@ -1,21 +1,29 @@
 import {
-    Flight, FlightAircraft,
+    Flight,
+    FlightAircraft,
     FlightDescription,
     FlightDescriptionContainer,
     FlightDetails,
     FlightDetailsWrapper,
     FlightDuration,
     FlightExpandDetails,
-    FlightLocationsText, FLightProviderImg,
+    FlightLocationsText,
+    FLightProviderImg,
     Flights,
-    FlightInfosContainer, FlightInfosDate,
-    FlightInfosDateLocationWrapper,
+    FlightInfosContainer,
+    FlightInfosDate,
     FlighInfosDateTimeWrapper,
-    FlightInfosItem, FlightInfosLocationText, FlightInfosTime,
-    FlightTextContainer,
+    FlightInfosItem,
+    FlightInfosLocationText,
+    FlightInfosTime,
     PricingRules,
     PricingText,
-    Stopover, StopoverText, FlightInfosDurationAircraftWrapper
+    Stopover,
+    StopoverText,
+    FlightInfosDurationAircraftWrapper,
+    DottedLines,
+    FlightDestinationTextContainer,
+    FlightDepartureTextContainer, FlightInfosDateLocationDestinationWrapper, FlightInfosDateLocationDepartureWrapper
 } from "../styled";
 import Image from "next/image";
 import DepartureIcon from "../../assets/img/departure-icon.svg";
@@ -49,7 +57,7 @@ const FirstStep = ({flightData}: IProps) => {
                         <FlightDetailsWrapper>
                             <FlightDetails>
                                 <Flight>
-                                    <FlightTextContainer>
+                                    <FlightDepartureTextContainer>
                                         <Image
                                             src={DepartureIcon}
                                             width={20}
@@ -59,11 +67,13 @@ const FirstStep = ({flightData}: IProps) => {
                                         <FlightLocationsText>
                                             {flight.departure}
                                         </FlightLocationsText>
-                                    </FlightTextContainer>
+                                    </FlightDepartureTextContainer>
+                                    <DottedLines/>
                                     <FlightDuration>
                                         {flight.duration}
                                     </FlightDuration>
-                                    <FlightTextContainer>
+                                    <DottedLines/>
+                                    <FlightDestinationTextContainer>
                                         <Image
                                             src={ArrivalIcon}
                                             width={20}
@@ -73,7 +83,7 @@ const FirstStep = ({flightData}: IProps) => {
                                         <FlightLocationsText>
                                             {flight.destination}
                                         </FlightLocationsText>
-                                    </FlightTextContainer>
+                                    </FlightDestinationTextContainer>
                                 </Flight>
                                 <PricingRules onClick={() => handleExpand(index)}>
                                     <Image src={InfoIcon} alt="info-pricing" height={12} width={12}/>
@@ -91,7 +101,7 @@ const FirstStep = ({flightData}: IProps) => {
                             </FlightExpandDetails>
                             <FlightInfosContainer>
                                 <FlightInfosItem>
-                                    <FlightInfosDateLocationWrapper>
+                                    <FlightInfosDateLocationDepartureWrapper>
                                         <FlighInfosDateTimeWrapper>
                                             <FlightInfosDate>
                                                 {flight.departureDate}
@@ -103,7 +113,9 @@ const FirstStep = ({flightData}: IProps) => {
                                         <FlightInfosLocationText>
                                             {flight.departure}, <span>{flight.departureShort}</span>
                                         </FlightInfosLocationText>
-                                    </FlightInfosDateLocationWrapper>
+                                    </FlightInfosDateLocationDepartureWrapper>
+
+                                    <DottedLines/>
 
                                     <FlightInfosDurationAircraftWrapper>
                                         <FlightInfosTime>
@@ -120,7 +132,9 @@ const FirstStep = ({flightData}: IProps) => {
                                         />
                                     </FlightInfosDurationAircraftWrapper>
 
-                                    <FlightInfosDateLocationWrapper>
+                                    <DottedLines/>
+
+                                    <FlightInfosDateLocationDestinationWrapper>
                                         <FlighInfosDateTimeWrapper>
                                             <FlightInfosDate>
                                                 {flight.stopover ? flight.stopover.date : flight.destinationDate}
@@ -132,7 +146,7 @@ const FirstStep = ({flightData}: IProps) => {
                                         <FlightInfosLocationText>
                                             {flight.stopover ? flight.stopover.city : flight.destination}, <span>{flight.stopover ? flight.stopover.short : flight.destinationShort}</span>
                                         </FlightInfosLocationText>
-                                    </FlightInfosDateLocationWrapper>
+                                    </FlightInfosDateLocationDestinationWrapper>
 
                                 </FlightInfosItem>
 
@@ -155,7 +169,7 @@ const FirstStep = ({flightData}: IProps) => {
                                     flight.stopover &&
                                     <FlightInfosItem>
 
-                                        <FlightInfosDateLocationWrapper>
+                                        <FlightInfosDateLocationDepartureWrapper>
                                             <FlighInfosDateTimeWrapper>
                                                 <FlightInfosDate>
                                                     {flight.stopover.date}
@@ -167,7 +181,9 @@ const FirstStep = ({flightData}: IProps) => {
                                             <FlightInfosLocationText>
                                                 {flight.stopover.city}, <span>{flight.stopover.short}</span>
                                             </FlightInfosLocationText>
-                                        </FlightInfosDateLocationWrapper>
+                                        </FlightInfosDateLocationDepartureWrapper>
+
+                                        <DottedLines/>
 
                                         <FlightInfosDurationAircraftWrapper>
                                             <FlightInfosTime>
@@ -184,7 +200,9 @@ const FirstStep = ({flightData}: IProps) => {
                                             />
                                         </FlightInfosDurationAircraftWrapper>
 
-                                        <FlightInfosDateLocationWrapper>
+                                        <DottedLines/>
+
+                                        <FlightInfosDateLocationDestinationWrapper>
                                             <FlighInfosDateTimeWrapper>
                                                 <FlightInfosDate>
                                                     {flight.destinationDate}
@@ -196,9 +214,7 @@ const FirstStep = ({flightData}: IProps) => {
                                             <FlightInfosLocationText>
                                                 {flight.destination}, <span>{flight.destinationShort}</span>
                                             </FlightInfosLocationText>
-                                        </FlightInfosDateLocationWrapper>
-
-
+                                        </FlightInfosDateLocationDestinationWrapper>
 
                                     </FlightInfosItem>
                                 }

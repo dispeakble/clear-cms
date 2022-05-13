@@ -29,21 +29,6 @@ import {
     FlightsWrapper,
     CartStepsWrapper,
     StepWrapper,
-    CartItemContainer,
-    FlightCartItem,
-    DepartureDestinationText,
-    FLightProviderImg,
-    FlightTimeContainer,
-    DateText,
-    TimeText,
-    CartFlightInfo,
-    DepartureDestinationTextWrapper,
-    CartTicketsWrapper,
-    TicketItem,
-    TicketText,
-    CartFooterWrapper,
-    TotalText,
-    TotalPrice
 } from "./styled";
 import {useTranslations} from "next-intl";
 import FirstStep from "./steps/First";
@@ -57,18 +42,6 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
     };
-
-    const [data, setData] = useState({
-        hotel: "",
-        checkin: new Date(),
-        checkout: moment(new Date()).add(1, "d"),
-        passenger: {
-            adults: 1,
-            infants: 0,
-            children: 0
-        }
-
-    });
 
     const myTheme: any = { colors: colorScheme, icon: getIcons };
 
@@ -141,8 +114,8 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
     const displayStep = () => {
         switch(currentStep){
-            case 1: return <FirstStep flightData={flightData} />; break;
-            default: return <FirstStep flightData={flightData} />; break;
+            case 1: return <FirstStep flightData={flightData} />;
+            default: return <FirstStep flightData={flightData} />;
         }
     }
 

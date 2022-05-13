@@ -4,7 +4,7 @@ import {
     CartHeaderWrapper,
     CartItemContainer, CartTicketsWrapper,
     CartWrapper, DateText, DepartureDestinationText,
-    DepartureDestinationTextWrapper,
+    DepartureTextWrapper, DestinationTextWrapper, DottedLines,
     FlightCartItem, FLightProviderImg, FlightTimeContainer, TicketItem, TicketText, TimeText, TotalPrice, TotalText
 } from "../styled";
 import Image from "next/image";
@@ -32,7 +32,7 @@ const Cart = ({flightData}: IProps) => {
                         return(
                             <CartFlightInfo>
                                 <FlightCartItem>
-                                    <DepartureDestinationTextWrapper>
+                                    <DepartureTextWrapper>
                                         <Image
                                             src={flight.typeIMG}
                                             alt="tripType"
@@ -42,18 +42,24 @@ const Cart = ({flightData}: IProps) => {
                                         <DepartureDestinationText>
                                             {flight.departure}
                                         </DepartureDestinationText>
-                                    </DepartureDestinationTextWrapper>
+                                    </DepartureTextWrapper>
+
+                                    <DottedLines />
+
                                     <FLightProviderImg
                                         src={flight.flightProviderIMG}
                                         alt="flightProvider"
                                         height={20}
                                         width={67}
                                     />
-                                    <DepartureDestinationTextWrapper>
+
+                                    <DottedLines />
+
+                                    <DestinationTextWrapper>
                                         <DepartureDestinationText>
                                             {flight.destination}
                                         </DepartureDestinationText>
-                                    </DepartureDestinationTextWrapper>
+                                    </DestinationTextWrapper>
 
                                 </FlightCartItem>
                                 <FlightTimeContainer>

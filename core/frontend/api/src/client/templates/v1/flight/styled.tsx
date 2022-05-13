@@ -29,6 +29,7 @@ export const DetailsWrapper = styled.div`
   
   @media(max-width: ${size.laptop}){
     flex-direction: column;
+    align-items: stretch;
     padding: 20px;
   }
 `
@@ -79,6 +80,15 @@ export const PricingText = styled.p`
   color: #FF840D;
 `
 
+export const DottedLines = styled.hr`
+  border: none;
+  border-top: 1px dashed #A29E9E;
+  overflow: visible;
+  text-align: center;
+  height: 1px;
+  flex: 1;
+`
+
 export const Flight = styled.div`
   display: flex;
   align-items: center;
@@ -103,10 +113,54 @@ export const Flights = styled.div`
 
 
 
-export const FlightTextContainer = styled.div`
+export const FlightDestinationTextContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 21px;
+  padding-left: 10px;
+  position: relative;
+  background: white;
+
+  :after{
+    content: "";
+    position: absolute;
+    left: -4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
+
+  @media screen and (max-width: ${size.laptop}) {
+    span{
+      display: none !important;
+    }
+  }
+`
+
+export const FlightDepartureTextContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 21px;
+  padding-right: 10px;
+  position: relative;
+  background: white;
+
+  :after{
+    content: "";
+    position: absolute;
+    right: -4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
 
   @media screen and (max-width: ${size.laptop}) {
     span{
@@ -129,6 +183,8 @@ export const FlightDuration = styled.p`
   color: #000000;
   font-weight: 500;
   font-size: 16px;
+  padding: 0 10px;
+  background: #ffffff;
   line-height: 1.5;
   margin: 0;
 `
@@ -293,10 +349,48 @@ export const DepartureDestinationText = styled.p`
   margin: 0;
 `
 
-export const DepartureDestinationTextWrapper = styled.div`
+export const DepartureTextWrapper = styled.div`
   display: flex;
   gap: 10px;
   align-items: center;
+  padding-right: 10px;
+  position: relative;
+  background: white;
+
+  :after{
+    content: "";
+    position: absolute;
+    right: -4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
+`
+
+export const DestinationTextWrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-left: 10px;
+  position: relative;
+  background: white;
+
+  :after{
+    content: "";
+    position: absolute;
+    left: -4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
 `
 
 export const FlightExpandDetails = styled.div<IFlightsDetails>`
@@ -363,10 +457,48 @@ export const FlighInfosDateTimeWrapper = styled.div`
   }
 `
 
-export const FlightInfosDateLocationWrapper = styled.div`
+export const FlightInfosDateLocationDepartureWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding-right: 10px;
+  position: relative;
+  background: white;
+
+  :after{
+    content: "";
+    position: absolute;
+    right: -4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
+`
+
+export const FlightInfosDateLocationDestinationWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 10px;
+  position: relative;
+  background: white;
+
+  :after{
+    content: "";
+    position: absolute;
+    left: -4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
 `
 
 export const FlightInfosDurationAircraftWrapper = styled.div`
@@ -374,6 +506,8 @@ export const FlightInfosDurationAircraftWrapper = styled.div`
   flex-direction: column;
   gap: 2px;
   text-align: center;
+  padding: 0 10px;
+  background: white;
 `
 
 export const FlightInfosTime = styled.p`
