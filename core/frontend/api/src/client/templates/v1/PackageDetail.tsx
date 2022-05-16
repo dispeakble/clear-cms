@@ -221,6 +221,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                     <div style={{ width: '65%', }}>
                         <PackageDetailCard />
                         <HotelCardGrid  title={"Similar Hotels"} />
+                        <HotelCardGrid  title={"Other Destinations"} />
                     </div>
                 </BottomContentWrapper>
                 </PackageDetailMainContent>

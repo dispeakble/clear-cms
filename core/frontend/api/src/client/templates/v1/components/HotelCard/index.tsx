@@ -4,6 +4,7 @@ import {
 import React, {FC} from "react"
 import {Rate} from "antd";
 import cardBg from "../../assets/img/hotels/original/hotel1.jpg"
+import calendarCheckIcon from "../../assets/img/calendar-check-icon.svg"
 
 const HotelCard = () => {
 
@@ -20,7 +21,7 @@ const HotelCard = () => {
             <CardImage src={cardBg.src} alt={"Card Image"} />
 
             <CustomButton>
-                {/*<img src={calend} alt=""/>*/}
+                <img src={calendarCheckIcon.src} alt="icon"/>
                 Check Availability
             </CustomButton>
         </Body>

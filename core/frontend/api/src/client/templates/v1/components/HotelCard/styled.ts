@@ -30,7 +30,7 @@ export const CardImage = styled.img`
 `;
 export const CustomButton = styled.button`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   
   margin-top: 10px;
