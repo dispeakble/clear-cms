@@ -21,6 +21,7 @@ import {Cardtitle, CheckedIcon, Feature, Highlights, MapSection} from "./compone
 import GoogleMapReact from "google-map-react";
 import Footer from "./components/Footer";
 import PacakgeCharter from './components/PackageCharter'
+import HotelCardGrid from "./components/HotelCardGrid";
 
 
 const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
@@ -217,12 +218,15 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                         </MapSection>
                     </ContentWrapper>
                     </ServiceAndMapWrapper>
-                    <PackageDetailCard />
+                    <div style={{ width: '65%', }}>
+                        <PackageDetailCard />
+                        <HotelCardGrid  title={"Similar Hotels"} />
+                    </div>
                 </BottomContentWrapper>
                 </PackageDetailMainContent>
                 <Footer />
             </MainWrapper>
-            </ThemeProvider>);
+            </ThemeProvider>
         </>
 );
 

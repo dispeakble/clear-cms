@@ -26,8 +26,13 @@ export const CommonHelper = ({ templates }: any) => {
   useEffect(() => {
     (async () => {
       const response = await fetch("/api/settings/getSettings");
-      const data = await response.json();
-
+      let data = {}
+      try {
+        data = await response.json();
+      } catch (e) {
+        console.log(e)
+      }
+      console.log(data)
       Object.keys(data["colorScheme"]).map(color => {
         if ("string" === typeof data["colorScheme"][color].value) {
           data["colorScheme"][color] = data["colorScheme"][color].value;
