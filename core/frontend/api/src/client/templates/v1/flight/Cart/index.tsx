@@ -13,11 +13,13 @@ import {useTranslations} from "next-intl";
 
 interface IProps{
     flightData: any;
+    passengersCount: any;
 }
 
-const Cart = ({flightData}: IProps) => {
+const Cart = ({flightData, passengersCount}: IProps) => {
 
     const t = useTranslations()
+    const ticketPrice = 435.71;
 
     return(
         <CartWrapper>
@@ -82,14 +84,20 @@ const Cart = ({flightData}: IProps) => {
                 }
             </CartItemContainer>
             <CartTicketsWrapper>
-                <TicketItem>
-                    <TicketText>
-                        1 x Adult ticket
-                    </TicketText>
-                    <TicketText>
-                        435.71 €
-                    </TicketText>
-                </TicketItem>
+                {
+                    Object.keys(passengersCount).map((key: any) =>
+                        (
+                            <TicketItem>
+                                <TicketText>
+                                    {passengersCount[key]} x {key} ticket
+                                </TicketText>
+                                <TicketText>
+                                    {Number((passengersCount[key] as number) * ticketPrice).toFixed(2)} €
+                                </TicketText>
+                            </TicketItem>
+                        )
+                    )
+                }
                 <TicketItem>
                     <TicketText>
                         {t('flightsCheckout.cart.tax')}

@@ -23,7 +23,11 @@ import {
     FlightInfosDurationAircraftWrapper,
     DottedLines,
     FlightDestinationTextContainer,
-    FlightDepartureTextContainer, FlightInfosDateLocationDestinationWrapper, FlightInfosDateLocationDepartureWrapper
+    FlightDepartureTextContainer,
+    FlightInfosDateLocationDestinationWrapper,
+    FlightInfosDateLocationDepartureWrapper,
+    ButtonsContainer,
+    CustomButton
 } from "../styled";
 import Image from "next/image";
 import DepartureIcon from "../../assets/img/departure-icon.svg";
@@ -36,9 +40,11 @@ import {useState} from "react";
 
 interface IProps {
     flightData: any;
+    setCurrentStep: any;
+    currentStep: number;
 }
 
-const FirstStep = ({flightData}: IProps) => {
+const FirstStep = ({flightData, setCurrentStep, currentStep}: IProps) => {
 
     const  t = useTranslations();
     const [isOpen, setIsOpen] = useState<number>(-1)
@@ -223,6 +229,11 @@ const FirstStep = ({flightData}: IProps) => {
                     )
                 })
             }
+            <ButtonsContainer hasOneChild>
+                <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
+                    {t('flightsCheckout.main.nextStep')}
+                </CustomButton>
+            </ButtonsContainer>
         </Flights>
     )
 }

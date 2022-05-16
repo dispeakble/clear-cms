@@ -1,28 +1,19 @@
 import * as React from "react";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
-import HotelDetail from "../components/HotelDetail";
-import HotelAbout from "../components/HotelAbout";
 import FlightImg from "../assets/img/flight.png"
 import DepartureIcon from "../assets/img/departure-icon.svg"
 import ArrivalIcon from "../assets/img/arrival-icon.svg"
 import {
-    ContentWrapper,
     GlobalStyle,
     MainWrapper,
     TopContentWrapper, Wrapper
 } from "../styled";
-import Image from "next/image"
 import Breadcrumbs from "../components/Breadcrumbs";
-import HotelAvailable from "../components/HotelAvailable";
-import moment from "moment";
 import { getIcon } from "../helpers/icons";
 import Footer from "../components/Footer";
 import {
-    CartHeader,
-    CartHeaderWrapper,
-    CartWrapper,
     DetailsWrapper,
     FlightsHeaderWrapper,
     FlightsHeader,
@@ -32,18 +23,43 @@ import {
 } from "./styled";
 import {useTranslations} from "next-intl";
 import FirstStep from "./steps/First";
+import SecondStep from "./steps/Second";
 import Cart from "./Cart";
+import * as shortid from "shortid"
+
+interface IPassenger {
+    id: string,
+    firstName: string;
+    lastName: string;
+    isAdult: boolean;
+    age?: number;
+}
 
 const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(1)
+    const [currentStep, setCurrentStep] = useState<number>(2)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
     };
 
     const myTheme: any = { colors: colorScheme, icon: getIcons };
+
+    const passengersData = [
+        {
+           type: "adult"
+        },
+        {
+            type: "adult"
+        },
+        {
+            type: "children"
+        },
+        {
+            type: "children"
+        }
+    ]
 
     const flightData = [
         {
@@ -112,10 +128,58 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         },
     ]
 
+    const [passengers, setPassengers] = useState<IPassenger[]>([])
+
+    const [contactDetails, setContactDetails] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        emailAddress: '',
+        country: ''
+    })
+
+    useEffect(() => {
+        setPassengers([])
+        passengersData.map((passenger: { type: string }) => {
+            setPassengers((prev: IPassenger[]) => {
+                return [...prev, {
+                    id: shortid.generate(),
+                    firstName: "",
+                    lastName: "",
+                    isAdult: passenger.type === "adult",
+                    ...(passenger.type !== "adult" ? {age: Number as unknown as number} : {})
+                }]
+            })
+        })
+    }, [])
+
+    const passengersCount = {
+        ...(passengers.filter((p) => p.isAdult).length > 0
+            && {adults: passengers.filter((p) => p.isAdult).length} ),
+        ...(passengers.filter((p) => !p.isAdult).length > 0
+            && {children: passengers.filter((p) => !p.isAdult).length} ),
+    }
+
+    console.log(passengersCount)
+
     const displayStep = () => {
         switch(currentStep){
-            case 1: return <FirstStep flightData={flightData} />;
-            default: return <FirstStep flightData={flightData} />;
+            case 1: return <FirstStep flightData={flightData}
+                                      setCurrentStep={setCurrentStep}
+                                      currentStep={currentStep}
+                            />;
+
+            case 2: return <SecondStep passengers={passengers}
+                                       setCurrentStep={setCurrentStep}
+                                       currentStep={currentStep}
+                                       setPassengers={setPassengers}
+                                       contactDetails={contactDetails}
+                                       setContactDetails={setContactDetails}
+                            />;
+
+            default: return <FirstStep flightData={flightData}
+                                       setCurrentStep={setCurrentStep}
+                                       currentStep={currentStep}/>;
         }
     }
 
@@ -129,7 +193,7 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 <Wrapper>
                     <Breadcrumbs />
                     <DetailsWrapper>
-                        <Cart flightData={flightData} />
+                        <Cart flightData={flightData} passengersCount={passengersCount} />
                         <FlightsWrapper>
                             <FlightsHeaderWrapper>
                                 <FlightsHeader>

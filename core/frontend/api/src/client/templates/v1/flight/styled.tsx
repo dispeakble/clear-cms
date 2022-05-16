@@ -8,6 +8,14 @@ interface IFlightsDetails{
     expand?: boolean;
 }
 
+interface IButtonContainer{
+    hasOneChild?: boolean;
+}
+
+interface ICustomButton{
+    isActive?: boolean;
+}
+
 export const size = {
     mobileS: "320px",
     mobileM: "375px",
@@ -111,6 +119,93 @@ export const Flights = styled.div`
   gap: 20px;
 `
 
+export const PassengerDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+export const PassengerItem = styled.div`
+  width: 100%;
+  border: 1px #DBDBDB solid;
+  border-radius: 10px;
+  background: #FFFFFF;
+  padding: 20px 28px;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+export const PassengerHeaderContainer = styled.div`
+    
+`
+
+export const PassengerHeader = styled.h2`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.5;
+  color: #434343;
+`
+
+export const FormGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column
+  }
+`
+
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`
+
+export const InputLabel = styled.label`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  color: #434343;
+`
+
+export const TextInput = styled.input`
+  outline: none;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  color: #434343;
+  
+  ::placeholder{
+    color: #ADADAD;
+  }
+`
+
+export const CustomSelect = styled.select`
+  outline: none;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  color: #434343;
+  background: #FFFFFF;
+
+  option:first-child{
+    color: #ADADAD;
+  }
+`
 
 
 export const FlightDestinationTextContainer = styled.div`
@@ -138,6 +233,39 @@ export const FlightDestinationTextContainer = styled.div`
     span{
       display: none !important;
     }
+  }
+`
+
+export const ButtonsContainer = styled.div<IButtonContainer>`
+  display: flex;
+  justify-content: ${({hasOneChild}) => hasOneChild ? "flex-end" : "space-between"};
+  
+  @media screen and (max-width:${size.tablet}){
+    flex-direction: column;
+    gap: 20px;
+  }
+`
+
+export const CustomButton = styled.button<ICustomButton>`
+  background: ${({isActive}) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: clamp(18px, 3vw, 36px);
+  line-height: 1.5;
+  color: #FFFFFF;
+  display: flex;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 18px 26px;
+  justify-content: space-between;
+  
+  gap: 20px;
+  
+  @media screen and (max-width:${size.tablet}){
+    justify-content: center;
   }
 `
 

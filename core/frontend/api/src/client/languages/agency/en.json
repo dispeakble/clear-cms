@@ -200,6 +200,19 @@
     "flights": {
       "header" : "Flight Details",
       "pricingRules": "Pricing rules"
+    },
+    "main": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "adult": "Adult",
+      "child": "Child",
+      "contactDetails": "Contact Details",
+      "phoneNumber": "Phone Number",
+      "childAge": "Child Age",
+      "country": "Country",
+      "emailAddress": "Email Address",
+      "previousStep": "Previous Step",
+      "nextStep": "Next Step"
     }
   }
 }
