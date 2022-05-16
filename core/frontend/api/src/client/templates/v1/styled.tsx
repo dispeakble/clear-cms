@@ -38,7 +38,24 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #f7f7f7;
 `;
+
+export const Wrapper = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px 0;
+  min-height: 100vh;
+  
+  @media(max-width: ${size.laptopL}){
+    padding: 20px;
+  }
+
+  @media(max-width: ${size.tablet}){
+    padding: 0;
+  }
+`
 
 export const TopContentWrapper = styled.div`
   width: 100%;
