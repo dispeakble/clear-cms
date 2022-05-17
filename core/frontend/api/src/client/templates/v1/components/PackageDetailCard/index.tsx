@@ -437,7 +437,7 @@ const PackageDetailCard = () => {
                     <ParaTextBold style={{textAlign: 'center'}}>Available prices for Jun 16 2022 - 7 nights</ParaTextBold>
 
                     <BookingCard>
-                        <div style={{ flexBasis: '15%'}}>
+                    <div style={{ flexBasis: '15%'}}>
                             <BookingHeadingText>Single room</BookingHeadingText>
                             <BookingHeadingText>All Inclusive</BookingHeadingText>
                         </div>
