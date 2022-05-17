@@ -1,29 +1,423 @@
-import {PackageDetailContainer, PackageTitle, FlightInformation, FlightInputs, FlightTakeOffIcon, FlightTakeOffInput, DropdownIcon } from  './styled';
+import {PackageDetailContainer, TitleText, FlightInformation, InputContainer, FlightTakeOffIcon,
+    StyledSearchDestinationInput, AutocompleteItem, AutocompleteList, FlightTakeOffInput, DropdownIcon,
+    StyledSearchInput, ImageForCompany, FlightDetailsContainer, FlightPort,
+    Time, TakeOffInputContainer, PassengerWrapper, Passenger, ChildIcon,
+    CounterBtn, CounterDiv, DivView, GuestNumber, PassengerDetailsWrapper, SpanDiv, PassengerView} from  './styled';
 import { Packages } from '../HomeSearch/SearchForms/Packages'
-import React from "react";
+import React, {useCallback, useRef, useState} from "react";
+import { useTranslations } from "next-intl";
+import debounce from "lodash/debounce";
+import useWsContext from "../../../../context/SocketContext";
+import {CalenderIcon, DateDiv, H4, HotelCalendar, HotelSearch} from "../HotelDetail/styled";
+import moment from "moment";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Image from "next/image";
+import adultsIcon from "../../assets/img/adults-icon.svg";
 
 
 const PackageDetailCard = () => {
+    const departureRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+    const t = useTranslations();
 
-    return(
-        <PackageDetailContainer>
-            <PackageTitle>Package Details</PackageTitle>
-            <Packages />
-           {/* <FlightInformation>
-                <label>Flight information</label>
-                <FlightInputs>
-                    <FlightTakeOffInput>
-                        <FlightTakeOffIcon />
-                        <input placeholder="Bucharest"
-                               style={{cursor: 'pointer'}}/>
-                        <DropdownIcon />
-                    </FlightTakeOffInput>
-                    <input placeholder="Bucharest"
-                           style={{cursor: 'pointer'}}/>
-                </FlightInputs>
-            </FlightInformation>*/}
-        </PackageDetailContainer>
-    )
+    const { ws } = useWsContext();
+    const [departure, setDeparture] = useState("");
+    const [showDepartures, setShowDepartures] = useState(false);
+    const [departureList, setDepartureList] = useState<any[]>([]);
+    const [destination, setDestination] = useState("");
+    const [departureId, setDepartureId] = useState(0)
+    const [showDestinations, setShowDestinations] = useState(false);
+    const [destinationList, setDestinationList] = useState<any[]>([]);
+    const [destinationId, setDestinationId] = useState(0);
+    const [minCheckInDate, setMinCheckInDate] = useState(new Date());
+    const [showOccupantAdult, setShowOccupantAdult] = useState(false);
+    const [showOccupantChild, setShowOccupantChild] = useState(false);
+
+    const [data, setData] = useState({
+        hotel: "",
+        checkin: new Date(),
+        checkout: moment(new Date()).add(1, "d"),
+        passenger: {
+            adults: 1,
+            infants: 0,
+            children: 0
+        }
+
+    });
+    const [show, setShow] = useState({
+        checkin: false,
+        checkout: false,
+        details: false
+    });
+
+
+    const searchDepartureByName = async (value: string) => {
+        const response = await ws.sendMessage({
+            api: "homeSearchPackages",
+            act: "packages",
+            payload: {
+                type: "departure",
+                data: {
+                    name: value
+                }
+            }
+        })
+    };
+    const searchDestinationByName = async (value: string) => {
+        const response = await ws.sendMessage({
+            api: "homeSearchPackages",
+            act: "packages",
+            payload: {
+                type: "destination",
+                data: {
+                    departure: departureId,
+                    name: value
+                }
+            }
+        });
+        if (response && response.destination && response.destination.length) {
+            setDestinationList(response.destination);
+            setShowDestinations(true);
+        } else {
+            setDestinationList([]);
+            setShowDestinations(false);
+        }
+    };
+
+
+    const debouncedDepartureSearch = useCallback(debounce(searchDepartureByName, 500), []);
+        const debouncedDestinationSearch = useCallback(debounce(searchDestinationByName, 500), [departureId]);
+
+        const handleDeparture = async (e: any) => {
+            setDestination("");
+            if (e.id) {
+                setDeparture(e.name);
+                setDepartureList([]);
+                setShowDepartures(false);
+                setDepartureId(e.id);
+            } else {
+                e.preventDefault();
+                setDeparture(e.target.value);
+                if (e.target.value.length > 2) {
+                    debouncedDepartureSearch(e.target.value);
+                }
+            }
+        };
+
+        const showDepartureList = async () => {
+            const response = await ws.sendMessage({
+                api: "homeSearchPackages",
+                act: "packages",
+                payload: {
+                    type: "init",
+                    data: {}
+                }
+            });
+
+            if (response && response.departure) {
+                setDepartureList(response.departure);
+                setShowDepartures(true);
+            } else {
+                setDepartureList([]);
+                setShowDepartures(false);
+            }
+        };
+    const getStartDates = async () => {
+        const response = await ws.sendMessage({
+            api: "homeSearchPackages",
+            act: "packages",
+            payload: {
+                type: "dates",
+                data: {
+                    departure: departureId,
+                    destination: destinationId
+                }
+            }
+        });
+        if (response && response.dateInterval) {
+            setMinCheckInDate(new Date(response.dateInterval))
+        }
+    }
+
+    const handleDestination = async (e: any) => {
+        if (e.id) {
+            setDestination(e.name);
+            setDestinationList([]);
+            setShowDestinations(false);
+            setDestinationId(e.id);
+            getStartDates();
+        } else {
+            e.preventDefault();
+            setDestination(e.target.value);
+            if (e.target.value.length > 2) {
+                debouncedDestinationSearch(e.target.value);
+            }
+        }
+    };
+
+    const handleClickAway = (name: string) => {
+        setShow({
+            ...show,
+            [name]: false
+        });
+    };
+
+    const handleShowCheckin = () => {
+        setShow({
+            ...show,
+            checkin: !show.checkin
+        });
+    };
+    const handleChangeInput = (name: string, value: any) => {
+        setData({
+            ...data,
+            [name]: value
+        });
+    };
+    const handleDateAway = (name: string) => {
+        setShow({
+            ...show,
+            [name]: false
+        });
+    };
+    const handleShowAdults = () => {
+        setShowOccupantAdult(prevState => !prevState)
+    };
+
+    const handleAdultPlus = () => {
+        setData({
+            ...data,
+            passenger: {
+                ...data.passenger,
+                adults: data.passenger.adults + 1
+            }
+        });
+
+    };
+
+    const handleAdultMinus = () => {
+        if (Number(data.passenger.adults) > 0) {
+            setData({
+                ...data,
+                passenger: {
+                    ...data.passenger,
+                    adults: data.passenger.adults - 1
+                }
+            });
+        }
+    };
+    const handleShowChildren = () => {
+        setShowOccupantChild(prevState => !prevState)
+    };
+    const handleChildrenPlus = () => {
+        setData({
+            ...data,
+            passenger: {
+                ...data.passenger,
+                children: data.passenger.children + 1
+            }
+        });
+
+    };
+    const handleChildrenMinus = () => {
+        if (Number(data.passenger.children) > 0) {
+            setData({
+                ...data,
+                passenger: {
+                    ...data.passenger,
+                    children: data.passenger.children - 1
+                }
+            });
+        }
+
+
+    };
+
+    return (
+            <PackageDetailContainer>
+                <TitleText>Package Details</TitleText>
+                <FlightInformation>
+                    <label>Flight information</label>
+                    <InputContainer>
+                        <FlightTakeOffInput>
+                            <TakeOffInputContainer>
+                            <StyledSearchInput
+                                ref={departureRef}
+                                placeholder={t("search.homeSearchPackageDeparturePlaceholder")}
+                                value={departure}
+                                onChange={handleDeparture}
+                                onFocus={showDepartureList}
+                            />
+                            <DropdownIcon />
+                            </TakeOffInputContainer>
+
+                            {showDepartures && <AutocompleteList>
+                                {departureList.map(
+                                    (dep, i) =>
+                                        <AutocompleteItem
+                                            onClick={() => handleDeparture({id: dep.Id, name: dep.Name})}
+                                            key={i}>{dep.IntName} ({dep.Name})</AutocompleteItem>
+                                )}
+                            </AutocompleteList>}
+                        </FlightTakeOffInput>
+                        <FlightTakeOffInput>
+                            <TakeOffInputContainer>
+                            <StyledSearchDestinationInput
+                                placeholder={t("search.homeSearchPackageDestinationPlaceholder")}
+                                value={destination}
+                                onChange={handleDestination} />
+                                </TakeOffInputContainer>
+                            {showDestinations && <AutocompleteList className="destination">
+                                {destinationList.map(
+                                    (dest, i) =>
+                                        <AutocompleteItem
+                                            onClick={() => handleDestination({ id: dest.Id, name: dest.Name })}
+                                            key={i}>{dest.IntName} ({dest.Name})</AutocompleteItem>
+                                )}
+                            </AutocompleteList>}
+                        </FlightTakeOffInput>
+                    </InputContainer>
+
+                    <label>Flight information</label>
+
+                    <InputContainer>
+                    <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
+                        <DateDiv>
+                            <HotelSearch onClick={() => {
+                                handleShowCheckin();
+                            }}>
+                                <CalenderIcon  />
+                                <input placeholder={t("deals.checkin") }
+                                       onChange={() => {}}
+                                       style={{cursor: 'pointer'}}
+                                       value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
+
+                                <DropdownIcon />
+                            </HotelSearch>
+
+                            {show.checkin ? (
+
+                                <HotelCalendar
+                                    minDate={data.checkin}
+                                    value={data.checkin}
+
+                                    onChange={(value: any) => {
+                                        handleChangeInput("checkin", value);
+                                        handleDateAway("checkin");
+                                    }}
+                                />
+
+                            ) : null}
+                        </DateDiv>
+                    </ClickAwayListener>
+                        <HotelSearch onClick={() => {
+                            handleShowCheckin();
+                        }}>
+                            <CalenderIcon  />
+                            <input placeholder={t("deals.checkin") }
+                                   onChange={() => {}}
+                                   style={{cursor: 'pointer'}}
+                                   value="7 nights" readOnly />
+
+                            <DropdownIcon />
+                        </HotelSearch>
+
+                    </InputContainer>
+                    <label>Occupants</label>
+                    <InputContainer>
+                        <PassengerWrapper onClick={handleShowAdults}>
+                            <DivView>
+                                <Passenger onClick={handleShowAdults}>
+                                    <PassengerDetailsWrapper onClick={handleShowAdults}>
+                                        <div className="icon-and-title__wrapper">
+                                        <Image src={adultsIcon.src} width={9} height={22}/>
+                                        <SpanDiv>{data?.passenger.adults} Adults</SpanDiv>
+                                        </div>
+                                        <DropdownIcon/>
+                                    </PassengerDetailsWrapper>
+                                </Passenger>
+                                {showOccupantAdult  ? (
+                                    <PassengerView>
+                                        <CounterDiv>
+                                            <CounterBtn onClick={handleAdultMinus}>
+                                                -
+                                            </CounterBtn>
+                                            <div>{data?.passenger.adults}</div>
+                                            <CounterBtn onClick={handleAdultPlus}>
+                                                +
+                                            </CounterBtn>
+
+
+                                        </CounterDiv>
+                                    </PassengerView>
+                                ) : null}
+                            </DivView>
+                        </PassengerWrapper>
+                        <PassengerWrapper onClick={handleShowChildren}>
+                            <DivView>
+                                <Passenger onClick={handleShowChildren}>
+                                    <PassengerDetailsWrapper onClick={handleShowChildren}>
+                                        <div className="icon-and-title__wrapper">
+                                        <ChildIcon/>
+                                        <SpanDiv>{data?.passenger.children} Children</SpanDiv>
+                                        </div>
+                                        <DropdownIcon/>
+                                    </PassengerDetailsWrapper>
+                                </Passenger>
+                                {showOccupantChild ? (
+                                    <PassengerView>
+                                        <CounterDiv>
+                                            <CounterBtn onClick={handleChildrenMinus}>
+                                                -
+                                            </CounterBtn>
+                                            <div>{data?.passenger.children}</div>
+                                            <CounterBtn onClick={handleChildrenPlus}>
+                                                +
+                                            </CounterBtn>
+                                        </CounterDiv>
+                                    </PassengerView>
+                                ) : null}
+                            </DivView>
+
+                        </PassengerWrapper>
+                    </InputContainer>
+
+                    <TitleText>Flight Details</TitleText>
+                    <label>Flight from Henri Coanda to Tenerife 04h 45m</label>
+
+                    <FlightDetailsContainer>
+                        <FlightPort>Henri<br />Coanda,<br />
+                            Bucharest</FlightPort>
+                        <Time>
+                            <div className="takeOffTime">05:45</div>
+                            <div className="time-dotted">
+                                <div className="dot-before"></div>
+                                <div className="dot-after"></div>
+                            </div>
+                            <ImageForCompany />
+                            <div className="tandingTime">07:30</div>
+                        </Time>
+                        <FlightPort>Tenerfie<br /> Sur,<br />
+                            Spain</FlightPort>
+                    </FlightDetailsContainer>
+                    <FlightDetailsContainer>
+                        <FlightPort>Tenerfie<br />Sur,<br />
+                            Spain</FlightPort>
+                        <Time>
+                            <div className="takeOffTime">08:20</div>
+                            <div className="time-dotted">
+                                <div className="dot-before"></div>
+                                <div className="dot-after"></div>
+                            </div>
+                            <ImageForCompany />
+                            <div className="tandingTime">10:30</div>
+                        </Time>
+                        <FlightPort>Henri<br /> Coanda,<br />
+                            Bucharest</FlightPort>
+                    </FlightDetailsContainer>
+
+                </FlightInformation>
+            </PackageDetailContainer>
+        )
 }
 
 export default PackageDetailCard;

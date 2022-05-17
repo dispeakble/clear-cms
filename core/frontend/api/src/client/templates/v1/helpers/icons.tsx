@@ -26,6 +26,9 @@ import starIcon from "../assets/img/star-icon.svg";
 import zoomIcon from "../assets/img/zoom-icon.svg";
 import departureIcon from "../assets/img/departure-icon.svg";
 import arrivalIcon from "../assets/img/arrival-icon.svg";
+import destinationIcon from '../assets/img/destination-icon.svg'
+import companyIcon from '../assets/img/company-icon.svg'
+
 
 const icons: Record<string, any> = {
   adults: adultsIcon,
@@ -56,6 +59,9 @@ const icons: Record<string, any> = {
   zoom: zoomIcon,
   departure: departureIcon,
   arrival: arrivalIcon,
+  destination: destinationIcon,
+  companyImage: companyIcon
+
 }
 
 export const getIcon = (iconName: string) => {
