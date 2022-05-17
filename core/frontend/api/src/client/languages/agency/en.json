@@ -208,6 +208,29 @@
     "bookingDetailPara": "Available prices for Jun 16 2022 - 7 nights",
     "charterDetailHeading1": "Package Charter for Hotel Victoria",
     "charterDetailPara1": "Specially Curated Holiday for your soulmate, Enjoy dinner in a romantic set-up at Barefoot Resort - Havelock, Thrilling Seakart Activity, Visit Elephant beach and enjoy water sports. Comfortable private transfers, Choice of Hotels, Inter-island travel on a private ferry...",
-    "charterDetailHeading2": "Booking Conditions"
+    "charterDetailHeading2": "Booking Conditions"},
+  "flightsCheckout" : {
+    "cart" : {
+      "header" : "Your Shopping Cart",
+      "tax": "Service tax",
+      "total": "Total price"
+    },
+    "flights": {
+      "header" : "Flight Details",
+      "pricingRules": "Pricing rules"
+    },
+    "main": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "adult": "Adult",
+      "child": "Child",
+      "contactDetails": "Contact Details",
+      "phoneNumber": "Phone Number",
+      "childAge": "Child Age",
+      "country": "Country",
+      "emailAddress": "Email Address",
+      "previousStep": "Previous Step",
+      "nextStep": "Next Step"
+    }
   }
 }

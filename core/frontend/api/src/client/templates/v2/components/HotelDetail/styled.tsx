@@ -762,8 +762,28 @@ export const HotelCalendar = styled(Calendar)`
 `;
 export const H4 = styled("h4")`
   
-`
+`;
+
+export const StyledButton = styled.button`
+  position: relative;
+`;
 
 export const SPAN = styled("span")`
 user-select: none;
 `
+
+export const StyledTooltipWrapper = styled.div`
+  & > * {
+    color: ${({theme}) => theme.colors.primaryColor} !important;
+    background: ${({theme}) => theme.colors.white} !important;
+  }
+  
+  & > .place-top::after {
+    border-top-color: ${({theme}) => theme.colors.white} !important;
+  }
+  
+  & > .__react_component_tooltip {
+    max-width: 350px;
+  }
+
+`;

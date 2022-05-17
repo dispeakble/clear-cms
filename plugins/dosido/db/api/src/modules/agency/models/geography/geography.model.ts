@@ -2,6 +2,7 @@ import { BelongsTo, BelongsToMany, Column, ForeignKey, HasOne, Model, Sequelize,
 import { DataTypes } from 'sequelize';
 import { PackagesCache } from "../search/packages.cache.model";
 import { HotelsCache } from "../search/hotels.cache.model";
+import { FlightsCache } from "../search/flights.cache.model"
 
 @Table
 export class Geography extends Model {
@@ -55,6 +56,12 @@ can be used in web pages*/
 
   @BelongsTo(() => PackagesCache, { foreignKey: 'Id', targetKey: 'Departure', constraints: false})
   PackagesCacheDeparture: PackagesCache
+
+  @BelongsTo(() => FlightsCache, { foreignKey: 'Id', targetKey: 'Departure', constraints: false})
+  FlightsCacheDeparture: FlightsCache
+
+  @BelongsTo(() => FlightsCache, { foreignKey: 'Id', targetKey: 'Destination', constraints: false})
+  FlightsCacheDestination: FlightsCache
 
   @BelongsTo(() => PackagesCache, { foreignKey: 'Id', targetKey: 'Destination', constraints: false})
   PackagesCacheDestination: PackagesCache

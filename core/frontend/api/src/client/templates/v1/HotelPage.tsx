@@ -16,6 +16,7 @@ import Breadcrumbs from "./components/Breadcrumbs";
 import HotelAvailable from "./components/HotelAvailable";
 import moment from "moment";
 import { getIcon } from "./helpers/icons";
+import Footer from "./components/Footer";
 
 const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
@@ -162,6 +163,7 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
               handleAdultPlus={handleAdultPlus}
               handleAdultMinus={handleAdultMinus}
             />
+            <Footer />
           </ContentWrapper>
 
         </PaperWrapper>

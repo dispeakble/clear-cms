@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="run bucket" type="js.build_tools.npm">
+  <configuration default="false" name="bucket api" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/plugins/dosido/bucket/api/package.json" />
     <command value="run" />
     <scripts>
