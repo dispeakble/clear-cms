@@ -18,7 +18,10 @@ export const DealCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 7px 0 rgb(0 0 0 / 17%);
   height: max-content;
-  width: 35%;
+  //width: 35%;
+  @media (max-width: ${size.laptop}) {
+    width: 100%;
+  }
 `;
 export const CardHead = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderOutline};
@@ -191,10 +194,9 @@ export const HotelView = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 10px;
-  width: 65%;
-  @media (min-width: ${size.laptop}) {
-    width: 379px;
-    padding: 0;
+  width: 379px;
+  @media (max-width: ${size.laptop}) {
+    width: 100%;
   }
 `;
 export const HotelInfo = styled.div`
@@ -204,7 +206,8 @@ export const HotelInfo = styled.div`
     justify-content: space-between;
   }
   @media (min-width: ${size.laptop}) {
-    display: block;
+    display: flex;
+    justify-content: space-between;
   }
   @media (min-width: ${size.laptopL}) {
     display: flex;
@@ -219,43 +222,34 @@ export const HotelName = styled.div`
   padding-top: 18px;
 `;
 export const ViewPrice = styled.div`
-  position: relative;
-  display: flex;
   margin: 18px 0;
+  text-align: right;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
   @media (min-width: ${size.laptop}) {
     margin: 18px 18px 18px 0;
   }
   
-
-  button {
-    flex: 1;
-    height: 66px;
-    background: linear-gradient(180deg, #7CCF13 0%, #639722 100%);
-    color: ${({ theme }) => theme.colors.white};
-    border-radius: 12px;
-    border: none;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: 24px;
-    align-items: center;
-    cursor: pointer;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-    display: flex;
-    justify-content: center;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
-    &:hover {
-      background: linear-gradient(180deg, #A9F945 0%, #69AD14 100%);
-    }
-
-    span {
-      color: ${({ theme }) => theme.colors.white}
-    }
-
-    @media (min-width: ${size.tablet}) {
+  @media (min-width: ${size.tablet}) {
       width: 268px;
     }
   }
 `;
+
+export const Price = styled.div`
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 54px;
+  color: #FF840D;
+  
+  span {
+    font-size: 16px;
+  }
+`
+
+export const AboutPrice = styled.div`
+  
+`
 export const InfoIcon = styled.span`
   display: inline-block;
   height: 32px;
@@ -270,7 +264,7 @@ export const Star = styled.div`
 `;
 export const ShortDescription = styled.div`
   display: flex;
-  width: 400px;
+  width: 100%;
   justify-content: space-between;
   @media only screen and (max-width: ${size.tablet}) {
     display: block;
@@ -282,6 +276,7 @@ export const HotelLocation = styled.div`
   color: #0009;
 `;
 export const ViewMap = styled.div`
+  margin-left: 32px;
   a {
     color: ${({ theme }) => theme.colors.secondaryColor};
     font-size: 16px;

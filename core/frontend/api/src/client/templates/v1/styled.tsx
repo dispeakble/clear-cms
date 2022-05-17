@@ -36,10 +36,40 @@ export const MainWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   display: flex;
+  //overflow-x: hidden;
   flex-direction: column;
   align-items: center;
   background-color: #E5E5E5
 `;
+
+export const MainContentWrapper = styled.div`
+  width: 100%;
+  max-width: 320px;
+  @media ${device.mobileS} {
+    max-width: 320px;
+  }
+  @media ${device.mobileM} {
+    max-width: 375px;
+  }
+  @media ${device.mobileL} {
+    max-width: 400px;
+  }
+  @media ${device.tablet} {
+    max-width: 720px;
+  }
+  @media ${device.laptop} {
+    max-width: 900px;
+  }
+  @media ${device.laptopL} {
+    max-width: 1280px;
+  }
+  @media ${device.desktop} {
+    max-width: 1440px;
+  }
+  @media ${device.desktopL} {
+    max-width: 1440px;
+  }
+`
 
 export const TopContentWrapper = styled.div`
   width: 100%;
@@ -85,11 +115,28 @@ export const ContentWrapperForPackageDetail = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  @media (min-width: ${size.laptop}) {
+    flex: 1 1 100%;
+  }
 `;
 
 
 export const ServiceAndMapWrapper = styled.div`
-  width: 35%;
+  flex: 0 0 calc(35% - 8px);
+  max-width: calc(35% - 8px);
+  @media (max-width: ${size.laptopL}) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+`;
+
+export const DetailWrapper = styled.div`
+  flex: 0 0 65%;
+  max-width: 65%;
+  @media (max-width: ${size.laptopL}) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 `;
 
 export const PaperWrapper = styled.div`
@@ -169,6 +216,7 @@ export const BottomContentWrapper = styled.div`
   width: 100%;
   padding: 32px 0 32px 0;
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 `;
 

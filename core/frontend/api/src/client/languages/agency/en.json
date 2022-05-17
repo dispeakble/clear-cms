@@ -190,5 +190,24 @@
   },
   "custom500" : {
     "header": "For the moment our services are under maintenance"
+  },
+  "packageDetails": {
+    "BookingCardTitle1": "Similar Hotels",
+    "countryName": "Spain",
+    "islandName": "Tenerife",
+    "townName": "Adeje",
+    "hotelName": "Package Charter for Hotel Victoria",
+    "findDeals": "Find Deals",
+    "destinationOrHotel": "Destination or Hotel:",
+    "checkInDate": "Check-in date:",
+    "checkOutDate": "Check-out date:",
+    "adult": "Adults",
+    "children": "Children",
+    "flightDetails": "Flight Details",
+    "flightDetailLabel": "Flight from Henri Coanda to Tenerife 04h 45m",
+    "bookingDetailPara": "Available prices for Jun 16 2022 - 7 nights",
+    "charterDetailHeading1": "Package Charter for Hotel Victoria",
+    "charterDetailPara1": "Specially Curated Holiday for your soulmate, Enjoy dinner in a romantic set-up at Barefoot Resort - Havelock, Thrilling Seakart Activity, Visit Elephant beach and enjoy water sports. Comfortable private transfers, Choice of Hotels, Inter-island travel on a private ferry...",
+    "charterDetailHeading2": "Booking Conditions"
   }
 }

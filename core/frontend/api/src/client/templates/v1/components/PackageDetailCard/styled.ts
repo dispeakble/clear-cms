@@ -6,7 +6,7 @@ export const PackageDetailContainer = styled.div`
   background: #FFFFFF;
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.14);
   border-radius: 27px;
-  width: 65%;
+  width: 100%;
   padding: 2rem;
 `;
 
@@ -59,9 +59,17 @@ export const BookingCard = styled.div`
   align-items: center;
   padding: 2rem;
   position: relative;
-
+  
   background: url(${({theme}) => theme.icon('bookingDetailBg')}) no-repeat center;
   background-size: cover;
+  
+  white-space: nowrap;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  };
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `;
 
 export const FlightInformation = styled.div`
@@ -69,7 +77,7 @@ export const FlightInformation = styled.div`
 `
 
 export const FlightTakeOffInput = styled.div`
-  width: 18rem;
+  flex: 1 0 40%;
 `
 export const InputContainer = styled.div`
     display: flex;
@@ -90,7 +98,6 @@ export const FlightTakeOffIcon = styled.div`
   width: 23px;
   height: 23px;
   margin: 13px 10px 0 10px;
-
 `;
 
 export const DropdownIcon = styled.div`
@@ -249,12 +256,12 @@ export const PassengerWrapper = styled.div`
   border: 1px solid #DBDBDB;
   box-shadow: 0px 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
-  max-width: 18rem;
   margin: 0 0;
   height: 100%;
-  flex: 1;
+  flex: 1 0 40%;
   cursor: pointer;
   padding: 5px 0;
+  min-width: 0px !important;
   span {
     margin-left: 8px;
   }
@@ -333,7 +340,7 @@ export const PassengerDetailsWrapper = styled.div`
   cursor:pointer;
   display: flex;
   align-items: center;
-  padding-left: 16px;
+  padding-left: 8px;
   width: 100%;
   height: 36px;
   justify-content: space-between;
@@ -352,7 +359,7 @@ export const PassengerView = styled.div`
   align-items: center;
   height: 100%;
   top: 50px;
-  left: 54%;
+  right: -60px;
   transform: translate(-50%, -10%);
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: ${Shadows.primaryShadow};
@@ -364,10 +371,15 @@ export const PassengerView = styled.div`
 `;
 
 export const SpanDiv = styled.span`
+  display: inline-block;
   font-weight: bold;
   width: 100%;
   text-align: left;
-  margin-left: 20px !important;
+  margin-left: 10px !important;
+  white-space: nowrap;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const BookingDetailContainer = styled.div`
@@ -434,3 +446,15 @@ export const QuotedPara = styled.p`
   };
 `;
 
+export const BetweenInputsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 20%;
+`
+
+export const BetweenInputs = styled.div`
+  border-bottom: 1px dotted grey;
+  height: 0;
+  width: 80%;
+`

@@ -84,7 +84,7 @@ export const MapSection = styled.div`
 
 export const Highlights = styled.div`
   width: 100%;
-  height: 427px;
+  min-height: 427px;
   background: url(${hotel1.src}) no-repeat center center;
   background-size: cover;
   border-radius: 20px;
@@ -162,6 +162,14 @@ export const CheckedIcon = styled.div`
   margin-top: 5px;
   background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
 `;
+
+export const UncheckedIcon = styled.div`
+  width: 29px;
+  height: 28px;
+  position: relative;
+  margin-top: 5px;
+  background: url(${({theme}) => theme.icon('uncheck')}) no-repeat left center;
+`
 
 export const Ping =styled(Rate)`
 .ant-rate-star-zero svg {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import {device, size} from "../../styled";
 
 
 export const Body = styled.div`
@@ -27,6 +27,20 @@ export const CardContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 15px;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  };
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+
+  @media (max-width: ${size.mobileL}) {
+    overflow-x: hidden;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+  }
+  
 `;
 export const HotelCard = styled.div`
   display: flex;

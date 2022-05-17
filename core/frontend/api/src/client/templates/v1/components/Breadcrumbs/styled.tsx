@@ -9,7 +9,7 @@ export const StyledBreadcrumbs = styled.div`
   width: 100%;
   padding: 0 20px;
   margin: 20px auto 0 auto;
-  
+  overflow: hidden;
 `;
 
 export const StyledBreadcrumbLink = styled.a`
@@ -22,6 +22,7 @@ export const StyledBreadcrumbLink = styled.a`
   cursor: pointer;
   font-size: 11px;
   white-space: nowrap;
+  text-overflow: ellipsis;
   &:hover {
     color: ${({theme}) => theme.colors.primaryLight};
   }

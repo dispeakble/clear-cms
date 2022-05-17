@@ -2,10 +2,10 @@ import {PackageDetailContainer, TitleText, FlightInformation, InputContainer, Fl
     StyledSearchDestinationInput, AutocompleteItem, AutocompleteList, FlightTakeOffInput, DropdownIcon,
     StyledSearchInput, ImageForCompany, FlightDetailsContainer, FlightPort,
     Time, TakeOffInputContainer, PassengerWrapper, Passenger, ChildIcon,
-    CounterBtn, CounterDiv, DivView, GuestNumber, PassengerDetailsWrapper, SpanDiv, PassengerView} from  './styled';
+    CounterBtn, CounterDiv, DivView, GuestNumber, PassengerDetailsWrapper, SpanDiv, PassengerView, BetweenInputs
+,BetweenInputsContainer} from  './styled';
 
 import {
-    FlightInputs,
     BookingDetailContainer,
     ParaTextBold,
     BookingCard,
@@ -276,6 +276,9 @@ const PackageDetailCard = () => {
                                 )}
                             </AutocompleteList>}
                         </FlightTakeOffInput>
+                        <BetweenInputsContainer>
+                        <BetweenInputs />
+                        </BetweenInputsContainer>
                         <FlightTakeOffInput>
                             <TakeOffInputContainer>
                             <StyledSearchDestinationInput
@@ -297,57 +300,64 @@ const PackageDetailCard = () => {
                     <label>Flight information</label>
 
                     <InputContainer>
-                    <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
-                        <DateDiv>
-                            <HotelSearch onClick={() => {
-                                handleShowCheckin();
-                            }}>
-                                <CalenderIcon  />
-                                <input placeholder={t("deals.checkin") }
-                                       onChange={() => {}}
-                                       style={{cursor: 'pointer'}}
-                                       value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
+                        <div style={{flex: '1 0 40%', }}>
 
-                                <DropdownIcon />
-                            </HotelSearch>
+                            <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
+                                <DateDiv>
+                                    <HotelSearch onClick={() => {
+                                        handleShowCheckin();
+                                    }}>
+                                        <CalenderIcon  />
+                                        <input placeholder={t("deals.checkin") }
+                                               onChange={() => {}}
+                                               style={{cursor: 'pointer'}}
+                                               value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
 
-                            {show.checkin ? (
+                                        <DropdownIcon />
+                                    </HotelSearch>
 
-                                <HotelCalendar
-                                    minDate={data.checkin}
-                                    value={data.checkin}
+                                    {show.checkin ? (
 
-                                    onChange={(value: any) => {
-                                        handleChangeInput("checkin", value);
-                                        handleDateAway("checkin");
-                                    }}
-                                />
+                                        <HotelCalendar
+                                            minDate={data.checkin}
+                                            value={data.checkin}
 
-                            ) : null}
-                        </DateDiv>
-                    </ClickAwayListener>
-                        <HotelSearch onClick={() => {
-                            handleShowCheckin();
-                        }}>
-                            <CalenderIcon  />
-                            <input placeholder={t("deals.checkin") }
-                                   onChange={() => {}}
-                                   style={{cursor: 'pointer'}}
-                                   value="7 nights" readOnly />
+                                            onChange={(value: any) => {
+                                                handleChangeInput("checkin", value);
+                                                handleDateAway("checkin");
+                                            }}
+                                        />
 
-                            <DropdownIcon />
-                        </HotelSearch>
+                                    ) : null}
+                                </DateDiv>
+                            </ClickAwayListener>
+                        </div>
+                        <BetweenInputsContainer>
+                            <BetweenInputs />
+                        </BetweenInputsContainer>
+                    <HotelSearch onClick={() => {
+                        handleShowCheckin();
+                    }}>
+                        <CalenderIcon  />
+                        <input placeholder={t("deals.checkin") }
+                               onChange={() => {}}
+                               style={{cursor: 'pointer'}}
+                               value="7 nights" readOnly />
+
+                        <DropdownIcon />
+                    </HotelSearch>
 
                     </InputContainer>
                     <label>Occupants</label>
                     <InputContainer>
-                        <PassengerWrapper onClick={handleShowAdults}>
+                        <PassengerWrapper>
+                            <ClickAwayListener onClickAway={()=>setShowOccupantAdult(false)}>
                             <DivView>
-                                <Passenger onClick={handleShowAdults}>
-                                    <PassengerDetailsWrapper onClick={handleShowAdults}>
+                                <Passenger onClick={()=>handleShowAdults()}>
+                                    <PassengerDetailsWrapper>
                                         <div className="icon-and-title__wrapper">
                                         <Image src={adultsIcon.src} width={9} height={22}/>
-                                        <SpanDiv>{data?.passenger.adults} Adults</SpanDiv>
+                                        <SpanDiv>{data?.passenger.adults} {t("packageDetails.adult")}</SpanDiv>
                                         </div>
                                         <DropdownIcon/>
                                     </PassengerDetailsWrapper>
@@ -368,14 +378,19 @@ const PackageDetailCard = () => {
                                     </PassengerView>
                                 ) : null}
                             </DivView>
+                            </ClickAwayListener>
                         </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowChildren}>
+                        <BetweenInputsContainer>
+                            <BetweenInputs />
+                        </BetweenInputsContainer>
+                        <PassengerWrapper>
+                            <ClickAwayListener onClickAway={()=>setShowOccupantChild(false)}>
                             <DivView>
-                                <Passenger onClick={handleShowChildren}>
-                                    <PassengerDetailsWrapper onClick={handleShowChildren}>
+                                <Passenger>
+                                    <PassengerDetailsWrapper onClick={()=>handleShowChildren()}>
                                         <div className="icon-and-title__wrapper">
                                         <ChildIcon/>
-                                        <SpanDiv>{data?.passenger.children} Children</SpanDiv>
+                                        <SpanDiv>{data?.passenger.children} {t("packageDetails.children")}</SpanDiv>
                                         </div>
                                         <DropdownIcon/>
                                     </PassengerDetailsWrapper>
@@ -394,12 +409,12 @@ const PackageDetailCard = () => {
                                     </PassengerView>
                                 ) : null}
                             </DivView>
-
+                                </ClickAwayListener>
                         </PassengerWrapper>
                     </InputContainer>
 
-                    <TitleText>Flight Details</TitleText>
-                    <label>Flight from Henri Coanda to Tenerife 04h 45m</label>
+                    <TitleText>{t("packageDetails.flightDetails")}</TitleText>
+                    <label>{t("packageDetails.flightDetailLabel")}</label>
 
                     <FlightDetailsContainer>
                         <FlightPort>Henri<br />Coanda,<br />
@@ -434,10 +449,10 @@ const PackageDetailCard = () => {
                 </FlightInformation>
                 <BookingDetailContainer>
                     <TitleText>Booking Details</TitleText>
-                    <ParaTextBold style={{textAlign: 'center'}}>Available prices for Jun 16 2022 - 7 nights</ParaTextBold>
+                    <ParaTextBold style={{textAlign: 'center'}}>{t("packageDetails.bookingDetailPara")}</ParaTextBold>
 
                     <BookingCard>
-                    <div style={{ flexBasis: '15%'}}>
+                        <div style={{ flexBasis: '15%', marginRight: '10px'}}>
                             <BookingHeadingText>Single room</BookingHeadingText>
                             <BookingHeadingText>All Inclusive</BookingHeadingText>
                         </div>
@@ -452,7 +467,7 @@ const PackageDetailCard = () => {
                     </BookingCard>
 
                     <BookingCard>
-                        <div style={{ flexBasis: '15%'}}>
+                        <div style={{ flexBasis: '15%', marginRight: '10px'}}>
                             <BookingHeadingText>Double room</BookingHeadingText>
                             <BookingHeadingText>All Inclusive</BookingHeadingText>
                         </div>
@@ -468,21 +483,38 @@ const PackageDetailCard = () => {
                 </BookingDetailContainer>
 
                 <PackageCharterContainer>
-                    <CustomHeading>Package Charter for Hotel Victoria</CustomHeading>
+                    <CustomHeading>{t("packageDetails.charterDetailHeading1")}</CustomHeading>
                     <QuotedPara>
-                        Specially Curated Holiday for your soulmate, Enjoy dinner in a romantic set-up at Barefoot Resort - Havelock, Thrilling Seakart Activity, Visit Elephant beach and enjoy water sports. Comfortable private transfers, Choice of Hotels, Inter-island travel on a private ferry...
+                        {t("packageDetails.charterDetailPara1")}
                     </QuotedPara>
                 </PackageCharterContainer>
 
                 <BookingConditionsContainer>
-                    <CustomHeading>Booking Conditions</CustomHeading>
+                    <CustomHeading>{t("packageDetails.charterDetailHeading2")}</CustomHeading>
                     <QuotedPara>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus.
+                             Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices.
+                            Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque.
+                            Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh.
+                            Aliquam posuere auctor lacus vitae sollicitudin.
+                            Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum.
+                             Nam eu nunc a erat tincidunt feugiat sit amet id lacus.
+                            Nunc id risus vitae neque dictum eleifend eu quis felis.
                         </p>
 
                         <p>
-                            Vestibulum sed rutrum nunc. Ut fringilla interdum neque, in sagittis tellus maximus vitae. Phasellus non diam volutpat est mattis vulputate. Nulla non interdum purus, ut suscipit purus. Sed sit amet pulvinar nunc. Praesent porttitor, risus convallis scelerisque rhoncus, ex est blandit dui, id facilisis erat libero eu ex. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris nibh tellus, egestas quis semper non, vulputate ac enim. Duis tempus nisl non dolor elementum varius. Praesent nec quam vitae elit vestibulum venenatis eget vel magna. Nulla luctus euismod faucibus. Aliquam ut lacus nec elit mattis ultrices vel sit amet orci. Nullam dignissim congue risus, at sagittis velit tempor sit amet. Cras a molestie leo, ut consequat neque. In ullamcorper auctor nisi, a scelerisque magna semper eu.
+                            Vestibulum sed rutrum nunc. Ut fringilla interdum neque,
+                            in sagittis tellus maximus vitae. Phasellus non diam volutpat est mattis vulputate.
+                            Nulla non interdum purus, ut suscipit purus. Sed sit amet pulvinar nunc. Praesent porttitor,
+                            risus convallis scelerisque rhoncus, ex est blandit dui, id facilisis erat libero eu ex. Class
+                            aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris nibh
+                            tellus, egestas quis semper non, vulputate ac enim. Duis tempus nisl non dolor elementum varius.
+                            Praesent nec quam vitae elit vestibulum venenatis eget vel magna. Nulla luctus euismod faucibus.
+                            Aliquam ut lacus nec elit mattis ultrices vel sit amet orci. Nullam dignissim congue risus, at
+                            sagittis velit tempor sit amet. Cras a molestie leo, ut consequat neque. In ullamcorper auctor nisi,
+                            a scelerisque magna semper eu.
                         </p>
                     </QuotedPara>
                 </BookingConditionsContainer>

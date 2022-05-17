@@ -59,6 +59,7 @@ export const HotelSearch = styled.div`
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   cursor: pointer;
+  flex: 1 0 40%;
 
   input {
     border: none;
@@ -67,7 +68,8 @@ export const HotelSearch = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
-    min-width: 150px;
+    min-width: 0px;
+    width: 100%;
     border-radius: 0 10px 10px 0;
   }
 `;

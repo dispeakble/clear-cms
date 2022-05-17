@@ -35,8 +35,10 @@ import quoteDown from "../assets/img/quoteDown.svg";
 import starYellow from "../assets/img/starYellow.svg";
 import starDark from "../assets/img/starDark.svg";
 import calendarCheckIcon from "../assets/img/calendar-check-icon.svg";
+import uncheckIcon from "../assets/img/uncheck.svg"
 
 const icons: Record<string, any> = {
+  uncheck: uncheckIcon,
   calendarCheckIcon: calendarCheckIcon,
   starYellow: starYellow,
   starDark: starDark,

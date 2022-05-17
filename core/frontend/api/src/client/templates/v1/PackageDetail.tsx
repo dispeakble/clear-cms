@@ -9,15 +9,22 @@ import {
     GlobalStyle,
     MainWrapper,
     PaperWrapper,
-    StyledContentWrapper, TopContentWrapper, BottomContentWrapper,
-    ServiceAndMapWrapper, ContentWrapperForPackageDetail, PackageDetailMainContent, BreadcrumbsContainer
+    StyledContentWrapper,
+    TopContentWrapper,
+    BottomContentWrapper,
+    ServiceAndMapWrapper,
+    ContentWrapperForPackageDetail,
+    PackageDetailMainContent,
+    BreadcrumbsContainer,
+    MainContentWrapper,
+    DetailWrapper
 } from "./styled";
 const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 import Breadcrumbs from "./components/Breadcrumbs";
 import PackageDetailCard from "./components/PackageDetailCard"
 import moment from "moment";
 import { getIcon } from "./helpers/icons";
-import {Cardtitle, CheckedIcon, Feature, Highlights, MapSection} from "./components/HotelAbout/styled";
+import {Cardtitle, CheckedIcon, Feature, Highlights, MapSection, UncheckedIcon} from "./components/HotelAbout/styled";
 import GoogleMapReact from "google-map-react";
 import Footer from "./components/Footer";
 import PacakgeCharter from './components/PackageCharter'
@@ -25,6 +32,7 @@ import HotelCardGrid from "./components/HotelCardGrid";
 
 
 const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+    // const t = useTranslations();
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -158,10 +166,12 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         <>
             <ThemeProvider theme={myTheme}>
             <GlobalStyle />
+
+            <MainWrapper>
                 <Header websiteName={websiteName} />
-            <MainWrapper data-testid="hotel-page-wrapper">
+                <MainContentWrapper>
                 <BreadcrumbsContainer>
-                <Breadcrumbs countryName="Spain" islandName="Tenerife" townName="Adeje" hotelName="Package Charter for Hotel Victoria"/>
+                    <Breadcrumbs countryName={t("packageDetails.countryName")} islandName={t("packageDetails.islandName")} townName={t("packageDetails.islandName")} hotelName={t("packageDetails.townName")}/>
                 </BreadcrumbsContainer>
                 <PackageDetailMainContent>
                     <ContentWrapperForPackageDetail>
@@ -181,10 +191,10 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
                 <BottomContentWrapper>
                     <ServiceAndMapWrapper>
-                    <ContentWrapper>
+                        <ContentWrapper>
                             <Highlights>
                                 <Cardtitle>
-                                    {t("hotelAbout.cardTitle")}
+                                    Included Services
                                 </Cardtitle>
                                 <Feature>
                                     {
@@ -195,6 +205,12 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                                         })
                                     }
                                 </Feature>
+                                <Cardtitle>
+                                    Not Included Services
+                                </Cardtitle>
+                            <Feature>
+                                <li><UncheckedIcon/><span>Travel insurance</span></li>
+                            </Feature>
                             </Highlights>
                         <MapSection id="showmap">
 
@@ -218,13 +234,14 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                         </MapSection>
                     </ContentWrapper>
                     </ServiceAndMapWrapper>
-                    <div style={{ width: '65%', }}>
+                    <DetailWrapper>
                         <PackageDetailCard />
-                        <HotelCardGrid  title={"Similar Hotels"} />
+                        <HotelCardGrid  title={t("packageDetails.BookingCardTitle1")} />
                         <HotelCardGrid  title={"Other Destinations"} />
-                    </div>
+                    </DetailWrapper>
                 </BottomContentWrapper>
                 </PackageDetailMainContent>
+                </MainContentWrapper>
                 <Footer />
             </MainWrapper>
             </ThemeProvider>

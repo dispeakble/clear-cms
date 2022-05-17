@@ -12,7 +12,9 @@ import {
     CalenderIcon,
     CardHead,
     ChildIcon,
+    AboutPrice,
     CounterBtn,
+    Price,
     DateDiv,
     DealCard,
     Destination,
@@ -228,11 +230,11 @@ const PackageCharter = ({
         <Wrapper>
             <DealCard>
                 <CardHead>
-                    Find Deals
+                    {t("packageDetails.findDeals")}
                 </CardHead>
                 <EditDeals>
                     <Destination>
-                        <H4>Destination or Hotel:</H4>
+                        <H4>{t("packageDetails.destinationOrHotel")}</H4>
                         <AutoComplete
                             dropdownClassName="certain-category-search-dropdown"
                             dropdownStyle={{ backgroundColor: "white" }}
@@ -244,7 +246,7 @@ const PackageCharter = ({
                         >
                             <HotelSearch>
                                 <SearchIcon/>
-                                <input value={data.hotel} type="search" data-testid="hotelInput" placeholder={t("deals.hotel")} onChange={(e) => {
+                                <input value={data.hotel} type="search"  placeholder={t("deals.hotel")} onChange={(e) => {
                                     onSearch(e.target.value);
                                     handleSearch(e.target.value);
                                 }} />
@@ -255,7 +257,7 @@ const PackageCharter = ({
                     <Destination>
                         <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
                             <DateDiv>
-                                <H4>Check-in date:</H4>
+                                <H4>{t("packageDetails.checkInDate")}</H4>
                                 <HotelSearch onClick={() => {
                                     handleShowCheckin();
                                 }}>
@@ -291,7 +293,7 @@ const PackageCharter = ({
                             <DateDiv onClick={() => {
                                 handleShowCheckout();
                             }}>
-                                <H4>Check-out date:</H4>
+                                <H4>{t("packageDetails.checkOutDate")}</H4>
                                 <HotelSearch>
                                     <CalenderIcon />
                                     <input placeholder={t("deals.checkout")} onChange={() => {}}
@@ -438,29 +440,8 @@ const PackageCharter = ({
                         </ShortDescription>
                     </LeftSide>
                     <ViewPrice>
-                        <button>
-
-                            {customColors.map(color => (
-                                <Tooltip placement="bottom"
-                                         title={t("tooltip.view_price")}
-                                         color={color} key={color}
-                                         overlayInnerStyle={{
-                                             color:"#00000080",
-                                             fontSize: "15px",
-                                             lineHeight: "20px",
-                                             width: "300px",
-                                             cursor: "default",
-                                             boxShadow: "0px 4px 13px rgba(0, 0, 0, 0.25)",
-                                             borderRadius: "12px",
-                                             padding: "13px 18px"
-                                         }}
-                                         overlayStyle={{}}
-                                >
-                                    <InfoIcon />
-                                </Tooltip>
-                            ))}
-                            <Link to="prices" spy={true} smooth={true}><span>View Prices</span></Link>
-                        </button>
+                        <Price><span>from</span> 1409€</Price>
+                        <AboutPrice>pers / stay</AboutPrice>
 
                     </ViewPrice>
                 </HotelInfo>
