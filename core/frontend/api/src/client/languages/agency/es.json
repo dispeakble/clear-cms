@@ -1,17 +1,16 @@
 {
   "global": {
-    "home" : "Home",
-
+    "home": "Home",
     "search": "Búsqueda",
     "pageTitle": "Hotels page :: {websiteName}"
   },
-  "home" : {
+  "home": {
     "seo": {
       "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
     },
-    "info-box-title" : "Aventuras",
-    "info-box-description" : "Vacaciones y excursiones",
-    "img-source" : "Imagen de",
+    "info-box-title": "Aventuras",
+    "info-box-description": "Vacaciones y excursiones",
+    "img-source": "Imagen de",
     "promo": {
       "special-offers": "Ofertas",
       "last-minute": "Último minuto",
@@ -32,7 +31,7 @@
         "see-prices": "Ver precios"
       }
     },
-    "tabbed" : {
+    "tabbed": {
       "tabs": {
         "first": "Vuelos + Hoteles",
         "second": "Relájate en las mejores playas",
@@ -91,24 +90,24 @@
   },
   "search": {
     "destination": "Destino",
-    "input-placeholder" : "¿Adónde vas?",
-    "searchPackagesButton" : "Find deals",
-    "searchHotelsButton" : "Find hotels",
-    "searchFlightsButton" : "Find tickets",
+    "input-placeholder": "¿Adónde vas?",
+    "searchPackagesButton": "Find deals",
+    "searchHotelsButton": "Find hotels",
+    "searchFlightsButton": "Find tickets",
     "checkin": "Llegada",
     "addDate": "Añadir fecha",
     "checkinDate": "Fecha de registro",
     "checkout": "Salida",
-    "checkoutDate" : "Fecha de salida",
-    "guests" : "Huéspedes",
-    "adults" : "Adultos",
-    "children" : "Niños",
-    "infants" : "Bebés",
-    "oneway" : "One way",
-    "adults-age" : "13 años o más.",
-    "children-age" : "De 2 a 12 años.",
-    "infants-age" : "Menos de 2.",
-    "search-btn" : "Buscar",
+    "checkoutDate": "Fecha de salida",
+    "guests": "Huéspedes",
+    "adults": "Adultos",
+    "children": "Niños",
+    "infants": "Bebés",
+    "oneway": "One way",
+    "adults-age": "13 años o más.",
+    "children-age": "De 2 a 12 años.",
+    "infants-age": "Menos de 2.",
+    "search-btn": "Buscar",
     "homeSearchPackageDeparturePlaceholder": "Departure",
     "homeSearchPackageDestinationPlaceholder": "Destination",
     "homeSearchFlightDeparturePlaceholder": "Departure",
@@ -116,17 +115,17 @@
     "homeSearchHotelDestinationPlaceholder": "Search for a destination or a hotel",
     "flightsDeparturePlaceholder": "Flight departure",
     "flightsDestinationPlaceholder": "Flight destination",
-    "departure" : "Departure",
-    "return" : "Return",
-    "departureDate" : "Departure date",
+    "departure": "Departure",
+    "return": "Return",
+    "departureDate": "Departure date",
     "returnDate": "Return date",
-    "hotels" : "Hoteles",
-    "packages" : "Paquetes",
-    "flights" : "Vuelos",
+    "hotels": "Hoteles",
+    "packages": "Paquetes",
+    "flights": "Vuelos",
     "hotel-stars": "Categoría",
-    "activities" : "Ocupaciones"
+    "activities": "Ocupaciones"
   },
-  "deals" : {
+  "deals": {
     "hotel": "Hotel Victoria",
     "location": "Bischofshofen, 4, 38660 Adeje, Spain",
     "checkin": "sábado, 12 de marzo...",
@@ -143,17 +142,17 @@
       "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
     }
   },
-  "hotelAbout" : {
+  "hotelAbout": {
     "hotel": "Hotel Victoria, Adeje, España ",
     "star": "(4 Estrellas)",
     "cardTitle": "Hotel Victoria Destacados"
   },
-  "hotelAvailable" : {
+  "hotelAvailable": {
     "selectRoom": "2 Habitaciones"
   },
-  "tooltip" : {
-    "view_price" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
-    "room_type" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
+  "tooltip": {
+    "view_price": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
+    "room_type": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
   },
   "footer": {
     "links": {
@@ -169,27 +168,27 @@
     "subscribe": "Suscribir"
   },
   "custom404": {
-    "header" : "¿Va a alguna parte? Has llegado a una página muy perdida.",
-    "links" : "Haga clic en los siguientes enlaces",
-    "return" : "O volver a la página de inicio",
-    "goBackHome" : "Vuelve a home"
+    "header": "¿Va a alguna parte? Has llegado a una página muy perdida.",
+    "links": "Haga clic en los siguientes enlaces",
+    "return": "O volver a la página de inicio",
+    "goBackHome": "Vuelve a home"
   },
   "links": {
-    "home" : "Home",
-    "contact" : "Contactar con",
-    "hotels" :  "Hoteles",
-    "flights" : "Vuelos",
-    "packages" :  "Paquetes",
-      "latestSearches" : "Últimas búsquedas",
-    "lastMinute" :  "Último minuto"
+    "home": "Home",
+    "contact": "Contactar con",
+    "hotels": "Hoteles",
+    "flights": "Vuelos",
+    "packages": "Paquetes",
+    "latestSearches": "Últimas búsquedas",
+    "lastMinute": "Último minuto"
   },
-  "custom300" : {
-      "header": "Su página se redirigirá pronto."
+  "custom300": {
+    "header": "Su página se redirigirá pronto."
   },
-  "custom401" : {
+  "custom401": {
     "header": "Se le ha dado de baja."
   },
-  "custom500" : {
+  "custom500": {
     "header": "Por el momento nuestros servicios están en mantenimiento."
   },
   "packageDetails": {
@@ -209,16 +208,17 @@
     "bookingDetailPara": "Precios disponibles para el 16 jun 2022 - 7 noches",
     "charterDetailHeading1": "Paquete Charter para Hotel Victoria",
     "charterDetailPara1": "Vacaciones especialmente seleccionadas para su alma gemela, disfrute de una cena en un entorno romántico en Barefoot Resort - Havelock, emocionante actividad Seakart, visite la playa Elephant y disfrute de los deportes acuáticos. Cómodos traslados privados, Elección de Hoteles, Viajes interinsulares en ferry privado...",
-    "charterDetailHeading2": "Condiciones de reserva", 
-  "flightsCheckout" : {
-    "cart" : {
-      "header" : "Su cesta de la compra",
-      "tax" : "Impuesto sobre los servicios",
-      "total": "Precio total"
-    },
-    "flights": {
-      "header" : "Detalles del vuelo",
-      "pricingRules": "Normas de fijación de precios"
+    "charterDetailHeading2": "Condiciones de reserva",
+    "flightsCheckout": {
+      "cart": {
+        "header": "Su cesta de la compra",
+        "tax": "Impuesto sobre los servicios",
+        "total": "Precio total"
+      },
+      "flights": {
+        "header": "Detalles del vuelo",
+        "pricingRules": "Normas de fijación de precios"
+      }
     }
   }
 }

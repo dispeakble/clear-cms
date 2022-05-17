@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {size} from "../../styled";
 import hotel1 from "../../assets/img/hotels/small/hotel1.jpg";
+import {Rate} from "antd";
 
 export const About = styled.div`
   margin-top: 37px;
