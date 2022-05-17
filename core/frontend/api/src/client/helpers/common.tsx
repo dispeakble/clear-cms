@@ -27,7 +27,7 @@ export const CommonHelper = ({ templates }: any) => {
     (async () => {
       const response = await fetch("/api/settings/getSettings");
       const data = await response.json();
-      console.log('This is our data',data);
+
       Object.keys(data["colorScheme"]).map(color => {
         if ("string" === typeof data["colorScheme"][color].value) {
           data["colorScheme"][color] = data["colorScheme"][color].value;
