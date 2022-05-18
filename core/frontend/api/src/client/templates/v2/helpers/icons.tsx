@@ -22,12 +22,26 @@ import roomDropIcon from "../assets/img/roomDrop-icon.svg";
 import roomUpIcon from "../assets/img/roomUp-icon.svg";
 import searchIcon from "../assets/img/search-icon.svg";
 import searchWhiteIcon from "../assets/img/search-white-icon.svg";
-import starIcon from "../assets/img/star-icon.svg";
 import zoomIcon from "../assets/img/zoom-icon.svg";
 import departureIcon from "../assets/img/departure-icon.svg";
 import arrivalIcon from "../assets/img/arrival-icon.svg";
+import destinationIcon from '../assets/img/destination-icon.svg'
+import companyIcon from '../assets/img/company-icon.svg'
+import worldMap from "../assets/img/world-map.svg";
+import bookingDetailBg from "../assets/img/booking-detailbg.png";
+import quoteUp from "../assets/img/quote-up.svg";
+import quoteDown from "../assets/img/quote-down.svg";
+import starIcon from "../assets/img/star-icon.svg";
+import calendarCheckIcon from "../assets/img/calendar-check-icon.svg";
+import uncheckIcon from "../assets/img/uncheck.svg"
 
 const icons: Record<string, any> = {
+  uncheck: uncheckIcon,
+  calendarCheckIcon: calendarCheckIcon,
+  quoteUp: quoteUp,
+  quoteDown: quoteDown,
+  worldMap: worldMap,
+  bookingDetailBg: bookingDetailBg,
   adults: adultsIcon,
   bedroom: bedroomIcon,
   breadcrumb: breadcrumbIcon,
@@ -56,6 +70,9 @@ const icons: Record<string, any> = {
   zoom: zoomIcon,
   departure: departureIcon,
   arrival: arrivalIcon,
+  destination: destinationIcon,
+  companyImage: companyIcon
+
 }
 
 export const getIcon = (iconName: string) => {
