@@ -414,7 +414,7 @@ const PackageDetailCard = () => {
                     </InputContainer>
 
                     <TitleText>{t("packageDetails.flightDetails")}</TitleText>
-                    <label>{t("packageDetails.flightDetailLabel")}</label>
+                    <label>{t("packageDetails.flightDetailLabel", {flightFrom: "Henri Coanda", flightTo: "Tenerife", flightDuration: "04h 45m"})}</label>
 
                     <FlightDetailsContainer>
                         <FlightPort>Henri<br />Coanda,<br />
@@ -449,7 +449,7 @@ const PackageDetailCard = () => {
                 </FlightInformation>
                 <BookingDetailContainer>
                     <TitleText>Booking Details</TitleText>
-                    <ParaTextBold style={{textAlign: 'center'}}>{t("packageDetails.bookingDetailPara")}</ParaTextBold>
+                    <ParaTextBold style={{textAlign: 'center'}}>{t("packageDetails.bookingDetailPara", {date: "Jun 16 2022", noOfNights: "7"})}</ParaTextBold>
 
                     <BookingCard>
                         <div style={{ flexBasis: '15%', marginRight: '10px'}}>
@@ -483,7 +483,7 @@ const PackageDetailCard = () => {
                 </BookingDetailContainer>
 
                 <PackageCharterContainer>
-                    <CustomHeading>{t("packageDetails.charterDetailHeading1")}</CustomHeading>
+                    <CustomHeading>{t("packageDetails.charterDetailHeading1", {hotelName: "Hotel Victoria"})}</CustomHeading>
                     <QuotedPara>
                         {t("packageDetails.charterDetailPara1")}
                     </QuotedPara>

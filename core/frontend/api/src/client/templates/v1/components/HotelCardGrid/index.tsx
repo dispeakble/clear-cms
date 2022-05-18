@@ -10,7 +10,7 @@ interface IHotelCardGrid {
     title: string;
 }
 
-const HotelCardGrid: FC<IHotelCardGrid> = ({title}) => {
+const HotelCardGrid = ({title}: IHotelCardGrid) => {
 
     return(
         <Body>

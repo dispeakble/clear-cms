@@ -17,7 +17,7 @@ import Menu from "./Menu";
 
 const Header = (props: any) => {
   const links: any[] = props.links;
-  console.log(props.links)
+
   const t = useTranslations();
 
   const [fixedHeader, setFixedHeader] = useState(false);
