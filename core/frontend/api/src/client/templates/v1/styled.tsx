@@ -38,6 +38,35 @@ export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #E5E5E5;
+`;
+
+export const MainContentWrapper = styled.div`
+  width: 100%;
+  max-width: 320px;
+  @media ${device.mobileS} {
+    max-width: 320px;
+  }
+  @media ${device.mobileM} {
+    max-width: 375px;
+  }
+  @media ${device.mobileL} {
+    max-width: 400px;
+  }
+  @media ${device.tablet} {
+    max-width: 720px;
+  }
+  @media ${device.laptop} {
+    max-width: 900px;
+  }
+  @media ${device.laptopL} {
+    max-width: 1280px;
+  }
+  @media ${device.desktop} {
+    max-width: 1440px;
+  }
+  @media ${device.desktopL} {
+    max-width: 1440px;
   background: #f7f7f7;
 `;
 
@@ -59,10 +88,11 @@ export const Wrapper = styled.div`
 
 export const TopContentWrapper = styled.div`
   width: 100%;
-  padding: 114px 0 0;
+  padding: 114px 0 32px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
+
 
 export const ContentWrapper = styled.div`
   display: flex;
@@ -93,6 +123,34 @@ export const ContentWrapper = styled.div`
   }
   @media ${device.desktopL} {
     max-width: 1440px;
+  }
+`;
+
+export const ContentWrapperForPackageDetail = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  @media (min-width: ${size.laptop}) {
+    flex: 1 1 100%;
+  }
+`;
+
+
+export const ServiceAndMapWrapper = styled.div`
+  flex: 0 0 calc(35% - 8px);
+  max-width: calc(35% - 8px);
+  @media (max-width: ${size.laptopL}) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+`;
+
+export const DetailWrapper = styled.div`
+  flex: 0 0 65%;
+  max-width: 65%;
+  @media (max-width: ${size.laptopL}) {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 `;
 
@@ -156,6 +214,7 @@ export const StyledWebsiteSlogan = styled.div`
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
+
 /*
 export const StyledTermsOfUse = styled.div`
   background: ${({theme}) => theme.colors.primaryColor};
@@ -167,3 +226,24 @@ export const StyledTermsOfUse = styled.div`
     padding: 20px 90px;
 
 `;*/
+
+export const BottomContentWrapper = styled.div`
+  width: 100%;
+  padding: 32px 0 32px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+`;
+
+export const PackageDetailMainContent = styled.div`
+  width: 100%;
+  padding: 0 1rem;
+`;
+
+export const BreadcrumbsContainer = styled.div`
+  width: 100%;
+  margin: 120px 0px 0px 0px;
+  padding: 1rem;
+`;
+
+

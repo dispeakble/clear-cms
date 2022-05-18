@@ -17,8 +17,8 @@ interface ComponentProps extends WithRouterProps {
 }
 
 const templates: any = {
-    v1: dynamic(() => import("../../templates/v1/HotelPage")),
-    v2: dynamic(() => import("../../templates/v2/HotelPage"))
+    v1: dynamic(() => import("../../templates/v1/PackageDetail")),
+    v2: dynamic(() => import("../../templates/v2/PackageDetail"))
 };
 
 const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
@@ -29,6 +29,7 @@ const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
     return <>
         <Helmet>
             <title>{t("hotels.seo.pageTitle", { websiteName: settings.websiteName })}</title>
+
         </Helmet>
         <Component {...settings} />
     </>;

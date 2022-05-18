@@ -421,9 +421,7 @@ const HotelDetail = ({
               <HotelInfo>
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
-                      <Star>
                           <StyledStarsSmall stars={3}></StyledStarsSmall>
-                      </Star>
                       <ShortDescription>
                           <HotelLocation>
                               {t("deals.location")}

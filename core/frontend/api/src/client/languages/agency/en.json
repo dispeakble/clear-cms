@@ -192,13 +192,13 @@
     "header": "For the moment our services are under maintenance"
   },
   "flightsCheckout" : {
-    "cart" : {
-      "header" : "Your Shopping Cart",
+    "cart": {
+      "header": "Your Shopping Cart",
       "tax": "Service tax",
       "total": "Total price"
     },
     "flights": {
-      "header" : "Flight Details",
+      "header": "Flight Details",
       "pricingRules": "Pricing rules"
     },
     "main": {
@@ -214,5 +214,24 @@
       "previousStep": "Previous Step",
       "nextStep": "Next Step"
     }
+  },
+  "packageDetails": {
+    "BookingCardTitle1": "Similar Hotels",
+    "countryName": "Spain",
+    "islandName": "Tenerife",
+    "townName": "Adeje",
+    "hotelName": "Package Charter for {hotelName}",
+    "findDeals": "Find Deals",
+    "destinationOrHotel": "Destination or Hotel:",
+    "checkInDate": "Check-in date:",
+    "checkOutDate": "Check-out date:",
+    "adult": "Adults",
+    "children": "Children",
+    "flightDetails": "Flight Details",
+    "flightDetailLabel": "Flight from {flightFrom} to {flightTo} {flightDuration}",
+    "bookingDetailPara": "Available prices for {date} - {noOfNights} nights",
+    "charterDetailHeading1": "Package Charter for {hotelName}",
+    "charterDetailPara1": "Specially Curated Holiday for your soulmate, Enjoy dinner in a romantic set-up at Barefoot Resort - Havelock, Thrilling Seakart Activity, Visit Elephant beach and enjoy water sports. Comfortable private transfers, Choice of Hotels, Inter-island travel on a private ferry...",
+    "charterDetailHeading2": "Booking Conditions"
   }
 }
