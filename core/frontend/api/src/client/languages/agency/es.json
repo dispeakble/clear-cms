@@ -207,7 +207,7 @@
     "countryName": "España",
     "islandName": "Tenerife",
     "townName": "Adeje",
-    "hotelName": "Paquete Charter para Hotel Victoria",
+    "hotelName": "Paquete Charter para {hotelName}",
     "findDeals": "Buscar ofertas",
     "destinationOrHotel": "Destino u Hotel:",
     "checkInDate": "Comprobar en la fecha:",
@@ -215,9 +215,9 @@
     "adult": "Adultos",
     "children": "Children",
     "flightDetails": "Detalles del vuelo",
-    "flightDetailLabel": "Vuelo desde Henri Coanda a Tenerife 04h 45m",
-    "bookingDetailPara": "Precios disponibles para el 16 jun 2022 - 7 noches",
-    "charterDetailHeading1": "Paquete Charter para Hotel Victoria",
+    "flightDetailLabel": "Vuelo desde {flightFrom} a {flightTo} {flightDuration}",
+    "bookingDetailPara": "Precios disponibles para el {date} - {noOfNights} noches",
+    "charterDetailHeading1": "Paquete Charter para {hotelName}",
     "charterDetailPara1": "Vacaciones especialmente seleccionadas para su alma gemela, disfrute de una cena en un entorno romántico en Barefoot Resort - Havelock, emocionante actividad Seakart, visite la playa Elephant y disfrute de los deportes acuáticos. Cómodos traslados privados, Elección de Hoteles, Viajes interinsulares en ferry privado...",
     "charterDetailHeading2": "Condiciones de reserva"
   }
