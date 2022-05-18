@@ -36,7 +36,6 @@ export const MainWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   display: flex;
-  //overflow-x: hidden;
   flex-direction: column;
   align-items: center;
   background-color: #E5E5E5;
@@ -245,6 +244,6 @@ export const BreadcrumbsContainer = styled.div`
   width: 100%;
   margin: 120px 0px 0px 0px;
   padding: 1rem;
-`
+`;
 
 

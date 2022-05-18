@@ -157,3 +157,11 @@ export const CheckedIcon = styled.div`
   margin-top: 5px;
   background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
 `;
+
+export const UncheckedIcon = styled.div`
+  width: 29px;
+  height: 28px;
+  position: relative;
+  margin-top: 5px;
+  background: url(${({theme}) => theme.icon('uncheck')}) no-repeat left center;
+`
