@@ -2,20 +2,21 @@ import { Inject, Injectable } from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import { Observable } from "rxjs";
 import path from "path";
+import { ProtocolService } from "./protocol.service";
+import { readFile, } from "fs/promises";
 
 @Injectable()
 export class SettingsService {
 
-  private methods = ["getSettings"];
-  private fsPromises: any;
-  constructor(@Inject('ProtocolService') private protocolService) {
+  private methods = ["getSettings", "getTranslations"];
+  constructor(@Inject('ProtocolService') private protocolService: ProtocolService) {
 
   }
 
   getTranslations(params: any) {
     return new Observable((subscriber) => {
       (async () => {
-        const json_data = await this.fsPromises.readFile( path.join(__dirname, '../../src/client/languages/agency', `${params.language}.json`), {
+        const json_data = await readFile( path.join(__dirname, '../../src/client/languages/agency', `${params.language}.json`), {
           encoding: 'utf-8'
         } );
         subscriber.next(json_data);
@@ -25,6 +26,7 @@ export class SettingsService {
   }
 
   getSettings() {
+    const protocolService: any = this.protocolService;
     return new Observable((subscriber) => {
       (async () => {
         try {
@@ -45,7 +47,7 @@ export class SettingsService {
           const result = {};
 
           try {
-            const res = await this.protocolService.sendMessage(payload).toPromise();
+            const res = await protocolService.sendMessage(payload).toPromise();
             const data = JSON.parse(res.data);
 
             result['websiteName'] = data['websiteName'];
@@ -71,7 +73,7 @@ export class SettingsService {
 
   public perform(data: any) {
     if (this.methods.includes(data.act)) {
-      return this[data.act].call(Object.assign({}, data.payload));
+      return this[data.act](Object.assign({}, data.payload));
     } else {
       // eslint-disable-next-line no-console
       console.log("Frontend.SettingsService." + data.act + " not found");
