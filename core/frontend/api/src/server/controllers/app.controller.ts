@@ -205,14 +205,6 @@ export class AppController {
     @Get('*')
     public async showHome(@Req() req: Request, @Res() res: Response) {
         const url = parse(req.url, true);
-/*        const mockRequest = {//I don't remember why I did this.
-            headers: {
-
-            },
-            originalRequest: req,
-            url: req.url,
-            params: req.params
-        }*/
         await this.viewService.handler(req, res, url);
     }
 

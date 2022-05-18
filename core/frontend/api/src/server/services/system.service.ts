@@ -14,7 +14,7 @@ export class SystemService {
 
     public perform(data: any) {
         if (this.methods.includes(data.act)) {
-            return this[data.act].call(Object.assign({}, data.payload));
+            return this[data.act](Object.assign({}, data.payload));
         } else {
             // eslint-disable-next-line no-console
             console.log("Frontend.SystemService." + data.act + " not found");
