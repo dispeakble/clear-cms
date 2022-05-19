@@ -67,7 +67,7 @@ export const MainContentWrapper = styled.div`
   }
   @media ${device.desktopL} {
     max-width: 1440px;
-  background: #f7f7f7;
+    background: #f7f7f7;
 `;
 
 export const Wrapper = styled.div`
@@ -89,6 +89,12 @@ export const Wrapper = styled.div`
 export const TopContentWrapper = styled.div`
   width: 100%;
   padding: 114px 0 32px 0;
+  background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
+  background-size: cover;
+`;
+export const TopContentWrapperForFlightResults = styled.div`
+  width: 100%;
+  padding: 0px 0 32px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
@@ -242,8 +248,27 @@ export const PackageDetailMainContent = styled.div`
 
 export const BreadcrumbsContainer = styled.div`
   width: 100%;
-  margin: 120px 0px 0px 0px;
+  margin: 80px 0px 0px 0px;
   padding: 1rem;
 `;
+
+
+// ----------------------- for flight Results ---------------------------
+
+export const BottomContentWrapperForFlightResults = styled.div`
+  display: flex;
+  margin-top: 16px;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  flex-direction: column;
+  @media ${device.laptop} {
+    flex-direction: row;
+  }
+`;
+
+export const FlightResultsMainWrapper = styled.div`
+  background-color: #E5E5E5;
+`
 
 
