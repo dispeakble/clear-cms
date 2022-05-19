@@ -215,6 +215,21 @@
       "nextStep": "Next Step"
     }
   },
+  "filters": {
+    "main": {
+      "title": "Filters",
+      "reset": "reset"
+    }
+  },
+  "packages": {
+    "main": {
+      "bookNow": "Book Now",
+      "taxes": "*Including all taxes",
+      "includedServices": "Included Services",
+      "hotelDescription": "Hotel Description",
+      "loadMore": "View more packages"
+    }
+  },
   "packageDetails": {
     "BookingCardTitle1": "Similar Hotels",
     "countryName": "Spain",

@@ -35,7 +35,7 @@ interface IPassenger {
     age?: number;
 }
 
-const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const FlightPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
     const t = useTranslations()
     const [currentStep, setCurrentStep] = useState<number>(2)
@@ -229,4 +229,4 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     );
 };
 
-export default HotelPage;
+export default FlightPage;
