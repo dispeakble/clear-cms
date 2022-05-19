@@ -68,6 +68,7 @@ export const MainContentWrapper = styled.div`
   @media ${device.desktopL} {
     max-width: 1440px;
     background: #f7f7f7;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -98,6 +99,7 @@ export const TopContentWrapperForFlightResults = styled.div`
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
+
 
 
 export const ContentWrapper = styled.div`
@@ -248,7 +250,7 @@ export const PackageDetailMainContent = styled.div`
 
 export const BreadcrumbsContainer = styled.div`
   width: 100%;
-  margin: 80px 0px 0px 0px;
+  margin: 120px 0px 0px 0px;
   padding: 1rem;
 `;
 
