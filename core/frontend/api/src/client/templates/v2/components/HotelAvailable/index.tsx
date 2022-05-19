@@ -158,11 +158,12 @@ const HotelAvailable = ({
                                     <CheckBg>
                                         <CheckTitle>Check-in</CheckTitle>
                                         <p>
-                                            <strong>{moment(data.checkin).format("DD MMM , ddd")}  </strong>
+                                            <strong data-testid="avail-checkInDateInput">{moment(data.checkin).format("DD MMM , ddd")}</strong>
                                         </p>
                                     </CheckBg>
                                 </StayingInfoWrapper>
                                 {show === "checkin" ? (
+                                    <div data-testid="avail-checkInDateCont">
                                     <CalendarView>
                                         <HotelCalendar
                                             onChange={(value: any) => {
@@ -172,6 +173,7 @@ const HotelAvailable = ({
                                             value={data.checkin}
                                         />
                                     </CalendarView>
+                                    </div>
                                 ) : null}
                             </DivView>
                         </CalenderWrapper>
@@ -184,11 +186,12 @@ const HotelAvailable = ({
                                     <CheckBg>
                                         <CheckTitle>Check-out</CheckTitle>
                                         <p>
-                                            <strong>{moment(data.checkout).format("DD MMM , ddd")} </strong>
+                                            <strong data-testid="avail-checkOutDateInput">{moment(data.checkout).format("DD MMM , ddd")}</strong>
                                         </p>
                                     </CheckBg>
                                 </StayingInfoWrapper>
                                 {show === "checkout" ? (
+                                    <div data-testid="avail-checkOutDateCont">
                                     <CalendarViewCheckout>
                                         <HotelCalendar
                                             onChange={(value: any) => {
@@ -198,12 +201,13 @@ const HotelAvailable = ({
                                             value={new Date(data.checkout)}
                                         />
                                     </CalendarViewCheckout>
+                                        </div>
                                 ) : null}
                             </DivView>
                         </CalenderWrapper>
                     </LeftSide>
                     <RightSide>
-                        <PassengerWrapper onClick={handleShowAdults}>
+                        <PassengerWrapper onClick={handleShowAdults} data-testid="avail-adultNumberInput">
                             <DivView>
                                 <Passenger onClick={handleShowAdults}>
                                     <PassengerDetailsWrapper onClick={handleShowAdults}>
@@ -211,20 +215,18 @@ const HotelAvailable = ({
                                         <SpanDiv>Adults</SpanDiv>
                                         <DropdownIcon/>
                                     </PassengerDetailsWrapper>
-                                    <GuestNumber>{data?.passenger.adults}</GuestNumber>
+                                    <GuestNumber data-testid="avail-adultNumberChosen">{data?.passenger.adults}</GuestNumber>
                                 </Passenger>
                                 {show === "adults" ? (
-                                    <PassengerView>
+                                    <PassengerView  data-testid="avail-adultNumberCont">
                                         <CounterDiv>
-                                            <CounterBtn onClick={handleAdultMinus}>
+                                            <CounterBtn onClick={handleAdultMinus} data-testid="avail-decAdultNumber">
                                                 -
                                             </CounterBtn>
-                                            <div>{data?.passenger.adults}</div>
-                                            <CounterBtn onClick={handleAdultPlus}>
+                                            <div data-testid="avail-adultNumberDropdown">{data?.passenger.adults}</div>
+                                            <CounterBtn onClick={handleAdultPlus} data-testid="avail-incAdultNumber">
                                                 +
                                             </CounterBtn>
-
-
                                         </CounterDiv>
                                     </PassengerView>
                                 ) : null}
@@ -234,23 +236,23 @@ const HotelAvailable = ({
                         </PassengerWrapper>
                         <PassengerWrapper onClick={handleShowChildren}>
                             <DivView>
-                                <Passenger onClick={handleShowChildren}>
+                                <Passenger onClick={handleShowChildren} data-testid="avail-childNumberInput">
                                     <PassengerDetailsWrapper onClick={handleShowChildren}>
                                         <ChildIcon/>
                                         <SpanDiv>Children</SpanDiv>
                                         <DropdownIcon/>
 
                                     </PassengerDetailsWrapper>
-                                    <GuestNumber>{data?.passenger.children}</GuestNumber>
+                                    <GuestNumber data-testid="avail-childNumberChosen">{data?.passenger.children}</GuestNumber>
                                 </Passenger>
                                 {show === "children" ? (
-                                    <PassengerView>
+                                    <PassengerView data-testid="avail-childNumberCont">
                                         <CounterDiv>
-                                            <CounterBtn onClick={handleChildrenMinus}>
+                                            <CounterBtn onClick={handleChildrenMinus} data-testid="avail-decChildNumber">
                                                 -
                                             </CounterBtn>
-                                            <div>{data?.passenger.children}</div>
-                                            <CounterBtn onClick={handleChildrenPlus}>
+                                            <div data-testid="avail-childNumberDropdown">{data?.passenger.children}</div>
+                                            <CounterBtn onClick={handleChildrenPlus}  data-testid="avail-incChildNumber">
                                                 +
                                             </CounterBtn>
                                         </CounterDiv>
@@ -261,23 +263,23 @@ const HotelAvailable = ({
                         </PassengerWrapper>
                         <PassengerWrapper onClick={handleShowInfants}>
                             <DivView>
-                                <Passenger onClick={handleShowInfants}>
+                                <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
                                     <PassengerDetailsWrapper onClick={handleShowInfants}>
                                         <InfantIcon/>
                                         <SpanDiv>Infants</SpanDiv>
                                         <DropdownIcon/>
 
                                     </PassengerDetailsWrapper>
-                                    <GuestNumber>{data?.passenger.infants}</GuestNumber>
+                                    <GuestNumber data-testid="avail-infantNumberChosen">{data?.passenger.infants}</GuestNumber>
                                 </Passenger>
                                 {show === "infants" ? (
-                                    <PassengerView>
+                                    <PassengerView data-testid="avail-infantNumberCont">
                                         <CounterDiv>
-                                            <CounterBtn onClick={handleInfantsMinus}>
+                                            <CounterBtn onClick={handleInfantsMinus} data-testid="avail-decInfantNumber">
                                                 -
                                             </CounterBtn>
-                                            <div>{data?.passenger.infants}</div>
-                                            <CounterBtn onClick={handleInfantsPlus}>
+                                            <div data-testid="avail-infantNumberDropdown">{data?.passenger.infants}</div>
+                                            <CounterBtn onClick={handleInfantsPlus} data-testid="avail-incInfantNumber">
                                                 +
                                             </CounterBtn>
                                         </CounterDiv>
@@ -319,11 +321,12 @@ const HotelAvailable = ({
                                 </ColumnOne>
                                 <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
                                 <div style={{position: "relative"}}>
-                                    <ColumnThree onClick={() => handleShowRoomList(w.name)}>
+
+                                    <ColumnThree onClick={() => handleShowRoomList(w.name)} data-testid={`numOfRoomsCont${index}`}>
                                         <LeftIcon/>
                                         <span>
                                             <input type="text" placeholder="1 Rooms" readOnly
-                                                   value={selectedRoom[index].room}/>
+                                                   value={selectedRoom[index].room} data-testid={`numOfRoomsInput${index}`}/>
                                         </span>
                                         <TopUp/>
                                     </ColumnThree>
@@ -334,7 +337,7 @@ const HotelAvailable = ({
                                                 listStyleType: "none",
                                                 margin: "0px",
                                                 padding: "0px"
-                                            }}>
+                                            }} data-testid={`numOfRoomsUl${index}`}>
                                                 {
                                                     allRooms.map((w) => <li key={w} onClick={() => {
                                                         setShowRoom("");
@@ -359,7 +362,7 @@ const HotelAvailable = ({
                                     ) : null}
                                 </div>
 
-                                <ColumnFour>{Number(selectedRoom[index].price) * Number(roomUnitPrice)}{" \u20AC"}</ColumnFour>
+                                <ColumnFour data-testid={`amountOfRow${index}`}>{Number(selectedRoom[index].price) * Number(roomUnitPrice)}{" \u20AC"}</ColumnFour>
                                 <ColumnBreak/>
                                 <ColumnFive>
                                     <button>Book Now</button>

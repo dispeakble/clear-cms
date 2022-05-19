@@ -33,8 +33,8 @@ import quoteUp from "../assets/img/quote-up.svg";
 import quoteDown from "../assets/img/quote-down.svg";
 import starIcon from "../assets/img/star-icon.svg";
 import calendarCheckIcon from "../assets/img/calendar-check-icon.svg";
-import uncheckIcon from "../assets/img/uncheck.svg";
-import filterIcon from "../assets/img/filter-icon.svg";
+import uncheckIcon from "../assets/img/uncheck.svg"
+import filterIcon from "../assets/img/filter-icon.svg"
 
 const icons: Record<string, any> = {
   uncheck: uncheckIcon,
@@ -74,7 +74,6 @@ const icons: Record<string, any> = {
   destination: destinationIcon,
   companyImage: companyIcon,
   resultFilter: filterIcon
-
 }
 
 export const getIcon = (iconName: string) => {

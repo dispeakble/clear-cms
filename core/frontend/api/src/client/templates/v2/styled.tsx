@@ -77,7 +77,7 @@ export const Wrapper = styled.div`
   margin: 0 auto;
   padding: 20px 0;
   min-height: 100vh;
-
+  
   @media(max-width: ${size.laptopL}){
     padding: 20px;
   }

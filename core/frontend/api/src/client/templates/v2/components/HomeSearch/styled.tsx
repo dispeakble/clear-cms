@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { device, size } from "../../styled";
 
+
 interface IDateLabel {
   selected?: boolean;
 }
@@ -134,9 +135,6 @@ export const StyledSearchDestinationInput = styled.input`
   width: 100%;
   outline: none;
   border: none;
-  &:not(.singleInput) {
-    margin-top: 5px;
-  }
   
   &::placeholder{
     color: rgba(0,0,0,0.6);
@@ -147,7 +145,10 @@ export const StyledSearchDestinationInput = styled.input`
     }
   }
   @media ${device.tablet} {
-    margin: 0 0 0 10px !important;
+    &:not(.singleInput) {
+      margin: 0 0 0 5px !important;
+    }
+    
   }
 `;
 

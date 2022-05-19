@@ -111,6 +111,7 @@ export const FlightType = styled.div`
       
 `;
 export const BookNowBtn = styled.button`
+  
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   width: 199px;
@@ -123,6 +124,6 @@ export const BookNowBtn = styled.button`
   border: none;
   background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
   &:hover {
-    background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+    background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);  
   }
 `;
