@@ -221,18 +221,19 @@ const HotelDetail = ({
         handleHotelSearch(data);
     };
 
+
     return (
       <Wrapper>
           <DealCard>
               <CardHead>
-                  Find Deals
+                  Find
               </CardHead>
               <EditDeals>
                   <Destination>
                       <H4>Destination or Hotel:</H4>
                       <HotelSearch>
                           <SearchIcon/>
-                          <input value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
+                          <input value={data.hotel} data-testid="hotelInput" type="search" placeholder={t("deals.hotel")} onChange={(e) => {
                               onSearch(e.target.value);
                               handleSearch(e.target.value);
                           }} />
@@ -248,6 +249,7 @@ const HotelDetail = ({
                                   <CalenderIcon  />
                                   <input placeholder={t("deals.checkin") }
                                          onChange={() => {}}
+                                         data-testid="checkInDateInput"
                                          style={{cursor: 'pointer'}}
                                          value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
 
@@ -255,16 +257,18 @@ const HotelDetail = ({
                               </HotelSearch>
 
                               {show.checkin ? (
+                                <div data-testid="checkInDateCont">
+                                    <HotelCalendar
 
-                                <HotelCalendar
-                                  minDate={data.checkin}
-                                  value={data.checkin}
+                                        minDate={data.checkin}
+                                        value={data.checkin}
 
-                                  onChange={(value: any) => {
-                                      handleChangeInput("checkin", value);
-                                      handleDateAway("checkin");
-                                  }}
-                                />
+                                        onChange={(value: any) => {
+                                            handleChangeInput("checkin", value);
+                                            handleDateAway("checkin");
+                                        }}
+                                    />
+                                </div>
 
                               ) : null}
                           </DateDiv>
@@ -278,9 +282,10 @@ const HotelDetail = ({
                               handleShowCheckout();
                           }}>
                               <H4>Check-out date:</H4>
+
                               <HotelSearch>
                                   <CalenderIcon />
-                                  <input placeholder={t("deals.checkout")} onChange={() => {}}
+                                  <input placeholder={t("deals.checkout")} data-testid="checkOutDateInput"  onChange={() => {}}
                                          value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
                                   style={{cursor: 'pointer'}}
                                   />
@@ -289,20 +294,23 @@ const HotelDetail = ({
                               </HotelSearch>
 
 
+
                               {show.checkout ? (
+                                  <div data-testid="checkOutDateCont">
 
                                 <HotelCalendar
                                   minDate={new Date(String(moment(data.checkin).add(1, "d")))}
                                   value={new Date(data.checkout)}
+
                                   onChange={(value: any) => {
                                       handleChangeInput("checkout", value);
                                       handleDateAway("checkout");
                                   }}
-                                />
-
+                                /></div>
                               ) : null}
                           </DateDiv>
                       </ClickAwayListener>
+
 
 
                   </Destination>
@@ -311,24 +319,24 @@ const HotelDetail = ({
                           <DateDiv>
                               <H4>Details:</H4>
                               <GuestType>
-                                  <AdultBox onClick={() => handleShowPassenger()}>
+                                  <AdultBox onClick={() => handleShowPassenger()} data-testid="detailsInput">
                                       <AdultIcon  />
                                       <AdultNumber>
-                                          {t(`deals.detail.adult`)}{data.passenger.adults}
+                                          {t(`deals.detail.adult`)}<span data-testid="adultNumberChosen">{data.passenger.adults}</span>
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox onClick={() => handleShowPassenger()}>
                                       <ChildIcon  />
                                       <AdultNumber>
-                                          {t(`deals.detail.child`)}{data.passenger.children}
+                                          {t(`deals.detail.child`)}<span data-testid="childNumberChosen">{data.passenger.children}</span>
 
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox onClick={() => handleShowPassenger()}>
                                       <InfantIcon  />
                                       <AdultNumber>
-                                          {t(`deals.detail.infant`)}{data.passenger.infants}
+                                          {t(`deals.detail.infant`)}<span data-testid="infantNumberChosen">{data.passenger.infants}</span>
                                       </AdultNumber>
                                   </AdultBox>
                                   <div style={{position:'relative', left: '7px'}}>
@@ -336,6 +344,7 @@ const HotelDetail = ({
                                   </div>
                               </GuestType>
                               {show.details ? (
+                                  <div data-testid="detailsContainer">
                                   <DetailsCard>
                                       <DetailTop>
                                           <CloseIcon onClick={()=>
@@ -354,9 +363,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <SPAN onClick={handleAdultMinus}>-</SPAN>
-                                                  <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
-                                                  <SPAN onClick={handleAdultPlus}>+</SPAN>
+                                                  <SPAN onClick={handleAdultMinus} data-testid="decAdultNumber">-</SPAN>
+                                                  <h5 data-testid='adultNumberFromDropdown'>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
+                                                  <SPAN onClick={handleAdultPlus} data-testid="incAdultNumber">+</SPAN>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -367,9 +376,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <SPAN onClick={handleChildrenMinus}>-</SPAN>
-                                                  <h5>{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
-                                                  <SPAN onClick={handleChildrenPlus}>+</SPAN>
+                                                  <SPAN onClick={handleChildrenMinus} data-testid="decChildNumber">-</SPAN>
+                                                  <h5 data-testid="childNumberFromDropdown">{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
+                                                  <SPAN onClick={handleChildrenPlus} data-testid="incChildNumber">+</SPAN>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -380,9 +389,9 @@ const HotelDetail = ({
                                           </BoxLeft>
                                           <BoxRight>
                                               <Quantity>
-                                                  <SPAN onClick={handleInfantsMinus}>-</SPAN>
-                                                  <h5>{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                  <SPAN onClick={handleInfantsPlus}>+</SPAN>
+                                                  <SPAN onClick={handleInfantsMinus} data-testid="decInfantNumber">-</SPAN>
+                                                  <h5 data-testid="infantNumberFromDropdown">{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
+                                                  <SPAN onClick={handleInfantsPlus} data-testid="incInfantNumber">+</SPAN>
                                               </Quantity>
                                           </BoxRight>
                                       </Person>
@@ -395,6 +404,7 @@ const HotelDetail = ({
                                       </SubDetail>
                                       </PersonEntry>
                                   </DetailsCard>
+                                  </div>
 
                               ) : null}
                           </DateDiv>
@@ -411,9 +421,7 @@ const HotelDetail = ({
               <HotelInfo>
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
-                      <Star>
                           <StyledStarsSmall stars={3}></StyledStarsSmall>
-                      </Star>
                       <ShortDescription>
                           <HotelLocation>
                               {t("deals.location")}

@@ -36,7 +36,6 @@ export const MainWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   display: flex;
-  //overflow-x: hidden;
   flex-direction: column;
   align-items: center;
   background-color: #E5E5E5;
@@ -68,7 +67,8 @@ export const MainContentWrapper = styled.div`
   }
   @media ${device.desktopL} {
     max-width: 1440px;
-  background: #f7f7f7;
+    background: #f7f7f7;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -92,6 +92,13 @@ export const TopContentWrapper = styled.div`
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
+export const TopContentWrapperForFlightResults = styled.div`
+  width: 100%;
+  padding: 0px 0 32px 0;
+  background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
+  background-size: cover;
+`;
+
 
 
 export const ContentWrapper = styled.div`
@@ -245,5 +252,24 @@ export const BreadcrumbsContainer = styled.div`
   margin: 120px 0px 0px 0px;
   padding: 1rem;
 `;
+
+
+// ----------------------- for flight Results ---------------------------
+
+export const BottomContentWrapperForFlightResults = styled.div`
+  display: flex;
+  margin-top: 16px;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  flex-direction: column;
+  @media ${device.laptop} {
+    flex-direction: row;
+  }
+`;
+
+export const FlightResultsMainWrapper = styled.div`
+  background-color: #E5E5E5;
+`
 
 

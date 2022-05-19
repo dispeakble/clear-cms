@@ -8,6 +8,9 @@ import {
     ContentWrapper,
     GlobalStyle,
     MainWrapper,
+    PaperWrapper,
+    StyledContentWrapper,
+    TopContentWrapper,
     BottomContentWrapper,
     ServiceAndMapWrapper,
     ContentWrapperForPackageDetail,
@@ -158,7 +161,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         "7 nights stay"
     ];
 
-    // @ts-ignore
+
     return (
         <>
             <ThemeProvider theme={myTheme}>
@@ -168,7 +171,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 <Header websiteName={websiteName} />
                 <MainContentWrapper>
                 <BreadcrumbsContainer>
-                    <Breadcrumbs countryName={t("packageDetails.countryName")} islandName={t("packageDetails.islandName")} townName={t("packageDetails.islandName")} hotelName={t("packageDetails.townName")}/>
+                    <Breadcrumbs countryName={t("packageDetails.countryName")} islandName={t("packageDetails.islandName")} townName={t("packageDetails.townName")} hotelName={t("packageDetails.hotelName",{hotelName: "Hotel Victoria"})}/>
                 </BreadcrumbsContainer>
                 <PackageDetailMainContent>
                     <ContentWrapperForPackageDetail>
@@ -210,7 +213,6 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                             </Feature>
                             </Highlights>
                         <MapSection id="showmap">
-
                             <GoogleMapReact
                                 bootstrapURLKeys={{
                                     key: "AIzaSyBX1z5nvjcjzyxSMT-QCVS3ERu6Y3iNSb0",
@@ -220,14 +222,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                                 defaultZoom={mapData.zoom}
                                 yesIWantToUseGoogleMapApiInternals
 
-                            >
-                                <AnyReactComponent
-                                    lat={mapData.center.lat}
-                                    lng={mapData.center.lng}
-                                    text="🔴"
-                                />
-                            </GoogleMapReact>
-
+                            />
                         </MapSection>
                     </ContentWrapper>
                     </ServiceAndMapWrapper>
