@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {size} from "../../styled";
 import hotel1 from "../../assets/img/hotels/small/hotel1.jpg";
 
+
 export const About = styled.div`
   margin-top: 37px;
   @media (min-width: ${size.laptopL}) {
@@ -69,25 +70,28 @@ export const MapSection = styled.div`
   width: 100%;
   height: 298px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
+  overflow: hidden;
   div > div > div > div{
     border-radius: 10px;
   }
-  @media (min-width: ${size.laptopL}) {
+  /*@media (min-width: ${size.laptopL}) {
     width: 485px;
     border-radius: 10px;
-  }
+  }*/
 `
 
 
 export const Highlights = styled.div`
   width: 100%;
-  height: 427px;
+  min-height: 427px;
   background: url(${hotel1.src}) no-repeat center center;
   background-size: cover;
   border-radius: 20px;
   padding: 20px 35px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   position: relative;
+  margin-bottom: 1rem;
   ::before{
     content: '';
     position: absolute;
@@ -102,9 +106,10 @@ export const Highlights = styled.div`
     cursor: pointer;
     border-radius: 20px;
   }
-  @media (min-width: ${size.laptopL}) {
+  /* TODO A temporary comment i will comment it out after making a copy */
+  /*@media (min-width: ${size.laptopL}) {
     width: 497px;
-  }
+  }*/
 `
 
 export const Cardtitle = styled.div`
@@ -157,3 +162,11 @@ export const CheckedIcon = styled.div`
   margin-top: 5px;
   background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
 `;
+
+export const UncheckedIcon = styled.div`
+  width: 29px;
+  height: 28px;
+  position: relative;
+  margin-top: 5px;
+  background: url(${({theme}) => theme.icon('uncheck')}) no-repeat left center;
+`

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import { device, size } from "../../styled";
 
+
 interface IDateLabel {
   selected?: boolean;
 }

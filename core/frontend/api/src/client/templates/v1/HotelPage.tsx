@@ -135,7 +135,7 @@ const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         <Header websiteName={websiteName} />
         <TopContentWrapper>
           <ContentWrapper>
-            <Breadcrumbs />
+            <Breadcrumbs countryName="Spain" islandName="Tenerife" townName="Adeje" hotelName="Hotel Victoria (Hotel)" />
             <HotelDetail
               data={data}
               handleChildrenMinus={handleChildrenMinus}
