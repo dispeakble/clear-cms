@@ -35,6 +35,8 @@ import starIcon from "../assets/img/star-icon.svg";
 import calendarCheckIcon from "../assets/img/calendar-check-icon.svg";
 import uncheckIcon from "../assets/img/uncheck.svg"
 import filterIcon from "../assets/img/filter-icon.svg"
+import rightArrowIcon from '../assets/img/right-arrow-icon.svg';
+import leftArrowIcon from '../assets/img/left-arrow-icon.svg';
 
 const icons: Record<string, any> = {
   uncheck: uncheckIcon,
@@ -73,7 +75,9 @@ const icons: Record<string, any> = {
   arrival: arrivalIcon,
   destination: destinationIcon,
   companyImage: companyIcon,
-  resultFilter: filterIcon
+  resultFilter: filterIcon,
+  rightArrow: rightArrowIcon,
+  leftArrow: leftArrowIcon
 }
 
 export const getIcon = (iconName: string) => {
