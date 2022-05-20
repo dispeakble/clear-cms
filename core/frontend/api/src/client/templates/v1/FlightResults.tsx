@@ -20,7 +20,7 @@ import Breadcrumbs from "./components/Breadcrumbs";
 import ResultsMainContent from "./components/ResultsMainContent";
 import FilteringFlightResult from "./components/FilteringFlightResult"
 
-const FlightResults = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const FlightResults = ({ websiteName, colorScheme }: any) => {
     const t = useTranslations()
 
     const getIcons = (iconName: string) => {

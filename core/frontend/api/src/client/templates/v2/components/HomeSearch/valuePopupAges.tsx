@@ -6,7 +6,7 @@ import {
   StyledValuePopupControl,
   StyledValuePopupList
 } from "./styledValuePopup";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type valuePopupAgesProps = {
   name: string;

@@ -68,7 +68,7 @@ export const HotelSearch = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
-    min-width: 0px;
+    min-width: 0;
     width: 100%;
     border-radius: 0 10px 10px 0;
   }
@@ -311,9 +311,6 @@ export const ShowDate = styled.div`
 export const HeadingDiv = styled.div`
   width: 200px;
   background-color: ${({ theme }) => theme.colors.white};
-`;
-export const DiVForH5 = styled.div`
-  text-align: center;
 `;
 export const MemberBox = styled.div`
   display: flex;
@@ -741,7 +738,7 @@ export const HotelCalendar = styled(Calendar)`
     display: -moz-box;
     display: flex;
     height: 44px;
-    margin-bottom: 0em;
+    margin-bottom: 0;
   }
 
   .react-calendar__navigation__label {

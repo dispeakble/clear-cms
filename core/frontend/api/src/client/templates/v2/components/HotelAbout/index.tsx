@@ -48,7 +48,6 @@ const HotelAbout = () => {
     "ATM Exchange"
   ];
 
-  const currentNode = ref.current;
   return (
     <>
       <About>

@@ -3,15 +3,8 @@ import {
 } from "./styled";
 
 import hotel1 from "../../assets/img/hotels/small/hotel8.jpg";
-import hotel2 from "../../assets/img/hotels/small/hotel9.jpg";
-import hotel3 from "../../assets/img/hotels/small/hotel10.jpg";
-import {useTranslations} from "next-intl";
-import Link from "next/link";
-import Image from "next/image";
 import Card from "./Card";
-import {StyledTabBtn, StyledTabs} from "../Promo/styled";
 import * as React from "react";
-import {useState} from "react";
 
 
 const BottomCards = () => {
@@ -22,8 +15,6 @@ const BottomCards = () => {
         price: "199$",
         img: hotel1.src
     };
-
-    const t = useTranslations();
 
     return (
         <>

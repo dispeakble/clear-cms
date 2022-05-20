@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
+import {size} from "../../styled";
 
 
 export const Body = styled.div`
   background: #FFFFFF;
-  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
   border-radius: 27px;
   width: 100%;
   padding: 1rem;
@@ -20,7 +20,7 @@ export const TitleText = styled.h3`
 export const ParaTextBold = styled.p`
   font-weight: bolder;
   font-size: 17px;
-  margin: 0px;
+  margin: 0;
 `;
 
 export const CardContainer = styled.div`

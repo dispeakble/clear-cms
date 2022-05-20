@@ -7,7 +7,6 @@ import {
   StyledStars,
   StyledTitle,
   StyledZoomImg,
-  StyledZoomPopup
 } from "./styled";
 import { useTranslations } from "next-intl";
 

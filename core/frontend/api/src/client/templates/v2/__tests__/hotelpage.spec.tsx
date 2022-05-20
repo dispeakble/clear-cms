@@ -1,4 +1,4 @@
-    import {render, screen, fireEvent, prettyDOM, within,  waitFor, cleanup} from "@testing-library/react";
+    import {render, screen, fireEvent, waitFor} from "@testing-library/react";
     import "@testing-library/jest-dom";
     import HotelPage from "../HotelPage";
     import { IntlProvider } from "next-intl";
@@ -41,15 +41,6 @@
             </WsContextProvider>
         );
     };
-
-    const formatDate = (date: any) => {
-        return Intl.DateTimeFormat("en", {
-            month: "short",
-            day: "2-digit",
-            year: "2-digit"
-        }).format(date);
-    };
-
 
     describe("Hotel Page Suite", () => {
          it("Should render the hotel page", async () => {

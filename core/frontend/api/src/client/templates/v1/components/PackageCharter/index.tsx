@@ -11,7 +11,6 @@ import {
     CardHead,
     ChildIcon,
     AboutPrice,
-    CounterBtn,
     Price,
     DateDiv,
     DealCard,
@@ -25,15 +24,11 @@ import {
     HotelSearch,
     HotelView,
     InfantIcon,
-    InfoIcon,
     LeftSide,
-    MemberBox,
     NewSearch,
-    PersonBox,
     SearchIcon,
     ShortDescription,
     SliderSection,
-    Star,
     ViewMap,
     ViewPrice,
     WhiteIcon,
@@ -110,7 +105,6 @@ const PackageCharter = ({
             location: "Mohali"
         }
     ];
-    const customColors = ['#FFFFFF'];
     React.useEffect(() => {
         const getHotel = arr.map((value: any) => {
             return value.location;
@@ -219,10 +213,6 @@ const PackageCharter = ({
             return x !== undefined;
         });
         setMainValue(filtered);
-    };
-
-    const onSelect = (data: string) => {
-        handleHotelSearch(data);
     };
 
     return (

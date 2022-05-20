@@ -2,7 +2,7 @@ import {
     Body, CardContainer,
     TitleText,
 } from './styled';
-import React, {FC} from "react";
+import React from "react";
 import HotelCard from "../HotelCard";
 
 

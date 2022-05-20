@@ -19,7 +19,7 @@ import {
 import {useTranslations} from "next-intl";
 import {useRouter} from "next/router";
 
-const Custom404 = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const Custom404 = ({ websiteName, colorScheme }: any) => {
 
     const router = useRouter()
 

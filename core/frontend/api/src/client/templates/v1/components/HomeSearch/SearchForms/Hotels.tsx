@@ -21,7 +21,7 @@ import {
   StyledValue
 } from "../styled";
 import { useTranslations } from "next-intl";
-import { useCallback, useRef, useState } from "react";
+import { MutableRefObject, useCallback, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import ValuePopup from "../valuePopup";
 import { useRouter } from "next/router";
@@ -33,7 +33,7 @@ export const Hotels = () => {
   const router = useRouter();
   const t = useTranslations();
 
-  const destinationRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const destinationRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [destinationList, setDestinationList] = useState<any[]>([]);
   const [showDestinations, setShowDestinations] = useState(false);

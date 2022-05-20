@@ -19,7 +19,7 @@ import PackageActivities from "../assets/img/packageActivities-icon.svg"
 
 
 
-const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const PackagesPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
 
