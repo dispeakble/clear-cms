@@ -47,7 +47,7 @@ export const CartWrapper = styled.div`
   max-width: 433px;
   height: auto;
   background: #FFFFFF;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
   border-radius: 8px;
   @media(max-width: ${size.laptop}){
     max-width: 100%;
@@ -248,7 +248,7 @@ export const ButtonsContainer = styled.div<IButtonContainer>`
 
 export const CustomButton = styled.button<ICustomButton>`
   background: ${({isActive}) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;

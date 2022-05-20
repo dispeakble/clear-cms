@@ -29,7 +29,6 @@ import Image from "next/image"
 import YellowStar from "../../../assets/img/starYellowImage.png"
 import GrayStar from "../../../assets/img/starGrayImage.png"
 import {useTranslations} from "next-intl";
-import Arrow from "../../../assets/img/filtersArrow-icon.svg"
 import {useState} from "react";
 
 

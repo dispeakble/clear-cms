@@ -1,8 +1,8 @@
-import {PackageDetailContainer, TitleText, FlightInformation, InputContainer, FlightTakeOffIcon,
+import {PackageDetailContainer, TitleText, FlightInformation, InputContainer,
     StyledSearchDestinationInput, AutocompleteItem, AutocompleteList, FlightTakeOffInput, DropdownIcon,
     StyledSearchInput, ImageForCompany, FlightDetailsContainer, FlightPort,
     Time, TakeOffInputContainer, PassengerWrapper, Passenger, ChildIcon,
-    CounterBtn, CounterDiv, DivView, GuestNumber, PassengerDetailsWrapper, SpanDiv, PassengerView, BetweenInputs
+    CounterBtn, CounterDiv, DivView, PassengerDetailsWrapper, SpanDiv, PassengerView, BetweenInputs
 ,BetweenInputsContainer} from  './styled';
 
 import {
@@ -17,15 +17,13 @@ import {
     BookingConditionsContainer,
     CustomHeading,
     QuotedPara,
-    CustomSection
 } from './styled';
 
-import { Packages } from '../HomeSearch/SearchForms/Packages'
 import React, {useCallback, useRef, useState} from "react";
 import { useTranslations } from "next-intl";
 import debounce from "lodash/debounce";
 import useWsContext from "../../../../context/SocketContext";
-import {CalenderIcon, DateDiv, H4, HotelCalendar, HotelSearch} from "../HotelDetail/styled";
+import {CalenderIcon, DateDiv, HotelCalendar, HotelSearch} from "../HotelDetail/styled";
 import moment from "moment";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Image from "next/image";
@@ -68,6 +66,7 @@ const PackageDetailCard = () => {
 
 
     const searchDepartureByName = async (value: string) => {
+        //TODO SHOW THE LIST HERE
         const response = await ws.sendMessage({
             api: "homeSearchPackages",
             act: "packages",

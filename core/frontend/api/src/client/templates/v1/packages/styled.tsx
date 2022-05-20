@@ -263,7 +263,7 @@ export const StartingPriceContainer = styled.div`
   margin: 0 0 2px 0;
 
   p{
-    margin: 0;
+    margin: 0 10px 0 0;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     font-size: 16px;
@@ -272,7 +272,6 @@ export const StartingPriceContainer = styled.div`
     float:left;
     display: inline-block;
     color: #646464;
-    margin-right: 10px;
   }
 
   @media screen and (max-width: ${size.tablet}){

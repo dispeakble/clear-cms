@@ -44,7 +44,7 @@ interface IProps {
     currentStep: number;
 }
 
-const FirstStep = ({flightData, setCurrentStep, currentStep}: IProps) => {
+const FirstStep = ({flightData, setCurrentStep}: IProps) => {
 
     const  t = useTranslations();
     const [isOpen, setIsOpen] = useState<number>(-1)

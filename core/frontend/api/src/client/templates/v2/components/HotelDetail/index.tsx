@@ -28,7 +28,6 @@ import {
     SearchIcon,
     ShortDescription,
     SliderSection,
-    Star,
     ViewMap,
     ViewPrice,
     WhiteIcon,
@@ -67,7 +66,6 @@ const HotelDetail = ({
                          data,
                          handleAdultPlus,
                          handleAdultMinus,
-                         handleHotelSearch,
                          handleInfantsPlus,
                          handleChangeInput,
                          handleChildrenMinus,
@@ -216,11 +214,6 @@ const HotelDetail = ({
         });
         setMainValue(filtered);
     };
-
-    const onSelect = (data: string) => {
-        handleHotelSearch(data);
-    };
-
 
     return (
       <Wrapper>

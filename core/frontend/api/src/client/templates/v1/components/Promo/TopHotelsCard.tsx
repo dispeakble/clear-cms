@@ -36,7 +36,7 @@ export const TopHotelsCard = ({ src, tag, details, action, prices }: TopHotelsCa
         <StyledGrayLabel>{details}</StyledGrayLabel>
         <SmallBookNow>{action}</SmallBookNow>
       </StyledFirstRow>
-      {prices && prices.map((price, i) => (
+      {prices && prices.map((price) => (
         <StyledFeaturedPrices key={`${price.destination}-${price.value}`}>
           <StyledDestination>{price.destination}</StyledDestination>
           <StyledPrice>{price.value}</StyledPrice>

@@ -35,7 +35,7 @@ interface IPassenger {
     age?: number;
 }
 
-const FlightPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
     const [currentStep, setCurrentStep] = useState<number>(2)

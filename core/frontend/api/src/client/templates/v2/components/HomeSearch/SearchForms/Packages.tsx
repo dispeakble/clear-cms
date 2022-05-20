@@ -22,7 +22,7 @@ import {
   StyledValue
 } from "../styled";
 import { useTranslations } from "next-intl";
-import { useCallback, useRef, useState } from "react";
+import { MutableRefObject, useCallback, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import ValuePopup from "../valuePopup";
 import { useRouter } from "next/router";
@@ -61,7 +61,7 @@ export const Packages = () => {
     }
   };
 
-  const departureRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const departureRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [departure, setDeparture] = useState("");
   const [departureId, setDepartureId] = useState(0);
   const [destination, setDestination] = useState("");

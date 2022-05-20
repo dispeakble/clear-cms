@@ -1,4 +1,4 @@
-import {act, cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {cleanup, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 import HomePage from "../HomePage";

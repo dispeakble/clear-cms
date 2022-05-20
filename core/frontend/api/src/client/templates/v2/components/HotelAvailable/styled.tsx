@@ -313,10 +313,6 @@ export const LeftIcon = styled.div`
   position: relative;
   align-items: center;
 `;
-export const RightIcon = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
 export const TopUp = styled.div`
   width: 10px;
   height: 18px;
@@ -456,15 +452,6 @@ export const ColumnBreak = styled.div`
   @media (max-width: ${size.tablet}) {
     display: block;
     flex: 0 !important;
-  }
-`;
-export const BedroomIcon = styled.div`
-  margin: 9px 0 0 25px;
-  width: 18px;
-  height: 20px;;
-  background: url(${({ theme }) => theme.icon("bedroom")}) no-repeat left center;
-  @media (max-width: ${size.laptopL}) {
-    margin: 9px 0 0 9px;
   }
 `;
 export const RowView = styled.div`
@@ -764,7 +751,7 @@ export const HotelCalendar = styled(Calendar)`
     display: -moz-box;
     display: flex;
     height: 44px;
-    margin-bottom: 0em;
+    margin-bottom: 0;
   }
 
   .react-calendar__navigation__label {
