@@ -6,9 +6,6 @@ import card1 from "../../assets/img/hotelresults/card1.jpg"
 
 export const Wrapper = styled.div`
   width: 100%;
-  /*max-width: 400px;
-  max-height: 399px;*/
-  overflow: hidden;
   text-align: center;
 `;
 
@@ -24,7 +21,7 @@ export const CardHeading = styled.div`
 export const SliderContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -36,6 +33,7 @@ export const LeftArrow = styled.div`
 
 export const RightArrow = styled.div`
   background: url(${({theme}) => theme.icon('rightArrow')}) no-repeat left center;
+  background-position-x: right;
   width: 30px;
   height: 75px;
 `;
@@ -68,8 +66,7 @@ interface ICardImage {
 };
 
 export const CardImage = styled.div<ICardImage>`
-  background: url(${(props) => props.url}) no-repeat center center;
-  width: 292px;
+  background: url(${(props) => props.url}) no-repeat center center/cover;
   height: 179px;
   margin-bottom: 16px;
 `;

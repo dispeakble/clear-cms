@@ -1,4 +1,4 @@
-import {Wrapper} from "./styled";
+import {Wrapper, ViewMoreButton, ViewMoreIcon, ViewMoreButtonContainer} from "./styled";
 import HotelContent from './HotelContent';
 
 const hotelsContent = [
@@ -71,13 +71,22 @@ const hotelsContent = [
 const HotelResultsContent = () => {
     return (
         <Wrapper>
+            <div>
             {hotelsContent.map(hotelContent => <HotelContent
             imgSrc={hotelContent.imgSrc} hotelName={hotelContent.hotelName}
             hotelLocation={hotelContent.hotelLocation} averageStars={hotelContent.averageStars}
             price={hotelContent.price} noOfNights={hotelContent.noOfNights} description={hotelContent.description}
             />)}
+            </div>
 
+            <ViewMoreButtonContainer>
+                <ViewMoreButton>
+                    <span>View more</span>
+                    <ViewMoreIcon />
+                </ViewMoreButton>
+            </ViewMoreButtonContainer>
         </Wrapper>
+
     )
 }
 

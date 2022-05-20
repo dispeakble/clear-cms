@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   width: 100%;
+  min-width: 0px;
   padding: 16px 20px 16px 20px ;
   background: #FFFFFF;
   box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.14);
@@ -11,6 +12,7 @@ export const Wrapper = styled.div`
 
 export const TopContent = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
 `;
 
@@ -25,22 +27,23 @@ interface HotelImage {
 };
 
 export const HotelImageContainer = styled.div`
-  width: 346px;
+  width: 346.43px;
+  height: 190px;
   height: 190px;
   background: #FFFFFF;
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.18);
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px 12px 10px 12px;
 `;
 
 export const HotelImage = styled.div<HotelImage>`
-  background: url(${(props) => props.url}) no-repeat center center;
+  background: url(${(props) => props.url}) no-repeat center center/cover;
   border-radius: 10px;
-  width: 312px;
-  height: 172px;
+  /*width: 312px;
+  height: 172px;*/
+  width: 100%;
+  height: 100%;
 `;
 
 
@@ -81,7 +84,7 @@ export const SectionTwo = styled.div`
     color: #FF840D;
   }
   button {
-    background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+    background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     width: 201.02px;
@@ -92,6 +95,9 @@ export const SectionTwo = styled.div`
     font-weight: 600;
     font-size: 20px;
     line-height: 30px;
+    &:hover {
+      background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+    }
   }
   
 `;

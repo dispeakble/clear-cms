@@ -16,6 +16,7 @@ export const size = {
   mobileL: "425px",
   tablet: "768px",
   laptop: "1024px",
+  laptopM: "1200px",
   laptopL: "1440px",
   desktop: "1919px",
   desktopL: "2560px"
@@ -282,5 +283,8 @@ export const HotelResultsMainContent = styled.div`
   padding-left: 8px;
   justify-content: center;
   width: 100%;
+  @media (max-width: ${size.laptopM}) {
+  flex-wrap: wrap;
+  }
 `;
 

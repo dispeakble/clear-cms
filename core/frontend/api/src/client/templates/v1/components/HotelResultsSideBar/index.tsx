@@ -35,10 +35,30 @@ import {
     CloseIcon,
     HotelCalendar, H4, SPAN,
 } from "../PackageCharter/styled";
-import moment from "moment";
+import moment from "moment"
 import HotelPhotoSlider from "../HotelPhotoSlider";
 import {StyledStarsSmall} from "../Styled/stars";
 import Carousal from "../Carousel";
+
+const carouselsData = [
+    {
+        title: "Hot deals of 2022",
+        imgSrc: '../../assets/img/hotelresults/card1.jpg',
+        hotelName: 'Hotel Victoria',
+        averageStars: 4,
+        price: 1409,
+        noOfNights: 7
+    },
+    {
+        title: "Top searches of 2022",
+        imgSrc: '../../assets/img/hotelresults/card1.jpg',
+        hotelName: 'Hotel Victoria',
+        averageStars: 4,
+        price: 1409,
+        noOfNights: 7
+    }
+]
+
 
 type HotelDetailProps = {
     data: any;
@@ -288,7 +308,12 @@ const HotelResultSideBar = ({
                     </NewSearch>
                 </EditDeals>
             </DealCard>
-            <Carousal />
+
+            { carouselsData.map(carouselData => <Carousal title={carouselData.title}
+            imgSrc={carouselData.imgSrc} hotelName={carouselData.hotelName}
+            averageStars={carouselData.averageStars}
+            price={carouselData.price}
+            noOfNights={carouselData.noOfNights}/>)}
         </Wrapper>
     );
 };
