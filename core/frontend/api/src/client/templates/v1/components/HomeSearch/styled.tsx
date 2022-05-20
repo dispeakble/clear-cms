@@ -144,7 +144,12 @@ export const StyledSearchDestinationInput = styled.input`
       font-weight: bold;
     }
   }
+  &:not(.singleInput) {
+    margin-top: 5px;
+  }
+  
   @media ${device.tablet} {
+    margin-top: 0;
     &:not(.singleInput) {
       margin: 0 0 0 5px !important;
     }
