@@ -23,7 +23,7 @@ import React, {useCallback, useRef, useState} from "react";
 import { useTranslations } from "next-intl";
 import debounce from "lodash/debounce";
 import useWsContext from "../../../../context/SocketContext";
-import {CalenderIcon, DateDiv, HotelCalendar, HotelSearch} from "../HotelDetail/styled";
+import {CalenderIcon, DateDiv, HotelCalendar, HotelSearch} from "../../hotel/components/HotelDetail/styled";
 import moment from "moment";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Image from "next/image";
