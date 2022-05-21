@@ -66,7 +66,7 @@ export const HeaderContent = styled.div`
 
 
 export const LogoWrapper = styled.div`
-  filter: drop-shadow(0px 0px 4px rgba(255,255,255,0.7));
+  filter: drop-shadow(0px 0 4px rgba(255,255,255,0.7));
   order: 1;
   margin: 0 5px;
   @media (max-width: ${size.laptop}) {

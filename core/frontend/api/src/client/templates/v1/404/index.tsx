@@ -18,7 +18,7 @@ import {
 } from "./styled";
 import {useTranslations} from "next-intl";
 
-const Custom404 = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const Custom404 = ({ websiteName, colorScheme }: any) => {
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);

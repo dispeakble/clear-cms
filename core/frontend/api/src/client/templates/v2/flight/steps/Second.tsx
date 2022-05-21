@@ -1,23 +1,15 @@
 import {useTranslations} from "next-intl";
-import {useEffect, useState} from "react";
 import {
     FormGroup,
     PassengerDetails,
     PassengerHeader,
     PassengerHeaderContainer,
     PassengerItem, InputGroup,
-    InputLabel, TextInput, DottedLines, CustomSelect, ButtonsContainer, CustomButton
+    InputLabel, TextInput, CustomSelect, ButtonsContainer, CustomButton
 } from "../styled";
 
-interface IPassenger {
-    firstName: string;
-    lastName: string;
-    isAdult: boolean;
-    age?: number;
-}
-
 const SecondStep = ({passengers, setPassengers, contactDetails,
-                        setContactDetails, currentStep, setCurrentStep}: any) => {
+                        setContactDetails, setCurrentStep}: any) => {
 
     const t = useTranslations();
 

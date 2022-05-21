@@ -49,13 +49,12 @@ export const TopContentWrapper = styled.div`
 export const StyledContainer = styled.div`
   width: 100%;
   max-width: 1440px;
-  margin: auto 0;
+    margin: auto 0 100px;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: space-between;
   padding: 50px 20px;
-  margin-bottom: 100px;
   gap: 40px;
 
   @media ${device.laptop} {

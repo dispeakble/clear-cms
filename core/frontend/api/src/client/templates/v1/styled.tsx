@@ -95,7 +95,7 @@ export const TopContentWrapper = styled.div`
 `;
 export const TopContentWrapperForFlightResults = styled.div`
   width: 100%;
-  padding: 0px 0 32px 0;
+  padding: 0 0 32px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;

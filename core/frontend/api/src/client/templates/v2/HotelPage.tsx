@@ -9,7 +9,6 @@ import {
   GlobalStyle,
   MainWrapper,
   PaperWrapper,
-  StyledContentWrapper,
   TopContentWrapper
 } from "./styled";
 import Breadcrumbs from "./components/Breadcrumbs";
@@ -18,7 +17,7 @@ import moment from "moment";
 import { getIcon } from "./helpers/icons";
 import Footer from "./components/Footer";
 
-const HotelPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const HotelPage = ({ websiteName, colorScheme }: any) => {
 
   const getIcons = (iconName: string) => {
     return getIcon(iconName);

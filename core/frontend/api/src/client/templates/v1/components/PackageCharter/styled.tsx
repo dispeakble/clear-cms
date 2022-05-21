@@ -224,7 +224,7 @@ export const HotelName = styled.div`
 export const ViewPrice = styled.div`
   margin: 18px 0;
   text-align: right;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   
   @media (min-width: ${size.laptop}) {
     margin: 18px 18px 18px 0;
@@ -306,9 +306,6 @@ export const ShowDate = styled.div`
 export const HeadingDiv = styled.div`
   width: 200px;
   background-color: ${({ theme }) => theme.colors.white};
-`;
-export const DiVForH5 = styled.div`
-  text-align: center;
 `;
 export const MemberBox = styled.div`
   display: flex;
@@ -736,7 +733,7 @@ export const HotelCalendar = styled(Calendar)`
     display: -moz-box;
     display: flex;
     height: 44px;
-    margin-bottom: 0em;
+    margin-bottom: 0;
   }
 
   .react-calendar__navigation__label {

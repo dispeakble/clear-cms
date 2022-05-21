@@ -4,7 +4,7 @@ import {Shadows} from "../../../../assets/design-set";
 
 export const PackageDetailContainer = styled.div`
   background: #FFFFFF;
-  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
   border-radius: 27px;
   width: 100%;
   padding: 2rem;
@@ -12,7 +12,7 @@ export const PackageDetailContainer = styled.div`
 
 export const CustomSection = styled.div`
   background: #FFFFFF;
-  box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
   border-radius: 27px;
   width: 65%;
   padding: 2rem;
@@ -27,24 +27,24 @@ export const TitleText = styled.h3`
 export const ParaTextBold = styled.p`
   font-weight: bolder;
   font-size: 17px;
-  margin: 0px;
+  margin: 0;
 `;
 
 export const BookingHeadingText = styled.p`
   font-weight: bolder;
   font-size: 17px;
-  margin: 0px;
+  margin: 0;
 `;
 
 export const BookingMutedText = styled.p`
   font-size: 17px;
-  margin: 0px;
+  margin: 0;
   color: #848484;
 `;
 
 export const BookingPriceText = styled.p`
   font-size: 36px;
-  margin: 0px;
+  margin: 0;
   color: #FF840D;
 `;
 
@@ -53,7 +53,7 @@ export const BookingCard = styled.div`
   height: 140px;
   border: 2px dashed #FFAC5B;
   border-radius: 10px;
-  margin: 1rem 0rem;
+  margin: 1rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -88,16 +88,9 @@ export const InputContainer = styled.div`
     inputs {
       background: #FFFFFF;
       border: 1px solid #DBDBDB;
-      box-shadow: 0px 4px 7px rgba(255, 255, 255, 0.25);
+      box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
       border-radius: 10px;
     }
-`
-
-
-export const FlightTakeOffIcon = styled.div`
-  width: 23px;
-  height: 23px;
-  margin: 13px 10px 0 10px;
 `;
 
 export const DropdownIcon = styled.div`
@@ -113,7 +106,7 @@ export const DropdownIcon = styled.div`
 export const TakeOffInputContainer = styled.div`
   display: flex;
   border: 1px solid #DBDBDB;
-  box-shadow: 0px 4px 7px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
 `
 
@@ -254,14 +247,14 @@ export const Time = styled.div`
 export const PassengerWrapper = styled.div`
   display: flex;
   border: 1px solid #DBDBDB;
-  box-shadow: 0px 4px 7px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   margin: 0 0;
   height: 100%;
   flex: 1 0 40%;
   cursor: pointer;
   padding: 5px 0;
-  min-width: 0px !important;
+  min-width: 0 !important;
   span {
     margin-left: 8px;
   }
@@ -390,13 +383,13 @@ export const BookingButton = styled.button`
   width: 139px;
   height: 51px;
   background: linear-gradient(180deg, #FFAC5C 0%, #FF840D 100%);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 7px;
   font-weight: bolder;
   font-size: 20px;
   color: #fff;
   border: none;
-  text-shadow: 0px 2px 2px #00000040;
+  text-shadow: 0 2px 2px #00000040;
 `;
 
 
@@ -422,7 +415,7 @@ export const CustomHeading = styled.p`
     content: '';
     position: absolute;
     bottom: -5px;
-    left: 0px;
+    left: 0;
     width: 220px;
     height: 2px;
     background-color: #dedede;
@@ -442,7 +435,7 @@ export const QuotedPara = styled.p`
     content: url(${({theme})=>theme.icon('quoteDown')});
     position: absolute;
     bottom: -20px;
-    right: 0px;
+    right: 0;
   };
 `;
 

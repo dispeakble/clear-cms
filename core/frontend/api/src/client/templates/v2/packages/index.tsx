@@ -7,16 +7,71 @@ import Footer from "../components/Footer";
 import { ThemeProvider } from "styled-components";
 import Breadcrumbs from "../components/Breadcrumbs";
 import HomeSearch from "../components/HomeSearch";
-import {FiltersContainer, PackagesContainer, PackagesLayout} from "./styled";
+import {ButtonContainer, FiltersContainer, LoadMoreButton, PackagesContainer, PackagesLayout} from "./styled";
 import Filters from "./components/Filters";
+import PackageCard from "./components/PackageCard";
 
-const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+import HotelImage from "../assets/img/hotelImage.png"
+import PackageFlight from "../assets/img/packageFlight-icon.svg"
+import PackageHotel from "../assets/img/packageHotel-icon.svg"
+import PackageTransfers from "../assets/img/packageTransfers-icon.svg"
+import PackageActivities from "../assets/img/packageActivities-icon.svg"
+
+
+
+const PackagesPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
     };
+
+    const [page, setPage] = useState(5)
+
+    const loadMorePages = () => {
+        setPage((prev: number) => prev+5)
+    }
+
+    const packages = [
+        {
+            title : "Package Charter for Hotel Victoria",
+            image : HotelImage,
+            address: "Bischofshofen, 4, 38660 Adeje, Spain",
+            rating: 4,
+            packages: [
+                {
+                    type: "Flights",
+                    icon: PackageFlight,
+                },
+                {
+                    type: "Hotel",
+                    icon: PackageHotel,
+                },
+                {
+                    type: "Transfers",
+                    icon: PackageTransfers,
+                },
+                {
+                    type: "5 Activities",
+                    icon: PackageActivities,
+                }
+            ],
+            startingPrice: 1409,
+            packageOfferType: "Adult / 7 nights",
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.\n',
+            services: [
+                "Flight included",
+                "1 checkin baggage",
+                "1 hand baggage",
+                "Airport taxes",
+                "Transfer from airport to hotel",
+                "Transfer from hotel to airport",
+                "Tourist assistance",
+                "7 nights stay"
+            ]
+        }
+    ]
 
     const [selectedFilters, setSelectedFilters] = useState([])
 
@@ -109,6 +164,8 @@ const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         }
     ]
 
+    console.log("filters index", filters)
+
     const myTheme: any = { colors: colorScheme, icon: getIcons };
 
     return(
@@ -118,9 +175,15 @@ const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 <TopContentWrapper>
                     <Header websiteName={websiteName} />
                 </TopContentWrapper>
-                <Breadcrumbs />
+                <Wrapper>
+                    <Breadcrumbs />
+                </Wrapper>
                 <TopContentWrapper>
-                    <HomeSearch />
+                    <Wrapper
+                        style={{display: "flex", alignItems: "center", justifyContent: "center"}}
+                    >
+                        <HomeSearch />
+                    </Wrapper>
                 </TopContentWrapper>
                 <Wrapper>
                     <PackagesLayout>
@@ -128,11 +191,22 @@ const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                             <Filters
                                 setSelectedFilters={setSelectedFilters}
                                 selectedFilters={selectedFilters}
-                                filers={filters}
+                                filters={filters}
                             />
                         </FiltersContainer>
                         <PackagesContainer>
+                            {
+                                [...Array(page)]
+                                    .map((value: undefined, index:number) => (
+                                        <PackageCard _package={packages[0]} />
+                                    ))
+                            }
 
+                            <ButtonContainer style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "30px 0"}}>
+                                <LoadMoreButton onClick={() => loadMorePages()}>
+                                    {t('packages.main.loadMore')}
+                                </LoadMoreButton>
+                            </ButtonContainer>
                         </PackagesContainer>
                     </PackagesLayout>
                 </Wrapper>

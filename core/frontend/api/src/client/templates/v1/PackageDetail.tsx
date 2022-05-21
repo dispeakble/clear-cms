@@ -2,15 +2,11 @@ import * as React from "react";
 import { useState } from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
-import HotelDetail from "./components/HotelDetail";
 import {useTranslations} from "next-intl";
 import {
     ContentWrapper,
     GlobalStyle,
     MainWrapper,
-    PaperWrapper,
-    StyledContentWrapper,
-    TopContentWrapper,
     BottomContentWrapper,
     ServiceAndMapWrapper,
     ContentWrapperForPackageDetail,
@@ -19,7 +15,6 @@ import {
     MainContentWrapper,
     DetailWrapper
 } from "./styled";
-const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 import Breadcrumbs from "./components/Breadcrumbs";
 import PackageDetailCard from "./components/PackageDetailCard"
 import moment from "moment";
@@ -31,7 +26,7 @@ import PacakgeCharter from './components/PackageCharter'
 import HotelCardGrid from "./components/HotelCardGrid";
 
 
-const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+const PackageDetail = ({ websiteName, colorScheme }: any) => {
     // const t = useTranslations();
 
     const getIcons = (iconName: string) => {

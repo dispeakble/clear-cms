@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import {
-    BookNow,
     CalendarView,
     CalendarViewCheckout,
     CalenderWrapper,
@@ -56,7 +55,6 @@ import Image from "next/image";
 import adultsIcon from "../../assets/img/adults-icon.svg";
 import { Overlay } from "../HomeSearch/styled";
 import ReactTooltip from "react-tooltip";
-import { InfoIcon } from "../HotelDetail/styled";
 
 type HotelAvailableProps = {
     data: any;
@@ -110,7 +108,6 @@ const HotelAvailable = ({
 
 
     ]);
-    const customColors = ["#FFFFFF"];
     const allRooms = ["1 Room", "2 Rooms", "3 Rooms", "4 Rooms", "5 Rooms"];
     const t = useTranslations();
 

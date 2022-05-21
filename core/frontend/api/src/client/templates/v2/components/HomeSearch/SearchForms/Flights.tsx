@@ -3,7 +3,6 @@ import {
   AutocompleteList,
   CalendarContainer,
   Overlay,
-  SearchLabel,
   StyledCenterLabel,
   StyledCheckIn,
   StyledCheckOut,
@@ -22,11 +21,8 @@ import {
   StyledValue
 } from "../styled";
 import { useTranslations } from "next-intl";
-import {useCallback, useRef, useState} from "react";
+import { MutableRefObject, useCallback, useRef, useState } from "react";
 import Calendar from "react-calendar";
-import person from "../../../assets/img/person-icon.svg";
-import child from "../../../assets/img/child-icon.svg";
-import Image from "next/image";
 import ValuePopup from "../valuePopup";
 import { useRouter } from "next/router";
 import useWsContext from "../../../../../context/SocketContext";
@@ -37,7 +33,7 @@ export const Flights = () => {
   const router = useRouter();
   const { ws } = useWsContext();
   const t = useTranslations();
-  const departureRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const departureRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [departureList, setDepartureList] = useState<any[]>([]);
   const [showDepartures, setShowDepartures] = useState(false);
