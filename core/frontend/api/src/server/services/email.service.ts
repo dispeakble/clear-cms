@@ -63,8 +63,10 @@ export class EmailService {
             html: messageData.body
           });
 
+          // eslint-disable-next-line no-console
           console.log(emailResult);
         } catch (err) {
+          // eslint-disable-next-line no-console
           console.log(err.message);
           return;
         }
