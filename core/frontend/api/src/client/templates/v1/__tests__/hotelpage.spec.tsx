@@ -1,6 +1,6 @@
     import {render, screen, fireEvent, waitFor} from "@testing-library/react";
     import "@testing-library/jest-dom";
-    import HotelPage from "../HotelPage";
+    import Detail from "../hotel/detail";
     import { IntlProvider } from "next-intl";
     import { WsContextProvider } from "../../../context/SocketContext";
 
@@ -36,7 +36,7 @@
         return (
             <WsContextProvider settings={{}}>
                 <IntlProvider locale="en" messages={messages}>
-                    <HotelPage {...props} />
+                    <Detail {...props} />
                 </IntlProvider>
             </WsContextProvider>
         );
