@@ -1,18 +1,18 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import { ThemeProvider } from "styled-components";
-import Header from "../components/Header";
-import FlightImg from "../assets/img/flight.png"
-import DepartureIcon from "../assets/img/departure-icon.svg"
-import ArrivalIcon from "../assets/img/arrival-icon.svg"
+import Header from "../../components/Header";
+import FlightImg from "../../assets/img/flight.png"
+import DepartureIcon from "../../assets/img/departure-icon.svg"
+import ArrivalIcon from "../../assets/img/arrival-icon.svg"
 import {
     GlobalStyle,
     MainWrapper,
     TopContentWrapper, Wrapper
-} from "../styled";
-import Breadcrumbs from "../components/Breadcrumbs";
-import { getIcon } from "../helpers/icons";
-import Footer from "../components/Footer";
+} from "../../styled";
+import Breadcrumbs from "../../components/Breadcrumbs";
+import { getIcon } from "../../helpers/icons";
+import Footer from "../../components/Footer";
 import {
     DetailsWrapper,
     FlightsHeaderWrapper,
