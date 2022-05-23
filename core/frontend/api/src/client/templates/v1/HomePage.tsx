@@ -21,12 +21,39 @@ import QuickAboutUs from "./components/QuickAboutUs";
 import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
+import useWsContext from "../../context/SocketContext";
+import { useEffect } from "react";
 
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+
+
 
   const getIcons = (iconName: string) => {
     return getIcon(iconName);
   };
+
+  const { ws } = useWsContext();
+
+
+  const sendEmail = async () => {
+    const response = await ws.sendMessage({
+      api: "email",
+      act: "send",
+      payload: {
+        type: "invoice",
+        destination: {
+          address: "alexa.ovidiu@hotmail.com",
+          name: "Ovidiu Alexa"
+        }
+      }
+    });
+
+    console.log(response);
+  };
+
+  useEffect(() => {
+    sendEmail()
+  }, [sendEmail]);
 
   const myTheme: any = { colors: colorScheme, icon: getIcons };
 

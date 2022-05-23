@@ -10,6 +10,7 @@ import { BucketService } from "./services/bucket.service";
 import { HomeSearchPackagesService } from "./services/homeSearch/packages.service";
 import { HomeSearchHotelsService } from "./services/homeSearch/hotels.service";
 import { HomeSearchFlightsService } from "./services/homeSearch/flights.service";
+import { EmailService } from "./services/email.service";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import * as redisStore from "cache-manager-redis-store";
 import { ViewService } from "./services/view.service";
@@ -67,6 +68,7 @@ import { WsGateway } from "./gateways/ws.gateway";
     HomeSearchPackagesService,
     HomeSearchHotelsService,
     HomeSearchFlightsService,
+    EmailService,
     WsGateway
   ]
 })
