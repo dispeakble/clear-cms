@@ -36,6 +36,8 @@ import {
     HotelCalendar, H4, SPAN,
 } from "../PackageCharter/styled";
 import moment from "moment"
+import HotelPhotoSlider from "../HotelPhotoSlider";
+import {StyledStarsSmall} from "../Styled/stars";
 import Carousal from "../Carousel";
 
 const carouselsData = [

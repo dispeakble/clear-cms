@@ -57,7 +57,7 @@ const t = useTranslations();
 
             <ViewMoreButtonContainer>
                 <ViewMoreButton>
-                    <span>{t("hotelResult.viewMore")}</span>
+                    <span>t("hotelResult.viewMore")</span>
                     <ViewMoreIcon />
                 </ViewMoreButton>
             </ViewMoreButtonContainer>
