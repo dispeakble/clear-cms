@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
       width: 100%;
     }
     flex: 0 1 70%;
-  @media (max-width: ${size.laptopL}) {
+  @media (max-width: ${size.laptopM}) {
     flex: 1 0 100%;
     min-width: 0px;
   }
