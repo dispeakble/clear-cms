@@ -22,6 +22,7 @@ export const size = {
     mobileL: "425px",
     tablet: "768px",
     laptop: "1024px",
+    laptopM: "1200px",
     laptopL: "1440px",
     desktop: "1920px",
     desktopL: "2560px"

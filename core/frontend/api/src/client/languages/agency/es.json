@@ -220,5 +220,16 @@
     "charterDetailHeading1": "Paquete Charter para {hotelName}",
     "charterDetailPara1": "Vacaciones especialmente seleccionadas para su alma gemela, disfrute de una cena en un entorno romántico en Barefoot Resort - Havelock, emocionante actividad Seakart, visite la playa Elephant y disfrute de los deportes acuáticos. Cómodos traslados privados, Elección de Hoteles, Viajes interinsulares en ferry privado...",
     "charterDetailHeading2": "Condiciones de reserva"
+  },
+  "hotelResult": {
+    "adult": "Adulto",
+    "nights": "noches",
+    "bookNow": "Reservar ahora",
+    "from": "Desde",
+    "hotelVictoria": "Hotel Victoria",
+    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
+    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "viewMore": "Ver más"
+
   }
 }
