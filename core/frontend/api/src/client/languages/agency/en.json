@@ -281,6 +281,11 @@
       "redirectText" : "If your page hasn't changed in 5 seconds please",
       "clickHere": "Click here"
     },
+    "paymentConfirmed": {
+      "successText": "Success",
+      "emailDetails": "You will also get an email with all the details.",
+      "backHome": "Back Home"
+    },
     "cart": {
       "allInclusive": "All Inclusive"
     }

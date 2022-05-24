@@ -2,9 +2,6 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../../components/Header";
-import FlightImg from "../../assets/img/flight.png"
-import DepartureIcon from "../../assets/img/departure-icon.svg"
-import ArrivalIcon from "../../assets/img/arrival-icon.svg"
 import {
     GlobalStyle,
     MainWrapper,
@@ -27,6 +24,7 @@ import SecondStep from "./steps/Second";
 import Cart from "./Cart";
 import * as shortid from "shortid"
 import FourthStep from "./steps/Fourth";
+import BookingConfirmed from "./steps/BookingConfirmed";
 
 interface IPassenger {
     id: string,
@@ -39,7 +37,7 @@ interface IPassenger {
 const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(2)
+    const [currentStep, setCurrentStep] = useState<number>(1)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -154,6 +152,13 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        currentStep={currentStep}
                                        setCurrentStep={setCurrentStep}
             />;
+
+            case 5: return <BookingConfirmed />
+
+            default : return <FirstStep hotelData={hotelData}
+                                        setCurrentStep={setCurrentStep}
+                                        currentStep={currentStep}
+            />;
         }
     }
 
@@ -167,7 +172,10 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                 <Wrapper>
                     <Breadcrumbs />
                     <DetailsWrapper>
-                        <Cart hotelData={hotelData} />
+                        {
+                            currentStep !== 5 &&
+                            <Cart hotelData={hotelData} />
+                        }
                         <HotelsWrapper>
                             <HotelsHeaderWrapper>
                                 <HotelsHeader>

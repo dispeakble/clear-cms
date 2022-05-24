@@ -38,7 +38,7 @@ interface IPassenger {
 const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(2)
+    const [currentStep, setCurrentStep] = useState<number>(1)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -138,6 +138,17 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         country: ''
     })
 
+    const [invoiceDetails, setInvoiceDetails] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        emailAddress: '',
+        country: '',
+        address: '',
+        city: '',
+        zipCode: ''
+    })
+
     useEffect(() => {
         setPassengers([])
         passengersData.map((passenger: { type: string }) => {
@@ -175,6 +186,8 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        setPassengers={setPassengers}
                                        contactDetails={contactDetails}
                                        setContactDetails={setContactDetails}
+                                       invoiceDetails={invoiceDetails}
+                                       setInvoiceDetails={setInvoiceDetails}
                             />;
 
             default: return <FirstStep flightData={flightData}

@@ -281,6 +281,10 @@
       "redirectText" : "Si su página no ha cambiado en 5 segundos, por favor",
       "clickHere": "Haga clic aquí"
     },
+    "paymentConfirmed": {
+      "successText": "Éxito",
+      "emailDetails": "También recibirá un correo electrónico con todos los detalles."
+    },
     "cart": {
       "allInclusive": "Todo incluido"
     }

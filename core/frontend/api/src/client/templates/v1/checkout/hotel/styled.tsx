@@ -934,3 +934,57 @@ export const PaymentStep = styled.div`
 `
 
 /* end fourth step */
+
+/* start final step */
+
+export const BookingConfirmedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+export const FinalStep = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  gap: 20px;
+
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+  }
+`
+
+export const ConfirmedText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+`
+
+export const SuccessText = styled.h3`
+  font-family: 'Metropolis', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  color: #FF8C1D;
+`
+
+export const EmailDetailsText = styled.h5`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.5;
+
+text-align: center;
+
+color: #77838F;
+`
+
+
+/* end final step */
