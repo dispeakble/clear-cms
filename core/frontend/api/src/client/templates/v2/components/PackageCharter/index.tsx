@@ -46,7 +46,7 @@ import {
     HotelCalendar, H4, SPAN,
 } from "./styled";
 import moment from "moment";
-import HotelPhotoSlider from "../HotelPhotoSlider";
+import HotelPhotoSlider from "../../hotel/components/HotelPhotoSlider";
 import {StyledStarsSmall} from "../Styled/stars";
 
 type HotelDetailProps = {

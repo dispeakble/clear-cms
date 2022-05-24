@@ -17,8 +17,8 @@ interface ComponentProps extends WithRouterProps {
 }
 
 const templates: any = {
-  v1: dynamic(() => import("../../templates/v1/HotelPage")),
-  v2: dynamic(() => import("../../templates/v2/HotelPage"))
+  v1: dynamic(() => import("../../templates/v1/hotel/detail")),
+  v2: dynamic(() => import("../../templates/v2/hotel/detail"))
 };
 
 const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
@@ -87,7 +87,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       settings: websiteData,
-      version: String(process.env.tpl_ver), //TODO GET FROM hubAPI
+      version: String(websiteData['selectedTheme']),
       messages: require(`../../languages/agency/${context.locale}.json`)
     }
   };
