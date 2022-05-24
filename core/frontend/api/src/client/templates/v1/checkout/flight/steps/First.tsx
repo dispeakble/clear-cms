@@ -44,7 +44,7 @@ interface IProps {
     currentStep: number;
 }
 
-const FirstStep = ({flightData, setCurrentStep}: IProps) => {
+const FirstStep = ({flightData, setCurrentStep, currentStep}: IProps) => {
 
     const  t = useTranslations();
     const [isOpen, setIsOpen] = useState<number>(-1)
@@ -232,6 +232,9 @@ const FirstStep = ({flightData, setCurrentStep}: IProps) => {
             <ButtonsContainer hasOneChild>
                 <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
                     {t('flightsCheckout.main.nextStep')}
+                    <span>
+                        {currentStep+1}
+                    </span>
                 </CustomButton>
             </ButtonsContainer>
         </Flights>

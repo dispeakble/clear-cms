@@ -256,29 +256,29 @@
   },
   "hotelCheckout": {
     "main": {
-      "stars" : "{stars} stars",
-      "adults" :  "Adults",
+      "stars": "{stars} stars",
+      "adults": "Adults",
       "children": "Children"
     },
     "headers": {
-      "first" : "Booking Details",
-      "second" : "Passenger Details",
-      "fourthError" : "Payment Error",
-      "fourthSuccess" : "Payment Processing",
+      "first": "Booking Details",
+      "second": "Passenger Details",
+      "fourthError": "Payment Error",
+      "fourthSuccess": "Payment Processing",
       "confirmed": "Booking Confirmed"
     },
     "payment": {
-      "error" : {
+      "error": {
         "title": "The payment step did not succeed",
         "insufficientFunds": "Insufficient Funds",
         "tryAgain": "Let's try again"
       },
       "success": {
         "title": "We are redirecting you to the payment processing step",
-        "doNotCloseWindow" : "Please Do Not Close This Window"
+        "doNotCloseWindow": "Please Do Not Close This Window"
       },
       "clickBackButton": "Or Click The Back Button",
-      "redirectText" : "If your page hasn't changed in 5 seconds please",
+      "redirectText": "If your page hasn't changed in 5 seconds please",
       "clickHere": "Click here"
     },
     "paymentConfirmed": {
@@ -289,5 +289,15 @@
     "cart": {
       "allInclusive": "All Inclusive"
     }
+  },
+  "hotelResult": {
+    "adult": "Adult",
+    "nights": "nights",
+    "bookNow": "Book Now",
+    "from": "From",
+    "hotelVictoria": "Hotel Victoria",
+    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, Spain",
+    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "viewMore": "View more"
   }
 }

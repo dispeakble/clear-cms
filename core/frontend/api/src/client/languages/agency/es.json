@@ -256,29 +256,29 @@
   },
   "hotelCheckout": {
     "main": {
-      "stars" : "{stars} estrellas",
-      "adults" :  "Adultos",
+      "stars": "{stars} estrellas",
+      "adults": "Adultos",
       "children": "Niños"
     },
     "headers": {
-      "first" : "Detalles de la reserva",
-      "second" : "Detalles del pasajero",
-      "fourthError" : "Error de pago",
-      "fourthSuccess" : "Procesamiento de pagos",
+      "first": "Detalles de la reserva",
+      "second": "Detalles del pasajero",
+      "fourthError": "Error de pago",
+      "fourthSuccess": "Procesamiento de pagos",
       "confirmed": "Procesamiento de pagos"
     },
     "payment": {
-      "error" : {
+      "error": {
         "title": "El paso de pago no tuvo éxito",
         "insufficientFunds": "Fondos insuficientes",
         "tryAgain": "Intentémoslo de nuevo"
       },
       "success": {
         "title": "Le redirigimos al paso de procesamiento de pagos",
-        "doNotCloseWindow" : "Por favor, no cierre esta ventana"
+        "doNotCloseWindow": "Por favor, no cierre esta ventana"
       },
       "clickBackButton": "O bien, haga clic en el botón de retroceso",
-      "redirectText" : "Si su página no ha cambiado en 5 segundos, por favor",
+      "redirectText": "Si su página no ha cambiado en 5 segundos, por favor",
       "clickHere": "Haga clic aquí"
     },
     "paymentConfirmed": {
@@ -288,5 +288,15 @@
     "cart": {
       "allInclusive": "Todo incluido"
     }
+  },
+  "hotelResult": {
+    "adult": "Adulto",
+    "nights": "noches",
+    "bookNow": "Reservar ahora",
+    "from": "Desde",
+    "hotelVictoria": "Hotel Victoria",
+    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
+    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "viewMore": "Ver más"
   }
 }

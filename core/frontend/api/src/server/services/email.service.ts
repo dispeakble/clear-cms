@@ -129,7 +129,7 @@ export class EmailService {
         const invoiceNumber = params.invoiceNumber;
         //TODO use translation
         data.subject = `Invoice #${invoiceNumber} for ${params.destination.name}`;
-        data.templateFile = 'invoice.hbs';
+        data.templateFile = 'invoice.html';
         break;
       case "registration":
         data.subject = `Registration confirmation for ${params.destination.name}`;

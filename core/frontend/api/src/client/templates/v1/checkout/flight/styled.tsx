@@ -261,11 +261,39 @@ export const CustomButton = styled.button<ICustomButton>`
   outline: none;
   padding: 18px 26px;
   justify-content: space-between;
-  
+
   gap: 20px;
-  
+
+  span{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.5;
+    margin: 0;
+    border-radius: 50% ;
+    text-align: center;
+
+    color: ${({isActive}) => isActive ? "#FF8C1D" : "#959595"};
+  }
+
   @media screen and (max-width:${size.tablet}){
     justify-content: center;
+  }
+
+  :is(:disabled){
+    cursor: not-allowed;
+    background: linear-gradient(180deg, #D0D0D0 0%, #919191 100%) !important;
+    span{
+      color: #959595;
+    }
   }
 `
 

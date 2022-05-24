@@ -120,6 +120,9 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
             <ButtonsContainer hasOneChild>
                 <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
                     {t('flightsCheckout.main.nextStep')}
+                    <span>
+                        {currentStep+1}
+                    </span>
                 </CustomButton>
             </ButtonsContainer>
         </Flights>

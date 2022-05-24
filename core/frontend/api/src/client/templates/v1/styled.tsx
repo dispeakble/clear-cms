@@ -16,6 +16,7 @@ export const size = {
   mobileL: "425px",
   tablet: "768px",
   laptop: "1024px",
+  laptopM: "1200px",
   laptopL: "1440px",
   desktop: "1919px",
   desktopL: "2560px"
@@ -247,9 +248,13 @@ export const PackageDetailMainContent = styled.div`
   padding: 0 1rem;
 `;
 
-export const BreadcrumbsContainer = styled.div`
+export type BreadCrumbsProps = {
+  marg?: string
+}
+
+export const BreadcrumbsContainer = styled.div<BreadCrumbsProps>`
   width: 100%;
-  margin: 120px 0 0 0;
+  margin: ${(props) => props.marg || '120px 0px 0px 0px'};
   padding: 1rem;
 `;
 
@@ -272,4 +277,14 @@ export const FlightResultsMainWrapper = styled.div`
   background-color: #E5E5E5;
 `
 
+
+export const HotelResultsMainContent = styled.div`
+  display: flex;
+  padding-left: 8px;
+  justify-content: center;
+  width: 100%;
+  @media (max-width: ${size.laptopM}) {
+  flex-wrap: wrap;
+  }
+`;
 
