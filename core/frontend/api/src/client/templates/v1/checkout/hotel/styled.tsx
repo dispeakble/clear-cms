@@ -16,6 +16,11 @@ interface ICustomButton{
     isActive?: boolean;
 }
 
+interface IPaymentDiv{
+    isError?: boolean;
+    isError?: boolean;
+}
+
 export const size = {
     mobileS: "320px",
     mobileM: "375px",
@@ -285,6 +290,26 @@ export const CustomButton = styled.button<ICustomButton>`
   
   gap: 20px;
   
+  span{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.5;
+    margin: 0;
+    border-radius: 50% ;
+    text-align: center;
+
+    color: ${({isActive}) => isActive ? "#FF8C1D" : "#959595"};
+  }
+  
   @media screen and (max-width:${size.tablet}){
     justify-content: center;
   }
@@ -292,6 +317,9 @@ export const CustomButton = styled.button<ICustomButton>`
   :is(:disabled){
     cursor: not-allowed;
     background: linear-gradient(180deg, #D0D0D0 0%, #919191 100%) !important;
+    span{
+      color: #959595;
+    }
   }
 `
 
@@ -823,10 +851,16 @@ export const TotalPrice = styled.h2`
 
 /* start fourth step */
 
-export const Payment = styled.div`
-  background: #FFFFFF;
+export const Payment = styled.div<IPaymentDiv>`
+  background: ${({isError}) => isError ? "#FFFFFF" : "none"};
   display: flex;
   align-items: center;
+  padding: 15px 0;
+  gap:15px;
+  
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+  }
 `
 
 export const PaymentStatusImageContainer = styled.div`
@@ -844,8 +878,8 @@ export const PaymentStatusDetailsContainer = styled.div`
 export const PaymentStatusTitle = styled.h3`
   font-family: 'Nunito', sans-serif;
   font-weight: 600;
-  font-size: 34px;
-  line-height: 1.5;
+  font-size: 28px;
+  line-height: 1.2;
   text-align: center;
   letter-spacing: 0.6px;
   text-transform: uppercase;
@@ -856,13 +890,47 @@ export const PaymentStatusTitle = styled.h3`
 export const PaymentErrorText= styled.h4`
   font-family: 'Nunito', sans-serif;
   font-weight: 600;
-  font-size: 27px;
+  font-size: 18px;
   line-height: 1.5;
   text-align: center;
   letter-spacing: 0.6px;
   text-transform: uppercase;
   margin: 0;
   color: #FF1515;
+`
+
+export const PaymentInfoText = styled.h5`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+
+  color: #FF840D;
+`
+
+export const RedirectText = styled.p`
+  font-family: 'Nunito', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin: 20px 0 0 0;
+  color: #474747;
+  
+  a{
+    color: #FF840D;
+  }
+`
+
+export const PaymentStep = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `
 
 /* end fourth step */

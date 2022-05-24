@@ -39,7 +39,7 @@ interface IPassenger {
 const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(4)
+    const [currentStep, setCurrentStep] = useState<number>(2)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -87,6 +87,17 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         country: ''
     })
 
+    const [invoiceDetails, setInvoiceDetails] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        emailAddress: '',
+        country: '',
+        address: '',
+        city: '',
+        zipCode: ''
+    })
+
     useEffect(() => {
         setPassengers([])
         passengersData.map((passenger: { type: string }) => {
@@ -109,6 +120,20 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
             && {children: passengers.filter((p) => !p.isAdult).length} ),
     }
 
+    const displayHeader = () => {
+        switch(currentStep){
+            case 1 : return t('hotelCheckout.headers.first');
+            case 2 : return t('hotelCheckout.headers.second');
+            case 3 : return t('hotelCheckout.headers.third');
+            case 4 : if(paymentError){
+                return t('hotelCheckout.headers.fourthError')
+            } else {
+                return t('hotelCheckout.headers.fourthSuccess')
+            }
+            case 5: return t('hotelCheckout.headers.confirmed')
+        }
+    }
+
     const displayStep = () => {
         switch(currentStep){
             case 1: return <FirstStep hotelData={hotelData}
@@ -122,8 +147,13 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        setPassengers={setPassengers}
                                        contactDetails={contactDetails}
                                        setContactDetails={setContactDetails}
+                                       invoiceDetails={invoiceDetails}
+                                       setInvoiceDetails={setInvoiceDetails}
             />;
-            case 4: return <FourthStep paymentError={paymentError} />;
+            case 4: return <FourthStep paymentError={paymentError}
+                                       currentStep={currentStep}
+                                       setCurrentStep={setCurrentStep}
+            />;
         }
     }
 
@@ -141,7 +171,9 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                         <HotelsWrapper>
                             <HotelsHeaderWrapper>
                                 <HotelsHeader>
-                                    {t('flightsCheckout.flights.header')}
+                                    {
+                                        displayHeader()
+                                    }
                                 </HotelsHeader>
                                 <CartStepsWrapper>
                                     <StepWrapper currentStep={currentStep===1}>

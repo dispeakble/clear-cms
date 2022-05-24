@@ -6,40 +6,78 @@ import * as React from "react";
 import {useTranslations} from "next-intl";
 import {useState} from "react";
 import {
+    ButtonsContainer,
+    CustomButton,
     Payment,
-    PaymentErrorText,
+    PaymentErrorText, PaymentInfoText,
     PaymentStatusDetailsContainer,
     PaymentStatusImageContainer,
-    PaymentStatusTitle
+    PaymentStatusTitle, PaymentStep,
+    RedirectText
 } from "../styled";
 import Image from "next/image";
+import Link from "next/link";
 
 interface IProps {
-    paymentError: boolean
+    paymentError: boolean;
+    currentStep: number;
+    setCurrentStep: any;
 }
 
-const FourthStep = ({paymentError}: IProps) => {
+const FourthStep = ({paymentError, currentStep,
+                        setCurrentStep}: IProps) => {
 
     const t = useTranslations();
     return(
-        <Payment>
-            <PaymentStatusImageContainer>
-                <Image
-                    src={paymentError ? PaymentError : PaymentRedirection }
-                    width={500}
-                    height={450}
-                />
-            </PaymentStatusImageContainer>
-            <PaymentStatusDetailsContainer>
-                <Image src={ShoppingCart} />
-                <PaymentStatusTitle>
-                    {paymentError ? t('hotelCheckout.payment.error.title') : t('hotelCheckout.payment.success.title')}
-                </PaymentStatusTitle>
-                <PaymentErrorText>
-                    {paymentError && (t('hotelCheckout.payment.error.insufficientFunds'))}
-                </PaymentErrorText>
-            </PaymentStatusDetailsContainer>
-        </Payment>
+        <PaymentStep>
+            <Payment isError={paymentError}>
+                <PaymentStatusImageContainer>
+                    <Image
+                        src={paymentError ? PaymentError : PaymentRedirection }
+                        width={500}
+                        height={450}
+                    />
+                </PaymentStatusImageContainer>
+                <PaymentStatusDetailsContainer>
+                    <Image src={ShoppingCart} />
+                    <PaymentStatusTitle>
+                        {paymentError ? t('hotelCheckout.payment.error.title') : t('hotelCheckout.payment.success.title')}
+                    </PaymentStatusTitle>
+                    { paymentError &&
+                        <PaymentErrorText>
+                            ({t('hotelCheckout.payment.error.insufficientFunds')})
+                        </PaymentErrorText>
+                    }
+                    <PaymentInfoText>
+                        {paymentError ?
+                            t('hotelCheckout.payment.error.tryAgain') :
+                            t('hotelCheckout.payment.success.doNotCloseWindow')
+                        }
+                    </PaymentInfoText>
+                    <PaymentInfoText>
+                        ({t('hotelCheckout.payment.clickBackButton')})
+                    </PaymentInfoText>
+
+                    {
+                        !paymentError &&
+                        <RedirectText>
+                            {t('hotelCheckout.payment.redirectText')} <Link href={'#'}>{t('hotelCheckout.payment.clickHere')}</Link>
+                        </RedirectText>
+                    }
+                </PaymentStatusDetailsContainer>
+            </Payment>
+            {
+                paymentError &&
+                <ButtonsContainer hasOneChild>
+                    <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
+                        {t('flightsCheckout.main.nextStep')}
+                        <span>
+                            {currentStep+1}
+                        </span>
+                    </CustomButton>
+                </ButtonsContainer>
+            }
+        </PaymentStep>
     )
 }
 

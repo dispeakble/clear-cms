@@ -191,7 +191,7 @@
   "custom500": {
     "header": "Por el momento nuestros servicios están en mantenimiento."
   },
-  "flightsCheckout": {
+  "flightsCheckout" : {
     "cart": {
       "header": "Su cesta de la compra",
       "tax": "Impuesto sobre los servicios",
@@ -200,6 +200,39 @@
     "flights": {
       "header": "Detalles del vuelo",
       "pricingRules": "Normas de fijación de precios"
+    },
+    "main": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "adult": "Adulto",
+      "child": "Niño",
+      "city": "Ciudad",
+      "contactDetails": "Datos de contacto",
+      "zipCode": "Código postal",
+      "invoiceDetails": "Detalles de la factura",
+      "phoneNumber": "Número de teléfono",
+      "address": "Dirección",
+      "childAge": "Edad del niño",
+      "country": "País",
+      "emailAddress": "Correo electrónico",
+      "previousStep": "Paso anterior",
+      "nextStep": "Siguiente paso",
+      "sameAsContact": "Igual que los datos de contacto"
+    }
+  },
+  "filters": {
+    "main": {
+      "title": "Filtros",
+      "reset": "restablecer"
+    }
+  },
+  "packages": {
+    "main": {
+      "bookNow": "Reservar ahora",
+      "taxes": "*Incluyendo todos los impuestos",
+      "includedServices": "Servicios incluidos",
+      "hotelDescription": "Descripción del hotel",
+      "loadMore": "Ver más paquetes"
     }
   },
   "packageDetails": {
@@ -220,5 +253,36 @@
     "charterDetailHeading1": "Paquete Charter para {hotelName}",
     "charterDetailPara1": "Vacaciones especialmente seleccionadas para su alma gemela, disfrute de una cena en un entorno romántico en Barefoot Resort - Havelock, emocionante actividad Seakart, visite la playa Elephant y disfrute de los deportes acuáticos. Cómodos traslados privados, Elección de Hoteles, Viajes interinsulares en ferry privado...",
     "charterDetailHeading2": "Condiciones de reserva"
+  },
+  "hotelCheckout": {
+    "main": {
+      "stars" : "{stars} estrellas",
+      "adults" :  "Adultos",
+      "children": "Niños"
+    },
+    "headers": {
+      "first" : "Detalles de la reserva",
+      "second" : "Detalles del pasajero",
+      "fourthError" : "Error de pago",
+      "fourthSuccess" : "Procesamiento de pagos",
+      "confirmed": "Procesamiento de pagos"
+    },
+    "payment": {
+      "error" : {
+        "title": "El paso de pago no tuvo éxito",
+        "insufficientFunds": "Fondos insuficientes",
+        "tryAgain": "Intentémoslo de nuevo"
+      },
+      "success": {
+        "title": "Le redirigimos al paso de procesamiento de pagos",
+        "doNotCloseWindow" : "Por favor, no cierre esta ventana"
+      },
+      "clickBackButton": "O bien, haga clic en el botón de retroceso",
+      "redirectText" : "Si su página no ha cambiado en 5 segundos, por favor",
+      "clickHere": "Haga clic aquí"
+    },
+    "cart": {
+      "allInclusive": "Todo incluido"
+    }
   }
 }

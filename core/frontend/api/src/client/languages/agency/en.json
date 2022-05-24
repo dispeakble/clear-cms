@@ -206,13 +206,18 @@
       "lastName": "Last Name",
       "adult": "Adult",
       "child": "Child",
+      "city": "City",
       "contactDetails": "Contact Details",
+      "zipCode": "Zip Code",
+      "invoiceDetails": "Invoice Details",
       "phoneNumber": "Phone Number",
+      "address": "Address",
       "childAge": "Child Age",
       "country": "Country",
       "emailAddress": "Email Address",
       "previousStep": "Previous Step",
-      "nextStep": "Next Step"
+      "nextStep": "Next Step",
+      "sameAsContact": "Same as Contact Details"
     }
   },
   "filters": {
@@ -272,7 +277,9 @@
         "title": "We are redirecting you to the payment processing step",
         "doNotCloseWindow" : "Please Do Not Close This Window"
       },
-      "clickBackButton": "Or Click The Back Button"
+      "clickBackButton": "Or Click The Back Button",
+      "redirectText" : "If your page hasn't changed in 5 seconds please",
+      "clickHere": "Click here"
     },
     "cart": {
       "allInclusive": "All Inclusive"
