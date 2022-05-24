@@ -18,7 +18,6 @@ interface ICustomButton{
 
 interface IPaymentDiv{
     isError?: boolean;
-    isError?: boolean;
 }
 
 export const size = {

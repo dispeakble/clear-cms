@@ -1,27 +1,18 @@
 import {
-    CartFlightInfo,
     CartFooterWrapper,
     CartHeader,
     CartHeaderWrapper, CartHotelInfo,
     CartItemContainer,
     CartTicketsWrapper,
     CartWrapper,
-    DateText,
-    DepartureDestinationText,
-    DepartureTextWrapper,
-    DestinationTextWrapper, DetailsText,
-    DottedLines,
-    FlightCartItem,
-    FLightProviderImg,
+    DetailsText,
     FlightTimeContainer,
     HotelCartItem, HotelCartItemElement, HotelName, RoomType,
     TicketItem,
     TicketText,
-    TimeText,
     TotalPrice,
     TotalText
 } from "../styled";
-import Image from "next/image";
 import * as React from "react";
 import {useTranslations} from "next-intl";
 
