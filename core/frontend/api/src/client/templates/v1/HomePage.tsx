@@ -42,7 +42,7 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       payload: {
         type: "invoice",
         destination: {
-          address: "alexa.ovidiu@hotmail.com",
+          address: "yayipaw356@runchet.com",
           name: "Ovidiu Alexa"
         }
       }

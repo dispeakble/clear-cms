@@ -7,6 +7,7 @@ import path from "path";
 import { cwd } from 'node:process';
 import { payloadInterface } from "../interfaces/payload.interface";
 import { Observable } from "rxjs";
+import * as fs from "fs";
 
 @Injectable()
 export class EmailService {
@@ -60,7 +61,28 @@ export class EmailService {
               address: params.destination.address
             },
             subject: messageData.subject,
-            html: messageData.body
+            html: messageData.body ,
+            attachments:  [{   // stream as an attachment
+              filename: 'order-preview-icon.png',
+              content: fs.createReadStream(__dirname + '../../../src/client/assets/template-icons/order-preview-icon.png'),
+              cid: 'order-preview-icon'
+            },
+              {   // stream as an attachment
+                filename: 'check-icon.png',
+                content: fs.createReadStream(__dirname + '../../../src/client/assets/template-icons/check-icon.png'),
+                cid: 'check-icon'
+              },
+              {   // stream as an attachment
+                filename: 'paymentemail-main-image.png',
+                content: fs.createReadStream(__dirname + '../../../src/client/assets/template-icons/paymentemail-main-image.png'),
+                cid: 'paymentemail-main-image'
+              },
+              {   // stream as an attachment
+                filename: 'down-icon.png',
+                content: fs.createReadStream(__dirname + '../../../src/client/assets/template-icons/down-icon.png'),
+                cid: 'down-icon'
+              }
+            ]
           });
 
           // eslint-disable-next-line no-console
@@ -129,7 +151,7 @@ export class EmailService {
         const invoiceNumber = params.invoiceNumber;
         //TODO use translation
         data.subject = `Invoice #${invoiceNumber} for ${params.destination.name}`;
-        data.templateFile = 'invoice.html';
+        data.templateFile = 'payment.hbs';
         break;
       case "registration":
         data.subject = `Registration confirmation for ${params.destination.name}`;
