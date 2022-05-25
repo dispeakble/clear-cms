@@ -22,18 +22,11 @@ import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
 import useWsContext from "../../context/SocketContext";
-import { useEffect } from "react";
 
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+  /*
 
-
-
-  const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-  };
-
-  const { ws } = useWsContext();
-
+  ////////////////////////////// example of sending invoice from client
 
   const sendEmail = async () => {
     const response = await ws.sendMessage({
@@ -42,8 +35,8 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       payload: {
         type: "invoice",
         destination: {
-          address: "alexa.ovidiu@hotmail.com",
-          name: "Ovidiu Alexa"
+          address: "dosidoweb@protonmail.com",
+          name: "Do Si Do Web"
         }
       }
     });
@@ -53,7 +46,14 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   useEffect(() => {
     sendEmail()
-  }, [sendEmail]);
+  }, [sendEmail]);*/
+
+
+  const getIcons = (iconName: string) => {
+    return getIcon(iconName);
+  };
+
+  const { ws } = useWsContext();
 
   const myTheme: any = { colors: colorScheme, icon: getIcons };
 

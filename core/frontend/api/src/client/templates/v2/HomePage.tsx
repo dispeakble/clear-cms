@@ -21,13 +21,40 @@ import QuickAboutUs from "./components/QuickAboutUs";
 import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
+import useWsContext from "../../context/SocketContext";
 
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+  /*
+
+  ////////////////////////////// example of sending invoice from client
+
+  const sendEmail = async () => {
+    const response = await ws.sendMessage({
+      api: "email",
+      act: "send",
+      payload: {
+        type: "invoice",
+        destination: {
+          address: "dosidoweb@protonmail.com",
+          name: "Do Si Do Web"
+        }
+      }
+    });
+
+    console.log(response);
+  };
+
+  useEffect(() => {
+    sendEmail()
+  }, [sendEmail]);*/
+
 
   const getIcons = (iconName: string) => {
     return getIcon(iconName);
   };
 
+  const { ws } = useWsContext();
+  
   const myTheme: any = { colors: colorScheme, icon: getIcons };
 
   return (

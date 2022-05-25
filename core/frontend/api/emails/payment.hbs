@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <title>Invoice #{{invoiceNumber}}</title>
+    <style type="text/css">
+      * {
+        box-sizing: border-box;
+      }
+
+      table,
+      td,
+      div,
+      h1,
+      p {
+        font-family: Arial, sans-serif;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        word-spacing: normal;
+        background-color: #e5dfdf;
+      }
+      .main-table {
+        width: 100%;
+        background-color: #ffffff;
+        padding: 10px;
+        border-collapse: collapse;
+        border: 3px dashed #ff6b00;
+        filter: drop-shadow(0px 0px 18px rgba(0, 0, 0, 0.15));
+        width: 80%;
+        max-width: 1300px;
+        text-align: center;
+        margin: 60px auto;
+        min-width: 360px;
+      }
+      tr {
+        width: 100%;
+      }
+      td {
+        display: inline-block;
+      }
+      .topROw > td {
+        padding: 10px;
+        color: #363636;
+        display: inline-block;
+        width: 50%;
+        text-align: left;
+        font-size: 27px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table role="presentation" class="main-table">
+      <tbody>
+        <!--  Top Row  -->
+        <tr style="border-bottom: 2px dashed #ff6b00" class="topROw">
+          <td>Invoice #{{invoiceNumber}}</td>
+          <td style="text-align: right">{{date}}</td>
+        </tr>
+
+        <!--  Second / Middle ROw  -->
+        <tr style="vertical-align: baseline">
+          <td>
+            <img
+              src="cid:paymentemail-main-image"
+              width="215"
+              alt=""
+              style="width: 600px; max-width: 100%"
+            />
+          </td>
+          <td
+            class="col-lge"
+            style="
+              line-height: 22px;
+              width: 100%;
+              max-width: 550px;
+              padding-bottom: 20px;
+            "
+          >
+            <h1 style="font-weight: 500; font-size: 29px; line-height: 44px">
+              Dear <span style="color: #ff6b00">{{fullName}}</span>
+            </h1>
+
+            <img
+              src="cid:check-icon"
+              width="120"
+              alt=""
+              style="width: 120px; max-width: 80%; margin-bottom: 20px"
+            />
+
+            <p
+              style="
+                margin-top: 0;
+                margin-bottom: 12px;
+                color: #ff6b00;
+                font-weight: 700;
+                font-size: 28.35px;
+                line-height: 38px;
+              "
+            >
+              Your Order Has Been Registered And <br />
+              We Received Your Payment.
+            </p>
+            <p style="color: grey; color: rgba(0, 0, 0, 0.5)">
+              An invoice is attached to this email with the exact<br />
+              details.
+            </p>
+            <p style="color: #3a3a3a">
+              You can always visit
+              <a
+                href="{{visitWebHref}}"
+                style="text-decoration: none; color: #ff6b00"
+              >
+                marioviajes.es</a
+              >
+              and check your<br />
+              <a
+                href="{{accountHref}}"
+                style="text-decoration: none; color: #ff6b00"
+              >
+                account</a
+              >
+              payment history.
+            </p>
+            <p style="color: #3a3a3a">
+              If the attachment is not working for you please
+              <a
+                href="{{attachmentBrokenHref}}"
+                style="text-decoration: none; color: #ff6b00"
+              >
+                click here</a
+              >
+              to see your invoice and print it.
+            </p>
+
+            <table
+              style="
+                width: 100%;
+                border: none;
+                background: #f2eeee;
+                box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+                margin-bottom: 16px;
+              "
+            >
+              <tr>
+                <td style="width: 120px">
+                  <img
+                    src="cid:order-preview-icon"
+                    width="215px"
+                    alt=""
+                    style="width: 80px; max-width: 100%"
+                  />
+                </td>
+                <td
+                  style="
+                    text-align: left;
+                    padding-left: 16px;
+                    border-left: 1px dashed #898888;
+                    width: 70%;
+                  "
+                >
+                  <h1
+                    style="
+                      font-weight: 600;
+                      font-size: 14px;
+                      line-height: 21px;
+                      color: #ff6b00;
+                      margin: 0;
+                    "
+                  >
+                    Order Review
+                  </h1>
+                  <p
+                    style="
+                      font-size: 12px;
+                      line-height: 18px;
+                      color: #101828;
+                      margin: 0;
+                    "
+                  >
+                    Invoice for {{fullName}} generated at {{date}}
+                  </p>
+                  <p
+                    style="
+                      font-size: 12px;
+                      color: #101828;
+                      line-height: 12px;
+                      margin: 0;
+                      margin-bottom: 6px;
+                    "
+                  >
+                    {{noOfBedrooms}} x double bedroom in {{hotelName}}<br />
+                    bed and breakfast for:<br />
+                    {{noOFAdults}} x adults<br />
+                    {{noOfChildrens}} x children
+                  </p>
+                </td>
+                <td
+                  style="
+                    font-size: 14px;
+                    color: #363636;
+                    display: inline-block;
+                    width: 40px;
+                  "
+                >
+                  <img src="cid:down-icon" width="215" alt="" style="width: 8px" />
+                  <br />
+                  <span style="display: inline-block">{{price}} €</span>
+                </td>
+              </tr>
+            </table>
+
+            <p
+              style="
+                color: #3a3a3a;
+              "
+            >
+              Please send us an email at<br />
+              <a
+                href="{{ourEmailHref}}"
+                style="text-decoration: none; color: #ff6b00"
+              >
+                contact@marioviajes.com</a
+              >
+              if you have questions <br />
+              about this booking.
+            </p>
+
+            <p>
+              <a
+                href="{{conditionsHref}}"
+                style="text-decoration: none; color: #ff6b00; font-weight: 500"
+              >
+                Terms and Conditions Apply</a
+              >
+            </p>
+            <p
+              style="
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.5);
+              "
+            >
+              {{termsAndConditions}}
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
