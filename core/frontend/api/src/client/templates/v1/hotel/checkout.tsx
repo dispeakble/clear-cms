@@ -171,7 +171,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                     <Header websiteName={websiteName} />
                 </TopContentWrapper>
                 <Wrapper>
-                    <Breadcrumbs />
+                    <Breadcrumbs page="Hotel" what="Checkout" />
                     <DetailsWrapper>
                         {
                             currentStep !== 5 &&

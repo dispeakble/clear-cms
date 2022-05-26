@@ -214,7 +214,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                     <Header websiteName={websiteName} />
                 </TopContentWrapper>
                 <Wrapper>
-                    <Breadcrumbs />
+                    <Breadcrumbs page="Flight" what="Checkout" />
                     <DetailsWrapper>
                         <Cart flightData={flightData} passengersCount={passengersCount} />
                         <FlightsWrapper>
