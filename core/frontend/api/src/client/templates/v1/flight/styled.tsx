@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image"
+import {Field} from "formik";
 interface IStep{
     currentStep?: boolean;
 }
@@ -15,6 +16,10 @@ interface IButtonContainer{
 interface ICustomButton{
     isActive?: boolean;
 }
+interface IPaymentDiv{
+    isError?: boolean;
+}
+
 
 export const size = {
     mobileS: "320px",
@@ -34,7 +39,7 @@ export const DetailsWrapper = styled.div`
   width: 100%;
   gap: 17px;
   margin-top: 53px;
-  
+
   @media(max-width: ${size.laptop}){
     flex-direction: column;
     align-items: stretch;
@@ -73,7 +78,7 @@ export const PricingRules = styled.div`
   align-items: center;
   gap: 5px;
   cursor: pointer;
-  
+
   @media screen and (max-width: 480px){
     display: none;
   }
@@ -97,20 +102,30 @@ export const DottedLines = styled.hr`
   flex: 1;
 `
 
+export const DottedLinesContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding: 18px 0;
+  width: 100%;
+  @media screen and (max-width: ${size.laptop}){
+    display: none;
+  }
+`
+
 export const Flight = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   min-width: 60%;
-  
+
   @media screen and (max-width: ${size.laptop}) {
     min-width: 70%;
   }
-  
+
   @media screen and (max-width: 480px){
     width: 100%;
   }
-  
+
 `
 
 export const Flights = styled.div`
@@ -131,13 +146,25 @@ export const PassengerItem = styled.div`
   border-radius: 10px;
   background: #FFFFFF;
   padding: 20px 28px;
-  
+  margin-bottom: 8px;
+
   display: flex;
   flex-direction: column;
   gap: 10px;
 `
+
+export const ErrorText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  margin:0;
+
+  color: #e74c3c;
+`
+
 export const PassengerHeaderContainer = styled.div`
-    
+
 `
 
 export const PassengerHeader = styled.h2`
@@ -152,10 +179,12 @@ export const PassengerHeader = styled.h2`
 export const FormGroup = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
   gap: 10px;
-  
+
   @media screen and (max-width: ${size.laptop}){
-    flex-direction: column
+    flex-direction: column;
+    align-items: stretch;
   }
 `
 
@@ -174,7 +203,7 @@ export const InputLabel = styled.label`
   color: #434343;
 `
 
-export const TextInput = styled.input`
+export const TextInput = styled(Field)`
   outline: none;
   border: 1px solid #DBDBDB;
   border-radius: 10px;
@@ -184,7 +213,7 @@ export const TextInput = styled.input`
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   color: #434343;
-  
+
   ::placeholder{
     color: #ADADAD;
   }
@@ -239,7 +268,7 @@ export const FlightDestinationTextContainer = styled.div`
 export const ButtonsContainer = styled.div<IButtonContainer>`
   display: flex;
   justify-content: ${({hasOneChild}) => hasOneChild ? "flex-end" : "space-between"};
-  
+
   @media screen and (max-width:${size.tablet}){
     flex-direction: column;
     gap: 20px;
@@ -256,16 +285,51 @@ export const CustomButton = styled.button<ICustomButton>`
   line-height: 1.5;
   color: #FFFFFF;
   display: flex;
+  align-items: center;
   cursor: pointer;
   border: none;
   outline: none;
   padding: 18px 26px;
   justify-content: space-between;
-  
+
   gap: 20px;
-  
+
+  span{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.5;
+    margin: 0;
+    border-radius: 50% ;
+    text-align: center;
+
+    color: ${({isActive}) => isActive ? "#FF8C1D" : "#959595"};
+  }
+
   @media screen and (max-width:${size.tablet}){
     justify-content: center;
+    
+    span{
+      font-size: 18px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  :is(:disabled){
+    cursor: not-allowed;
+    background: linear-gradient(180deg, #D0D0D0 0%, #919191 100%) !important;
+    span{
+      color: #959595;
+    }
   }
 `
 
@@ -326,7 +390,7 @@ export const FlightsHeaderWrapper = styled.div`
   border: 1px solid #DBDBDB;
   border-radius: 10px;
   background: #ffffff;
-  
+
   @media screen and (max-width: 480px){
     flex-direction: column;
     gap: 10px;
@@ -378,7 +442,7 @@ export const CartStepsWrapper = styled.div`
   display: flex;
   position: relative;
   gap: 20px;
-  
+
   @media screen and (max-width: 1200px){
     gap: 15px;
   }
@@ -389,20 +453,20 @@ export const StepWrapper = styled.div<IStep>`
   font-weight: 400;
   font-size: 28px;
   position: relative;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
   width: 50px;
-  
+
   border: 1px solid #FF8C1D;
-  
+
   background: ${({currentStep}) => currentStep ? "#FF8C1D" : "#FFFFFF"};
   color:  ${({currentStep}) => currentStep ? "#FFFFFF" : "#FF8C1D"};
-  
+
   border-radius:50%;
-  
+
   &:not(:last-child)::after{
     content: "";
     position: absolute;
@@ -413,11 +477,11 @@ export const StepWrapper = styled.div<IStep>`
     width: 20px;
     border-bottom: 1px dashed #A29E9E;
   }
-  
+
   @media screen and (max-width: 1200px){
     height: 30px;
     width: 30px;
-    
+
     font-size: 16px;
 
     &:not(:last-child)::after{
@@ -431,8 +495,8 @@ export const StepWrapper = styled.div<IStep>`
       border-bottom: 1px dashed #A29E9E;
     }
   }
-  
-  
+
+
 `
 
 export const FlightCartItem = styled.div`
@@ -455,7 +519,7 @@ export const TimeText = styled.p`
   color: #000000;
   line-height: 1.5;
   margin: 0;
-  
+
 `
 
 export const DateText = styled.p`
@@ -465,7 +529,7 @@ export const DateText = styled.p`
   color: #707070;
   line-height: 1.5;
   margin: 0;
-  
+
 `
 
 export const DepartureDestinationText = styled.p`
@@ -570,7 +634,7 @@ export const FlightInfosDate = styled.p`
   line-height: 1.5;
   color: #707070;
   margin: 0;
-  
+
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
@@ -646,7 +710,7 @@ export const FlightInfosTime = styled.p`
   line-height: 1.5;
   color: #000000;
   margin: 0;
-  
+
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
@@ -660,7 +724,7 @@ export const FlightInfosLocationText = styled.p`
 
   color: #707070;
   margin: 0;
-  
+
   span{
     font-weight: 500;
     margin: 0;
@@ -704,15 +768,15 @@ export const StopoverText = styled.p`
   margin:0;
 
   color: #818181;
-  
+
   span{
     font-weight: 700;
   }
-  
+
   span:first-child{
-     color: #FF8C1D;
-   }
-  
+    color: #FF8C1D;
+  }
+
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
@@ -769,3 +833,139 @@ export const TotalPrice = styled.h2`
   color: #434343;
 `
 
+/* start fourth step */
+
+export const Payment = styled.div<IPaymentDiv>`
+  background: ${({isError}) => isError ? "#FFFFFF" : "none"};
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  gap:15px;
+  
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+  }
+`
+
+export const PaymentStatusImageContainer = styled.div`
+
+`
+
+export const PaymentStatusDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`
+
+export const PaymentStatusTitle = styled.h3`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #77838F;
+`
+
+export const PaymentErrorText= styled.h4`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #FF1515;
+`
+
+export const PaymentInfoText = styled.h5`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+
+  color: #FF840D;
+`
+
+export const RedirectText = styled.p`
+  font-family: 'Nunito', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin: 20px 0 0 0;
+  color: #474747;
+  
+  a{
+    color: #FF840D;
+  }
+`
+
+export const PaymentStep = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+/* end fourth step */
+
+/* start final step */
+
+export const BookingConfirmedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+export const FinalStep = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  gap: 20px;
+
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+  }
+`
+
+export const ConfirmedText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+`
+
+export const SuccessText = styled.h3`
+  font-family: 'Metropolis', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  color: #FF8C1D;
+`
+
+export const EmailDetailsText = styled.h5`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.5;
+
+text-align: center;
+
+color: #77838F;
+`

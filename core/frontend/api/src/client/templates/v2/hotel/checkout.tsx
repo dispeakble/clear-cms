@@ -1,15 +1,15 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import { ThemeProvider } from "styled-components";
-import Header from "../../components/Header";
+import Header from "../components/Header";
 import {
     GlobalStyle,
     MainWrapper,
     TopContentWrapper, Wrapper
-} from "../../styled";
-import Breadcrumbs from "../../components/Breadcrumbs";
-import { getIcon } from "../../helpers/icons";
-import Footer from "../../components/Footer";
+} from "../styled";
+import Breadcrumbs from "../components/Breadcrumbs";
+import { getIcon } from "../helpers/icons";
+import Footer from "../components/Footer";
 import {
     DetailsWrapper,
     HotelsHeaderWrapper,

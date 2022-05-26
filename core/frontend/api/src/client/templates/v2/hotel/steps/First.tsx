@@ -16,8 +16,8 @@ import {
     BottomRightCircle, TicketInfosItems, TicketInfosItem, RoomType, DetailsText
 } from "../styled";
 import Image from "next/image";
-import YellowStar from "../../../assets/img/starYellowImage.png";
-import GrayStar from "../../../assets/img/starGrayImage.png";
+import YellowStar from "../../assets/img/starYellowImage.png";
+import GrayStar from "../../assets/img/starGrayImage.png";
 import * as React from "react";
 import {useTranslations} from "next-intl";
 import {useState} from "react";
@@ -81,10 +81,6 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
                                     </HotelAddress>
                                 </HotelAddressContainer>
                                 <HotelTicketInfosContainer>
-                                    <TopLeftCircle />
-                                    <TopRightCircle />
-                                    <BottomLeftCircle />
-                                    <BottomRightCircle />
                                     <TicketInfosItems>
                                         <TicketInfosItem>
                                             <RoomType>

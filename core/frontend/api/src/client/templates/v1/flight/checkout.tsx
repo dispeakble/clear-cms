@@ -26,6 +26,8 @@ import FirstStep from "./steps/First";
 import SecondStep from "./steps/Second";
 import Cart from "./Cart";
 import * as shortid from "shortid"
+import FourthStep from "./steps/Fourth";
+import BookingConfirmed from "./steps/BookingConfirmed";
 
 interface IPassenger {
     id: string,
@@ -38,7 +40,7 @@ interface IPassenger {
 const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(2)
+    const [currentStep, setCurrentStep] = useState<number>(1)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -48,7 +50,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const passengersData = [
         {
-           type: "adult"
+            type: "adult"
         },
         {
             type: "adult"
@@ -129,6 +131,8 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
     ]
 
     const [passengers, setPassengers] = useState<IPassenger[]>([])
+    const [paymentError, setPaymentError] = useState(true)
+
 
     const [contactDetails, setContactDetails] = useState({
         firstName: '',
@@ -136,6 +140,17 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         phoneNumber: '',
         emailAddress: '',
         country: ''
+    })
+
+    const [invoiceDetails, setInvoiceDetails] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        emailAddress: '',
+        country: '',
+        address: '',
+        city: '',
+        zipCode: ''
     })
 
     useEffect(() => {
@@ -160,14 +175,13 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
             && {children: passengers.filter((p) => !p.isAdult).length} ),
     }
 
-    console.log(passengersCount)
-
     const displayStep = () => {
         switch(currentStep){
             case 1: return <FirstStep flightData={flightData}
                                       setCurrentStep={setCurrentStep}
                                       currentStep={currentStep}
-                            />;
+
+            />;
 
             case 2: return <SecondStep passengers={passengers}
                                        setCurrentStep={setCurrentStep}
@@ -175,7 +189,16 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        setPassengers={setPassengers}
                                        contactDetails={contactDetails}
                                        setContactDetails={setContactDetails}
-                            />;
+                                       invoiceDetails={invoiceDetails}
+                                       setInvoiceDetails={setInvoiceDetails}
+                                       passengersCount={passengersCount}
+            />;
+            case 4: return <FourthStep paymentError={paymentError}
+                                       currentStep={currentStep}
+                                       setCurrentStep={setCurrentStep}
+            />;
+
+            case 5: return <BookingConfirmed />
 
             default: return <FirstStep flightData={flightData}
                                        setCurrentStep={setCurrentStep}

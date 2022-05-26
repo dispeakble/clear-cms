@@ -8,7 +8,7 @@ const CustomSwitch = ({setState, state, label}: any) => {
                 {label}
             </StyledSwitchText>
             <StyledLabel onClick={() => setState((prev: boolean) => !prev)}>
-                <StyledCheckbox type="checkbox" checked={state} readOnly/>
+                <StyledCheckbox type="checkbox" checked={state} />
                     <CustomSlider className="slider"></CustomSlider>
             </StyledLabel>
         </StyledSwitch>
