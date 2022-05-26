@@ -2,9 +2,6 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
-import FlightImg from "../assets/img/flight.png"
-import DepartureIcon from "../assets/img/departure-icon.svg"
-import ArrivalIcon from "../assets/img/arrival-icon.svg"
 import {
     GlobalStyle,
     MainWrapper,
@@ -15,9 +12,9 @@ import { getIcon } from "../helpers/icons";
 import Footer from "../components/Footer";
 import {
     DetailsWrapper,
-    FlightsHeaderWrapper,
-    FlightsHeader,
-    FlightsWrapper,
+    HotelsHeaderWrapper,
+    HotelsHeader,
+    HotelsWrapper,
     CartStepsWrapper,
     StepWrapper,
 } from "./styled";
@@ -63,76 +60,22 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         }
     ]
 
-    const flightData = [
-        {
-            typeIMG: DepartureIcon,
-            flightProviderIMG: FlightImg,
-            type: "departure",
-            departure: "Bucharest",
-            departureShort: "OTP",
-            departureDate: "Monday, 10 iun.",
-            departureTime: "00:20",
-            destination: "Tenerife",
-            destinationShort: "TFS",
-            destinationDate: "Monday, 10 iun.",
-            arrivalTime: "06:20",
-            duration: "7h 30m",
-            aircraft: "Wizz Air",
-            aircraftRef: "W12345",
-            stopover: {
-                city: "Madrid",
-                short: "MAD",
-                duration: "2h 35m",
-                date: "Monday, 10 iun.",
-                arrival: "18:20",
-                departure: "18:20",
-            }
-        },
-        {
-            typeIMG: ArrivalIcon,
-            flightProviderIMG: FlightImg,
-            type: "return",
-            departure: "Tenerife",
-            departureShort: "TFS",
-            departureDate: "Monday, 10 iun.",
-            departureTime: "00:20",
-            destination: "Bucharest",
-            destinationShort: "OTP",
-            destinationDate: "Monday, 10 iun.",
-            arrivalTime: "06:20",
-            duration: "7h 30m",
-            aircraft: "Wizz Air",
-            aircraftRef: "W12345",
-            stopover: {
-                city: "Madrid",
-                short: "MAD",
-                duration: "2h 35m",
-                date: "Monday, 10 iun.",
-                arrival: "18:20",
-                departure: "18:20",
-            }
-        },
-        {
-            typeIMG: DepartureIcon,
-            flightProviderIMG: FlightImg,
-            type: "departure",
-            departure: "Bucharest",
-            departureShort: "OTP",
-            departureDate: "Monday, 10 iun.",
-            departureTime: "00:20",
-            destination: "Tenerife",
-            destinationShort: "TFS",
-            destinationDate: "Monday, 10 iun.",
-            arrivalTime: "06:20",
-            duration: "7h 30m",
-            aircraft: "Wizz Air",
-            aircraftRef: "W12345"
-        },
-    ]
+    const hotelData = [{
+        name: "Hotel Victoria",
+        address: "José del Campo Llanera, 2 - Puerto de la Cruz, Tenerife, Spain",
+        rating: 4,
+        adults: 1,
+        children: 0,
+        roomType: "Double Room",
+        allInclusive: true,
+        duration: "8 days / 7 nights",
+        checkoutDay: "Monday, 10 iun.",
+        checkoutTime: "14:00",
+        price: 409
+    }]
 
     const [passengers, setPassengers] = useState<IPassenger[]>([])
     const [paymentError, setPaymentError] = useState(true)
-
 
     const [contactDetails, setContactDetails] = useState({
         firstName: '',
@@ -175,12 +118,25 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
             && {children: passengers.filter((p) => !p.isAdult).length} ),
     }
 
+    const displayHeader = () => {
+        switch(currentStep){
+            case 1 : return t('hotelCheckout.headers.first');
+            case 2 : return t('hotelCheckout.headers.second');
+            case 3 : return t('hotelCheckout.headers.third');
+            case 4 : if(paymentError){
+                return t('hotelCheckout.headers.fourthError')
+            } else {
+                return t('hotelCheckout.headers.fourthSuccess')
+            }
+            case 5: return t('hotelCheckout.headers.confirmed')
+        }
+    }
+
     const displayStep = () => {
         switch(currentStep){
-            case 1: return <FirstStep flightData={flightData}
+            case 1: return <FirstStep hotelData={hotelData}
                                       setCurrentStep={setCurrentStep}
                                       currentStep={currentStep}
-
             />;
 
             case 2: return <SecondStep passengers={passengers}
@@ -191,7 +147,6 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        setContactDetails={setContactDetails}
                                        invoiceDetails={invoiceDetails}
                                        setInvoiceDetails={setInvoiceDetails}
-                                       passengersCount={passengersCount}
             />;
             case 4: return <FourthStep paymentError={paymentError}
                                        currentStep={currentStep}
@@ -200,9 +155,10 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
 
             case 5: return <BookingConfirmed />
 
-            default: return <FirstStep flightData={flightData}
-                                       setCurrentStep={setCurrentStep}
-                                       currentStep={currentStep}/>;
+            default : return <FirstStep hotelData={hotelData}
+                                        setCurrentStep={setCurrentStep}
+                                        currentStep={currentStep}
+            />;
         }
     }
 
@@ -214,14 +170,19 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                     <Header websiteName={websiteName} />
                 </TopContentWrapper>
                 <Wrapper>
-                    <Breadcrumbs page="Flight" what="Checkout" />
+                    <Breadcrumbs />
                     <DetailsWrapper>
-                        <Cart flightData={flightData} passengersCount={passengersCount} />
-                        <FlightsWrapper>
-                            <FlightsHeaderWrapper>
-                                <FlightsHeader>
-                                    {t('flightsCheckout.flights.header')}
-                                </FlightsHeader>
+                        {
+                            currentStep !== 5 &&
+                            <Cart hotelData={hotelData} />
+                        }
+                        <HotelsWrapper>
+                            <HotelsHeaderWrapper>
+                                <HotelsHeader>
+                                    {
+                                        displayHeader()
+                                    }
+                                </HotelsHeader>
                                 <CartStepsWrapper>
                                     <StepWrapper currentStep={currentStep===1}>
                                         1
@@ -239,11 +200,11 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                         5
                                     </StepWrapper>
                                 </CartStepsWrapper>
-                            </FlightsHeaderWrapper>
+                            </HotelsHeaderWrapper>
                             {
                                 displayStep()
                             }
-                        </FlightsWrapper>
+                        </HotelsWrapper>
                     </DetailsWrapper>
                 </Wrapper>
                 <Footer />

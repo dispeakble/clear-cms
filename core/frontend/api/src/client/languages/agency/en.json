@@ -206,13 +206,18 @@
       "lastName": "Last Name",
       "adult": "Adult",
       "child": "Child",
+      "city": "City",
       "contactDetails": "Contact Details",
+      "zipCode": "Zip Code",
+      "invoiceDetails": "Invoice Details",
       "phoneNumber": "Phone Number",
+      "address": "Address",
       "childAge": "Child Age",
       "country": "Country",
       "emailAddress": "Email Address",
       "previousStep": "Previous Step",
-      "nextStep": "Next Step"
+      "nextStep": "Next Step",
+      "sameAsContact": "Same as Contact Details"
     }
   },
   "filters": {
@@ -248,6 +253,42 @@
     "charterDetailHeading1": "Package Charter for {hotelName}",
     "charterDetailPara1": "Specially Curated Holiday for your soulmate, Enjoy dinner in a romantic set-up at Barefoot Resort - Havelock, Thrilling Seakart Activity, Visit Elephant beach and enjoy water sports. Comfortable private transfers, Choice of Hotels, Inter-island travel on a private ferry...",
     "charterDetailHeading2": "Booking Conditions"
+  },
+  "hotelCheckout": {
+    "main": {
+      "stars": "{stars} stars",
+      "adults": "Adults",
+      "children": "Children"
+    },
+    "headers": {
+      "first": "Booking Details",
+      "second": "Passenger Details",
+      "fourthError": "Payment Error",
+      "fourthSuccess": "Payment Processing",
+      "confirmed": "Booking Confirmed"
+    },
+    "payment": {
+      "error": {
+        "title": "The payment step did not succeed",
+        "insufficientFunds": "Insufficient Funds",
+        "tryAgain": "Let's try again"
+      },
+      "success": {
+        "title": "We are redirecting you to the payment processing step",
+        "doNotCloseWindow": "Please Do Not Close This Window"
+      },
+      "clickBackButton": "Or Click The Back Button",
+      "redirectText": "If your page hasn't changed in 5 seconds please",
+      "clickHere": "Click here"
+    },
+    "paymentConfirmed": {
+      "successText": "Success",
+      "emailDetails": "You will also get an email with all the details.",
+      "backHome": "Back Home"
+    },
+    "cart": {
+      "allInclusive": "All Inclusive"
+    }
   },
   "hotelResult": {
     "adult": "Adult",
