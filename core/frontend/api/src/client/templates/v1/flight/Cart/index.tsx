@@ -16,6 +16,7 @@ interface IProps{
     passengersCount: any;
 }
 
+
 const Cart = ({flightData, passengersCount}: IProps) => {
 
     const t = useTranslations()
@@ -89,7 +90,8 @@ const Cart = ({flightData, passengersCount}: IProps) => {
                         (
                             <TicketItem>
                                 <TicketText>
-                                    {passengersCount[key]} x {key} ticket
+
+                                    {passengersCount[key]} x {t(`global.${key}`)} {t('flightsCheckout.main.ticket')}
                                 </TicketText>
                                 <TicketText>
                                     {Number((passengersCount[key] as number) * ticketPrice).toFixed(2)} €

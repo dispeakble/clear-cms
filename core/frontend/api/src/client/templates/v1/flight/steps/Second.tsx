@@ -58,7 +58,7 @@ const SecondStep = ({passengers, setPassengers, contactDetails,
                                     </InputLabel>
                                     <TextInput
                                         type="text"
-                                        placeholder="E.G. John (Given Name)"
+                                        placeholder={t("flightsCheckout.main.firstNamePlaceHolder")}
                                         value={passenger.firstName}
                                         name="firstName"
                                         onChange={(e) =>
@@ -72,7 +72,7 @@ const SecondStep = ({passengers, setPassengers, contactDetails,
                                     </InputLabel>
                                     <TextInput
                                         type="text"
-                                        placeholder="E.G. Smith (Last Name)"
+                                        placeholder={t("flightsCheckout.main.lastNamePlaceHolder")}
                                         value={passenger.lastName}
                                         name="lastName"
                                         onChange={(e) =>
@@ -132,7 +132,7 @@ const SecondStep = ({passengers, setPassengers, contactDetails,
                         </InputLabel>
                         <TextInput
                             type="text"
-                            placeholder="E.G. Smith (Last Name)"
+                            placeholder={t("flightsCheckout.main.lastNamePlaceHolder")}
                             value={contactDetails.firstName}
                             name="lastName"
                             onChange={handleContactDetails}
@@ -174,10 +174,10 @@ const SecondStep = ({passengers, setPassengers, contactDetails,
                             {t('flightsCheckout.main.country')}
                         </InputLabel>
                         <CustomSelect>
-                            <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. United Kingdom</option>
-                            <option value="spain">Spain</option>
-                            <option value="morocco">Morocco</option>
-                            <option value="romania">Romania</option>
+                            <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. {t("flightsCheckout.country.unitedKingdom")}</option>
+                            <option value="spain">{t("flightsCheckout.country.spain")}</option>
+                            <option value="morocco">{t("flightsCheckout.country.morocco")}</option>
+                            <option value="romania">{t("flightsCheckout.country.romania")}</option>
                         </CustomSelect>
                     </InputGroup>
                 </FormGroup>

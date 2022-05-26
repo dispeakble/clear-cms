@@ -2,7 +2,34 @@
   "global": {
     "home": "Home",
     "search": "Búsqueda",
-    "pageTitle": "Hotels page :: {websiteName}"
+    "pageTitle": "Hotels page :: {websiteName}",
+    "adults": "Adultos",
+    "childrens": "Niños",
+    "nights": "Noches",
+    "infants": "Infantes"
+  },
+  "day": {
+    "monday": "Lunes",
+    "tuesday":"Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "sunday": "Domingo"
+  },
+  "month": {
+    "january": "enero" ,
+    "february": "Febrero",
+    "march": "Marzo" ,
+    "april": "Abril" ,
+    "may": "Puede",
+    "june": "Junio" ,
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
   },
   "home": {
     "seo": {
@@ -200,6 +227,103 @@
     "flights": {
       "header": "Detalles del vuelo",
       "pricingRules": "Normas de fijación de precios"
+    },
+    "country": {
+      "spain": "España",
+      "unitedKingdom": "Reino Unido",
+      "morocco": "Marruecos",
+      "romania": "Rumania"
+    },
+    "main": {
+      "firstName": "Primer nombre",
+      "lastName": "Apellido",
+      "adult": "Adulto",
+      "child": "Niño",
+      "contactDetails": "Detalles de contacto",
+      "phoneNumber": "Número de teléfono",
+      "childAge": "Edad del niño",
+      "country": "País",
+      "emailAddress": "Dirección de correo electrónico",
+      "previousStep": "Paso anterior",
+      "nextStep": "Próximo paso",
+      "type": {
+        "departure": "departure",
+        "return": "devolver"
+      },
+      "bucharest": "Bucarest",
+      "departureDate": "lunes, 10 de junio.",
+      "tenerife": "Tenerife",
+      "destinationDate": "lunes, 10 de junio.",
+      "stopover": {
+        "city": {
+          "madrid": "Madrid"
+        }
+      },
+      "ticket": "billete",
+      "firstNamePlaceHolder": "E.G. Juan (nombre de pila)",
+      "lastNamePlaceHolder": "E.G. Juan (nombre de pila)"
+    }
+  },
+  "flightList": {
+    "filters": {
+      "sortCheckboxes": {
+        "all": "All",
+        "theBest":  "El mejor",
+        "theCheapest": "El mas barato",
+        "theFastest": "El mas rapido",
+        "airline": "Aerolínea"
+      }
+    },
+    "sort": "Clasificar",
+    "airlines": "aerolíneas",
+    "stopOvers": "Número de escalas",
+    "bucharest": "Bucarest",
+    "madrid": "Madrid",
+    "tenerife": "Tenerife",
+    "flightType": {
+      "directflight": "vuelo directo",
+      "oneStop": "una parada en MAD"
+    },
+    "person": "persona",
+    "bookNow": "Reservar ahora"
+  },
+  "filters": {
+    "destination": "Destino",
+    "categories": "Categorías",
+    "main": {
+      "title": "filtros",
+      "reset": "Reiniciar"
+    },
+    "packages": {
+      "title" : "Paquete Charter para {hotelName}",
+      "address" : "Bischofshofen, 4, 38660 Adeje, Spain",
+      "type": {
+        "flights": "Vuelos",
+        "hotel": "Hotel",
+        "transfers": "Transferencias",
+        "activities": "Actividades"
+      }
+    },
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "services": {
+      "flightIncluded": "Vuelo incluido",
+      "checkinBaggage": "facturar equipaje",
+      "handBaggage": "equipaje de mano",
+      "airportTaxes": "Impuestos de aeropuerto",
+      "airportToHotel": "Traslado del aeropuerto al hotel",
+      "hotelToAirport": "Transfer from hotel to airport",
+      "touristAssistance":  "asistencia turística",
+      "nightStay": "noches de estancia"
+    }
+  },
+  "packages": {
+    "main": {
+      "bookNow": "Reservar ahora",
+      "taxes": "*Incluyendo todos los impuestos",
+      "includedServices": "Servicios incluidos",
+      "hotelDescription": "Descripción del hotel",
+      "loadMore": "Ver más paquetes",
+      "from": "Desde"
     }
   },
   "packageDetails": {
@@ -230,6 +354,50 @@
     "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
     "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
     "viewMore": "Ver más"
-
+  },
+  "hotelDetail": {
+    "hotelDetailComponent": {
+      "find": "Encontrar",
+      "hotel": "Destino u Hotel",
+      "outDate": "Echa un vistazo a la fecha",
+      "inDate": "Comprobar en la fecha",
+      "details": "Detalles",
+      "addNumbersOfPersons": "Añadir números de personas",
+      "ageOnTheDayOfTravel": "Años y más el día del viaje",
+      "infantsAgeAtTheDayOfTravel": "Menores de 2 años el día del viaje",
+      "infoIconDes": "Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
+      "viewPrices": "Ver precios",
+      "newSearch": "Nueva búsqueda",
+      "done": "Hecho",
+      "showMap": "Mostrar mapa"
+    },
+    "hotelAbout": {
+      "features": {
+        "breakfast": "Desayuno info Continental, Buffet",
+        "seaView": "Vista marítima",
+        "gardenView": "Vista al jardín",
+        "terrace": "Terraza",
+        "poolView": "Vista a la piscina",
+        "quietStreetView": "Vista de la calle tranquila",
+        "freeParking": "Estacionamiento gratis",
+        "atmExchange": "Cambio de cajero automático"
+      },
+      "readLess": "Leer menos...",
+      "readMore": "Lee mas..."
+    },
+    "hotelAvailable": {
+      "roomsAvailable": "Habitaciones disponibles para",
+      "checkIn": "Registrarse",
+      "checkOut": "Verificar",
+      "refreshPrice": "Actualizar precios",
+      "roomType": "Tipo de habitación",
+      "meals": "Comidas",
+      "rooms": "Habitaciones",
+      "room": "Habitación",
+      "price": "Precio",
+      "premiumRoom": "Habitación Familiar Premium ",
+      "breakfastInc": "Desayuno incluido",
+      "bookNow": "Reservar ahora"
+    }
   }
 }

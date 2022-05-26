@@ -1,16 +1,43 @@
 {
   "global": {
-    "home" : "Home",
+    "home": "Home",
     "search": "Search",
-    "pageTitle": "Hotels page :: {websiteName}"
+    "pageTitle": "Hotels page :: {websiteName}",
+    "adults": "Adults",
+    "childrens": "Children",
+    "infants": "Infants",
+    "nights": "Nights"
+  },
+  "day": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "month": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   },
   "home": {
     "seo": {
       "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
     },
-    "info-box-title" : "Adventure",
-    "info-box-description" : "Holidays and tours",
-    "img-source" : "Image from",
+    "info-box-title": "Adventure",
+    "info-box-description": "Holidays and tours",
+    "img-source": "Image from",
     "promo": {
       "special-offers": "Special Offers",
       "last-minute": "Last Minute",
@@ -31,7 +58,7 @@
         "see-prices": "See prices"
       }
     },
-    "tabbed" : {
+    "tabbed": {
       "tabs": {
         "first": "Flights + Hotels",
         "second": "Relax on the finest beaches",
@@ -90,24 +117,24 @@
   },
   "search": {
     "destination": "Destination",
-    "input-placeholder" : "Where are you going?",
-    "searchPackagesButton" : "Find deals",
-    "searchHotelsButton" : "Find hotels",
-    "searchFlightsButton" : "Find tickets",
+    "input-placeholder": "Where are you going?",
+    "searchPackagesButton": "Find deals",
+    "searchHotelsButton": "Find hotels",
+    "searchFlightsButton": "Find tickets",
     "checkin": "Check in",
     "addDate": "Add date",
     "checkinDate": "Check in",
     "checkout": "Check out",
-    "checkoutDate" : "Check out",
-    "guests" : "Guests",
-    "adults" : "Adults",
-    "children" : "Children",
-    "infants" : "Infants",
-    "oneway" : "One way",
-    "adults-age" : "Ages 13 or above.",
-    "children-age" : "Ages between 2 and 13.",
-    "infants-age" : "Under 2.",
-    "search-btn" : "Search",
+    "checkoutDate": "Check out",
+    "guests": "Guests",
+    "adults": "Adults",
+    "children": "Children",
+    "infants": "Infants",
+    "oneway": "One way",
+    "adults-age": "Ages 13 or above.",
+    "children-age": "Ages between 2 and 13.",
+    "infants-age": "Under 2.",
+    "search-btn": "Search",
     "homeSearchPackageDeparturePlaceholder": "Departure",
     "homeSearchPackageDestinationPlaceholder": "Destination",
     "homeSearchFlightDeparturePlaceholder": "Departure",
@@ -115,17 +142,17 @@
     "homeSearchHotelDestinationPlaceholder": "Search for a destination or a hotel",
     "flightsDeparturePlaceholder": "Flight departure",
     "flightsDestinationPlaceholder": "Flight destination",
-    "departure" : "Departure",
-    "return" : "Return",
-    "departureDate" : "Departure date",
+    "departure": "Departure",
+    "return": "Return",
+    "departureDate": "Departure date",
     "returnDate": "Return date",
-    "hotels" : "Hotels",
-    "packages" : "Packages",
-    "flights" : "Flights",
+    "hotels": "Hotels",
+    "packages": "Packages",
+    "flights": "Flights",
     "hotel-stars": "Category",
-    "activities" : "Activities"
+    "activities": "Activities"
   },
-  "deals" : {
+  "deals": {
     "hotel": "Hotel Victoria",
     "location": "Bischofshofen, 4, 38660 Adeje, Spain",
     "checkin": "Saturday, 12 March...",
@@ -142,17 +169,17 @@
       "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
     }
   },
-  "hotelAbout" : {
+  "hotelAbout": {
     "hotel": "Hotel Victoria, Adeje, Spain ",
     "star": "(4 Stars)",
     "cardTitle": "Hotel Victoria Highlights"
   },
-  "hotelAvailable" : {
+  "hotelAvailable": {
     "selectRoom": "2 Rooms"
   },
-  "tooltip" : {
-    "view_price" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
-    "room_type" : "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
+  "tooltip": {
+    "view_price": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
+    "room_type": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
   },
   "footer": {
     "links": {
@@ -168,30 +195,30 @@
     "subscribe": "Subscribe"
   },
   "custom404": {
-    "header" : "Going somewhere? You have reached a very lost page.",
-    "links" : "Please click on the below links",
-    "return" : "Or return to the home page",
-    "goBackHome" : "Go back home"
+    "header": "Going somewhere? You have reached a very lost page.",
+    "links": "Please click on the below links",
+    "return": "Or return to the home page",
+    "goBackHome": "Go back home"
   },
   "links": {
-    "home" : "Home",
-    "contact" : "Contact",
-    "hotels" :  "Hotels",
-    "flights" : "Flights",
-    "packages" :  "Packages",
-    "latestSearches" : "Latest searches",
-    "lastMinute" :  "Last minute"
+    "home": "Home",
+    "contact": "Contact",
+    "hotels": "Hotels",
+    "flights": "Flights",
+    "packages": "Packages",
+    "latestSearches": "Latest searches",
+    "lastMinute": "Last minute"
   },
-  "custom300" : {
+  "custom300": {
     "header": "Your page will redirect soon"
   },
-  "custom401" : {
+  "custom401": {
     "header": "You have been signed out."
   },
-  "custom500" : {
+  "custom500": {
     "header": "For the moment our services are under maintenance"
   },
-  "flightsCheckout" : {
+  "flightsCheckout": {
     "cart": {
       "header": "Your Shopping Cart",
       "tax": "Service tax",
@@ -200,6 +227,12 @@
     "flights": {
       "header": "Flight Details",
       "pricingRules": "Pricing rules"
+    },
+    "country": {
+      "spain": "spain",
+      "unitedKingdom": "United Kingdom",
+      "morocco": "Morocco",
+      "romania": "Romania"
     },
     "main": {
       "firstName": "First Name",
@@ -212,13 +245,75 @@
       "country": "Country",
       "emailAddress": "Email Address",
       "previousStep": "Previous Step",
-      "nextStep": "Next Step"
+      "nextStep": "Next Step",
+      "type": {
+        "departure": "salida",
+        "return": "return"
+      },
+      "bucharest": "Bucharest",
+      "departureDate": "Monday, 10 june.",
+      "tenerife": "Tenerife",
+      "destinationDate": "Monday, 10 june.",
+      "stopover": {
+        "city": {
+          "madrid": "Madrid"
+        }
+      },
+      "ticket": "ticket",
+      "firstNamePlaceHolder": "E.G. John (Given Name)",
+      "lastNamePlaceHolder": "E.G. Smith (Last Name)"
     }
   },
+  "flightList": {
+    "filters": {
+      "sortCheckboxes": {
+        "all": "All",
+        "theBest": "The Best",
+        "theCheapest": "The Cheapest",
+        "theFastest": "The Fastest",
+        "airline": "Airline"
+      }
+    },
+    "sort": "Sort",
+    "airlines": "Airlines",
+    "stopOvers": "Number of stopovers",
+    "bucharest": "Bucharest",
+    "madrid": "Madrid",
+    "tenerife": "Tenerife",
+    "flightType": {
+      "directflight": "direct flight",
+      "oneStop": "one stop in MAD"
+    },
+    "person": "person",
+    "bookNow": "Book Now"
+  },
   "filters": {
+    "destination": "Destination",
+    "categories": "Categories",
     "main": {
       "title": "Filters",
       "reset": "reset"
+    },
+    "packages": {
+      "title": "Package Charter for {hotelName}",
+      "address": "Bischofshofen, 4, 38660 Adeje, Spain",
+      "type": {
+        "flights": "Flights",
+        "hotel": "Hotel",
+        "transfers": "Transfers",
+        "activities": "Activities"
+      }
+    },
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "services": {
+      "flightIncluded": "Flight included",
+      "checkinBaggage": "checkin baggage",
+      "handBaggage": "hand baggage",
+      "airportTaxes": "Airport taxes",
+      "airportToHotel": "Transfer from airport to hotel",
+      "hotelToAirport": "Transfer from hotel to airport",
+      "touristAssistance": "Tourist assistance",
+      "nightStay": "nights stay"
     }
   },
   "packages": {
@@ -227,7 +322,8 @@
       "taxes": "*Including all taxes",
       "includedServices": "Included Services",
       "hotelDescription": "Hotel Description",
-      "loadMore": "View more packages"
+      "loadMore": "View more packages",
+      "from": "From"
     }
   },
   "packageDetails": {
@@ -258,5 +354,55 @@
     "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, Spain",
     "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
     "viewMore": "View more"
+  },
+  "hotelDetail": {
+    "hotelDetailComponent": {
+      "find": "Find",
+      "hotel": "Destination or Hotel",
+      "outDate": "Check-out date",
+      "inDate": "Check-in date",
+      "details": "Details",
+      "addNumbersOfPersons": "Add Numbers of Persons",
+      "ageOnTheDayOfTravel": "Yrs & above on the day of travel",
+      "infantsAgeAtTheDayOfTravel": "Under 2 yrs on the day of travel",
+      "infoIconDes": "Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
+      "viewPrices": "View Prices",
+      "newSearch": "New Search",
+      "done": "Done",
+      "showMap": "Show Map"
+    },
+    "hotelAbout": {
+      "features": {
+        "breakfast": "Breakfast info Continental, Buffet",
+        "seaView": "Sea view",
+        "gardenView": "Garden view",
+        "terrace": "Terrace",
+        "poolView": "Pool view",
+        "quietStreetView": "Quiet street view",
+        "freeParking": "Free parking",
+        "atmExchange": "ATM Exchange"
+      },
+      "readLess": "read less...",
+      "readMore": "read more..."
+
+    },
+    "hotelAvailable": {
+      "roomsAvailable": "Available Rooms for",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "refreshPrice": "Refresh Prices",
+      "roomType": "Room Type",
+      "meals": "Meals",
+      "rooms": "Rooms",
+      "room": "Room",
+      "price": "Price",
+      "premiumRoom": "Premium Family Room ",
+      "breakfastInc": "Breakfast included",
+      "bookNow": "Book Now"
+    }
   }
+
+
+
+
 }
