@@ -234,7 +234,7 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.country')}
                                     </InputLabel>
-                                    <TextInput name={`contact.country`} required as="select" defaultValue="" style={{background: "none"}}>
+                                    <TextInput name={`contact.country`} required as="select" style={{background: "none"}}>
                                         <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
                                         <option value="spain">Spain</option>
                                         <option value="morocco">Morocco</option>
@@ -328,7 +328,7 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.country')}
                                     </InputLabel>
-                                    <TextInput name={`invoice.country`} required as="select" defaultValue="" style={{background: "none"}}>
+                                    <TextInput name={`invoice.country`} required as="select" style={{background: "none"}}>
                                         <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
                                         <option value="spain">Spain</option>
                                         <option value="morocco">Morocco</option>

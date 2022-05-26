@@ -31,7 +31,6 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
 
     const  t = useTranslations();
 
-
     return(
         <Flights>
             {
