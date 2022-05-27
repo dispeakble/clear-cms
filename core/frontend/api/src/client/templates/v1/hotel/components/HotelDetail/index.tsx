@@ -336,6 +336,7 @@ const HotelDetailComponent = ({
                                   </div>
                               </GuestType>
                               {show.details ? (
+                                  <div data-testid="detailsContainer">
                                   <DetailsCard>
                                       <DetailTop>
                                           <CloseIcon onClick={()=>
@@ -354,9 +355,9 @@ const HotelDetailComponent = ({
                                               </BoxLeft>
                                               <BoxRight>
                                                   <Quantity>
-                                                      <SPAN onClick={handleAdultMinus}>-</SPAN>
-                                                      <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
-                                                      <SPAN onClick={handleAdultPlus}>+</SPAN>
+                                                      <SPAN onClick={handleAdultMinus} data-testid="decAdultNumber">-</SPAN>
+                                                      <h5 data-testid='adultNumberFromDropdown'>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
+                                                      <SPAN onClick={handleAdultPlus} data-testid="incAdultNumber">+</SPAN>
                                                   </Quantity>
                                               </BoxRight>
                                           </Person>
@@ -367,9 +368,9 @@ const HotelDetailComponent = ({
                                               </BoxLeft>
                                               <BoxRight>
                                                   <Quantity>
-                                                      <SPAN onClick={handleChildrenMinus}>-</SPAN>
-                                                      <h5>{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
-                                                      <SPAN onClick={handleChildrenPlus}>+</SPAN>
+                                                      <SPAN onClick={handleChildrenMinus} data-testid="decChildNumber">-</SPAN>
+                                                      <h5 data-testid="childNumberFromDropdown">{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
+                                                      <SPAN onClick={handleChildrenPlus} data-testid="incChildNumber">+</SPAN>
                                                   </Quantity>
                                               </BoxRight>
                                           </Person>
@@ -380,9 +381,9 @@ const HotelDetailComponent = ({
                                               </BoxLeft>
                                               <BoxRight>
                                                   <Quantity>
-                                                      <SPAN onClick={handleInfantsMinus}>-</SPAN>
-                                                      <h5>{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                      <SPAN onClick={handleInfantsPlus}>+</SPAN>
+                                                      <SPAN onClick={handleInfantsMinus} data-testid="decInfantNumber">-</SPAN>
+                                                      <h5 data-testid="infantNumberFromDropdown">{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
+                                                      <SPAN onClick={handleInfantsPlus} data-testid="incInfantNumber">+</SPAN>
                                                   </Quantity>
                                               </BoxRight>
                                           </Person>
@@ -395,7 +396,7 @@ const HotelDetailComponent = ({
                                           </SubDetail>
                                       </PersonEntry>
                                   </DetailsCard>
-
+                                  </div>
                               ) : null}
                           </DateDiv>
                       </ClickAwayListener>
