@@ -226,7 +226,7 @@
   "custom500": {
     "header": "Por el momento nuestros servicios están en mantenimiento."
   },
-  "flightsCheckout": {
+  "flightsCheckout" : {
     "cart": {
       "header": "Su cesta de la compra",
       "tax": "Impuesto sobre los servicios",
@@ -330,8 +330,8 @@
       "taxes": "*Incluyendo todos los impuestos",
       "includedServices": "Servicios incluidos",
       "hotelDescription": "Descripción del hotel",
-      "loadMore": "Ver más paquetes",
-      "from": "Desde"
+      "from": "Desde",
+      "loadMore": "Ver más paquetes"
     }
   },
   "packageDetails": {
@@ -438,6 +438,41 @@
     }
   },
 
+  "hotelCheckout": {
+    "main": {
+      "stars": "{stars} estrellas",
+      "adults": "Adultos",
+      "children": "Niños"
+    },
+    "headers": {
+      "first": "Detalles de la reserva",
+      "second": "Detalles del pasajero",
+      "fourthError": "Error de pago",
+      "fourthSuccess": "Procesamiento de pagos",
+      "confirmed": "Procesamiento de pagos"
+    },
+    "payment": {
+      "error": {
+        "title": "El paso de pago no tuvo éxito",
+        "insufficientFunds": "Fondos insuficientes",
+        "tryAgain": "Intentémoslo de nuevo"
+      },
+      "success": {
+        "title": "Le redirigimos al paso de procesamiento de pagos",
+        "doNotCloseWindow": "Por favor, no cierre esta ventana"
+      },
+      "clickBackButton": "O bien, haga clic en el botón de retroceso",
+      "redirectText": "Si su página no ha cambiado en 5 segundos, por favor",
+      "clickHere": "Haga clic aquí"
+    },
+    "paymentConfirmed": {
+      "successText": "Éxito",
+      "emailDetails": "También recibirá un correo electrónico con todos los detalles."
+    },
+    "cart": {
+      "allInclusive": "Todo incluido"
+    }
+  },
   "hotelResult": {
     "sideBar": {
       "carousels": {

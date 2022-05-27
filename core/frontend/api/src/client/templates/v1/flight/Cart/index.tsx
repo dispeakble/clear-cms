@@ -31,9 +31,9 @@ const Cart = ({flightData, passengersCount}: IProps) => {
             </CartHeaderWrapper>
             <CartItemContainer>
                 {
-                    flightData.map((flight: any) => {
+                    flightData.map((flight: any, index: number ) => {
                         return(
-                            <CartFlightInfo>
+                            <CartFlightInfo key={index}>
                                 <FlightCartItem>
                                     <DepartureTextWrapper>
                                         <Image
@@ -88,7 +88,7 @@ const Cart = ({flightData, passengersCount}: IProps) => {
                 {
                     Object.keys(passengersCount).map((key: any) =>
                         (
-                            <TicketItem>
+                            <TicketItem key={key}>
                                 <TicketText>
 
                                     {passengersCount[key]} x {t(`global.${key}`)} {t('flightsCheckout.main.ticket')}
