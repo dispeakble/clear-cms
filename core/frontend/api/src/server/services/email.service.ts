@@ -120,7 +120,6 @@ export class EmailService {
 
     try {
       const res = await this.protocolService.sendMessage(payload).toPromise();
-      // const res = await new ProtocolService().sendMessage(payload).toPromise();
       const data = JSON.parse(res.data);
 
       result['emailSender'] = data['emailSender'];
