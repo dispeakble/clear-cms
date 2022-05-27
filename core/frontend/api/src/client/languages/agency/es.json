@@ -6,7 +6,8 @@
     "adults": "Adultos",
     "childrens": "Niños",
     "nights": "Noches",
-    "infants": "Infantes"
+    "infants": "Infantes",
+    "days": "dias"
   },
   "day": {
     "monday": "Lunes",
@@ -56,8 +57,15 @@
         "adventure": "Aventura",
         "relax": "Relax",
         "see-prices": "Ver precios"
-      }
+      },
+      "hotel1": "hoteles 1" ,
+      "description": "Alojamiento y desayuno completo",
+      "noOfNights": "Vuelo + Hotel 3 noches"
     },
+    "relax": "Relax",
+    "breakfast": "desayuno",
+    "detail": "7 días, desayuno",
+    "bookNow": "Reservar ahora",
     "tabbed": {
       "tabs": {
         "first": "Vuelos + Hoteles",
@@ -118,9 +126,9 @@
   "search": {
     "destination": "Destino",
     "input-placeholder": "¿Adónde vas?",
-    "searchPackagesButton": "Find deals",
-    "searchHotelsButton": "Find hotels",
-    "searchFlightsButton": "Find tickets",
+    "searchPackagesButton": "Encuentra ofertas",
+    "searchHotelsButton": "Buscar hoteles",
+    "searchFlightsButton": "Encontrar entradas",
     "checkin": "Llegada",
     "addDate": "Añadir fecha",
     "checkinDate": "Fecha de registro",
@@ -135,17 +143,17 @@
     "children-age": "De 2 a 12 años.",
     "infants-age": "Menos de 2.",
     "search-btn": "Buscar",
-    "homeSearchPackageDeparturePlaceholder": "Departure",
-    "homeSearchPackageDestinationPlaceholder": "Destination",
-    "homeSearchFlightDeparturePlaceholder": "Departure",
-    "homeSearchFlightDestinationPlaceholder": "Destination",
-    "homeSearchHotelDestinationPlaceholder": "Search for a destination or a hotel",
-    "flightsDeparturePlaceholder": "Flight departure",
-    "flightsDestinationPlaceholder": "Flight destination",
-    "departure": "Departure",
-    "return": "Return",
-    "departureDate": "Departure date",
-    "returnDate": "Return date",
+    "homeSearchPackageDeparturePlaceholder": "Salida",
+    "homeSearchPackageDestinationPlaceholder": "Destino",
+    "homeSearchFlightDeparturePlaceholder": "Salida",
+    "homeSearchFlightDestinationPlaceholder": "Destino",
+    "homeSearchHotelDestinationPlaceholder": "Buscar un destino o un hotel",
+    "flightsDeparturePlaceholder": "Salida del vuelo",
+    "flightsDestinationPlaceholder": "destino del vuelo",
+    "departure": "Salida",
+    "return": "Devolver",
+    "departureDate": "Fecha de salida",
+    "returnDate": "Fecha de regreso",
     "hotels": "Hoteles",
     "packages": "Paquetes",
     "flights": "Vuelos",
@@ -337,24 +345,53 @@
     "checkInDate": "Comprobar en la fecha:",
     "checkOutDate": "Echa un vistazo a la fecha:",
     "adult": "Adultos",
-    "children": "Children",
+    "children": "Niños",
     "flightDetails": "Detalles del vuelo",
     "flightDetailLabel": "Vuelo desde {flightFrom} a {flightTo} {flightDuration}",
     "bookingDetailPara": "Precios disponibles para el {date} - {noOfNights} noches",
     "charterDetailHeading1": "Paquete Charter para {hotelName}",
     "charterDetailPara1": "Vacaciones especialmente seleccionadas para su alma gemela, disfrute de una cena en un entorno romántico en Barefoot Resort - Havelock, emocionante actividad Seakart, visite la playa Elephant y disfrute de los deportes acuáticos. Cómodos traslados privados, Elección de Hoteles, Viajes interinsulares en ferry privado...",
-    "charterDetailHeading2": "Condiciones de reserva"
+    "charterDetailHeading2": "Condiciones de reserva",
+    "incService": "Servicios incluidos",
+    "services": {
+      "flightIncluded": "Vuelo incluido",
+      "checkinBaggage": "facturar equipaje",
+      "handBaggage": "equipaje de mano",
+      "airportTaxes": "Impuestos de aeropuerto",
+      "airportToHotel": "Traslado del aeropuerto al hotel",
+      "hotelToAirport": "Transfer from hotel to airport",
+      "touristAssistance":  "asistencia turística",
+      "nightStay": "noches de estancia"
+    },
+    "notIncService": "Servicios No Incluidos",
+    "travelIns": "Seguro de viaje",
+    "detailCard": {
+      "packDetail": "Detalles del paquete",
+      "flightInf": "Informacion de vuelo",
+      "flightDate": "Fecha de vuelo",
+      "occupants": "ocupantes",
+      "bookingDetails": "Detalles de la reserva",
+      "singleRoom": "Habitación individual",
+      "allIncl": "Todo incluido",
+      "bookNow": "Reservar ahora",
+      "doubleRoom": "Doble habitacion",
+      "henri": "enrique",
+      "coanda": "Coandá",
+      "tenerife": "Tenerfie",
+      "spain": "España",
+      "sur": "Sur",
+      "bucharest": "Bucarest",
+      "checkAvailable": "Consultar disponibilidad",
+      "otherDestinations": "Otros Destinos"
+    },
+    "packageCharter": {
+      "showMap": "Mostrar mapa",
+      "from": "desde",
+      "perStay": "pers / estancia"
+    }
   },
-  "hotelResult": {
-    "adult": "Adulto",
-    "nights": "noches",
-    "bookNow": "Reservar ahora",
-    "from": "Desde",
-    "hotelVictoria": "Hotel Victoria",
-    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
-    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
-    "viewMore": "Ver más"
-  },
+
+
   "hotelDetail": {
     "hotelDetailComponent": {
       "find": "Encontrar",
@@ -399,5 +436,31 @@
       "breakfastInc": "Desayuno incluido",
       "bookNow": "Reservar ahora"
     }
+  },
+
+  "hotelResult": {
+    "sideBar": {
+      "carousels": {
+        "title1": "Grandes ofertas de 2022",
+        "title2": "Principales búsquedas de 2022"
+      },
+      "search": {
+        "detail": "Details",
+        "addPersons": "Añadir números de personas",
+        "adultsAge": "12 años o más el día del viaje",
+        "childrensAge": "2-12 años el día del viaje",
+        "infantsAge": "Menores de 2 años el día del viaje",
+        "done": "Hecho",
+        "newSearch": "Nueva búsqueda"
+      }
+    },
+    "adult": "Adulto",
+    "nights": "noches",
+    "bookNow": "Reservar ahora",
+    "from": "Desde",
+    "hotelVictoria": "Hotel Victoria",
+    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
+    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "viewMore": "Ver más"
   }
 }

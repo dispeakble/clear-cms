@@ -6,8 +6,11 @@
     "adults": "Adults",
     "childrens": "Children",
     "infants": "Infants",
-    "nights": "Nights"
+    "nights": "Nights",
+    "days": "days"
   },
+
+
   "day": {
     "monday": "Monday",
     "tuesday": "Tuesday",
@@ -31,6 +34,8 @@
     "november": "November",
     "december": "December"
   },
+
+
   "home": {
     "seo": {
       "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
@@ -56,8 +61,16 @@
         "adventure": "Adventure",
         "relax": "Relax",
         "see-prices": "See prices"
-      }
+      },
+      "hotel1": "Hotel 1" ,
+      "description": "Accommodation and full breakfast",
+      "noOfNights": "Flight + Hotel 3 nights",
+      "bookNow": "Book Now"
     },
+    "relax": "Relax",
+    "breakfast": "breakfast",
+    "detail": "7 days, breakfast",
+    "bookNow": "Book Now",
     "tabbed": {
       "tabs": {
         "first": "Flights + Hotels",
@@ -115,6 +128,7 @@
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla sapien libero, non malesuada nisi lacinia vel. Nam euvarius justo. Phaselluslaoreet sapien augue, a accumsan turpis dapibus vitae. Curabitur ac nibh felis. Sed eu metus quis erosegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttitor lor sit ametsegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttit"
     }
   },
+
   "search": {
     "destination": "Destination",
     "input-placeholder": "Where are you going?",
@@ -152,6 +166,7 @@
     "hotel-stars": "Category",
     "activities": "Activities"
   },
+
   "deals": {
     "hotel": "Hotel Victoria",
     "location": "Bischofshofen, 4, 38660 Adeje, Spain",
@@ -163,24 +178,29 @@
       "infant": "infant-"
     }
   },
+
   "hotels": {
     "seo": {
       "pageTitle": "Hotels :: {websiteName}",
       "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
     }
   },
+
   "hotelAbout": {
     "hotel": "Hotel Victoria, Adeje, Spain ",
     "star": "(4 Stars)",
     "cardTitle": "Hotel Victoria Highlights"
   },
+
   "hotelAvailable": {
     "selectRoom": "2 Rooms"
   },
+
   "tooltip": {
     "view_price": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
     "room_type": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
   },
+
   "footer": {
     "links": {
       "about-us": "About Us",
@@ -194,12 +214,14 @@
     "subscribe-title": "Subscribe to our newsletter",
     "subscribe": "Subscribe"
   },
+
   "custom404": {
     "header": "Going somewhere? You have reached a very lost page.",
     "links": "Please click on the below links",
     "return": "Or return to the home page",
     "goBackHome": "Go back home"
   },
+
   "links": {
     "home": "Home",
     "contact": "Contact",
@@ -209,15 +231,19 @@
     "latestSearches": "Latest searches",
     "lastMinute": "Last minute"
   },
+
   "custom300": {
     "header": "Your page will redirect soon"
   },
+
   "custom401": {
     "header": "You have been signed out."
   },
+
   "custom500": {
     "header": "For the moment our services are under maintenance"
   },
+
   "flightsCheckout": {
     "cart": {
       "header": "Your Shopping Cart",
@@ -264,6 +290,7 @@
       "lastNamePlaceHolder": "E.G. Smith (Last Name)"
     }
   },
+
   "flightList": {
     "filters": {
       "sortCheckboxes": {
@@ -287,6 +314,7 @@
     "person": "person",
     "bookNow": "Book Now"
   },
+
   "filters": {
     "destination": "Destination",
     "categories": "Categories",
@@ -316,6 +344,7 @@
       "nightStay": "nights stay"
     }
   },
+
   "packages": {
     "main": {
       "bookNow": "Book Now",
@@ -326,6 +355,7 @@
       "from": "From"
     }
   },
+
   "packageDetails": {
     "BookingCardTitle1": "Similar Hotels",
     "countryName": "Spain",
@@ -343,18 +373,49 @@
     "bookingDetailPara": "Available prices for {date} - {noOfNights} nights",
     "charterDetailHeading1": "Package Charter for {hotelName}",
     "charterDetailPara1": "Specially Curated Holiday for your soulmate, Enjoy dinner in a romantic set-up at Barefoot Resort - Havelock, Thrilling Seakart Activity, Visit Elephant beach and enjoy water sports. Comfortable private transfers, Choice of Hotels, Inter-island travel on a private ferry...",
-    "charterDetailHeading2": "Booking Conditions"
+    "charterDetailHeading2": "Booking Conditions",
+    "incService": "Included Services",
+    "services": {
+      "flightIncluded": "Flight included",
+      "checkinBaggage": "checkin baggage",
+      "handBaggage": "hand baggage",
+      "airportTaxes": "Airport taxes",
+      "airportToHotel": "Transfer from airport to hotel",
+      "hotelToAirport": "Transfer from hotel to airport",
+      "touristAssistance": "Tourist assistance",
+      "nightStay": "nights stay"
+    },
+    "notIncService": "Not Included Services",
+    "travelIns": "Travel insurance",
+    "detailCard": {
+      "packDetail": "Package Details",
+      "flightInf": "Flight information",
+      "flightDate": "Flight date",
+      "occupants": "Occupants",
+      "bookingDetails": "Booking Details",
+      "singleRoom": "Single room",
+      "allIncl": "All Inclusive",
+      "bookNow": "Book Now",
+      "doubleRoom": "Double room",
+      "henri": "Henri",
+      "coanda": "Coanda",
+      "tenerife": "Tenerfie",
+      "spain": "Spain",
+      "sur": "Sur",
+      "bucharest": "Bucharest",
+      "checkAvailable": "Check Availability",
+      "otherDestinations": "Other Destinations"
+    },
+    "packageCharter": {
+      "showMap": "Show Map",
+      "from": "from",
+      "perStay": "pers / stay"
+    }
   },
-  "hotelResult": {
-    "adult": "Adult",
-    "nights": "nights",
-    "bookNow": "Book Now",
-    "from": "From",
-    "hotelVictoria": "Hotel Victoria",
-    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, Spain",
-    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
-    "viewMore": "View more"
-  },
+
+
+
+
   "hotelDetail": {
     "hotelDetailComponent": {
       "find": "Find",
@@ -400,9 +461,32 @@
       "breakfastInc": "Breakfast included",
       "bookNow": "Book Now"
     }
+  },
+
+  "hotelResult": {
+    "sideBar": {
+      "carousels": {
+        "title1": "Hot deals of 2022",
+        "title2": "Top searches of 2022"
+      },
+      "search": {
+        "detail": "Details",
+        "addPersons": "Add Numbers of Persons",
+        "adultsAge": "12Yrs & above on the day of travel",
+        "childrensAge": "2-12 yrs on the day of travel",
+        "infantsAge": "Under 2 yrs on the day of travel",
+        "done": "Done",
+        "newSearch": "New Search"
+      }
+    },
+
+    "adult": "Adult",
+    "nights": "nights",
+    "bookNow": "Book Now",
+    "from": "From",
+    "hotelVictoria": "Hotel Victoria",
+    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, Spain",
+    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "viewMore": "View more"
   }
-
-
-
-
 }

@@ -79,11 +79,12 @@ const HotelAvailable = ({
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
     const [showRoom, setShowRoom] = useState("");
+    const t = useTranslations();
 
     const [selectedRoom, setSelectedRoom] = useState<{ room: string, price: number }[]>([{
-        room: "1 Room",
+        room: `1 ${t("hotelDetail.hotelAvailable.room")}`,
         price: 10
-    }, { room: "2 Rooms", price: 10 }, { room: "3 Rooms", price: 10 }, { room: "4 Rooms", price: 10 }, { room: "5 Rooms", price: 10 }]);
+    }, { room: `2 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `3 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `4 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `5 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }]);
     const [forArray] = useState([
         {
             hotelPrice: 122,
@@ -108,7 +109,7 @@ const HotelAvailable = ({
 
 
     ]);
-    const t = useTranslations();
+
     const allRooms = [`1 ${t("hotelDetail.hotelAvailable.room")}`, `2 ${t("hotelDetail.hotelAvailable.rooms")}`
         , `3 ${t("hotelDetail.hotelAvailable.rooms")}`, `4 ${t("hotelDetail.hotelAvailable.rooms")}`, `5 ${t("hotelDetail.hotelAvailable.rooms")}`];
 
@@ -143,7 +144,7 @@ const HotelAvailable = ({
 
     return (
         <Wrapper>
-            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} adults, {data.passenger.children} children, {data.passenger.infants} infants </QueryTitle>
+            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.childrens")}, {data.passenger.infants} {t("global.infants")} </QueryTitle>
             <Modifier>
                 <HotelCheck>
                     <LeftSide>

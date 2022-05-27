@@ -38,24 +38,6 @@ import {
 import moment from "moment"
 import Carousal from "../Carousel";
 
-const carouselsData = [
-    {
-        title: "Hot deals of 2022",
-        imgSrc: '../../assets/img/hotelresults/card1.jpg',
-        hotelName: 'Hotel Victoria',
-        averageStars: 4,
-        price: 1409,
-        noOfNights: 7
-    },
-    {
-        title: "Top searches of 2022",
-        imgSrc: '../../assets/img/hotelresults/card1.jpg',
-        hotelName: 'Hotel Victoria',
-        averageStars: 4,
-        price: 1409,
-        noOfNights: 7
-    }
-]
 
 
 type HotelDetailProps = {
@@ -91,6 +73,25 @@ const HotelResultSideBar = ({
     });
 
     const t = useTranslations();
+    const carouselsData = [
+        {
+            title: t("hotelResult.sideBar.carousels.title1"),
+            imgSrc: '../../assets/img/hotelresults/card1.jpg',
+            hotelName: 'Hotel Victoria',
+            averageStars: 4,
+            price: 1409,
+            noOfNights: 7
+        },
+        {
+            title: t("hotelResult.sideBar.carousels.title2"),
+            imgSrc: '../../assets/img/hotelresults/card1.jpg',
+            hotelName: 'Hotel Victoria',
+            averageStars: 4,
+            price: 1409,
+            noOfNights: 7
+        }
+    ]
+
     const handleClickAway = (name: string) => {
         setShow({
             ...show,
@@ -209,7 +210,7 @@ const HotelResultSideBar = ({
                     <Destination>
                         <ClickAwayListener onClickAway={() => handleClickAway("details")}>
                             <DateDiv>
-                                <H4>Details:</H4>
+                                <H4>{t("hotelResult.sideBar.search.detail")}</H4>
                                 <GuestType>
                                     <AdultBox onClick={() => handleShowPassenger()}>
                                         <AdultIcon  />
@@ -243,14 +244,14 @@ const HotelResultSideBar = ({
                                                     ...show,
                                                     details: false
                                                 })}/>
-                                            Details
+                                            {t("hotelResult.sideBar.search.detail")}
                                         </DetailTop>
                                         <PersonEntry>
-                                            <CardDesc>Add Numbers of Persons</CardDesc>
+                                            <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>Adults</h3>
-                                                    <p>12Yrs & above on the day of travel</p>
+                                                    <h3>{t("global.adults")}</h3>
+                                                    <p>{t("hotelResult.sideBar.search.adultsAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>
                                                     <Quantity>
@@ -262,8 +263,8 @@ const HotelResultSideBar = ({
                                             </Person>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>Children</h3>
-                                                    <p>2-12 yrs on the day of travel</p>
+                                                    <h3>{t("global.childrens")}</h3>
+                                                    <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>
                                                     <Quantity>
@@ -275,8 +276,8 @@ const HotelResultSideBar = ({
                                             </Person>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>Infants</h3>
-                                                    <p>Under 2 yrs on the day of travel</p>
+                                                    <h3>{t("global.infants")}</h3>
+                                                    <p>{t("hotelResult.sideBar.search.infantsAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>
                                                     <Quantity>
@@ -291,7 +292,7 @@ const HotelResultSideBar = ({
                                                     setShow({
                                                         ...show,
                                                         details: false
-                                                    })}>Done</button>
+                                                    })}>{t("hotelResult.sideBar.search.done")}</button>
                                             </SubDetail>
                                         </PersonEntry>
                                     </DetailsCard>
@@ -302,7 +303,7 @@ const HotelResultSideBar = ({
 
                     </Destination>
                     <NewSearch>
-                        <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>New Search</span></Link></button>
+                        <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>{t("hotelResult.sideBar.search.newSearch")}</span></Link></button>
                     </NewSearch>
                 </EditDeals>
             </DealCard>

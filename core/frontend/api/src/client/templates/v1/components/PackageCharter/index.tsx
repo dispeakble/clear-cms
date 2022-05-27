@@ -337,14 +337,14 @@ const PackageCharter = ({
                                                     ...show,
                                                     details: false
                                                 })}/>
-                                            Details
+                                            {t("hotelResult.sideBar.search.detail")}
                                         </DetailTop>
                                         <PersonEntry>
-                                            <CardDesc>Add Numbers of Persons</CardDesc>
+                                            <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>Adults</h3>
-                                                    <p>12Yrs & above on the day of travel</p>
+                                                    <h3>{t("global.adults")}</h3>
+                                                    <p>{t("hotelResult.sideBar.search.adultsAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>
                                                     <Quantity>
@@ -356,8 +356,8 @@ const PackageCharter = ({
                                             </Person>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>Children</h3>
-                                                    <p>2-12 yrs on the day of travel</p>
+                                                    <h3>{t("global.childrens")}</h3>
+                                                    <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>
                                                     <Quantity>
@@ -369,8 +369,8 @@ const PackageCharter = ({
                                             </Person>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>Infants</h3>
-                                                    <p>Under 2 yrs on the day of travel</p>
+                                                    <h3>{t("global.infants")}</h3>
+                                                    <p>{t("hotelResult.sideBar.search.infantsAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>
                                                     <Quantity>
@@ -385,7 +385,7 @@ const PackageCharter = ({
                                                     setShow({
                                                         ...show,
                                                         details: false
-                                                    })}>Done</button>
+                                                    })}>{t("hotelResult.sideBar.search.done")}</button>
                                             </SubDetail>
                                         </PersonEntry>
                                     </DetailsCard>
@@ -396,7 +396,7 @@ const PackageCharter = ({
 
                     </Destination>
                     <NewSearch>
-                        <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>New Search</span></Link></button>
+                        <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>{t("hotelResult.sideBar.search.newSearch")}</span></Link></button>
                     </NewSearch>
 
                 </EditDeals>
@@ -410,12 +410,12 @@ const PackageCharter = ({
                             <HotelLocation>
                                 {t("deals.location")}
                             </HotelLocation>
-                            <ViewMap><Link to="showmap" spy={true} smooth={true}>Show Map</Link></ViewMap>
+                            <ViewMap><Link to="showmap" spy={true} smooth={true}>{t("packageDetails.packageCharter.showMap")}</Link></ViewMap>
                         </ShortDescription>
                     </LeftSide>
                     <ViewPrice>
-                        <Price><span>from</span> 1409€</Price>
-                        <AboutPrice>pers / stay</AboutPrice>
+                        <Price><span>{t("packageDetails.packageCharter.from")}</span> 1409€</Price>
+                        <AboutPrice>{t("packageDetails.packageCharter.perStay")}</AboutPrice>
 
                     </ViewPrice>
                 </HotelInfo>

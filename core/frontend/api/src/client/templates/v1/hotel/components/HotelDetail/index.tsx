@@ -336,67 +336,65 @@ const HotelDetailComponent = ({
                                   </div>
                               </GuestType>
                               {show.details ? (
-                                  <div data-testid="detailsContainer">
                                   <DetailsCard>
                                       <DetailTop>
                                           <CloseIcon onClick={()=>
                                               setShow({
-                                              ...show,
-                                              details: false
-                                          })}/>
-                                          {t("hotelDetail.hotelDetailComponent.details")}
-                                      </DetailTop>
-                                      <PersonEntry>
-                                      <CardDesc>{t("hotelDetail.hotelDetailComponent.addNumbersOfPersons")}</CardDesc>
-                                      <Person>
-                                          <BoxLeft>
-                                              <h3>{t("global.adults")}</h3>
-                                              <p>12{t("hotelDetail.hotelDetailComponent.ageOnTheDayOfTravel")}</p>
-                                          </BoxLeft>
-                                          <BoxRight>
-                                              <Quantity>
-                                                  <SPAN onClick={handleAdultMinus} data-testid="decAdultNumber">-</SPAN>
-                                                  <h5 data-testid='adultNumberFromDropdown'>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
-                                                  <SPAN onClick={handleAdultPlus} data-testid="incAdultNumber">+</SPAN>
-                                              </Quantity>
-                                          </BoxRight>
-                                      </Person>
-                                      <Person>
-                                          <BoxLeft>
-                                              <h3>{t("global.children")}</h3>
-                                              <p>2-12 {t("hotelDetail.hotelDetailComponent.details")}</p>
-                                          </BoxLeft>
-                                          <BoxRight>
-                                              <Quantity>
-                                                  <SPAN onClick={handleChildrenMinus} data-testid="decChildNumber">-</SPAN>
-                                                  <h5 data-testid="childNumberFromDropdown">{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
-                                                  <SPAN onClick={handleChildrenPlus} data-testid="incChildNumber">+</SPAN>
-                                              </Quantity>
-                                          </BoxRight>
-                                      </Person>
-                                      <Person>
-                                          <BoxLeft>
-                                              <h3>{t(`deals.detail.infant`)}</h3>
-                                              <p>{t("hotelDetail.hotelDetailComponent.infantsAgeAtTheDayOfTravel")}</p>
-                                          </BoxLeft>
-                                          <BoxRight>
-                                              <Quantity>
-                                                  <SPAN onClick={handleInfantsMinus} data-testid="decInfantNumber">-</SPAN>
-                                                  <h5 data-testid="infantNumberFromDropdown">{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                  <SPAN onClick={handleInfantsPlus} data-testid="incInfantNumber">+</SPAN>
-                                              </Quantity>
-                                          </BoxRight>
-                                      </Person>
-                                      <SubDetail>
-                                          <button onClick={()=>
-                                              setShow({
                                                   ...show,
                                                   details: false
-                                              })}>Done</button>
-                                      </SubDetail>
+                                              })}/>
+                                          {t("hotelResult.sideBar.search.detail")}
+                                      </DetailTop>
+                                      <PersonEntry>
+                                          <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>
+                                          <Person>
+                                              <BoxLeft>
+                                                  <h3>{t("global.adults")}</h3>
+                                                  <p>{t("hotelResult.sideBar.search.adultsAge")}</p>
+                                              </BoxLeft>
+                                              <BoxRight>
+                                                  <Quantity>
+                                                      <SPAN onClick={handleAdultMinus}>-</SPAN>
+                                                      <h5>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
+                                                      <SPAN onClick={handleAdultPlus}>+</SPAN>
+                                                  </Quantity>
+                                              </BoxRight>
+                                          </Person>
+                                          <Person>
+                                              <BoxLeft>
+                                                  <h3>{t("global.childrens")}</h3>
+                                                  <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
+                                              </BoxLeft>
+                                              <BoxRight>
+                                                  <Quantity>
+                                                      <SPAN onClick={handleChildrenMinus}>-</SPAN>
+                                                      <h5>{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
+                                                      <SPAN onClick={handleChildrenPlus}>+</SPAN>
+                                                  </Quantity>
+                                              </BoxRight>
+                                          </Person>
+                                          <Person>
+                                              <BoxLeft>
+                                                  <h3>{t("global.infants")}</h3>
+                                                  <p>{t("hotelResult.sideBar.search.infantsAge")}</p>
+                                              </BoxLeft>
+                                              <BoxRight>
+                                                  <Quantity>
+                                                      <SPAN onClick={handleInfantsMinus}>-</SPAN>
+                                                      <h5>{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
+                                                      <SPAN onClick={handleInfantsPlus}>+</SPAN>
+                                                  </Quantity>
+                                              </BoxRight>
+                                          </Person>
+                                          <SubDetail>
+                                              <button onClick={()=>
+                                                  setShow({
+                                                      ...show,
+                                                      details: false
+                                                  })}>{t("hotelResult.sideBar.search.done")}</button>
+                                          </SubDetail>
                                       </PersonEntry>
                                   </DetailsCard>
-                                  </div>
 
                               ) : null}
                           </DateDiv>

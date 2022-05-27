@@ -250,9 +250,9 @@ const PackageDetailCard = () => {
 
     return (
             <PackageDetailContainer>
-                <TitleText>Package Details</TitleText>
+                <TitleText>{t("packageDetails.detailCard.packDetail")}</TitleText>
                 <FlightInformation>
-                    <label>Flight information</label>
+                    <label>{t("packageDetails.detailCard.flightInf")}</label>
                     <InputContainer>
                         <FlightTakeOffInput>
                             <TakeOffInputContainer>
@@ -296,7 +296,7 @@ const PackageDetailCard = () => {
                         </FlightTakeOffInput>
                     </InputContainer>
 
-                    <label>Flight information</label>
+                    <label>{t("packageDetails.detailCard.flightDate")}</label>
 
                     <InputContainer>
                         <div style={{flex: '1 0 40%', }}>
@@ -341,13 +341,13 @@ const PackageDetailCard = () => {
                         <input placeholder={t("deals.checkin") }
                                onChange={() => {}}
                                style={{cursor: 'pointer'}}
-                               value="7 nights" readOnly />
+                               value={`7 ${t("global.nights")}`} readOnly />
 
                         <DropdownIcon />
                     </HotelSearch>
 
                     </InputContainer>
-                    <label>Occupants</label>
+                    <label>{t("packageDetails.detailCard.occupants")}</label>
                     <InputContainer>
                         <PassengerWrapper>
                             <ClickAwayListener onClickAway={()=>setShowOccupantAdult(false)}>
@@ -416,8 +416,8 @@ const PackageDetailCard = () => {
                     <label>{t("packageDetails.flightDetailLabel", {flightFrom: "Henri Coanda", flightTo: "Tenerife", flightDuration: "04h 45m"})}</label>
 
                     <FlightDetailsContainer>
-                        <FlightPort>Henri<br />Coanda,<br />
-                            Bucharest</FlightPort>
+                        <FlightPort>{t("packageDetails.detailCard.henri")}<br />{t("packageDetails.detailCard.coanda")},<br />
+                            {t("packageDetails.detailCard.tenerife")}</FlightPort>
                         <Time>
                             <div className="takeOffTime">05:45</div>
                             <div className="time-dotted">
@@ -427,12 +427,12 @@ const PackageDetailCard = () => {
                             <ImageForCompany />
                             <div className="tandingTime">07:30</div>
                         </Time>
-                        <FlightPort>Tenerfie<br /> Sur,<br />
-                            Spain</FlightPort>
+                        <FlightPort>{t("packageDetails.detailCard.tenerife")}<br /> {t("packageDetails.detailCard.sur")},<br />
+                            {t("packageDetails.detailCard.spain")}</FlightPort>
                     </FlightDetailsContainer>
                     <FlightDetailsContainer>
-                        <FlightPort>Tenerfie<br />Sur,<br />
-                            Spain</FlightPort>
+                        <FlightPort>{t("packageDetails.detailCard.tenerife")}<br />{t("packageDetails.detailCard.sur")},<br />
+                            {t("packageDetails.detailCard.spain")}</FlightPort>
                         <Time>
                             <div className="takeOffTime">08:20</div>
                             <div className="time-dotted">
@@ -442,41 +442,41 @@ const PackageDetailCard = () => {
                             <ImageForCompany />
                             <div className="tandingTime">10:30</div>
                         </Time>
-                        <FlightPort>Henri<br /> Coanda,<br />
-                            Bucharest</FlightPort>
+                        <FlightPort>{t("packageDetails.detailCard.henri")}<br /> {t("packageDetails.detailCard.coanda")},<br />
+                            {t("packageDetails.detailCard.bucharest")}</FlightPort>
                     </FlightDetailsContainer>
                 </FlightInformation>
                 <BookingDetailContainer>
-                    <TitleText>Booking Details</TitleText>
+                    <TitleText>{t("packageDetails.detailCard.bookingDetails")}</TitleText>
                     <ParaTextBold style={{textAlign: 'center'}}>{t("packageDetails.bookingDetailPara", {date: "Jun 16 2022", noOfNights: "7"})}</ParaTextBold>
 
                     <BookingCard>
                         <div style={{ flexBasis: '15%', marginRight: '10px'}}>
-                            <BookingHeadingText>Single room</BookingHeadingText>
-                            <BookingHeadingText>All Inclusive</BookingHeadingText>
+                            <BookingHeadingText>{t('packageDetails.detailCard.singleRoom')}</BookingHeadingText>
+                            <BookingHeadingText>{t('packageDetails.detailCard.singleRoom')}</BookingHeadingText>
                         </div>
                         <div style={{display: 'flex', flexBasis: '55%'}}>
-                            <BookingMutedText>8 days / 7 nights</BookingMutedText>
-                            <BookingMutedText style={{marginLeft: '35px'}}>1 adults, 0 children</BookingMutedText>
+                            <BookingMutedText>8  {t('global.days')} / 7 {t('global.nights')}</BookingMutedText>
+                            <BookingMutedText style={{marginLeft: '35px'}}>1 {t('global.adults')}, 0 {t('global.childrens')}</BookingMutedText>
                         </div>
                         <div style={{display: 'flex', flexBasis: '30%'}}>
                             <BookingPriceText style={{marginRight: '30px'}}>409€</BookingPriceText>
-                            <BookingButton>Book Now</BookingButton>
+                            <BookingButton>{t("packageDetails.detailCard.bookNow")}</BookingButton>
                         </div>
                     </BookingCard>
 
                     <BookingCard>
                         <div style={{ flexBasis: '15%', marginRight: '10px'}}>
-                            <BookingHeadingText>Double room</BookingHeadingText>
-                            <BookingHeadingText>All Inclusive</BookingHeadingText>
+                            <BookingHeadingText>{t("packageDetails.detailCard.doubleRoom")}</BookingHeadingText>
+                            <BookingHeadingText>{t("packageDetails.detailCard.allIncl")}</BookingHeadingText>
                         </div>
                         <div style={{display: 'flex', flexBasis: '55%'}}>
                             <BookingMutedText>8 days / 7 nights</BookingMutedText>
-                            <BookingMutedText style={{marginLeft: '35px'}}>2 adults, 4 children</BookingMutedText>
+                            <BookingMutedText style={{marginLeft: '35px'}}>2 {t('global.adults')}, 4 {t('global.childrens')}</BookingMutedText>
                         </div>
                         <div style={{display: 'flex', flexBasis: '30%'}}>
                             <BookingPriceText style={{marginRight: '30px'}}>1409€</BookingPriceText>
-                            <BookingButton>Book Now</BookingButton>
+                            <BookingButton>{t("packageDetails.detailCard.bookNow")}</BookingButton>
                         </div>
                     </BookingCard>
                 </BookingDetailContainer>

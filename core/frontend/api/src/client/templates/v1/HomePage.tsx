@@ -22,13 +22,6 @@ import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
 import useWsContext from "../../context/SocketContext";
-<<<<<<< Updated upstream
-=======
-import { useEffect } from "react";
-import {EmailService} from "../../../server/services/email.service";
-import {ProtocolService} from "../../../server/services/protocol.service";
->>>>>>> Stashed changes
-
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   /*
 
@@ -42,18 +35,13 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       payload: {
         type: "invoice",
         destination: {
-<<<<<<< Updated upstream
           address: "dosidoweb@protonmail.com",
           name: "Do Si Do Web"
-=======
-          // address: "alexa.ovidiu@hotmail.com",
-          // name: "Ovidiu Alexa"
-          address: "tohiko7193@sinyago.com",
-          name: "Sufyan"
->>>>>>> Stashed changes
+
         }
       }
     });
+    console.log(response);
   };
 
   useEffect(() => {

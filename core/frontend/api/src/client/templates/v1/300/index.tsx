@@ -23,11 +23,11 @@ const Custom404 = ({ websiteName, colorScheme }: any) => {
 
     const router = useRouter()
 
-    React.useEffect(() => {
+    /*React.useEffect(() => {
         setTimeout(() => {
             router.push('/')
         }, 10000)
-    })
+    })*/
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
