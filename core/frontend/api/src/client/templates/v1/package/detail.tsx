@@ -153,14 +153,14 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
 
     const myTheme: any = { colors: colorScheme, icon: getIcons };
     const Features = [
-        "Flight included",
-        "1 checkin bagage",
-        "1 hand bagage",
-        "Airport taxes",
-        "Transfer from airport to hotel",
-        "Transfer from hotel to airport",
-        "Tourist assistance",
-        "7 nights stay"
+        t("packageDetails.services.flightIncluded"),
+        t("packageDetails.services.checkinBaggage"),
+        t("packageDetails.services.handBaggage"),
+        t("packageDetails.services.airportTaxes"),
+        t("packageDetails.services.airportToHotel"),
+        t("packageDetails.services.hotelToAirport"),
+        t("packageDetails.services.touristAssistance"),
+        `7 ${t("packageDetails.services.flightIncluded")}`
     ];
 
 
@@ -199,7 +199,7 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
                                   <ContentWrapper>
                                       <Highlights>
                                           <Cardtitle>
-                                              Included Services
+                                              {t("packageDetails.incService")}
                                           </Cardtitle>
                                           <Feature>
                                               {
@@ -211,10 +211,10 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
                                               }
                                           </Feature>
                                           <Cardtitle>
-                                              Not Included Services
+                                              {t("packageDetails.notIncService")}
                                           </Cardtitle>
                                           <Feature>
-                                              <li><UncheckedIcon /><span>Travel insurance</span></li>
+                                              <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
                                           </Feature>
                                       </Highlights>
                                       <MapSection id="showmap">
@@ -234,7 +234,7 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
                               <DetailWrapper>
                                   <PackageDetailCard />
                                   <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
-                                  <HotelCardGrid title={"Other Destinations"} />
+                                  <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
                               </DetailWrapper>
                           </BottomContentWrapper>
                       </PackageDetailMainContent>

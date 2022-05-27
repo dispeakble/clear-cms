@@ -40,7 +40,30 @@ interface IPassenger {
 const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(1)
+    const day = {
+        Monday: t('day.monday'),
+        Tuesday: t('day.tuesday'),
+        Wednesday: t('day.wednesday'),
+        Thurday: t('day.thursday'),
+        Friday: t('day.friday'),
+        Saturday: t('day.saturday'),
+        Sunday: t('day.sunday')
+    }
+    const month = {
+        January: t('month.january'),
+        February: t('month.february'),
+        March: t('month.march'),
+        April: t('month.april'),
+        May: t('month.may'),
+        June: t('month.june'),
+        July: t('month.july'),
+        August: t('month.august'),
+        September: t('month.september'),
+        October: t('month.october'),
+        November: t('month.november'),
+        December: t('month.december')
+    }
+    const [currentStep, setCurrentStep] = useState<number>(2)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -67,14 +90,14 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         {
             typeIMG: DepartureIcon,
             flightProviderIMG: FlightImg,
-            type: "departure",
-            departure: "Bucharest",
+            type: t("flightsCheckout.main.type.departure"),
+            departure: t("flightsCheckout.main.bucharest"),
             departureShort: "OTP",
-            departureDate: "Monday, 10 iun.",
+            departureDate: `${day.Monday}, 10 ${month.June}`,
             departureTime: "00:20",
-            destination: "Tenerife",
+            destination: t("flightsCheckout.main.tenerife"),
             destinationShort: "TFS",
-            destinationDate: "Monday, 10 iun.",
+            destinationDate: `${day.Monday}, 10 ${month.June}`,
             arrivalTime: "06:20",
             duration: "7h 30m",
             aircraft: "Wizz Air",
@@ -83,7 +106,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                 city: "Madrid",
                 short: "MAD",
                 duration: "2h 35m",
-                date: "Monday, 10 iun.",
+                date: `${day.Monday}, 10 ${month.June}`,
                 arrival: "18:20",
                 departure: "18:20",
             }
@@ -91,23 +114,23 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         {
             typeIMG: ArrivalIcon,
             flightProviderIMG: FlightImg,
-            type: "return",
-            departure: "Tenerife",
+            type: t("flightsCheckout.main.type.departure"),
+            departure: t("flightsCheckout.main.tenerife"),
             departureShort: "TFS",
-            departureDate: "Monday, 10 iun.",
+            departureDate: `${day.Monday}, 10 ${month.June}`,
             departureTime: "00:20",
-            destination: "Bucharest",
+            destination: t("flightsCheckout.main.bucharest"),
             destinationShort: "OTP",
-            destinationDate: "Monday, 10 iun.",
+            destinationDate: `${day.Monday}, 10 ${month.June}`,
             arrivalTime: "06:20",
             duration: "7h 30m",
             aircraft: "Wizz Air",
             aircraftRef: "W12345",
             stopover: {
-                city: "Madrid",
+                city: t("flightsCheckout.main.stopover.city.madrid"),
                 short: "MAD",
                 duration: "2h 35m",
-                date: "Monday, 10 iun.",
+                date: `${day.Monday}, 10 ${month.June}`,
                 arrival: "18:20",
                 departure: "18:20",
             }
@@ -115,19 +138,19 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         {
             typeIMG: DepartureIcon,
             flightProviderIMG: FlightImg,
-            type: "departure",
-            departure: "Bucharest",
+            type: t("flightsCheckout.main.type.departure"),
+            departure: t("flightsCheckout.main.bucharest"),
             departureShort: "OTP",
-            departureDate: "Monday, 10 iun.",
+            departureDate: `${day.Monday}, 10 ${month.June}`,
             departureTime: "00:20",
-            destination: "Tenerife",
+            destination: t("flightsCheckout.main.tenerife"),
             destinationShort: "TFS",
-            destinationDate: "Monday, 10 iun.",
+            destinationDate: `${day.Monday}, 10 ${month.June}`,
             arrivalTime: "06:20",
             duration: "7h 30m",
             aircraft: "Wizz Air",
-            aircraftRef: "W12345"
-        },
+            aircraftRef: "W12345",
+        }
     ]
 
     const [passengers, setPassengers] = useState<IPassenger[]>([])

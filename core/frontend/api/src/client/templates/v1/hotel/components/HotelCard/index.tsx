@@ -6,9 +6,9 @@ import React from "react"
 import cardBg from "../../../assets/img/hotels/original/hotel1.jpg"
 import calendarCheckIcon from "../../../assets/img/calendar-check-icon.svg"
 import {StyledStarsSmall} from "../../../components/Styled/stars";
-
+import {useTranslations} from "next-intl";
 const HotelCard = () => {
-
+    const t = useTranslations();
     return(
         <Body>
             <TitleText>Sol Puerto de la Cruz</TitleText>
@@ -21,7 +21,7 @@ const HotelCard = () => {
 
             <CustomButton>
                 <img src={calendarCheckIcon.src} alt="icon"/>
-                Check Availability
+                {t("packageDetails.detailCard.checkAvailable")}
             </CustomButton>
         </Body>
     )

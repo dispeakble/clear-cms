@@ -173,6 +173,7 @@ export const StyledSearchInputHolder = styled.div`
 `;
 
 export const StyledSearchButton = styled.button`
+  font-size: 14px;
   background: ${({theme}) => theme.colors.primaryColor};
   &:hover {
     background: ${({theme}) => theme.colors.primaryColorHover};

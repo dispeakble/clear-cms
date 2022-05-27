@@ -133,7 +133,7 @@ const PackageCard = ({_package}: IProps) => {
                     <PricingDetailsWrapper>
                         <PriceTextContainer>
                             <StartingPriceContainer>
-                                <p>From</p>
+                                <p>{t('packages.main.from')}</p>
                                 <StartingPriceText>
                                     {_package.startingPrice} €
                                 </StartingPriceText>
