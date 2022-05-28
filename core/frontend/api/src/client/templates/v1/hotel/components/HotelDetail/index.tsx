@@ -219,11 +219,11 @@ const HotelDetailComponent = ({
       <Wrapper>
           <DealCard>
               <CardHead>
-                  Find
+                  {t("hotelDetail.hotelDetailComponent.find")}
               </CardHead>
               <EditDeals>
                   <Destination>
-                      <H4>Destination or Hotel:</H4>
+                      <H4>{t("hotelDetail.hotelDetailComponent.hotel")}:</H4>
                       <HotelSearch>
                           <SearchIcon/>
                           <input value={data.hotel} data-testid="hotelInput" type="search" placeholder={t("deals.hotel")} onChange={(e) => {
@@ -235,7 +235,7 @@ const HotelDetailComponent = ({
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
                           <DateDiv>
-                              <H4>Check-in date:</H4>
+                              <H4>{t("hotelDetail.hotelDetailComponent.inDate")}:</H4>
                               <HotelSearch onClick={() => {
                                   handleShowCheckin();
                               }}>
@@ -273,7 +273,7 @@ const HotelDetailComponent = ({
                           <DateDiv onClick={() => {
                               handleShowCheckout();
                           }}>
-                              <H4>Check-out date:</H4>
+                              <H4>{t("hotelDetail.hotelDetailComponent.outDate")}</H4>
 
                               <HotelSearch>
                                   <CalenderIcon />
@@ -309,7 +309,7 @@ const HotelDetailComponent = ({
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
                           <DateDiv>
-                              <H4>Details:</H4>
+                              <H4>{t("hotelDetail.hotelDetailComponent.details")}</H4>
                               <GuestType>
                                   <AdultBox onClick={() => handleShowPassenger()} data-testid="detailsInput">
                                       <AdultIcon  />
@@ -341,70 +341,69 @@ const HotelDetailComponent = ({
                                       <DetailTop>
                                           <CloseIcon onClick={()=>
                                               setShow({
-                                              ...show,
-                                              details: false
-                                          })}/>
-                                          Details
-                                      </DetailTop>
-                                      <PersonEntry>
-                                      <CardDesc>Add Numbers of Persons</CardDesc>
-                                      <Person>
-                                          <BoxLeft>
-                                              <h3>Adults</h3>
-                                              <p>12Yrs & above on the day of travel</p>
-                                          </BoxLeft>
-                                          <BoxRight>
-                                              <Quantity>
-                                                  <SPAN onClick={handleAdultMinus} data-testid="decAdultNumber">-</SPAN>
-                                                  <h5 data-testid='adultNumberFromDropdown'>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
-                                                  <SPAN onClick={handleAdultPlus} data-testid="incAdultNumber">+</SPAN>
-                                              </Quantity>
-                                          </BoxRight>
-                                      </Person>
-                                      <Person>
-                                          <BoxLeft>
-                                              <h3>Children</h3>
-                                              <p>2-12 yrs on the day of travel</p>
-                                          </BoxLeft>
-                                          <BoxRight>
-                                              <Quantity>
-                                                  <SPAN onClick={handleChildrenMinus} data-testid="decChildNumber">-</SPAN>
-                                                  <h5 data-testid="childNumberFromDropdown">{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
-                                                  <SPAN onClick={handleChildrenPlus} data-testid="incChildNumber">+</SPAN>
-                                              </Quantity>
-                                          </BoxRight>
-                                      </Person>
-                                      <Person>
-                                          <BoxLeft>
-                                              <h3>Infants</h3>
-                                              <p>Under 2 yrs on the day of travel</p>
-                                          </BoxLeft>
-                                          <BoxRight>
-                                              <Quantity>
-                                                  <SPAN onClick={handleInfantsMinus} data-testid="decInfantNumber">-</SPAN>
-                                                  <h5 data-testid="infantNumberFromDropdown">{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                  <SPAN onClick={handleInfantsPlus} data-testid="incInfantNumber">+</SPAN>
-                                              </Quantity>
-                                          </BoxRight>
-                                      </Person>
-                                      <SubDetail>
-                                          <button onClick={()=>
-                                              setShow({
                                                   ...show,
                                                   details: false
-                                              })}>Done</button>
-                                      </SubDetail>
+                                              })}/>
+                                          {t("hotelResult.sideBar.search.detail")}
+                                      </DetailTop>
+                                      <PersonEntry>
+                                          <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>
+                                          <Person>
+                                              <BoxLeft>
+                                                  <h3>{t("global.adults")}</h3>
+                                                  <p>{t("hotelResult.sideBar.search.adultsAge")}</p>
+                                              </BoxLeft>
+                                              <BoxRight>
+                                                  <Quantity>
+                                                      <SPAN onClick={handleAdultMinus} data-testid="decAdultNumber">-</SPAN>
+                                                      <h5 data-testid='adultNumberFromDropdown'>{data?.passenger.adults<10?`0${data?.passenger.adults}`:data?.passenger.adults}</h5>
+                                                      <SPAN onClick={handleAdultPlus} data-testid="incAdultNumber">+</SPAN>
+                                                  </Quantity>
+                                              </BoxRight>
+                                          </Person>
+                                          <Person>
+                                              <BoxLeft>
+                                                  <h3>{t("global.childrens")}</h3>
+                                                  <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
+                                              </BoxLeft>
+                                              <BoxRight>
+                                                  <Quantity>
+                                                      <SPAN onClick={handleChildrenMinus} data-testid="decChildNumber">-</SPAN>
+                                                      <h5 data-testid="childNumberFromDropdown">{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
+                                                      <SPAN onClick={handleChildrenPlus} data-testid="incChildNumber">+</SPAN>
+                                                  </Quantity>
+                                              </BoxRight>
+                                          </Person>
+                                          <Person>
+                                              <BoxLeft>
+                                                  <h3>{t("global.infants")}</h3>
+                                                  <p>{t("hotelResult.sideBar.search.infantsAge")}</p>
+                                              </BoxLeft>
+                                              <BoxRight>
+                                                  <Quantity>
+                                                      <SPAN onClick={handleInfantsMinus} data-testid="decInfantNumber">-</SPAN>
+                                                      <h5 data-testid="infantNumberFromDropdown">{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
+                                                      <SPAN onClick={handleInfantsPlus} data-testid="incInfantNumber">+</SPAN>
+                                                  </Quantity>
+                                              </BoxRight>
+                                          </Person>
+                                          <SubDetail>
+                                              <button onClick={()=>
+                                                  setShow({
+                                                      ...show,
+                                                      details: false
+                                                  })}>{t("hotelResult.sideBar.search.done")}</button>
+                                          </SubDetail>
                                       </PersonEntry>
                                   </DetailsCard>
                                   </div>
-
                               ) : null}
                           </DateDiv>
                       </ClickAwayListener>
 
                   </Destination>
                   <NewSearch>
-                      <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>New Search</span></Link></button>
+                      <button><WhiteIcon /><Link to="prices" spy={true} smooth={true}><span>{t("hotelDetail.hotelDetailComponent.newSearch")}</span></Link></button>
                   </NewSearch>
 
               </EditDeals>
@@ -418,19 +417,17 @@ const HotelDetailComponent = ({
                           <HotelLocation>
                               {t("deals.location")}
                           </HotelLocation>
-                          <ViewMap><Link to="showmap" spy={true} smooth={true}>Show Map</Link></ViewMap>
+                          <ViewMap><Link to="showmap" spy={true} smooth={true}>{t("hotelDetail.hotelDetailComponent.showMap")}</Link></ViewMap>
                       </ShortDescription>
                   </LeftSide>
                   <ViewPrice>
                       <StyledButton>
                           <InfoIcon
                             data-for="mainTooltip"
-                            data-tip="Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore
-magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor.
-magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod"
+                            data-tip={t("hotelDetail.hotelDetailComponent.infoIconDes")}
                             data-iscapture="true"
                           />
-                          <Link to="prices" spy={true} smooth={true}><span>View Prices</span></Link>
+                          <Link to="prices" spy={true} smooth={true}><span>{t("hotelDetail.hotelDetailComponent.viewPrices")}</span></Link>
                       </StyledButton>
                   </ViewPrice>
               </HotelInfo>

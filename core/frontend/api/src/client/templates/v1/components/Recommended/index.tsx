@@ -9,15 +9,14 @@ import { useState } from "react";
 
 
 const Recommended = () => {
+  const t = useTranslations();
   const cardProps = {
-    title: "Hotel 1",
-    meal: "Accommodation and full breakfast\n",
-    details: "Flight + Hotel 3 nights\n",
+    title: t("home.recommended.hotel1"),
+    meal: t("home.recommended.description"),
+    details: t("home.recommended.noOfNights"),
     price: "199$",
     img: hotel1.src
   };
-
-  const t = useTranslations();
 
   const [selectedTab, setSelectedTab] = useState(0);
 

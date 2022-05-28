@@ -1,5 +1,4 @@
 .idea
-.wsrun
 node_modules/
 var/
 dist/

@@ -2,7 +2,8 @@ import {
      Description, PriceContainer, DescriptionRowOne, LandingLocation,
     MoreAboutFlight, FlightTime, Price, NumberOfPersons, FlightType, BookNowBtn,
     ResultMainContent, FlightDuration, PlanName, PlanIcon, TakeOffFlightLocation
-} from './styled'
+} from './styled';
+import {useTranslations} from "next-intl";
 
 interface FlightInformation {
     from: string,
@@ -31,6 +32,7 @@ interface IResultMainContentUnit {
 }
 
 const ResultMainContentUnit = ({flightInfo}: IResultMainContentUnit) => {
+    const t = useTranslations();
     return (
         <ResultMainContent>
             <Description>
@@ -61,9 +63,9 @@ const ResultMainContentUnit = ({flightInfo}: IResultMainContentUnit) => {
             </Description>
             <PriceContainer>
                 <Price>{flightInfo.otherDetail.price}</Price>
-                <NumberOfPersons>{flightInfo.otherDetail.noOfPersons} person</NumberOfPersons>
+                <NumberOfPersons>{flightInfo.otherDetail.noOfPersons} {t("flightList.person")}</NumberOfPersons>
                 <FlightType>{flightInfo.otherDetail.flightType}</FlightType>
-                <BookNowBtn>Book Now</BookNowBtn>
+                <BookNowBtn>{t("flightList.bookNow")}</BookNowBtn>
             </PriceContainer>
         </ResultMainContent>
     );

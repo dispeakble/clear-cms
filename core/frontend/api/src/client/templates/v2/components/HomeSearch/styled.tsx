@@ -183,7 +183,7 @@ export const StyledSearchButton = styled.button`
   user-select: none;
   border-radius: 8px;
   padding: 20px;
-
+  font-size: 14px;
   margin: 10px 0 0 0;
   
   @media ${device.tablet} {

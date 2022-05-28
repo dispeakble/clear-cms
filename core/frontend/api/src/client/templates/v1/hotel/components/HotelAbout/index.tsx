@@ -38,14 +38,14 @@ const HotelAbout = () => {
   const t = useTranslations();
 
   const Features = [
-    "Breakfast info Continental, Buffet",
-    "Sea view",
-    "Garden view",
-    "Terrace",
-    "Pool view",
-    "Quiet street view",
-    "Free parking",
-    "ATM Exchange"
+    t("hotelDetail.hotelAbout.features.breakfast"),
+    t("hotelDetail.hotelAbout.features.seaView"),
+    t("hotelDetail.hotelAbout.features.gardenView"),
+    t("hotelDetail.hotelAbout.features.terrace"),
+    t("hotelDetail.hotelAbout.features.poolView"),
+    t("hotelDetail.hotelAbout.features.quietStreetView"),
+    t("hotelDetail.hotelAbout.features.freeParking"),
+    t("hotelDetail.hotelAbout.features.atmExchange")
   ];
 
   return (
@@ -156,7 +156,7 @@ const HotelAbout = () => {
               tempor incididunt ut labo
             </StyledDescription>
 
-            <span onClick={HandleToggle} data-testid="readButton">{show ? 'read less...' : 'read more...'}</span>
+            <span onClick={HandleToggle} data-testid="readButton">{show ? t("hotelDetail.hotelAbout.readLess") : t("hotelDetail.hotelAbout.readMore")}</span>
             {/*currentNode && currentNode?.clientHeight >= 600 && <span onClick={HandleToggle} data-testid="readButton">{show ? 'read less...' : 'read more...'}</span>*/}
           </Description>
         </LeftSection>
