@@ -46,7 +46,8 @@ export class EmailService {
           const messageData = await this.compileMessage({
             type: params.type,
             destination: params.destination,
-            invoiceNumber: 12345
+            invoiceNumber: 12345,
+            emailInfos: "email test"
             //TODO need further info such as name, price and product
           });
 
@@ -155,6 +156,7 @@ export class EmailService {
         break;
       case "registration":
         data.subject = `Registration confirmation for ${params.destination.name}`;
+        data.templateFile = 'registration.hbs';
         break;
       case "cancellation":
         data.subject = `Cancellation for ${params.destination.name}`;
