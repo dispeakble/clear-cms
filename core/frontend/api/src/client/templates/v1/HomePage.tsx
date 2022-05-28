@@ -22,21 +22,22 @@ import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
 import useWsContext from "../../context/SocketContext";
+import {useEffect} from "react";
 
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
-  /*
+
 
   ////////////////////////////// example of sending invoice from client
-
+  /*
   const sendEmail = async () => {
     const response = await ws.sendMessage({
       api: "email",
       act: "send",
       payload: {
-        type: "invoice",
+        type: "registration",
         destination: {
-          address: "dosidoweb@protonmail.com",
-          name: "Do Si Do Web"
+          address: "zrouquiahmed@proton.me",
+          name: "John Doe"
         }
       }
     });

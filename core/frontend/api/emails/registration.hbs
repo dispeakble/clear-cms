@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <style type="text/css">
+        body{
+            Margin: 0;
+            padding: 0;
+        }
+        table {
+            border-spacing: 0;
+        }
+        td{
+            padding: 0;
+        }
+        img{
+            border: 0;
+        }
+        p,h2,h3{
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper{
+            width: 100%;
+            table-layout: fixed;
+            background: #F7F7F7;
+            padding: 40px 0;
+        }
+        .webkit{
+            max-width: 600px;
+            background: #FFEDED;
+            border-radius:10px;
+            border: 3px #FF6B00 dashed;
+            display: flex;
+            padding: 24px 30px;
+        }
+        .image-container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+        .outer{
+            flex: 1;
+            Margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border-spacing: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #333333;
+        }
+        .link{
+            padding: 20px;
+            display: block;
+            width: 200px;
+            background-color: #16a085;
+            text-align: center;
+            color: #FFFFFF !important;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .disclaimer{
+            color: #9c9c9c;
+        }
+        .user-name{
+            text-align: center;
+            font-weight: 500;
+            font-size: 18px;
+
+            color: #3A3A3A;
+            margin-bottom: 18px;
+        }
+        .user-name span{
+            color: #FF6B00;
+            font-weight: 700;
+        }
+
+        .success-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        .successful-signIn{
+            text-align: center;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 18px;
+
+            text-align: center;
+            text-transform: capitalize;
+
+            color: #FF6B00;
+            margin-bottom: 12px;
+        }
+
+        .travel-journey{
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+            text-transform: capitalize;
+            margin: 0;
+
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 12px;
+        }
+
+        .visit-website{
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+            text-transform: capitalize;
+            color: #3A3A3A;
+            margin-bottom: 18px;
+        }
+
+        .visit-website span{
+            font-weight: 700;
+            color: #FF6B00;
+        }
+
+        .send-email{
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            text-align: center;
+            text-transform: capitalize;
+            color: #3A3A3A;
+            margin-bottom: 8px;
+        }
+
+        .send-email span{
+            font-weight: 700;
+            color: #FF6B00;
+        }
+
+        .terms-and-conditions{
+            font-style: normal;
+            font-weight: 500;
+            font-size: 12px;
+            text-align: center;
+            display: block;
+            text-transform: capitalize;
+            color: #FF6B00;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        .footer-text{
+            font-style: normal;
+            font-weight: 500;
+            font-size: 10px;
+            line-height: 1.5;
+            text-align: center;
+            text-transform: capitalize;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .image{
+            max-width:240px;
+            max-height:266px;
+        }
+    </style>
+</head>
+
+
+
+
+<body>
+<center class="wrapper">
+    <div class="webkit">
+        <table class="image-container">
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <img src="https://drive.google.com/file/d/1J1kvFpjsnzqkBGVI-NEqRqn2UYMx-l2d/view" alt="email-image" class="image" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table class="outer">
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td >
+                                <h2 class="user-name">
+                                    Dear <span>{{name}}</span>
+                                </h2>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td class="success-container">
+                                <svg width="60" height="60" viewBox="0 0 120 121" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect y="0.763245" width="120" height="120" rx="60" fill="#E4FFC1"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M85.482 37.7132L49.682 72.2633L40.182 62.1133C38.432 60.4632 35.682 60.3633 33.682 61.7633C31.732 63.2133 31.182 65.7632 32.382 67.8132L43.632 86.1133C44.732 87.8133 46.632 88.8633 48.782 88.8633C50.832 88.8633 52.782 87.8133 53.882 86.1133C55.682 83.7633 90.032 42.8132 90.032 42.8132C94.532 38.2132 89.082 34.1632 85.482 37.6632V37.7132Z" fill="url(#paint0_linear_5_16)"/>
+                                    <defs>
+                                        <linearGradient id="paint0_linear_5_16" x1="61.7416" y1="36.3411" x2="61.7416" y2="88.8633" gradientUnits="userSpaceOnUse">
+                                            <stop stop-color="#7ACD13"/>
+                                            <stop offset="1" stop-color="#5D9519"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr >
+                            <td>
+                                <h3 class="successful-signIn">
+                                    Your Sign up has been successfully completed
+                                </h3>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr >
+                            <td>
+                                <p class="travel-journey">
+                                    start your travel journey right away
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <p class="visit-website">
+                                    You can always visit <span>
+                                        marioviajes.es
+                                    </span> and discover the world
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <p class="send-email">
+                                    Please send us an email at <span>contact@marioviajes.com</span> if you have questions
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <a class="terms-and-conditions" href="#" target="_blank">
+                                    Terms and Conditions Apply
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <p class="footer-text">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</center>
+</body>
+</html>
