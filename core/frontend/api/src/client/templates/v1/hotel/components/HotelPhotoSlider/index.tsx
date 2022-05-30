@@ -7,21 +7,22 @@ import { useMemo } from "react";
 import hotel1 from "../../../assets/img/hotels/small/hotel4.jpg";
 import hotel2 from "../../../assets/img/hotels/small/hotel5.jpg";
 import hotel3 from "../../../assets/img/hotels/small/hotel6.jpg";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 const HotelPhotoSlider = () => {
-
   const gallery = {
-    showBullets: false,
-    showThumbnails: false,
+    showBullets: true,
+    showThumbnails: true,
+    thumbnailPosition: "left" as "top" | "bottom" | "left" | "right",
     infinite: true,
     showFullscreenButton: false,
     zoom: false,
-    autoPlay: true,
+    autoPlay: false,
     showPlayButton: false,
     showNav: true,
     showIndex: false,
     slideOnThumbnailOver: false,
-    slideInterval: 5000,
+    slideInterval: 3000,
     slideDuration: 300,
   };
 
@@ -40,16 +41,15 @@ const HotelPhotoSlider = () => {
         thumbnail: img.src
       };
 
-      imgObject.renderItem = (item: any) => {
+      /*imgObject.renderItem = (item: any) => {
         const style = {
           background: `url(${item.original}) no-repeat center center`,
           backgroundSize: 'cover',
           display: 'block',
           height: '100%'
         };
-
-        return <div style={style}>&nbsp;</div>
-      }
+        return <div style={style}></div>
+      }*/
 
       return imgObject;
     } catch (err) {
@@ -58,6 +58,7 @@ const HotelPhotoSlider = () => {
     }
 
   });
+
 
   const renderZoom = (args: any) => {
     return (
@@ -83,6 +84,7 @@ const HotelPhotoSlider = () => {
     autoPlay: gallery.autoPlay,
     showBullets: gallery.showBullets,
     showThumbnails: gallery.showThumbnails,
+    thumbnailPosition: gallery.thumbnailPosition,
     infinite: gallery.infinite,
     showFullscreenButton: gallery.showFullscreenButton,
     showPlayButton: gallery.showPlayButton,
@@ -99,8 +101,10 @@ const HotelPhotoSlider = () => {
 
   return <HotelPhotoSliderWrapper>
     <ImageGallery
-      {...galleryProps}
+        {...galleryProps}
     />
+
+  
     <div id={`vertical-slider-enlargeImage`}/>
   </HotelPhotoSliderWrapper>;
 }

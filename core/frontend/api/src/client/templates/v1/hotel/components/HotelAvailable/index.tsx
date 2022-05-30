@@ -260,7 +260,7 @@ const HotelAvailable = ({
                             </DivView>
 
                         </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowInfants}>
+                        {/*<PassengerWrapper onClick={handleShowInfants}>
                             <DivView>
                                 <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
                                     <PassengerDetailsWrapper onClick={handleShowInfants}>
@@ -286,7 +286,7 @@ const HotelAvailable = ({
                                 ) : null}
 
                             </DivView>
-                        </PassengerWrapper>
+                        </PassengerWrapper>*/}
                     </RightSide>
                 </HotelCheck>
                 <RefreshPrice id="prices">

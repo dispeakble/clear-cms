@@ -63,7 +63,6 @@ export const RightSection = styled.div`
   gap: 20px;
   @media only screen and (max-width:${size.tablet}){
     padding:10px;
-    
   }
 `
 export const MapSection = styled.div`

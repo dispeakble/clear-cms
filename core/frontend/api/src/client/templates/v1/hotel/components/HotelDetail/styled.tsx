@@ -2,6 +2,23 @@ import styled from "styled-components";
 import { size } from "../../styled";
 import { Shadows } from "../../../../../assets/design-set";
 import Calendar from "react-calendar";
+import {createTheme} from "@mui/material";
+
+export const customTheme = createTheme({
+    components: {
+        MuiTooltip: {
+            styleOverrides: {
+                tooltip: {
+                    fontSize: '14px',
+                    color: "#DC6B03",
+                    backgroundColor: 'white',
+                    maxWidth: '350px',
+                    borderTopColor: 'white'
+                },
+            },
+        },
+    },
+});
 
 export const Wrapper = styled.div`
   margin-top: 30px;
@@ -176,15 +193,7 @@ export const ChildIcon = styled.div`
   cursor: pointer;
   background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
 `;
-export const InfantIcon = styled.div`
-  position: relative;
-  height: 26px;
-  width: 15px;
-  top: 0;
-  background: url(${({theme}) => theme.icon('infant')}) no-repeat left center;
-  cursor: pointer;
 
-`;
 export const HotelView = styled.div`
   flex: 1;
   height: 100%;
@@ -765,6 +774,7 @@ export const H4 = styled("h4")`
 
 export const StyledButton = styled.button`
   position: relative;
+  z-index: 2;
 `;
 
 export const SPAN = styled("span")`
