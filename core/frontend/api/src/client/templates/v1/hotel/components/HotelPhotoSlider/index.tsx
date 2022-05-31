@@ -1,6 +1,5 @@
 import * as React from "react";
-import {HotelPhotoSliderWrapper} from "./styled";
-import ReactImageMagnify from 'react-image-magnify';
+import {HotelPhotoSliderWrapper, ImageDiv} from "./styled";
 import ImageGallery from 'react-image-gallery';
 import { useMemo } from "react";
 
@@ -34,22 +33,14 @@ const HotelPhotoSlider = () => {
     src: hotel3.src
   }];
 
+
+
   const images = imgSources.map((img) => {
     try {
       const imgObject: any = {
         original: img.src,
         thumbnail: img.src
       };
-
-      /*imgObject.renderItem = (item: any) => {
-        const style = {
-          background: `url(${item.original}) no-repeat center center`,
-          backgroundSize: 'cover',
-          display: 'block',
-          height: '100%'
-        };
-        return <div style={style}></div>
-      }*/
 
       return imgObject;
     } catch (err) {
@@ -59,26 +50,6 @@ const HotelPhotoSlider = () => {
 
   });
 
-
-  const renderZoom = (args: any) => {
-    return (
-      <ReactImageMagnify
-        {...{
-          smallImage: {
-            alt: args.title,
-            isFluidWidth: true,
-            src: `${args.thumbnail}`
-          },
-          largeImage: {
-            width: 300,
-            height: 300,
-            src: `${args.original}`
-          },
-          enlargedImagePortalId: `vertical-slider-enlargeImage`
-        }}
-      />
-    );
-  };
 
   const galleryProps = useMemo(() => ({
     autoPlay: gallery.autoPlay,
@@ -95,7 +66,7 @@ const HotelPhotoSlider = () => {
     slideDuration: gallery.slideDuration,
     items: images,
     renderItem: (...args: any[]) => {
-      return args.map(a => <img src={a.thumbnail} style={{width: '100%', height: '100%'}}/>);
+      return args.map(a => <ImageDiv url={a.original}/>);
     },
   }), [gallery]);
 

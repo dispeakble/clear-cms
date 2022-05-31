@@ -201,23 +201,25 @@ export const HotelView = styled.div`
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  @media (min-width: ${size.tablet}) {
+    max-height: 700px;
+    & .slider-wrapper {
+      height: calc(600px - 255px);
+    }
+  } 
   @media (min-width: ${size.laptop}) {
     width: 379px;
     padding: 0;
     max-height: 700px;
   }
+
   @media (min-width: ${size.laptopL}) {
     max-height: 600px;
     & .slider-wrapper {
       height: calc(600px - 130px);
     }
   }
-  @media (max-width: ${size.tablet}) {
-    max-height: 700px;
-    & .slider-wrapper {
-      height: calc(700px - 200px);
-    }
-  }
+
 `;
 export const HotelInfo = styled.div`
   display: block;

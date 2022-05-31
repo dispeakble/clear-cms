@@ -301,9 +301,6 @@ const HotelDetailComponent = ({
                               ) : null}
                           </DateDiv>
                       </ClickAwayListener>
-
-
-
                   </Destination>
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
