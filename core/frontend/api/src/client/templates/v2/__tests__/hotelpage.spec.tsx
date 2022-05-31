@@ -32,6 +32,15 @@ const hotelPageProps = {
     colorScheme: {}
 };
 
+const formateChosenDate = (chosenDate: string) => {
+    let formattedDate = chosenDate;
+    if(formattedDate.charAt(0) === '0') {
+        formattedDate = formattedDate.slice(1)
+    }
+    return formattedDate;
+}
+
+
 const Wrapper = ({ ...props }: any) => {
     return (
         <WsContextProvider settings={{}}>
@@ -145,11 +154,13 @@ describe("Hotel Page Suite", () => {
             checkInDateCalendarInput
         )
 
-        const dateInputField = hotelPage.getByTestId('avail-checkInDateInput');
-        const dateSelectedFromCalender = new Date(checkInDateCalendarInput.getAttribute("aria-label"));
-        const finalDateSelected = `0${dateSelectedFromCalender.getDate()} ${dateSelectedFromCalender.toLocaleDateString('en-US', { month: 'short' })} , ${dateSelectedFromCalender.toLocaleDateString('en-US', { weekday: 'short' })}`;
 
-        expect(dateInputField.textContent).toEqual(finalDateSelected);
+        const dateInputField = hotelPage.getByTestId('avail-checkInDateInput');
+        const formattedDateField = formateChosenDate(dateInputField.textContent)
+        const dateSelectedFromCalender = new Date(checkInDateCalendarInput.getAttribute("aria-label"));
+        const finalDateSelected = `${dateSelectedFromCalender.getDate()} ${dateSelectedFromCalender.toLocaleDateString('en-US', { month: 'short' })} , ${dateSelectedFromCalender.toLocaleDateString('en-US', { weekday: 'short' })}`;
+
+        expect(formattedDateField).toEqual(finalDateSelected);
     })
 
 
@@ -178,11 +189,11 @@ describe("Hotel Page Suite", () => {
 
         const dateInputField = hotelPage.getByTestId('avail-checkOutDateInput');
 
-
+        const formattedDateField = formateChosenDate(dateInputField.textContent)
         const dateSelectedFromCalender = new Date(checkOutDateCalendarInput.getAttribute("aria-label"));
-        const finalDateSelected = `0${dateSelectedFromCalender.getDate()} ${dateSelectedFromCalender.toLocaleDateString('en-US', { month: 'short' })} , ${dateSelectedFromCalender.toLocaleDateString('en-US', { weekday: 'short' })}`;
+        const finalDateSelected = `${dateSelectedFromCalender.getDate()} ${dateSelectedFromCalender.toLocaleDateString('en-US', { month: 'short' })} , ${dateSelectedFromCalender.toLocaleDateString('en-US', { weekday: 'short' })}`;
 
-        expect(dateInputField.textContent).toEqual(finalDateSelected);
+        expect(formattedDateField).toEqual(finalDateSelected);
     })
 
     it('Should match adult number with chosen adult number', async () => {
