@@ -35,40 +35,40 @@ const PackagesPage = ({ websiteName, colorScheme }: any) => {
 
     const packages = [
         {
-            title : "Package Charter for Hotel Victoria",
+            title : t("filters.packages.title", {hotelName: 'Hotel Victoria'}),
             image : HotelImage,
-            address: "Bischofshofen, 4, 38660 Adeje, Spain",
+            address:  t("filters.packages.address"),
             rating: 4,
             packages: [
                 {
-                    type: "Flights",
+                    type: t("filters.packages.type.flights"),
                     icon: PackageFlight,
                 },
                 {
-                    type: "Hotel",
+                    type: t("filters.packages.type.hotel"),
                     icon: PackageHotel,
                 },
                 {
-                    type: "Transfers",
+                    type: t("filters.packages.type.transfers"),
                     icon: PackageTransfers,
                 },
                 {
-                    type: "5 Activities",
+                    type: `5 ${t("filters.packages.type.activities")}`,
                     icon: PackageActivities,
                 }
             ],
             startingPrice: 1409,
-            packageOfferType: "Adult / 7 nights",
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.\n',
+            packageOfferType: `${t("global.adults")} / 7 ${t("global.nights")}}`,
+            description: t("filters.description"),
             services: [
-                "Flight included",
-                "1 checkin baggage",
-                "1 hand baggage",
-                "Airport taxes",
-                "Transfer from airport to hotel",
-                "Transfer from hotel to airport",
-                "Tourist assistance",
-                "7 nights stay"
+                t("filters.services.flightIncluded"),
+                t("filters.services.checkinBaggage"),
+                t("filters.services.handBaggage"),
+                t("filters.services.airportTaxes"),
+                t("filters.services.airportToHotel"),
+                t("filters.services.hotelToAirport"),
+                t("filters.services.touristAssistance"),
+                `7 ${t("filters.services.flightIncluded")}`
             ]
         }
     ]
@@ -77,7 +77,7 @@ const PackagesPage = ({ websiteName, colorScheme }: any) => {
 
     const filters = [
         {
-            title: "destinations",
+            title: t("filters.destination"),
             items: [
                 {
                     value: "Rome",
@@ -110,7 +110,7 @@ const PackagesPage = ({ websiteName, colorScheme }: any) => {
             ]
         },
         {
-            title: "categories",
+            title: t("filters.categories"),
             items: [
                 {
                     value: "All",

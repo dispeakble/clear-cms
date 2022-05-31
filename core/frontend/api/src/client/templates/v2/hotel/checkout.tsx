@@ -147,6 +147,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        setContactDetails={setContactDetails}
                                        invoiceDetails={invoiceDetails}
                                        setInvoiceDetails={setInvoiceDetails}
+                                       passengersCount={passengersCount}
             />;
             case 4: return <FourthStep paymentError={paymentError}
                                        currentStep={currentStep}
@@ -170,7 +171,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                     <Header websiteName={websiteName} />
                 </TopContentWrapper>
                 <Wrapper>
-                    <Breadcrumbs />
+                    <Breadcrumbs page="Hotel" what="Checkout" />
                     <DetailsWrapper>
                         {
                             currentStep !== 5 &&

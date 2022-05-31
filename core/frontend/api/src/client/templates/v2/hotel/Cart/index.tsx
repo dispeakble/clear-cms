@@ -33,9 +33,9 @@ const Cart = ({hotelData}: IProps) => {
             </CartHeaderWrapper>
             <CartItemContainer>
                 {
-                    hotelData.map((hotel: any) => {
+                    hotelData.map((hotel: any, index: number) => {
                         return(
-                            <CartHotelInfo>
+                            <CartHotelInfo key={index}>
                                 <HotelCartItem>
                                     <HotelCartItemElement>
                                         <HotelName>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { size } from "../../styled";
 import Calendar from "react-calendar";
 import { Shadows } from "../../../../../assets/design-set";
+import {device} from "../../../styled";
 
 export const QueryTitle = styled.div`
   font-weight: 600;
@@ -69,7 +70,7 @@ export const HotelCheck = styled.div`
 export const LeftSide = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 16px;
-  flex: 2;
+  flex: 1 1 50%;
   display: flex;
   align-items: center;
   background: ${({ theme }) => theme.colors.white};
@@ -77,12 +78,95 @@ export const LeftSide = styled.div`
 export const RightSide = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 16px;
-  flex: 5;
+  flex: 1 1 50%;
   display: flex;
   background: ${({ theme }) => theme.colors.white};
   align-items: center;
   background: #fff;
 `;
+
+export const StyledSearchOptionsGroup = styled.div`
+  cursor: pointer !important;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  flex: 1;
+`;
+
+
+export const StyledPrimaryValue = styled.div`
+  font-weight: bold;
+  font-size: 14px;
+  color: ${({theme}) => theme.colors.primaryColor};
+`;
+export const StyledPerson = styled.label`
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  padding: 10px 0 10px 10px;
+  position: relative;
+  background: url(${({theme}) => theme.icon('person')}) no-repeat 50px 15px;
+  
+  @media ${device.laptopL} {
+    background-position: 45px 12px;
+  }
+  @media ${device.desktop} {
+    background-position: 70px 12px;
+  }
+`;
+
+
+export const StyledChild = styled.label`
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  padding: 10px 0 10px 10px;
+  position: relative;
+  background: url(${({theme}) => theme.icon('child')}) no-repeat 35px 15px;
+  @media (max-width: ${size.mobileL}) {
+    border-radius: 0 8px 0 0;
+  }
+  @media ${device.laptop} {
+    background-position: 10px 12px;
+  }
+  @media ${device.laptopL} {
+    background-position: 38px 12px;
+  }
+  @media ${device.desktop} {
+    background-position: 60px 12px;
+  }
+`;
+
+export const StyledCenterLabel = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 30;
+`;
+
+export const StyledLabel = styled.label`
+  display: flex;
+  align-items: center;
+  color: #505050;
+  font-size: inherit;
+  white-space: nowrap;
+  & > span {
+    padding-right: 10px !important;
+  }
+`;
+
+
+export const Overlay = styled.a`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
+`;
+
+
 export const DropdownIcon = styled.div`
   width: 20px;
   height: 12px;

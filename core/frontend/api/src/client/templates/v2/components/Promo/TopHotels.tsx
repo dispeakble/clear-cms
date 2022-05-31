@@ -34,9 +34,9 @@ const TopHotels = () => {
                     className={selectedTab === 2 ? "selected" : ""}>{t("home.promo.flights")}</StyledTabBtn>
     </StyledTabs>
     <StyledCardsWrapper>
-      <TopHotelsCard src={Hotel1.src} tag="Relax" details="7 days, breakfast" action="Book Now" prices={fakePrices} />
-      <TopHotelsCard src={Hotel2.src} tag="Relax" details="7 days, breakfast" action="Book Now" prices={fakePrices} />
-      <TopHotelsCard src={Hotel3.src} tag="Relax" details="7 days, breakfast" action="Book Now" prices={fakePrices} />
+      <TopHotelsCard src={Hotel1.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard src={Hotel2.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard src={Hotel3.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
     </StyledCardsWrapper>
 
   </StyledWrapper>;
