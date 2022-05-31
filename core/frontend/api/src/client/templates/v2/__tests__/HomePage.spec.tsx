@@ -3,9 +3,12 @@ import "@testing-library/jest-dom";
 
 import HomePage from "../HomePage";
 import { IntlProvider } from 'next-intl';
+import WS from "jest-websocket-mock";
+
 import { WsContextProvider } from "../../../context/SocketContext";
 
 let location = "";
+let server;
 
 jest.mock("next/router", () => ({
   useRouter() {
@@ -22,6 +25,7 @@ jest.mock("next/router", () => ({
   },
 }));
 
+
 jest.mock('next/image', () => ({
   __esModule: true,
   default: () => {
@@ -30,7 +34,12 @@ jest.mock('next/image', () => ({
 }));
 
 afterEach(() => cleanup())
-beforeEach(() => cleanup())
+beforeEach(() => {
+  WS.clean()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  server = new WS("/api/ws");
+  cleanup()
+})
 
 const messages = require("../../../languages/agency/en.json");
 
@@ -67,10 +76,33 @@ describe("Home Page Suite", () => {
   })
 
   it("Should render the home page", async () => {
-
-    render(<Wrapper {...homePageProps} />);
-    expect(screen.getByText(/Travel Any Corner of The World With Us/)).toBeInTheDocument();
+    const homePage = render(<Wrapper {...homePageProps} />)
+    expect(homePage).toMatchSnapshot()
   });
+
+  it("Header should be fixed on scroll", async () => {
+    render(<Wrapper {...homePageProps} />);
+
+    fireEvent.scroll(window, {
+      target:{
+        scrollY: 100
+      }
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId(/header-wrapper/)).toHaveClass('fixedHeader')
+    })
+
+    fireEvent.scroll(window, {
+      target:{
+        scrollY: 30
+      }
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId(/header-wrapper/)).not.toHaveClass('fixedHeader')
+    })
+  })
 
   /*it("Should not perform Search with no data", async () => {
    render(<Wrapper {...homePageProps} />);
@@ -319,39 +351,156 @@ describe("Home Page Suite", () => {
     })
   })
 
-  it("Should toggle flights & hotel tab", async () => {
+  it("Should toggle hotels tab", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
-    fireEvent.click(homePage.getByTestId(/test-first-tab-button/))
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
 
     await waitFor(() => {
-      expect(homePage.getByText(/The complete package/)).toBeInTheDocument()
+      expect(homePage.getByTestId(/test-hotels-search-tab/)).toHaveClass('selected')
     })
   })
 
-  it("Should toggle second tab", async () => {
+  it("Should toggle packages tab", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
-    fireEvent.click(homePage.getByTestId(/test-second-tab-button/))
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
 
     await waitFor(() => {
-      expect(homePage.getByText(/Fun at the beach/)).toBeInTheDocument()
+      expect(homePage.getByTestId(/test-packages-search-tab/)).toHaveClass('selected')
     })
   })
 
-  it("Should toggle third tab", async () => {
+  it("Should toggle flights tab", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
-    fireEvent.click(homePage.getByTestId(/test-third-tab-button/))
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
 
     await waitFor(() => {
-      expect(homePage.getByText(/Fun at the Zoo/)).toBeInTheDocument()
+      expect(homePage.getByTestId(/test-flights-search-tab/)).toHaveClass('selected')
     })
   })
-
-
-
-
 });
+
+describe("Children age popup suite", () => {
+  it("Should not go less than 0 and more than 17", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-ages-handler/)).toBeInTheDocument()
+    })
+
+    for(let i =0; i< 20; i++){
+      fireEvent.click(homePage.getByTestId(/test-age-plus-handler/))
+    }
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-age-handler-value/).textContent).toBe('17')
+    })
+
+    for(let i =0; i< 20; i++){
+      fireEvent.click(homePage.getByTestId(/test-age-minus-handler/))
+    }
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-age-handler-value/).textContent).toBe('0')
+    })
+
+  })
+})
+
+describe("Hotels search form suite", () => {
+  it("Should display autocomplete list for hotels", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'spa'
+          }
+        }
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-autocomplete-list/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should display departure autocomplete list for packages", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    homePage.getByTestId(/test-departure-search-input/).focus()
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-autocomplete-list/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should display destination autocomplete list for packages", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'tene'
+          }
+        }
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-autocomplete-list/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should display departure autocomplete list for flights", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    fireEvent.focus(
+        homePage.getByTestId(/test-departure-search-input/)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-autocomplete-list/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should display destination autocomplete list for flights", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'tene'
+          }
+        }
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-autocomplete-list/)).toBeInTheDocument()
+    })
+  })
+
+
+})
 
 

@@ -37,7 +37,7 @@ interface IPassenger {
     age?: number;
 }
 
-const FlightPage = ({ websiteName, colorScheme }: any) => {
+const FlightCheckoutPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
     const day = {
@@ -63,7 +63,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         November: t('month.november'),
         December: t('month.december')
     }
-    const [currentStep, setCurrentStep] = useState<number>(2)
+    const [currentStep, setCurrentStep] = useState<number>(1)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -275,4 +275,4 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
     );
 };
 
-export default FlightPage;
+export default FlightCheckoutPage;

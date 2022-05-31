@@ -4,7 +4,7 @@
     "search": "Búsqueda",
     "pageTitle": "Hotels page :: {websiteName}",
     "adults": "Adultos",
-    "childrens": "Niños",
+    "children": "Niños",
     "nights": "Noches",
     "infants": "Infantes",
     "days": "dias"
@@ -447,6 +447,7 @@
     "headers": {
       "first": "Detalles de la reserva",
       "second": "Detalles del pasajero",
+      "third": "Third Step",
       "fourthError": "Error de pago",
       "fourthSuccess": "Procesamiento de pagos",
       "confirmed": "Procesamiento de pagos"

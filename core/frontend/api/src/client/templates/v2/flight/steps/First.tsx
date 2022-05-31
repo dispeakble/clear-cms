@@ -44,7 +44,7 @@ interface IProps {
     currentStep: number;
 }
 
-const FirstStep = ({flightData, setCurrentStep}: IProps) => {
+const FirstStep = ({flightData, setCurrentStep, currentStep}: IProps) => {
 
     const  t = useTranslations();
     const [isOpen, setIsOpen] = useState<number>(-1)
@@ -56,11 +56,11 @@ const FirstStep = ({flightData, setCurrentStep}: IProps) => {
     }
 
     return(
-        <Flights>
+        <Flights data-testid="test-flight-first-step">
             {
                 flightData.map((flight: any, index: number) => {
                     return(
-                        <FlightDetailsWrapper>
+                        <FlightDetailsWrapper key={index}>
                             <FlightDetails>
                                 <Flight>
                                     <FlightDepartureTextContainer>
@@ -230,8 +230,11 @@ const FirstStep = ({flightData, setCurrentStep}: IProps) => {
                 })
             }
             <ButtonsContainer hasOneChild>
-                <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
+                <CustomButton isActive data-testid="test-next-button" onClick={() => setCurrentStep((prev: number) => prev + 1)}>
                     {t('flightsCheckout.main.nextStep')}
+                    <span>
+                        {currentStep+1}
+                    </span>
                 </CustomButton>
             </ButtonsContainer>
         </Flights>

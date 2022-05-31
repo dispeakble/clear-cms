@@ -5,192 +5,346 @@ import {
     PassengerHeader,
     PassengerHeaderContainer,
     PassengerItem, InputGroup,
-    InputLabel, TextInput, CustomSelect, ButtonsContainer, CustomButton
+    InputLabel, TextInput, DottedLines, ButtonsContainer, CustomButton, ErrorText, DottedLinesContainer, StyledField
 } from "../styled";
+import * as React from "react";
+import {Formik, Form, : any} from "formik";
 
-const SecondStep = ({passengers, setPassengers, contactDetails,
-                        setContactDetails, setCurrentStep}: any) => {
+const SecondStep = ({passengers,
+                        setPassengers, contactDetails,
+                        setContactDetails, setCurrentStep,
+                        currentStep, invoiceDetails,
+                        setInvoiceDetails, passengersCount}: any) => {
 
     const t = useTranslations();
 
-    const handleInfosChange = (e: any, passenger: any, index: number) => {
-        setPassengers((prev: any) => {
-            return [
-                ...prev.slice(0, index),
-                {
-                    ...passenger,
-                    [e.target.name]: e.target.value,
-                },
-                ...prev.slice(1-index)
-            ]
-        })
-    }
-
-    const handleContactDetails = (e: any) => {
-        setContactDetails((prev: any) => {
-            return{
-                ...prev,
-                [e.target.name]: e.target.value
-            }
-        })
-    }
-
-
     return (
-        <PassengerDetails>
-            {
-                passengers.map((passenger: any, index: number) => {
+        <PassengerDetails data-testid="test-hotel-second-step">
+            <Formik
+                initialValues={{
+                    passengers: passengers,
+                    contact: contactDetails,
+                    invoice: invoiceDetails
+                }}
+                enableReinitialize
 
-                    return(
+                validate={(values) => {
+                    const errors:any = {};
+                    if (!values.contact.emailAddress) {
+                        errors.contactEmail = 'Email required';
+                    } else if (
+                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.contact.emailAddress)
+                    ) {
+                        errors.contactEmail = 'Invalid email address';
+                    }
+
+                    if (!values.invoice.emailAddress) {
+                        errors.invoiceEmail = 'Email required';
+                    } else if (
+                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.invoice.emailAddress)
+                    ) {
+                        errors.invoiceEmail = 'Invalid email address';
+                    }
+                    return errors;
+                }
+                }
+                onSubmit={
+                    (values, actions) => {
+                        actions.setSubmitting(true)
+                        setPassengers(values.passengers)
+                        setContactDetails(values.contact)
+                        setInvoiceDetails(values.invoice)
+                        setCurrentStep((prev: number) => prev + 1)
+                    }
+                }
+            >
+                {({errors, isSubmitting}: any) => (
+                    <Form>
+                        {
+                            passengers.map((passenger: any, index: number) =>
+                                (
+                                    <PassengerItem key={index}>
+                                        <PassengerHeaderContainer>
+                                            <PassengerHeader>
+                                                {passenger.isAdult ?
+                                                    t('flightsCheckout.main.adult')
+                                                    :
+                                                    t('flightsCheckout.main.child')
+                                                } {
+                                                passenger.isAdult ? index +1 : index +1 - passengersCount.adults
+                                            }
+                                            </PassengerHeader>
+                                        </PassengerHeaderContainer>
+                                        <FormGroup>
+                                            <InputGroup>
+                                                <InputLabel>
+                                                    {t('flightsCheckout.main.firstName')}
+                                                </InputLabel>
+                                                <Field name={`passengers[${index}].firstName`}>
+                                                    {({field}: any) => (
+                                                        <TextInput {...field} required
+                                                                   placeholder="E.G. John (Given Name)" type="text"/>
+                                                    )}
+                                                </Field>
+                                            </InputGroup>
+                                            <DottedLinesContainer>
+                                                <DottedLines />
+                                            </DottedLinesContainer>
+                                            <InputGroup>
+                                                <InputLabel>
+                                                    {t('flightsCheckout.main.lastName')}
+                                                </InputLabel>
+                                                <Field name={`passengers[${index}].lastName`}>
+                                                    {({ field }: any) => (
+                                                        <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                                    )}
+                                                </Field>
+                                            </InputGroup>
+
+                                        </FormGroup>
+                                        {
+                                            !passenger.isAdult &&
+
+                                            <FormGroup>
+                                                <InputGroup>
+                                                    <InputLabel>
+                                                        {t('flightsCheckout.main.childAge')}
+                                                    </InputLabel>
+                                                    <Field name={`passengers[${index}].age`}>
+                                                        {({ field }: any) => (
+                                                            <TextInput {...field} required placeholder="E.G. 12" min={0} type="number"/>
+                                                        )}
+                                                    </Field>
+                                                </InputGroup>
+                                            </FormGroup>
+                                        }
+                                    </PassengerItem>
+                                )
+                            )
+                        }
                         <PassengerItem>
                             <PassengerHeaderContainer>
                                 <PassengerHeader>
-                                    {passenger.isAdult ?
-                                        t('flightsCheckout.main.adult')
-                                            :
-                                        t('flightsCheckout.main.child')}
+                                    {(t('flightsCheckout.main.contactDetails'))}
                                 </PassengerHeader>
                             </PassengerHeaderContainer>
+
                             <FormGroup>
                                 <InputGroup>
                                     <InputLabel>
                                         {t('flightsCheckout.main.firstName')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. John (Given Name)"
-                                        value={passenger.firstName}
-                                        name="firstName"
-                                        onChange={(e) =>
-                                            handleInfosChange(e, passenger, index)}
-                                    />
+                                    <Field name={`contact.firstName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. John (Given Name)" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
-
+                                <DottedLinesContainer>
+                                    <DottedLines />
+                                </DottedLinesContainer>
                                 <InputGroup>
                                     <InputLabel>
                                         {t('flightsCheckout.main.lastName')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. Smith (Last Name)"
-                                        value={passenger.lastName}
-                                        name="lastName"
-                                        onChange={(e) =>
-                                            handleInfosChange(e, passenger, index)}
-                                    />
+                                    <Field name={`contact.lastName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
-
                             </FormGroup>
-                            {
-                                !passenger.isAdult &&
 
-                                <FormGroup>
-                                    <InputGroup>
-                                        <InputLabel>
-                                            {t('flightsCheckout.main.childAge')}
-                                        </InputLabel>
-                                        <TextInput
-                                            type="number"
-                                            placeholder="E.G. 12"
-                                            value={passenger.age}
-                                            name="age"
-                                            max={17}
-                                            min={6}
-                                            onChange={(e) =>
-                                                handleInfosChange(e, passenger, index)}
-                                        />
-                                    </InputGroup>
-                                </FormGroup>
-                            }
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.phoneNumber')}
+                                    </InputLabel>
+                                    <Field name={`contact.phoneNumber`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. +30 645 654 9850" type="tel"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                                <DottedLinesContainer>
+                                    <DottedLines />
+                                </DottedLinesContainer>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.emailAddress')}
+                                    </InputLabel>
+                                    <Field name={`contact.emailAddress`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. john.smith@example.com" type="email"/>
+                                        )}
+                                    </Field>
+                                    {
+                                        errors.contactEmail &&
+                                        <ErrorText>{errors.contactEmail}</ErrorText>
+                                    }
+                                </InputGroup>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.country')}
+                                    </InputLabel>
+                                    <StyledField name={`contact.country`} required as="select" style={{background: "none"}}>
+                                        <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
+                                        <option value="spain">Spain</option>
+                                        <option value="morocco">Morocco</option>
+                                        <option value="romania">Romania</option>
+                                    </StyledField>
+                                </InputGroup>
+                            </FormGroup>
+
                         </PassengerItem>
-                    )
-                })
-            }
-            <PassengerItem>
-                <PassengerHeaderContainer>
-                    <PassengerHeader>
-                        {(t('flightsCheckout.main.contactDetails'))}
-                    </PassengerHeader>
-                </PassengerHeaderContainer>
 
-                <FormGroup>
-                    <InputGroup>
-                        <InputLabel>
-                            {t('flightsCheckout.main.firstName')}
-                        </InputLabel>
-                        <TextInput
-                            type="text"
-                            placeholder="E.G. John (Given Name)"
-                            value={contactDetails.firstName}
-                            name="firstName"
-                            onChange={handleContactDetails}
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <InputLabel>
-                            {t('flightsCheckout.main.lastName')}
-                        </InputLabel>
-                        <TextInput
-                            type="text"
-                            placeholder="E.G. Smith (Last Name)"
-                            value={contactDetails.firstName}
-                            name="lastName"
-                            onChange={handleContactDetails}
-                        />
-                    </InputGroup>
-                </FormGroup>
+                        <PassengerItem>
+                            <PassengerHeaderContainer>
+                                <PassengerHeader>
+                                    {(t('flightsCheckout.main.invoiceDetails'))}
+                                </PassengerHeader>
+                            </PassengerHeaderContainer>
 
-                <FormGroup>
-                    <InputGroup>
-                        <InputLabel>
-                            {t('flightsCheckout.main.phoneNumber')}
-                        </InputLabel>
-                        <TextInput
-                            type="tel"
-                            placeholder="E.G. +30 645 654 9850"
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                            value={contactDetails.phoneNumber}
-                            name="phoneNumber"
-                            onChange={handleContactDetails}
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <InputLabel>
-                            {t('flightsCheckout.main.emailAddress')}
-                        </InputLabel>
-                        <TextInput
-                            type="email"
-                            placeholder="E.G. john.smith@example.com"
-                            value={contactDetails.emailAddress}
-                            name="emailAddress"
-                            onChange={handleContactDetails}
-                        />
-                    </InputGroup>
-                </FormGroup>
+                            {/*
+                                <FormGroup>
+                                <CustomSwitch
+                                    label={t('flightsCheckout.main.sameAsContact')}
+                                    state={useContactDetails}
+                                    setState={setUseContactDetails}
+                                />
+                            </FormGroup>
+                               */
+                            }
 
-                <FormGroup>
-                    <InputGroup>
-                        <InputLabel>
-                            {t('flightsCheckout.main.country')}
-                        </InputLabel>
-                        <CustomSelect>
-                            <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. United Kingdom</option>
-                            <option value="spain">Spain</option>
-                            <option value="morocco">Morocco</option>
-                            <option value="romania">Romania</option>
-                        </CustomSelect>
-                    </InputGroup>
-                </FormGroup>
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.firstName')}
+                                    </InputLabel>
+                                    <Field name={`invoice.firstName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. John (Given Name)" type="text"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                                <DottedLinesContainer>
+                                    <DottedLines />
+                                </DottedLinesContainer>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.lastName')}
+                                    </InputLabel>
+                                    <Field name={`invoice.lastName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                            </FormGroup>
 
-            </PassengerItem>
-            <ButtonsContainer>
-                <CustomButton onClick={() => setCurrentStep((prev: number) => prev - 1)}>
-                    {t('flightsCheckout.main.previousStep')}
-                </CustomButton>
-                <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
-                    {t('flightsCheckout.main.nextStep')}
-                </CustomButton>
-            </ButtonsContainer>
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.phoneNumber')}
+                                    </InputLabel>
+                                    <Field name={`invoice.phoneNumber`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. +30 645 654 9850" type="tel"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                                <DottedLinesContainer>
+                                    <DottedLines />
+                                </DottedLinesContainer>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.emailAddress')}
+                                    </InputLabel>
+                                    <Field name={`invoice.emailAddress`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. john.smith@example.com" type="email"/>
+                                        )}
+                                    </Field>
+                                    {
+                                        errors.invoiceEmail &&
+                                        <ErrorText>{errors.invoiceEmail}</ErrorText>
+                                    }
+                                </InputGroup>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.country')}
+                                    </InputLabel>
+                                    <StyledField name={`invoice.country`} required as="select" style={{background: "none"}}>
+                                        <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
+                                        <option value="spain">Spain</option>
+                                        <option value="morocco">Morocco</option>
+                                        <option value="romania">Romania</option>
+                                    </StyledField>
+                                </InputGroup>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.address')}
+                                    </InputLabel>
+                                    <Field name={`invoice.address`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. 64 Notley Street" type="text"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                                <DottedLinesContainer>
+                                    <DottedLines />
+                                </DottedLinesContainer>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.city')}
+                                    </InputLabel>
+                                    <Field name={`invoice.city`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. London" type="text"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                            </FormGroup>
+
+                            <FormGroup>
+                                <InputGroup>
+                                    <InputLabel>
+                                        {t('flightsCheckout.main.zipCode')}
+                                    </InputLabel>
+                                    <Field name={`invoice.zipCode`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. 40741" type="text"/>
+                                        )}
+                                    </Field>
+                                </InputGroup>
+                            </FormGroup>
+                        </PassengerItem>
+                        <ButtonsContainer>
+                            <CustomButton data-testid="test-previous-button" onClick={() => setCurrentStep((prev: number) => prev - 1)}>
+                                {t('flightsCheckout.main.previousStep')}
+                                <span>
+                                    {currentStep-1}
+                                </span>
+                            </CustomButton>
+                            <CustomButton data-testid="test-next-button" type="submit" isActive disabled={isSubmitting}>
+                                {t('flightsCheckout.main.nextStep')}
+                                <span>
+                                    {currentStep+1}
+                                </span>
+                            </CustomButton>
+                        </ButtonsContainer>
+                    </Form>
+                )}
+            </Formik>
         </PassengerDetails>
     )
 }

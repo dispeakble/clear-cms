@@ -73,6 +73,7 @@ const PackageCard = ({_package}: IProps) => {
                                             .map((value: undefined, index: number) =>
                                                 (
                                                     <Image
+                                                        key={index}
                                                         src={YellowStar}
                                                         width={21}
                                                         height={20}
@@ -86,6 +87,7 @@ const PackageCard = ({_package}: IProps) => {
                                             .map((value: undefined, index: number) =>
                                                 (
                                                     <Image
+                                                        key={index}
                                                         src={GrayStar}
                                                         width={21}
                                                         height={20}
@@ -133,7 +135,7 @@ const PackageCard = ({_package}: IProps) => {
                     <PricingDetailsWrapper>
                         <PriceTextContainer>
                             <StartingPriceContainer>
-                                <p>From</p>
+                                <p>{t('packages.main.from')}</p>
                                 <StartingPriceText>
                                     {_package.startingPrice} €
                                 </StartingPriceText>

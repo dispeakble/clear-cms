@@ -79,11 +79,12 @@ const HotelAvailable = ({
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
     const [showRoom, setShowRoom] = useState("");
+    const t = useTranslations();
 
     const [selectedRoom, setSelectedRoom] = useState<{ room: string, price: number }[]>([{
-        room: "1 Room",
+        room: `1 ${t("hotelDetail.hotelAvailable.room")}`,
         price: 10
-    }, { room: "2 Rooms", price: 10 }, { room: "3 Rooms", price: 10 }, { room: "4 Rooms", price: 10 }, { room: "5 Rooms", price: 10 }]);
+    }, { room: `2 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `3 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `4 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `5 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }]);
     const [forArray] = useState([
         {
             hotelPrice: 122,
@@ -108,8 +109,10 @@ const HotelAvailable = ({
 
 
     ]);
-    const allRooms = ["1 Room", "2 Rooms", "3 Rooms", "4 Rooms", "5 Rooms"];
-    const t = useTranslations();
+
+    const allRooms = [`1 ${t("hotelDetail.hotelAvailable.room")}`, `2 ${t("hotelDetail.hotelAvailable.rooms")}`
+        , `3 ${t("hotelDetail.hotelAvailable.rooms")}`, `4 ${t("hotelDetail.hotelAvailable.rooms")}`, `5 ${t("hotelDetail.hotelAvailable.rooms")}`];
+
 
     const handleClickAway = () => {
         setShow("");
@@ -141,8 +144,7 @@ const HotelAvailable = ({
 
     return (
         <Wrapper>
-            <QueryTitle>Available Rooms
-                for {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} adults, {data.passenger.children} children, {data.passenger.infants} infants </QueryTitle>
+            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.children")}, {data.passenger.infants} {t("global.infants")} </QueryTitle>
             <Modifier>
                 <HotelCheck>
                     <LeftSide>
@@ -153,7 +155,7 @@ const HotelAvailable = ({
                                         <CheckInSvg onClick={handleShowCheckin}/>
                                     </div>
                                     <CheckBg>
-                                        <CheckTitle>Check-in</CheckTitle>
+                                        <CheckTitle>{t("hotelDetail.hotelAvailable.checkIn")}</CheckTitle>
                                         <p>
                                             <strong data-testid="avail-checkInDateInput">{moment(data.checkin).format("DD MMM , ddd")}</strong>
                                         </p>
@@ -181,7 +183,7 @@ const HotelAvailable = ({
                                         <CheckOutSvg onClick={handleShowCheckout}/>
                                     </div>
                                     <CheckBg>
-                                        <CheckTitle>Check-out</CheckTitle>
+                                        <CheckTitle>{t("hotelDetail.hotelAvailable.checkOut")}</CheckTitle>
                                         <p>
                                             <strong data-testid="avail-checkOutDateInput">{moment(data.checkout).format("DD MMM , ddd")}</strong>
                                         </p>
@@ -209,7 +211,7 @@ const HotelAvailable = ({
                                 <Passenger onClick={handleShowAdults}>
                                     <PassengerDetailsWrapper onClick={handleShowAdults}>
                                         <Image src={adultsIcon.src} width={9} height={22}/>
-                                        <SpanDiv>Adults</SpanDiv>
+                                        <SpanDiv>{t("global.adults")}</SpanDiv>
                                         <DropdownIcon/>
                                     </PassengerDetailsWrapper>
                                     <GuestNumber data-testid="avail-adultNumberChosen">{data?.passenger.adults}</GuestNumber>
@@ -236,7 +238,7 @@ const HotelAvailable = ({
                                 <Passenger onClick={handleShowChildren} data-testid="avail-childNumberInput">
                                     <PassengerDetailsWrapper onClick={handleShowChildren}>
                                         <ChildIcon/>
-                                        <SpanDiv>Children</SpanDiv>
+                                        <SpanDiv>{t("global.children")}</SpanDiv>
                                         <DropdownIcon/>
 
                                     </PassengerDetailsWrapper>
@@ -263,7 +265,7 @@ const HotelAvailable = ({
                                 <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
                                     <PassengerDetailsWrapper onClick={handleShowInfants}>
                                         <InfantIcon/>
-                                        <SpanDiv>Infants</SpanDiv>
+                                        <SpanDiv>{t("global.infants")}</SpanDiv>
                                         <DropdownIcon/>
 
                                     </PassengerDetailsWrapper>
@@ -291,15 +293,15 @@ const HotelAvailable = ({
 
                     <button>
                         <RefreshIcon/>
-                        <span>Refresh Prices</span></button>
+                        <span>{t("hotelDetail.hotelAvailable.refreshPrice")}</span></button>
                 </RefreshPrice>
             </Modifier>
             <RoomTable>
                 <TableHead>
-                    <RoomType>Room Type</RoomType>
-                    <Meal>Meals</Meal>
-                    <SelectRoom>Rooms</SelectRoom>
-                    <Price>Price</Price>
+                    <RoomType>{t("hotelDetail.hotelAvailable.roomType")}</RoomType>
+                    <Meal>{t("hotelDetail.hotelAvailable.meals")}</Meal>
+                    <SelectRoom>{t("hotelDetail.hotelAvailable.rooms")}</SelectRoom>
+                    <Price>{t("hotelDetail.hotelAvailable.price")}</Price>
                 </TableHead>
                 {/*<RowView>*/}
                 {
@@ -314,9 +316,9 @@ const HotelAvailable = ({
                                       data-tip={t("tooltip.view_price")}
                                       data-iscapture="true"
                                     />
-                                    Premium Family Room {index + 1}
+                                    {t("hotelDetail.hotelAvailable.premiumRoom")} {index + 1}
                                 </ColumnOne>
-                                <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
+                                <ColumnTwo>{t("hotelDetail.hotelAvailable.breakfastInc")} {index + 1}</ColumnTwo>
                                 <div style={{position: "relative"}}>
 
                                     <ColumnThree onClick={() => handleShowRoomList(w.name)} data-testid={`numOfRoomsCont${index}`}>
@@ -362,7 +364,7 @@ const HotelAvailable = ({
                                 <ColumnFour data-testid={`amountOfRow${index}`}>{Number(selectedRoom[index].price) * Number(roomUnitPrice)}{" \u20AC"}</ColumnFour>
                                 <ColumnBreak/>
                                 <ColumnFive>
-                                    <button>Book Now</button>
+                                    <button>{t("hotelDetail.hotelAvailable.bookNow")}</button>
                                 </ColumnFive>
                             </TableBody>
                         );

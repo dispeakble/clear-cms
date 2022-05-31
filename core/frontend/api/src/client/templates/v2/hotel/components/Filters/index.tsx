@@ -32,8 +32,7 @@ const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
                 filters &&
                 filters.map((filter: any, index: number) => {
                     return(
-                        <>
-                            <FiltersHeaderWrapper key={index}>
+                            <FiltersHeaderWrapper onClick={() => handleFilterOpen(filter.slug)} key={index}>
                                 <FiltersHeader>
                                     {filter.title}
                                 </FiltersHeader>
@@ -41,13 +40,11 @@ const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
                                     src={FiltersArrow}
                                     width={10}
                                     height={5}
-                                    onClick={() => handleFilterOpen(filter.slug)}
                                     style={{
                                         cursor: 'pointer'
                                 }}
                                 />
                             </FiltersHeaderWrapper>
-                        </>
                     )
                 })
             }

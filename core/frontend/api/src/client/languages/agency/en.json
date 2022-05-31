@@ -4,7 +4,7 @@
     "search": "Search",
     "pageTitle": "Hotels page :: {websiteName}",
     "adults": "Adults",
-    "childrens": "Children",
+    "children": "Children",
     "infants": "Infants",
     "nights": "Nights",
     "days": "days"
@@ -325,7 +325,7 @@
     "categories": "Categories",
     "main": {
       "title": "Filters",
-      "reset": "reset"
+      "reset": "Reset"
     },
     "packages": {
       "title": "Package Charter for {hotelName}",
@@ -475,6 +475,7 @@
     "headers": {
       "first": "Booking Details",
       "second": "Passenger Details",
+      "third": "Third Step",
       "fourthError": "Payment Error",
       "fourthSuccess": "Payment Processing",
       "confirmed": "Booking Confirmed"

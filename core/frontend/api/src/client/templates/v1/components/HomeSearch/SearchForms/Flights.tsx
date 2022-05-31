@@ -43,7 +43,6 @@ export const Flights = () => {
 
   const showDepartureList = async () => {
 
-
     const response = await ws.sendMessage({
       api: "homeSearchFlights",
       act: "flights",
@@ -257,14 +256,14 @@ export const Flights = () => {
   return (<>
       <StyledSearchInputHolder className="flights">
         <StyledSearchInput
-          data-testid="test-search-input"
+          data-testid="test-departure-search-input"
           ref={departureRef}
           placeholder={t("search.homeSearchPackageDeparturePlaceholder")}
           value={departure}
           onChange={handleDeparture}
           onFocus={showDepartureList}
         />
-        {showDepartures && <AutocompleteList>
+        {showDepartures && <AutocompleteList data-testid="test-autocomplete-list">
           {departureList.map(
               (dep, i) =>
                   <AutocompleteItem
@@ -277,7 +276,7 @@ export const Flights = () => {
           placeholder={t("search.homeSearchPackageDestinationPlaceholder")}
           value={destination}
           onChange={handleDestination} />
-        {showDestinations && <AutocompleteList className="destination">
+        {showDestinations && <AutocompleteList data-testid="test-autocomplete-list" className="destination">
           {destinationList.map(
               (dest, i) =>
                   <AutocompleteItem

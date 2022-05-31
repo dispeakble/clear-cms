@@ -56,7 +56,7 @@ const FirstStep = ({flightData, setCurrentStep, currentStep}: IProps) => {
     }
 
     return(
-        <Flights>
+        <Flights data-testid="test-flight-first-step">
             {
                 flightData.map((flight: any, index: number) => {
                     return(
@@ -230,7 +230,7 @@ const FirstStep = ({flightData, setCurrentStep, currentStep}: IProps) => {
                 })
             }
             <ButtonsContainer hasOneChild>
-                <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
+                <CustomButton isActive data-testid="test-next-button" onClick={() => setCurrentStep((prev: number) => prev + 1)}>
                     {t('flightsCheckout.main.nextStep')}
                     <span>
                         {currentStep+1}

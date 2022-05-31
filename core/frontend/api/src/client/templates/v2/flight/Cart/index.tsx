@@ -16,6 +16,7 @@ interface IProps{
     passengersCount: any;
 }
 
+
 const Cart = ({flightData, passengersCount}: IProps) => {
 
     const t = useTranslations()
@@ -30,9 +31,9 @@ const Cart = ({flightData, passengersCount}: IProps) => {
             </CartHeaderWrapper>
             <CartItemContainer>
                 {
-                    flightData.map((flight: any) => {
+                    flightData.map((flight: any, index: number ) => {
                         return(
-                            <CartFlightInfo>
+                            <CartFlightInfo key={index}>
                                 <FlightCartItem>
                                     <DepartureTextWrapper>
                                         <Image
@@ -87,9 +88,10 @@ const Cart = ({flightData, passengersCount}: IProps) => {
                 {
                     Object.keys(passengersCount).map((key: any) =>
                         (
-                            <TicketItem>
+                            <TicketItem key={key}>
                                 <TicketText>
-                                    {passengersCount[key]} x {key} ticket
+
+                                    {passengersCount[key]} x {t(`global.${key}`)} {t('flightsCheckout.main.ticket')}
                                 </TicketText>
                                 <TicketText>
                                     {Number((passengersCount[key] as number) * ticketPrice).toFixed(2)} €

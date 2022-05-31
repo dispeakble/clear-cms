@@ -3,13 +3,18 @@ import {BookingConfirmedContainer, ConfirmedText, CustomButton, FinalStep, Succe
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { EmailDetailsText } from "../styled";
+import { useRouter } from 'next/router'
+
 
 const BookingConfirmed = () => {
 
     const t = useTranslations();
 
+    const router = useRouter();
+    const redirectHome = () => router.push('/');
+
     return(
-        <BookingConfirmedContainer>
+        <BookingConfirmedContainer data-testid="test-hotel-checkout-confirmation">
             <FinalStep>
                 <Image
                     src={BookingConfirmedIllustration}
@@ -23,7 +28,7 @@ const BookingConfirmed = () => {
                     <EmailDetailsText>
                         {t('hotelCheckout.paymentConfirmed.emailDetails')}
                     </EmailDetailsText>
-                    <CustomButton isActive>
+                    <CustomButton data-testid="test-home-button" isActive onClick={redirectHome}>
                         {t('hotelCheckout.paymentConfirmed.backHome')}
                     </CustomButton>
                 </ConfirmedText>

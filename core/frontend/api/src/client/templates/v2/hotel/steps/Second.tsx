@@ -5,12 +5,10 @@ import {
     PassengerHeader,
     PassengerHeaderContainer,
     PassengerItem, InputGroup,
-    InputLabel, TextInput, DottedLines, ButtonsContainer, CustomButton, ErrorText, DottedLinesContainer
+    InputLabel, TextInput, DottedLines, ButtonsContainer, CustomButton, ErrorText, DottedLinesContainer, StyledField
 } from "../styled";
-import {useEffect, useState} from "react";
 import * as React from "react";
-import {Formik, Form, ErrorMessage} from "formik";
-import CustomSwitch from "../../components/CustomSwitch";
+import {Formik, Form, : any} from "formik";
 
 const SecondStep = ({passengers,
                         setPassengers, contactDetails,
@@ -19,53 +17,19 @@ const SecondStep = ({passengers,
                         setInvoiceDetails, passengersCount}: any) => {
 
     const t = useTranslations();
-    const [useContactDetails, setUseContactDetails] = useState<boolean>(false)
-
-    useEffect(() => {
-        const clearInvoiceDetails = () => {
-            setInvoiceDetails((prev:any) => {
-                return{
-                    firstName: '',
-                    lastName: '',
-                    phoneNumber: '',
-                    emailAddress: '',
-                    country: '',
-                    address: '',
-                    city: '',
-                    zipCode: ''
-                }
-            })
-        }
-
-
-        if(!useContactDetails){
-            clearInvoiceDetails()
-        } else{
-            Object.keys(contactDetails).map((key: any) => {
-                setInvoiceDetails((prev:any) => {
-                    return{
-                        ...prev,
-                        [key]: contactDetails[key]
-                    }
-                })
-            })
-        }
-
-        console.log(invoiceDetails)
-    }, [useContactDetails])
-
 
     return (
-        <PassengerDetails>
+        <PassengerDetails data-testid="test-hotel-second-step">
             <Formik
                 initialValues={{
                     passengers: passengers,
                     contact: contactDetails,
                     invoice: invoiceDetails
                 }}
+                enableReinitialize
 
                 validate={(values) => {
-                    const errors: any = {};
+                    const errors:any = {};
                     if (!values.contact.emailAddress) {
                         errors.contactEmail = 'Email required';
                     } else if (
@@ -90,9 +54,7 @@ const SecondStep = ({passengers,
                         setPassengers(values.passengers)
                         setContactDetails(values.contact)
                         setInvoiceDetails(values.invoice)
-                        setTimeout(() => {
-                            actions.setSubmitting(false);
-                        }, 1000);
+                        setCurrentStep((prev: number) => prev + 1)
                     }
                 }
             >
@@ -118,12 +80,12 @@ const SecondStep = ({passengers,
                                                 <InputLabel>
                                                     {t('flightsCheckout.main.firstName')}
                                                 </InputLabel>
-                                                <TextInput
-                                                    type="text"
-                                                    placeholder="E.G. John (Given Name)"
-                                                    required
-                                                    name={`passengers[${index}].firstName`}
-                                                />
+                                                <Field name={`passengers[${index}].firstName`}>
+                                                    {({field}: any) => (
+                                                        <TextInput {...field} required
+                                                                   placeholder="E.G. John (Given Name)" type="text"/>
+                                                    )}
+                                                </Field>
                                             </InputGroup>
                                             <DottedLinesContainer>
                                                 <DottedLines />
@@ -132,12 +94,11 @@ const SecondStep = ({passengers,
                                                 <InputLabel>
                                                     {t('flightsCheckout.main.lastName')}
                                                 </InputLabel>
-                                                <TextInput
-                                                    type="text"
-                                                    placeholder="E.G. Smith (Last Name)"
-                                                    name={`passengers[${index}].lastName`}
-                                                    required
-                                                />
+                                                <Field name={`passengers[${index}].lastName`}>
+                                                    {({ field }: any) => (
+                                                        <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                                    )}
+                                                </Field>
                                             </InputGroup>
 
                                         </FormGroup>
@@ -149,12 +110,11 @@ const SecondStep = ({passengers,
                                                     <InputLabel>
                                                         {t('flightsCheckout.main.childAge')}
                                                     </InputLabel>
-                                                    <TextInput
-                                                        type="number"
-                                                        placeholder="E.G. 12"
-                                                        name={`passengers[${index}].age`}
-                                                        required
-                                                    />
+                                                    <Field name={`passengers[${index}].age`}>
+                                                        {({ field }: any) => (
+                                                            <TextInput {...field} required placeholder="E.G. 12" min={0} type="number"/>
+                                                        )}
+                                                    </Field>
                                                 </InputGroup>
                                             </FormGroup>
                                         }
@@ -174,12 +134,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.firstName')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. John (Given Name)"
-                                        name={`contact.firstName`}
-                                        required
-                                    />
+                                    <Field name={`contact.firstName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. John (Given Name)" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                                 <DottedLinesContainer>
                                     <DottedLines />
@@ -188,12 +147,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.lastName')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. Smith (Last Name)"
-                                        name={`contact.lastName`}
-                                        required
-                                    />
+                                    <Field name={`contact.lastName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                             </FormGroup>
 
@@ -202,12 +160,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.phoneNumber')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="tel"
-                                        placeholder="E.G. +30 645 654 9850"
-                                        name={`contact.phoneNumber`}
-                                        required
-                                    />
+                                    <Field name={`contact.phoneNumber`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. +30 645 654 9850" type="tel"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                                 <DottedLinesContainer>
                                     <DottedLines />
@@ -216,12 +173,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.emailAddress')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="email"
-                                        placeholder="E.G. john.smith@example.com"
-                                        name={`contact.emailAddress`}
-                                        required
-                                    />
+                                    <Field name={`contact.emailAddress`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. john.smith@example.com" type="email"/>
+                                        )}
+                                    </Field>
                                     {
                                         errors.contactEmail &&
                                         <ErrorText>{errors.contactEmail}</ErrorText>
@@ -234,12 +190,12 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.country')}
                                     </InputLabel>
-                                    <TextInput name={`contact.country`} required as="select" style={{background: "none"}}>
-                                        <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. United Kingdom</option>
+                                    <StyledField name={`contact.country`} required as="select" style={{background: "none"}}>
+                                        <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
                                         <option value="spain">Spain</option>
                                         <option value="morocco">Morocco</option>
                                         <option value="romania">Romania</option>
-                                    </TextInput>
+                                    </StyledField>
                                 </InputGroup>
                             </FormGroup>
 
@@ -252,25 +208,27 @@ const SecondStep = ({passengers,
                                 </PassengerHeader>
                             </PassengerHeaderContainer>
 
-                            <FormGroup>
+                            {/*
+                                <FormGroup>
                                 <CustomSwitch
                                     label={t('flightsCheckout.main.sameAsContact')}
                                     state={useContactDetails}
                                     setState={setUseContactDetails}
                                 />
                             </FormGroup>
+                               */
+                            }
 
                             <FormGroup>
                                 <InputGroup>
                                     <InputLabel>
                                         {t('flightsCheckout.main.firstName')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. John (Given Name)"
-                                        name={`invoice.firstName`}
-                                        required
-                                    />
+                                    <Field name={`invoice.firstName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. John (Given Name)" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                                 <DottedLinesContainer>
                                     <DottedLines />
@@ -279,12 +237,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.lastName')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. Smith (Last Name)"
-                                        name={`invoice.lastName`}
-                                        required
-                                    />
+                                    <Field name={`invoice.lastName`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                             </FormGroup>
 
@@ -293,12 +250,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.phoneNumber')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="tel"
-                                        placeholder="E.G. +30 645 654 9850"
-                                        name={`invoice.phoneNumber`}
-                                        required
-                                    />
+                                    <Field name={`invoice.phoneNumber`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. +30 645 654 9850" type="tel"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                                 <DottedLinesContainer>
                                     <DottedLines />
@@ -307,12 +263,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.emailAddress')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="email"
-                                        placeholder="E.G. john.smith@example.com"
-                                        name={`invoice.emailAddress`}
-                                        required
-                                    />
+                                    <Field name={`invoice.emailAddress`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. john.smith@example.com" type="email"/>
+                                        )}
+                                    </Field>
                                     {
                                         errors.invoiceEmail &&
                                         <ErrorText>{errors.invoiceEmail}</ErrorText>
@@ -325,12 +280,12 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.country')}
                                     </InputLabel>
-                                    <TextInput name={`invoice.country`} required as="select" style={{background: "none"}}>
-                                        <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. United Kingdom</option>
+                                    <StyledField name={`invoice.country`} required as="select" style={{background: "none"}}>
+                                        <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
                                         <option value="spain">Spain</option>
                                         <option value="morocco">Morocco</option>
                                         <option value="romania">Romania</option>
-                                    </TextInput>
+                                    </StyledField>
                                 </InputGroup>
                             </FormGroup>
 
@@ -339,12 +294,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.address')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. 64 Notley Street"
-                                        name={`invoice.address`}
-                                        required
-                                    />
+                                    <Field name={`invoice.address`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. 64 Notley Street" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                                 <DottedLinesContainer>
                                     <DottedLines />
@@ -353,12 +307,11 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.city')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. London"
-                                        name={`invoice.city`}
-                                        required
-                                    />
+                                    <Field name={`invoice.city`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. London" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                             </FormGroup>
 
@@ -367,23 +320,22 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.zipCode')}
                                     </InputLabel>
-                                    <TextInput
-                                        type="text"
-                                        placeholder="E.G. 40741"
-                                        name={`invoice.zipCode`}
-                                        required
-                                    />
+                                    <Field name={`invoice.zipCode`}>
+                                        {({ field }: any) => (
+                                            <TextInput {...field} required placeholder="E.G. 40741" type="text"/>
+                                        )}
+                                    </Field>
                                 </InputGroup>
                             </FormGroup>
                         </PassengerItem>
                         <ButtonsContainer>
-                            <CustomButton onClick={() => setCurrentStep((prev: number) => prev - 1)}>
+                            <CustomButton data-testid="test-previous-button" onClick={() => setCurrentStep((prev: number) => prev - 1)}>
                                 {t('flightsCheckout.main.previousStep')}
                                 <span>
                                     {currentStep-1}
                                 </span>
                             </CustomButton>
-                            <CustomButton type="submit" isActive disabled={isSubmitting}>
+                            <CustomButton data-testid="test-next-button" type="submit" isActive disabled={isSubmitting}>
                                 {t('flightsCheckout.main.nextStep')}
                                 <span>
                                     {currentStep+1}

@@ -181,7 +181,9 @@ category-${filterValues.stars}`
           placeholder={t("search.homeSearchHotelDestinationPlaceholder")}
           value={destination}
           onChange={handleDestination} />
-        {showDestinations && <AutocompleteList className="destination">
+        {showDestinations && <AutocompleteList
+            data-testid="test-autocomplete-list"
+            className="destination">
           {destinationList.map(
             (dest, i) =>
               <AutocompleteItem

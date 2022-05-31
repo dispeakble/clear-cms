@@ -26,6 +26,8 @@ import FirstStep from "./steps/First";
 import SecondStep from "./steps/Second";
 import Cart from "./Cart";
 import * as shortid from "shortid"
+import FourthStep from "./steps/Fourth";
+import BookingConfirmed from "./steps/BookingConfirmed";
 
 interface IPassenger {
     id: string,
@@ -35,10 +37,33 @@ interface IPassenger {
     age?: number;
 }
 
-const FlightPage = ({ websiteName, colorScheme }: any) => {
+const FlightCheckoutPage = ({ websiteName, colorScheme }: any) => {
 
     const t = useTranslations()
-    const [currentStep, setCurrentStep] = useState<number>(2)
+    const day = {
+        Monday: t('day.monday'),
+        Tuesday: t('day.tuesday'),
+        Wednesday: t('day.wednesday'),
+        Thurday: t('day.thursday'),
+        Friday: t('day.friday'),
+        Saturday: t('day.saturday'),
+        Sunday: t('day.sunday')
+    }
+    const month = {
+        January: t('month.january'),
+        February: t('month.february'),
+        March: t('month.march'),
+        April: t('month.april'),
+        May: t('month.may'),
+        June: t('month.june'),
+        July: t('month.july'),
+        August: t('month.august'),
+        September: t('month.september'),
+        October: t('month.october'),
+        November: t('month.november'),
+        December: t('month.december')
+    }
+    const [currentStep, setCurrentStep] = useState<number>(1)
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -48,7 +73,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
 
     const passengersData = [
         {
-           type: "adult"
+            type: "adult"
         },
         {
             type: "adult"
@@ -65,14 +90,14 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         {
             typeIMG: DepartureIcon,
             flightProviderIMG: FlightImg,
-            type: "departure",
-            departure: "Bucharest",
+            type: t("flightsCheckout.main.type.departure"),
+            departure: t("flightsCheckout.main.bucharest"),
             departureShort: "OTP",
-            departureDate: "Monday, 10 iun.",
+            departureDate: `${day.Monday}, 10 ${month.June}`,
             departureTime: "00:20",
-            destination: "Tenerife",
+            destination: t("flightsCheckout.main.tenerife"),
             destinationShort: "TFS",
-            destinationDate: "Monday, 10 iun.",
+            destinationDate: `${day.Monday}, 10 ${month.June}`,
             arrivalTime: "06:20",
             duration: "7h 30m",
             aircraft: "Wizz Air",
@@ -81,7 +106,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                 city: "Madrid",
                 short: "MAD",
                 duration: "2h 35m",
-                date: "Monday, 10 iun.",
+                date: `${day.Monday}, 10 ${month.June}`,
                 arrival: "18:20",
                 departure: "18:20",
             }
@@ -89,23 +114,23 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         {
             typeIMG: ArrivalIcon,
             flightProviderIMG: FlightImg,
-            type: "return",
-            departure: "Tenerife",
+            type: t("flightsCheckout.main.type.departure"),
+            departure: t("flightsCheckout.main.tenerife"),
             departureShort: "TFS",
-            departureDate: "Monday, 10 iun.",
+            departureDate: `${day.Monday}, 10 ${month.June}`,
             departureTime: "00:20",
-            destination: "Bucharest",
+            destination: t("flightsCheckout.main.bucharest"),
             destinationShort: "OTP",
-            destinationDate: "Monday, 10 iun.",
+            destinationDate: `${day.Monday}, 10 ${month.June}`,
             arrivalTime: "06:20",
             duration: "7h 30m",
             aircraft: "Wizz Air",
             aircraftRef: "W12345",
             stopover: {
-                city: "Madrid",
+                city: t("flightsCheckout.main.stopover.city.madrid"),
                 short: "MAD",
                 duration: "2h 35m",
-                date: "Monday, 10 iun.",
+                date: `${day.Monday}, 10 ${month.June}`,
                 arrival: "18:20",
                 departure: "18:20",
             }
@@ -113,22 +138,24 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         {
             typeIMG: DepartureIcon,
             flightProviderIMG: FlightImg,
-            type: "departure",
-            departure: "Bucharest",
+            type: t("flightsCheckout.main.type.departure"),
+            departure: t("flightsCheckout.main.bucharest"),
             departureShort: "OTP",
-            departureDate: "Monday, 10 iun.",
+            departureDate: `${day.Monday}, 10 ${month.June}`,
             departureTime: "00:20",
-            destination: "Tenerife",
+            destination: t("flightsCheckout.main.tenerife"),
             destinationShort: "TFS",
-            destinationDate: "Monday, 10 iun.",
+            destinationDate: `${day.Monday}, 10 ${month.June}`,
             arrivalTime: "06:20",
             duration: "7h 30m",
             aircraft: "Wizz Air",
-            aircraftRef: "W12345"
-        },
+            aircraftRef: "W12345",
+        }
     ]
 
     const [passengers, setPassengers] = useState<IPassenger[]>([])
+    const [paymentError, setPaymentError] = useState(true)
+
 
     const [contactDetails, setContactDetails] = useState({
         firstName: '',
@@ -136,6 +163,17 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
         phoneNumber: '',
         emailAddress: '',
         country: ''
+    })
+
+    const [invoiceDetails, setInvoiceDetails] = useState({
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        emailAddress: '',
+        country: '',
+        address: '',
+        city: '',
+        zipCode: ''
     })
 
     useEffect(() => {
@@ -160,14 +198,13 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
             && {children: passengers.filter((p) => !p.isAdult).length} ),
     }
 
-    console.log(passengersCount)
-
     const displayStep = () => {
         switch(currentStep){
             case 1: return <FirstStep flightData={flightData}
                                       setCurrentStep={setCurrentStep}
                                       currentStep={currentStep}
-                            />;
+
+            />;
 
             case 2: return <SecondStep passengers={passengers}
                                        setCurrentStep={setCurrentStep}
@@ -175,7 +212,16 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                                        setPassengers={setPassengers}
                                        contactDetails={contactDetails}
                                        setContactDetails={setContactDetails}
-                            />;
+                                       invoiceDetails={invoiceDetails}
+                                       setInvoiceDetails={setInvoiceDetails}
+                                       passengersCount={passengersCount}
+            />;
+            case 4: return <FourthStep paymentError={paymentError}
+                                       currentStep={currentStep}
+                                       setCurrentStep={setCurrentStep}
+            />;
+
+            case 5: return <BookingConfirmed />
 
             default: return <FirstStep flightData={flightData}
                                        setCurrentStep={setCurrentStep}
@@ -191,7 +237,7 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
                     <Header websiteName={websiteName} />
                 </TopContentWrapper>
                 <Wrapper>
-                    <Breadcrumbs />
+                    <Breadcrumbs page="Flight" what="Checkout" />
                     <DetailsWrapper>
                         <Cart flightData={flightData} passengersCount={passengersCount} />
                         <FlightsWrapper>
@@ -229,4 +275,4 @@ const FlightPage = ({ websiteName, colorScheme }: any) => {
     );
 };
 
-export default FlightPage;
+export default FlightCheckoutPage;

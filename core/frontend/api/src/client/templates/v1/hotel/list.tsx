@@ -198,7 +198,7 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
                             {
                                 [...Array(page)]
                                     .map((value: undefined, index:number) => (
-                                        <PackageCard _package={packages[0]} />
+                                        <PackageCard key={index} _package={packages[0]} />
                                     ))
                             }
 

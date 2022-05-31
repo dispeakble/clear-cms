@@ -6,7 +6,6 @@ export const Body = styled.div`
   border-radius: 15px;
   min-width: 280px;
   width: 280px;
-  height: 265px;
   padding: 10px;
 `;
 
