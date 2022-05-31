@@ -95,15 +95,14 @@ const HotelPhotoSlider = () => {
     slideDuration: gallery.slideDuration,
     items: images,
     renderItem: (...args: any[]) => {
-      return renderZoom(args[0]);
+      return args.map(a => <img src={a.thumbnail} style={{width: '100%', height: '100%'}}/>);
     },
   }), [gallery]);
 
-  return <HotelPhotoSliderWrapper>
+  return <HotelPhotoSliderWrapper className={"slider-wrapper"}>
     <ImageGallery
         {...galleryProps}
     />
-
   
     <div id={`vertical-slider-enlargeImage`}/>
   </HotelPhotoSliderWrapper>;

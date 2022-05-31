@@ -196,7 +196,7 @@ export const ChildIcon = styled.div`
 
 export const HotelView = styled.div`
   flex: 1;
-  height: 100%;
+  height: initial;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -204,6 +204,19 @@ export const HotelView = styled.div`
   @media (min-width: ${size.laptop}) {
     width: 379px;
     padding: 0;
+    max-height: 700px;
+  }
+  @media (min-width: ${size.laptopL}) {
+    max-height: 600px;
+    & .slider-wrapper {
+      height: calc(600px - 130px);
+    }
+  }
+  @media (max-width: ${size.tablet}) {
+    max-height: 700px;
+    & .slider-wrapper {
+      height: calc(700px - 200px);
+    }
   }
 `;
 export const HotelInfo = styled.div`

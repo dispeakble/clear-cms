@@ -260,33 +260,6 @@ const HotelAvailable = ({
                             </DivView>
 
                         </PassengerWrapper>
-                        {/*<PassengerWrapper onClick={handleShowInfants}>
-                            <DivView>
-                                <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
-                                    <PassengerDetailsWrapper onClick={handleShowInfants}>
-                                        <InfantIcon/>
-                                        <SpanDiv>{t("global.infants")}</SpanDiv>
-                                        <DropdownIcon/>
-
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-infantNumberChosen">{data?.passenger.infants}</GuestNumber>
-                                </Passenger>
-                                {show === "infants" ? (
-                                    <PassengerView data-testid="avail-infantNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleInfantsMinus} data-testid="avail-decInfantNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-infantNumberDropdown">{data?.passenger.infants}</div>
-                                            <CounterBtn onClick={handleInfantsPlus} data-testid="avail-incInfantNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-
-                            </DivView>
-                        </PassengerWrapper>*/}
                     </RightSide>
                 </HotelCheck>
                 <RefreshPrice id="prices">

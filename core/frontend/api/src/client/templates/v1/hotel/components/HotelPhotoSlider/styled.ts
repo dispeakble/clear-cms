@@ -24,4 +24,5 @@ export const HotelPhotoSliderWrapper = styled.div`
       outline: none;
     }
   }
+  
 `;
