@@ -31,7 +31,14 @@ const HotelPhotoSlider = () => {
     src: hotel2.src
   },{
     src: hotel3.src
-  }];
+  },
+    {
+      src: hotel1.src
+    },{
+      src: hotel2.src
+    },{
+      src: hotel3.src
+    }];
 
 
 

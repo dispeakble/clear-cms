@@ -388,7 +388,7 @@ const HotelDetailComponent = ({
               <HotelInfo>
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
-                          <StyledStarsSmall stars={3}></StyledStarsSmall>
+                          <StyledStarsSmall stars={3} />
                       <ShortDescription>
                           <HotelLocation>
                               {t("deals.location")}
@@ -398,7 +398,6 @@ const HotelDetailComponent = ({
                   </LeftSide>
                   <ViewPrice>
                       <StyledButton>
-
                           <ThemeProvider theme={customTheme}>
                               <Tooltip title={t("hotelDetail.hotelDetailComponent.infoIconDes")} arrow placement="top">
                                   <InfoIcon />

@@ -105,7 +105,14 @@ export const StyledPerson = styled.label`
   display: inline-block;
   padding: 10px 0 10px 10px;
   position: relative;
-  background: url(${({theme}) => theme.icon('person')}) no-repeat 50px 15px;
+  background: url(${({theme}) => theme.icon('person')}) no-repeat 50px 12px;
+  &:hover {
+    background-color: #F6F0DF;
+    border-radius: 14px 0px 0px 14px;
+  }
+  @media ${device.laptop} {
+    background-position: 40px 12px;
+  }
   
   @media ${device.laptopL} {
     background-position: 45px 12px;
@@ -122,18 +129,20 @@ export const StyledChild = styled.label`
   display: inline-block;
   padding: 10px 0 10px 10px;
   position: relative;
-  background: url(${({theme}) => theme.icon('child')}) no-repeat 35px 15px;
+  background: url(${({theme}) => theme.icon('child')}) no-repeat 35px 12px;
+  &:hover {
+    background-color: #F6F0DF;
+    border-radius: 0px 14px 14px 0px;
+  }
   @media (max-width: ${size.mobileL}) {
     border-radius: 0 8px 0 0;
   }
   @media ${device.laptop} {
-    background-position: 10px 12px;
+    background-position: 25px 12px;
   }
-  @media ${device.laptopL} {
-    background-position: 38px 12px;
-  }
+  
   @media ${device.desktop} {
-    background-position: 60px 12px;
+    background-position: 50px 12px;
   }
 `;
 

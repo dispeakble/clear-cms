@@ -13,7 +13,12 @@ export const customTheme = createTheme({
                     color: "#DC6B03",
                     backgroundColor: 'white',
                     maxWidth: '350px',
-                    borderTopColor: 'white'
+                    borderTopColor: 'white',
+                    border: '1px solid #DC6B03',
+                    textAlign: 'justify',
+                    padding: '12px',
+                    lineHeight: "1.5rem",
+                    boxShadow: '0px 0px 4px 0px #dc6b03'
                 },
             },
         },
@@ -406,11 +411,15 @@ export const ImageCount = styled.div`
 
 export const StyledDescription = styled.div<{readMore: boolean}>`
   width: 100%;
-  
+  text-align: justify;
+  line-height: 2.4rem;
+  letter-spacing: .05em;
+  margin-bottom: 1rem;
+  color: #000;
   max-height: ${props=> props.readMore ? ' ' : '600px'};
   overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
-  font-size: 20px;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  
   @media only screen and (max-width: ${size.tablet}) {
     font-size: 18px;
     margin-top: 10px;
@@ -794,7 +803,7 @@ export const StyledButton = styled.button`
 
 export const SPAN = styled("span")`
 user-select: none;
-`
+`;
 
 export const StyledTooltipWrapper = styled.div`
   & > * {

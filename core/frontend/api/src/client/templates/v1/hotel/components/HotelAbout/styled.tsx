@@ -31,7 +31,9 @@ export const HotelName = styled.div`
 `
 export const HotelRate = styled.div`
   display: flex;
-padding: 5px 0;
+  padding: 5px 0;
+  align-items: center;
+  margin-bottom: 1rem;
   h3 {
     font-weight: 500;
     font-size: 16px;
@@ -42,6 +44,7 @@ padding: 5px 0;
   }
 `
 export const Description = styled.div`
+  margin-bottom: 2rem;
   p {
     font-weight: 400;
     font-size: 20px;
@@ -52,7 +55,6 @@ export const Description = styled.div`
   span {
     font-weight: 500;
     font-size: 20px;
-    padding-left: 6px;
     color: ${({theme}) => theme.colors.secondaryColor};
     cursor: pointer;
     :hover{

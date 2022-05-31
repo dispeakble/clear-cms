@@ -173,7 +173,7 @@ const HotelAvailable = ({
 
     return (
         <Wrapper>
-            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.childrens")}, {data.passenger.infants} {t("global.infants")} </QueryTitle>
+            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.childrens")}</QueryTitle>
             <Modifier>
                 <HotelCheck>
                     <LeftSide>
