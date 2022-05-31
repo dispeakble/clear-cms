@@ -83,4 +83,16 @@ describe("Hotels list Page Suite", () => {
 
         fireEvent.click(hotelsPage.getByText(/Reset/))
     })
+
+    it("Should load more items", async() => {
+        const hotelsPage = render(<Wrapper {...pageProps} />);
+
+        const cardsCount = hotelsPage.container.querySelectorAll('.cardWrapper').length
+
+        fireEvent.click(hotelsPage.getByTestId(/test-loadMore/))
+
+        await waitFor(() => {
+            expect(hotelsPage.container.querySelectorAll('.cardWrapper').length).toBeGreaterThan(cardsCount)
+        })
+    })
 })

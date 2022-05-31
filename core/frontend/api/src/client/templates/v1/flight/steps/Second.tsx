@@ -8,7 +8,7 @@ import {
     InputLabel, TextInput, DottedLines, ButtonsContainer, CustomButton, ErrorText, DottedLinesContainer, StyledField
 } from "../styled";
 import * as React from "react";
-import {Formik, Form, : any} from "formik";
+import {Formik, Form, Field} from "formik";
 
 const SecondStep = ({passengers,
                         setPassengers, contactDetails,
