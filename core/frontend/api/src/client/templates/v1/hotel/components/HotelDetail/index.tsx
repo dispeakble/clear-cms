@@ -41,10 +41,9 @@ import {
     PersonEntry,
     SubDetail,
     CloseIcon,
-    HotelCalendar, H4, SPAN, StyledButton, customTheme
+    HotelCalendar, H4, SPAN, StyledButton
 } from "./styled";
-import {ThemeProvider} from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
+import CustomTooltip from "../../../components/Tooltip"
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
 import { StyledStarsSmall } from "../../../components/Styled/stars";
@@ -311,7 +310,6 @@ const HotelDetailComponent = ({
                                       <AdultIcon  />
                                       <AdultNumber>
                                           {t(`deals.detail.adult`)}<span data-testid="adultNumberChosen">{data.passenger.adults}</span>
-
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox onClick={() => handleShowPassenger()}>
@@ -398,12 +396,9 @@ const HotelDetailComponent = ({
                   </LeftSide>
                   <ViewPrice>
                       <StyledButton>
-                          <ThemeProvider theme={customTheme}>
-                              <Tooltip title={t("hotelDetail.hotelDetailComponent.infoIconDes")} arrow placement="top">
+                              <CustomTooltip text={t("hotelDetail.hotelDetailComponent.infoIconDes")}>
                                   <InfoIcon />
-                              </Tooltip>
-                          </ThemeProvider>
-
+                              </CustomTooltip>
                           <Link to="prices" spy={true} smooth={true}><span>{t("hotelDetail.hotelDetailComponent.viewPrices")}</span></Link>
                       </StyledButton>
                   </ViewPrice>
@@ -412,7 +407,6 @@ const HotelDetailComponent = ({
                   <HotelPhotoSlider />
               </SliderSection>
           </HotelView>
-
       </Wrapper>
     );
 };

@@ -2,23 +2,6 @@ import styled from "styled-components";
 import { size } from "../../styled";
 import { Shadows } from "../../../../../assets/design-set";
 import Calendar from "react-calendar";
-import {createTheme} from "@mui/material";
-
-export const customTheme = createTheme({
-    components: {
-        MuiTooltip: {
-            styleOverrides: {
-                tooltip: {
-                    fontSize: '14px',
-                    color: "#DC6B03",
-                    backgroundColor: 'white',
-                    maxWidth: '350px',
-                    borderTopColor: 'white'
-                },
-            },
-        },
-    },
-});
 
 export const Wrapper = styled.div`
   margin-top: 30px;
@@ -33,13 +16,12 @@ export const Wrapper = styled.div`
 
 export const DealCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 4px 7px 0 rgb(0 0 0 / 17%);
   height: max-content;
 `;
 export const CardHead = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderOutline};
   background: ${({ theme }) => theme.colors.white};
-
+  
   line-height: 48px;
   font-size: 32px;
   color: ${({ theme }) => theme.colors.gray};
@@ -70,7 +52,7 @@ export const HotelSearch = styled.div`
   justify-content: space-around;
   height: 50px;
   background: ${({ theme }) => theme.colors.white};
-
+  
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   box-sizing: border-box;
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
@@ -406,11 +388,15 @@ export const ImageCount = styled.div`
 
 export const StyledDescription = styled.div<{readMore: boolean}>`
   width: 100%;
-  
+  text-align: left;
+  line-height: 2.4rem;
+  letter-spacing: .05em;
+  margin-bottom: 1rem;
+  color: #000;
   max-height: ${props=> props.readMore ? ' ' : '600px'};
   overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
-  font-size: 20px;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  
   @media only screen and (max-width: ${size.tablet}) {
     font-size: 18px;
     margin-top: 10px;
@@ -789,25 +775,9 @@ export const H4 = styled("h4")`
 
 export const StyledButton = styled.button`
   position: relative;
-  z-index: 2;
+  z-index: 5;
 `;
 
 export const SPAN = styled("span")`
 user-select: none;
-`
-
-export const StyledTooltipWrapper = styled.div`
-  & > * {
-    color: ${({theme}) => theme.colors.primaryColor} !important;
-    background: ${({theme}) => theme.colors.white} !important;
-  }
-  
-  & > .place-top::after {
-    border-top-color: ${({theme}) => theme.colors.white} !important;
-  }
-  
-  & > .__react_component_tooltip {
-    max-width: 350px;
-  }
-
 `;

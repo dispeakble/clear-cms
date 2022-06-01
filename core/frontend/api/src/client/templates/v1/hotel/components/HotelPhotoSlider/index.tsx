@@ -73,7 +73,7 @@ const HotelPhotoSlider = () => {
     slideDuration: gallery.slideDuration,
     items: images,
     renderItem: (...args: any[]) => {
-      return args.map(a => <ImageDiv url={a.original}/>);
+      return args.map(a => <ImageDiv url={a.original} key={`${Math.random()}${a.original}`}/>);
     },
   }), [gallery]);
 
