@@ -46,15 +46,22 @@ import {
     TableHead,
     TopUp,
     Wrapper,
-    StyledTooltipWrapper
+    StyledTooltipWrapper,
+    Overlay,
+    StyledCenterLabel, StyledChild,
+    StyledLabel,
+    StyledPerson,
+    StyledPrimaryValue,
+    StyledSearchOptionsGroup
 } from "./styled";
 
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import adultsIcon from "../../../assets/img/adults-icon.svg";
-import { Overlay } from "../../../components/HomeSearch/styled";
 import ReactTooltip from "react-tooltip";
+import ValuePopup from "../HotelValuePopup";
+import ValuePopupAges from "../../../components/HomeSearch/valuePopupAges";
 
 type HotelAvailableProps = {
     data: any;
@@ -79,11 +86,12 @@ const HotelAvailable = ({
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
     const [showRoom, setShowRoom] = useState("");
+    const t = useTranslations();
 
     const [selectedRoom, setSelectedRoom] = useState<{ room: string, price: number }[]>([{
-        room: "1 Room",
+        room: `1 ${t("hotelDetail.hotelAvailable.room")}`,
         price: 10
-    }, { room: "2 Rooms", price: 10 }, { room: "3 Rooms", price: 10 }, { room: "4 Rooms", price: 10 }, { room: "5 Rooms", price: 10 }]);
+    }, { room: `2 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `3 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `4 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }, { room: `5 ${t("hotelDetail.hotelAvailable.rooms")}`, price: 10 }]);
     const [forArray] = useState([
         {
             hotelPrice: 122,
@@ -108,8 +116,10 @@ const HotelAvailable = ({
 
 
     ]);
-    const allRooms = ["1 Room", "2 Rooms", "3 Rooms", "4 Rooms", "5 Rooms"];
-    const t = useTranslations();
+
+    const allRooms = [`1 ${t("hotelDetail.hotelAvailable.room")}`, `2 ${t("hotelDetail.hotelAvailable.rooms")}`
+        , `3 ${t("hotelDetail.hotelAvailable.rooms")}`, `4 ${t("hotelDetail.hotelAvailable.rooms")}`, `5 ${t("hotelDetail.hotelAvailable.rooms")}`];
+
 
     const handleClickAway = () => {
         setShow("");
@@ -139,10 +149,31 @@ const HotelAvailable = ({
         setShowRoom("");
     }, [setShowRoom]);
 
+    const [showFilter, setShowFilter] = useState("");
+    const [filterValues, setFilterValues] = useState({
+        adults: 1,
+        children: 1,
+        stars: 4,
+        childrenAges: []
+    });
+    const toggleFilters = (type: string) => {
+        setShowFilter(type);
+    };
+    const handleFilterChange = (value: Record<string, number[] | number>) => {
+        setFilterValues(prevState => {
+            return { ...prevState, ...value };
+        });
+    };
+    const closeFilters = () => {
+        setShowFilter("");
+    };
+    const closeModals = () => {
+        closeFilters();
+    };
+
     return (
         <Wrapper>
-            <QueryTitle>Available Rooms
-                for {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} adults, {data.passenger.children} children, {data.passenger.infants} infants </QueryTitle>
+            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.childrens")}</QueryTitle>
             <Modifier>
                 <HotelCheck>
                     <LeftSide>
@@ -153,7 +184,7 @@ const HotelAvailable = ({
                                         <CheckInSvg onClick={handleShowCheckin}/>
                                     </div>
                                     <CheckBg>
-                                        <CheckTitle>Check-in</CheckTitle>
+                                        <CheckTitle>{t("hotelDetail.hotelAvailable.checkIn")}</CheckTitle>
                                         <p>
                                             <strong data-testid="avail-checkInDateInput">{moment(data.checkin).format("DD MMM , ddd")}</strong>
                                         </p>
@@ -181,7 +212,7 @@ const HotelAvailable = ({
                                         <CheckOutSvg onClick={handleShowCheckout}/>
                                     </div>
                                     <CheckBg>
-                                        <CheckTitle>Check-out</CheckTitle>
+                                        <CheckTitle>{t("hotelDetail.hotelAvailable.checkOut")}</CheckTitle>
                                         <p>
                                             <strong data-testid="avail-checkOutDateInput">{moment(data.checkout).format("DD MMM , ddd")}</strong>
                                         </p>
@@ -204,102 +235,62 @@ const HotelAvailable = ({
                         </CalenderWrapper>
                     </LeftSide>
                     <RightSide>
-                        <PassengerWrapper onClick={handleShowAdults} data-testid="avail-adultNumberInput">
-                            <DivView>
-                                <Passenger onClick={handleShowAdults}>
-                                    <PassengerDetailsWrapper onClick={handleShowAdults}>
-                                        <Image src={adultsIcon.src} width={9} height={22}/>
-                                        <SpanDiv>Adults</SpanDiv>
-                                        <DropdownIcon/>
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-adultNumberChosen">{data?.passenger.adults}</GuestNumber>
-                                </Passenger>
-                                {show === "adults" ? (
-                                    <PassengerView  data-testid="avail-adultNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleAdultMinus} data-testid="avail-decAdultNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-adultNumberDropdown">{data?.passenger.adults}</div>
-                                            <CounterBtn onClick={handleAdultPlus} data-testid="avail-incAdultNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-                            </DivView>
+                        <StyledSearchOptionsGroup>
+                        <StyledPerson>
+                            <StyledCenterLabel data-testid="avail-adultNumberInput" onClick={() => toggleFilters("adults")}>
+                                <StyledLabel>{t("search.adults")}</StyledLabel>
+                                <StyledPrimaryValue data-testid="avail-adultNumberChosen">{filterValues.adults}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                            {showFilter === "adults" &&
+                                <ValuePopup dataTestId="avail-adultNumberCont"
+                                            incTestId="avail-incAdultNumber"
+                                            decrTestId="avail-decAdultNumber"
+                                            inputTestId="avail-adultNumberDropdown"
+                                            name="adults" value={filterValues.adults} min={1} max={9}
+                                            onChange={handleFilterChange} />}
+                        </StyledPerson>
+                        <StyledChild>
+                            <StyledCenterLabel  data-testid="avail-childNumberInput" onClick={() => toggleFilters("children")}>
+                                <StyledLabel>{t("search.children")}</StyledLabel>
+                                <StyledPrimaryValue  data-testid="avail-childNumberChosen">{filterValues.children}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                            {showFilter === "children" &&
+                                <><ValuePopup dataTestId="avail-childNumberCont"
+                                              incTestId="avail-incChildNumber"
+                                              decrTestId="avail-decChildNumber"
+                                              inputTestId="avail-childNumberDropdown" name="children" value={filterValues.children} min={0}
+                                              max={4} onChange={handleFilterChange} />
 
+                                    { filterValues.children > 0 && <ValuePopupAges
+                                        className="childrenAges"
+                                        name="childrenAges"
+                                        min={0}
+                                        max={17}
+                                        count={filterValues.children}
+                                        data={filterValues.childrenAges}
+                                        dataTestId="test-children-ages-handler"
+                                        onChange={handleFilterChange}/> }
+                                </>
 
-                        </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowChildren}>
-                            <DivView>
-                                <Passenger onClick={handleShowChildren} data-testid="avail-childNumberInput">
-                                    <PassengerDetailsWrapper onClick={handleShowChildren}>
-                                        <ChildIcon/>
-                                        <SpanDiv>Children</SpanDiv>
-                                        <DropdownIcon/>
-
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-childNumberChosen">{data?.passenger.children}</GuestNumber>
-                                </Passenger>
-                                {show === "children" ? (
-                                    <PassengerView data-testid="avail-childNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleChildrenMinus} data-testid="avail-decChildNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-childNumberDropdown">{data?.passenger.children}</div>
-                                            <CounterBtn onClick={handleChildrenPlus}  data-testid="avail-incChildNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-                            </DivView>
-
-                        </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowInfants}>
-                            <DivView>
-                                <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
-                                    <PassengerDetailsWrapper onClick={handleShowInfants}>
-                                        <InfantIcon/>
-                                        <SpanDiv>Infants</SpanDiv>
-                                        <DropdownIcon/>
-
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-infantNumberChosen">{data?.passenger.infants}</GuestNumber>
-                                </Passenger>
-                                {show === "infants" ? (
-                                    <PassengerView data-testid="avail-infantNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleInfantsMinus} data-testid="avail-decInfantNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-infantNumberDropdown">{data?.passenger.infants}</div>
-                                            <CounterBtn onClick={handleInfantsPlus} data-testid="avail-incInfantNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-
-                            </DivView>
-                        </PassengerWrapper>
+                            }
+                        </StyledChild>
+                        </StyledSearchOptionsGroup>
+                        {showFilter.length ? <Overlay data-testid="home-search-overlay" onClick={closeModals} /> : ""}
                     </RightSide>
                 </HotelCheck>
                 <RefreshPrice id="prices">
 
                     <button>
                         <RefreshIcon/>
-                        <span>Refresh Prices</span></button>
+                        <span>{t("hotelDetail.hotelAvailable.refreshPrice")}</span></button>
                 </RefreshPrice>
             </Modifier>
             <RoomTable>
                 <TableHead>
-                    <RoomType>Room Type</RoomType>
-                    <Meal>Meals</Meal>
-                    <SelectRoom>Rooms</SelectRoom>
-                    <Price>Price</Price>
+                    <RoomType>{t("hotelDetail.hotelAvailable.roomType")}</RoomType>
+                    <Meal>{t("hotelDetail.hotelAvailable.meals")}</Meal>
+                    <SelectRoom>{t("hotelDetail.hotelAvailable.rooms")}</SelectRoom>
+                    <Price>{t("hotelDetail.hotelAvailable.price")}</Price>
                 </TableHead>
                 {/*<RowView>*/}
                 {
@@ -314,9 +305,9 @@ const HotelAvailable = ({
                                       data-tip={t("tooltip.view_price")}
                                       data-iscapture="true"
                                     />
-                                    Premium Family Room {index + 1}
+                                    {t("hotelDetail.hotelAvailable.premiumRoom")} {index + 1}
                                 </ColumnOne>
-                                <ColumnTwo>Breakfast included {index + 1}</ColumnTwo>
+                                <ColumnTwo>{t("hotelDetail.hotelAvailable.breakfastInc")} {index + 1}</ColumnTwo>
                                 <div style={{position: "relative"}}>
 
                                     <ColumnThree onClick={() => handleShowRoomList(w.name)} data-testid={`numOfRoomsCont${index}`}>
@@ -362,7 +353,7 @@ const HotelAvailable = ({
                                 <ColumnFour data-testid={`amountOfRow${index}`}>{Number(selectedRoom[index].price) * Number(roomUnitPrice)}{" \u20AC"}</ColumnFour>
                                 <ColumnBreak/>
                                 <ColumnFive>
-                                    <button>Book Now</button>
+                                    <button>{t("hotelDetail.hotelAvailable.bookNow")}</button>
                                 </ColumnFive>
                             </TableBody>
                         );

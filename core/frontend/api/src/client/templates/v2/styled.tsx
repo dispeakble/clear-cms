@@ -8,6 +8,13 @@ export const GlobalStyle = createGlobalStyle<{theme: CustomTheme}>`
     padding: 0;
     font-family: "Poppins", Arial, sans-serif, serif;
   }
+  #__next {
+    overflow: hidden;
+  }
+  
+  .MuiTooltip-popper{
+    z-index: 10001 !important;
+  }
 `;
 
 export const size = {
@@ -76,6 +83,7 @@ export const Wrapper = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+  min-height: 100vh;
   padding: 20px 0;
   
   @media(max-width: ${size.laptopL}){

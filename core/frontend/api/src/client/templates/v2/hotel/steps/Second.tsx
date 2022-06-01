@@ -50,8 +50,6 @@ const SecondStep = ({passengers,
                 })
             })
         }
-
-        console.log(invoiceDetails)
     }, [useContactDetails])
 
 
@@ -63,9 +61,10 @@ const SecondStep = ({passengers,
                     contact: contactDetails,
                     invoice: invoiceDetails
                 }}
+                enableReinitialize
 
                 validate={(values) => {
-                    const errors: any = {};
+                    const errors:any = {};
                     if (!values.contact.emailAddress) {
                         errors.contactEmail = 'Email required';
                     } else if (
@@ -90,13 +89,14 @@ const SecondStep = ({passengers,
                         setPassengers(values.passengers)
                         setContactDetails(values.contact)
                         setInvoiceDetails(values.invoice)
+                        setCurrentStep((prev: number) => prev + 1)
                         setTimeout(() => {
                             actions.setSubmitting(false);
                         }, 1000);
                     }
                 }
             >
-                {({errors, isSubmitting}: any) => (
+                {({errors, touched, isSubmitting}: any) => (
                     <Form>
                         {
                             passengers.map((passenger: any, index: number) =>
@@ -234,8 +234,8 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.country')}
                                     </InputLabel>
-                                    <TextInput name={`contact.country`} required as="select" style={{background: "none"}}>
-                                        <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. United Kingdom</option>
+                                    <TextInput name={`contact.country`} required as="select" defaultValue="" style={{background: "none"}}>
+                                        <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
                                         <option value="spain">Spain</option>
                                         <option value="morocco">Morocco</option>
                                         <option value="romania">Romania</option>
@@ -252,13 +252,16 @@ const SecondStep = ({passengers,
                                 </PassengerHeader>
                             </PassengerHeaderContainer>
 
-                            <FormGroup>
+                            {/*
+                                <FormGroup>
                                 <CustomSwitch
                                     label={t('flightsCheckout.main.sameAsContact')}
                                     state={useContactDetails}
                                     setState={setUseContactDetails}
                                 />
                             </FormGroup>
+                               */
+                            }
 
                             <FormGroup>
                                 <InputGroup>
@@ -325,8 +328,8 @@ const SecondStep = ({passengers,
                                     <InputLabel>
                                         {t('flightsCheckout.main.country')}
                                     </InputLabel>
-                                    <TextInput name={`invoice.country`} required as="select" style={{background: "none"}}>
-                                        <option style={{color: "#ADADAD"}} value="" disabled selected>E.G. United Kingdom</option>
+                                    <TextInput name={`invoice.country`} required as="select" defaultValue="" style={{background: "none"}}>
+                                        <option style={{color: "#ADADAD"}} disabled value="">E.G. United Kingdom</option>
                                         <option value="spain">Spain</option>
                                         <option value="morocco">Morocco</option>
                                         <option value="romania">Romania</option>

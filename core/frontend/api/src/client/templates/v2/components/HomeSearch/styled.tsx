@@ -173,6 +173,7 @@ export const StyledSearchInputHolder = styled.div`
 `;
 
 export const StyledSearchButton = styled.button`
+  font-size: 14px;
   background: ${({theme}) => theme.colors.primaryColor};
   &:hover {
     background: ${({theme}) => theme.colors.primaryColorHover};
@@ -183,7 +184,7 @@ export const StyledSearchButton = styled.button`
   user-select: none;
   border-radius: 8px;
   padding: 20px;
-  font-size: 14px;
+
   margin: 10px 0 0 0;
   
   @media ${device.tablet} {

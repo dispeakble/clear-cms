@@ -24,4 +24,16 @@ export const HotelPhotoSliderWrapper = styled.div`
       outline: none;
     }
   }
+  
 `;
+
+interface IImageDiv {
+    url: string
+};
+
+export const ImageDiv = styled.div<IImageDiv>`
+  background: url(${(props) => props.url}) no-repeat center center;
+  background-size: cover;
+  display: block;
+  height: 100% 
+`

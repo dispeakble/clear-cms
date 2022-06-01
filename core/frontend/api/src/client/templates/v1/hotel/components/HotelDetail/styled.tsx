@@ -16,13 +16,12 @@ export const Wrapper = styled.div`
 
 export const DealCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 4px 7px 0 rgb(0 0 0 / 17%);
   height: max-content;
 `;
 export const CardHead = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderOutline};
   background: ${({ theme }) => theme.colors.white};
-
+  
   line-height: 48px;
   font-size: 32px;
   color: ${({ theme }) => theme.colors.gray};
@@ -53,7 +52,7 @@ export const HotelSearch = styled.div`
   justify-content: space-around;
   height: 50px;
   background: ${({ theme }) => theme.colors.white};
-
+  
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   box-sizing: border-box;
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
@@ -176,26 +175,33 @@ export const ChildIcon = styled.div`
   cursor: pointer;
   background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
 `;
-export const InfantIcon = styled.div`
-  position: relative;
-  height: 26px;
-  width: 15px;
-  top: 0;
-  background: url(${({theme}) => theme.icon('infant')}) no-repeat left center;
-  cursor: pointer;
 
-`;
 export const HotelView = styled.div`
   flex: 1;
-  height: 100%;
+  height: initial;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  @media (min-width: ${size.tablet}) {
+    max-height: 700px;
+    & .slider-wrapper {
+      height: calc(600px - 255px);
+    }
+  } 
   @media (min-width: ${size.laptop}) {
     width: 379px;
     padding: 0;
+    max-height: 700px;
   }
+
+  @media (min-width: ${size.laptopL}) {
+    max-height: 600px;
+    & .slider-wrapper {
+      height: calc(600px - 130px);
+    }
+  }
+
 `;
 export const HotelInfo = styled.div`
   display: block;
@@ -382,11 +388,15 @@ export const ImageCount = styled.div`
 
 export const StyledDescription = styled.div<{readMore: boolean}>`
   width: 100%;
-  
+  text-align: left;
+  line-height: 2.4rem;
+  letter-spacing: .05em;
+  margin-bottom: 1rem;
+  color: #000;
   max-height: ${props=> props.readMore ? ' ' : '600px'};
   overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
-  font-size: 20px;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+  
   @media only screen and (max-width: ${size.tablet}) {
     font-size: 18px;
     margin-top: 10px;
@@ -765,24 +775,9 @@ export const H4 = styled("h4")`
 
 export const StyledButton = styled.button`
   position: relative;
+  z-index: 5;
 `;
 
 export const SPAN = styled("span")`
 user-select: none;
-`
-
-export const StyledTooltipWrapper = styled.div`
-  & > * {
-    color: ${({theme}) => theme.colors.primaryColor} !important;
-    background: ${({theme}) => theme.colors.white} !important;
-  }
-  
-  & > .place-top::after {
-    border-top-color: ${({theme}) => theme.colors.white} !important;
-  }
-  
-  & > .__react_component_tooltip {
-    max-width: 350px;
-  }
-
 `;

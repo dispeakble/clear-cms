@@ -15,8 +15,9 @@ import {
 } from "./styled";
 import {StyledDescription} from "../HotelDetail/styled";
 import GoogleMapReact from "google-map-react";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import { StyledStars } from "../../../components/BottomCards/styled";
+import {StyledStarsSmall} from "../../../components/Styled/stars";
 
 const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 
@@ -56,9 +57,9 @@ const HotelAbout = () => {
             {t("hotelAbout.hotel")}
           </HotelName>
           <HotelRate>
-            <StyledStars stars={3}/>
+            <StyledStarsSmall stars={3} />
             <h3>
-              {t("hotelAbout.star")}
+              {t("hotelAbout.star", {noOfStars: 3})}
             </h3>
           </HotelRate>
           <Description>

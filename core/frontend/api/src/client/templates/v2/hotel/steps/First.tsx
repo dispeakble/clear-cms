@@ -20,7 +20,6 @@ import YellowStar from "../../assets/img/starYellowImage.png";
 import GrayStar from "../../assets/img/starGrayImage.png";
 import * as React from "react";
 import {useTranslations} from "next-intl";
-import {useState} from "react";
 
 interface IProps {
     hotelData: any;
@@ -32,13 +31,12 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
 
     const  t = useTranslations();
 
-
     return(
         <Flights>
             {
                 hotelData.map((hotel: any, index: number) => {
                     return(
-                        <HotelDetailsWrapper>
+                        <HotelDetailsWrapper key={index}>
                             <HotelDetailsHeader>
                                 <HotelName>
                                     {hotel.name}
@@ -49,6 +47,7 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
                                             .map((value: undefined, index: number) =>
                                                 (
                                                     <Image
+                                                        key={index}
                                                         src={YellowStar}
                                                         width={25}
                                                         height={25}
@@ -62,6 +61,7 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
                                             .map((value: undefined, index: number) =>
                                                 (
                                                     <Image
+                                                        key={index}
                                                         src={GrayStar}
                                                         width={25}
                                                         height={25}

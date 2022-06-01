@@ -22,13 +22,13 @@ import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
 import useWsContext from "../../context/SocketContext";
-
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   /*
 
   ////////////////////////////// example of sending invoice from client
 
   const sendEmail = async () => {
+
     const response = await ws.sendMessage({
       api: "email",
       act: "send",
@@ -37,10 +37,10 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         destination: {
           address: "dosidoweb@protonmail.com",
           name: "Do Si Do Web"
+
         }
       }
     });
-
     console.log(response);
   };
 
@@ -54,7 +54,7 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   };
 
   const { ws } = useWsContext();
-  
+
   const myTheme: any = { colors: colorScheme, icon: getIcons };
 
   return (

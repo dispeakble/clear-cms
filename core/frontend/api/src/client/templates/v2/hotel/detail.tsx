@@ -30,7 +30,7 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
     passenger: {
       adults: 1,
       infants: 0,
-      children: 0
+      children: 1
     }
 
   });
