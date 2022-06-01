@@ -15,8 +15,9 @@ import {
 } from "./styled";
 import {StyledDescription} from "../HotelDetail/styled";
 import GoogleMapReact from "google-map-react";
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import { StyledStars } from "../../../components/BottomCards/styled";
+import {StyledStarsSmall} from "../../../components/Styled/stars";
 
 const AnyReactComponent = ({text}: any) => <div>{text}</div>;
 
@@ -38,14 +39,14 @@ const HotelAbout = () => {
   const t = useTranslations();
 
   const Features = [
-    "Breakfast info Continental, Buffet",
-    "Sea view",
-    "Garden view",
-    "Terrace",
-    "Pool view",
-    "Quiet street view",
-    "Free parking",
-    "ATM Exchange"
+    t("hotelDetail.hotelAbout.features.breakfast"),
+    t("hotelDetail.hotelAbout.features.seaView"),
+    t("hotelDetail.hotelAbout.features.gardenView"),
+    t("hotelDetail.hotelAbout.features.terrace"),
+    t("hotelDetail.hotelAbout.features.poolView"),
+    t("hotelDetail.hotelAbout.features.quietStreetView"),
+    t("hotelDetail.hotelAbout.features.freeParking"),
+    t("hotelDetail.hotelAbout.features.atmExchange")
   ];
 
   return (
@@ -56,9 +57,9 @@ const HotelAbout = () => {
             {t("hotelAbout.hotel")}
           </HotelName>
           <HotelRate>
-            <StyledStars stars={3}/>
+            <StyledStarsSmall stars={3} />
             <h3>
-              {t("hotelAbout.star")}
+              {t("hotelAbout.star", {noOfStars: 3})}
             </h3>
           </HotelRate>
           <Description>
@@ -156,7 +157,7 @@ const HotelAbout = () => {
               tempor incididunt ut labo
             </StyledDescription>
 
-            <span onClick={HandleToggle} data-testid="readButton">{show ? 'read less...' : 'read more...'}</span>
+            <span onClick={HandleToggle} data-testid="readButton">{show ? t("hotelDetail.hotelAbout.readLess") : t("hotelDetail.hotelAbout.readMore")}</span>
             {/*currentNode && currentNode?.clientHeight >= 600 && <span onClick={HandleToggle} data-testid="readButton">{show ? 'read less...' : 'read more...'}</span>*/}
           </Description>
         </LeftSection>

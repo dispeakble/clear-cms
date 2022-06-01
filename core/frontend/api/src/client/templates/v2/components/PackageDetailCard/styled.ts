@@ -380,7 +380,6 @@ export const BookingDetailContainer = styled.div`
 `;
 
 export const BookingButton = styled.button`
-  width: 139px;
   height: 51px;
   background: linear-gradient(180deg, #FFAC5C 0%, #FF840D 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);

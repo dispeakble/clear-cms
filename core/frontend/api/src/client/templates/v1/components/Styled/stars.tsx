@@ -34,7 +34,6 @@ export const StyledStarsBig = styled.div<{stars: number}>`
 
 export const StyledStarsSmall = styled.div<{stars: number}>`
   height: 25px;
-  
   width: 125px;
   display: flex;
   
@@ -57,7 +56,7 @@ export const StyledStarsSmall = styled.div<{stars: number}>`
     left: 0;
     height: 25px;
     width: ${({stars}) => stars * 25}px;
-    background: url(${smallGoldStarIcon.src}) space left center white;
+    background: url(${smallGoldStarIcon.src}) space left center;
     background-size: 25px 25px;
   }
 `;

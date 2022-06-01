@@ -22,12 +22,13 @@ export const PackagesLayout = styled.div`
   width: 100%;
   display: flex;
   gap: 20px;
-
+  
   @media screen and (max-width: 1300px){
     flex-direction: column;
   }
-
+  
 `
+
 
 export const FiltersContainer = styled.div`
   display: flex;
@@ -36,16 +37,16 @@ export const FiltersContainer = styled.div`
 `
 
 export const PackagesContainer = styled.div`
-  width: 100%;
+    width: 100%;
 `
 
 export const LoadMoreButton = styled.button`
   background: linear-gradient(180deg, #FF840D 0%, #DC6B03 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-
+  
   color: #FFFFFF;
-
+  
   padding: 7px 33px;
 
   font-family: 'Poppins', sans-serif;
@@ -55,13 +56,13 @@ export const LoadMoreButton = styled.button`
   line-height: 1.5;
 
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-
+  
   border: none;
   outline: none;
   cursor: pointer;
-
+  
   transition: background .4s ease-in-out;
-
+  
   :hover{
     background: linear-gradient(180deg, #FFAC5C 0%, #E78F3C 100%);
     transition: background .4s ease-in-out;
@@ -93,7 +94,7 @@ export const ImageContainer = styled.div`
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.18);
   margin-right: 25px;
   position: relative;
-
+  
   .package-image{
     height: 100% ;
     width: 100% ;
@@ -104,14 +105,14 @@ export const ImageContainer = styled.div`
     max-width: 100%;
     min-height: 300px;
     width:100%;
-
+    
     margin-bottom: 10px;
   }
 `
 export const PackageDetailsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-
+  
   @media screen and (max-width: ${size.tablet}){
     max-width: 100%;
     width: 100%;
@@ -127,7 +128,7 @@ export const PackageMain = styled.div`
 export const PackageMainContainer = styled.div`
   display: flex;
   flex: 1;
-
+  
   @media screen and (max-width: ${size.tablet}){
     flex-direction: column;
   }
@@ -138,14 +139,14 @@ export const PackageDetailsContainer = styled.div`
 `
 
 export const PackageDescriptionContainer = styled.div`
-
+    
 `
 
 export const PackageServicesContainer = styled.div`
 `
 
 export const ServiceItem = styled.div`
-
+  
 `
 
 export const PackageDescription = styled.p`
@@ -161,7 +162,7 @@ export const PackageDescription = styled.p`
 export const PackageDetails = styled.div`
   display: flex;
   flex-direction: column;
-
+  
   @media screen and (max-width: ${size.tablet}){
     width: 100%;
     flex: 1;
@@ -177,11 +178,11 @@ export const PackageTitle = styled.h2`
   max-width: 390px;
 
   color: #000000;
-
+  
   @media screen and (max-width: ${size.tablet}){
     max-width: 100%;
   }
-
+  
 `
 
 export const AddressText = styled.div`
@@ -209,7 +210,7 @@ export const PackageItems = styled.div`
   justify-content: space-between;
   padding: 2px 10px;
   margin-bottom: 8px;
-
+  
   @media screen and (max-width: ${size.mobileL}){
     flex-direction: column;
     gap: 8px;
@@ -242,7 +243,7 @@ export const PricingDetailsWrapper = styled.div`
   align-items: flex-end;
   flex-direction: column;
   justify-content: space-between;
-
+  
   @media screen and (max-width: ${size.tablet}){
     flex-direction: row;
   }
@@ -252,14 +253,14 @@ export const PriceTextContainer = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-
+  
   @media screen and (max-width: ${size.tablet}){
     align-items: flex-start;
   }
 `
 
 export const StartingPriceContainer = styled.div`
-
+  
   display: flex;
   align-items: flex-end;
   margin: 0 0 2px 0;
@@ -281,7 +282,7 @@ export const StartingPriceContainer = styled.div`
       display: none;
       margin-right: 0;
     }
-
+    
     align-items: flex-start;
   }
 `
@@ -327,16 +328,16 @@ export const TaxText = styled.p`
 `
 
 export const ButtonContainer = styled.div`
-
+    
 `
 
 export const BookNowButton = styled.button`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-
+  
   color: #FFFFFF;
-
+  
   padding: 7px 33px;
 
   font-family: 'Poppins', sans-serif;
@@ -346,13 +347,13 @@ export const BookNowButton = styled.button`
   line-height: 1.5;
 
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-
+  
   border: none;
   outline: none;
   cursor: pointer;
-
+  
   transition: background .4s ease-in-out;
-
+  
   :hover{
     background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
     transition: background .4s ease-in-out;
@@ -368,7 +369,7 @@ export const ServicesTextContainer = styled.div<IDetailsContainer>`
   display: flex;
   gap: 8px;
   cursor: pointer;
-
+  
   p{
     color: ${({isExpanded}) => isExpanded ? "#DC6B03" : "rgba(0, 0, 0, 0.7)"} !important;
   }
@@ -384,7 +385,7 @@ export const ServicesDescriptionText = styled.p`
 `
 
 export const DescriptionContainer = styled.div`
-
+  
 `
 
 /* end Packages styles */
@@ -398,7 +399,7 @@ export const FiltersWrapper = styled.div`
   width:100%;
   background: #FFFFFF;
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.11);
-
+  
   display: flex;
   flex-direction: column;
   border-radius: 8px;
@@ -421,8 +422,8 @@ export const FiltersHeaderWrapper = styled.div`
   align-items: center;
   border-bottom: 1px #C4C4C4 solid;
   width: 100%;
-
-
+  
+  
 `
 
 export const FiltersHeader = styled.h2`
@@ -483,7 +484,7 @@ export const DetailsWrapper = styled.div`
   width: 100%;
   gap: 17px;
   margin-top: 53px;
-
+  
   @media(max-width: ${size.laptop}){
     flex-direction: column;
     align-items: stretch;
@@ -529,7 +530,7 @@ export const StarsText = styled.p`
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
-
+  
   color: #000000;
 
 `
@@ -539,7 +540,7 @@ export const PricingRules = styled.div`
   align-items: center;
   gap: 5px;
   cursor: pointer;
-
+  
   @media screen and (max-width: 480px){
     display: none;
   }
@@ -568,15 +569,15 @@ export const Flight = styled.div`
   align-items: center;
   justify-content: space-between;
   min-width: 60%;
-
+  
   @media screen and (max-width: ${size.laptop}) {
     min-width: 70%;
   }
-
+  
   @media screen and (max-width: 480px){
     width: 100%;
   }
-
+  
 `
 
 export const Flights = styled.div`
@@ -598,13 +599,13 @@ export const PassengerItem = styled.div`
   background: #FFFFFF;
   padding: 20px 28px;
   margin-bottom: 8px;
-
+  
   display: flex;
   flex-direction: column;
   gap: 10px;
 `
 export const PassengerHeaderContainer = styled.div`
-
+    
 `
 
 export const PassengerHeader = styled.h2`
@@ -653,7 +654,7 @@ export const TextInput = styled(Field)`
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   color: #434343;
-
+  
   ::placeholder{
     color: #ADADAD;
   }
@@ -708,7 +709,7 @@ export const FlightDestinationTextContainer = styled.div`
 export const ButtonsContainer = styled.div<IButtonContainer>`
   display: flex;
   justify-content: ${({hasOneChild}) => hasOneChild ? "flex-end" : "space-between"};
-
+  
   @media screen and (max-width:${size.tablet}){
     flex-direction: column;
     gap: 20px;
@@ -830,7 +831,7 @@ export const HotelsHeaderWrapper = styled.div`
   border: 1px solid #DBDBDB;
   border-radius: 10px;
   background: #ffffff;
-
+  
   @media screen and (max-width: 480px){
     flex-direction: column;
     gap: 10px;
@@ -884,7 +885,7 @@ export const HotelName = styled.h3`
   font-weight: 600;
   font-size: 26px;
   line-height: 1.5;
-
+  
   color: #FF840D;
 `
 
@@ -892,7 +893,7 @@ export const CartStepsWrapper = styled.div`
   display: flex;
   position: relative;
   gap: 20px;
-
+  
   @media screen and (max-width: 1200px){
     gap: 15px;
   }
@@ -903,20 +904,20 @@ export const StepWrapper = styled.div<IStep>`
   font-weight: 400;
   font-size: 28px;
   position: relative;
-
+  
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
   width: 50px;
-
+  
   border: 1px solid #FF8C1D;
-
+  
   background: ${({currentStep}) => currentStep ? "#FF8C1D" : "#FFFFFF"};
   color:  ${({currentStep}) => currentStep ? "#FFFFFF" : "#FF8C1D"};
-
+  
   border-radius:50%;
-
+  
   &:not(:last-child)::after{
     content: "";
     position: absolute;
@@ -927,11 +928,11 @@ export const StepWrapper = styled.div<IStep>`
     width: 20px;
     border-bottom: 1px dashed #A29E9E;
   }
-
+  
   @media screen and (max-width: 1200px){
     height: 30px;
     width: 30px;
-
+    
     font-size: 16px;
 
     &:not(:last-child)::after{
@@ -945,8 +946,8 @@ export const StepWrapper = styled.div<IStep>`
       border-bottom: 1px dashed #A29E9E;
     }
   }
-
-
+  
+  
 `
 
 export const HotelCartItem = styled.div`
@@ -984,7 +985,7 @@ export const TimeText = styled.p`
   color: #000000;
   line-height: 1.5;
   margin: 0;
-
+  
 `
 
 export const DateText = styled.p`
@@ -994,7 +995,7 @@ export const DateText = styled.p`
   color: #707070;
   line-height: 1.5;
   margin: 0;
-
+  
 `
 
 export const DepartureDestinationText = styled.p`
@@ -1100,7 +1101,7 @@ export const HotelTicketInfosContainer = styled.div`
   border: 1px dashed #FF840D;
   padding: 32px 22px;
   margin: 10px 0;
-
+  
   position: relative;
 `
 
@@ -1136,14 +1137,14 @@ export const BottomRightCircle = styled.div`
 
 
 export const HotelInfos = styled.div`
-  padding: 6px 25px;
+    padding: 6px 25px;
 `
 
 export const TicketInfosItem = styled.div<ITicketItem>`
   display: flex;
   flex-direction: column;
   justify-content: ${({alignEnd}) => alignEnd ? 'flex-end' : 'center'};
-
+  
   @media screen and (max-width: ${size.tablet}){
     padding-bottom: 15px;
     :not(:last-child){
@@ -1180,7 +1181,7 @@ export const FlightInfosTime = styled.p`
   line-height: 1.5;
   color: #000000;
   margin: 0;
-
+  
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
@@ -1194,7 +1195,7 @@ export const FlightInfosLocationText = styled.p`
 
   color: #707070;
   margin: 0;
-
+  
   span{
     font-weight: 500;
     margin: 0;
@@ -1238,15 +1239,15 @@ export const StopoverText = styled.p`
   margin:0;
 
   color: #818181;
-
+  
   span{
     font-weight: 700;
   }
-
+  
   span:first-child{
-    color: #FF8C1D;
-  }
-
+     color: #FF8C1D;
+   }
+  
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
@@ -1311,7 +1312,7 @@ export const Payment = styled.div<IPaymentDiv>`
   align-items: center;
   padding: 15px 0;
   gap:15px;
-
+  
   @media screen and (max-width: ${size.laptop}){
     flex-direction: column;
   }
@@ -1375,7 +1376,7 @@ export const RedirectText = styled.p`
   letter-spacing: 0.5px;
   margin: 20px 0 0 0;
   color: #474747;
-
+  
   a{
     color: #FF840D;
   }
@@ -1450,12 +1451,12 @@ export const SuccessText = styled.h3`
 export const EmailDetailsText = styled.h5`
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 36px;
-  line-height: 1.5;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.5;
 
-  text-align: center;
+text-align: center;
 
-  color: #77838F;
+color: #77838F;
 `

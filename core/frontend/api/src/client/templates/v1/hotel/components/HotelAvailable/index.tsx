@@ -46,15 +46,22 @@ import {
     TableHead,
     TopUp,
     Wrapper,
-    StyledTooltipWrapper
+    StyledTooltipWrapper,
+    Overlay,
+    StyledCenterLabel, StyledChild,
+    StyledLabel,
+    StyledPerson,
+    StyledPrimaryValue,
+    StyledSearchOptionsGroup
 } from "./styled";
 
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import adultsIcon from "../../../assets/img/adults-icon.svg";
-import { Overlay } from "../../../components/HomeSearch/styled";
 import ReactTooltip from "react-tooltip";
+import ValuePopup from "../HotelValuePopup";
+import ValuePopupAges from "../../../components/HomeSearch/valuePopupAges";
 
 type HotelAvailableProps = {
     data: any;
@@ -142,9 +149,31 @@ const HotelAvailable = ({
         setShowRoom("");
     }, [setShowRoom]);
 
+    const [showFilter, setShowFilter] = useState("");
+    const [filterValues, setFilterValues] = useState({
+        adults: 1,
+        children: 1,
+        stars: 4,
+        childrenAges: []
+    });
+    const toggleFilters = (type: string) => {
+        setShowFilter(type);
+    };
+    const handleFilterChange = (value: Record<string, number[] | number>) => {
+        setFilterValues(prevState => {
+            return { ...prevState, ...value };
+        });
+    };
+    const closeFilters = () => {
+        setShowFilter("");
+    };
+    const closeModals = () => {
+        closeFilters();
+    };
+
     return (
         <Wrapper>
-            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.childrens")}, {data.passenger.infants} {t("global.infants")} </QueryTitle>
+            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.childrens")}</QueryTitle>
             <Modifier>
                 <HotelCheck>
                     <LeftSide>
@@ -206,87 +235,47 @@ const HotelAvailable = ({
                         </CalenderWrapper>
                     </LeftSide>
                     <RightSide>
-                        <PassengerWrapper onClick={handleShowAdults} data-testid="avail-adultNumberInput">
-                            <DivView>
-                                <Passenger onClick={handleShowAdults}>
-                                    <PassengerDetailsWrapper onClick={handleShowAdults}>
-                                        <Image src={adultsIcon.src} width={9} height={22}/>
-                                        <SpanDiv>{t("global.adults")}</SpanDiv>
-                                        <DropdownIcon/>
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-adultNumberChosen">{data?.passenger.adults}</GuestNumber>
-                                </Passenger>
-                                {show === "adults" ? (
-                                    <PassengerView  data-testid="avail-adultNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleAdultMinus} data-testid="avail-decAdultNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-adultNumberDropdown">{data?.passenger.adults}</div>
-                                            <CounterBtn onClick={handleAdultPlus} data-testid="avail-incAdultNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-                            </DivView>
+                        <StyledSearchOptionsGroup>
+                        <StyledPerson>
+                            <StyledCenterLabel data-testid="avail-adultNumberInput" onClick={() => toggleFilters("adults")}>
+                                <StyledLabel>{t("search.adults")}</StyledLabel>
+                                <StyledPrimaryValue data-testid="avail-adultNumberChosen">{filterValues.adults}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                            {showFilter === "adults" &&
+                                <ValuePopup dataTestId="avail-adultNumberCont"
+                                            incTestId="avail-incAdultNumber"
+                                            decrTestId="avail-decAdultNumber"
+                                            inputTestId="avail-adultNumberDropdown"
+                                            name="adults" value={filterValues.adults} min={1} max={9}
+                                            onChange={handleFilterChange} />}
+                        </StyledPerson>
+                        <StyledChild>
+                            <StyledCenterLabel  data-testid="avail-childNumberInput" onClick={() => toggleFilters("children")}>
+                                <StyledLabel>{t("search.children")}</StyledLabel>
+                                <StyledPrimaryValue  data-testid="avail-childNumberChosen">{filterValues.children}</StyledPrimaryValue>
+                            </StyledCenterLabel>
+                            {showFilter === "children" &&
+                                <><ValuePopup dataTestId="avail-childNumberCont"
+                                              incTestId="avail-incChildNumber"
+                                              decrTestId="avail-decChildNumber"
+                                              inputTestId="avail-childNumberDropdown" name="children" value={filterValues.children} min={0}
+                                              max={4} onChange={handleFilterChange} />
 
+                                    { filterValues.children > 0 && <ValuePopupAges
+                                        className="childrenAges"
+                                        name="childrenAges"
+                                        min={0}
+                                        max={17}
+                                        count={filterValues.children}
+                                        data={filterValues.childrenAges}
+                                        dataTestId="test-children-ages-handler"
+                                        onChange={handleFilterChange}/> }
+                                </>
 
-                        </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowChildren}>
-                            <DivView>
-                                <Passenger onClick={handleShowChildren} data-testid="avail-childNumberInput">
-                                    <PassengerDetailsWrapper onClick={handleShowChildren}>
-                                        <ChildIcon/>
-                                        <SpanDiv>{t("global.childrens")}</SpanDiv>
-                                        <DropdownIcon/>
-
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-childNumberChosen">{data?.passenger.children}</GuestNumber>
-                                </Passenger>
-                                {show === "children" ? (
-                                    <PassengerView data-testid="avail-childNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleChildrenMinus} data-testid="avail-decChildNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-childNumberDropdown">{data?.passenger.children}</div>
-                                            <CounterBtn onClick={handleChildrenPlus}  data-testid="avail-incChildNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-                            </DivView>
-
-                        </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowInfants}>
-                            <DivView>
-                                <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
-                                    <PassengerDetailsWrapper onClick={handleShowInfants}>
-                                        <InfantIcon/>
-                                        <SpanDiv>{t("global.infants")}</SpanDiv>
-                                        <DropdownIcon/>
-
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-infantNumberChosen">{data?.passenger.infants}</GuestNumber>
-                                </Passenger>
-                                {show === "infants" ? (
-                                    <PassengerView data-testid="avail-infantNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleInfantsMinus} data-testid="avail-decInfantNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-infantNumberDropdown">{data?.passenger.infants}</div>
-                                            <CounterBtn onClick={handleInfantsPlus} data-testid="avail-incInfantNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-
-                            </DivView>
-                        </PassengerWrapper>
+                            }
+                        </StyledChild>
+                        </StyledSearchOptionsGroup>
+                        {showFilter.length ? <Overlay data-testid="home-search-overlay" onClick={closeModals} /> : ""}
                     </RightSide>
                 </HotelCheck>
                 <RefreshPrice id="prices">

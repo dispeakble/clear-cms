@@ -29,6 +29,7 @@ export const PackagesLayout = styled.div`
   
 `
 
+
 export const FiltersContainer = styled.div`
   display: flex;
   align-items: flex-start;
