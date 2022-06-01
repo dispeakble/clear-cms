@@ -5,16 +5,19 @@ import hotel1 from "../../../assets/img/hotels/small/hotel1.jpg";
 
 export const About = styled.div`
   margin-top: 37px;
+  padding: 37px 34px;
   @media (min-width: ${size.laptopL}) {
     display: flex;
     gap: 20px;
-    padding: 37px 34px;
+    padding: 0;
+    justify-content: space-between;
   }
 `
 
 export const LeftSection = styled.div`
   height: 100%;
   max-height: 100%;
+  flex: 1 1 70%;
   overflow: hidden;
   @media only screen and (max-width:${size.tablet}){
     padding:10px;
@@ -28,7 +31,9 @@ export const HotelName = styled.div`
 `
 export const HotelRate = styled.div`
   display: flex;
-padding: 5px 0;
+  padding: 5px 0;
+  align-items: center;
+  margin-bottom: 1rem;
   h3 {
     font-weight: 500;
     font-size: 16px;
@@ -39,6 +44,7 @@ padding: 5px 0;
   }
 `
 export const Description = styled.div`
+  margin-bottom: 2rem;
   p {
     font-weight: 400;
     font-size: 20px;
@@ -49,7 +55,6 @@ export const Description = styled.div`
   span {
     font-weight: 500;
     font-size: 20px;
-    padding-left: 6px;
     color: ${({theme}) => theme.colors.secondaryColor};
     cursor: pointer;
     :hover{
@@ -60,10 +65,10 @@ export const Description = styled.div`
 export const RightSection = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1 1 30%;
   gap: 20px;
   @media only screen and (max-width:${size.tablet}){
     padding:10px;
-    
   }
 `
 export const MapSection = styled.div`

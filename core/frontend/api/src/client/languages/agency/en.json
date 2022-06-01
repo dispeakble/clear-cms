@@ -188,7 +188,7 @@
 
   "hotelAbout": {
     "hotel": "Hotel Victoria, Adeje, Spain ",
-    "star": "(4 Stars)",
+    "star": "({noOfStars} Stars)",
     "cardTitle": "Hotel Victoria Highlights"
   },
 

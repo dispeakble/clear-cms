@@ -8,6 +8,13 @@ export const GlobalStyle = createGlobalStyle<{theme: CustomTheme}>`
     padding: 0;
     font-family: "Poppins", Arial, sans-serif, serif;
   }
+  #__next {
+    overflow: hidden;
+  }
+  
+  .MuiTooltip-popper{
+    z-index: 10001 !important;
+  }
 `;
 
 export const size = {

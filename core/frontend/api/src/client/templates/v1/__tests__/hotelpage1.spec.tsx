@@ -32,6 +32,15 @@
         colorScheme: {}
     };
 
+    const formateChosenDate = (chosenDate: string) => {
+        let formattedDate = chosenDate;
+        if(formattedDate.charAt(0) === '0') {
+            formattedDate = formattedDate.slice(1)
+        }
+        return formattedDate;
+    }
+
+
     const Wrapper = ({ ...props }: any) => {
         return (
             <WsContextProvider settings={{}}>
@@ -145,11 +154,13 @@
                 checkInDateCalendarInput
             )
 
+
             const dateInputField = hotelPage.getByTestId('avail-checkInDateInput');
+            const formattedDateField = formateChosenDate(dateInputField.textContent)
             const dateSelectedFromCalender = new Date(checkInDateCalendarInput.getAttribute("aria-label"));
             const finalDateSelected = `${dateSelectedFromCalender.getDate()} ${dateSelectedFromCalender.toLocaleDateString('en-US', { month: 'short' })} , ${dateSelectedFromCalender.toLocaleDateString('en-US', { weekday: 'short' })}`;
 
-            expect(dateInputField.textContent).toEqual(finalDateSelected);
+            expect(formattedDateField).toEqual(finalDateSelected);
         })
 
 
@@ -178,11 +189,11 @@
 
             const dateInputField = hotelPage.getByTestId('avail-checkOutDateInput');
 
-
+            const formattedDateField = formateChosenDate(dateInputField.textContent)
             const dateSelectedFromCalender = new Date(checkOutDateCalendarInput.getAttribute("aria-label"));
             const finalDateSelected = `${dateSelectedFromCalender.getDate()} ${dateSelectedFromCalender.toLocaleDateString('en-US', { month: 'short' })} , ${dateSelectedFromCalender.toLocaleDateString('en-US', { weekday: 'short' })}`;
 
-            expect(dateInputField.textContent).toEqual(finalDateSelected);
+            expect(formattedDateField).toEqual(finalDateSelected);
         })
 
         it('Should match adult number with chosen adult number', async () => {
@@ -215,35 +226,6 @@
 
         })
 
-        it('Should match infant number with chosen infant number', async () => {
-            const hotelPage = render(<Wrapper {...hotelPageProps} />);
-            const infantNumberChosen = hotelPage.getByTestId('infantNumberChosen');
-
-            fireEvent.click(
-                hotelPage.getByTestId('detailsInput'),
-            )
-            await waitFor(() => {
-                expect(hotelPage.getByTestId('detailsContainer')).toBeInTheDocument();
-            })
-
-            const infantNumberFromDropdown = hotelPage.getByTestId('infantNumberFromDropdown');
-
-            fireEvent.click(
-                hotelPage.getByTestId('incInfantNumber'),
-            )
-            await waitFor(() => {
-                expect(`0${infantNumberChosen.innerHTML}`).toEqual(infantNumberFromDropdown.innerHTML);
-            })
-
-            fireEvent.click(
-                hotelPage.getByTestId('decInfantNumber'),
-            )
-
-            await waitFor(() => {
-                expect(`0${infantNumberChosen.innerHTML}`).toEqual(infantNumberFromDropdown.innerHTML);
-            })
-
-        })
 
 
         it('Should match child number with chosen child number', async () => {
@@ -382,34 +364,6 @@
               await waitFor(() => expect(numOfRoomsInput.value).toEqual('1 Room'));
 
           })
-
-
-            it('Should match (In Available Section) infant number with chosen infant number', async () => {
-                const hotelPage = render(<Wrapper {...hotelPageProps} />);
-                const numberChosen = hotelPage.getByTestId('avail-infantNumberChosen');
-
-                fireEvent.click(
-                    hotelPage.getByTestId('avail-infantNumberInput'),
-                )
-                await waitFor(() => {
-                    expect(hotelPage.getByTestId('avail-infantNumberCont')).toBeInTheDocument();
-                })
-
-                const numberFromDropdown = hotelPage.getByTestId('avail-infantNumberDropdown');
-
-                fireEvent.click(
-                    hotelPage.getByTestId('avail-incInfantNumber'),
-                )
-
-                await waitFor(() => expect(numberChosen.innerHTML).toEqual(numberFromDropdown.innerHTML));
-
-                fireEvent.click(
-                    hotelPage.getByTestId('avail-decInfantNumber'),
-                )
-
-               await waitFor(() => expect(numberChosen.innerHTML).toEqual(numberFromDropdown.innerHTML));
-            })
-
 
 
         it('Should match (In Available Section) child number with chosen child number', async () => {
