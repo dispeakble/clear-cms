@@ -65,17 +65,21 @@ describe("Hotels list Page Suite", () => {
         fireEvent.click(hotelsPage.getAllByText(/Hotel Description/)[0])
     })
 
-    it("Should open filters", async() => {
+    it("Should open and close filters", async() => {
         const hotelsPage = render(<Wrapper {...pageProps} />);
 
-        fireEvent.click(hotelsPage.getByText(/Categories/))
+        fireEvent.click(hotelsPage.container.querySelectorAll('.filterHeaderWrapper')[0])
 
-    })
+        await waitFor(() => {
+            expect(hotelsPage.container.querySelectorAll('.isOpen')[0]).toBeInTheDocument()
+        })
 
-    it("Should close filters", async() => {
-        const hotelsPage = render(<Wrapper {...pageProps} />);
+        fireEvent.click(hotelsPage.container.querySelectorAll('.filterHeaderWrapper')[0])
 
-        fireEvent.click(hotelsPage.getByText(/Categories/))
+        await waitFor(() => {
+            expect(hotelsPage.container.querySelectorAll('.isOpen')[0]).toBeUndefined()
+        })
+
     })
 
     it("Should reset filters", async() => {
@@ -89,7 +93,7 @@ describe("Hotels list Page Suite", () => {
 
         const cardsCount = hotelsPage.container.querySelectorAll('.cardWrapper').length
 
-        fireEvent.click(hotelsPage.getByTestId(/test-loadMore/))
+        fireEvent.click(hotelsPage.getByTestId(/test-loadMore-button/))
 
         await waitFor(() => {
             expect(hotelsPage.container.querySelectorAll('.cardWrapper').length).toBeGreaterThan(cardsCount)

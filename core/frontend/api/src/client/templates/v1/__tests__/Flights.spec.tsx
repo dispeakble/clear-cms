@@ -48,4 +48,18 @@ describe("Fights list Page Suite", () => {
 
         expect(flightsPage).toMatchSnapshot()
     });
+
+    it("Should toggle filter options", async () => {
+        const flightsPage = render(<Wrapper {...pageProps} />);
+
+        await waitFor(() => {
+            expect(flightsPage.getByTestId(/test-filter-options-container/)).toBeInTheDocument()
+        })
+
+        fireEvent.click(flightsPage.getByTestId(/test-filter-icon-handler/))
+
+        await waitFor(() => {
+            expect(flightsPage.getByTestId(/test-filter-options-container/)).toBeUndefined()
+        })
+    })
 })

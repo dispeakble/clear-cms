@@ -60,22 +60,18 @@ type HotelAvailableProps = {
     data: any;
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
-    handleInfantsPlus: () => void;
     handleChangeInput: (name: string, value: any) => void;
     handleChildrenMinus: () => void;
     handleChildrenPlus: () => void;
-    handleInfantsMinus: () => void;
 }
 
 const HotelAvailable = ({
                             data,
                             handleAdultPlus,
                             handleAdultMinus,
-                            handleInfantsPlus,
                             handleChangeInput,
                             handleChildrenMinus,
                             handleChildrenPlus,
-                            handleInfantsMinus
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
     const [showRoom, setShowRoom] = useState("");
@@ -130,9 +126,6 @@ const HotelAvailable = ({
     };
     const handleShowChildren = () => {
         setShow("children");
-    };
-    const handleShowInfants = () => {
-        setShow("infants");
     };
     const handleShowRoomList = (name: string) => {
         setShowRoom(name);
@@ -259,33 +252,6 @@ const HotelAvailable = ({
                                 ) : null}
                             </DivView>
 
-                        </PassengerWrapper>
-                        <PassengerWrapper onClick={handleShowInfants}>
-                            <DivView>
-                                <Passenger onClick={handleShowInfants}  data-testid="avail-infantNumberInput">
-                                    <PassengerDetailsWrapper onClick={handleShowInfants}>
-                                        <InfantIcon/>
-                                        <SpanDiv>{t("global.infants")}</SpanDiv>
-                                        <DropdownIcon/>
-
-                                    </PassengerDetailsWrapper>
-                                    <GuestNumber data-testid="avail-infantNumberChosen">{data?.passenger.infants}</GuestNumber>
-                                </Passenger>
-                                {show === "infants" ? (
-                                    <PassengerView data-testid="avail-infantNumberCont">
-                                        <CounterDiv>
-                                            <CounterBtn onClick={handleInfantsMinus} data-testid="avail-decInfantNumber">
-                                                -
-                                            </CounterBtn>
-                                            <div data-testid="avail-infantNumberDropdown">{data?.passenger.infants}</div>
-                                            <CounterBtn onClick={handleInfantsPlus} data-testid="avail-incInfantNumber">
-                                                +
-                                            </CounterBtn>
-                                        </CounterDiv>
-                                    </PassengerView>
-                                ) : null}
-
-                            </DivView>
                         </PassengerWrapper>
                     </RightSide>
                 </HotelCheck>

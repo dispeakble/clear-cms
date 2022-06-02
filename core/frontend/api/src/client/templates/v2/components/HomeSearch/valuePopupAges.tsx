@@ -66,9 +66,9 @@ const ValuePopupAges = ({name, data, count, min, max, dataTestId, className, onC
       <StyledValuePopupList key={i}>
         <StyledAgeLabel>Child {i+1} age:</StyledAgeLabel>
         <StyledValuePopupControl>
-          <StyledButton onClick={() => decreaseValue(i)} data-testid="test-minus-handler">-</StyledButton>
-          <StyledValue data-testid="test-handler-value">{val}</StyledValue>
-          <StyledButton onClick={() => increaseValue(i)} data-testid="test-plus-handler">+</StyledButton>
+          <StyledButton onClick={() => decreaseValue(i)} data-testid="test-age-minus-handler">-</StyledButton>
+          <StyledValue data-testid="test-age-handler-value">{val}</StyledValue>
+          <StyledButton onClick={() => increaseValue(i)} data-testid="test-age-plus-handler">+</StyledButton>
         </StyledValuePopupControl>
 
       </StyledValuePopupList>

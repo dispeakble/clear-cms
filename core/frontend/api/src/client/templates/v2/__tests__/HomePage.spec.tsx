@@ -8,7 +8,6 @@ import WS from "jest-websocket-mock";
 import { WsContextProvider } from "../../../context/SocketContext";
 
 let location = "";
-let server;
 
 jest.mock("next/router", () => ({
   useRouter() {
@@ -33,13 +32,16 @@ jest.mock('next/image', () => ({
   },
 }));
 
-afterEach(() => cleanup())
-beforeEach(() => {
-  WS.clean()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  server = new WS("/api/ws");
+
+beforeEach( () => {
   cleanup()
 })
+
+afterEach(() => {
+  WS.clean()
+  cleanup()
+})
+
 
 const messages = require("../../../languages/agency/en.json");
 
@@ -414,9 +416,77 @@ describe("Children age popup suite", () => {
     })
 
   })
+
+  it("Should Display top hotel cards", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-topHotel-card-first/)).toBeInTheDocument()
+      expect(homePage.getByTestId(/test-topHotel-card-second/)).toBeInTheDocument()
+      expect(homePage.getByTestId(/test-topHotel-card-third/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should toggle top hotel cards", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-topHotel-button-second/))
+
+    await waitFor(() => {
+      expect(
+          homePage
+          .getByTestId(/test-topHotel-button-second/)
+          .getAttribute('class'))
+          .toMatch(/selected/i)
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-topHotel-button-first/))
+
+    await waitFor(() => {
+      expect(
+          homePage
+              .getByTestId(/test-topHotel-button-first/)
+              .getAttribute('class'))
+          .toMatch(/selected/i)
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-topHotel-button-third/))
+
+    await waitFor(() => {
+      expect(
+          homePage
+              .getByTestId(/test-topHotel-button-third/)
+              .getAttribute('class'))
+          .toMatch(/selected/i)
+    })
+  })
+
+  it("Should toggle recommended hotels cards", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+    fireEvent.click(homePage.getAllByTestId(/test-recommended-button/)[1])
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-recommended-card-second/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getAllByTestId(/test-recommended-button/)[2])
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-recommended-card-third/)).toBeInTheDocument()
+
+    })
+
+    fireEvent.click(homePage.getAllByTestId(/test-recommended-button/)[0])
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-recommended-card-first/)).toBeInTheDocument()
+
+    })
+  })
 })
 
 describe("Hotels search form suite", () => {
+
   it("Should display autocomplete list for hotels", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 

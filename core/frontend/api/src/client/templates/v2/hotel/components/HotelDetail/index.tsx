@@ -21,7 +21,6 @@ import {
     HotelName,
     HotelSearch,
     HotelView,
-    InfantIcon,
     InfoIcon,
     LeftSide,
     NewSearch,
@@ -42,23 +41,20 @@ import {
     PersonEntry,
     SubDetail,
     CloseIcon,
-    HotelCalendar, H4, SPAN, StyledButton, StyledTooltipWrapper
+    HotelCalendar, H4, SPAN, StyledButton
 } from "./styled";
+import CustomTooltip from "../../../components/Tooltip"
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
 import { StyledStarsSmall } from "../../../components/Styled/stars";
-import ReactTooltip from "react-tooltip";
-
 type HotelDetailProps = {
     data: any;
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
     handleHotelSearch: (data: string) => void;
-    handleInfantsPlus: () => void;
     handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
     handleChildrenPlus: () => void;
-    handleInfantsMinus: () => void;
     handleSearch: (data: string) => void;
 }
 
@@ -66,11 +62,9 @@ const HotelDetailComponent = ({
                          data,
                          handleAdultPlus,
                          handleAdultMinus,
-                         handleInfantsPlus,
                          handleChangeInput,
                          handleChildrenMinus,
                          handleChildrenPlus,
-                         handleInfantsMinus,
                          handleSearch,
 
                      }: HotelDetailProps) => {
@@ -302,9 +296,6 @@ const HotelDetailComponent = ({
                               ) : null}
                           </DateDiv>
                       </ClickAwayListener>
-
-
-
                   </Destination>
                   <Destination>
                       <ClickAwayListener onClickAway={() => handleClickAway("details")}>
@@ -315,20 +306,12 @@ const HotelDetailComponent = ({
                                       <AdultIcon  />
                                       <AdultNumber>
                                           {t(`deals.detail.adult`)}<span data-testid="adultNumberChosen">{data.passenger.adults}</span>
-
                                       </AdultNumber>
                                   </AdultBox>
                                   <AdultBox onClick={() => handleShowPassenger()}>
                                       <ChildIcon  />
                                       <AdultNumber>
                                           {t(`deals.detail.child`)}<span data-testid="childNumberChosen">{data.passenger.children}</span>
-
-                                      </AdultNumber>
-                                  </AdultBox>
-                                  <AdultBox onClick={() => handleShowPassenger()}>
-                                      <InfantIcon  />
-                                      <AdultNumber>
-                                          {t(`deals.detail.infant`)}<span data-testid="infantNumberChosen">{data.passenger.infants}</span>
                                       </AdultNumber>
                                   </AdultBox>
                                   <div style={{position:'relative', left: '7px'}}>
@@ -374,19 +357,6 @@ const HotelDetailComponent = ({
                                                   </Quantity>
                                               </BoxRight>
                                           </Person>
-                                          <Person>
-                                              <BoxLeft>
-                                                  <h3>{t("global.infants")}</h3>
-                                                  <p>{t("hotelResult.sideBar.search.infantsAge")}</p>
-                                              </BoxLeft>
-                                              <BoxRight>
-                                                  <Quantity>
-                                                      <SPAN onClick={handleInfantsMinus} data-testid="decInfantNumber">-</SPAN>
-                                                      <h5 data-testid="infantNumberFromDropdown">{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                      <SPAN onClick={handleInfantsPlus} data-testid="incInfantNumber">+</SPAN>
-                                                  </Quantity>
-                                              </BoxRight>
-                                          </Person>
                                           <SubDetail>
                                               <button onClick={()=>
                                                   setShow({
@@ -412,7 +382,7 @@ const HotelDetailComponent = ({
               <HotelInfo>
                   <LeftSide>
                       <HotelName>Hotel Victoria</HotelName>
-                          <StyledStarsSmall stars={3}></StyledStarsSmall>
+                          <StyledStarsSmall stars={3} />
                       <ShortDescription>
                           <HotelLocation>
                               {t("deals.location")}
@@ -422,11 +392,9 @@ const HotelDetailComponent = ({
                   </LeftSide>
                   <ViewPrice>
                       <StyledButton>
-                          <InfoIcon
-                            data-for="mainTooltip"
-                            data-tip={t("hotelDetail.hotelDetailComponent.infoIconDes")}
-                            data-iscapture="true"
-                          />
+                              <CustomTooltip text={t("hotelDetail.hotelDetailComponent.infoIconDes")}>
+                                  <InfoIcon />
+                              </CustomTooltip>
                           <Link to="prices" spy={true} smooth={true}><span>{t("hotelDetail.hotelDetailComponent.viewPrices")}</span></Link>
                       </StyledButton>
                   </ViewPrice>
@@ -435,15 +403,6 @@ const HotelDetailComponent = ({
                   <HotelPhotoSlider />
               </SliderSection>
           </HotelView>
-          <StyledTooltipWrapper>
-              <ReactTooltip
-                id="mainTooltip"
-                place="top"
-                effect="solid"
-                multiline={true}
-              />
-          </StyledTooltipWrapper>
-
       </Wrapper>
     );
 };

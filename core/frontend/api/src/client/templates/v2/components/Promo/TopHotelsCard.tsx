@@ -18,6 +18,7 @@ type TopHotelPriceProp = {
 }
 
 type TopHotelsCardProps = {
+  dataTestid: string;
   src: any;
   tag: string;
   details: string;
@@ -25,9 +26,9 @@ type TopHotelsCardProps = {
   prices: TopHotelPriceProp[]
 }
 
-export const TopHotelsCard = ({ src, tag, details, action, prices }: TopHotelsCardProps) => {
+export const TopHotelsCard = ({ dataTestid, src, tag, details, action, prices }: TopHotelsCardProps) => {
   return (
-    <StyledCard>
+    <StyledCard data-testid={dataTestid}>
       <StyledCardImageHolder>
         <StyledCardImage src={src} />
       </StyledCardImageHolder>

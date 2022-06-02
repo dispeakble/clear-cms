@@ -29,7 +29,6 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
     checkout: moment(new Date()).add(1, "d"),
     passenger: {
       adults: 1,
-      infants: 0,
       children: 1
     }
 
@@ -58,29 +57,6 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
         passenger: {
           ...data.passenger,
           adults: data.passenger.adults - 1
-        }
-      });
-    }
-
-
-  };
-  const handleInfantsPlus = () => {
-    setData({
-      ...data,
-      passenger: {
-        ...data.passenger,
-        infants: data.passenger.infants + 1
-      }
-    });
-
-  };
-  const handleInfantsMinus = () => {
-    if (Number(data.passenger.infants) > 0) {
-      setData({
-        ...data,
-        passenger: {
-          ...data.passenger,
-          infants: data.passenger.infants - 1
         }
       });
     }
@@ -139,8 +115,6 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
               data={data}
               handleChildrenMinus={handleChildrenMinus}
               handleChildrenPlus={handleChildrenPlus}
-              handleInfantsMinus={handleInfantsMinus}
-              handleInfantsPlus={handleInfantsPlus}
               handleChangeInput={handleChangeInput}
               handleAdultPlus={handleAdultPlus}
               handleAdultMinus={handleAdultMinus}
@@ -156,8 +130,6 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
               data={data}
               handleChildrenMinus={handleChildrenMinus}
               handleChildrenPlus={handleChildrenPlus}
-              handleInfantsMinus={handleInfantsMinus}
-              handleInfantsPlus={handleInfantsPlus}
               handleChangeInput={handleChangeInput}
               handleAdultPlus={handleAdultPlus}
               handleAdultMinus={handleAdultMinus}

@@ -28,9 +28,10 @@ const ResultFilter = ({checkboxes, title}: IResultFilter) => {
                 <FilteringIcon onClick={toggleDisplayFilterOptHandler}/>
             </FilterTitleContainer>
             {displayFilterOpt && <FilterOptionsContainer>
-                {checkboxes.map(checkbox => <CheckboxContainer>
-                    <Checkbox type="checkbox" />
-                    <Label>{checkbox}</Label>
+                {checkboxes.map((checkbox: any, index:number) =>
+                    <CheckboxContainer key={index}>
+                        <Checkbox type="checkbox" />
+                        <Label>{checkbox}</Label>
                 </CheckboxContainer>)}
             </FilterOptionsContainer>
             }

@@ -32,7 +32,7 @@ const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
                 filters &&
                 filters.map((filter: any, index: number) => {
                     return(
-                            <FiltersHeaderWrapper onClick={() => handleFilterOpen(filter.slug)} key={index}>
+                            <FiltersHeaderWrapper className={`filterHeaderWrapper ${isOpen.includes(filter.slug) ? "isOpen" : ""}`} onClick={() => handleFilterOpen(filter.slug)} key={index}>
                                 <FiltersHeader>
                                     {filter.title}
                                 </FiltersHeader>

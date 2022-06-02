@@ -48,7 +48,7 @@ const PackageCard = ({_package}: IProps) => {
     }
 
     return(
-        <CardWrapper>
+        <CardWrapper className="cardWrapper">
             <ImageContainer>
                 <Image src={_package.image}
                        objectFit="cover"

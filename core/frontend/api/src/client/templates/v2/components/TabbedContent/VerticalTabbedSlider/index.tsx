@@ -103,7 +103,7 @@ const VerticalTabbedSlider = ({ maxWidth, maxHeight }: VerticalPhotoSliderProps)
   }), [gallery]);
 
   return <StyledSliderWrapper>
-    <ImageGallery
+    <ImageGallery data-testid="test-image-gallery"
       {...galleryProps}
     />
     <div id={`vertical-slider-enlargeImage`}/>

@@ -8,7 +8,7 @@ const Breadcrumbs = (props: any) => {
     {/* TODO the commented code will be deleted in the next round */}
     <StyledBreadcrumbLink href="#">{t("global.home")}</StyledBreadcrumbLink>
     {
-      Object.keys(props).map((key: any) => <StyledBreadcrumbLink href="#" key={key}>{props[key]}</StyledBreadcrumbLink>)
+      Object.keys(props).map((key: any) => <StyledBreadcrumbLink key={key} href="#">{props[key]}</StyledBreadcrumbLink>)
     }
   </StyledBreadcrumbs>);
 };

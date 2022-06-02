@@ -203,7 +203,7 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
                             }
 
                             <ButtonContainer style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "30px 0"}}>
-                                <LoadMoreButton onClick={() => loadMorePages()}>
+                                <LoadMoreButton data-testid="test-loadMore-button" onClick={() => loadMorePages()}>
                                     {t('packages.main.loadMore')}
                                 </LoadMoreButton>
                             </ButtonContainer>
