@@ -82,8 +82,8 @@ const SecondStep = ({passengers,
                                                 </InputLabel>
                                                 <Field name={`passengers[${index}].firstName`}>
                                                     {({field}: any) => (
-                                                            <TextInput {...field} required
-                                                                       placeholder="E.G. John (Given Name)" type="text"/>
+                                                        <TextInput {...field} required
+                                                                   placeholder="E.G. John (Given Name)" type="text"/>
                                                     )}
                                                 </Field>
                                             </InputGroup>

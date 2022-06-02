@@ -490,8 +490,6 @@ describe("Children age popup suite", () => {
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-second-tab-slide/)).toBeInTheDocument()
-      expect(homePage.getByTestId(/test-first-tab-slide/)).toBeUndefined()
-      expect(homePage.getByTestId(/test-third-tab-slide/)).toBeUndefined()
       expect(
           homePage
               .getByTestId(/test-second-tab-button/)
@@ -503,8 +501,6 @@ describe("Children age popup suite", () => {
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-first-tab-slide/)).toBeInTheDocument()
-      expect(homePage.getByTestId(/test-second-tab-slide/)).toBeUndefined()
-      expect(homePage.getByTestId(/test-third-tab-slide/)).toBeUndefined()
       expect(
           homePage
               .getByTestId(/test-first-tab-button/)
@@ -516,8 +512,6 @@ describe("Children age popup suite", () => {
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-third-tab-slide/)).toBeInTheDocument()
-      expect(homePage.getByTestId(/test-first-tab-slide/)).toBeUndefined()
-      expect(homePage.getByTestId(/test-second-tab-slide/)).toBeUndefined()
       expect(
           homePage
               .getByTestId(/test-third-tab-button/)

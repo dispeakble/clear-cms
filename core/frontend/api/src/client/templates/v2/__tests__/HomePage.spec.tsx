@@ -480,7 +480,43 @@ describe("Children age popup suite", () => {
 
     await waitFor(() => {
       expect(homePage.getByTestId(/test-recommended-card-first/)).toBeInTheDocument()
+    })
+  })
 
+  it("Should switch tabbed content", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-second-tab-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-second-tab-slide/)).toBeInTheDocument()
+      expect(
+          homePage
+              .getByTestId(/test-second-tab-button/)
+              .getAttribute('class'))
+          .toMatch(/selected/i)
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-first-tab-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-first-tab-slide/)).toBeInTheDocument()
+      expect(
+          homePage
+              .getByTestId(/test-first-tab-button/)
+              .getAttribute('class'))
+          .toMatch(/selected/i)
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-third-tab-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-third-tab-slide/)).toBeInTheDocument()
+      expect(
+          homePage
+              .getByTestId(/test-third-tab-button/)
+              .getAttribute('class'))
+          .toMatch(/selected/i)
     })
   })
 })

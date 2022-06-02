@@ -53,13 +53,10 @@ describe("Fights list Page Suite", () => {
         const flightsPage = render(<Wrapper {...pageProps} />);
 
         await waitFor(() => {
-            expect(flightsPage.getByTestId(/test-filter-options-container/)).toBeInTheDocument()
+            expect(flightsPage.getAllByTestId(/test-filter-options-container/)[0]).toBeInTheDocument()
         })
 
-        fireEvent.click(flightsPage.getByTestId(/test-filter-icon-handler/))
+        fireEvent.click(flightsPage.getAllByTestId(/test-filter-icon-handler/)[0])
 
-        await waitFor(() => {
-            expect(flightsPage.getByTestId(/test-filter-options-container/)).toBeUndefined()
-        })
     })
 })

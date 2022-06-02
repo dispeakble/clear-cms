@@ -25,9 +25,9 @@ const ResultFilter = ({checkboxes, title}: IResultFilter) => {
         <FilterWrapper>
             <FilterTitleContainer>
                 <FilterTitle>{title}</FilterTitle>
-                <FilteringIcon onClick={toggleDisplayFilterOptHandler}/>
+                <FilteringIcon data-testid="test-filter-icon-handler" onClick={toggleDisplayFilterOptHandler}/>
             </FilterTitleContainer>
-            {displayFilterOpt && <FilterOptionsContainer>
+            {displayFilterOpt && <FilterOptionsContainer data-testid="test-filter-options-container">
                 {checkboxes.map((checkbox: any, index:number) =>
                     <CheckboxContainer key={index}>
                         <Checkbox type="checkbox" />
