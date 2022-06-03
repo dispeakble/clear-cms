@@ -238,14 +238,7 @@ export const Flights = () => {
         && checkInDate
         && checkOutDate
         && formatDate(checkInDate) !== formatDate(checkOutDate)) {
-      router.push({
-        pathname: `/flights/search/
-          ${destination}/
-          from-${formatDateSearch(checkInDate)}/
-          to-${formatDateSearch(checkOutDate)}/
-          adults-${filterValues.adults}/
-          children-${filterValues.children}`
-      });
+      router.push(`/flights/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
 
@@ -302,7 +295,6 @@ export const Flights = () => {
               <CalendarContainer data-testid="test-calendar">
               <Calendar
               formatMonthYear={(locale, date) => formatDate(date)}
-              formatYear={(locale, date) => formatDate(date)}
               view="month"
               showDoubleView={true}
               selectRange={true}
@@ -350,7 +342,9 @@ export const Flights = () => {
             <StyledOneWay data-testid="test-checkbox-oneway-handler">
               <StyledCenterLabel style={{height: "100%", width: "100%"}}>
                 <StyledLabel>{t("search.oneway")}</StyledLabel>
-                <StyledPrimaryValue><input onChange={() => setOneWay(!oneWay)} type="checkbox" checked={oneWay} /></StyledPrimaryValue>
+                <StyledPrimaryValue>
+                  <input onChange={() => setOneWay(!oneWay)} type="checkbox" data-testid="test-checkbox-oneway" checked={oneWay} />
+                </StyledPrimaryValue>
               </StyledCenterLabel>
             </StyledOneWay>
           </StyledSearchOptionsGroup>

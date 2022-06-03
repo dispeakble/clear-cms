@@ -203,6 +203,10 @@ export const Packages = () => {
     }).format(date);
   };
 
+  const guestsCount = () => {
+    return filterValues.children + filterValues.adults;
+  };
+
   const onDateChange = (dates: any[]) => {
     setCheckInDate(dates[0]);
     setCheckOutDate(dates[1]);
@@ -235,15 +239,9 @@ export const Packages = () => {
     if (destination.length > 0
         && checkInDate
         && checkOutDate
-        && formatDate(checkInDate) !== formatDate(checkOutDate)) {
-      router.push({
-        pathname: `/packages/search/
-          ${destination}/
-          from-${formatDateSearch(checkInDate)}/
-          to-${formatDateSearch(checkOutDate)}/
-          adults-${filterValues.adults}/
-          children-${filterValues.children}`
-      });
+        && formatDate(checkInDate) !== formatDate(checkOutDate)
+        && guestsCount() > 0) {
+      router.push(`/flights/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
 
@@ -300,7 +298,6 @@ export const Packages = () => {
                 <CalendarContainer data-testid="test-calendar">
                   <Calendar
                     formatMonthYear={(locale, date) => formatDate(date)}
-                    formatYear={(locale, date) => formatDate(date)}
                     view="month"
                     showDoubleView={true}
                     selectRange={true}
@@ -352,7 +349,6 @@ export const Packages = () => {
                   dataTestId="test-children-ages-handler"
                   onChange={handleFilterChange}/> }
                 </>
-
               }
             </StyledChild>
           </StyledSearchOptionsGroup>

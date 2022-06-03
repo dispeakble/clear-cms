@@ -1184,6 +1184,30 @@ describe("Flights search form suite", () => {
     })
   })
 
+  it("Should toggle filters (One way flight)", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    console.log("handler", homePage.getByTestId(/test-checkbox-oneway-handler/))
+
+    fireEvent.click(homePage.getByTestId(/test-checkbox-oneway-handler/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('input[type="checkbox"]')).toHaveProperty("checked", true)
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkbox-oneway-handler/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('input[type="checkbox"]')).toHaveProperty("checked", false)
+    })
+  })
+
   it("Should perform a submit after fields are filled", async () => {
     const homePage = render(<Wrapper {...homePageProps} />)
     const today = new Date();
@@ -1489,6 +1513,49 @@ describe("Packages search form suite", () => {
     await waitFor(() => {
       expect(homePage.getByTestId(/test-children-ages-handler/)).toBeInTheDocument()
       expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(0)
+    })
+  })
+
+  it("Should toggle filters (Stars)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-stars-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-stars-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Stars)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-stars-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-stars-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(4)
     })
   })
 
