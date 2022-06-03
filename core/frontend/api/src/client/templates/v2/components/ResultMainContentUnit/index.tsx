@@ -35,7 +35,7 @@ const ResultMainContentUnit = ({flightInfo}: IResultMainContentUnit) => {
     const t = useTranslations();
     return (
         <ResultMainContent>
-            <Description>
+            <Description data-testid="test-flight-description">
                 <DescriptionRowOne>
                     <TakeOffFlightLocation>
                         {flightInfo.flightOne.from}<span>, {flightInfo.flightOne.fromAbr}</span>

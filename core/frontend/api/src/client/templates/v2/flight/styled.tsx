@@ -128,6 +128,22 @@ export const Flight = styled.div`
 
 `
 
+export const StyledField= styled(Field)`
+  outline: none;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  color: #434343;
+
+  ::placeholder{
+    color: #ADADAD;
+  }
+`
+
 export const Flights = styled.div`
   display: flex;
   flex-direction: column;

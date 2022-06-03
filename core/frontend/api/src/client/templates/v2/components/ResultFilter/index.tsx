@@ -25,12 +25,13 @@ const ResultFilter = ({checkboxes, title}: IResultFilter) => {
         <FilterWrapper>
             <FilterTitleContainer>
                 <FilterTitle>{title}</FilterTitle>
-                <FilteringIcon onClick={toggleDisplayFilterOptHandler}/>
+                <FilteringIcon data-testid="test-filter-icon-handler" onClick={toggleDisplayFilterOptHandler}/>
             </FilterTitleContainer>
-            {displayFilterOpt && <FilterOptionsContainer>
-                {checkboxes.map(checkbox => <CheckboxContainer>
-                    <Checkbox type="checkbox" />
-                    <Label>{checkbox}</Label>
+            {displayFilterOpt && <FilterOptionsContainer data-testid="test-filter-options-container">
+                {checkboxes.map((checkbox: any, index:number) =>
+                    <CheckboxContainer key={index}>
+                        <Checkbox type="checkbox" />
+                        <Label>{checkbox}</Label>
                 </CheckboxContainer>)}
             </FilterOptionsContainer>
             }

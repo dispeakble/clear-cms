@@ -7,7 +7,6 @@ import { NextRouter } from "next/dist/shared/lib/router/router";
 const Languages = (props: { languages: any; }) => {
 
   const router: NextRouter = useRouter();
-  const locales = router.locales || [];
   const { languages } = props;
 
 
@@ -16,13 +15,14 @@ const Languages = (props: { languages: any; }) => {
       <SelectedLanguage>{languages[router.locale as string]} <BiChevronDown /></SelectedLanguage>
       <LanguagesDropdown>
         {
-          locales.map((locale, i) =>
-            <Link href={router.asPath} locale={locale} key={`language-link-${i}`}>
-              <a>
-                {languages[locale]}
-              </a>
-            </Link>
-          )
+            router.locales &&
+                router.locales.map((locale, i) =>
+                    <Link href={router.asPath} locale={locale} key={`language-link-${i}`}>
+                      <a>
+                        {languages[locale]}
+                      </a>
+                    </Link>
+                )
         }
       </LanguagesDropdown>
     </Container>

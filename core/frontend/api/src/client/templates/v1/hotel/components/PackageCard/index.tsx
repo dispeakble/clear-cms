@@ -48,7 +48,7 @@ const PackageCard = ({_package}: IProps) => {
     }
 
     return(
-        <CardWrapper>
+        <CardWrapper className="cardWrapper">
             <ImageContainer>
                 <Image src={_package.image}
                        objectFit="cover"
@@ -73,6 +73,7 @@ const PackageCard = ({_package}: IProps) => {
                                             .map((value: undefined, index: number) =>
                                                 (
                                                     <Image
+                                                        key={index}
                                                         src={YellowStar}
                                                         width={21}
                                                         height={20}
@@ -86,6 +87,7 @@ const PackageCard = ({_package}: IProps) => {
                                             .map((value: undefined, index: number) =>
                                                 (
                                                     <Image
+                                                        key={index}
                                                         src={GrayStar}
                                                         width={21}
                                                         height={20}

@@ -32,7 +32,7 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
     const  t = useTranslations();
 
     return(
-        <Flights>
+        <Flights data-testid="test-hotel-first-step">
             {
                 hotelData.map((hotel: any, index: number) => {
                     return(
@@ -114,7 +114,7 @@ const FirstStep = ({hotelData, setCurrentStep, currentStep}: IProps) => {
                 })
             }
             <ButtonsContainer hasOneChild>
-                <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
+                <CustomButton isActive data-testid="test-next-button" onClick={() => setCurrentStep((prev: number) => prev + 1)}>
                     {t('flightsCheckout.main.nextStep')}
                     <span>
                         {currentStep+1}

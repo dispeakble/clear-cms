@@ -14,7 +14,7 @@ const BookingConfirmed = () => {
     const redirectHome = () => router.push('/');
 
     return(
-        <BookingConfirmedContainer>
+        <BookingConfirmedContainer data-testid="test-hotel-checkout-confirmation">
             <FinalStep>
                 <Image
                     src={BookingConfirmedIllustration}
@@ -28,7 +28,7 @@ const BookingConfirmed = () => {
                     <EmailDetailsText>
                         {t('hotelCheckout.paymentConfirmed.emailDetails')}
                     </EmailDetailsText>
-                    <CustomButton isActive onClick={redirectHome}>
+                    <CustomButton data-testid="test-home-button" isActive onClick={redirectHome}>
                         {t('hotelCheckout.paymentConfirmed.backHome')}
                     </CustomButton>
                 </ConfirmedText>

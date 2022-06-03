@@ -52,11 +52,9 @@ type HotelDetailProps = {
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
     handleHotelSearch: (data: string) => void;
-    handleInfantsPlus: () => void;
     handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
     handleChildrenPlus: () => void;
-    handleInfantsMinus: () => void;
     handleSearch: (data: string) => void;
 }
 
@@ -64,11 +62,9 @@ const HotelDetailComponent = ({
                          data,
                          handleAdultPlus,
                          handleAdultMinus,
-                         handleInfantsPlus,
                          handleChangeInput,
                          handleChildrenMinus,
                          handleChildrenPlus,
-                         handleInfantsMinus,
                          handleSearch,
 
                      }: HotelDetailProps) => {
@@ -350,7 +346,7 @@ const HotelDetailComponent = ({
                                           </Person>
                                           <Person>
                                               <BoxLeft>
-                                                  <h3>{t("global.childrens")}</h3>
+                                                  <h3>{t("global.children")}</h3>
                                                   <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
                                               </BoxLeft>
                                               <BoxRight>

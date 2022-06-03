@@ -427,6 +427,8 @@
             await waitFor(() => expect(hotelPage.getByTestId('readButton')).toHaveTextContent('read less...'))
         })
 
+
+
     });
 
 

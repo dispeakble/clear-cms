@@ -445,8 +445,8 @@ const ResultsMainContent = () => {
 
 
     return <ResultMainContentWrapper>
-        {flightsInformation?.map(flightInfo =>
-            <ResultMainContentUnit flightInfo={flightInfo}/>
+        {flightsInformation?.map((flightInfo: any, index:number) =>
+            <ResultMainContentUnit key={index} flightInfo={flightInfo}/>
             )}
     </ResultMainContentWrapper>
 }

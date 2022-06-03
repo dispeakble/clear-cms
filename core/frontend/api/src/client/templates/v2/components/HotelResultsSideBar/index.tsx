@@ -263,7 +263,7 @@ const HotelResultSideBar = ({
                                             </Person>
                                             <Person>
                                                 <BoxLeft>
-                                                    <h3>{t("global.childrens")}</h3>
+                                                    <h3>{t("global.children")}</h3>
                                                     <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
                                                 </BoxLeft>
                                                 <BoxRight>

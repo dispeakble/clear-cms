@@ -43,7 +43,6 @@ export const Flights = () => {
 
   const showDepartureList = async () => {
 
-
     const response = await ws.sendMessage({
       api: "homeSearchFlights",
       act: "flights",
@@ -192,10 +191,6 @@ export const Flights = () => {
     }).format(date);
   };
 
-  const guestsCount = () => {
-    return filterValues.children + filterValues.adults;
-  };
-
   const openCalendar = (e: any) => {
     if (e.currentTarget === e.target) {
       setCalendarIsOpen(true);
@@ -235,36 +230,29 @@ export const Flights = () => {
 
     if (destination.length === 0) {
       focusElement(departureRef);
-    } else if (!checkInDate) {
+    } else if (formatDate(checkInDate) === formatDate(checkOutDate)) {
       setCalendarIsOpen(true);
     }
 
     if (destination.length > 0
         && checkInDate
         && checkOutDate
-        && guestsCount() > 0) {
-      router.push({
-        pathname: `/flights/search/
-          ${destination}/
-          from-${formatDateSearch(checkInDate)}/
-          to-${formatDateSearch(checkOutDate)}/
-          adults-${filterValues.adults}/
-          children-${filterValues.children}`
-      });
+        && formatDate(checkInDate) !== formatDate(checkOutDate)) {
+      router.push(`/flights/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
 
   return (<>
-      <StyledSearchInputHolder className="flights">
+      <StyledSearchInputHolder className="flightsSearchForm">
         <StyledSearchInput
-          data-testid="test-search-input"
+          data-testid="test-departure-search-input"
           ref={departureRef}
           placeholder={t("search.homeSearchPackageDeparturePlaceholder")}
           value={departure}
           onChange={handleDeparture}
           onFocus={showDepartureList}
         />
-        {showDepartures && <AutocompleteList>
+        {showDepartures && <AutocompleteList data-testid="test-autocomplete-list">
           {departureList.map(
               (dep, i) =>
                   <AutocompleteItem
@@ -277,7 +265,7 @@ export const Flights = () => {
           placeholder={t("search.homeSearchPackageDestinationPlaceholder")}
           value={destination}
           onChange={handleDestination} />
-        {showDestinations && <AutocompleteList className="destination">
+        {showDestinations && <AutocompleteList data-testid="test-autocomplete-list" className="destination">
           {destinationList.map(
               (dest, i) =>
                   <AutocompleteItem
@@ -307,7 +295,6 @@ export const Flights = () => {
               <CalendarContainer data-testid="test-calendar">
               <Calendar
               formatMonthYear={(locale, date) => formatDate(date)}
-              formatYear={(locale, date) => formatDate(date)}
               view="month"
               showDoubleView={true}
               selectRange={true}
@@ -355,7 +342,9 @@ export const Flights = () => {
             <StyledOneWay data-testid="test-checkbox-oneway-handler">
               <StyledCenterLabel style={{height: "100%", width: "100%"}}>
                 <StyledLabel>{t("search.oneway")}</StyledLabel>
-                <StyledPrimaryValue><input onChange={() => setOneWay(!oneWay)} type="checkbox" checked={oneWay} /></StyledPrimaryValue>
+                <StyledPrimaryValue>
+                  <input onChange={() => setOneWay(!oneWay)} type="checkbox" data-testid="test-checkbox-oneway" checked={oneWay} />
+                </StyledPrimaryValue>
               </StyledCenterLabel>
             </StyledOneWay>
           </StyledSearchOptionsGroup>

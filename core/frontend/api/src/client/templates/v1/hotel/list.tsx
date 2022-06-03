@@ -198,12 +198,12 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
                             {
                                 [...Array(page)]
                                     .map((value: undefined, index:number) => (
-                                        <PackageCard _package={packages[0]} />
+                                        <PackageCard key={index} _package={packages[0]} />
                                     ))
                             }
 
                             <ButtonContainer style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "center", margin: "30px 0"}}>
-                                <LoadMoreButton onClick={() => loadMorePages()}>
+                                <LoadMoreButton data-testid="test-loadMore-button" onClick={() => loadMorePages()}>
                                     {t('packages.main.loadMore')}
                                 </LoadMoreButton>
                             </ButtonContainer>

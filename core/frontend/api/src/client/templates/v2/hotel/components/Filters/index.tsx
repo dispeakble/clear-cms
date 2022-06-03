@@ -8,7 +8,7 @@ import {useState} from "react";
 const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
 
     const t = useTranslations();
-    const [isOpen, setIsOpen] = useState([])
+    const [isOpen, setIsOpen] = useState<string[]>([])
 
 
     const handleFilterOpen = (slug: string) => {
@@ -32,8 +32,7 @@ const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
                 filters &&
                 filters.map((filter: any, index: number) => {
                     return(
-                        <>
-                            <FiltersHeaderWrapper key={index}>
+                            <FiltersHeaderWrapper className={`filterHeaderWrapper ${(isOpen?.includes(filter.slug as string)) ? "isOpen" : ""}`} onClick={() => handleFilterOpen(filter.slug)} key={index}>
                                 <FiltersHeader>
                                     {filter.title}
                                 </FiltersHeader>
@@ -41,13 +40,11 @@ const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
                                     src={FiltersArrow}
                                     width={10}
                                     height={5}
-                                    onClick={() => handleFilterOpen(filter.slug)}
                                     style={{
                                         cursor: 'pointer'
                                 }}
                                 />
                             </FiltersHeaderWrapper>
-                        </>
                     )
                 })
             }

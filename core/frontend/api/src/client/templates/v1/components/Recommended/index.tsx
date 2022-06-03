@@ -23,17 +23,17 @@ const Recommended = () => {
   return (
     <>
       <StyledTabs>
-        <StyledTabBtn onClick={() => setSelectedTab(0)}
+        <StyledTabBtn data-testid="test-recommended-button" onClick={() => setSelectedTab(0)}
                       className={selectedTab === 0 ? "selected" : ""}>{t("home.recommended.tabs.popular")}</StyledTabBtn>
-        <StyledTabBtn onClick={() => setSelectedTab(1)}
+        <StyledTabBtn data-testid="test-recommended-button" onClick={() => setSelectedTab(1)}
                       className={selectedTab === 1 ? "selected" : ""}>{t("home.recommended.tabs.adventure")}</StyledTabBtn>
-        <StyledTabBtn onClick={() => setSelectedTab(2)}
+        <StyledTabBtn data-testid="test-recommended-button" onClick={() => setSelectedTab(2)}
                       className={selectedTab === 2 ? "selected" : ""}>{t("home.recommended.tabs.relax")}</StyledTabBtn>
       </StyledTabs>
       <Wrapper>
-        <Card {...cardProps} />
-        <Card {...cardProps} />
-        <Card {...cardProps} />
+        <Card {...cardProps} dataTestid="test-recommended-card-first" />
+        <Card {...cardProps} dataTestid="test-recommended-card-second" />
+        <Card {...cardProps} dataTestid="test-recommended-card-third" />
       </Wrapper>
     </>
   );

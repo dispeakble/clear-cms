@@ -422,6 +422,7 @@ export const FiltersHeaderWrapper = styled.div`
   align-items: center;
   border-bottom: 1px #C4C4C4 solid;
   width: 100%;
+  cursor: pointer;
   
   
 `
@@ -644,7 +645,23 @@ export const InputLabel = styled.label`
   color: #434343;
 `
 
-export const TextInput = styled(Field)`
+export const StyledField= styled(Field)`
+  outline: none;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  color: #434343;
+
+  ::placeholder{
+    color: #ADADAD;
+  }
+`
+
+export const TextInput = styled.input`
   outline: none;
   border: 1px solid #DBDBDB;
   border-radius: 10px;

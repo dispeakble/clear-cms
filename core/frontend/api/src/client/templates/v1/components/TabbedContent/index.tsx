@@ -28,7 +28,7 @@ const TabbedContent = () => {
     </StyledTabs>
     <StyledContent>
       {slides.map((slide, index) => (
-        selectedTab === index && <div key={index}>
+        selectedTab === index && <div key={index} data-testid={`test-${slide}-tab-slide`}>
           <StyledTitle>{t(`home.tabbed.${slide}.title`)}</StyledTitle>
           <VerticalTabbedSlider maxWidth="732px" maxHeight="250px" />
           <StyledContentWrapper>
