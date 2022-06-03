@@ -521,6 +521,7 @@ describe("Children age popup suite", () => {
   })
 })
 
+/*
 describe("Hotels search form suite", () => {
 
   it("Should display autocomplete list for hotels", async () => {
@@ -606,6 +607,951 @@ describe("Hotels search form suite", () => {
     })
   })
 
+
+})
+
+*/
+
+describe("Hotels search form suite", () => {
+
+  it("Should focus destination input on submit", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(document.activeElement)
+          .toEqual(homePage.getByTestId('test-destination-search-input'))
+    })
+
+  })
+
+  it("Should open calendar or submit", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should update destination input value", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+  })
+
+  it("Should open and close calendar modal via overlay click", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkIn-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+
+  it("Should change calendar date and close calendar", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+    const today = new Date();
+    const checkOut = new Date();
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkIn-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    const checkInFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate())))}"]`);
+
+
+    fireEvent.click(
+        checkInFlightDateInCalendar
+    )
+
+    const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
+
+    fireEvent.click(
+        checkOutFlightDateInCalendar
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkIn-date-value/).textContent).toBe(formatDate(today).toString());
+      expect(homePage.getByTestId(/test-checkOut-date-value/).textContent).toBe(formatDate(checkOut).toString());
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+
+  it("Should toggle filters (Adults)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-adults-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-adults-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Adults)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-adults-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-adults-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(1)
+    })
+  })
+
+  it("Should toggle filters (Children)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Children)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-ages-handler/)).toBeInTheDocument()
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(0)
+    })
+  })
+
+  it("Should toggle filters (Stars)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-stars-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-stars-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Stars)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-stars-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-stars-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(4)
+    })
+  })
+
+
+  it("Should perform a submit after fields are filled", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+    const today = new Date();
+    const checkOut = new Date();
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.hotelsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    const checkInFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate())))}"]`);
+
+
+    fireEvent.click(
+        checkInFlightDateInCalendar
+    )
+
+    const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
+
+    fireEvent.click(
+        checkOutFlightDateInCalendar
+    )
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+})
+
+describe("Flights search form suite", () => {
+
+  it("Should focus departure on submit", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(document.activeElement)
+          .toEqual(homePage.getByTestId('test-departure-search-input'))
+    })
+
+  })
+
+  it("Should open calendar or submit", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+  })
+
+
+  it("Should update departure input value", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+  })
+
+  it("Should update destination input value", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+  })
+
+  it("Should open and close calendar modal via overlay click", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkIn-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+
+  it("Should change calendar date and close calendar", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+    const today = new Date();
+    const checkOut = new Date();
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkIn-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    const checkInFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate())))}"]`);
+
+
+    fireEvent.click(
+        checkInFlightDateInCalendar
+    )
+
+    const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
+
+    fireEvent.click(
+        checkOutFlightDateInCalendar
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkIn-date-value/).textContent).toBe(formatDate(today).toString());
+      expect(homePage.getByTestId(/test-checkOut-date-value/).textContent).toBe(formatDate(checkOut).toString());
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+
+
+  it("Should toggle filters (Adults)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-adults-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-adults-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Adults)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-adults-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-adults-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(1)
+    })
+  })
+
+  it("Should toggle filters (Children)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Children)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-ages-handler/)).toBeInTheDocument()
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(0)
+    })
+  })
+
+  it("Should perform a submit after fields are filled", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+    const today = new Date();
+    const checkOut = new Date();
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    const checkInFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate())))}"]`);
+
+
+    fireEvent.click(
+        checkInFlightDateInCalendar
+    )
+
+    const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
+
+    fireEvent.click(
+        checkOutFlightDateInCalendar
+    )
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+})
+
+describe("Packages search form suite", () => {
+
+  it("Should focus departure on submit", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(document.activeElement)
+          .toEqual(homePage.getByTestId('test-departure-search-input'))
+    })
+
+  })
+
+  it("Should open calendar or submit", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+  })
+
+  it("Should update departure input value", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+  })
+
+  it("Should update destination input value", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+  })
+
+  it("Should open and close calendar modal via overlay click", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkIn-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+
+  it("Should change calendar date", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+    const today = new Date();
+    const checkOut = new Date();
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-checkIn-button/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    const checkInFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate())))}"]`);
+
+
+    fireEvent.click(
+        checkInFlightDateInCalendar
+    )
+
+    const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
+
+    fireEvent.click(
+        checkOutFlightDateInCalendar
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-checkIn-date-value/).textContent).toBe(formatDate(today).toString());
+      expect(homePage.getByTestId(/test-checkOut-date-value/).textContent).toBe(formatDate(checkOut).toString());
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+
+  it("Should toggle filters (Adults)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-adults-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-adults-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Adults)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-adults-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-adults-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(1)
+    })
+  })
+
+  it("Should toggle filters (Children)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/home-search-overlay/))
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
+  it("Should change filters values (Children)", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-open-children-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(homePage.getByTestId(/test-plus-handler/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-children-ages-handler/)).toBeInTheDocument()
+      expect(Number(homePage.getByTestId(/test-handler-value/).textContent)).toBeGreaterThan(0)
+    })
+  })
+
+  it("Should perform a submit after fields are filled", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />)
+    const today = new Date();
+    const checkOut = new Date();
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/))
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector('.packagesSearchForm')).toBeInTheDocument()
+    })
+
+    fireEvent.change(
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target:{
+            value: 'test'
+          }
+        }
+    )
+
+    fireEvent.click(homePage.getByTestId(/search-submit-btn/))
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-calendar/)).toBeInTheDocument()
+    })
+
+    const checkInFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(today.setDate(today.getDate())))}"]`);
+
+
+    fireEvent.click(
+        checkInFlightDateInCalendar
+    )
+
+    const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat('en', {
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
+
+    fireEvent.click(
+        checkOutFlightDateInCalendar
+    )
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/home-search-overlay/)).toBeNull()
+    })
+  })
 
 })
 

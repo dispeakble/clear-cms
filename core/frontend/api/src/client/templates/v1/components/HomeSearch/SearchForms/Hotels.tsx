@@ -123,10 +123,6 @@ export const Hotels = () => {
     }).format(date);
   };
 
-  const guestsCount = () => {
-    return filterValues.children + filterValues.adults;
-  };
-
   const onDateChange = (dates: any[]) => {
     setCheckInDate(dates[0]);
     setCheckOutDate(dates[1]);
@@ -152,28 +148,28 @@ export const Hotels = () => {
 
     if (destination.length === 0) {
       focusElement(destinationRef);
-    } else if (!checkInDate) {
+    } else if (formatDate(checkInDate) === formatDate(checkOutDate)) {
       setCalendarIsOpen(true);
     }
 
     if (destination.length > 0
-      && checkInDate
-      && checkOutDate
-      && guestsCount() > 0) {
+        && checkInDate
+        && checkOutDate
+        && formatDate(checkInDate) !== formatDate(checkOutDate))
+    {
       router.push({
         pathname: `/hotels/search/
-${destination}/
-from-${formatDateSearch(checkInDate)}/
-to-${formatDateSearch(checkOutDate)}/
-adults-${filterValues.adults}/
-children-${filterValues.children}/
-category-${filterValues.stars}`
+          ${destination}/
+          from-${formatDateSearch(checkInDate)}/
+          to-${formatDateSearch(checkOutDate)}/
+          adults-${filterValues.adults}/
+          children-${filterValues.children}`
       });
     }
   };
 
   return (<>
-      <StyledSearchInputHolder className="flights">
+      <StyledSearchInputHolder className="hotelsSearchForm">
         <StyledSearchDestinationInput
           className="singleInput"
           ref={destinationRef}

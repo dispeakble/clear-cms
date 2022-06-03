@@ -191,10 +191,6 @@ export const Flights = () => {
     }).format(date);
   };
 
-  const guestsCount = () => {
-    return filterValues.children + filterValues.adults;
-  };
-
   const openCalendar = (e: any) => {
     if (e.currentTarget === e.target) {
       setCalendarIsOpen(true);
@@ -234,14 +230,14 @@ export const Flights = () => {
 
     if (destination.length === 0) {
       focusElement(departureRef);
-    } else if (!checkInDate) {
+    } else if (formatDate(checkInDate) === formatDate(checkOutDate)) {
       setCalendarIsOpen(true);
     }
 
     if (destination.length > 0
         && checkInDate
         && checkOutDate
-        && guestsCount() > 0) {
+        && formatDate(checkInDate) !== formatDate(checkOutDate)) {
       router.push({
         pathname: `/flights/search/
           ${destination}/
@@ -254,7 +250,7 @@ export const Flights = () => {
   };
 
   return (<>
-      <StyledSearchInputHolder className="flights">
+      <StyledSearchInputHolder className="flightsSearchForm">
         <StyledSearchInput
           data-testid="test-departure-search-input"
           ref={departureRef}

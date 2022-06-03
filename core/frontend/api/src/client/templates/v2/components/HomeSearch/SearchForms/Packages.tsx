@@ -203,10 +203,6 @@ export const Packages = () => {
     }).format(date);
   };
 
-  const guestsCount = () => {
-    return filterValues.children + filterValues.adults;
-  };
-
   const onDateChange = (dates: any[]) => {
     setCheckInDate(dates[0]);
     setCheckOutDate(dates[1]);
@@ -232,28 +228,27 @@ export const Packages = () => {
 
     if (destination.length === 0) {
       focusElement(departureRef);
-    } else if (!checkInDate) {
+    } else if (formatDate(checkInDate) === formatDate(checkOutDate)) {
       setCalendarIsOpen(true);
     }
 
     if (destination.length > 0
-      && checkInDate
-      && checkOutDate
-      && guestsCount() > 0) {
+        && checkInDate
+        && checkOutDate
+        && formatDate(checkInDate) !== formatDate(checkOutDate)) {
       router.push({
         pathname: `/packages/search/
-        ${destination}/
-        from-${formatDateSearch(checkInDate)}/
-        to-${formatDateSearch(checkOutDate)}/
-        adults-${filterValues.adults}/
-        children-${filterValues.children}/
-        category-${filterValues.stars}`
+          ${destination}/
+          from-${formatDateSearch(checkInDate)}/
+          to-${formatDateSearch(checkOutDate)}/
+          adults-${filterValues.adults}/
+          children-${filterValues.children}`
       });
     }
   };
 
   return (<>
-      <StyledSearchInputHolder className="packages">
+      <StyledSearchInputHolder className="packagesSearchForm">
         <StyledSearchInput
           data-testid="test-departure-search-input"
           ref={departureRef}

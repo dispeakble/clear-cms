@@ -23,13 +23,20 @@ const Header = (props: any) => {
   const [fixedHeader, setFixedHeader] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) {
-        setFixedHeader(true);
-      } else {
-        setFixedHeader(false);
+      if(isMounted) {
+        if (window.scrollY > 50) {
+          setFixedHeader(true);
+        } else {
+          setFixedHeader(false);
+        }
       }
     });
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      isMounted = false
+    };
   }, []);
 
   return (
