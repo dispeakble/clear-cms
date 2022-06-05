@@ -1193,7 +1193,6 @@ describe("Flights search form suite", () => {
       expect(homePage.container.querySelector('.flightsSearchForm')).toBeInTheDocument()
     })
 
-
     fireEvent.click(homePage.getByTestId(/test-checkbox-oneway-handler/))
 
     await waitFor(() => {
