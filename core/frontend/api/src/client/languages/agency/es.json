@@ -7,7 +7,9 @@
     "children": "Niños",
     "nights": "Noches",
     "infants": "Infantes",
-    "days": "dias"
+    "days": "dias",
+    "included": "Incluye",
+    "termsAndConditions": "Términos y Condiciones."
   },
   "day": {
     "monday": "Lunes",
@@ -498,5 +500,29 @@
     "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
     "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
     "viewMore": "Ver más"
+  },
+  "packageCheckout": {
+    "main": {
+      "stars": "{stars} estrellas",
+      "adults": "Adultos",
+      "children": "Niños",
+      "termsAndConditionsApply": "Se aplican los términos y condiciones.",
+      "termsAndConditionsLong": "Al continuar con el siguiente paso, confirmo que estoy de acuerdo con los"
+
+    },
+    "headers": {
+      "first": "Detalles de la reserva del paquete",
+      "second": "Detalles del pasajero",
+      "third": "Third Step",
+      "fourthError": "Error de pago",
+      "fourthSuccess": "Procesamiento de pagos",
+      "confirmed": "Procesamiento de pagos"
+    },
+    "cart": {
+      "total": "Precio del paquete"
+    },
+    "details": {
+      "title" : "Mi superpaquete extraordinario"
+    }
   }
 }

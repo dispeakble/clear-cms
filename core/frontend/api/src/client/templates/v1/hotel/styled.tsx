@@ -963,8 +963,6 @@ export const StepWrapper = styled.div<IStep>`
       border-bottom: 1px dashed #A29E9E;
     }
   }
-  
-  
 `
 
 export const HotelCartItem = styled.div`
@@ -988,6 +986,7 @@ export const RoomType = styled.p`
 
   color: #000000;
 `
+
 
 export const FlightTimeContainer = styled.div`
   display: flex;
