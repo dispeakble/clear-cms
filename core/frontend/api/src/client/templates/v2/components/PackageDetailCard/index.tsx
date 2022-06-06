@@ -78,7 +78,7 @@ const PackageDetailCard = () => {
             }
         })
     };
-    const searchDestinationByName = async (value: string) => {
+    const searchDestinationByName = useCallback(async (value: string) => {
         const response = await ws.sendMessage({
             api: "homeSearchPackages",
             act: "packages",
@@ -97,7 +97,7 @@ const PackageDetailCard = () => {
             setDestinationList([]);
             setShowDestinations(false);
         }
-    };
+    }, [ws, setDestinationList, setShowDestinations]);
 
 
     const debouncedDepartureSearch = useCallback(debounce(searchDepartureByName, 500), []);
@@ -154,7 +154,7 @@ const PackageDetailCard = () => {
         }
     }
 
-    const handleDestination = async (e: any) => {
+    const handleDestination = useCallback(async (e: any) => {
         if (e.id) {
             setDestination(e.name);
             setDestinationList([]);
@@ -168,7 +168,7 @@ const PackageDetailCard = () => {
                 debouncedDestinationSearch(e.target.value);
             }
         }
-    };
+    }, [setDestination, setDestinationList, setShowDestinations, setDestinationId]);
 
     const handleClickAway = (name: string) => {
         setShow({
