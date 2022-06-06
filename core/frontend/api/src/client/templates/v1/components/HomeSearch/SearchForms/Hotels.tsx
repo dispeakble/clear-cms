@@ -54,7 +54,7 @@ export const Hotels = () => {
     childrenAges: []
   });
 
-  const searchDestinationByName = async (value: string) => {
+  const searchDestinationByName = useCallback(async (value: string) => {
     const response = await ws.sendMessage({
       api: "homeSearchHotels",
       act: "hotels",
@@ -72,11 +72,12 @@ export const Hotels = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  };
+    return null;
+  }, [ws, setDestinationList, setShowDestinations]);
 
   const debouncedDestinationSearch = useCallback(debounce(searchDestinationByName, 500), []);
 
-  const handleDestination = async (e: any) => {
+  const handleDestination = useCallback(async (e: any) => {
     if (e.id) {
       setDestination(e.name);
       setDestinationList([]);
@@ -89,7 +90,7 @@ export const Hotels = () => {
         debouncedDestinationSearch(e.target.value);
       }
     }
-  };
+  }, [setDestination, setDestinationList, setShowDestinations, setDestinationId]);
 
   const closeModals = () => {
     setCalendarIsOpen(false);

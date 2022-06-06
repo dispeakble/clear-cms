@@ -1,8 +1,10 @@
-import {render, screen, fireEvent, waitFor} from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import List from "../flight/list";
 import { IntlProvider } from "next-intl";
-import { WsContextProvider } from "../../../context/SocketContext";
+import { WsContext } from "../../../context/SocketContext";
+import { ThemeProvider } from "styled-components";
+import { myMockTheme } from "./mocks/theme";
 
 jest.mock("next/router", () => ({
     useRouter() {
@@ -23,6 +25,14 @@ jest.mock("next/image", () => ({
     }
 }));
 
+beforeEach(() => {
+    cleanup();
+});
+
+afterEach(() => {
+    cleanup();
+});
+
 const messages = require("../../../languages/agency/en.json");
 
 const pageProps = {
@@ -33,12 +43,39 @@ const pageProps = {
 };
 
 const Wrapper = ({ ...props }: any) => {
+    const WsContextProviderValue = {
+        ws: {
+            socket: false,
+            sendMessage: (data: any) => {
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const result = {
+                            departure: [{
+                                Id: 0,
+                                Name: "Abc",
+                                IntName: "Abc"
+                            }, {
+                                Id: 1,
+                                Name: "Def",
+                                IntName: "Def"
+                            }]
+                        };
+
+                        resolve(result);
+                    }, 30);
+                });
+            }
+        }
+    };
+
     return (
-        <WsContextProvider settings={{}}>
-            <IntlProvider locale="en" messages={messages}>
+      <ThemeProvider theme={myMockTheme}>
+          <IntlProvider locale="en" messages={messages}>
+              <WsContext.Provider value={WsContextProviderValue}>
                 <List {...props} />
-            </IntlProvider>
-        </WsContextProvider>
+              </WsContext.Provider>
+          </IntlProvider>
+      </ThemeProvider>
     );
 };
 

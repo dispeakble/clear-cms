@@ -41,7 +41,7 @@ export const Flights = () => {
   const [destinationList, setDestinationList] = useState<any[]>([]);
   const [showDestinations, setShowDestinations] = useState(false);
 
-  const showDepartureList = async () => {
+  const showDepartureList = useCallback(async () => {
 
     const response = await ws.sendMessage({
       api: "homeSearchFlights",
@@ -59,7 +59,8 @@ export const Flights = () => {
       setDepartureList([]);
       setShowDepartures(false);
     }
-  };
+    return null;
+  }, [ws, setDepartureList, setShowDepartures]);
 
   const [departure, setDeparture] = useState("");
   const [departureId, setDepartureId] = useState(0);
@@ -97,7 +98,7 @@ export const Flights = () => {
     }
   }
 
-  const searchDestinationByName = async (value: string) => {
+  const searchDestinationByName = useCallback(async (value: string) => {
     const response = await ws.sendMessage({
       api: "homeSearchFlights",
       act: "flights",
@@ -117,7 +118,7 @@ export const Flights = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  };
+  }, [ws, setDestinationList, setShowDestinations]);
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
@@ -156,7 +157,7 @@ export const Flights = () => {
     }
   };
 
-  const handleDestination = async (e: any) => {
+  const handleDestination = useCallback(async (e: any) => {
     if (e.id) {
       setDestination(e.name);
       setDestinationList([]);
@@ -170,7 +171,8 @@ export const Flights = () => {
         debouncedDestinationSearch(e.target.value);
       }
     }
-  };
+  }, [setDestination, setDestinationList, setShowDestinations, setDestinationId, getStartDates,
+    debouncedDestinationSearch]);
 
   const closeModals = () => {
     setCalendarIsOpen(false);
@@ -252,7 +254,7 @@ export const Flights = () => {
           onChange={handleDeparture}
           onFocus={showDepartureList}
         />
-        {showDepartures && <AutocompleteList data-testid="test-autocomplete-list">
+        {showDepartures && <AutocompleteList data-testid="flights-departure-list">
           {departureList.map(
               (dep, i) =>
                   <AutocompleteItem
@@ -265,7 +267,7 @@ export const Flights = () => {
           placeholder={t("search.homeSearchPackageDestinationPlaceholder")}
           value={destination}
           onChange={handleDestination} />
-        {showDestinations && <AutocompleteList data-testid="test-autocomplete-list" className="destination">
+        {showDestinations && <AutocompleteList data-testid="flights-destination-list" className="destination">
           {destinationList.map(
               (dest, i) =>
                   <AutocompleteItem
