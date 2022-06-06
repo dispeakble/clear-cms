@@ -6,12 +6,17 @@
     "adults": "Adults",
     "children": "Children",
     "infants": "Infants",
-    "nights": "Nights",
+    "nights": "nights",
     "days": "days",
     "included": "Included",
     "termsAndConditions": "Terms and Conditions"
   },
-
+  "input": {
+    "placeholder": {
+      "firstName" : "E.G. John (Given Name)",
+      "lastName" : "E.G. Smith (Last Name)"
+    }
+  },
   "day": {
     "monday": "Monday",
     "tuesday": "Tuesday",
@@ -278,7 +283,7 @@
       "previousStep": "Previous Step",
       "nextStep": "Next Step",
       "type": {
-        "departure": "salida",
+        "departure": "departure",
         "return": "return"
       },
       "bucharest": "Bucharest",
@@ -550,7 +555,13 @@
       "total": "Package Price"
     },
     "details": {
-      "title" : "My Super Package Extraordinaire"
+      "title" : "My Super Package Extraordinaire",
+      "bedAndBreakfast": "Bed and breakfast",
+      "doubleRoom" : "Double Room",
+      "airportHotelTransfer": "Airport transfer + Hotel transfer",
+      "smallBags": "small bag for every person",
+      "suitcase": "large suitcase for every adult",
+      "airportTaxes": "All airport taxes"
     }
   }
 }

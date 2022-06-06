@@ -16,6 +16,7 @@ import {
 } from "../styled";
 import Image from "next/image";
 import Link from "next/link";
+import {useEffect} from "react";
 
 interface IProps {
     paymentError: boolean;
@@ -27,6 +28,15 @@ const FourthStep = ({paymentError, currentStep,
                         setCurrentStep}: IProps) => {
 
     const t = useTranslations();
+
+    useEffect(() => {
+        if(!paymentError){
+            setTimeout(() => {
+                setCurrentStep(4)
+            }, 5000)
+        }
+    }, [])
+
     return(
         <PaymentStep data-testid="test-package-fourth-step">
             <Payment isError={paymentError}>

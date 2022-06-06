@@ -5,11 +5,17 @@
     "pageTitle": "Hotels page :: {websiteName}",
     "adults": "Adultos",
     "children": "Niños",
-    "nights": "Noches",
+    "nights": "noches",
     "infants": "Infantes",
     "days": "dias",
     "included": "Incluye",
     "termsAndConditions": "Términos y Condiciones."
+  },
+  "input": {
+    "placeholder": {
+      "firstName" : "E.G. John (Nombre)",
+      "lastName" : "E.G. Smith (Apellido)"
+    }
   },
   "day": {
     "monday": "Lunes",
@@ -250,14 +256,18 @@
       "adult": "Adulto",
       "child": "Niño",
       "contactDetails": "Detalles de contacto",
+      "invoiceDetails": "Detalles de la factura",
       "phoneNumber": "Número de teléfono",
+      "city": "Ciudad",
+      "zipCode": "Código postal",
+      "address": "Dirección",
       "childAge": "Edad del niño",
       "country": "País",
       "emailAddress": "Dirección de correo electrónico",
       "previousStep": "Paso anterior",
       "nextStep": "Próximo paso",
       "type": {
-        "departure": "departure",
+        "departure": "salida",
         "return": "devolver"
       },
       "bucharest": "Bucarest",
@@ -470,7 +480,8 @@
     },
     "paymentConfirmed": {
       "successText": "Éxito",
-      "emailDetails": "También recibirá un correo electrónico con todos los detalles."
+      "emailDetails": "También recibirá un correo electrónico con todos los detalles.",
+      "backHome": "Volver a Home"
     },
     "cart": {
       "allInclusive": "Todo incluido"
@@ -522,7 +533,13 @@
       "total": "Precio del paquete"
     },
     "details": {
-      "title" : "Mi superpaquete extraordinario"
+      "title" : "Mi superpaquete extraordinario",
+      "bedAndBreakfast": "Alojamiento y desayuno",
+      "doubleRoom" : "Habitación doble",
+      "airportHotelTransfer": "Traslado al aeropuerto + traslado al hotel",
+      "smallBags": "bolsa pequeña para cada persona",
+      "suitcase": "maleta grande para cada adulto",
+      "airportTaxes": "Todas las tasas de aeropuerto"
     }
   }
 }

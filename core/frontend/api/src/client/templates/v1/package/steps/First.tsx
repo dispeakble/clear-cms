@@ -120,9 +120,9 @@ const FirstStep = ({packageDetails, setCurrentStep, currentStep, passengersCount
                                         <PackageHotelInfos>
                                             {
                                                 Object.keys(passengersCount).map((key: any, index: number) => (
-                                                    <>
+                                                    <div key={index}>
                                                         {`${passengersCount[key]} ${key} `}
-                                                    </>
+                                                    </div>
                                                 ))
                                             }
                                         </PackageHotelInfos>
@@ -140,26 +140,26 @@ const FirstStep = ({packageDetails, setCurrentStep, currentStep, passengersCount
                                 <HotelTicketInfosContainer key={index}>
                                     <FlightsSectionPackage>
                                     {
-                                        Object.keys(flight).map((key: any, index: number) => {
+                                        Object.keys(flight.trips).map((key: any, index: number) => {
                                             return(
                                                 <div key={index}>
                                                     <FlightCartItem>
                                                         <DepartureTextWrapper>
                                                             <Image
-                                                                src={flight[key].typeIMG}
+                                                                src={flight.trips[key].typeIMG}
                                                                 alt="tripType"
                                                                 height={18}
                                                                 width={20}
                                                             />
                                                             <DepartureDestinationText>
-                                                                {flight[key].departure}
+                                                                {flight.trips[key].departure}
                                                             </DepartureDestinationText>
                                                         </DepartureTextWrapper>
 
                                                         <DottedLines/>
 
                                                         <FLightProviderImg
-                                                            src={flight[key].flightProviderIMG}
+                                                            src={flight.trips[key].flightProviderIMG}
                                                             alt="flightProvider"
                                                             height={20}
                                                             width={67}
@@ -169,23 +169,23 @@ const FirstStep = ({packageDetails, setCurrentStep, currentStep, passengersCount
 
                                                         <DestinationTextWrapper>
                                                             <DepartureDestinationText>
-                                                                {flight[key].destination}
+                                                                {flight.trips[key].destination}
                                                             </DepartureDestinationText>
                                                         </DestinationTextWrapper>
 
                                                     </FlightCartItem>
                                                     <FlightTimeContainer>
                                                         <DateText>
-                                                            {flight[key].departureDate}
+                                                            {flight.trips[key].departureDate}
                                                         </DateText>
                                                         <TimeText>
-                                                            {flight[key].departureTime}
+                                                            {flight.trips[key].departureTime}
                                                         </TimeText>
                                                         <TimeText>
-                                                            {flight[key].arrivalTime}
+                                                            {flight.trips[key].arrivalTime}
                                                         </TimeText>
                                                         <DateText>
-                                                            {flight[key].destinationDate}
+                                                            {flight.trips[key].destinationDate}
                                                         </DateText>
                                                     </FlightTimeContainer>
                                             </div>
@@ -197,18 +197,14 @@ const FirstStep = ({packageDetails, setCurrentStep, currentStep, passengersCount
                                         <IncludedText>
                                             {t('global.included')}:
                                         </IncludedText>
-                                        <PackageHotelInfos>
-                                            Airport transfer + Hotel transfer
-                                        </PackageHotelInfos>
-                                        <PackageHotelInfos>
-                                            1 x small bag for every person
-                                        </PackageHotelInfos>
-                                        <PackageHotelInfos>
-                                            1 x large suitecase for every adult
-                                        </PackageHotelInfos>
-                                        <PackageHotelInfos>
-                                            All airport taxes
-                                        </PackageHotelInfos>
+                                        {
+                                            flight &&
+                                            flight.services.map((service: any, index: number) => (
+                                                <PackageHotelInfos key={index}>
+                                                    {service}
+                                                </PackageHotelInfos>
+                                            ))
+                                        }
                                     </HotelInclusivesContainer>
                                 </HotelTicketInfosContainer>
                             )

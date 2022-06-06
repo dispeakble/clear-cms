@@ -97,49 +97,57 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
                 rating: 4,
                 adults: 1,
                 children: 0,
-                roomType: "2 x Double Room",
-                roomDetails: "Bed and breakfast",
+                roomType: `2 x ${t('packageCheckout.details.doubleRoom')}`,
+                roomDetails: t('packageCheckout.details.bedAndBreakfast'),
                 allInclusive: true,
-                duration: "8 days / 7 nights",
-                checkoutDay: "Monday, 10 iun.",
+                duration: `8 ${t('global.days')} / 7 ${t('global.nights')}`,
+                checkoutDay: `${day.Monday}, 10 ${month.June}.`,
                 checkoutTime: "14:00",
                 price: 409
             }
         ],
         flights: [
             {
-            outbound: {
-                typeIMG: DepartureIcon,
-                flightProviderIMG: FlightImg,
-                type: t("flightsCheckout.main.type.departure"),
-                departure: t("flightsCheckout.main.bucharest"),
-                departureShort: "OTP",
-                departureDate: `${day.Monday}, 10 ${month.June}`,
-                departureTime: "00:20",
-                destination: t("flightsCheckout.main.tenerife"),
-                destinationShort: "TFS",
-                destinationDate: `${day.Monday}, 10 ${month.June}`,
-                arrivalTime: "06:20",
-                duration: "7h 30m",
-                aircraft: "Wizz Air",
-                aircraftRef: "W12345",
-            },
-            return: {
-                typeIMG: ArrivalIcon,
-                flightProviderIMG: FlightImg,
-                type: t("flightsCheckout.main.type.departure"),
-                departure: t("flightsCheckout.main.tenerife"),
-                departureShort: "TFS",
-                departureDate: `${day.Monday}, 10 ${month.June}`,
-                departureTime: "00:20",
-                destination: t("flightsCheckout.main.bucharest"),
-                destinationShort: "OTP",
-                destinationDate: `${day.Monday}, 10 ${month.June}`,
-                arrivalTime: "06:20",
-                duration: "7h 30m",
-                aircraft: "Wizz Air",
-                aircraftRef: "W12345",
-            },
+                trips: {
+                    outbound: {
+                        typeIMG: DepartureIcon,
+                        flightProviderIMG: FlightImg,
+                        type: t("flightsCheckout.main.type.departure"),
+                        departure: t("flightsCheckout.main.bucharest"),
+                        departureShort: "OTP",
+                        departureDate: `${day.Monday}, 10 ${month.June}`,
+                        departureTime: "00:20",
+                        destination: t("flightsCheckout.main.tenerife"),
+                        destinationShort: "TFS",
+                        destinationDate: `${day.Monday}, 10 ${month.June}`,
+                        arrivalTime: "06:20",
+                        duration: "7h 30m",
+                        aircraft: "Wizz Air",
+                        aircraftRef: "W12345",
+                    },
+                    return: {
+                        typeIMG: ArrivalIcon,
+                        flightProviderIMG: FlightImg,
+                        type: t("flightsCheckout.main.type.departure"),
+                        departure: t("flightsCheckout.main.tenerife"),
+                        departureShort: "TFS",
+                        departureDate: `${day.Monday}, 10 ${month.June}`,
+                        departureTime: "00:20",
+                        destination: t("flightsCheckout.main.bucharest"),
+                        destinationShort: "OTP",
+                        destinationDate: `${day.Monday}, 10 ${month.June}`,
+                        arrivalTime: "06:20",
+                        duration: "7h 30m",
+                        aircraft: "Wizz Air",
+                        aircraftRef: "W12345",
+                    },
+                },
+                services: [
+                    `${t('packageCheckout.details.airportHotelTransfer')}`,
+                    `1 x ${t('packageCheckout.details.smallBags')}`,
+                    `1 x ${t('packageCheckout.details.suitcase')}`,
+                    `${t('packageCheckout.details.airportTaxes')}`
+                ]
             }
         ]
     }
@@ -192,13 +200,12 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
         switch(currentStep){
             case 1 : return t('packageCheckout.headers.first');
             case 2 : return t('packageCheckout.headers.second');
-            case 3 : return t('packageCheckout.headers.third');
-            case 4 : if(paymentError){
+            case 3 : if(paymentError){
                 return t('packageCheckout.headers.fourthError')
             } else {
                 return t('packageCheckout.headers.fourthSuccess')
             }
-            case 5: return t('packageCheckout.headers.confirmed')
+            case 4: return t('packageCheckout.headers.confirmed')
         }
     }
 
@@ -220,18 +227,12 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
                                        setInvoiceDetails={setInvoiceDetails}
                                        passengersCount={passengersCount}
             />;
-            case 4: return <FourthStep paymentError={paymentError}
+            case 3: return <FourthStep paymentError={paymentError}
                                        currentStep={currentStep}
                                        setCurrentStep={setCurrentStep}
             />;
 
-            case 5: return <BookingConfirmed />
-
-            default : return <FirstStep packageDetails={packageDetails}
-                                        setCurrentStep={setCurrentStep}
-                                        currentStep={currentStep}
-                                        passengersCount={passengersCount}
-            />;
+            case 4: return <BookingConfirmed />
         }
     }
 
@@ -246,7 +247,7 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
                     <Breadcrumbs page="Package" what="Checkout" />
                     <DetailsWrapper>
                         {
-                            currentStep !== 5 &&
+                            currentStep !== 4 &&
                             <Cart packageDetails={packageDetails}
                                   passengersCount={passengersCount}
                             />
@@ -270,9 +271,6 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
                                     </StepWrapper>
                                     <StepWrapper currentStep={currentStep===4}>
                                         4
-                                    </StepWrapper>
-                                    <StepWrapper currentStep={currentStep===5}>
-                                        5
                                     </StepWrapper>
                                 </CartStepsWrapper>
                             </HotelsHeaderWrapper>

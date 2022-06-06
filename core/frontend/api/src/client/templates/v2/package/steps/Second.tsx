@@ -71,7 +71,7 @@ const SecondStep = ({passengers,
                                                     :
                                                     t('flightsCheckout.main.child')
                                                 } {
-                                                passenger.isAdult ? index +1 : index +1 - passengersCount.adults
+                                                passenger.isAdult ? index +1 : index +1 - passengersCount[t('global.adults')]
                                             }
                                             </PassengerHeader>
                                         </PassengerHeaderContainer>
@@ -83,7 +83,7 @@ const SecondStep = ({passengers,
                                                 <Field name={`passengers[${index}].firstName`}>
                                                     {({field}: any) => (
                                                         <TextInput {...field} required
-                                                                   placeholder="E.G. John (Given Name)" type="text"/>
+                                                                   placeholder={t('input.placeholder.firstName')} type="text"/>
                                                     )}
                                                 </Field>
                                             </InputGroup>
@@ -96,7 +96,7 @@ const SecondStep = ({passengers,
                                                 </InputLabel>
                                                 <Field name={`passengers[${index}].lastName`}>
                                                     {({ field }: any) => (
-                                                        <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                                        <TextInput {...field} required placeholder={t('input.placeholder.lastName')} type="text"/>
                                                     )}
                                                 </Field>
                                             </InputGroup>
@@ -136,7 +136,7 @@ const SecondStep = ({passengers,
                                     </InputLabel>
                                     <Field name={`contact.firstName`}>
                                         {({ field }: any) => (
-                                            <TextInput {...field} required placeholder="E.G. John (Given Name)" type="text"/>
+                                            <TextInput {...field} required placeholder={t('input.placeholder.firstName')} type="text"/>
                                         )}
                                     </Field>
                                 </InputGroup>
@@ -149,7 +149,7 @@ const SecondStep = ({passengers,
                                     </InputLabel>
                                     <Field name={`contact.lastName`}>
                                         {({ field }: any) => (
-                                            <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                            <TextInput {...field} required placeholder={t('input.placeholder.lastName')} type="text"/>
                                         )}
                                     </Field>
                                 </InputGroup>
@@ -226,7 +226,7 @@ const SecondStep = ({passengers,
                                     </InputLabel>
                                     <Field name={`invoice.firstName`}>
                                         {({ field }: any) => (
-                                            <TextInput {...field} required placeholder="E.G. John (Given Name)" type="text"/>
+                                            <TextInput {...field} required placeholder={t('input.placeholder.firstName')} type="text"/>
                                         )}
                                     </Field>
                                 </InputGroup>
@@ -239,7 +239,7 @@ const SecondStep = ({passengers,
                                     </InputLabel>
                                     <Field name={`invoice.lastName`}>
                                         {({ field }: any) => (
-                                            <TextInput {...field} required placeholder="E.G. Smith (Last Name)" type="text"/>
+                                            <TextInput {...field} required placeholder={t('input.placeholder.lastName')} type="text"/>
                                         )}
                                     </Field>
                                 </InputGroup>

@@ -62,22 +62,6 @@ describe("Packages checkout page suite", () => {
         })
     })
 
-    it("Shouldn't go to third step", async () => {
-        const checkoutPage = render(<Wrapper {...pageProps} />);
-
-        fireEvent.click(checkoutPage.getByTestId(/test-next-button/))
-
-        await waitFor(() => {
-            expect(checkoutPage.getByTestId(/test-package-second-step/)).toBeInTheDocument()
-        })
-
-        fireEvent.click(checkoutPage.getByTestId(/test-next-button/))
-
-        await waitFor(() => {
-            expect(checkoutPage.getByTestId(/test-package-second-step/)).toBeInTheDocument()
-        })
-    })
-
     it("Should go back to first step", async() => {
         const checkoutPage = render(<Wrapper {...pageProps} />);
 
@@ -172,12 +156,6 @@ describe("Packages checkout page suite", () => {
                     }
                 }
             )
-        })
-
-        fireEvent.click(checkoutPage.getByTestId(/test-next-button/))
-
-        await waitFor(() => {
-            expect(checkoutPage.queryByTestId(/test-package-second-step/)).not.toBeInTheDocument()
         })
 
         fireEvent.click(checkoutPage.getByTestId(/test-next-button/))
