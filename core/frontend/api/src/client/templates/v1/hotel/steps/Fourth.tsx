@@ -4,7 +4,6 @@ import ShoppingCart from "../../assets/img/shoppingCart-icon.svg";
 
 import * as React from "react";
 import {useTranslations} from "next-intl";
-import {useState} from "react";
 import {
     ButtonsContainer,
     CustomButton,
@@ -29,7 +28,7 @@ const FourthStep = ({paymentError, currentStep,
 
     const t = useTranslations();
     return(
-        <PaymentStep>
+        <PaymentStep data-testid="test-hotel-fourth-step">
             <Payment isError={paymentError}>
                 <PaymentStatusImageContainer>
                     <Image
@@ -69,7 +68,7 @@ const FourthStep = ({paymentError, currentStep,
             {
                 paymentError &&
                 <ButtonsContainer hasOneChild>
-                    <CustomButton isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
+                    <CustomButton data-testid="test-next-button" isActive onClick={() => setCurrentStep((prev: number) => prev + 1)}>
                         {t('flightsCheckout.main.nextStep')}
                         <span>
                             {currentStep+1}

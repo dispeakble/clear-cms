@@ -41,8 +41,7 @@ export const Flights = () => {
   const [destinationList, setDestinationList] = useState<any[]>([]);
   const [showDestinations, setShowDestinations] = useState(false);
 
-  const showDepartureList = async () => {
-
+  const showDepartureList = useCallback(async () => {
 
     const response = await ws.sendMessage({
       api: "homeSearchFlights",
@@ -60,7 +59,8 @@ export const Flights = () => {
       setDepartureList([]);
       setShowDepartures(false);
     }
-  };
+    return null;
+  }, [ws, setDepartureList, setShowDepartures]);
 
   const [departure, setDeparture] = useState("");
   const [departureId, setDepartureId] = useState(0);
@@ -98,7 +98,7 @@ export const Flights = () => {
     }
   }
 
-  const searchDestinationByName = async (value: string) => {
+  const searchDestinationByName = useCallback(async (value: string) => {
     const response = await ws.sendMessage({
       api: "homeSearchFlights",
       act: "flights",
@@ -118,7 +118,7 @@ export const Flights = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  };
+  }, [ws, setDestinationList, setShowDestinations]);
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
@@ -157,7 +157,7 @@ export const Flights = () => {
     }
   };
 
-  const handleDestination = async (e: any) => {
+  const handleDestination = useCallback(async (e: any) => {
     if (e.id) {
       setDestination(e.name);
       setDestinationList([]);
@@ -171,7 +171,8 @@ export const Flights = () => {
         debouncedDestinationSearch(e.target.value);
       }
     }
-  };
+  }, [setDestination, setDestinationList, setShowDestinations, setDestinationId, getStartDates,
+    debouncedDestinationSearch]);
 
   const closeModals = () => {
     setCalendarIsOpen(false);
@@ -190,10 +191,6 @@ export const Flights = () => {
       day: "2-digit",
       year: "2-digit"
     }).format(date);
-  };
-
-  const guestsCount = () => {
-    return filterValues.children + filterValues.adults;
   };
 
   const openCalendar = (e: any) => {
@@ -235,36 +232,29 @@ export const Flights = () => {
 
     if (destination.length === 0) {
       focusElement(departureRef);
-    } else if (!checkInDate) {
+    } else if (formatDate(checkInDate) === formatDate(checkOutDate)) {
       setCalendarIsOpen(true);
     }
 
     if (destination.length > 0
         && checkInDate
         && checkOutDate
-        && guestsCount() > 0) {
-      router.push({
-        pathname: `/flights/search/
-          ${destination}/
-          from-${formatDateSearch(checkInDate)}/
-          to-${formatDateSearch(checkOutDate)}/
-          adults-${filterValues.adults}/
-          children-${filterValues.children}`
-      });
+        && formatDate(checkInDate) !== formatDate(checkOutDate)) {
+      router.push(`/flights/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
 
   return (<>
-      <StyledSearchInputHolder className="flights">
+      <StyledSearchInputHolder className="flightsSearchForm">
         <StyledSearchInput
-          data-testid="test-search-input"
+          data-testid="test-departure-search-input"
           ref={departureRef}
           placeholder={t("search.homeSearchPackageDeparturePlaceholder")}
           value={departure}
           onChange={handleDeparture}
           onFocus={showDepartureList}
         />
-        {showDepartures && <AutocompleteList>
+        {showDepartures && <AutocompleteList data-testid="flights-departure-list">
           {departureList.map(
               (dep, i) =>
                   <AutocompleteItem
@@ -277,7 +267,7 @@ export const Flights = () => {
           placeholder={t("search.homeSearchPackageDestinationPlaceholder")}
           value={destination}
           onChange={handleDestination} />
-        {showDestinations && <AutocompleteList className="destination">
+        {showDestinations && <AutocompleteList data-testid="flights-destination-list" className="destination">
           {destinationList.map(
               (dest, i) =>
                   <AutocompleteItem
@@ -307,7 +297,6 @@ export const Flights = () => {
               <CalendarContainer data-testid="test-calendar">
               <Calendar
               formatMonthYear={(locale, date) => formatDate(date)}
-              formatYear={(locale, date) => formatDate(date)}
               view="month"
               showDoubleView={true}
               selectRange={true}
@@ -355,7 +344,9 @@ export const Flights = () => {
             <StyledOneWay data-testid="test-checkbox-oneway-handler">
               <StyledCenterLabel style={{height: "100%", width: "100%"}}>
                 <StyledLabel>{t("search.oneway")}</StyledLabel>
-                <StyledPrimaryValue><input onChange={() => setOneWay(!oneWay)} type="checkbox" checked={oneWay} /></StyledPrimaryValue>
+                <StyledPrimaryValue>
+                  <input onChange={() => setOneWay(!oneWay)} type="checkbox" data-testid="test-checkbox-oneway" checked={oneWay} />
+                </StyledPrimaryValue>
               </StyledCenterLabel>
             </StyledOneWay>
           </StyledSearchOptionsGroup>

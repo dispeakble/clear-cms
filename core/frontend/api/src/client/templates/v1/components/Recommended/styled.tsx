@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 
   @media (min-width: ${size.laptopL}) {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    padding: 160px;
+    padding: 0 160px;
   }
 
 `;

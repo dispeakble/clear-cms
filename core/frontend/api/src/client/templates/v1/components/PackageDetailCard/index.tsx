@@ -78,7 +78,7 @@ const PackageDetailCard = () => {
             }
         })
     };
-    const searchDestinationByName = async (value: string) => {
+    const searchDestinationByName = useCallback(async (value: string) => {
         const response = await ws.sendMessage({
             api: "homeSearchPackages",
             act: "packages",
@@ -97,7 +97,7 @@ const PackageDetailCard = () => {
             setDestinationList([]);
             setShowDestinations(false);
         }
-    };
+    }, [ws, setDestinationList, setShowDestinations]);
 
 
     const debouncedDepartureSearch = useCallback(debounce(searchDepartureByName, 500), []);
@@ -154,7 +154,7 @@ const PackageDetailCard = () => {
         }
     }
 
-    const handleDestination = async (e: any) => {
+    const handleDestination = useCallback(async (e: any) => {
         if (e.id) {
             setDestination(e.name);
             setDestinationList([]);
@@ -168,7 +168,7 @@ const PackageDetailCard = () => {
                 debouncedDestinationSearch(e.target.value);
             }
         }
-    };
+    }, [setDestination, setDestinationList, setShowDestinations, setDestinationId]);
 
     const handleClickAway = (name: string) => {
         setShow({
@@ -457,7 +457,7 @@ const PackageDetailCard = () => {
                         </div>
                         <div style={{display: 'flex', flexBasis: '55%'}}>
                             <BookingMutedText>8  {t('global.days')} / 7 {t('global.nights')}</BookingMutedText>
-                            <BookingMutedText style={{marginLeft: '35px'}}>1 {t('global.adults')}, 0 {t('global.childrens')}</BookingMutedText>
+                            <BookingMutedText style={{marginLeft: '35px'}}>1 {t('global.adults')}, 0 {t('global.children')}</BookingMutedText>
                         </div>
                         <div style={{display: 'flex', flexBasis: '30%'}}>
                             <BookingPriceText style={{marginRight: '30px'}}>409€</BookingPriceText>
@@ -472,7 +472,7 @@ const PackageDetailCard = () => {
                         </div>
                         <div style={{display: 'flex', flexBasis: '55%'}}>
                             <BookingMutedText>8 days / 7 nights</BookingMutedText>
-                            <BookingMutedText style={{marginLeft: '35px'}}>2 {t('global.adults')}, 4 {t('global.childrens')}</BookingMutedText>
+                            <BookingMutedText style={{marginLeft: '35px'}}>2 {t('global.adults')}, 4 {t('global.children')}</BookingMutedText>
                         </div>
                         <div style={{display: 'flex', flexBasis: '30%'}}>
                             <BookingPriceText style={{marginRight: '30px'}}>1409€</BookingPriceText>

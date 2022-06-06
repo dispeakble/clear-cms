@@ -108,8 +108,6 @@ export const TopContentWrapperForFlightResults = styled.div`
   background-size: cover;
 `;
 
-
-
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -173,39 +171,6 @@ export const DetailWrapper = styled.div`
 export const PaperWrapper = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.colors.mainBackground};
-`;
-
-export const StyledContentWrapper = styled.div`
-  width: 100%;
-  margin: 95px auto 0;
-  background: ${({theme}) => theme.colors.offWhite};
-  @media (min-width: ${size.tablet}) {
-    padding: 0 40px;
-  }
-  @media ${device.mobileS} {
-    max-width: 320px;
-  }
-  @media ${device.mobileM} {
-    max-width: 375px;
-  }
-  @media ${device.mobileL} {
-    max-width: 400px;
-  }
-  @media ${device.tablet} {
-    max-width: 720px;
-  }
-  @media ${device.laptop} {
-    max-width: 900px;
-  }
-  @media ${device.laptopL} {
-    max-width: 1280px;
-  }
-  @media ${device.desktop} {
-    max-width: 1440px;
-  }
-  @media ${device.desktopL} {
-    max-width: 1440px;
-  }
 `;
 
 export const StyledMiddleText = styled.div`

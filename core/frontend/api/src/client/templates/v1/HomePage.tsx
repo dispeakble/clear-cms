@@ -53,8 +53,6 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     return getIcon(iconName);
   };
 
-  const { ws } = useWsContext();
-
   const myTheme: any = { colors: colorScheme, icon: getIcons };
 
   return (

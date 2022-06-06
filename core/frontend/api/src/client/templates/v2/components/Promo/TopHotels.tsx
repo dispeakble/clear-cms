@@ -26,17 +26,17 @@ const TopHotels = () => {
   }];
   return <StyledWrapper>
     <StyledTabs>
-      <StyledTabBtn onClick={() => setSelectedTab(0)}
+      <StyledTabBtn data-testid="test-topHotel-button-first" onClick={() => setSelectedTab(0)}
                     className={selectedTab === 0 ? "selected" : ""}>{t("home.promo.special-offers")}</StyledTabBtn>
-      <StyledTabBtn onClick={() => setSelectedTab(1)}
+      <StyledTabBtn data-testid="test-topHotel-button-second" onClick={() => setSelectedTab(1)}
                     className={selectedTab === 1 ? "selected" : ""}>{t("home.promo.last-minute")}</StyledTabBtn>
-      <StyledTabBtn onClick={() => setSelectedTab(2)}
+      <StyledTabBtn data-testid="test-topHotel-button-third" onClick={() => setSelectedTab(2)}
                     className={selectedTab === 2 ? "selected" : ""}>{t("home.promo.flights")}</StyledTabBtn>
     </StyledTabs>
     <StyledCardsWrapper>
-      <TopHotelsCard src={Hotel1.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
-      <TopHotelsCard src={Hotel2.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
-      <TopHotelsCard src={Hotel3.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard dataTestid="test-topHotel-card-first" src={Hotel1.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard dataTestid="test-topHotel-card-second" src={Hotel2.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard dataTestid="test-topHotel-card-third" src={Hotel3.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
     </StyledCardsWrapper>
 
   </StyledWrapper>;

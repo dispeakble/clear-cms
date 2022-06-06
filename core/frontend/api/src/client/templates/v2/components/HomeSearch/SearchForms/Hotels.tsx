@@ -54,7 +54,7 @@ export const Hotels = () => {
     childrenAges: []
   });
 
-  const searchDestinationByName = async (value: string) => {
+  const searchDestinationByName = useCallback(async (value: string) => {
     const response = await ws.sendMessage({
       api: "homeSearchHotels",
       act: "hotels",
@@ -72,11 +72,12 @@ export const Hotels = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  };
+    return null;
+  }, [ws, setDestinationList, setShowDestinations]);
 
   const debouncedDestinationSearch = useCallback(debounce(searchDestinationByName, 500), []);
 
-  const handleDestination = async (e: any) => {
+  const handleDestination = useCallback(async (e: any) => {
     if (e.id) {
       setDestination(e.name);
       setDestinationList([]);
@@ -89,7 +90,7 @@ export const Hotels = () => {
         debouncedDestinationSearch(e.target.value);
       }
     }
-  };
+  }, [setDestination, setDestinationList, setShowDestinations, setDestinationId]);
 
   const closeModals = () => {
     setCalendarIsOpen(false);
@@ -123,10 +124,6 @@ export const Hotels = () => {
     }).format(date);
   };
 
-  const guestsCount = () => {
-    return filterValues.children + filterValues.adults;
-  };
-
   const onDateChange = (dates: any[]) => {
     setCheckInDate(dates[0]);
     setCheckOutDate(dates[1]);
@@ -152,28 +149,28 @@ export const Hotels = () => {
 
     if (destination.length === 0) {
       focusElement(destinationRef);
-    } else if (!checkInDate) {
+    } else if (formatDate(checkInDate) === formatDate(checkOutDate)) {
       setCalendarIsOpen(true);
     }
 
     if (destination.length > 0
-      && checkInDate
-      && checkOutDate
-      && guestsCount() > 0) {
+        && checkInDate
+        && checkOutDate
+        && formatDate(checkInDate) !== formatDate(checkOutDate))
+    {
       router.push({
         pathname: `/hotels/search/
-${destination}/
-from-${formatDateSearch(checkInDate)}/
-to-${formatDateSearch(checkOutDate)}/
-adults-${filterValues.adults}/
-children-${filterValues.children}/
-category-${filterValues.stars}`
+          ${destination}/
+          from-${formatDateSearch(checkInDate)}/
+          to-${formatDateSearch(checkOutDate)}/
+          adults-${filterValues.adults}/
+          children-${filterValues.children}`
       });
     }
   };
 
   return (<>
-      <StyledSearchInputHolder className="flights">
+      <StyledSearchInputHolder className="hotelsSearchForm">
         <StyledSearchDestinationInput
           className="singleInput"
           ref={destinationRef}
@@ -181,7 +178,9 @@ category-${filterValues.stars}`
           placeholder={t("search.homeSearchHotelDestinationPlaceholder")}
           value={destination}
           onChange={handleDestination} />
-        {showDestinations && <AutocompleteList className="destination">
+        {showDestinations && <AutocompleteList
+            data-testid="test-autocomplete-list"
+            className="destination">
           {destinationList.map(
             (dest, i) =>
               <AutocompleteItem
@@ -211,7 +210,6 @@ category-${filterValues.stars}`
                 <CalendarContainer data-testid="test-calendar">
                   <Calendar
                     formatMonthYear={(locale, date) => formatDate(date)}
-                    formatYear={(locale, date) => formatDate(date)}
                     view="month"
                     showDoubleView={true}
                     selectRange={true}

@@ -2,11 +2,6 @@ import styled from "styled-components";
 
 import { device, size } from "../../styled";
 
-
-interface IDateLabel {
-  selected?: boolean;
-}
-
 export const StyledHomeSearch = styled.div`
   background-size: cover;
   margin-bottom: 20px;
@@ -74,7 +69,7 @@ export const StyledSearchTab = styled.a`
 
 export const StyledSearchInput = styled.input`
   flex: 1;
-  background: url(${({theme}) => theme.icon('departure')}) no-repeat 16px center white;
+  background: url(${({theme}) => theme.icon('departure')}) no-repeat 16px center #FFFFFF;
   padding: 20px 0 20px 64px;
   width: 100%;
   outline: none;
@@ -407,20 +402,6 @@ export const StyledOneWay = styled.label`
   @media (max-width: ${size.mobileL}) {
     border-radius: 0 0 8px 0;
   }
-`;
-export const SearchLabel = styled.label`
-  font-size: 12px;
-  font-weight: 800;
-  color: #333;
-  margin-bottom: 4px;
-  cursor: pointer;
-`;
-
-export const DateLabel = styled.label<IDateLabel>`
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  color: ${(props) => props.selected ? "#333" : "#777"};
 `;
 
 export const CalendarContainer = styled.div`
