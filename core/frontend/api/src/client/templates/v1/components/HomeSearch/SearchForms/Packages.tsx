@@ -42,7 +42,7 @@ export const Packages = () => {
 
   const { ws } = useWsContext();
 
-  const showDepartureList = async () => {
+  const showDepartureList = useCallback(async () => {
     const response = await ws.sendMessage({
       api: "homeSearchPackages",
       act: "packages",
@@ -59,7 +59,8 @@ export const Packages = () => {
       setDepartureList([]);
       setShowDepartures(false);
     }
-  };
+    return null;
+  }, [ws, setDepartureList, setShowDepartures]);
 
   const departureRef = useRef() as MutableRefObject<HTMLInputElement>;
   const [departure, setDeparture] = useState("");
@@ -97,7 +98,7 @@ export const Packages = () => {
     }
   };
 
-  const searchDestinationByName = async (value: string) => {
+  const searchDestinationByName = useCallback(async (value: string) => {
     const response = await ws.sendMessage({
       api: "homeSearchPackages",
       act: "packages",
@@ -116,7 +117,7 @@ export const Packages = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  };
+  }, [ws, setDestinationList, setShowDestinations]);
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
@@ -154,7 +155,7 @@ export const Packages = () => {
     }
   };
 
-  const handleDestination = async (e: any) => {
+  const handleDestination = useCallback(async (e: any) => {
     if (e.id) {
       setDestination(e.name);
       setDestinationList([]);
@@ -168,7 +169,7 @@ export const Packages = () => {
         debouncedDestinationSearch(e.target.value);
       }
     }
-  };
+  }, [setDestination, setDestinationList, setShowDestinations, setDestinationId, getStartDates]);
 
   const closeModals = () => {
     setCalendarIsOpen(false);
@@ -241,7 +242,7 @@ export const Packages = () => {
         && checkOutDate
         && formatDate(checkInDate) !== formatDate(checkOutDate)
         && guestsCount() > 0) {
-      router.push(`/flights/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
+      router.push(`/packages/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
 
@@ -255,7 +256,7 @@ export const Packages = () => {
           onChange={handleDeparture}
           onFocus={showDepartureList}
         />
-        {showDepartures && <AutocompleteList>
+        {showDepartures && <AutocompleteList data-testid="packages-departure-list">
           {departureList.map(
             (dep, i) =>
               <AutocompleteItem
