@@ -19,7 +19,7 @@ const SecondStep = ({passengers,
     const t = useTranslations();
 
     return (
-        <PassengerDetails data-testid="test-hotel-second-step">
+        <PassengerDetails data-testid="test-package-second-step">
             <Formik
                 initialValues={{
                     passengers: passengers,
