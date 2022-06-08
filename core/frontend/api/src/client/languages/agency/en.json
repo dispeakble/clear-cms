@@ -6,11 +6,17 @@
     "adults": "Adults",
     "children": "Children",
     "infants": "Infants",
-    "nights": "Nights",
-    "days": "days"
+    "nights": "nights",
+    "days": "days",
+    "included": "Included",
+    "termsAndConditions": "Terms and Conditions"
   },
-
-
+  "input": {
+    "placeholder": {
+      "firstName" : "E.G. John (Given Name)",
+      "lastName" : "E.G. Smith (Last Name)"
+    }
+  },
   "day": {
     "monday": "Monday",
     "tuesday": "Tuesday",
@@ -277,7 +283,7 @@
       "previousStep": "Previous Step",
       "nextStep": "Next Step",
       "type": {
-        "departure": "salida",
+        "departure": "departure",
         "return": "return"
       },
       "bucharest": "Bucharest",
@@ -528,5 +534,34 @@
     "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, Spain",
     "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
     "viewMore": "View more"
+  },
+  "packageCheckout": {
+    "main": {
+      "stars": "{stars} stars",
+      "adults": "Adults",
+      "children": "Children",
+      "termsAndConditionsApply": "Terms and conditions apply.",
+      "termsAndConditionsLong": "By Continuing to the next step, I confirm that I Agree to the"
+    },
+    "headers": {
+      "first": "Package Booking Details",
+      "second": "Passenger Details",
+      "third": "Third Step",
+      "fourthError": "Payment Error",
+      "fourthSuccess": "Payment Processing",
+      "confirmed": "Booking Confirmed"
+    },
+    "cart": {
+      "total": "Package Price"
+    },
+    "details": {
+      "title" : "My Super Package Extraordinaire",
+      "bedAndBreakfast": "Bed and breakfast",
+      "doubleRoom" : "Double Room",
+      "airportHotelTransfer": "Airport transfer + Hotel transfer",
+      "smallBags": "small bag for every person",
+      "suitcase": "large suitcase for every adult",
+      "airportTaxes": "All airport taxes"
+    }
   }
 }

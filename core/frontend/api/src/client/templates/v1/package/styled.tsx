@@ -1,8 +1,29 @@
 import styled from "styled-components";
+import {Field} from "formik";
 
 
 interface IDetailsContainer{
     isExpanded: boolean;
+}
+
+interface IStep{
+    currentStep?: boolean;
+}
+
+interface IButtonContainer{
+    hasOneChild?: boolean;
+}
+
+interface ICustomButton{
+    isActive?: boolean;
+}
+
+interface IPaymentDiv{
+    isError?: boolean;
+}
+
+interface ITicketItem{
+    alignEnd?: boolean;
 }
 
 const size = {
@@ -449,3 +470,889 @@ export const ResetText = styled.span`
 `
 
 /* end Filters styles */
+
+
+/** CHECKOUT PAGE **/
+
+export const DetailsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  gap: 17px;
+  margin-top: 53px;
+  
+  @media(max-width: ${size.laptop}){
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  }
+`
+
+export const HotelsHeaderWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 24px 33px;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  background: #ffffff;
+  
+  @media screen and (max-width: 480px){
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
+  }
+`
+
+export const HotelsHeader = styled.h2`
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(18px, 3vw, 36px);
+  font-weight: 400;
+  color: #434343;
+  line-height:1.5;
+  margin: 0;
+`
+
+export const HotelsWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+export const CartStepsWrapper = styled.div`
+  display: flex;
+  position: relative;
+  gap: 20px;
+  
+  @media screen and (max-width: 1200px){
+    gap: 15px;
+  }
+`
+
+export const StepWrapper = styled.div<IStep>`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  position: relative;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  
+  border: 1px solid #FF8C1D;
+  
+  background: ${({currentStep}) => currentStep ? "#FF8C1D" : "#FFFFFF"};
+  color:  ${({currentStep}) => currentStep ? "#FFFFFF" : "#FF8C1D"};
+  
+  border-radius:50%;
+  
+  &:not(:last-child)::after{
+    content: "";
+    position: absolute;
+    right: -21px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    width: 20px;
+    border-bottom: 1px dashed #A29E9E;
+  }
+  
+  @media screen and (max-width: 1200px){
+    height: 30px;
+    width: 30px;
+    
+    font-size: 16px;
+
+    &:not(:last-child)::after{
+      content: "";
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 1px;
+      width: 15px;
+      border-bottom: 1px dashed #A29E9E;
+    }
+  }
+`
+
+/** FIRST STEP **/
+
+export const PackageOffers = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+export const PlusContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+export const HotelMainInfosContainer = styled.div`
+    flex: 1;
+`
+
+export const HotelInclusivesContainer = styled.div`
+    flex: 1;
+`
+
+export const Flights = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+export const PackageItemsWrapper = styled.div`
+  background: #FFFFFF;
+  border: 1px solid #FF840D;
+  border-radius: 10px;
+`
+
+export const PackageItemsHeaderContainer = styled.div`
+  padding: 20px;
+  border-bottom: 1px solid #FF840D;
+`
+
+export const PackageHeader = styled.h2`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.5;
+  margin: 0;  
+
+  color: #FF840D;
+
+`
+
+export const HotelDetailsWrapper = styled.div`
+  border-radius: 10px;
+  border: 1px solid #FF840D;
+  background: #FFFFFF;
+`
+
+export const HotelDetailsHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 4px 36px;
+  border-bottom: 1px solid #FF840D;
+  gap: 12px;
+  @media screen and (max-width:${size.tablet}){
+    flex-direction: column;
+    align-items: stretch;
+  }
+`
+
+export const HotelName = styled.h3`
+  margin:0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 26px;
+  line-height: 1.5;
+  
+  color: #FF840D;
+`
+
+export const StarsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`
+
+export const StarsText = styled.p`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  
+  color: #000000;
+
+`
+
+export const HotelAddressContainer = styled.div`
+`
+
+export const HotelAddress = styled.p`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.55;
+
+  color: #848484;
+
+`
+
+export const HotelTicketInfosContainer = styled.div`
+  border: 1px dashed #FF840D;
+  padding: 32px 22px;
+  margin: 10px 0;
+  gap: 40px;
+  display: flex;
+  justify-content: space-between;
+  
+  position: relative;
+  
+  @media screen and (max-width: 1300px){
+    flex-direction: column;
+    gap: 20px;
+  }
+`
+
+export const HotelInfos = styled.div`
+    padding: 6px 25px;
+`
+
+export const IncludedText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #000000;
+`
+
+export const TicketInfosItems = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: ${size.tablet}){
+    flex-direction: column;
+    gap: 15px;
+  }
+`
+
+export const TicketInfosItem = styled.div<ITicketItem>`
+  display: flex;
+  flex-direction: column;
+  justify-content: ${({alignEnd}) => alignEnd ? 'flex-end' : 'center'};
+  
+  @media screen and (max-width: ${size.tablet}){
+    padding-bottom: 15px;
+    :not(:last-child){
+      border-bottom: 1px dashed #848484;
+    }
+  }
+`
+
+export const RoomType = styled.p`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+
+  color: #000000;
+`
+
+export const DetailsText = styled.div`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #848484;
+`
+
+export const FlightsSectionPackage = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 20px;
+`
+
+export const TextContainer = styled.div`
+  
+`
+
+export const TextInfoItem = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 10px 0;
+  
+  color: #848484;
+  
+  a{
+    font-weight: 700;
+    color: #FF840D;
+    &:hover{
+     color: #FF840D; 
+    }
+  }
+`
+
+export const PackagePriceWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #FFFFFF;
+  padding: 22px 34px;
+  border: 1px #DBDBDB solid;
+  border-radius:10px;
+`
+
+export const PackagePriceText = styled.h4`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #434343;
+  
+  @media screen and (max-width: 590px){
+    font-size: 18px;
+  }
+`
+
+export const PackagePrice = styled.h4`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #FF840D;
+
+  @media screen and (max-width: 590px){
+    font-size: 18px;
+  }
+`
+
+
+/** END FIRST STEP **/
+
+/** Second Step **/
+
+export const FormGroup = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+    align-items: stretch;
+  }
+`
+
+export const PassengerDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+export const PassengerHeader = styled.h2`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.5;
+  color: #434343;
+`
+
+export const PassengerHeaderContainer = styled.div`
+    
+`
+
+export const PassengerItem = styled.div`
+  width: 100%;
+  border: 1px #DBDBDB solid;
+  border-radius: 10px;
+  background: #FFFFFF;
+  padding: 20px 28px;
+  margin-bottom: 8px;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+
+export const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`
+
+export const InputLabel = styled.label`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  color: #434343;
+`
+
+export const TextInput = styled.input`
+  outline: none;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  color: #434343;
+  
+  ::placeholder{
+    color: #ADADAD;
+  }
+`
+
+export const DottedLines = styled.hr`
+  border: none;
+  border-top: 1px dashed #A29E9E;
+  overflow: visible;
+  text-align: center;
+  height: 1px;
+  flex: 1;
+`
+
+export const ButtonsContainer = styled.div<IButtonContainer>`
+  display: flex;
+  justify-content: ${({hasOneChild}) => hasOneChild ? "flex-end" : "space-between"};
+  
+  @media screen and (max-width:${size.tablet}){
+    flex-direction: column;
+    gap: 20px;
+  }
+`
+
+export const CustomButton = styled.button<ICustomButton>`
+  background: ${({isActive}) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: clamp(18px, 3vw, 36px);
+  line-height: 1.5;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 18px 26px;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  span{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.5;
+    margin: 0;
+    border-radius: 50% ;
+    text-align: center;
+
+    color: ${({isActive}) => isActive ? "#FF8C1D" : "#959595"};
+  }
+
+  @media screen and (max-width:${size.tablet}){
+    justify-content: center;
+
+    span{
+      font-size: 18px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  :is(:disabled){
+    cursor: not-allowed;
+    background: linear-gradient(180deg, #D0D0D0 0%, #919191 100%) !important;
+    span{
+      color: #959595;
+    }
+  }
+`
+
+export const ErrorText = styled.span`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  margin:0;
+
+  color: #e74c3c;
+`
+
+export const StyledField= styled(Field)`
+  outline: none;
+  border: 1px solid #DBDBDB;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  color: #434343;
+
+  ::placeholder{
+    color: #ADADAD;
+  }
+`
+
+/** END SECOND STEP **/
+
+/** FOURTH STEP **/
+
+export const Payment = styled.div<IPaymentDiv>`
+  background: ${({isError}) => isError ? "#FFFFFF" : "none"};
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  gap:15px;
+  
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+  }
+`
+
+export const PaymentStatusImageContainer = styled.div`
+
+`
+
+export const PaymentStatusDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`
+
+export const PaymentStatusTitle = styled.h3`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #77838F;
+`
+
+export const PaymentErrorText= styled.h4`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  text-align: center;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 0;
+  color: #FF1515;
+`
+
+export const PaymentInfoText = styled.h5`
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.5px;
+
+  color: #FF840D;
+`
+
+export const RedirectText = styled.p`
+  font-family: 'Nunito', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin: 20px 0 0 0;
+  color: #474747;
+  
+  a{
+    color: #FF840D;
+  }
+`
+
+export const PaymentStep = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+/** FOURTH STEP CONTAINER **/
+
+/** BOOKING CONFIRMED  **/
+
+export const BookingConfirmedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`
+
+export const FinalStep = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  gap: 20px;
+
+  @media screen and (max-width: ${size.laptop}){
+    flex-direction: column;
+  }
+`
+
+export const ConfirmedText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+`
+
+export const DottedLinesContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding: 18px 0;
+  width: 100%;
+  @media screen and (max-width: ${size.laptop}){
+    display: none;
+  }
+`
+
+export const SuccessText = styled.h3`
+  font-family: 'Metropolis', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  color: #FF8C1D;
+`
+
+export const EmailDetailsText = styled.h5`
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 1.5;
+    
+    text-align: center;
+    
+    color: #77838F;
+`
+
+/** END BOOKING CONFIRMED  **/
+
+/** CART STYLES **/
+
+export const CartTicketsWrapper = styled.div`
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 18px 20px;
+`
+
+export const CartHotelSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px dashed #A29E9E;;
+  padding-bottom: 12px;
+`
+
+export const CartFlightSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 12px;
+`
+
+export const HotelPackageTitle = styled.h4`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #FF840D;
+`
+
+export const TicketHotelTitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const HotelPackageAddress = styled.h4`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+
+  color: rgba(0, 0, 0, 0.6);
+`
+
+export const RoomDetailsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+
+export const TicketItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const TicketText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #000000;
+`
+
+export const CartFooterWrapper = styled.div`
+  padding: 25px 31px;
+  border-top: 1px dashed #A29E9E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const TotalText = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #434343;
+`
+
+export const TotalPrice = styled.h2`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #434343;
+`
+
+export const CartHeaderWrapper = styled.div`
+  padding: 25px 31px;
+  border-bottom: 1px dashed #A29E9E;
+  display: flex;
+  align-items: center;
+`
+
+export const CartHeader = styled.h2`
+  font-family: "Poppins", sans-serif;
+  font-size: clamp(18px, 4vw, 32px);
+  font-weight: 400;
+  color: #434343;
+  line-height:1.5;
+  margin: 0;
+`
+
+export const CartHotelInfo = styled.div`
+`
+
+export const CartItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+  border-bottom: 1px dashed #A29E9E;
+  padding: 24px 20px;
+`
+
+export const CartWrapper = styled.div`
+  flex: 1;
+  max-width: 433px;
+  height: auto;
+  background: #FFFFFF;
+  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+  border-radius: 8px;
+  @media(max-width: ${size.laptop}){
+    max-width: 100%;
+  }
+`
+
+export const FlightTimeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const HotelCartItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`
+
+export const HotelCartItemElement = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const RoomDetails = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  
+  color: #000000;
+`
+
+export const PackageHotelInfos = styled.p`
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+
+  color: #848484;
+`
+
+/** END CART STYLES **/
+
+/** END CHECKOUT PAGE**/
