@@ -74,6 +74,32 @@ export const MoreAboutFlight = styled.div`
       justify-content: center;
       align-items: center;
       flex: 1 1 20%;
+  position: relative;
+  :after{
+    content: "";
+    position: absolute;
+    right: 4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
+
+  :before{
+    content: "";
+    position: absolute;
+    left: 4px;
+    height: 4px;
+    width: 4px;
+    border: 1px solid #FF840D;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border-radius: 50%;
+  }
 `;
 export const FlightDuration = styled.div`
   font-weight: 500;
@@ -103,12 +129,12 @@ export const Price = styled.div`
 `;
 export const NumberOfPersons = styled.div`
   color: #000000;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 18px;
   line-height: 27px;
 `;
 export const FlightType = styled.div`
-      
+      margin-bottom: 8px;
 `;
 export const BookNowBtn = styled.button`
   
@@ -122,8 +148,11 @@ export const BookNowBtn = styled.button`
   color: #FFFFFF;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   border: none;
-  background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
+  background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+  cursor: pointer;
+  transition: background .8s ease-in-out;
   &:hover {
-    background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);  
+    background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
+    transition: background .8s ease-in-out;
   }
 `;
