@@ -28,11 +28,13 @@ const ResultFilter = ({checkboxes, title}: IResultFilter) => {
                 <FilteringIcon data-testid="test-filter-icon-handler" onClick={toggleDisplayFilterOptHandler}/>
             </FilterTitleContainer>
             {displayFilterOpt && <FilterOptionsContainer data-testid="test-filter-options-container">
-                {checkboxes.map((checkbox: any, index:number) =>
+                {checkboxes.map((_filter: any, index:number) =>
                     <CheckboxContainer key={index}>
-                        <Checkbox type="checkbox" />
-                        <Label>{checkbox}</Label>
-                </CheckboxContainer>)}
+                        <Label>
+                            <Checkbox type="checkbox" />
+                            {_filter}
+                        </Label>
+                    </CheckboxContainer>)}
             </FilterOptionsContainer>
             }
         </FilterWrapper>
