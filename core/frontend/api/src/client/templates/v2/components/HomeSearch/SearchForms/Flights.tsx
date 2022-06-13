@@ -41,6 +41,23 @@ export const Flights = () => {
   const [destinationList, setDestinationList] = useState<any[]>([]);
   const [showDestinations, setShowDestinations] = useState(false);
 
+  const [departure, setDeparture] = useState("");
+  const [departureId, setDepartureId] = useState(0);
+  const [destination, setDestination] = useState("");
+  const [destinationId, setDestinationId] = useState(0);
+  const [calendarIsOpen, setCalendarIsOpen] = useState(false);
+  const [showFilter, setShowFilter] = useState("");
+  const [minCheckInDate, setMinCheckInDate] = useState(new Date());
+  const [checkInDate, setCheckInDate] = useState(new Date());
+  const [checkOutDate, setCheckOutDate] = useState(new Date());
+  const [filterValues, setFilterValues] = useState({
+    adults: 1,
+    children: 0,
+    stars: 4,
+    childrenAges: []
+  });
+  const [oneWay, setOneWay] = useState(false);
+
   const showDepartureList = useCallback(async () => {
 
     const response = await ws.sendMessage({
@@ -60,24 +77,7 @@ export const Flights = () => {
       setShowDepartures(false);
     }
     return null;
-  }, [ws, setDepartureList, setShowDepartures]);
-
-  const [departure, setDeparture] = useState("");
-  const [departureId, setDepartureId] = useState(0);
-  const [destination, setDestination] = useState("");
-  const [destinationId, setDestinationId] = useState(0);
-  const [calendarIsOpen, setCalendarIsOpen] = useState(false);
-  const [showFilter, setShowFilter] = useState("");
-  const [minCheckInDate, setMinCheckInDate] = useState(new Date());
-  const [checkInDate, setCheckInDate] = useState(new Date());
-  const [checkOutDate, setCheckOutDate] = useState(new Date());
-  const [filterValues, setFilterValues] = useState({
-    adults: 1,
-    children: 0,
-    stars: 4,
-    childrenAges: []
-  });
-  const [oneWay, setOneWay] = useState(false);
+  }, [ws, setDepartureList, setShowDepartures, departureId]);
 
   const searchDepartureByName = async (value: string) => {
     const response = await ws.sendMessage({
@@ -118,7 +118,7 @@ export const Flights = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  }, [ws, setDestinationList, setShowDestinations]);
+  }, [ws, setDestinationList, setShowDestinations, departureId]);
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
@@ -149,11 +149,13 @@ export const Flights = () => {
       setShowDepartures(false);
       setDepartureId(e.id);
     } else {
-      e.preventDefault();
-      setDeparture(e.target.value);
-      if (e.target.value.length > 2) {
-        debouncedDepartureSearch(e.target.value);
+      if(e.target){
+        setDeparture(e.target.value);
+        if (e.target.value.length > 2) {
+          debouncedDepartureSearch(e.target.value);
+        }
       }
+
     }
   };
 
@@ -163,13 +165,15 @@ export const Flights = () => {
       setDestinationList([]);
       setShowDestinations(false);
       setDestinationId(e.id);
-      getStartDates();
+      await getStartDates();
     } else {
-      e.preventDefault();
-      setDestination(e.target.value);
-      if (e.target.value.length > 2) {
-        debouncedDestinationSearch(e.target.value);
+      if(e.target){
+        setDestination(e.target.value);
+        if (e.target.value.length > 2) {
+          debouncedDestinationSearch(e.target.value);
+        }
       }
+
     }
   }, [setDestination, setDestinationList, setShowDestinations, setDestinationId, getStartDates,
     debouncedDestinationSearch]);
@@ -258,6 +262,7 @@ export const Flights = () => {
           {departureList.map(
               (dep, i) =>
                   <AutocompleteItem
+                      data-testid={`autocomplete-departure-${i}`}
                       onClick={() => handleDeparture({ id: dep.Id, name: dep.Name })}
                       key={i}>{dep.IntName} ({dep.Name})</AutocompleteItem>
           )}
@@ -271,6 +276,7 @@ export const Flights = () => {
           {destinationList.map(
               (dest, i) =>
                   <AutocompleteItem
+                      data-testid={`autocomplete-destination-${i}`}
                       onClick={() => handleDestination({ id: dest.Id, name: dest.Name })}
                       key={i}>{dest.IntName} ({dest.Name})</AutocompleteItem>
           )}

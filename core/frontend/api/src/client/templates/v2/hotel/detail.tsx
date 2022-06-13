@@ -87,13 +87,7 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
 
 
   };
-  const handleHotelSearch = (hotelValue: any) => {
-    setData({
-      ...data,
-      hotel: hotelValue
-    });
 
-  };
   const handleSearch = (value: any) => {
     setData({
       ...data,
@@ -119,7 +113,6 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
               handleAdultPlus={handleAdultPlus}
               handleAdultMinus={handleAdultMinus}
               handleSearch={handleSearch}
-              handleHotelSearch={handleHotelSearch}
             />
           </ContentWrapper>
         </TopContentWrapper>

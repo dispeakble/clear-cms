@@ -1067,13 +1067,6 @@ export const DestinationTextWrapper = styled.div`
   }
 `
 
-export const FlightExpandDetails = styled.div<IFlightsDetails>`
-  padding: 10px;
-  display: ${({expand}) => expand ? "block" : "none"};
-  transition: height .5s ease-in-out;
-  overflow: hidden;
-`
-
 export const FlightDescriptionContainer = styled.div`
   padding: 25px 0;
   border-bottom: 1px solid #FF840D;

@@ -3,6 +3,9 @@ import "@testing-library/jest-dom";
 import HotelList from "../hotel/list";
 import { IntlProvider } from "next-intl";
 import { WsContextProvider } from "../../../context/SocketContext";
+import {myMockTheme} from "./mocks/theme";
+import Detail from "../hotel/detail";
+import {ThemeProvider} from "styled-components";
 
 jest.mock("next/router", () => ({
     useRouter() {
@@ -34,11 +37,13 @@ const pageProps = {
 
 const Wrapper = ({ ...props }: any) => {
     return (
-        <WsContextProvider settings={{}}>
+        <ThemeProvider theme={myMockTheme}>
             <IntlProvider locale="en" messages={messages}>
-                <HotelList {...props} />
+                <WsContextProvider settings={{}}>
+                    <HotelList {...props} />
+                </WsContextProvider>
             </IntlProvider>
-        </WsContextProvider>
+        </ThemeProvider>
     );
 };
 

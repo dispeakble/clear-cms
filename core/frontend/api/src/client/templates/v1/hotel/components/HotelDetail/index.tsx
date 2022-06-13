@@ -51,7 +51,6 @@ type HotelDetailProps = {
     data: any;
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
-    handleHotelSearch: (data: string) => void;
     handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
     handleChildrenPlus: () => void;
@@ -103,9 +102,8 @@ const HotelDetailComponent = ({
         const getHotel = arr.map((value: any) => {
             return value.location;
         });
-        const uniqueChars = [...getHotel];
 
-        const mainFilter = uniqueChars.map((hotel: any) => {
+        const mainFilter = [...getHotel].map((hotel: any) => {
             const lableFilter = arr.map((value) => {
                 if (value.location == hotel) {
                     return (
@@ -203,10 +201,8 @@ const HotelDetailComponent = ({
             }
 
         });
-        const filtered = searchData.filter(function(x) {
-            return x !== undefined;
-        });
-        setMainValue(filtered);
+
+        setMainValue(searchData.filter(Boolean));
     };
 
     return (

@@ -59,6 +59,7 @@ const Wrapper = ({ ...props }: any) => {
         return new Promise((resolve) => {
           setTimeout(() => {
             const result = {
+              dateInterval: new Date(),
               departure: [{
                 Id: 0,
                 Name: "Abc",
@@ -86,6 +87,7 @@ const Wrapper = ({ ...props }: any) => {
     }
   };
 
+
   return (
     <ThemeProvider theme={myMockTheme}>
       <IntlProvider locale="en" messages={messages}>
@@ -96,6 +98,31 @@ const Wrapper = ({ ...props }: any) => {
     </ThemeProvider>
   );
 };
+
+const _Wrapper = ({...props}: any) => {
+  const WsContextProviderValue = {
+    ws: {
+      socket: false,
+      sendMessage: (data: any) => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({});
+          }, 30);
+        });
+      }
+    }
+  };
+
+  return (
+      <ThemeProvider theme={myMockTheme}>
+        <IntlProvider locale="en" messages={messages}>
+          <WsContext.Provider value={WsContextProviderValue}>
+            <HomePage {...props} />
+          </WsContext.Provider>
+        </IntlProvider>
+      </ThemeProvider>
+  );
+}
 
 const formatDate = (date: any) => {
   return Intl.DateTimeFormat("en", {
@@ -138,36 +165,6 @@ describe("Home Page Suite", () => {
     await waitFor(() => {
       expect(screen.getByTestId(/header-wrapper/)).not.toHaveClass("fixedHeader");
     });
-  });
-
-  it("Should show the packages departure list", async () => {
-    const homePage = render(<Wrapper {...homePageProps} />);
-
-    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/));
-
-    fireEvent.focus(
-      screen.getByTestId(/test-departure-search-input/)
-    );
-
-    await waitFor(async () => {
-      expect(screen.getByTestId(/packages-departure-list/)).toBeInTheDocument();
-    });
-
-  });
-
-  it("Should show the flight departure list", async () => {
-    const homePage = render(<Wrapper {...homePageProps} />);
-
-    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/));
-
-    fireEvent.focus(
-      screen.getByTestId(/test-departure-search-input/)
-    );
-
-    await waitFor(async () => {
-      expect(screen.getByTestId(/flights-departure-list/)).toBeInTheDocument();
-    });
-
   });
 
   it("Should not perform Search with no data", async () => {
@@ -475,35 +472,6 @@ describe("Home Page Suite", () => {
     });
   });
 
-  /*it.only("Should update guests (children) number", async () => {
-    const homePage = render(<Wrapper {...homePageProps} />);
-
-    fireEvent.click(
-        homePage.getByTestId(/test-open-children-handler/)
-    )
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-children-handler/)).toBeInTheDocument()
-    })
-
-    for(let i = 0; i < 20; i++){
-      fireEvent.click(
-          homePage.getByTestId(/test-minus-handler/)
-      )
-    }
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-handler-value/).textContent).toBe('0')
-    })
-
-    for(let i =0; i < 13; i++){
-      fireEvent.click(homePage.getByTestId(/test-plus-handler/))
-    }
-
-    await waitFor(() => {
-      expect(homePage.getByTestId(/test-handler-value/).textContent).toBe('4')
-    })
-  })*/
 
   it("Should update stars number", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
@@ -814,6 +782,25 @@ describe("Hotels search form suite", () => {
 
   });
 
+  it("Shouldn't show the Hotel destinations list by name", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/));
+
+    fireEvent.change(
+        screen.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
+        }
+    );
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/hotels-destination-list/)).toBeNull();
+    });
+  });
+
   it("Should open calendar or submit", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
@@ -848,7 +835,7 @@ describe("Hotels search form suite", () => {
     });
   });
 
-  it("Should update destination input value", async () => {
+  it("Shouldn't show destinations list", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/));
@@ -861,10 +848,45 @@ describe("Hotels search form suite", () => {
       homePage.getByTestId(/test-destination-search-input/),
       {
         target: {
-          value: "test"
+          value: "Abc"
         }
       }
     );
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/hotels-destination-list/)).toBeInTheDocument()
+    })
+
+    fireEvent.click(
+        homePage.getByTestId(/autocomplete-destination-0/)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-destination-search-input/)).toHaveDisplayValue(/Abc/)
+    })
+  });
+
+  it("Should update destination input value", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-hotels-search-tab/));
+
+    await waitFor(() => {
+      expect(homePage.container.querySelector(".hotelsSearchForm")).toBeInTheDocument();
+    });
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "Abc"
+          }
+        }
+    );
+
+    await waitFor(() => {
+      expect(homePage.queryByTestId(/hotels-destination-list/)).toBeNull()
+    })
   });
 
   it("Should open and close calendar modal via overlay click", async () => {
@@ -1137,6 +1159,118 @@ describe("Flights search form suite", () => {
     });
 
   });
+
+  it("Should show the flight departure list", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/));
+
+    fireEvent.focus(
+        screen.getByTestId(/test-departure-search-input/)
+    );
+
+    await waitFor(async () => {
+      expect(screen.getByTestId(/flights-departure-list/)).toBeInTheDocument();
+    });
+
+  });
+
+  it("Shouldn't show the flight departure list", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/));
+
+    fireEvent.focus(
+        screen.getByTestId(/test-departure-search-input/)
+    );
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/flights-departure-list/)).toBeNull();
+    });
+
+  });
+
+  it("Shouldn't show the flight departure list by name", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/));
+
+    fireEvent.change(
+        screen.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
+        }
+    );
+
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/flights-departure-list/)).toBeNull();
+    });
+  });
+
+  it("Shouldn't show the flight destination list by name", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/));
+
+    fireEvent.change(
+        screen.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
+        }
+    );
+
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/flights-destination-list/)).toBeNull();
+    });
+  });
+
+  it("Should select destination and departure options from autocomplete - Flights", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+
+    fireEvent.click(homePage.getByTestId(/test-flights-search-tab/));
+
+    fireEvent.focus(
+        homePage.getByTestId(/test-departure-search-input/)
+    );
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/flights-departure-list/)).toBeInTheDocument();
+    });
+
+    fireEvent.click(
+        homePage.getByTestId(/autocomplete-departure-0/)
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "Def"
+          }
+        }
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/flights-destination-list/)).toBeInTheDocument();
+      console.log(homePage.getByTestId(/flights-destination-list/), "hak had test")
+    });
+
+    fireEvent.click(
+        homePage.getByTestId(/autocomplete-destination-0/)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-destination-search-input/)).toHaveDisplayValue(/Def/)
+    })
+  })
+
 
   it("Should open calendar or submit", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
@@ -1469,6 +1603,116 @@ describe("Packages search form suite", () => {
     });
 
   });
+
+  it("Should show the packages departure list", async () => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/));
+
+    fireEvent.focus(
+        screen.getByTestId(/test-departure-search-input/)
+    );
+
+    await waitFor(async () => {
+      expect(screen.getByTestId(/packages-departure-list/)).toBeInTheDocument();
+    });
+
+  });
+
+  it("Shouldn't show the packages departure list", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/));
+
+    fireEvent.focus(
+        screen.getByTestId(/test-departure-search-input/)
+    );
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/packages-departure-list/)).toBeNull();
+    });
+
+  });
+
+  it("Shouldn't show the package departure list by name", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/));
+
+    fireEvent.change(
+        screen.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
+        }
+    );
+
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/packages-departure-list/)).toBeNull();
+    });
+  });
+
+  it("Shouldn't show the package destination list by name", async () => {
+    const homePage = render(<_Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/));
+
+    fireEvent.change(
+        screen.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
+        }
+    );
+
+
+    await waitFor(async () => {
+      expect(screen.queryByTestId(/packages-destination-list/)).toBeNull();
+    });
+  });
+
+  it("Should select destination and departure options from autocomplete - Flights", async() => {
+    const homePage = render(<Wrapper {...homePageProps} />);
+
+    fireEvent.click(homePage.getByTestId(/test-packages-search-tab/));
+
+    fireEvent.focus(
+        homePage.getByTestId(/test-departure-search-input/)
+    );
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/packages-departure-list/)).toBeInTheDocument();
+    });
+
+    fireEvent.click(
+        homePage.getByTestId(/autocomplete-departure-0/)
+    )
+
+    fireEvent.change(
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "Def"
+          }
+        }
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/packages-destination-list/)).toBeInTheDocument();
+    });
+
+    fireEvent.click(
+        homePage.getByTestId(/autocomplete-destination-0/)
+    )
+
+    await waitFor(() => {
+      expect(homePage.getByTestId(/test-destination-search-input/)).toHaveDisplayValue(/Def/)
+    })
+  })
+
 
   it("Should open calendar or submit", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);

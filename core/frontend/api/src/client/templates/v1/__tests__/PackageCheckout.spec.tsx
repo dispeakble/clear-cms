@@ -3,6 +3,9 @@ import {WsContextProvider} from "../../../context/SocketContext";
 import {IntlProvider} from "next-intl";
 import PackageCheckoutPage from "../package/checkout";
 import "@testing-library/jest-dom";
+import {myMockTheme} from "./mocks/theme";
+import {ThemeProvider} from "styled-components";
+import FourthStep from "../package/steps/Fourth";
 
 
 jest.mock("next/router", () => ({
@@ -34,13 +37,33 @@ const pageProps = {
     colorScheme: {}
 };
 
+const fourthStepProps = {
+    paymentError: false,
+    currentStep: 3,
+    setCurrentStep: jest.fn()
+}
+
+const FourthStepWrapper = ({...props}: any) => {
+    return (
+        <ThemeProvider theme={myMockTheme}>
+            <IntlProvider locale="en" messages={messages}>
+                <WsContextProvider settings={{}}>
+                    <FourthStep {...props} />
+                </WsContextProvider>
+            </IntlProvider>
+        </ThemeProvider>
+    );
+}
+
 const Wrapper = ({ ...props }: any) => {
     return (
-        <WsContextProvider settings={{}}>
+        <ThemeProvider theme={myMockTheme}>
             <IntlProvider locale="en" messages={messages}>
-                <PackageCheckoutPage {...props} />
+                <WsContextProvider settings={{}}>
+                    <PackageCheckoutPage {...props} />
+                </WsContextProvider>
             </IntlProvider>
-        </WsContextProvider>
+        </ThemeProvider>
     );
 };
 
@@ -171,5 +194,13 @@ describe("Packages checkout page suite", () => {
         })
 
         fireEvent.click(checkoutPage.getByTestId(/test-home-button/))
+    })
+
+    it("Should display payment step with no errors", async () => {
+        const paymentStep = render(<FourthStepWrapper {...fourthStepProps} />);
+
+        await waitFor(() => {
+            expect(paymentStep.getByText(/We are redirecting you to the payment processing step/)).toBeInTheDocument()
+        })
     })
 })

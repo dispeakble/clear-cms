@@ -1,8 +1,5 @@
 import { getIcon } from "../../helpers/icons";
 
-const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-};
 
 const myMockTheme: Record<string, any> = {
     colors: {
@@ -25,7 +22,7 @@ const myMockTheme: Record<string, any> = {
         "footerLinks": { "label": "Footer Links", "value": "#868484" },
         "greyBorder": { "label": "Grey Border", "value": "#ACACAC" },
         "borderOutline": { "label": "Border Outline", "value": "#DBDBDB" }
-    }, icon: getIcons
+    }, icon: () => {},
 };
 
 export {

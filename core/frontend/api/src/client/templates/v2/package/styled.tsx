@@ -389,7 +389,7 @@ export const ServicesTextContainer = styled.div<IDetailsContainer>`
   cursor: pointer;
   
   p{
-    color: ${({isExpanded}) => isExpanded ? "#DC6B03" : "rgba(0, 0, 0, 0.7)"} !important;
+    color: ${({isExpanded}) => isExpanded ? "#DC6B03" : "rgba(0, 0, 0, 0.7)"};
   }
 `
 
@@ -733,19 +733,6 @@ export const TicketInfosItems = styled.div`
   @media screen and (max-width: ${size.tablet}){
     flex-direction: column;
     gap: 15px;
-  }
-`
-
-export const TicketInfosItem = styled.div<ITicketItem>`
-  display: flex;
-  flex-direction: column;
-  justify-content: ${({alignEnd}) => alignEnd ? 'flex-end' : 'center'};
-  
-  @media screen and (max-width: ${size.tablet}){
-    padding-bottom: 15px;
-    :not(:last-child){
-      border-bottom: 1px dashed #848484;
-    }
   }
 `
 

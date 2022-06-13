@@ -21,7 +21,6 @@ import {
     GuestNumber,
     HotelCalendar,
     HotelCheck,
-    InfantIcon,
     InnerRoomList,
     LeftIcon,
     LeftSide,
@@ -114,9 +113,11 @@ const HotelAvailable = ({
         setShow("");
         setShowRoom("");
     };
+
     const handleShowCheckin = () => {
         setShow("checkin");
     };
+
     const handleShowCheckout = () => {
         setShow("checkout");
     };
@@ -337,7 +338,7 @@ const HotelAvailable = ({
                     })
                 }
             </RoomTable>
-            {(show.length || showRoom.length) ? <Overlay onClick={handleClickAway}/> : ""}
+            {(show.length || showRoom.length) ? <Overlay data-testid="test-overlay-close" onClick={handleClickAway}/> : ""}
             <StyledTooltipWrapper>
                 <ReactTooltip
                   id="mainTooltip"

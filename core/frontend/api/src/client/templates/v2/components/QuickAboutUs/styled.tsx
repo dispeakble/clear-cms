@@ -58,17 +58,3 @@ export const StyledContactBtn = styled.a`
     background-color: ${({theme}) => theme.colors.primaryLight};
   }
 `;
-
-export const StyledFloatingPrice = styled.div`
-  background:  ${({theme}) => theme.colors.white};
-  color: ${({theme}) => theme.colors.primaryColor};
-  padding: 30%;
-  text-align: center;
-  font-size: 36px;
-
-  & span {
-    text-transform: uppercase;
-    color: ${({theme}) => theme.colors.black};
-    font-size: 18px;
-  }
-`;

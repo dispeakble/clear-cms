@@ -852,7 +852,7 @@ export const TotalPrice = styled.h2`
 /* start fourth step */
 
 export const Payment = styled.div<IPaymentDiv>`
-  background: ${({isError}) => isError ? "#FFFFFF" : "none"};
+  background: ${({isError}) => isError ? "#FFFFFF" : "transparent"};
   display: flex;
   align-items: center;
   padding: 15px 0;

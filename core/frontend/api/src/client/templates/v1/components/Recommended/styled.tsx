@@ -100,17 +100,6 @@ export const StyledZoomImg = styled.div<{ src: any }>`
 
 `;
 
-export const StyledZoomPopup = styled.div<{ src: any }>`
-  width: 0;
-  height: 0;
-  max-width: calc(100% + 40px);
-  margin-right: 15px;
-  margin-bottom: 15px;
-  background: url(${({ src }) => src}) no-repeat center center;
-  background-size: cover;
-  transition: width 600ms ease-out, height 600ms ease-out, margin 600ms ease-out;
-  position: absolute;
-`;
 export const StyledStars = styled.div<{ stars: number }>`
   height: 25px;
   background: url(${({theme}) => theme.icon('coldStar')}) space top left;

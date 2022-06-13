@@ -16,7 +16,6 @@ import {
 import {StyledDescription} from "../HotelDetail/styled";
 import GoogleMapReact from "google-map-react";
 import React, {useRef, useState} from "react";
-import { StyledStars } from "../../../components/BottomCards/styled";
 import {StyledStarsSmall} from "../../../components/Styled/stars";
 
 const AnyReactComponent = ({text}: any) => <div>{text}</div>;

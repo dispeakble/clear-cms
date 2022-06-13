@@ -79,15 +79,17 @@ export const Hotels = () => {
 
   const handleDestination = useCallback(async (e: any) => {
     if (e.id) {
+      console.log(e.id, e.name, "teeeesst")
       setDestination(e.name);
       setDestinationList([]);
       setShowDestinations(false);
       setDestinationId(e.id);
     } else {
-      e.preventDefault();
-      setDestination(e.target.value);
-      if (e.target.value.length > 2) {
-        debouncedDestinationSearch(e.target.value);
+      if(e.target){
+        setDestination(e.target.value);
+        if (e.target.value.length > 2) {
+          debouncedDestinationSearch(e.target.value);
+        }
       }
     }
   }, [setDestination, setDestinationList, setShowDestinations, setDestinationId]);
@@ -179,11 +181,12 @@ export const Hotels = () => {
           value={destination}
           onChange={handleDestination} />
         {showDestinations && <AutocompleteList
-            data-testid="test-autocomplete-list"
+            data-testid="hotels-destination-list"
             className="destination">
           {destinationList.map(
             (dest, i) =>
               <AutocompleteItem
+                data-testid={`autocomplete-destination-${i}`}
                 onClick={() => handleDestination({ id: dest.Id, name: dest.Name })}
                 key={i}>{dest.IntName} ({dest.Name})</AutocompleteItem>
           )}

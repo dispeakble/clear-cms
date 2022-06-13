@@ -104,9 +104,9 @@ const Cart = ({packageDetails, passengersCount}: IProps) => {
                                     <PackageHotelInfos>
                                         {
                                             Object.keys(passengersCount).map((key: any, index: number) => (
-                                                <>
+                                                <div key={index}>
                                                     {`${passengersCount[key]} ${key} `}
-                                                </>
+                                                </div>
                                             ))
                                         }
                                     </PackageHotelInfos>

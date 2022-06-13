@@ -272,8 +272,7 @@ export const InfoIcon = styled.span`
 
 `;
 export const LeftSide = styled.div``;
-export const Star = styled.div`
-`;
+
 export const ShortDescription = styled.div`
   display: flex;
   width: 400px;
@@ -306,84 +305,11 @@ export const DateDiv = styled.div`
   position: relative;
 `;
 
-export const ShowDate = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 0;
-  left: 0;
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-export const HeadingDiv = styled.div`
-  width: 200px;
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-export const MemberBox = styled.div`
-  display: flex;
-  justify-content: center;
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  border-radius: 12px;
-  gap: 18px;
-  padding: 10px;
-`;
 export const CounterDiv = styled.div`
   display: flex;
   padding: 10px;
   width: 100%;
   justify-content: space-between;
-`;
-export const CounterBtn = styled.div`
-  fontSize: 12px;
-  background-color: ${({ theme }) => theme.colors.offWhite};
-  cursor: pointer;
-  padding: 1px 9px;
-  border-radius: 100%;
-  box-shadow: ${Shadows.primaryShadow};
-
-  :hover {
-    background-color: ${({ theme }) => theme.colors.primaryColor};
-    color: ${({ theme }) => theme.colors.white};
-  }
-
-
-`;
-
-export const PersonBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-
-`;
-export const InfBox = styled.div`
-  display: flex;
-`;
-export const ChildBox = styled.div`
-  display: flex;
-`;
-export const SliderLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 10px;
-  height: 437px;
-  background: ${({ theme }) => theme.colors.white};
-
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  box-sizing: border-box;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
-  padding: 12px;
-`;
-export const SliderRight = styled.div`
-  height: 437px;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
-`;
-
-export const ImageCount = styled.div`
-  width: 183px;
-  height: 130px;
-  background-size: cover;
-  margin-top: 10px;
 `;
 
 export const StyledDescription = styled.div<{readMore: boolean}>`
@@ -402,11 +328,6 @@ export const StyledDescription = styled.div<{readMore: boolean}>`
     margin-top: 10px;
   }
 
-`;
-
-export const StyledDescriptionMore = styled.a`
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.primaryColor};
 `;
 
 export const DetailsCard = styled.div`

@@ -26,11 +26,7 @@ export const ChildIcon = styled.div`
   cursor: pointer;
   width: 20px;
 `;
-export const InfantIcon = styled.div`
-  background: url(${({ theme }) => theme.icon("infant")}) no-repeat left center;
-  cursor: pointer;
-  width: 12px;
-`;
+
 export const CheckOutSvg = styled.div`
   background: url(${({ theme }) => theme.icon("checkOut")}) no-repeat left center;
   cursor: pointer;
@@ -91,59 +87,6 @@ export const StyledSearchOptionsGroup = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   flex: 1;
-`;
-
-
-export const StyledPrimaryValue = styled.div`
-  font-weight: bold;
-  font-size: 14px;
-  color: ${({theme}) => theme.colors.primaryColor};
-`;
-export const StyledPerson = styled.label`
-  cursor: pointer;
-  user-select: none;
-  display: inline-block;
-  padding: 10px 0 10px 10px;
-  position: relative;
-  background: url(${({theme}) => theme.icon('person')}) no-repeat 50px 12px;
-  &:hover {
-    background-color: #F6F0DF;
-    border-radius: 14px 0px 0px 14px;
-  }
-  @media ${device.laptop} {
-    background-position: 40px 12px;
-  }
-  
-  @media ${device.laptopL} {
-    background-position: 45px 12px;
-  }
-  @media ${device.desktop} {
-    background-position: 70px 12px;
-  }
-`;
-
-
-export const StyledChild = styled.label`
-  cursor: pointer;
-  user-select: none;
-  display: inline-block;
-  padding: 10px 0 10px 10px;
-  position: relative;
-  background: url(${({theme}) => theme.icon('child')}) no-repeat 35px 12px;
-  &:hover {
-    background-color: #F6F0DF;
-    border-radius: 0px 14px 14px 0px;
-  }
-  @media (max-width: ${size.mobileL}) {
-    border-radius: 0 8px 0 0;
-  }
-  @media ${device.laptop} {
-    background-position: 25px 12px;
-  }
-  
-  @media ${device.desktop} {
-    background-position: 50px 12px;
-  }
 `;
 
 export const StyledCenterLabel = styled.div`
@@ -420,20 +363,7 @@ export const TopUp = styled.div`
     background: url(${({ theme }) => theme.icon("dropDark")}) no-repeat left center;
   }
 `;
-export const TopUpRooms = styled.div`
-  width: 10px;
-  height: 18px;
-  display: flex;
-  right: 10px;
-  align-items: center;
-  background: url(${({ theme }) => theme.icon("dropLight")}) no-repeat left center;
-  position: relative;
-  top: 0;
 
-  :hover {
-    background: url(${({ theme }) => theme.icon("dropDark")}) no-repeat left center;
-  }
-`;
 export const InnerRoomList = styled.div`
   position: absolute;
   top: 39px;
