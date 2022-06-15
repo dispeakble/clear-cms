@@ -20,6 +20,7 @@ export const FilterTitle = styled.h3`
 export const FilteringIcon = styled.div`
   background: url(${({theme}) => theme.icon('resultFilter')}) no-repeat center center;
   width: 40px;
+  cursor: pointer;
 `;
 
 export const FilterOptionsContainer = styled.div`
@@ -30,17 +31,32 @@ export const CheckboxContainer = styled.div`
   margin-top: 6px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const Checkbox = styled.input`
   border: 2px solid #404040;
   width: 16px;
   height: 16px;
+  cursor: pointer;
 `;
 
 export const Label = styled.label`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
   font-weight: 500;
   font-size: 15px;
-  line-height: 24px;
-  margin-left: 8px;
+  line-height: 1.5;
+  margin: 0;
+  
+  color: #404040;
+  
+  ::selection{
+    background: none;
+  }
 `;

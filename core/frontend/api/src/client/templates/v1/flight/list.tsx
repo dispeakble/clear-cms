@@ -12,7 +12,7 @@ import {
     MainWrapper,
     TopContentWrapperForFlightResults,
     BottomContentWrapperForFlightResults,
-    FlightResultsMainWrapper
+    FlightResultsMainWrapper, Wrapper
 } from "../styled";
 import HomeSearch from "../components/HomeSearch";
 import Footer from "../components/Footer";
@@ -43,10 +43,12 @@ const List = ({ websiteName, colorScheme }: any) => {
                             <HomeSearch />
                         </ContentWrapper>
                     </TopContentWrapperForFlightResults>
-                    <BottomContentWrapperForFlightResults>
-                        <FilteringFlightResult />
-                        <ResultsMainContent />
-                    </BottomContentWrapperForFlightResults>
+                    <Wrapper>
+                        <BottomContentWrapperForFlightResults>
+                            <FilteringFlightResult />
+                            <ResultsMainContent />
+                        </BottomContentWrapperForFlightResults>
+                    </Wrapper>
                 </MainWrapper>
             </FlightResultsMainWrapper>
             <Footer />
