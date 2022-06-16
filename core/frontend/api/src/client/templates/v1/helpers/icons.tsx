@@ -38,8 +38,12 @@ import filterIcon from "../assets/img/filter-icon.svg"
 import rightArrowIcon from '../assets/img/right-arrow-icon.svg';
 import leftArrowIcon from '../assets/img/left-arrow-icon.svg';
 import viewMoreIcon from '../assets/img/view-more-icon.svg'
+import loginEmail from '../assets/img/login/email-icon.svg'
+import loginPassword from '../assets/img/login/password-icon.svg'
 
 const icons: Record<string, any> = {
+  loginEmail: loginEmail,
+  loginPassword: loginPassword,
   uncheck: uncheckIcon,
   calendarCheckIcon: calendarCheckIcon,
   quoteUp: quoteUp,

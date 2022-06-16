@@ -14,7 +14,11 @@
   "input": {
     "placeholder": {
       "firstName" : "E.G. John (Nombre)",
-      "lastName" : "E.G. Smith (Apellido)"
+      "lastName" : "E.G. Smith (Apellido)",
+      "login": {
+        "email": "Introduzca su correo electrónico",
+        "password": "Introduzca su contraseña"
+      }
     }
   },
   "day": {
@@ -540,6 +544,23 @@
       "smallBags": "bolsa pequeña para cada persona",
       "suitcase": "maleta grande para cada adulto",
       "airportTaxes": "Todas las tasas de aeropuerto"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Inicia sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "rememberMe": "Recuérdame",
+      "forgotPassword": "¿Olvidó su contraseña?",
+      "continue": "Continuar",
+      "dontHaveAccount": "¿No tiene una cuenta? ",
+      "registerHere": "Regístrese aquí"
+    },
+    "passwordReset": {
+      "title": "Inicia sesión",
+      "infos": "Recibirás un correo electrónico con las indicaciones para el proceso de restablecimiento de la contraseña."
+
     }
   }
 }
