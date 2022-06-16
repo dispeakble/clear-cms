@@ -89,13 +89,13 @@ const Wrapper = ({ ...props }: any) => {
 
 
   return (
-    <ThemeProvider theme={myMockTheme}>
-      <IntlProvider locale="en" messages={messages}>
-        <WsContext.Provider value={WsContextProviderValue}>
-          <HomePage {...props} />
-        </WsContext.Provider>
-      </IntlProvider>
-    </ThemeProvider>
+      <ThemeProvider theme={myMockTheme}>
+        <IntlProvider locale="en" messages={messages}>
+          <WsContext.Provider value={WsContextProviderValue}>
+            <HomePage {...props} />
+          </WsContext.Provider>
+        </IntlProvider>
+      </ThemeProvider>
   );
 };
 
@@ -171,7 +171,7 @@ describe("Home Page Suite", () => {
     render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(
-      screen.getByTestId(/search-submit-btn/)
+        screen.getByTestId(/search-submit-btn/)
     );
 
     await waitFor(async () => {
@@ -354,8 +354,8 @@ describe("Home Page Suite", () => {
     render(<Wrapper {...homePageProps} />);
 
     fireEvent.change(
-      screen.getByTestId(/test-destination-search-input/),
-      { target: { value: "New destination" } }
+        screen.getByTestId(/test-destination-search-input/),
+        { target: { value: "New destination" } }
     );
 
     expect(screen.getByTestId(/test-destination-search-input/)).toHaveValue("New destination");
@@ -366,15 +366,15 @@ describe("Home Page Suite", () => {
     const today = new Date();
 
     fireEvent.click(
-      homePage.getByTestId(/test-checkIn-button/)
+        homePage.getByTestId(/test-checkIn-button/)
     );
 
     fireEvent.click(
-      homePage.getByTestId("home-search-overlay")
+        homePage.getByTestId("home-search-overlay")
     );
 
     fireEvent.click(
-      homePage.getByTestId(/test-checkIn-button/)
+        homePage.getByTestId(/test-checkIn-button/)
     );
 
     await waitFor(() => {
@@ -388,7 +388,7 @@ describe("Home Page Suite", () => {
     }).format(new Date(today.setDate(today.getDate())))}"]`);
 
     fireEvent.click(
-      checkInDateInCalendar
+        checkInDateInCalendar
     );
 
     await waitFor(() => {
@@ -446,7 +446,7 @@ describe("Home Page Suite", () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(
-      homePage.getByTestId(/test-open-adults-handler/)
+        homePage.getByTestId(/test-open-adults-handler/)
     );
 
     await waitFor(() => {
@@ -455,7 +455,7 @@ describe("Home Page Suite", () => {
 
     for (let i = 0; i < 20; i++) {
       fireEvent.click(
-        homePage.getByTestId(/test-minus-handler/)
+          homePage.getByTestId(/test-minus-handler/)
       );
     }
 
@@ -477,7 +477,7 @@ describe("Home Page Suite", () => {
     const homePage = render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(
-      homePage.getByTestId(/test-open-stars-handler/)
+        homePage.getByTestId(/test-open-stars-handler/)
     );
 
     await waitFor(() => {
@@ -486,7 +486,7 @@ describe("Home Page Suite", () => {
 
     for (let i = 0; i < 6; i++) {
       fireEvent.click(
-        homePage.getByTestId(/test-minus-handler/)
+          homePage.getByTestId(/test-minus-handler/)
       );
     }
 
@@ -584,30 +584,30 @@ describe("Children age popup suite", () => {
 
     await waitFor(() => {
       expect(
-        homePage
-          .getByTestId(/test-topHotel-button-second/)
-          .getAttribute("class"))
-        .toMatch(/selected/i);
+          homePage
+              .getByTestId(/test-topHotel-button-second/)
+              .getAttribute("class"))
+          .toMatch(/selected/i);
     });
 
     fireEvent.click(homePage.getByTestId(/test-topHotel-button-first/));
 
     await waitFor(() => {
       expect(
-        homePage
-          .getByTestId(/test-topHotel-button-first/)
-          .getAttribute("class"))
-        .toMatch(/selected/i);
+          homePage
+              .getByTestId(/test-topHotel-button-first/)
+              .getAttribute("class"))
+          .toMatch(/selected/i);
     });
 
     fireEvent.click(homePage.getByTestId(/test-topHotel-button-third/));
 
     await waitFor(() => {
       expect(
-        homePage
-          .getByTestId(/test-topHotel-button-third/)
-          .getAttribute("class"))
-        .toMatch(/selected/i);
+          homePage
+              .getByTestId(/test-topHotel-button-third/)
+              .getAttribute("class"))
+          .toMatch(/selected/i);
     });
   });
 
@@ -641,10 +641,10 @@ describe("Children age popup suite", () => {
     await waitFor(() => {
       expect(homePage.getByTestId(/test-second-tab-slide/)).toBeInTheDocument();
       expect(
-        homePage
-          .getByTestId(/test-second-tab-button/)
-          .getAttribute("class"))
-        .toMatch(/selected/i);
+          homePage
+              .getByTestId(/test-second-tab-button/)
+              .getAttribute("class"))
+          .toMatch(/selected/i);
     });
 
     fireEvent.click(homePage.getByTestId(/test-first-tab-button/));
@@ -652,10 +652,10 @@ describe("Children age popup suite", () => {
     await waitFor(() => {
       expect(homePage.getByTestId(/test-first-tab-slide/)).toBeInTheDocument();
       expect(
-        homePage
-          .getByTestId(/test-first-tab-button/)
-          .getAttribute("class"))
-        .toMatch(/selected/i);
+          homePage
+              .getByTestId(/test-first-tab-button/)
+              .getAttribute("class"))
+          .toMatch(/selected/i);
     });
 
     fireEvent.click(homePage.getByTestId(/test-third-tab-button/));
@@ -663,10 +663,10 @@ describe("Children age popup suite", () => {
     await waitFor(() => {
       expect(homePage.getByTestId(/test-third-tab-slide/)).toBeInTheDocument();
       expect(
-        homePage
-          .getByTestId(/test-third-tab-button/)
-          .getAttribute("class"))
-        .toMatch(/selected/i);
+          homePage
+              .getByTestId(/test-third-tab-button/)
+              .getAttribute("class"))
+          .toMatch(/selected/i);
     });
   });
 });
@@ -777,7 +777,7 @@ describe("Hotels search form suite", () => {
 
     await waitFor(() => {
       expect(document.activeElement)
-        .toEqual(homePage.getByTestId("test-destination-search-input"));
+          .toEqual(homePage.getByTestId("test-destination-search-input"));
     });
 
   });
@@ -811,21 +811,21 @@ describe("Hotels search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.click(homePage.getByTestId(/search-submit-btn/));
@@ -845,12 +845,12 @@ describe("Hotels search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "Abc"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "Abc"
+          }
         }
-      }
     );
 
     await waitFor(() => {
@@ -936,7 +936,7 @@ describe("Hotels search form suite", () => {
 
 
     fireEvent.click(
-      checkInFlightDateInCalendar
+        checkInFlightDateInCalendar
     );
 
     const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat("en", {
@@ -946,7 +946,7 @@ describe("Hotels search form suite", () => {
     }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
 
     fireEvent.click(
-      checkOutFlightDateInCalendar
+        checkOutFlightDateInCalendar
     );
 
     await waitFor(() => {
@@ -1099,12 +1099,12 @@ describe("Hotels search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.click(homePage.getByTestId(/search-submit-btn/));
@@ -1121,7 +1121,7 @@ describe("Hotels search form suite", () => {
 
 
     fireEvent.click(
-      checkInFlightDateInCalendar
+        checkInFlightDateInCalendar
     );
 
     const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat("en", {
@@ -1131,7 +1131,7 @@ describe("Hotels search form suite", () => {
     }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
 
     fireEvent.click(
-      checkOutFlightDateInCalendar
+        checkOutFlightDateInCalendar
     );
 
     await waitFor(() => {
@@ -1155,7 +1155,7 @@ describe("Flights search form suite", () => {
 
     await waitFor(() => {
       expect(document.activeElement)
-        .toEqual(homePage.getByTestId("test-departure-search-input"));
+          .toEqual(homePage.getByTestId("test-departure-search-input"));
     });
 
   });
@@ -1282,21 +1282,21 @@ describe("Flights search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-departure-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.click(homePage.getByTestId(/search-submit-btn/));
@@ -1317,12 +1317,12 @@ describe("Flights search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-departure-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
   });
 
@@ -1336,12 +1336,12 @@ describe("Flights search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
   });
 
@@ -1392,7 +1392,7 @@ describe("Flights search form suite", () => {
 
 
     fireEvent.click(
-      checkInFlightDateInCalendar
+        checkInFlightDateInCalendar
     );
 
     const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat("en", {
@@ -1402,7 +1402,7 @@ describe("Flights search form suite", () => {
     }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
 
     fireEvent.click(
-      checkOutFlightDateInCalendar
+        checkOutFlightDateInCalendar
     );
 
     await waitFor(() => {
@@ -1534,21 +1534,21 @@ describe("Flights search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-departure-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.click(homePage.getByTestId(/search-submit-btn/));
@@ -1565,7 +1565,7 @@ describe("Flights search form suite", () => {
 
 
     fireEvent.click(
-      checkInFlightDateInCalendar
+        checkInFlightDateInCalendar
     );
 
     const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat("en", {
@@ -1575,7 +1575,7 @@ describe("Flights search form suite", () => {
     }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
 
     fireEvent.click(
-      checkOutFlightDateInCalendar
+        checkOutFlightDateInCalendar
     );
 
     await waitFor(() => {
@@ -1599,7 +1599,7 @@ describe("Packages search form suite", () => {
 
     await waitFor(() => {
       expect(document.activeElement)
-        .toEqual(homePage.getByTestId("test-departure-search-input"));
+          .toEqual(homePage.getByTestId("test-departure-search-input"));
     });
 
   });
@@ -1724,21 +1724,21 @@ describe("Packages search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-departure-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.click(homePage.getByTestId(/search-submit-btn/));
@@ -1758,12 +1758,12 @@ describe("Packages search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-departure-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
   });
 
@@ -1777,12 +1777,12 @@ describe("Packages search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
   });
 
@@ -1833,7 +1833,7 @@ describe("Packages search form suite", () => {
 
 
     fireEvent.click(
-      checkInFlightDateInCalendar
+        checkInFlightDateInCalendar
     );
 
     const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat("en", {
@@ -1843,7 +1843,7 @@ describe("Packages search form suite", () => {
     }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
 
     fireEvent.click(
-      checkOutFlightDateInCalendar
+        checkOutFlightDateInCalendar
     );
 
     await waitFor(() => {
@@ -1995,21 +1995,21 @@ describe("Packages search form suite", () => {
     });
 
     fireEvent.change(
-      homePage.getByTestId(/test-departure-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-departure-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.change(
-      homePage.getByTestId(/test-destination-search-input/),
-      {
-        target: {
-          value: "test"
+        homePage.getByTestId(/test-destination-search-input/),
+        {
+          target: {
+            value: "test"
+          }
         }
-      }
     );
 
     fireEvent.click(homePage.getByTestId(/search-submit-btn/));
@@ -2026,7 +2026,7 @@ describe("Packages search form suite", () => {
 
 
     fireEvent.click(
-      checkInFlightDateInCalendar
+        checkInFlightDateInCalendar
     );
 
     const checkOutFlightDateInCalendar = homePage.container.querySelector(`[aria-label="${Intl.DateTimeFormat("en", {
@@ -2036,7 +2036,7 @@ describe("Packages search form suite", () => {
     }).format(new Date(checkOut.setDate(checkOut.getDate() + 1)))}"]`);
 
     fireEvent.click(
-      checkOutFlightDateInCalendar
+        checkOutFlightDateInCalendar
     );
 
     await waitFor(() => {

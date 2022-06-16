@@ -40,13 +40,13 @@ export const device = {
   desktopL: `(min-width: ${size.desktopL})`
 };
 
-export const MainWrapper = styled.div`
+export const MainWrapper = styled.div<{isOrange?: boolean}>`
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #E5E5E5;
+  background: ${({isOrange}) => isOrange ? `linear-gradient(111.87deg, #FFD3A8 3.23%, #FFB369 98.39%)` : "#E5E5E5"};
 `;
 
 export const MainContentWrapper = styled.div`
@@ -79,12 +79,15 @@ export const MainContentWrapper = styled.div`
   }
 `;
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{isLogin?: boolean; isBreadcrumb?: boolean}>`
   width: 100%;
   max-width: 1440px;
-  margin: 0 auto;
-  min-height: 100vh;
-  padding: 20px 0;
+  margin: 20px auto;
+  min-height: ${({isBreadcrumb}) => isBreadcrumb ? "auto" : "100vh"};
+  border-radius: ${({isLogin}) => isLogin ? "10px" : "0"};
+  border: ${({isLogin}) => isLogin ? "3px dashed #FF6B00" : "none"};
+  background: ${({isLogin}) => isLogin ? "#FFEDED" : "none"};
+  padding: ${({isLogin}) => isLogin ? "20px" : "0"};
   
   @media(max-width: ${size.laptopL}){
     padding: 20px;
