@@ -46,7 +46,7 @@ export class ProtocolController {
         @Inject('AuthService') private authService,
         @Inject('BucketService') private bucketService,
         @Inject('CategoriesService') private categoriesService,
-        @Inject('UsersService') private usersService,
+        @Inject('ClientsService') private clientsService,
         @Inject('PagesService') private pagesService,
         @Inject('GeneralSettingsService') private generalSettingsService,
         @Inject('DashboardBoxService') private dashboardBoxService,

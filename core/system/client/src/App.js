@@ -70,7 +70,13 @@ class App extends Component {
                 name: "Tourism Agency",
                 icon: "apps",
                 subitems: [
-
+                    {
+                        toLink: "/clients",
+                        name: "Clients",
+                        controller: "clients",
+                        icon: "people",
+                        active: false,
+                    },
                 ],
             },
             {

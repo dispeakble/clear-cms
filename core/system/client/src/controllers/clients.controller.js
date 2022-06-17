@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
-import ViewUsers from "../templates/ViewUsers/ViewUsers";
+import ViewClients from "../templates/ViewClients/ViewClients";
 
-class UsersController extends Component {
+class ClientsController extends Component {
 
     messageCallbacks = {};
     control = {
@@ -13,7 +13,7 @@ class UsersController extends Component {
         rem: (params) => this.rem(params),
     };
 
-    channel = 'users';
+    channel = 'clients';
 
     async componentDidMount() {
         this.props.services.ws.subscribe({
@@ -30,7 +30,7 @@ class UsersController extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in users controller', params);
+        console.log('got message in clients controller', params);
     }
 
     sendMessage(params) {
@@ -53,7 +53,7 @@ class UsersController extends Component {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
-                    api: 'users',
+                    api: 'clients',
                     act: 'list',
                     payload: params,
                 });
@@ -69,11 +69,11 @@ class UsersController extends Component {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
-                    api: 'users',
+                    api: 'clients',
                     act: 'add',
                     payload: {
-                        fname: params.fname,
-                        lname: params.lname,
+                        firstName: params.firstName,
+                        lastName: params.lastName,
                         email: params.email,
                         password: params.password,
                         type: params.type,
@@ -93,7 +93,7 @@ class UsersController extends Component {
             try {
                 const response = await this.sendMessage({
                     module: 'system',
-                    api: 'users',
+                    api: 'clients',
                     act: 'rem',
                     payload: {
                         id: params.id
@@ -112,16 +112,12 @@ class UsersController extends Component {
             try {
                 const payload = {
                     module: 'system',
-                    api: 'users',
+                    api: 'clients',
                     act: 'set',
                     payload: {
-                        data: params.data,
-                        where: params.where
+                        data: params
                     }
                 };
-                if(params.password && params.password.length) {
-                    payload.data.payload.password = params.password;
-                }
                 const response = await this.sendMessage(payload);
 
                 resolve(response)
@@ -132,14 +128,14 @@ class UsersController extends Component {
     }
 
     render() {
-        return <ViewUsers control={this.control} {...this.props} />;
+        return <ViewClients control={this.control} {...this.props} />;
     }
 
 }
 
-export default UsersController;
+export default ClientsController;
 
-UsersController.propTypes = {
+ClientsController.propTypes = {
     services: PropTypes.object,
     history: PropTypes.object,
 };

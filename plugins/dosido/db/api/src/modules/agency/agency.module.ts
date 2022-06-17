@@ -3,7 +3,6 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { QueryService } from "../../services/query.service";
 import { AgencyService } from "./services/agency.service";
 
-
 import { FileInfo } from "./models/general/file.info.model";
 import { Gender } from "./models/general/gender.model";
 import { BookingItem } from "./models/booking/booking.item.model";
@@ -29,6 +28,7 @@ import { PriceInfo } from "./models/packages/price.info.model";
 import { PriceSet } from "./models/packages/price.set.model";
 import { Room } from "./models/packages/room.model";
 import { SpecialOffer } from "./models/packages/special.offer.model";
+import { Client } from "./models/clients/client.model";
 
 //search
 import { PackagesCache } from "./models/search/packages.cache.model";
@@ -74,6 +74,9 @@ import { FlightsCache } from "./models/search/flights.cache.model"
         PriceSet,
         Room,
         SpecialOffer,
+
+        //clients
+        Client,
 
         //search and cache
         PackagesCache,
