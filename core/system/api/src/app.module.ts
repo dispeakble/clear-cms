@@ -3,7 +3,7 @@ import { ProtocolController } from './controllers/protocol.controller';
 import { SystemService } from './services/system.service';
 import { BucketService } from './services/bucket.service';
 import { CategoriesService } from './services/categories.service';
-import { UsersService } from './services/users.service';
+import { ClientsService } from './services/clients.service';
 import { PagesService } from './services/pages.service';
 import { AuthService } from './services/auth.service';
 import { AdminProfileService } from './services/adminProfile.service';
@@ -47,7 +47,7 @@ import {GotModule} from "@t00nday/nestjs-got";
   providers: [
     BucketService,
     CategoriesService,
-    UsersService,
+    ClientsService,
     PagesService,
     ProtocolService,
     AuthService,

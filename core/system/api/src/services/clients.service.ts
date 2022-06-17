@@ -2,9 +2,10 @@ import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
+import md5 from "md5";
 
 @Injectable()
-export class UsersService {
+export class ClientsService {
 
     private methods = ["list", "add", "rem", "set"];
 
@@ -18,7 +19,7 @@ export class UsersService {
                 'or': []
             };
 
-            ["fname", "lname", "email"].map(field => {
+            ["firstName", "lastName", "email"].map(field => {
                 whereObj['or'].push({[field]: {'LIKE': `%${params.search}%`}});
             })
 
@@ -27,13 +28,13 @@ export class UsersService {
                 api: 'sql',
                 act: 'list',
                 payload: {
-                    db: 'main',
+                    db: 'agency',
                     channel: `${process.env.app}_system`,
                     data: {
-                        what: 'user',
-                        fields: ["id", "fname", "lname", "email", "type", "active", "createdAt", "accessedAt", "updatedAt"],
+                        what: 'client',
+                        attributes: ["id", "firstName", "lastName", "email", "active", "createdAt", "accessedAt", "updatedAt"],
                         where: null,
-                        order: params?.order,
+                        order: params?.order || [],
                         limit: params?.limit
                     }
                 }
@@ -44,7 +45,7 @@ export class UsersService {
             }
 
             this.protocolService.sendMessage(payload).subscribe(data => {
-                subscriber.next({type: 'users_list', data: data});
+                subscriber.next({type: 'client_list', data: data});
             }, err => {
                 subscriber.error(err);
             }, () => {
@@ -63,15 +64,15 @@ export class UsersService {
                         api: 'sql',
                         act: 'add',
                         payload: {
-                            db: 'main',
+                            db: 'agency',
                             channel: `${process.env.app}_system`,
                             data: {
-                                what: 'user',
+                                what: 'client',
                                 data: {
-                                    fname: String(params.fname),
-                                    lname: String(params.lname),
+                                    firstName: String(params.firstName),
+                                    lastName: String(params.lastName),
                                     email: String(params.email),
-                                    password: String(params.password),
+                                    password: md5(String(params.password)),
                                     type: Number(params.type),
                                     active: Number(params.active)
                                 }
@@ -81,9 +82,8 @@ export class UsersService {
 
                     const res = await this.protocolService.sendMessage(request).toPromise();
 
-
                     subscriber.next({
-                        success: "The user was added",
+                        success: "The client was added",
                         data: res
                     })
                     subscriber.complete();
@@ -98,31 +98,49 @@ export class UsersService {
 
     public set(params: any) {
         return new Observable(subscriber => {
-            const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
-                api: 'sql',
-                act: 'set',
-                payload: {
-                    db: 'main',
-                    channel: `${process.env.app}_system`,
-                    data: {
-                        what: 'user',
-                        data: params.data,
-                        where: params.where
-                    }
-                }
-            };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
-                subscriber.next({
-                    success: "The user was updated",
-                    data: null
-                })
-            }, err => {
+            try {
+                const where = {
+                    id: +params.data.id
+                };
+
+                delete params.data.id;
+                delete params.data.createdAt;
+                delete params.data.accessedAt;
+
+                const request: payloadInterface = {
+                    channel: `${process.env.app}_db`,
+                    api: 'sql',
+                    act: 'set',
+                    payload: {
+                        db: 'agency',
+                        channel: `${process.env.app}_system`,
+                        data: {
+                            what: 'client',
+                            data: params.data,
+                            where: where
+                        }
+                    }
+                };
+
+                if(params.data.password && params.data.password.length) {
+                    request.payload.data.data.password = md5(String(params.data.password));
+                }
+
+                this.protocolService.sendMessage(request).subscribe(data => {
+                    subscriber.next({
+                        success: "The client was updated",
+                        data: null
+                    })
+                }, err => {
+                    subscriber.error(err);
+                }, () => {
+                    subscriber.complete();
+                });
+            } catch (err) {
                 subscriber.error(err);
-            }, () => {
-                subscriber.complete();
-            });
+            }
+
         })
     }
 
@@ -133,10 +151,10 @@ export class UsersService {
                 api: 'sql',
                 act: 'rem',
                 payload: {
-                    db: 'main',
+                    db: 'agency',
                     channel: `${process.env.app}_system`,
                     data: {
-                        what: 'user',
+                        what: 'client',
                         where: {
                             id: Number(params.id)
                         }
@@ -146,7 +164,7 @@ export class UsersService {
 
             this.protocolService.sendMessage(request).subscribe(data => {
                 subscriber.next({
-                    success: "The user was removed",
+                    success: "The client was removed",
                     data: null
                 })
             }, err => {
@@ -161,7 +179,7 @@ export class UsersService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload, config);
         } else {
-            console.log("System.usersService." + data.act + " not found");
+            console.log("System.clientsService." + data.act + " not found");
         }
         return null;
     }
