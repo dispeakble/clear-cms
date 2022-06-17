@@ -1,4 +1,4 @@
-name: Build Bucket Api
+name: Build Db Api
 
 env:
   DOCKER_IMAGE: 'dispeakble/crm-db'
