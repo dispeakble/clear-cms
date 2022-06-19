@@ -1,0 +1,104 @@
+import * as React from "react";
+import { ThemeProvider } from "styled-components";
+import Header from "../Header";
+import {
+    GlobalStyle,
+    MainWrapper,
+    TopContentWrapper, Wrapper
+} from "../../styled";
+import Breadcrumbs from "../Breadcrumbs";
+import { getIcon } from "../../helpers/icons";
+import Footer from "../Footer";
+import {MuiThemeProvider} from "@material-ui/core";
+import {createTheme} from "@material-ui/core/styles";
+
+const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOrange }: any) => {
+
+    const getIcons = (iconName: string) => {
+        return getIcon(iconName);
+    };
+
+    const myTheme: any = { colors: colorScheme, icon: getIcons };
+    const muiTheme: any = createTheme({
+        palette: colorScheme,
+        overrides: {
+            MuiTable: {
+                root: {
+                    background: "transparent",
+                    borderSpacing: "0 20px",
+                    borderCollapse: "revert",
+                },
+            },
+            MuiTableHead:{
+                root:{
+                    background: "#FFFFFF"
+                }
+            },
+            MuiTableRow: {
+                head:{
+                    background: "transparent",
+                    "& > th:first-child": {
+                        borderRadius: "10px 0 0 10px",
+                    },
+                    "& > th:last-child": {
+                        borderRadius: "0 10px 10px 0"
+                    },
+                    '& > th > span > div': {
+                        cursor: "pointer",
+                        fontSize: "13px",
+                        fontWeight: "bold",
+                        color: "#333333"
+                    }
+                },
+                root: {
+                    padding: "10px",
+                    background: "#FFFFFF",
+                    "& > td:first-child": {
+                        borderRadius: "10px 0 0 10px",
+                        width: "150px !important",
+                        borderRight: "1px dashed #898888"
+                    },
+                    "& > td:last-child": {
+                        borderRadius: "0 10px 10px 0"
+                    },
+                },
+                footer: {
+                    background: "transparent",
+                    "& > tr": {
+                        border:"none"
+                    },
+                    "& > td:first-child": {
+                        width: "auto !important",
+                    },
+                }
+            },
+            MuiTableFooter:{
+                root:{
+                    background: "none"
+                }
+            },
+        }
+    })
+
+    return (
+        <MuiThemeProvider theme={muiTheme} >
+            <ThemeProvider theme={myTheme}>
+                <GlobalStyle />
+                <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
+                    <TopContentWrapper>
+                        <Header websiteName={websiteName} />
+                    </TopContentWrapper>
+                    <Wrapper isBreadcrumb>
+                        <Breadcrumbs {...breadcrumbs} />
+                    </Wrapper>
+                    <Wrapper isLogin={isLogin}>
+                        {children}
+                    </Wrapper>
+                    <Footer />
+                </MainWrapper>
+            </ThemeProvider>
+        </MuiThemeProvider>
+    );
+};
+
+export default Layout;
