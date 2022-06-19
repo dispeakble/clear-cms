@@ -562,5 +562,10 @@
       "infos": "Recibirás un correo electrónico con las indicaciones para el proceso de restablecimiento de la contraseña."
 
     }
+  },
+  "invoice": {
+    "invoiceDetails": "Detalles de la factura",
+    "price": "Precio",
+    "download": "Descargar factura"
   }
 }

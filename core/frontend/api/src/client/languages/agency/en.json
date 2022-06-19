@@ -583,5 +583,10 @@
       "title": "Reset Password",
       "infos": "You will receive an email with indications for the password reset process."
     }
+  },
+  "invoice": {
+    "invoiceDetails": "Invoice details",
+    "price": "Price",
+    "download": "Download Invoice"
   }
 }
