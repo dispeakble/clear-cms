@@ -21,7 +21,7 @@ export const DownloadButton = styled.button`
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
-  color: #FFFFFF;
+  color: ${({theme}) => theme && theme.colors.white};
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border: none;
   outline: none;

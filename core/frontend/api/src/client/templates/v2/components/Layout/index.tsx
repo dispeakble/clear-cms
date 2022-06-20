@@ -18,7 +18,9 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
         return getIcon(iconName);
     };
 
-    const myTheme: any = { colors: colorScheme, icon: getIcons };
+    console.log(colorScheme)
+
+    const theme: any = { colors: colorScheme, icon: getIcons };
     const muiTheme: any = createTheme({
         palette: colorScheme,
         overrides: {
@@ -31,7 +33,7 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
             },
             MuiTableHead:{
                 root:{
-                    background: "#FFFFFF"
+                    background: colorScheme.white
                 }
             },
             MuiTableRow: {
@@ -47,16 +49,16 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
                         cursor: "pointer",
                         fontSize: "13px",
                         fontWeight: "bold",
-                        color: "#333333"
+                        color: colorScheme.jetBlack
                     }
                 },
                 root: {
                     padding: "10px",
-                    background: "#FFFFFF",
+                    background: colorScheme.white,
                     "& > td:first-child": {
                         borderRadius: "10px 0 0 10px",
                         width: "150px !important",
-                        borderRight: "1px dashed #898888"
+                        borderRight: `1px dashed ${colorScheme.greyBorder}`
                     },
                     "& > td:last-child": {
                         borderRadius: "0 10px 10px 0"
@@ -82,7 +84,7 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
 
     return (
         <MuiThemeProvider theme={muiTheme} >
-            <ThemeProvider theme={myTheme}>
+            <ThemeProvider theme={theme}>
                 <GlobalStyle />
                 <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
                     <TopContentWrapper>
