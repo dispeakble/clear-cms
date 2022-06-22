@@ -33,12 +33,9 @@ import {
 } from "./styled";
 import {Formik, Field, Form} from "formik";
 import Link from "next/link";
-
-interface IAuthCreds{
-    email: string,
-    password: string,
-    rememberMe: boolean
-}
+import useAuth from "../auth/useAuth";
+import {ILoginCredentials} from "../types/types";
+import {useAuthentication} from "../context/auth.context";
 
 const LoginPage = ({ websiteName, colorScheme }: any) => {
 
@@ -48,15 +45,24 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
         return getIcon(iconName);
     };
 
-    const [creds, setCreds] = React.useState<IAuthCreds>({
-        email: "",
-        password: "",
-        rememberMe: false
-    })
-
     const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
     const myTheme: any = { colors: colorScheme, icon: getIcons };
+
+    const useLogin = async (values: ILoginCredentials) => {
+        console.log("useLogin values:", values)
+        try{
+            const response = await useAuth.login(values);
+            if(response && response.data.user) {
+                console.log("new")
+            } else if(response && response.data.error){
+                return;
+            }
+        }catch(err) {
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
 
 
     return (
@@ -80,10 +86,14 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
                             </StyledLoginTitle>
                             <InputContainer>
                                 <Formik
-                                    initialValues={creds}
+                                    initialValues={{
+                                        email: "",
+                                        password: "",
+                                        rememberMe: false
+                                    }}
                                     enableReinitialize
                                     validate={(values) => {
-                                            const errors:any = {};
+                                            const errors: any = {};
                                             if (!values.email) {
                                                 errors.email = 'Email required';
                                             } else if (
@@ -99,9 +109,10 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
                                         }
                                     }
                                     onSubmit={
-                                        (values, actions) => {
+                                        async (values, actions) => {
                                             actions.setSubmitting(true)
-                                            console.log(values)
+                                            console.log("values")
+                                            actions.setSubmitting(false)
                                         }
                                     }
                                 >

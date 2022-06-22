@@ -1,5 +1,6 @@
 import { CacheModule, Logger, Module } from "@nestjs/common";
-import { AppController } from "./controllers/app.controller";
+import { AppController } from "./controllers/app.controller"
+import { AuthService } from "./services/auth.service"
 import { ProtocolService } from "./services/protocol.service";
 import { SystemService } from "./services/system.service";
 import { SettingsService } from "./services/settings.service";
@@ -58,6 +59,7 @@ import { WsGateway } from "./gateways/ws.gateway";
     SystemService,
     SettingsService,
     Logger,
+    AuthService,
     PublicThemesService,
     CategoriesService,
     PagesService,

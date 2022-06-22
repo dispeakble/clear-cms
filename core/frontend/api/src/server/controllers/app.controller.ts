@@ -6,6 +6,7 @@ import { FsResponse } from "../interfaces/fs.interface";
 import { ViewService } from "../services/view.service";
 import { Request, Response } from "express";
 import { parse } from "url";
+import { AuthService } from "../services/auth.service";
 import { ProtocolService } from "../services/protocol.service";
 import { SystemService } from "../services/system.service";
 import { PublicThemesService } from "../services/publicThemes.service";
@@ -48,6 +49,7 @@ export class AppController {
     private mainService;
 
     constructor(
+      @Inject("AuthService") private authService: AuthService,
       @Inject("ProtocolService") private protocolService: ProtocolService,
       @Inject("SystemService") private systemService: SystemService,
       @Inject("SettingsService") private settingsService: SettingsService,
