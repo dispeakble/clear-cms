@@ -4,6 +4,7 @@ import useWsContext from "../../../context/SocketContext";
 class useAuth {
 
     static login = async (credentials: ILoginCredentials) => {
+        console.log("login function", credentials)
         const {ws} = useWsContext();
         const response = await ws.sendMessage({
             api: "auth",

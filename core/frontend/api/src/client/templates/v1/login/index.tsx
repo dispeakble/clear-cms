@@ -50,7 +50,7 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
     const myTheme: any = { colors: colorScheme, icon: getIcons };
 
     const useLogin = async (values: ILoginCredentials) => {
-        console.log("useLogin values:", values)
+        console.log("uuseLogin valuess:", values)
         try{
             const response = await useAuth.login(values);
             if(response && response.data.user) {
@@ -61,6 +61,7 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
         }catch(err) {
             // eslint-disable-next-line no-console
             console.error(err)
+            console.log("herrre")
         }
     }
 
@@ -111,7 +112,7 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
                                     onSubmit={
                                         async (values, actions) => {
                                             actions.setSubmitting(true)
-                                            console.log("values")
+                                            await useLogin(values)
                                             actions.setSubmitting(false)
                                         }
                                     }

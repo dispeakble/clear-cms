@@ -49,7 +49,6 @@ export class AppController {
     private mainService;
 
     constructor(
-      @Inject("AuthService") private authService: AuthService,
       @Inject("ProtocolService") private protocolService: ProtocolService,
       @Inject("SystemService") private systemService: SystemService,
       @Inject("SettingsService") private settingsService: SettingsService,
@@ -61,6 +60,7 @@ export class AppController {
       @Inject("HomeSearchFlightsService") private homeSearchFlightsService: HomeSearchFlightsService,
       @Inject("HomeSearchHotelsService") private homeSearchHotelsService: HomeSearchHotelsService,
       @Inject("EmailService") private emailService: EmailService,
+      @Inject("AuthService") private authService: AuthService,
       @Inject('WsGateway') private wsGateway,
       private viewService: ViewService
     ) {
