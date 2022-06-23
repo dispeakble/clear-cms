@@ -3,49 +3,94 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import * as md5 from "md5";
 import {Observable} from "rxjs";
+import {randomBytes} from "crypto";
 
 @Injectable()
 export class AuthService {
 
-    private methods = ["login", "logout"];
+    private methods = ["login", "logout", "getToken"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
     }
 
-    private login(params: any) {
-        console.log("login entered", params, "params")
+    private getToken(params:any){
         return new Observable(subscriber => {
             (async () => {
-                try {
-                    const loginPayload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
-                        api: "sql",
-                        act: "get",
-                        payload: {
-                            db: "main",
-                            channel: `${process.env.app}_frontend`,
-                            data: {
-                                what: "client",
-                                where: {
-                                    active: 1,
-                                    email: params.data.email,
-                                    password: md5.default(params.data.password)
-                                },
-                                limit: [0, 1]
+                const tokenResults = await this.protocolService.sendMessage({
+                    channel: `${process.env.app}_db`,
+                    api: "sql",
+                    act: "get",
+                    payload: {
+                        db: "agency",
+                        data: {
+                            what: "client",
+                            as: "Client",
+                            attributes: ['token'],
+                            where: {
+                                active: 1,
+                                email: params.data.email
                             }
                         }
-                    };
+                    }
+                }).toPromise();
 
-                    const res = await this.protocolService.sendMessage(loginPayload).toPromise();
+                subscriber.next(tokenResults);
+                subscriber.complete();
+            })()
+        })
+    }
 
-                    subscriber.next(res);
-                    subscriber.complete();
+    private login(params: any) {
+        return new Observable(subscriber => {
+            (async () => {
+                const loginResults = await this.protocolService.sendMessage({
+                    channel: `${process.env.app}_db`,
+                    api: "sql",
+                    act: "get",
+                    payload: {
+                        db: "agency",
+                        data: {
+                            what: "client",
+                            as: "Client",
+                            attributes: ['firstName', 'lastName' , 'email', 'accessedAt', 'createdAt'],
+                            where: {
+                                active: 1,
+                                email: params.data.email,
+                                password: md5.default(params.data.password)
+                            }
+                        }
+                    }
+                }).toPromise();
 
+                if(loginResults){
+                    const token = randomBytes(32).toString("hex");
 
-                } catch (err) {
-                    subscriber.next(err);
-                    subscriber.complete();
+                    await this.protocolService.sendMessage({
+                        channel: `${process.env.app}_db`,
+                        api: "sql",
+                        act: "set",
+                        payload: {
+                            db: "agency",
+                            data: {
+                                what: "client",
+                                as: "ClientUpdate",
+                                where: {
+                                    email: params.data.email
+                                },
+                                data: {
+                                    "accessedAt": new Date(),
+                                    "token": token
+                                }
+                            }
+                        }
+                    }).toPromise();
+
+                    loginResults.accessedAt = new Date()
+                    loginResults.token = token
                 }
+
+                subscriber.next({data: loginResults || {error: "Credentials mismatch."}});
+                subscriber.complete();
             })()
         })
     }

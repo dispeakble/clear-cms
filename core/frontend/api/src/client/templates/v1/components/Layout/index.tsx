@@ -19,7 +19,11 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
         return getIcon(iconName);
     };
 
-    const user = JSON.parse(localStorage.getItem("user") as string);
+    let user;
+
+    React.useEffect(() => {
+        user = JSON.parse(localStorage.getItem("user") as string) || null
+    }, [])
 
     const theme: any = { colors: colorScheme, icon: getIcons };
     const muiTheme: any = createTheme({
