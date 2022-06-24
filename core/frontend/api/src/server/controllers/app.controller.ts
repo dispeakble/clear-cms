@@ -6,6 +6,7 @@ import { FsResponse } from "../interfaces/fs.interface";
 import { ViewService } from "../services/view.service";
 import { Request, Response } from "express";
 import { parse } from "url";
+import { AuthService } from "../services/auth.service";
 import { ProtocolService } from "../services/protocol.service";
 import { SystemService } from "../services/system.service";
 import { PublicThemesService } from "../services/publicThemes.service";
@@ -59,6 +60,7 @@ export class AppController {
       @Inject("HomeSearchFlightsService") private homeSearchFlightsService: HomeSearchFlightsService,
       @Inject("HomeSearchHotelsService") private homeSearchHotelsService: HomeSearchHotelsService,
       @Inject("EmailService") private emailService: EmailService,
+      @Inject("AuthService") private authService: AuthService,
       @Inject('WsGateway') private wsGateway,
       private viewService: ViewService
     ) {
