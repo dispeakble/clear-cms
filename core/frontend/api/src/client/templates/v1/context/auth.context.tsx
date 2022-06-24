@@ -7,7 +7,7 @@ interface IProps{
 
 interface IAuthContext {
     user: any,
-    setUser: React.Dispatch<React.SetStateAction<any>>
+    setUser: (u: any) => void
 }
 
 const AuthContext = React.createContext<IAuthContext>({
@@ -17,6 +17,11 @@ const AuthContext = React.createContext<IAuthContext>({
 
 export const AuthProvider = ({ userData , children }: IProps) => {
     const  [user, setUser] = React.useState<any>(userData);
+
+    React.useEffect(() =>{
+        console.log("user has been updatedd!", user)
+        console.log("user data", userData)
+    }, [user])
 
     return (
         <AuthContext.Provider value={{ user, setUser }}>

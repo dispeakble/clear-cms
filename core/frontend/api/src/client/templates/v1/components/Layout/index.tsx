@@ -22,7 +22,8 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
     let user;
 
     React.useEffect(() => {
-        user = JSON.parse(localStorage.getItem("user") as string) || null
+        user = JSON.parse(localStorage.getItem("user") as string)
+        console.log("lkayout", user)
     }, [])
 
     const theme: any = { colors: colorScheme, icon: getIcons };

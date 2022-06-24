@@ -83,6 +83,7 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
     }, [ws])
 
     const setProfile = async (_user: any) => {
+        console.log("debugg")
         setUser(_user)
         if(localStorage){
             localStorage.removeItem('user')

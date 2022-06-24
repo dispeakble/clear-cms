@@ -29,6 +29,10 @@ export class Client extends Model {
   @Column
   active: number;
 
+  @Index
+  @Column
+  token: string;
+
   @Column({ type: DataTypes.DATE, allowNull: true })
   accessedAt: number;
 
