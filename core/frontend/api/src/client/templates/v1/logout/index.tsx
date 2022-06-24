@@ -1,23 +1,23 @@
 import * as React from 'react';
 import {useAuthentication} from "../../../context/AuthContext";
 import {useRouter} from "next/router";
-import {ClientAreaWrapper} from "./styled";
+import {LogoutWrapper} from "./styled";
 import Layout from "../components/Layout";
 import useWsContext from "../../../context/SocketContext";
 
-const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
+const LogoutPage = ({ websiteName, colorScheme }: any) => {
 
     const router = useRouter();
     const {ws} = useWsContext();
-    const {user} = useAuthentication()
+    const {user, setUser} = useAuthentication()
 
     React.useEffect( () => {
-        const redirectLogin = async () => await router.push('/login')
+        const redirectHomePage = async () => await router.push('/')
 
-        const fetchToken = async (userEmail: string) => {
+        const useLogout = async (userEmail: string) => {
             return await ws.sendMessage({
                 api: "auth",
-                act: "getToken",
+                act: "logout",
                 payload: {
                     data: {
                         email: userEmail,
@@ -26,17 +26,16 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
             });
         }
 
-
-        if(user && user?.token && user?.token !== ""){
-            fetchToken(user?.email)
-                .then((_token: string) => {
-                    if(!_token || user?.token !== _token){
-                        redirectLogin()
-                    }
+        if(user){
+            useLogout(user.email)
+                .then(() => {
+                    setUser(null)
+                    redirectHomePage()
                 })
         } else{
-            redirectLogin()
+            redirectHomePage()
         }
+
     }, [user])
 
     const breadcrumbs = {
@@ -45,11 +44,11 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
 
     return(
         <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
-            <ClientAreaWrapper>
-                client area - Hello, {user && user?.firstName}!
-            </ClientAreaWrapper>
+            <LogoutWrapper>
+                Login out...
+            </LogoutWrapper>
         </Layout>
     )
 }
 
-export default ClientAreaPage
+export default LogoutPage

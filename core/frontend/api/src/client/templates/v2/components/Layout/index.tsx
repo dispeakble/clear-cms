@@ -11,7 +11,7 @@ import { getIcon } from "../../helpers/icons";
 import Footer from "../Footer";
 import {MuiThemeProvider} from "@material-ui/core";
 import {createTheme} from "@material-ui/core/styles";
-import {AuthProvider} from "../../context/auth.context";
+import {useAuthentication} from "../../../../context/AuthContext";
 
 const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOrange }: any) => {
 
@@ -19,11 +19,7 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
         return getIcon(iconName);
     };
 
-    let user;
-
-    React.useEffect(() => {
-        user = JSON.parse(localStorage.getItem("user") as string) || null
-    }, [])
+    const {user, setUser} = useAuthentication()
 
     const theme: any = { colors: colorScheme, icon: getIcons };
     const muiTheme: any = createTheme({
@@ -90,7 +86,6 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
     return (
         <MuiThemeProvider theme={muiTheme} >
             <ThemeProvider theme={theme}>
-                <AuthProvider userData={user}>
                     <GlobalStyle />
                     <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
                         <TopContentWrapper>
@@ -104,7 +99,6 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
                         </Wrapper>
                         <Footer />
                     </MainWrapper>
-                </AuthProvider>
             </ThemeProvider>
         </MuiThemeProvider>
     );

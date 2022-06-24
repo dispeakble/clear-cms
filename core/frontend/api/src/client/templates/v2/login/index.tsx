@@ -1,17 +1,7 @@
 import * as React from "react";
-import { ThemeProvider } from "styled-components";
-import Header from "../components/Header";
-import {
-    GlobalStyle,
-    MainWrapper,
-    TopContentWrapper, Wrapper
-} from "../styled";
-import Breadcrumbs from "../components/Breadcrumbs";
 import Luggage from "../assets/img/login/luggage.png"
 import ShowPassword from "../assets/img/login/showPassword-icon.svg"
 import Image from "next/image"
-import { getIcon } from "../helpers/icons";
-import Footer from "../components/Footer";
 import {useTranslations} from "next-intl";
 import {
     FormGroup,
@@ -34,7 +24,7 @@ import {
 import {Formik, Field, Form} from "formik";
 import Link from "next/link";
 import {ILoginCredentials} from "../types/types";
-import {useAuthentication} from "../context/auth.context";
+import {useAuthentication} from "../../../context/AuthContext";
 import useWsContext from "../../../context/SocketContext";
 import {useCallback} from "react";
 import {useRouter} from "next/router";
@@ -92,10 +82,10 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
     }
 
     React.useEffect(() => {
-        if((user || user.token != "") && user.token){
+        if(user || (user?.token &&  user?.token !== "")){
             router.push('/client-area')
         }
-    }, [])
+    }, [user])
 
     return (
         <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>

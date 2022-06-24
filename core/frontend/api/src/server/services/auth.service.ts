@@ -34,7 +34,7 @@ export class AuthService {
                     }
                 }).toPromise();
 
-                subscriber.next(tokenResults);
+                subscriber.next(tokenResults.token);
                 subscriber.complete();
             })()
         })
@@ -96,9 +96,31 @@ export class AuthService {
     }
 
     private logout(params: any) {
-        return new Promise((resolve) => {
-            //here remove the session
-        });
+        return new Observable(subscriber => {
+            (async () => {
+                const logoutRequest = await this.protocolService.sendMessage({
+                    channel: `${process.env.app}_db`,
+                    api: "sql",
+                    act: "set",
+                    payload: {
+                        db: "agency",
+                        data: {
+                            what: "client",
+                            as: "ClientLogout",
+                            where: {
+                                email: params.data.email
+                            },
+                            data: {
+                                "token": ""
+                            }
+                        }
+                    }
+                }).toPromise();
+
+                subscriber.next(logoutRequest);
+                subscriber.complete();
+            })()
+        })
     }
 
 
