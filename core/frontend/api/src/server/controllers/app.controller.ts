@@ -1,16 +1,17 @@
-import { Controller, Get, HttpStatus, Inject, Logger, Post, Req, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Inject, Logger, Post, Request, Res, UseGuards } from "@nestjs/common";
 import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 import { ModuleInterface } from "../interfaces/module.interface";
 import { payloadInterface } from "../interfaces/payload.interface";
 import { FsResponse } from "../interfaces/fs.interface";
 import { ViewService } from "../services/view.service";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { parse } from "url";
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "../services/auth/auth.service";
 import { ProtocolService } from "../services/protocol.service";
 import { SystemService } from "../services/system.service";
 import { PublicThemesService } from "../services/publicThemes.service";
 import { CategoriesService } from "../services/categories.service";
+import { UsersService } from "../services/users.service";
 import { PagesService } from "../services/pages.service";
 import { BucketService } from "../services/bucket.service";
 import { HomeSearchPackagesService } from "../services/homeSearch/packages.service";
@@ -19,6 +20,8 @@ import { HomeSearchFlightsService } from "../services/homeSearch/flights.service
 import { Observable } from "rxjs";
 import { SettingsService } from "../services/settings.service";
 import { EmailService } from "../services/email.service";
+import {LocalAuthGuard} from "../services/auth/local-auth.guard";
+import { JwtAuthGuard } from "../services/auth/jwt-auth.guard";
 
 @Controller('/')
 export class AppController {
@@ -61,6 +64,7 @@ export class AppController {
       @Inject("HomeSearchHotelsService") private homeSearchHotelsService: HomeSearchHotelsService,
       @Inject("EmailService") private emailService: EmailService,
       @Inject("AuthService") private authService: AuthService,
+      @Inject("UsersService") private usersService: UsersService,
       @Inject('WsGateway') private wsGateway,
       private viewService: ViewService
     ) {
@@ -121,13 +125,13 @@ export class AppController {
     }
 
     @Get('_next*')
-    public async assets(@Req() req: Request, @Res() res: Response) {
+    public async assets(@Request() req, @Res() res: Response) {
         await this.viewService.handler(req, res);
     }
 
 
     @Get('files/*')
-    public async getFiles(@Req() req: Request, @Res() res: Response) {
+    public async getFiles(@Request() req, @Res() res: Response) {
         req.params[0] = `files/${req.params[0]}`;
         const fileReq = {
             channel: `${process.env.app}_frontend`,
@@ -184,8 +188,15 @@ export class AppController {
         });
     }
 
+    @UseGuards(LocalAuthGuard)
+    @Post('api/auth/login')
+    async login(@Request() req) {
+        console.log(req.body, "entered")
+        return await this.authService.login(req.user);
+    }
+
     @Get('api/*')
-    public async apiGet(@Req() req: Request) {
+    public async apiGet(@Request() req) {
         //TODO get the db from a
         const parts = req.url.slice(1).split('/');
         return await this.perform({
@@ -196,7 +207,7 @@ export class AppController {
     }
 
     @Post('api/*')
-    public async apiPost(@Req() req: Request) {
+    public async apiPost(@Request() req) {
         const parts = req.url.slice(1).split('/');
         return await this.perform({
             channel: `${process.env.app}_frontend`,
@@ -206,10 +217,17 @@ export class AppController {
         }).toPromise();
     }
 
+
     @Get('*')
-    public async showHome(@Req() req: Request, @Res() res: Response) {
+    public async showHome(@Request() req, @Res() res: Response) {
         const url = parse(req.url, true);
         await this.viewService.handler(req, res, url);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('profile')
+    getProfile(@Request() req) {
+        return req.user;
     }
 
     private static filesResponse(params) {

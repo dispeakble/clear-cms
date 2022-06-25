@@ -1,12 +1,13 @@
 import { CacheModule, Logger, Module } from "@nestjs/common";
 import { AppController } from "./controllers/app.controller"
-import { AuthService } from "./services/auth.service"
 import { ProtocolService } from "./services/protocol.service";
 import { SystemService } from "./services/system.service";
 import { SettingsService } from "./services/settings.service";
 import { PublicThemesService } from "./services/publicThemes.service";
 import { CategoriesService } from "./services/categories.service";
+import { UsersService } from './services/users.service';
 import { PagesService } from "./services/pages.service";
+import { JwtStrategy } from './services/auth/jwt.strategy';
 import { BucketService } from "./services/bucket.service";
 import { HomeSearchPackagesService } from "./services/homeSearch/packages.service";
 import { HomeSearchHotelsService } from "./services/homeSearch/hotels.service";
@@ -18,6 +19,10 @@ import { ViewService } from "./services/view.service";
 import { ConfigService } from "@nestjs/config";
 import { AppService } from "./services/app.service";
 import { WsGateway } from "./gateways/ws.gateway";
+import { JwtModule } from '@nestjs/jwt';
+import {AuthService} from "./services/auth/auth.service";
+import {LocalStrategy} from "./services/auth/local.strategy";
+import {PassportModule} from "@nestjs/passport";
 
 
 @Module({
@@ -52,14 +57,23 @@ import { WsGateway } from "./gateways/ws.gateway";
           retry_strategy: 1000
         }
       }
-    ])
+    ]),
+    PassportModule,
+    JwtModule.register({
+      secret: process.env.secret_key || "secret",
+      signOptions: { expiresIn: '60s' },
+    }),
   ],
   controllers: [AppController],
   providers: [ProtocolService,
     SystemService,
     SettingsService,
     Logger,
+    UsersService,
     AuthService,
+    LocalStrategy,
+    UsersService,
+    JwtStrategy,
     PublicThemesService,
     CategoriesService,
     PagesService,
