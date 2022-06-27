@@ -3,51 +3,65 @@ import {useAuthentication} from "../../../context/AuthContext";
 import {useRouter} from "next/router";
 import {LogoutWrapper} from "./styled";
 import Layout from "../components/Layout";
-import useWsContext from "../../../context/SocketContext";
+import UseAuth from "../../../auth/auth";
 
 const LogoutPage = ({ websiteName, colorScheme }: any) => {
 
     const router = useRouter();
-    const {ws} = useWsContext();
-    const {user, setUser} = useAuthentication()
+    const {setUser, setIsAuthenticated, setIsLoading, isLoading, isAuthenticated} = useAuthentication()
 
     React.useEffect( () => {
-        const redirectHomePage = async () => await router.push('/')
+        let response: any = null;
 
-        const useLogout = async (userEmail: string) => {
-            return await ws.sendMessage({
-                api: "auth",
-                act: "logout",
-                payload: {
-                    data: {
-                        email: userEmail,
-                    }
-                }
-            });
-        }
+        const tokens = JSON.parse(localStorage.getItem('tokens')) || null;
 
-        if(user){
-            useLogout(user.email)
-                .then(() => {
-                    setUser(null)
-                    redirectHomePage()
-                })
+        if(tokens && tokens.access_token && tokens.refresh_token ){
+            response = UseAuth.useLogout(tokens.access_token, tokens.refresh_token)
+                .then((response: any) => response)
+                // eslint-disable-next-line no-console
+                .catch((err: any) => console.error(err));
+
+            if(response){
+                response
+                    .then((res: any) => {
+                        if(res.status !== null){
+                            router.push('/')
+                                .then(() => {
+                                    setUser(null);
+                                    setIsAuthenticated(false)
+                                    setIsLoading(false)
+                                    localStorage.removeItem('tokens')
+                                })
+                        }
+                    })
+
+            }
         } else{
-            redirectHomePage()
+            router.push('/')
+                .then(() => {
+                    setUser(null);
+                    setIsAuthenticated(false)
+                    setIsLoading(false)
+                })
         }
 
-    }, [user])
+    }, [])
 
     const breadcrumbs = {
         clientArea: "Client Area"
     }
 
     return(
-        <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
-            <LogoutWrapper>
-                Login out...
-            </LogoutWrapper>
-        </Layout>
+        isLoading ? (
+                "Loading..."
+            ) :
+            (isAuthenticated ?
+                (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
+                        <LogoutWrapper>
+                            login out
+                        </LogoutWrapper>
+                    </Layout>
+                ) : ("redirecting..."))
     )
 }
 
