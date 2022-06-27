@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 @Injectable()
 export class UsersService {
 
-    private methods = ["getOne"];
+    private methods = ["getOne", "updateRtHash", "deleteRefreshToken", "getUserById"];
 
     constructor(
         @Inject('ProtocolService') private protocolService
@@ -37,6 +37,88 @@ export class UsersService {
                 subscriber.complete()
             })()
          })
+    }
+
+    private updateRtHash(refresh_token: string, email: string){
+        return new Observable(subscriber => {
+            (async () => {
+                const updateRequest = await this.protocolService.sendMessage({
+                    channel: `${process.env.app}_db`,
+                    api: "sql",
+                    act: "set",
+                    payload: {
+                        db: "agency",
+                        data: {
+                            what: "client",
+                            as: "Client",
+                            where: {
+                                email: email,
+                            },
+                            data: {
+                                "refresh_token" : refresh_token
+                            }
+                        }
+                    }
+                }).toPromise();
+
+                subscriber.next(updateRequest)
+                subscriber.complete()
+            })()
+        })
+    }
+
+    private deleteRefreshToken(userId: number){
+        return new Observable(subscriber => {
+            (async () => {
+                const updateRequest = await this.protocolService.sendMessage({
+                    channel: `${process.env.app}_db`,
+                    api: "sql",
+                    act: "set",
+                    payload: {
+                        db: "agency",
+                        data: {
+                            what: "client",
+                            as: "Client",
+                            where: {
+                                id: userId
+                            },
+                            data: {
+                                "refresh_token" : null,
+                            }
+                        }
+                    }
+                }).toPromise();
+
+                subscriber.next(updateRequest)
+                subscriber.complete()
+            })()
+        })
+    }
+
+    private getUserById(userId: number){
+        return new Observable(subscriber => {
+            (async () => {
+                const userResults = await this.protocolService.sendMessage({
+                    channel: `${process.env.app}_db`,
+                    api: "sql",
+                    act: "get",
+                    payload: {
+                        db: "agency",
+                        data: {
+                            what: "client",
+                            as: "Client",
+                            where: {
+                                active: 1,
+                                id: userId,
+                            }
+                        }
+                    }
+                }).toPromise();
+
+                subscriber.next(userResults)
+                subscriber.complete()
+            })()
+        })
     }
 
 

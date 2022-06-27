@@ -9,7 +9,14 @@
     "infants": "Infantes",
     "days": "dias",
     "included": "Incluye",
-    "termsAndConditions": "Términos y Condiciones."
+    "termsAndConditions": "Términos y Condiciones.",
+    "loader": {
+      "waitAMoment": "Por favor, espere un momento...",
+      "redirecting": "Redirigiendo..."
+    },
+    "errors": {
+      "credentialsMismatch": "No hay coincidencia de credenciales."
+    }
   },
   "input": {
     "placeholder": {

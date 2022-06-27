@@ -9,7 +9,14 @@
     "nights": "nights",
     "days": "days",
     "included": "Included",
-    "termsAndConditions": "Terms and Conditions"
+    "termsAndConditions": "Terms and Conditions",
+    "loader": {
+      "waitAMoment": "Please, wait a moment...",
+      "redirecting": "Redirecting..."
+    },
+    "errors": {
+      "credentialsMismatch": "Credentials mismatch."
+    }
   },
   "input": {
     "placeholder": {

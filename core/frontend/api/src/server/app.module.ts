@@ -7,7 +7,7 @@ import { PublicThemesService } from "./services/publicThemes.service";
 import { CategoriesService } from "./services/categories.service";
 import { UsersService } from './services/users.service';
 import { PagesService } from "./services/pages.service";
-import { JwtStrategy } from './services/auth/jwt.strategy';
+import { JwtStrategy } from './services/auth/strategies/jwt.strategy';
 import { BucketService } from "./services/bucket.service";
 import { HomeSearchPackagesService } from "./services/homeSearch/packages.service";
 import { HomeSearchHotelsService } from "./services/homeSearch/hotels.service";
@@ -21,8 +21,9 @@ import { AppService } from "./services/app.service";
 import { WsGateway } from "./gateways/ws.gateway";
 import { JwtModule } from '@nestjs/jwt';
 import {AuthService} from "./services/auth/auth.service";
-import {LocalStrategy} from "./services/auth/local.strategy";
+import {LocalStrategy} from "./services/auth/strategies/local.strategy";
 import {PassportModule} from "@nestjs/passport";
+import {JwtRtStrategy} from "./services/auth/strategies/jwtRt.strategy";
 
 
 @Module({
@@ -59,10 +60,7 @@ import {PassportModule} from "@nestjs/passport";
       }
     ]),
     PassportModule,
-    JwtModule.register({
-      secret: process.env.secret_key || "secret",
-      signOptions: { expiresIn: '60s' },
-    }),
+    JwtModule.register({}),
   ],
   controllers: [AppController],
   providers: [ProtocolService,
@@ -74,6 +72,7 @@ import {PassportModule} from "@nestjs/passport";
     LocalStrategy,
     UsersService,
     JwtStrategy,
+    JwtRtStrategy,
     PublicThemesService,
     CategoriesService,
     PagesService,

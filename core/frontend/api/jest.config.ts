@@ -100,7 +100,7 @@ export default {
     "\\.(css|less)$": "identity-obj-proxy"
   },
 
-  // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
+  // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module LoaderComponent
   // modulePathIgnorePatterns: [],
 
   // Activates notifications for test results
@@ -198,7 +198,7 @@ export default {
   //   "\\.pnp\\.[^\\/]+$"
   // ],
 
-  // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
+  // An array of regexp pattern strings that are matched against all modules before the module LoaderComponent will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
 
   // Indicates whether each individual test should be reported during the run

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Inject, Logger, Post, Request, Res, UseGuards } from "@nestjs/common";
+import {Controller, Get, HttpCode, HttpStatus, Inject, Logger, Post, Request, Res, UseGuards} from "@nestjs/common";
 import { EventPattern, MessagePattern, Payload } from "@nestjs/microservices";
 import { ModuleInterface } from "../interfaces/module.interface";
 import { payloadInterface } from "../interfaces/payload.interface";
@@ -20,8 +20,9 @@ import { HomeSearchFlightsService } from "../services/homeSearch/flights.service
 import { Observable } from "rxjs";
 import { SettingsService } from "../services/settings.service";
 import { EmailService } from "../services/email.service";
-import {LocalAuthGuard} from "../services/auth/local-auth.guard";
-import { JwtAuthGuard } from "../services/auth/jwt-auth.guard";
+import {LocalAuthGuard} from "../services/auth/common/guards/local-auth.guard";
+import { JwtAuthGuard } from "../services/auth/common/guards/jwt-auth.guard";
+import {JwtRtAuthGuard} from "../services/auth/common/guards/jwtRt-auth.guard";
 
 @Controller('/')
 export class AppController {
@@ -190,9 +191,29 @@ export class AppController {
 
     @UseGuards(LocalAuthGuard)
     @Post('api/auth/login')
+    @HttpCode(HttpStatus.OK)
     async login(@Request() req) {
-        console.log(req.body, "entered")
         return await this.authService.login(req.user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('api/user/profile')
+    async getProfile(@Request() req) {
+        return await this.authService.getProfile(req.user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('api/auth/logout')
+    @HttpCode(HttpStatus.OK)
+    async logout(@Request() req) {
+        return await this.authService.logout(req.user);
+    }
+
+    @UseGuards(JwtRtAuthGuard)
+    @Post('api/auth/refresh')
+    @HttpCode(HttpStatus.OK)
+    async refresh(@Request() req) {
+        return await this.authService.refreshTokens(req.user)
     }
 
     @Get('api/*')
@@ -222,12 +243,6 @@ export class AppController {
     public async showHome(@Request() req, @Res() res: Response) {
         const url = parse(req.url, true);
         await this.viewService.handler(req, res, url);
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    getProfile(@Request() req) {
-        return req.user;
     }
 
     private static filesResponse(params) {
