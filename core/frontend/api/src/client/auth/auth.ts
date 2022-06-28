@@ -8,8 +8,10 @@ export default class UseAuth{
             method: METHOD,
             url: endpoint,
             data: payload,
+            params: METHOD === "GET" ? {...payload} : null,
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
                 ...headers
             }
         }).then(
@@ -23,6 +25,15 @@ export default class UseAuth{
     static async useLogin(creds: ILoginCredentials) {
         try{
             return this.useAxios("POST", "/api/auth/login", creds, {})
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
+
+    static async useValidateHuman(token: string){
+        try{
+            return this.useAxios("GET", "/api/auth/recaptcha", {token: token}, {})
         } catch(err){
             // eslint-disable-next-line no-console
             console.error(err)

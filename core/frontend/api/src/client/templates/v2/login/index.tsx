@@ -21,7 +21,7 @@ import {
     InformationText,
     ImageContainer, Container, ShowPasswordIcon, ShowPasswordContainer
 } from "./styled";
-import {Formik, Field, Form} from "formik";
+import {Formik, Field, Form, FormikValues} from "formik";
 import Link from "next/link";
 import {ILoginCredentials} from "../../../types/types";
 import {useAuthentication} from "../../../context/AuthContext";
@@ -29,9 +29,9 @@ import {useCallback} from "react";
 import {useRouter} from "next/router";
 import Layout from "../components/Layout";
 import UseAuth from "../../../auth/auth";
-import LoaderComponent from "../components/LoaderComponent";
+import ReCAPTCHA from 'react-google-recaptcha'
 
-const LoginPage = ({ websiteName, colorScheme }: any) => {
+const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
 
     const t = useTranslations()
 
@@ -39,6 +39,7 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
     const [error, setError] = React.useState<string>("")
     const {isLoading, isAuthenticated, setIsAuthenticated} = useAuthentication();
     const router = useRouter();
+    let reCAPTCHARef = React.useRef<ReCAPTCHA>(null)
 
     const breadcrumbs = {
         login: "Log in"
@@ -47,7 +48,6 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
     const useLogin = async (values: ILoginCredentials) => {
         try{
             const response = await UseAuth.useLogin(values)
-
             if(response && response?.status === 200){
                 setProfile(response.data)
             } else{
@@ -67,6 +67,20 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
             })
     }
 
+    const isHuman = async (token: string) => {
+        try{
+            const response = await UseAuth.useValidateHuman(token)
+            if(response && response?.status === 200){
+                return response.data
+            } else{
+                setError(t('global.errors.recaptchaError'))
+            }
+        }catch(err) {
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
+
     return (
         isLoading ? (
                 <>
@@ -75,128 +89,152 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
             ) :
             (!isAuthenticated ?
                 (
-                    <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
-                        <LoginWrapper>
-                            <ImageContainer>
-                                <Image src={Luggage} alt="luggage-login" className="loginImage" width={540} height={735} />
-                            </ImageContainer>
-                            <LoginFormWrapper>
-                                <StyledLoginTitle>
-                                    {t('auth.login.title')}
-                                </StyledLoginTitle>
-                                <InputContainer>
-                                    <Formik
-                                        initialValues={{
-                                            email: "",
-                                            password: "",
-                                            rememberMe: false
-                                        }}
-                                        enableReinitialize
-                                        validate={(values) => {
-                                            const errors: any = {};
-                                            if (!values.email) {
-                                                errors.email = 'Email required';
-                                            } else if (
-                                                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                            ) {
-                                                errors.email = 'Invalid email address';
-                                            }
+                    <>
+                        <ReCAPTCHA
+                            sitekey={recaptchaKey}
+                            size="invisible"
+                            ref={(el: any) => reCAPTCHARef = el}
+                        />
+                        <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
+                            <LoginWrapper>
+                                <ImageContainer>
+                                    <Image src={Luggage} alt="luggage-login" className="loginImage" width={540} height={735} />
+                                </ImageContainer>
+                                <LoginFormWrapper>
+                                    <StyledLoginTitle>
+                                        {t('auth.login.title')}
+                                    </StyledLoginTitle>
+                                    <InputContainer>
+                                        <Formik
+                                            initialValues={{
+                                                email: "",
+                                                password: "",
+                                                rememberMe: false
+                                            }}
+                                            enableReinitialize
+                                            validate={(values) => {
+                                                const errors: any = {};
+                                                if (!values.email) {
+                                                    errors.email = 'Email required';
+                                                } else if (
+                                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                                                ) {
+                                                    errors.email = 'Invalid email address';
+                                                }
 
-                                            if (!values.password) {
-                                                errors.password = 'Password required';
+                                                if (!values.password) {
+                                                    errors.password = 'Password required';
+                                                }
+                                                return errors;
                                             }
-                                            return errors;
-                                        }
-                                        }
-                                        onSubmit={
-                                            async (values, actions) => {
-                                                actions.setSubmitting(true)
-                                                await useLogin(values)
-                                                actions.setSubmitting(false)
                                             }
-                                        }
-                                    >
-                                        {({errors, isSubmitting}: any) => (
-                                            <Form style={{width: "100%"}}>
-                                                <Container>
-                                                    <div>
-                                                        <FormGroup>
-                                                            <InputGroup>
-                                                                <InputLabel>
-                                                                    {t('auth.login.email')}
-                                                                </InputLabel>
-                                                                <Field name={`email`}>
-                                                                    {({field}: any) => (
-                                                                        <TextInput {...field} required
-                                                                                   placeholder={t('input.placeholder.login.email')}
-                                                                                   icon="loginEmail"
-                                                                                   type="email"
-                                                                                   data-testid="test-email-login"
-                                                                        />
-                                                                    )}
-                                                                </Field>
-                                                                {
-                                                                    errors.email &&
-                                                                    <ErrorText>{errors.email}</ErrorText>
-                                                                }
-                                                            </InputGroup>
-                                                            <InputGroup>
-                                                                <InputLabel>
-                                                                    {t('auth.login.password')}
-                                                                </InputLabel>
-                                                                <Field name={`password`}>
-                                                                    {({field}: any) => (
-                                                                        <TextInput {...field} required
-                                                                                   className={`passwordInput`}
-                                                                                   data-testid="test-password-login"
-                                                                                   placeholder={t('input.placeholder.login.password')} icon="loginPassword" type={showPassword ? `text` : `password`} />
-                                                                    )}
-                                                                </Field>
-                                                                <ShowPasswordContainer onClick={() => setShowPassword(!showPassword)} data-testid={"test-toggle-password-visibilty"} >
-                                                                    <ShowPasswordIcon src={ShowPassword} alt={"show-password"} width={20} height={18} />
-                                                                </ShowPasswordContainer>
+                                            onSubmit={
+                                                async (values, actions) => {
+                                                    actions.setSubmitting(true)
+                                                    let token;
+                                                    if(reCAPTCHARef.current){
+                                                        token = await reCAPTCHARef.current.executeAsync();
 
-                                                                {
-                                                                    errors.password &&
-                                                                    <ErrorText>{errors.password}</ErrorText>
-                                                                }
-                                                            </InputGroup>
-                                                        </FormGroup>
-                                                        {
-                                                            error &&
-                                                            <ErrorText>{error}</ErrorText>
+                                                        if(token){
+                                                            const verify = await isHuman(token)
+                                                            if(verify){
+                                                                await useLogin(values as ILoginCredentials)
+                                                            } else{
+                                                                setError(t('global.errors.recaptchaError'))
+                                                            }
+                                                        } else{
+                                                            setError(t('global.errors.errorOccurred'))
                                                         }
-                                                        <RememberMeContainer>
-                                                            <StyledCheckboxLabel data-testid="test-rememberMe-login" >
-                                                                <Field type="checkbox" name="rememberMe" />
-                                                                {t('auth.login.rememberMe')}
-                                                            </StyledCheckboxLabel>
-                                                            <ForgotPassword href="/passwordReset">
-                                                                {t('auth.login.forgotPassword')}
-                                                            </ForgotPassword>
-                                                        </RememberMeContainer>
-                                                    </div>
-                                                    <div>
-                                                        <ButtonContainer>
-                                                            <ContinueButton data-testid="test-login-button" disabled={isSubmitting} type="submit" role="submit">
-                                                                {t('auth.login.continue')}
-                                                            </ContinueButton>
-                                                        </ButtonContainer>
-                                                        <InformationText>
-                                                            {t('auth.login.dontHaveAccount')}
-                                                            <Link href="/register">
-                                                                {t('auth.login.registerHere')}
-                                                            </Link>
-                                                        </InformationText>
-                                                    </div>
-                                                </Container>
-                                            </Form>
-                                        )}
-                                    </Formik>
-                                </InputContainer>
-                            </LoginFormWrapper>
-                        </LoginWrapper>
-                    </Layout>
+                                                        reCAPTCHARef.current.reset()
+                                                    } else{
+                                                        setError(t('global.errors.errorOccurred'))
+                                                    }
+                                                    actions.setSubmitting(false)
+                                                }
+                                            }
+                                        >
+                                            {({errors, isSubmitting}: any) => (
+                                                <Form style={{width: "100%"}}>
+                                                    <Container>
+                                                        <div>
+                                                            <FormGroup>
+                                                                <InputGroup>
+                                                                    <InputLabel>
+                                                                        {t('auth.login.email')}
+                                                                    </InputLabel>
+                                                                    <Field name={`email`}>
+                                                                        {({field}: any) => (
+                                                                            <TextInput {...field} required
+                                                                                       placeholder={t('input.placeholder.login.email')}
+                                                                                       icon="loginEmail"
+                                                                                       type="email"
+                                                                                       data-testid="test-email-login"
+                                                                            />
+                                                                        )}
+                                                                    </Field>
+                                                                    {
+                                                                        errors.email &&
+                                                                        <ErrorText>{errors.email}</ErrorText>
+                                                                    }
+                                                                </InputGroup>
+                                                                <InputGroup>
+                                                                    <InputLabel>
+                                                                        {t('auth.login.password')}
+                                                                    </InputLabel>
+                                                                    <Field name={`password`}>
+                                                                        {({field}: any) => (
+                                                                            <TextInput {...field} required
+                                                                                       className={`passwordInput`}
+                                                                                       data-testid="test-password-login"
+                                                                                       placeholder={t('input.placeholder.login.password')} icon="loginPassword" type={showPassword ? `text` : `password`} />
+                                                                        )}
+                                                                    </Field>
+                                                                    <ShowPasswordContainer onClick={() => setShowPassword(!showPassword)} data-testid={"test-toggle-password-visibilty"} >
+                                                                        <ShowPasswordIcon src={ShowPassword} alt={"show-password"} width={20} height={18} />
+                                                                    </ShowPasswordContainer>
+
+                                                                    {
+                                                                        errors.password &&
+                                                                        <ErrorText>{errors.password}</ErrorText>
+                                                                    }
+                                                                </InputGroup>
+                                                            </FormGroup>
+                                                            {
+                                                                error &&
+                                                                <ErrorText>{error}</ErrorText>
+                                                            }
+                                                            <RememberMeContainer>
+                                                                <StyledCheckboxLabel data-testid="test-rememberMe-login" >
+                                                                    <Field type="checkbox" name="rememberMe" />
+                                                                    {t('auth.login.rememberMe')}
+                                                                </StyledCheckboxLabel>
+                                                                <ForgotPassword href="/passwordReset">
+                                                                    {t('auth.login.forgotPassword')}
+                                                                </ForgotPassword>
+                                                            </RememberMeContainer>
+                                                        </div>
+                                                        <div>
+                                                            <ButtonContainer>
+                                                                <ContinueButton data-testid="test-login-button" disabled={isSubmitting} type="submit" role="submit">
+                                                                    {t('auth.login.continue')}
+                                                                </ContinueButton>
+                                                            </ButtonContainer>
+                                                            <InformationText>
+                                                                {t('auth.login.dontHaveAccount')}
+                                                                <Link href="/register">
+                                                                    {t('auth.login.registerHere')}
+                                                                </Link>
+                                                            </InformationText>
+                                                        </div>
+                                                    </Container>
+                                                </Form>
+                                            )}
+                                        </Formik>
+                                    </InputContainer>
+                                </LoginFormWrapper>
+                            </LoginWrapper>
+                        </Layout>
+                    </>
                 ) :
                     (<>
                         <h3>Redirecting...</h3>

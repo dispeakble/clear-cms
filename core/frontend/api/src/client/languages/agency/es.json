@@ -15,7 +15,10 @@
       "redirecting": "Redirigiendo..."
     },
     "errors": {
-      "credentialsMismatch": "No hay coincidencia de credenciales."
+      "credentialsMismatch": "No hay coincidencia de credenciales.",
+      "errorOccurred": "Se ha producido un error, por favor, inténtelo de nuevo...",
+      "recaptchaError": "Se ha producido un error al validar el ReCAPTCHA, por favor, inténtelo más tarde..."
+
     }
   },
   "input": {

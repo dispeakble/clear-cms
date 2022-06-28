@@ -216,6 +216,12 @@ export class AppController {
         return await this.authService.refreshTokens(req.user)
     }
 
+    @Get('api/auth/recaptcha')
+    @HttpCode(HttpStatus.OK)
+    async isHuman(@Request() req){
+        return await this.authService.isHuman(req.query.token)
+    }
+
     @Get('api/*')
     public async apiGet(@Request() req) {
         //TODO get the db from a

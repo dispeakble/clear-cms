@@ -79,6 +79,7 @@ export async function getServerSideProps(context: any) {
         websiteData["websiteAdminEmail"] = dbWebsiteData["websiteAdminEmail"];
         websiteData["websiteDomain"] = dbWebsiteData["websiteDomain"];
         websiteData["websiteName"] = dbWebsiteData["websiteName"];
+        websiteData["recaptchaKey"] = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
     } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);

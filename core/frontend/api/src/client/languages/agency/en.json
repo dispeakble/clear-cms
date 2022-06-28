@@ -15,7 +15,9 @@
       "redirecting": "Redirecting..."
     },
     "errors": {
-      "credentialsMismatch": "Credentials mismatch."
+      "credentialsMismatch": "Credentials mismatch.",
+      "errorOccurred": "An error has occurred, please try again...",
+      "recaptchaError": "An error has occurred while validating ReCAPTCHA, please try again later..."
     }
   },
   "input": {

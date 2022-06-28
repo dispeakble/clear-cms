@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt'
 @Injectable()
 export class AuthService {
 
-    private methods = ["login", "getProfile", "validateUser", "logout"];
+    private methods = ["login", "getProfile", "validateUser", "logout", "isHuman"];
 
     constructor(
         @Inject('UsersService') private usersService,
@@ -56,6 +56,21 @@ export class AuthService {
             return null;
         }
         return null;
+    }
+
+    async isHuman(token: string){
+        //TODO: store secret in env
+        const secret = "6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29";
+        const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,{
+            method: "POST"
+        })
+
+        if(!response){
+           return null
+        }
+
+        const data = await response.json()
+        return data.success;
     }
 
     async compareHash(data: string, hashed: string){
