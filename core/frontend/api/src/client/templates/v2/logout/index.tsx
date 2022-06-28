@@ -13,7 +13,7 @@ const LogoutPage = ({ websiteName, colorScheme }: any) => {
     React.useEffect( () => {
         let response: any = null;
 
-        const tokens = JSON.parse(localStorage.getItem('tokens')) || null;
+        const tokens = JSON.parse(localStorage.getItem('tokens') as string) || null;
 
         if(tokens && tokens.access_token && tokens.refresh_token ){
             response = UseAuth.useLogout(tokens.access_token, tokens.refresh_token)
@@ -53,7 +53,9 @@ const LogoutPage = ({ websiteName, colorScheme }: any) => {
 
     return(
         isLoading ? (
-                "Loading..."
+                <>
+                    <h3>Loading...</h3>
+                </>
             ) :
             (isAuthenticated ?
                 (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
@@ -61,7 +63,9 @@ const LogoutPage = ({ websiteName, colorScheme }: any) => {
                             login out
                         </LogoutWrapper>
                     </Layout>
-                ) : ("redirecting..."))
+                ) : (<>
+                    <h3>Redirecting...</h3>
+                </>))
     )
 }
 

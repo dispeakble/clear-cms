@@ -15,7 +15,9 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
 
     return(
         isLoading ? (
-            "Loading..."
+                <>
+                    <h3>Loading...</h3>
+                </>
         ) :
         (isAuthenticated ?
             (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
@@ -23,7 +25,9 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
                     client area - Hello, {user && user?.firstName}!
                 </ClientAreaWrapper>
             </Layout>
-            ) : ("redirecting..."))
+            ) : (<>
+                <h3>Redirecting...</h3>
+            </>))
     )
 }
 

@@ -69,7 +69,9 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
 
     return (
         isLoading ? (
-                "Loading..."
+                <>
+                    <h3>Loading...</h3>
+                </>
             ) :
             (!isAuthenticated ?
                 (
@@ -196,7 +198,9 @@ const LoginPage = ({ websiteName, colorScheme }: any) => {
                         </LoginWrapper>
                     </Layout>
                 ) :
-                    ("Redirecting...")
+                    (<>
+                        <h3>Redirecting...</h3>
+                    </>)
             )
     );
 };

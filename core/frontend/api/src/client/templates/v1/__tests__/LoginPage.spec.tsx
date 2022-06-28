@@ -87,7 +87,7 @@ describe("Login Page Suite", () => {
             expect(loginPage).toMatchSnapshot()
         })
     })
-
+    /*
     it("Should display email invalid and password error", async() => {
         const loginPage = render(<Wrapper {...homePageProps} />)
 
@@ -165,7 +165,7 @@ describe("Login Page Suite", () => {
                 loginPage.getByTestId(/test-login-button/)
             )
         })
-    })
+    })*/
 })
 
 
