@@ -12,40 +12,36 @@ const LogoutPage = ({ websiteName, colorScheme }: any) => {
     const {setUser, setIsAuthenticated, setIsLoading, isLoading, isAuthenticated} = useAuthentication()
 
     React.useEffect( () => {
-        let response: any = null;
+        const checkLogout = async () => {
+            let response: any = null;
 
-        const tokens = JSON.parse(localStorage.getItem('tokens') as string) || null;
+            try{
+                const tokens = JSON.parse(localStorage.getItem('tokens') as string) || null;
 
-        if(tokens && tokens.access_token && tokens.refresh_token ){
-            response = UseAuth.useLogout(tokens.access_token, tokens.refresh_token)
-                .then((response: any) => response)
+                if(tokens && tokens.access_token && tokens.refresh_token ){
+                    response = await UseAuth.useLogout(tokens.access_token, tokens.refresh_token)
+
+                    if(response && response.status){
+                        setUser(null);
+                        setIsAuthenticated(false)
+                        setIsLoading(false)
+                        localStorage.removeItem('tokens')
+                    }
+                } else{
+                    router.push('/')
+                        .then(() => {
+                            setUser(null);
+                            setIsAuthenticated(false)
+                            setIsLoading(false)
+                        })
+                }
+            } catch(err){
                 // eslint-disable-next-line no-console
-                .catch((err: any) => console.error(err));
-
-            if(response){
-                response
-                    .then((res: any) => {
-                        if(res.status !== null){
-                            router.push('/')
-                                .then(() => {
-                                    setUser(null);
-                                    setIsAuthenticated(false)
-                                    setIsLoading(false)
-                                    localStorage.removeItem('tokens')
-                                })
-                        }
-                    })
-
+                console.error(err)
             }
-        } else{
-            router.push('/')
-                .then(() => {
-                    setUser(null);
-                    setIsAuthenticated(false)
-                    setIsLoading(false)
-                })
         }
 
+        checkLogout()
     }, [])
 
     const breadcrumbs = {

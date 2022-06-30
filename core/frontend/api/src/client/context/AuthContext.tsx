@@ -32,35 +32,27 @@ export const AuthProvider = ({ data , children }: any) => {
     const router = useRouter();
 
     React.useEffect(() => {
-        const getTokens: string = localStorage.getItem('tokens') as string
-        const tokens = JSON.parse(getTokens)
+        const checkAuth = async () => {
+            try{
+                const getTokens: string = localStorage.getItem('tokens') as string
+                const tokens = JSON.parse(getTokens)
 
-        const isExpired = (token: string) => {
-            const decodedToken:{exp: any} = jwtDecode(token)
-            const currentDate = new Date()
+                const isExpired = (token: string) => {
+                    const decodedToken:{exp: any} = jwtDecode(token)
+                    const currentDate = new Date()
 
-            return decodedToken?.exp * 1000 < currentDate.getTime();
-        }
+                    return decodedToken?.exp * 1000 < currentDate.getTime();
+                }
 
-        let response: any;
+                let response: any;
 
-        if(tokens){
-            if(isExpired(tokens['access_token'])){
-                response =
-                    UseAuth.useRefreshToken(tokens['refresh_token'])
-                        .then((response: any) => response)
-                        // eslint-disable-next-line no-console
-                        .catch((error: any) => console.log(error))
-            } else{
-                response = UseAuth
-                    .useFetchProfile(tokens['access_token'])
-                    .then((response: any) => response)
-                    // eslint-disable-next-line no-console
-                    .catch((error: any) => console.log(error))
-            }
+                if(tokens){
+                    if(isExpired(tokens['access_token'])){
+                        response = await UseAuth.useRefreshToken(tokens['refresh_token'])
+                    } else{
+                        response = await UseAuth.useFetchProfile(tokens['access_token'])
+                    }
 
-            response
-                .then((response: any) => {
                     if(response && response?.status === 200){
                         setUser(response.data)
                         setIsAuthenticated(true)
@@ -77,16 +69,21 @@ export const AuthProvider = ({ data , children }: any) => {
                             router.push('/login')
                         }
                     }
-                })
-        } else {
-            setUser(null)
-            setIsAuthenticated(false)
-            setIsLoading(false)
-            if(['/client-area'].includes(router.asPath)){
-                router.push('/login')
+                } else {
+                    setUser(null)
+                    setIsAuthenticated(false)
+                    setIsLoading(false)
+                    if(['/client-area'].includes(router.asPath)){
+                        router.push('/login')
+                    }
+                }
+            } catch(err){
+                // eslint-disable-next-line no-console
+                console.error(err)
             }
         }
 
+        checkAuth()
     }, [isAuthenticated])
 
     return (
