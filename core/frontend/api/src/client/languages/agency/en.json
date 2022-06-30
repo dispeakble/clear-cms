@@ -9,7 +9,20 @@
     "nights": "nights",
     "days": "days",
     "included": "Included",
-    "termsAndConditions": "Terms and Conditions"
+    "termsAndConditions": "Terms and Conditions",
+    "greetings": "Hello",
+    "loading": "Loading...",
+    "redirecting": "Redirecting...",
+    "loggingOut": "Logging out...",
+    "loader": {
+      "waitAMoment": "Please, wait a moment...",
+      "redirecting": "Redirecting..."
+    },
+    "errors": {
+      "credentialsMismatch": "Credentials mismatch.",
+      "errorOccurred": "An error has occurred, please try again...",
+      "recaptchaError": "An error has occurred while validating ReCAPTCHA, please try again later..."
+    }
   },
   "input": {
     "placeholder": {

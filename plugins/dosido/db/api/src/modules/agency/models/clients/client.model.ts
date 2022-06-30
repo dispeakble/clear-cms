@@ -31,7 +31,7 @@ export class Client extends Model {
 
   @Index
   @Column
-  token: string;
+  refresh_token: string;
 
   @Column({ type: DataTypes.DATE, allowNull: true })
   accessedAt: number;

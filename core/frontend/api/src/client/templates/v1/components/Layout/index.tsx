@@ -11,15 +11,12 @@ import { getIcon } from "../../helpers/icons";
 import Footer from "../Footer";
 import {MuiThemeProvider} from "@material-ui/core";
 import {createTheme} from "@material-ui/core/styles";
-import {useAuthentication} from "../../../../context/AuthContext";
 
-const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOrange }: any) => {
+const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOrange, isInvisible }: any) => {
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
     };
-
-    const {user, setUser} = useAuthentication()
 
     const theme: any = { colors: colorScheme, icon: getIcons };
     const muiTheme: any = createTheme({
@@ -86,19 +83,27 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
     return (
         <MuiThemeProvider theme={muiTheme} >
             <ThemeProvider theme={theme}>
-                    <GlobalStyle />
-                    <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
-                        <TopContentWrapper>
-                            <Header websiteName={websiteName} />
-                        </TopContentWrapper>
-                        <Wrapper isBreadcrumb>
-                            <Breadcrumbs {...breadcrumbs} />
-                        </Wrapper>
-                        <Wrapper isLogin={isLogin}>
-                            {children}
-                        </Wrapper>
-                        <Footer />
-                    </MainWrapper>
+                <GlobalStyle />
+                {
+                    !isInvisible ?
+                        (
+                            <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
+                                <TopContentWrapper>
+                                    <Header websiteName={websiteName} />
+                                </TopContentWrapper>
+                                <Wrapper isBreadcrumb>
+                                    <Breadcrumbs {...breadcrumbs} />
+                                </Wrapper>
+                                <Wrapper isLogin={isLogin}>
+                                    {children}
+                                </Wrapper>
+                                <Footer />
+                            </MainWrapper>
+                        ) :
+                        (
+                            <></>
+                        )
+                }
             </ThemeProvider>
         </MuiThemeProvider>
     );

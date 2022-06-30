@@ -3,51 +3,68 @@ import {useAuthentication} from "../../../context/AuthContext";
 import {useRouter} from "next/router";
 import {LogoutWrapper} from "./styled";
 import Layout from "../components/Layout";
-import useWsContext from "../../../context/SocketContext";
+import UseAuth from "../../../auth/auth";
+import {useTranslations} from "next-intl";
 
 const LogoutPage = ({ websiteName, colorScheme }: any) => {
 
     const router = useRouter();
-    const {ws} = useWsContext();
-    const {user, setUser} = useAuthentication()
+    const {setUser, setIsAuthenticated, setIsLoading, isLoading, isAuthenticated} = useAuthentication()
 
     React.useEffect( () => {
-        const redirectHomePage = async () => await router.push('/')
+        const checkLogout = async () => {
+            let response: any = null;
 
-        const useLogout = async (userEmail: string) => {
-            return await ws.sendMessage({
-                api: "auth",
-                act: "logout",
-                payload: {
-                    data: {
-                        email: userEmail,
+            try{
+                const tokens = JSON.parse(localStorage.getItem('tokens') as string) || null;
+
+                if(tokens && tokens.access_token && tokens.refresh_token ){
+                    response = await UseAuth.useLogout(tokens.access_token, tokens.refresh_token)
+
+                    if(response && response.status){
+                        setUser(null);
+                        setIsAuthenticated(false)
+                        setIsLoading(false)
+                        localStorage.removeItem('tokens')
                     }
+                } else{
+                    router.push('/')
+                        .then(() => {
+                            setUser(null);
+                            setIsAuthenticated(false)
+                            setIsLoading(false)
+                        })
                 }
-            });
+            } catch(err){
+                // eslint-disable-next-line no-console
+                console.error(err)
+            }
         }
 
-        if(user){
-            useLogout(user.email)
-                .then(() => {
-                    setUser(null)
-                    redirectHomePage()
-                })
-        } else{
-            redirectHomePage()
-        }
-
-    }, [user])
+        checkLogout()
+    }, [])
 
     const breadcrumbs = {
         clientArea: "Client Area"
     }
 
+    const t = useTranslations()
+
     return(
-        <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
-            <LogoutWrapper>
-                Login out...
-            </LogoutWrapper>
-        </Layout>
+        isLoading ? (
+                <>
+                    <h3>{t('global.loading')}</h3>
+                </>
+            ) :
+            (isAuthenticated ?
+                (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
+                        <LogoutWrapper>
+                            {t('global.loggingOut')}
+                        </LogoutWrapper>
+                    </Layout>
+                ) : (<>
+                    <h3>{t('global.redirecting')}</h3>
+                </>))
     )
 }
 

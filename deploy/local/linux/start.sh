@@ -13,6 +13,9 @@ INIT_WEBSITE_DOMAIN="marioviajes.com"
 INIT_DEFAULT_EMAIL="admin@localhost.local"
 INIT_DEFAULT_PASSWORD="1qaz"
 INIT_TPL_VER="v1"
+INIT_CMS_JWT_EXP_H="3600s"
+INIT_NEXT_PUBLIC_RECAPTCHA_SITE_KEY="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH"
+INIT_RECAPTCHA_SECRET_KEY="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29"
 
 #TODO MOVE TO AN ENV FILE
 INIT_POSTGRES_DEFAULT_USER=cms
@@ -22,6 +25,7 @@ INIT_POSTGRES_DEFAULT_CONNECTIONS="main,agency"
 INIT_PGADMIN_DEFAULT_EMAIL="admin@localhost.local"
 INIT_PGADMIN_DEFAULT_PASSWORD=1qaz
 INIT_REDIS_DEFAULT_PASSWORD=1gzHwbgfwR
+
 
 #cms
 USER_APP_NAME=$(promptText "App name (Enter for default:  $INIT_APP_NAME)")
@@ -34,6 +38,9 @@ USER_ADMIN_FNAME=$(promptText "Admin first name (Enter for default: $INIT_ADMIN_
 USER_ADMIN_LNAME=$(promptText "Admin last name (Enter for default: $INIT_ADMIN_LNAME)")
 USER_WEBSITE_DOMAIN=$(promptText "Website domain (Enter for default: $INIT_WEBSITE_DOMAIN)")
 USER_TPL_VER=$(promptText "App template E.G. v1 (Enter for default:  $INIT_TPL_VER)")
+USER_CMS_JWT_EXP_H=$(promptText "JWT expire time (Enter for default:  $INIT_CMS_JWT_EXP_H)")
+USER_NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$(promptText "Next JS public recaptcha key (Enter for default:  $INIT_NEXT_PUBLIC_RECAPTCHA_SITE_KEY)")
+USER_RECAPTCHA_SECRET_KEY=$(promptText "Recaptcha secret key (Enter for default:  $INIT_RECAPTCHA_SECRET_KEY)")
 
 #infra
 USER_REDIS_DEFAULT_PASSWORD=$(promptSecret "Redis password (Enter for default: $INIT_REDIS_DEFAULT_PASSWORD)")
@@ -58,6 +65,9 @@ export ADMIN_LNAME=$([[ -z $USER_ADMIN_LNAME ]] && echo $INIT_ADMIN_LNAME || ech
 export WEBSITE_DOMAIN=$([[ -z $USER_WEBSITE_DOMAIN ]] && echo $INIT_WEBSITE_DOMAIN || echo $USER_WEBSITE_DOMAIN)
 export APP_DOMAIN=$([[ -z $USER_APP_DOMAIN ]] && echo $INIT_APP_DOMAIN || echo $USER_APP_DOMAIN)
 export TPL_VER=$([[ -z $USER_TPL_VER ]] && echo $INIT_TPL_VER || echo $USER_TPL_VER)
+export CMS_JWT_EXP_H=$([[ -z $USER_CMS_JWT_EXP_H ]] && echo $INIT_CMS_JWT_EXP_H || echo $USER_CMS_JWT_EXP_H)
+export NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$([[ -z $USER_NEXT_PUBLIC_RECAPTCHA_SITE_KEY ]] && echo $INIT_NEXT_PUBLIC_RECAPTCHA_SITE_KEY || echo $USER_NEXT_PUBLIC_RECAPTCHA_SITE_KEY)
+export RECAPTCHA_SECRET_KEY=$([[ -z $USER_RECAPTCHA_SECRET_KEY ]] && echo $INIT_RECAPTCHA_SECRET_KEY || echo $USER_RECAPTCHA_SECRET_KEY)
 
 export REDIS_DEFAULT_PASSWORD=$([[ -z $USER_REDIS_DEFAULT_PASSWORD ]] && echo $INIT_REDIS_DEFAULT_PASSWORD || echo $USER_REDIS_DEFAULT_PASSWORD)
 

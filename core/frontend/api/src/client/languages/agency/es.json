@@ -9,7 +9,21 @@
     "infants": "Infantes",
     "days": "dias",
     "included": "Incluye",
-    "termsAndConditions": "Términos y Condiciones."
+    "termsAndConditions": "Términos y Condiciones.",
+    "greetings": "Hola",
+    "loading": "Cargando...",
+    "redirecting": "Redirigiendo...",
+    "loggingOut": "Cerrar la sesión...",
+    "loader": {
+      "waitAMoment": "Por favor, espere un momento...",
+      "redirecting": "Redirigiendo..."
+    },
+    "errors": {
+      "credentialsMismatch": "No hay coincidencia de credenciales.",
+      "errorOccurred": "Se ha producido un error, por favor, inténtelo de nuevo...",
+      "recaptchaError": "Se ha producido un error al validar el ReCAPTCHA, por favor, inténtelo más tarde..."
+
+    }
   },
   "input": {
     "placeholder": {
