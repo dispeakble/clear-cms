@@ -4,6 +4,7 @@ import {useRouter} from "next/router";
 import {LogoutWrapper} from "./styled";
 import Layout from "../components/Layout";
 import UseAuth from "../../../auth/auth";
+import {useTranslations} from "next-intl";
 
 const LogoutPage = ({ websiteName, colorScheme }: any) => {
 
@@ -51,20 +52,22 @@ const LogoutPage = ({ websiteName, colorScheme }: any) => {
         clientArea: "Client Area"
     }
 
+    const t = useTranslations()
+
     return(
         isLoading ? (
                 <>
-                    <h3>Loading...</h3>
+                    <h3>{t('global.loading')}</h3>
                 </>
             ) :
             (isAuthenticated ?
                 (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
                         <LogoutWrapper>
-                            login out
+                            {t('global.loggingOut')}
                         </LogoutWrapper>
                     </Layout>
                 ) : (<>
-                    <h3>Redirecting...</h3>
+                    <h3>{t('global.redirecting')}</h3>
                 </>))
     )
 }

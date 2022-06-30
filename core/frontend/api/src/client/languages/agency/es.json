@@ -10,6 +10,10 @@
     "days": "dias",
     "included": "Incluye",
     "termsAndConditions": "Términos y Condiciones.",
+    "greetings": "Hola",
+    "loading": "Cargando...",
+    "redirecting": "Redirigiendo...",
+    "loggingOut": "Cerrar la sesión...",
     "loader": {
       "waitAMoment": "Por favor, espere un momento...",
       "redirecting": "Redirigiendo..."

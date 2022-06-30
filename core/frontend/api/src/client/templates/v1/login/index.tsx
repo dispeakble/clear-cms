@@ -84,7 +84,7 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
     return (
         isLoading ? (
                 <>
-                    <h3>Loading...</h3>
+                    <h3>{t('global.loading')}</h3>
                 </>
             ) :
             (!isAuthenticated ?
@@ -237,7 +237,7 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                     </>
                 ) :
                     (<>
-                        <h3>Redirecting...</h3>
+                        <h3>{t('global.redirecting')}</h3>
                     </>)
             )
     );
