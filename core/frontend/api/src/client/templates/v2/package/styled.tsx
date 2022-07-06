@@ -1,70 +1,68 @@
 import styled from "styled-components";
-import {Field} from "formik";
+import { device, size } from "../styled";
+import { Field } from "formik";
 
 
-interface IDetailsContainer{
-    isExpanded: boolean;
+interface IDetailsContainer {
+  isExpanded: boolean;
 }
 
-interface IStep{
-    currentStep?: boolean;
+interface IStep {
+  currentStep?: boolean;
 }
 
-interface IButtonContainer{
-    hasOneChild?: boolean;
+interface IButtonContainer {
+  hasOneChild?: boolean;
 }
 
-interface ICustomButton{
-    isActive?: boolean;
+interface ICustomButton {
+  isActive?: boolean;
 }
 
-interface IPaymentDiv{
-    isError?: boolean;
+interface IPaymentDiv {
+  isError?: boolean;
 }
 
-interface ITicketItem{
-    alignEnd?: boolean;
+interface ITicketItem {
+  alignEnd?: boolean;
 }
-
-const size = {
-    mobileS: "320px",
-    mobileM: "375px",
-    mobileL: "425px",
-    tablet: "768px",
-    laptop: "1024px",
-    laptopL: "1440px",
-    desktop: "1919px",
-    desktopL: "2560px"
-};
 
 export const PackagesLayout = styled.div`
   width: 100%;
   display: flex;
   gap: 20px;
-  
-  @media screen and (max-width: 1300px){
-    flex-direction: column;
+  flex-direction: column;
+
+  @media ${device.laptopL} {
+    flex-direction: row;
   }
-  
-`
+
+`;
+
+export const PackagesDetail = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+`;
 
 export const FiltersContainer = styled.div`
   display: flex;
   align-items: flex-start;
   min-width: 288px;
-`
+`;
 
 export const PackagesContainer = styled.div`
-    width: 100%;
-`
+  width: 100%;
+`;
 
 export const LoadMoreButton = styled.button`
-  background: linear-gradient(180deg, #FF840D 0%, #DC6B03 100%);
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  
-  color: #FFFFFF;
-  
+
+  color: ${({ theme }) => theme.colors.white};
+
   padding: 7px 33px;
 
   font-family: 'Poppins', sans-serif;
@@ -74,98 +72,103 @@ export const LoadMoreButton = styled.button`
   line-height: 1.5;
 
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-  
+
   border: none;
   outline: none;
   cursor: pointer;
-  
+
   transition: background .4s ease-in-out;
-  
-  :hover{
-    background: linear-gradient(180deg, #FFAC5C 0%, #E78F3C 100%);
+
+  :hover {
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColorHover} 100%);
     transition: background .4s ease-in-out;
   }
-`
+`;
 
 
 /* start Packages styles */
 
 export const CardWrapper = styled.div`
   padding: 14px;
-  background: #FFFFFF;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
-  border-radius: 27px;
+  border-radius: 24px;
   display: flex;
-  width:100%;
+  width: 100%;
   margin-bottom: 10px;
 
-  @media screen and (max-width: ${size.laptop}){
+  @media screen and (max-width: ${size.laptop}) {
     flex-direction: column;
   }
-`
+`;
 
 export const ImageContainer = styled.div`
-  padding: 11px;
-  background: #ffffff;
+  background: ${({ theme }) => theme.colors.white};
+  overflow: hidden;
   width: 340px;
   border-radius: 10px;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.18);
+  padding: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.18);
   margin-right: 25px;
   position: relative;
-  
-  .package-image{
-    height: 100% ;
-    width: 100% ;
+
+  .package-image {
+    height: 100%;
+    width: 100%;
   }
 
-  @media screen and (max-width: ${size.laptop}){
+  @media screen and (max-width: ${size.laptop}) {
     flex-direction: column;
     max-width: 100%;
     min-height: 300px;
-    width:100%;
-    
+    width: 100%;
+
     margin-bottom: 10px;
   }
-`
+`;
 export const PackageDetailsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  
-  @media screen and (max-width: ${size.tablet}){
+
+  &:first-child {
+    flex: 1;
+  }
+
+  @media screen and (max-width: ${size.tablet}) {
     max-width: 100%;
     width: 100%;
   }
-`
+`;
 
 export const PackageMain = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-`
+`;
 
 export const PackageMainContainer = styled.div`
   display: flex;
   flex: 1;
-  
-  @media screen and (max-width: ${size.tablet}){
+  gap: 10px;
+  @media screen and (max-width: ${size.tablet}) {
     flex-direction: column;
   }
-`
+`;
 
 export const PackageDetailsContainer = styled.div`
   display: flex;
-`
+`;
 
 export const PackageDescriptionContainer = styled.div`
-    
-`
+
+`;
 
 export const PackageServicesContainer = styled.div`
-`
+`;
 
 export const ServiceItem = styled.div`
-  
-`
+
+`;
 
 export const PackageDescription = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -175,17 +178,17 @@ export const PackageDescription = styled.p`
   line-height: 1.5;
 
   color: rgba(86, 82, 82, 0.97);
-`
+`;
 
 export const PackageDetails = styled.div`
   display: flex;
   flex-direction: column;
-  
-  @media screen and (max-width: ${size.tablet}){
+
+  @media screen and (max-width: ${size.tablet}) {
     width: 100%;
     flex: 1;
   }
-`
+`;
 
 export const PackageTitle = styled.h2`
   font-family: 'Poppins', sans-serif;
@@ -195,13 +198,13 @@ export const PackageTitle = styled.h2`
   margin: 0;
   max-width: 390px;
 
-  color: #000000;
-  
-  @media screen and (max-width: ${size.tablet}){
+  color: ${({ theme }) => theme.colors.black};
+
+  @media screen and (max-width: ${size.tablet}) {
     max-width: 100%;
   }
-  
-`
+
+`;
 
 export const AddressText = styled.div`
   font-family: 'Poppins', sans-serif;
@@ -211,38 +214,38 @@ export const AddressText = styled.div`
   margin: 0;
 
   color: rgba(0, 0, 0, 0.6);
-`
+`;
 
 export const RatingContainer = styled.div`
   display: flex;
   gap: 3px;
   margin-bottom: 11px;
-`
+`;
 
 export const PackageItems = styled.div`
   display: flex;
   align-items: center;
-  background: #FFAC5C;
+  background: ${({ theme }) => theme.colors.primaryColorHover};
   border-radius: 27px;
   max-width: 425px;
   justify-content: space-between;
   padding: 2px 10px;
   margin-bottom: 8px;
-  
-  @media screen and (max-width: ${size.mobileL}){
+
+  @media screen and (max-width: ${size.mobileL}) {
     flex-direction: column;
     gap: 8px;
     max-width: 100%;
     width: 100%;
-    border-radius:5px;
+    border-radius: 5px;
   }
-`
+`;
 
 export const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-`
+`;
 
 export const ItemText = styled.p`
   margin: 0;
@@ -251,59 +254,54 @@ export const ItemText = styled.p`
   font-size: 13px;
   line-height: 1.5;
 
-  color: #FFFFFF;
-`
+  color: ${({ theme }) => theme.colors.white};
+`;
 
 export const PricingDetailsWrapper = styled.div`
   display: flex;
-  flex: 1;
   padding: 10px 0;
   align-items: flex-end;
   flex-direction: column;
   justify-content: space-between;
-  
-  @media screen and (max-width: ${size.tablet}){
+
+  @media screen and (max-width: ${size.tablet}) {
     flex-direction: row;
   }
-`
+`;
 
 export const PriceTextContainer = styled.div`
   display: flex;
   align-items: flex-end;
   flex-direction: column;
-  
-  @media screen and (max-width: ${size.tablet}){
+
+  @media screen and (max-width: ${size.tablet}) {
     align-items: flex-start;
   }
-`
+`;
 
 export const StartingPriceContainer = styled.div`
-  
+
   display: flex;
   align-items: flex-end;
   margin: 0 0 2px 0;
+  gap: 5px;
 
-  p{
+  p {
     margin: 0 10px 0 0;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
     font-size: 16px;
     line-height: 1;
-    text-align:left;
-    float:left;
+    text-align: left;
+    float: left;
     display: inline-block;
     color: #646464;
   }
 
-  @media screen and (max-width: ${size.tablet}){
-    p{
-      display: none;
-      margin-right: 0;
-    }
-    
+  @media screen and (max-width: ${size.tablet}) {
     align-items: flex-start;
   }
-`
+`;
 
 export const StartingPriceText = styled.h2`
   margin: 0;
@@ -311,17 +309,17 @@ export const StartingPriceText = styled.h2`
   font-weight: 700;
   font-size: 29px;
   line-height: 1;
-  text-align:right;
-  float:right;
+  text-align: right;
+  float: right;
   display: inline-block;
+  white-space: nowrap;
+  color: ${({ theme }) => theme.colors.accentColor};
 
-  color: #FF840D;
-
-  @media screen and (max-width: ${size.tablet}){
-    text-align:left !important;
-    float:left !important;
+  @media screen and (max-width: ${size.tablet}) {
+    text-align: left !important;
+    float: left !important;
   }
-`
+`;
 
 export const AdultNightText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -331,8 +329,8 @@ export const AdultNightText = styled.p`
   line-height: 1.5;
   margin: 0 0 2px 0;
 
-  color: #000000;
-`
+  color: ${({ theme }) => theme.colors.black};
+`;
 
 export const TaxText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -343,19 +341,19 @@ export const TaxText = styled.p`
   margin: 0;
 
   color: #646464;
-`
+`;
 
 export const ButtonContainer = styled.div`
-    
-`
+
+`;
 
 export const BookNowButton = styled.button`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  
-  color: #FFFFFF;
-  
+
+  color: ${({ theme }) => theme.colors.white};
+
   padding: 7px 33px;
 
   font-family: 'Poppins', sans-serif;
@@ -363,48 +361,52 @@ export const BookNowButton = styled.button`
   font-weight: 600;
   font-size: 20px;
   line-height: 1.5;
+  white-space: nowrap;
 
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-  
+
   border: none;
   outline: none;
   cursor: pointer;
-  
+
   transition: background .4s ease-in-out;
-  
-  :hover{
+
+  :hover {
     background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
     transition: background .4s ease-in-out;
   }
-`
+`;
 
 export const DetailsContainer = styled.div`
   display: flex;
   gap: 40px;
-`
+`;
 
 export const ServicesTextContainer = styled.div<IDetailsContainer>`
   display: flex;
   gap: 8px;
   cursor: pointer;
-  
-  p{
-    color: ${({isExpanded}) => isExpanded ? "#DC6B03" : "rgba(0, 0, 0, 0.7)"} !important;
-  }
-`
 
-export const ServicesDescriptionText = styled.p`
+  p {
+    color: ${({ isExpanded, theme }) => isExpanded ? theme.colors.primaryColor : "rgba(0, 0, 0, 0.7)"} !important;
+  }
+`;
+
+export const ServicesDescriptionText = styled.a`
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 13px;
   line-height: 1.5;
-
-  margin:0;
-`
+  margin: 0;
+  user-select: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export const DescriptionContainer = styled.div`
-  
-`
+
+`;
 
 /* end Packages styles */
 
@@ -413,36 +415,37 @@ export const DescriptionContainer = styled.div`
 /* start Filters styles */
 
 export const FiltersWrapper = styled.div`
-  max-width: 290px;
-  width:100%;
-  background: #FFFFFF;
+  max-width: 100%;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.11);
-  
+
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  flex-direction: row;
   border-radius: 8px;
 
-  @media screen and (max-width: 1300px){
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 100%;
+  @media screen and ${device.laptopL} {
+    flex-direction: column;
+    max-width: 290px;
   }
 
-  @media screen and (max-width: 500px){
-    flex-direction: column;
-  }
-`
+`;
 
 export const FiltersHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 22px 11px;
   align-items: center;
-  border-bottom: 1px #C4C4C4 solid;
   width: 100%;
-  
-  
-`
+  cursor: pointer;
+
+  @media screen and ${device.laptopL} {
+    &:not(:last-of-type) {
+      border-bottom: 1px #C4C4C4 solid;
+    }
+  }
+`;
 
 export const FiltersHeader = styled.h2`
   font-family: 'Poppins', sans-serif;
@@ -450,11 +453,11 @@ export const FiltersHeader = styled.h2`
   font-weight: 500;
   font-size: clamp(14px, 2vw, 21px);
   line-height: 1.5;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
   margin: 0;
   text-transform: capitalize;
   letter-spacing: 0.15px;
-`
+`;
 
 export const ResetText = styled.span`
   margin: 0;
@@ -466,8 +469,11 @@ export const ResetText = styled.span`
   cursor: pointer;
 
   letter-spacing: 0.15px;
-  color: #DC6B03;
-`
+  color: ${({ theme }) => theme.colors.primaryColor};
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 /* end Filters styles */
 
@@ -481,13 +487,13 @@ export const DetailsWrapper = styled.div`
   width: 100%;
   gap: 17px;
   margin-top: 53px;
-  
-  @media(max-width: ${size.laptop}){
+
+  @media (max-width: ${size.laptop}) {
     flex-direction: column;
     align-items: stretch;
     padding: 20px;
   }
-`
+`;
 
 export const HotelsHeaderWrapper = styled.div`
   display: flex;
@@ -495,42 +501,42 @@ export const HotelsHeaderWrapper = styled.div`
   align-items: center;
   width: 100%;
   padding: 24px 33px;
-  border: 1px solid #DBDBDB;
+  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 10px;
-  background: #ffffff;
-  
-  @media screen and (max-width: 480px){
+  background: ${({ theme }) => theme.colors.white};
+
+  @media screen and (max-width: 480px) {
     flex-direction: column;
     gap: 10px;
     padding: 12px;
   }
-`
+`;
 
 export const HotelsHeader = styled.h2`
   font-family: "Poppins", sans-serif;
   font-size: clamp(18px, 3vw, 36px);
   font-weight: 400;
   color: #434343;
-  line-height:1.5;
+  line-height: 1.5;
   margin: 0;
-`
+`;
 
 export const HotelsWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 export const CartStepsWrapper = styled.div`
   display: flex;
   position: relative;
   gap: 20px;
-  
-  @media screen and (max-width: 1200px){
+
+  @media screen and (max-width: 1200px) {
     gap: 15px;
   }
-`
+`;
 
 export const StepWrapper = styled.div<IStep>`
   font-family: 'Poppins', sans-serif;
@@ -538,21 +544,21 @@ export const StepWrapper = styled.div<IStep>`
   font-weight: 400;
   font-size: 28px;
   position: relative;
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
   height: 50px;
   width: 50px;
-  
-  border: 1px solid #FF8C1D;
-  
-  background: ${({currentStep}) => currentStep ? "#FF8C1D" : "#FFFFFF"};
-  color:  ${({currentStep}) => currentStep ? "#FFFFFF" : "#FF8C1D"};
-  
-  border-radius:50%;
-  
-  &:not(:last-child)::after{
+
+  border: 1px solid ${({ theme }) => theme.colors.accentColor};
+
+  background: ${({ currentStep, theme }) => currentStep ? theme.colors.accentColor : theme.colors.white};
+  color: ${({ currentStep, theme }) => currentStep ? theme.colors.white : theme.colors.accentColor};
+
+  border-radius: 50%;
+
+  &:not(:last-child)::after {
     content: "";
     position: absolute;
     right: -21px;
@@ -562,14 +568,14 @@ export const StepWrapper = styled.div<IStep>`
     width: 20px;
     border-bottom: 1px dashed #A29E9E;
   }
-  
-  @media screen and (max-width: 1200px){
+
+  @media screen and (max-width: 1200px) {
     height: 30px;
     width: 30px;
-    
+
     font-size: 16px;
 
-    &:not(:last-child)::after{
+    &:not(:last-child)::after {
       content: "";
       position: absolute;
       right: -16px;
@@ -580,7 +586,7 @@ export const StepWrapper = styled.div<IStep>`
       border-bottom: 1px dashed #A29E9E;
     }
   }
-`
+`;
 
 /** FIRST STEP **/
 
@@ -589,38 +595,38 @@ export const PackageOffers = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const PlusContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-`
+`;
 
 export const HotelMainInfosContainer = styled.div`
-    flex: 1;
-`
+  flex: 1;
+`;
 
 export const HotelInclusivesContainer = styled.div`
-    flex: 1;
-`
+  flex: 1;
+`;
 
 export const Flights = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const PackageItemsWrapper = styled.div`
-  background: #FFFFFF;
-  border: 1px solid #FF840D;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.accentColor};
   border-radius: 10px;
-`
+`;
 
 export const PackageItemsHeaderContainer = styled.div`
   padding: 20px;
-  border-bottom: 1px solid #FF840D;
-`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.accentColor};
+`;
 
 export const PackageHeader = styled.h2`
   font-family: 'Poppins', sans-serif;
@@ -628,45 +634,45 @@ export const PackageHeader = styled.h2`
   font-weight: 600;
   font-size: 24px;
   line-height: 1.5;
-  margin: 0;  
+  margin: 0;
 
-  color: #FF840D;
+  color: ${({ theme }) => theme.colors.accentColor};
 
-`
+`;
 
 export const HotelDetailsWrapper = styled.div`
   border-radius: 10px;
-  border: 1px solid #FF840D;
-  background: #FFFFFF;
-`
+  border: 1px solid ${({ theme }) => theme.colors.accentColor};
+  background: ${({ theme }) => theme.colors.white};
+`;
 
 export const HotelDetailsHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 4px 36px;
-  border-bottom: 1px solid #FF840D;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.accentColor};
   gap: 12px;
-  @media screen and (max-width:${size.tablet}){
+  @media screen and (max-width: ${size.tablet}) {
     flex-direction: column;
     align-items: stretch;
   }
-`
+`;
 
 export const HotelName = styled.h3`
-  margin:0;
+  margin: 0;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: 26px;
   line-height: 1.5;
-  
-  color: #FF840D;
-`
+
+  color: ${({ theme }) => theme.colors.accentColor};
+`;
 
 export const StarsWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-`
+`;
 
 export const StarsText = styled.p`
   margin: 0;
@@ -675,13 +681,13 @@ export const StarsText = styled.p`
   font-weight: 500;
   font-size: 16px;
   line-height: 1.5;
-  
-  color: #000000;
 
-`
+  color: ${({ theme }) => theme.colors.black};
+
+`;
 
 export const HotelAddressContainer = styled.div`
-`
+`;
 
 export const HotelAddress = styled.p`
   margin: 0;
@@ -691,29 +697,29 @@ export const HotelAddress = styled.p`
   font-size: 17px;
   line-height: 1.55;
 
-  color: #848484;
+  color: ${({ theme }) => theme.colors.greyBorder};
 
-`
+`;
 
 export const HotelTicketInfosContainer = styled.div`
-  border: 1px dashed #FF840D;
+  border: 1px dashed ${({ theme }) => theme.colors.accentColor};
   padding: 32px 22px;
   margin: 10px 0;
   gap: 40px;
   display: flex;
   justify-content: space-between;
-  
+
   position: relative;
-  
-  @media screen and (max-width: 1300px){
+
+  @media screen and (max-width: 1300px) {
     flex-direction: column;
     gap: 20px;
   }
-`
+`;
 
 export const HotelInfos = styled.div`
-    padding: 6px 25px;
-`
+  padding: 6px 25px;
+`;
 
 export const IncludedText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -723,31 +729,31 @@ export const IncludedText = styled.p`
   line-height: 1.5;
   margin: 0;
 
-  color: #000000;
-`
+  color: ${({ theme }) => theme.colors.black};
+`;
 
 export const TicketInfosItems = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media screen and (max-width: ${size.tablet}){
+  @media screen and (max-width: ${size.tablet}) {
     flex-direction: column;
     gap: 15px;
   }
-`
+`;
 
 export const TicketInfosItem = styled.div<ITicketItem>`
   display: flex;
   flex-direction: column;
-  justify-content: ${({alignEnd}) => alignEnd ? 'flex-end' : 'center'};
-  
-  @media screen and (max-width: ${size.tablet}){
+  justify-content: ${({ alignEnd }) => alignEnd ? "flex-end" : "center"};
+
+  @media screen and (max-width: ${size.tablet}) {
     padding-bottom: 15px;
-    :not(:last-child){
-      border-bottom: 1px dashed #848484;
+    :not(:last-child) {
+      border-bottom: 1px dashed ${({ theme }) => theme.colors.greyBorder};
     }
   }
-`
+`;
 
 export const RoomType = styled.p`
   margin: 0;
@@ -757,8 +763,8 @@ export const RoomType = styled.p`
   font-size: 16px;
   line-height: 1.5;
 
-  color: #000000;
-`
+  color: ${({ theme }) => theme.colors.black};
+`;
 
 export const DetailsText = styled.div`
   font-family: 'Poppins', sans-serif;
@@ -767,19 +773,19 @@ export const DetailsText = styled.div`
   line-height: 1.5;
   margin: 0;
 
-  color: #848484;
-`
+  color: ${({ theme }) => theme.colors.greyBorder};
+`;
 
 export const FlightsSectionPackage = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const TextContainer = styled.div`
-  
-`
+
+`;
 
 export const TextInfoItem = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -788,27 +794,28 @@ export const TextInfoItem = styled.p`
   font-size: 16px;
   line-height: 1.5;
   margin: 0 0 10px 0;
-  
-  color: #848484;
-  
-  a{
+
+  color: ${({ theme }) => theme.colors.greyBorder};
+
+  a {
     font-weight: 700;
-    color: #FF840D;
-    &:hover{
-     color: #FF840D; 
+    color: ${({ theme }) => theme.colors.accentColor};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.accentColor};
     }
   }
-`
+`;
 
 export const PackagePriceWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #FFFFFF;
+  background: ${({ theme }) => theme.colors.white};
   padding: 22px 34px;
-  border: 1px #DBDBDB solid;
-  border-radius:10px;
-`
+  border: 1px ${({ theme }) => theme.colors.borderOutline} solid;
+  border-radius: 10px;
+`;
 
 export const PackagePriceText = styled.h4`
   font-family: 'Poppins', sans-serif;
@@ -819,11 +826,11 @@ export const PackagePriceText = styled.h4`
   margin: 0;
 
   color: #434343;
-  
-  @media screen and (max-width: 590px){
+
+  @media screen and (max-width: 590px) {
     font-size: 18px;
   }
-`
+`;
 
 export const PackagePrice = styled.h4`
   font-family: 'Poppins', sans-serif;
@@ -833,12 +840,12 @@ export const PackagePrice = styled.h4`
   line-height: 1.5;
   margin: 0;
 
-  color: #FF840D;
+  color: ${({ theme }) => theme.colors.accentColor};
 
-  @media screen and (max-width: 590px){
+  @media screen and (max-width: 590px) {
     font-size: 18px;
   }
-`
+`;
 
 
 /** END FIRST STEP **/
@@ -851,17 +858,17 @@ export const FormGroup = styled.div`
   align-items: flex-end;
   gap: 10px;
 
-  @media screen and (max-width: ${size.laptop}){
+  @media screen and (max-width: ${size.laptop}) {
     flex-direction: column;
     align-items: stretch;
   }
-`
+`;
 
 export const PassengerDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 export const PassengerHeader = styled.h2`
   margin: 0;
@@ -870,30 +877,30 @@ export const PassengerHeader = styled.h2`
   font-size: 36px;
   line-height: 1.5;
   color: #434343;
-`
+`;
 
 export const PassengerHeaderContainer = styled.div`
-    
-`
+
+`;
 
 export const PassengerItem = styled.div`
   width: 100%;
-  border: 1px #DBDBDB solid;
+  border: 1px ${({ theme }) => theme.colors.borderOutline} solid;
   border-radius: 10px;
-  background: #FFFFFF;
+  background: ${({ theme }) => theme.colors.white};
   padding: 20px 28px;
   margin-bottom: 8px;
-  
+
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-`
+`;
 
 export const InputLabel = styled.label`
   font-family: 'Poppins', sans-serif;
@@ -902,11 +909,11 @@ export const InputLabel = styled.label`
   line-height: 1.5;
   margin: 0;
   color: #434343;
-`
+`;
 
 export const TextInput = styled.input`
   outline: none;
-  border: 1px solid #DBDBDB;
+  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 10px;
   padding: 11px 18px;
   font-size: 18px;
@@ -914,11 +921,11 @@ export const TextInput = styled.input`
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   color: #434343;
-  
-  ::placeholder{
+
+  ::placeholder {
     color: #ADADAD;
   }
-`
+`;
 
 export const DottedLines = styled.hr`
   border: none;
@@ -927,27 +934,27 @@ export const DottedLines = styled.hr`
   text-align: center;
   height: 1px;
   flex: 1;
-`
+`;
 
 export const ButtonsContainer = styled.div<IButtonContainer>`
   display: flex;
-  justify-content: ${({hasOneChild}) => hasOneChild ? "flex-end" : "space-between"};
-  
-  @media screen and (max-width:${size.tablet}){
+  justify-content: ${({ hasOneChild }) => hasOneChild ? "flex-end" : "space-between"};
+
+  @media screen and (max-width: ${size.tablet}) {
     flex-direction: column;
     gap: 20px;
   }
-`
+`;
 
 export const CustomButton = styled.button<ICustomButton>`
-  background: ${({isActive}) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
+  background: ${({ isActive }) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: clamp(18px, 3vw, 36px);
   line-height: 1.5;
-  color: #FFFFFF;
+  color: ${({ theme }) => theme.colors.white};
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -958,13 +965,13 @@ export const CustomButton = styled.button<ICustomButton>`
 
   gap: 20px;
 
-  span{
+  span {
     width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
+    background: ${({ theme }) => theme.colors.white};
 
     font-family: 'Poppins', sans-serif;
     font-style: normal;
@@ -972,44 +979,45 @@ export const CustomButton = styled.button<ICustomButton>`
     font-size: 28px;
     line-height: 1.5;
     margin: 0;
-    border-radius: 50% ;
+    border-radius: 50%;
     text-align: center;
 
-    color: ${({isActive}) => isActive ? "#FF8C1D" : "#959595"};
+    color: ${({ isActive, theme }) => isActive ? theme.colors.accentColor : "#959595"};
   }
 
-  @media screen and (max-width:${size.tablet}){
+  @media screen and (max-width: ${size.tablet}) {
     justify-content: center;
 
-    span{
+    span {
       font-size: 18px;
       width: 30px;
       height: 30px;
     }
   }
 
-  :is(:disabled){
+  :is(:disabled) {
     cursor: not-allowed;
     background: linear-gradient(180deg, #D0D0D0 0%, #919191 100%) !important;
-    span{
+
+    span {
       color: #959595;
     }
   }
-`
+`;
 
 export const ErrorText = styled.span`
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.5;
-  margin:0;
+  margin: 0;
 
   color: #e74c3c;
-`
+`;
 
-export const StyledField= styled(Field)`
+export const StyledField = styled(Field)`
   outline: none;
-  border: 1px solid #DBDBDB;
+  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 10px;
   padding: 11px 18px;
   font-size: 18px;
@@ -1018,30 +1026,30 @@ export const StyledField= styled(Field)`
   line-height: 1.5;
   color: #434343;
 
-  ::placeholder{
+  ::placeholder {
     color: #ADADAD;
   }
-`
+`;
 
 /** END SECOND STEP **/
 
 /** FOURTH STEP **/
 
 export const Payment = styled.div<IPaymentDiv>`
-  background: ${({isError}) => isError ? "#FFFFFF" : "none"};
+  background: ${({ isError, theme }) => isError ? theme.colors.white : "none"};
   display: flex;
   align-items: center;
   padding: 15px 0;
-  gap:15px;
-  
-  @media screen and (max-width: ${size.laptop}){
+  gap: 15px;
+
+  @media screen and (max-width: ${size.laptop}) {
     flex-direction: column;
   }
-`
+`;
 
 export const PaymentStatusImageContainer = styled.div`
 
-`
+`;
 
 export const PaymentStatusDetailsContainer = styled.div`
   display: flex;
@@ -1049,7 +1057,7 @@ export const PaymentStatusDetailsContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-`
+`;
 
 export const PaymentStatusTitle = styled.h3`
   font-family: 'Nunito', sans-serif;
@@ -1061,9 +1069,9 @@ export const PaymentStatusTitle = styled.h3`
   text-transform: uppercase;
   margin: 0;
   color: #77838F;
-`
+`;
 
-export const PaymentErrorText= styled.h4`
+export const PaymentErrorText = styled.h4`
   font-family: 'Nunito', sans-serif;
   font-weight: 600;
   font-size: 18px;
@@ -1073,7 +1081,7 @@ export const PaymentErrorText= styled.h4`
   text-transform: uppercase;
   margin: 0;
   color: #FF1515;
-`
+`;
 
 export const PaymentInfoText = styled.h5`
   font-family: 'Nunito', sans-serif;
@@ -1084,8 +1092,8 @@ export const PaymentInfoText = styled.h5`
   text-align: center;
   letter-spacing: 0.5px;
 
-  color: #FF840D;
-`
+  color: ${({ theme }) => theme.colors.accentColor};
+`;
 
 export const RedirectText = styled.p`
   font-family: 'Nunito', sans-serif;
@@ -1097,17 +1105,17 @@ export const RedirectText = styled.p`
   letter-spacing: 0.5px;
   margin: 20px 0 0 0;
   color: #474747;
-  
-  a{
-    color: #FF840D;
+
+  a {
+    color: ${({ theme }) => theme.colors.accentColor};
   }
-`
+`;
 
 export const PaymentStep = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 /** FOURTH STEP CONTAINER **/
 
@@ -1117,7 +1125,7 @@ export const BookingConfirmedContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const FinalStep = styled.div`
   display: flex;
@@ -1125,10 +1133,10 @@ export const FinalStep = styled.div`
   padding: 15px 0;
   gap: 20px;
 
-  @media screen and (max-width: ${size.laptop}){
+  @media screen and (max-width: ${size.laptop}) {
     flex-direction: column;
   }
-`
+`;
 
 export const ConfirmedText = styled.div`
   display: flex;
@@ -1136,17 +1144,17 @@ export const ConfirmedText = styled.div`
   align-items: center;
   justify-content: center;
   gap: 40px;
-`
+`;
 
 export const DottedLinesContainer = styled.div`
   display: flex;
   align-items: flex-end;
   padding: 18px 0;
   width: 100%;
-  @media screen and (max-width: ${size.laptop}){
+  @media screen and (max-width: ${size.laptop}) {
     display: none;
   }
-`
+`;
 
 export const SuccessText = styled.h3`
   font-family: 'Metropolis', sans-serif;
@@ -1156,21 +1164,21 @@ export const SuccessText = styled.h3`
   line-height: 1;
   text-align: center;
   margin: 0;
-  color: #FF8C1D;
-`
+  color: ${({ theme }) => theme.colors.accentColor};
+`;
 
 export const EmailDetailsText = styled.h5`
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 36px;
-    line-height: 1.5;
-    
-    text-align: center;
-    
-    color: #77838F;
-`
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.5;
+
+  text-align: center;
+
+  color: #77838F;
+`;
 
 /** END BOOKING CONFIRMED  **/
 
@@ -1182,22 +1190,22 @@ export const CartTicketsWrapper = styled.div`
   flex-direction: column;
   gap: 15px;
   padding: 18px 20px;
-`
+`;
 
 export const CartHotelSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  border-bottom: 1px dashed #A29E9E;;
+  border-bottom: 1px dashed #A29E9E;
   padding-bottom: 12px;
-`
+`;
 
 export const CartFlightSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding-bottom: 12px;
-`
+`;
 
 export const HotelPackageTitle = styled.h4`
   font-family: 'Poppins', sans-serif;
@@ -1207,13 +1215,13 @@ export const HotelPackageTitle = styled.h4`
   line-height: 1.5;
   margin: 0;
 
-  color: #FF840D;
-`
+  color: ${({ theme }) => theme.colors.accentColor};
+`;
 
 export const TicketHotelTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const HotelPackageAddress = styled.h4`
   font-family: 'Poppins', sans-serif;
@@ -1224,18 +1232,18 @@ export const HotelPackageAddress = styled.h4`
   margin: 0;
 
   color: rgba(0, 0, 0, 0.6);
-`
+`;
 
 export const RoomDetailsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 
 export const TicketItem = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const TicketText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -1244,8 +1252,8 @@ export const TicketText = styled.p`
   line-height: 1.5;
   margin: 0;
 
-  color: #000000;
-`
+  color: ${({ theme }) => theme.colors.black};
+`;
 
 export const CartFooterWrapper = styled.div`
   padding: 25px 31px;
@@ -1253,7 +1261,7 @@ export const CartFooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 export const TotalText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -1263,7 +1271,7 @@ export const TotalText = styled.p`
   margin: 0;
 
   color: #434343;
-`
+`;
 
 export const TotalPrice = styled.h2`
   font-family: 'Poppins', sans-serif;
@@ -1273,26 +1281,26 @@ export const TotalPrice = styled.h2`
   margin: 0;
 
   color: #434343;
-`
+`;
 
 export const CartHeaderWrapper = styled.div`
   padding: 25px 31px;
   border-bottom: 1px dashed #A29E9E;
   display: flex;
   align-items: center;
-`
+`;
 
 export const CartHeader = styled.h2`
   font-family: "Poppins", sans-serif;
   font-size: clamp(18px, 4vw, 32px);
   font-weight: 400;
   color: #434343;
-  line-height:1.5;
+  line-height: 1.5;
   margin: 0;
-`
+`;
 
 export const CartHotelInfo = styled.div`
-`
+`;
 
 export const CartItemContainer = styled.div`
   display: flex;
@@ -1300,36 +1308,36 @@ export const CartItemContainer = styled.div`
   gap: 23px;
   border-bottom: 1px dashed #A29E9E;
   padding: 24px 20px;
-`
+`;
 
 export const CartWrapper = styled.div`
   flex: 1;
   max-width: 433px;
   height: auto;
-  background: #FFFFFF;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
   border-radius: 8px;
-  @media(max-width: ${size.laptop}){
+  @media (max-width: ${size.laptop}) {
     max-width: 100%;
   }
-`
+`;
 
 export const FlightTimeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 export const HotelCartItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-`
+`;
 
 export const HotelCartItemElement = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const RoomDetails = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -1338,9 +1346,9 @@ export const RoomDetails = styled.p`
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
-  
-  color: #000000;
-`
+
+  color: ${({ theme }) => theme.colors.black};
+`;
 
 export const PackageHotelInfos = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -1350,8 +1358,8 @@ export const PackageHotelInfos = styled.p`
   line-height: 1.5;
   margin: 0;
 
-  color: #848484;
-`
+  color: ${({ theme }) => theme.colors.greyBorder};
+`;
 
 /** END CART STYLES **/
 

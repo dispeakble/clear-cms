@@ -39,7 +39,6 @@ const HotelResults = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         checkout: moment(new Date()).add(1, "d"),
         passenger: {
             adults: 1,
-            infants: 0,
             children: 0
         }
 
@@ -67,29 +66,6 @@ const HotelResults = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 passenger: {
                     ...data.passenger,
                     adults: data.passenger.adults - 1
-                }
-            });
-        }
-
-
-    };
-    const handleInfantsPlus = () => {
-        setData({
-            ...data,
-            passenger: {
-                ...data.passenger,
-                infants: data.passenger.infants + 1
-            }
-        });
-
-    };
-    const handleInfantsMinus = () => {
-        if (Number(data.passenger.infants) > 0) {
-            setData({
-                ...data,
-                passenger: {
-                    ...data.passenger,
-                    infants: data.passenger.infants - 1
                 }
             });
         }
@@ -143,7 +119,7 @@ const HotelResults = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 <MainWrapper>
                     <TopContentWrapperForFlightResults>
                         <ContentWrapper>
-                            <HomeSearch />
+                            <HomeSearch selectedTab='hotels' />
                         </ContentWrapper>
                     </TopContentWrapperForFlightResults>
                 </MainWrapper>
@@ -156,8 +132,6 @@ const HotelResults = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                     data={data}
                     handleChildrenMinus={handleChildrenMinus}
                     handleChildrenPlus={handleChildrenPlus}
-                    handleInfantsMinus={handleInfantsMinus}
-                    handleInfantsPlus={handleInfantsPlus}
                     handleChangeInput={handleChangeInput}
                     handleAdultPlus={handleAdultPlus}
                     handleAdultMinus={handleAdultMinus}

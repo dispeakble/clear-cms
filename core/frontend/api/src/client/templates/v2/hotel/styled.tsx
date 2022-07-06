@@ -22,6 +22,7 @@ export const PackagesLayout = styled.div`
   width: 100%;
   display: flex;
   gap: 20px;
+  margin-top: 50px;
   
   @media screen and (max-width: 1300px){
     flex-direction: column;

@@ -21,7 +21,6 @@ import {
     GuestNumber,
     HotelCalendar,
     HotelCheck,
-    InfantIcon,
     InnerRoomList,
     LeftIcon,
     LeftSide,
@@ -74,6 +73,7 @@ const HotelAvailable = ({
                             handleChildrenPlus,
                         }: HotelAvailableProps) => {
     const [show, setShow] = useState("");
+    const [componentLoaded, setComponentLoaded] = useState(false);
     const [showRoom, setShowRoom] = useState("");
     const t = useTranslations();
 
@@ -133,11 +133,14 @@ const HotelAvailable = ({
 
     useEffect(() => {
         setShowRoom("");
-    }, [setShowRoom]);
+        setComponentLoaded(true);
+    }, [setShowRoom, setComponentLoaded]);
 
     return (
         <Wrapper>
-            <QueryTitle>{t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.children")}, {data.passenger.infants} {t("global.infants")} </QueryTitle>
+            <QueryTitle>
+                {t("hotelDetail.hotelAvailable.roomsAvailable")} {moment(data.checkin).format("ddd DD MMM")} - {moment(data.checkout).format("ddd DD MMM,")} {data.passenger.adults} {t("global.adults")}, {data.passenger.children} {t("global.children")}
+            </QueryTitle>
             <Modifier>
                 <HotelCheck>
                     <LeftSide>
@@ -223,8 +226,6 @@ const HotelAvailable = ({
                                     </PassengerView>
                                 ) : null}
                             </DivView>
-
-
                         </PassengerWrapper>
                         <PassengerWrapper onClick={handleShowChildren}>
                             <DivView>
@@ -339,12 +340,12 @@ const HotelAvailable = ({
             </RoomTable>
             {(show.length || showRoom.length) ? <Overlay onClick={handleClickAway}/> : ""}
             <StyledTooltipWrapper>
-                <ReactTooltip
+                { componentLoaded && <ReactTooltip
                   id="mainTooltip"
                   place="top"
                   effect="solid"
                   multiline={true}
-                />
+                /> }
             </StyledTooltipWrapper>
         </Wrapper>
     );

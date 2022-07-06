@@ -53,7 +53,6 @@ const PackageDetailCard = () => {
         checkout: moment(new Date()).add(1, "d"),
         passenger: {
             adults: 1,
-            infants: 0,
             children: 0
         }
 

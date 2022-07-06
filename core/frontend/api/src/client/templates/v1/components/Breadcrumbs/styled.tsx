@@ -8,8 +8,12 @@ export const StyledBreadcrumbs = styled.div`
   box-shadow: 0 4px 4px rgba(0,0,0,0.25);
   width: 100%;
   padding: 0 20px;
-  margin: 20px auto 0 auto;
   overflow: hidden;
+  margin: 50px 0 0 0;
+  @media (min-width: ${size.tablet}) {
+    margin: 50px 20px;
+    width: calc(100% - 40px);
+  }
 `;
 
 export const StyledBreadcrumbLink = styled.a`

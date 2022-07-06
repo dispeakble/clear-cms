@@ -62,7 +62,7 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
         <TopContentWrapper>
           <ContentWrapper>
             <Header websiteName={websiteName} />
-            <HomeSearch />
+            <HomeSearch selectedTab='packages' />
             <StyledMiddleText>
               <StyledWebsiteName>{websiteName}</StyledWebsiteName>
               <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>

@@ -116,6 +116,7 @@ export const StyledSearchInput = styled.input`
   padding: 8px 0 8px 64px;
   width: 100%;
   border: none;
+  border-radius: 10px ;
   
   &::placeholder{
     color: rgba(0,0,0,0.6);
@@ -131,13 +132,12 @@ export const StyledSearchInput = styled.input`
 export const StyledSearchDestinationInput = styled.input`
   flex: 1;
   background: url(${({theme}) => theme.icon('destination')}) no-repeat 16px center white;
-  padding: 8px 0 8px 64px;
+  padding: 0 0 0 64px;
+  line-height: 48px;
   box-sizing: border-box;
   width: 100%;
   border: none;
-  &:not(.singleInput) {
-    margin-top: 5px;
-  }  
+  border-radius: 10px;
   &::placeholder{
     color: rgba(0,0,0,0.6);
   }

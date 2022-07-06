@@ -9,6 +9,7 @@ export const HotelPhotoSliderWrapper = styled.div`
   
   @media (min-width: ${size.laptop}) {
     width: calc(100% - 20px);
+      height: 440px;
   }
   & .image-gallery-icon {
     color: ${({theme}) => theme.colors.white};
