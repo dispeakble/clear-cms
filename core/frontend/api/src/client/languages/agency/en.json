@@ -196,9 +196,8 @@
     "checkin": "Saturday, 12 March...",
     "checkout": "Saturday, 13 March...",
     "detail": {
-      "adult": "Adult-",
-      "child": "Child-",
-      "infant": "infant-"
+      "adult": "Adults: ",
+      "child": "Children: "
     }
   },
 

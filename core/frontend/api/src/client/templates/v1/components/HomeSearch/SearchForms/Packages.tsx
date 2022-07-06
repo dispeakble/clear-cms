@@ -69,6 +69,7 @@ export const Packages = () => {
   const [destinationId, setDestinationId] = useState(0);
   const [calendarIsOpen, setCalendarIsOpen] = useState(false);
   const [showFilter, setShowFilter] = useState("");
+  const [filterCss, setFilterCss] = useState<Record<string, any>>({});
   const [minCheckInDate, setMinCheckInDate] = useState(new Date());
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
@@ -214,7 +215,13 @@ export const Packages = () => {
     closeModals();
   };
 
-  const toggleFilters = (type: string) => {
+  const toggleFilters = (evt: React.MouseEvent, type: string) => {
+    const boundaries = evt.currentTarget.getBoundingClientRect();
+    setFilterCss({
+      left: Math.floor(boundaries.left),
+      top: Math.floor(boundaries.top + 22 + boundaries.height),
+      width: Math.floor(boundaries.width)
+    })
     setShowFilter(type);
   };
 
@@ -314,43 +321,25 @@ export const Packages = () => {
 
           <StyledSearchOptionsGroup>
             <StyledStars>
-              <StyledCenterLabel data-testid="test-open-stars-handler" onClick={() => toggleFilters("stars")}>
+              <StyledCenterLabel data-testid="test-open-stars-handler" onClick={(evt) => toggleFilters(evt, "stars")}>
                 <StyledLabel>{t("search.hotel-stars")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.stars}</StyledPrimaryValue>
               </StyledCenterLabel>
-              {showFilter === "stars" &&
-                <ValuePopup dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1} max={5}
-                            onChange={handleFilterChange} />}
+
             </StyledStars>
             <StyledPerson>
-              <StyledCenterLabel data-testid="test-open-adults-handler" onClick={() => toggleFilters("adults")}>
+              <StyledCenterLabel data-testid="test-open-adults-handler" onClick={(evt) => toggleFilters(evt, "adults")}>
                 <StyledLabel>{t("search.adults")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
               </StyledCenterLabel>
-              {showFilter === "adults" &&
-                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9}
-                            onChange={handleFilterChange} />}
+
             </StyledPerson>
             <StyledChild>
-              <StyledCenterLabel  data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
+              <StyledCenterLabel  data-testid="test-open-children-handler" onClick={(evt) => toggleFilters(evt, "children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
-              {showFilter === "children" &&
-                <><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
-                            max={4} onChange={handleFilterChange} />
 
-                { filterValues.children > 0 && <ValuePopupAges
-                  className="childrenAges"
-                  name="childrenAges"
-                  min={0}
-                  max={17}
-                  count={filterValues.children}
-                  data={filterValues.childrenAges}
-                  dataTestId="test-children-ages-handler"
-                  onChange={handleFilterChange}/> }
-                </>
-              }
             </StyledChild>
           </StyledSearchOptionsGroup>
           <StyledSearchButton onClick={searchSubmitHandler}
@@ -363,6 +352,28 @@ export const Packages = () => {
         || showDepartures
         || showDestinations
       ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
+      {showFilter === "stars" &&
+        <ValuePopup style={filterCss} dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1} max={5}
+                    onChange={handleFilterChange} />}
+      {showFilter === "adults" &&
+        <ValuePopup style={filterCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9}
+                    onChange={handleFilterChange} />}
+      {showFilter === "children" ?
+        <div><ValuePopup style={filterCss} dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
+                         max={4} onChange={handleFilterChange} />
+
+          { filterValues.children > 0 && <ValuePopupAges
+            style={{...filterCss, ...{top: filterCss.top + 50}}}
+            className="childrenAges"
+            name="childrenAges"
+            min={0}
+            max={17}
+            count={filterValues.children}
+            data={filterValues.childrenAges}
+            dataTestId="test-children-ages-handler"
+            onChange={handleFilterChange}/> }
+        </div> : ""
+      }
     </>
   );
 };

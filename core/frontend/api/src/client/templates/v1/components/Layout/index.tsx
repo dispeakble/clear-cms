@@ -88,15 +88,9 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
                     !isInvisible ?
                         (
                             <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
-                                <TopContentWrapper>
-                                    <Header websiteName={websiteName} />
-                                </TopContentWrapper>
-                                <Wrapper isBreadcrumb>
-                                    <Breadcrumbs {...breadcrumbs} />
-                                </Wrapper>
-                                <Wrapper isLogin={isLogin}>
-                                    {children}
-                                </Wrapper>
+                                <Header websiteName={websiteName} />
+                                <Breadcrumbs {...breadcrumbs} />
+                                {children}
                                 <Footer />
                             </MainWrapper>
                         ) :

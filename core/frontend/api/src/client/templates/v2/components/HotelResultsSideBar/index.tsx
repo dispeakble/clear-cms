@@ -45,11 +45,9 @@ type HotelDetailProps = {
     handleAdultPlus: () => void;
     handleAdultMinus: () => void;
     handleHotelSearch: (data: string) => void;
-    handleInfantsPlus: () => void;
     handleChangeInput: (data: string, value: any) => void;
     handleChildrenMinus: () => void;
     handleChildrenPlus: () => void;
-    handleInfantsMinus: () => void;
     handleSearch: (data: string) => void;
 }
 
@@ -57,12 +55,9 @@ const HotelResultSideBar = ({
                             data,
                             handleAdultPlus,
                             handleAdultMinus,
-                            handleHotelSearch,
-                            handleInfantsPlus,
                             handleChangeInput,
                             handleChildrenMinus,
                             handleChildrenPlus,
-                            handleInfantsMinus,
                             handleSearch,
 
                         }: HotelDetailProps) => {
@@ -226,12 +221,6 @@ const HotelResultSideBar = ({
 
                                         </AdultNumber>
                                     </AdultBox>
-                                    <AdultBox onClick={() => handleShowPassenger()}>
-                                        <InfantIcon  />
-                                        <AdultNumber>
-                                            {t(`deals.detail.infant`)}{data.passenger.infants}
-                                        </AdultNumber>
-                                    </AdultBox>
                                     <div style={{position:'relative', left: '7px'}}>
                                         <DropdownIcon onClick={() => handleShowPassenger()} />
                                     </div>
@@ -271,19 +260,6 @@ const HotelResultSideBar = ({
                                                         <SPAN onClick={handleChildrenMinus}>-</SPAN>
                                                         <h5>{data?.passenger.children<10 ? `0${data?.passenger.children}`:data?.passenger.children}</h5>
                                                         <SPAN onClick={handleChildrenPlus}>+</SPAN>
-                                                    </Quantity>
-                                                </BoxRight>
-                                            </Person>
-                                            <Person>
-                                                <BoxLeft>
-                                                    <h3>{t("global.infants")}</h3>
-                                                    <p>{t("hotelResult.sideBar.search.infantsAge")}</p>
-                                                </BoxLeft>
-                                                <BoxRight>
-                                                    <Quantity>
-                                                        <SPAN onClick={handleInfantsMinus}>-</SPAN>
-                                                        <h5>{data?.passenger.infants<10?`0${data?.passenger.infants}`:data?.passenger.infants}</h5>
-                                                        <SPAN onClick={handleInfantsPlus}>+</SPAN>
                                                     </Quantity>
                                                 </BoxRight>
                                             </Person>

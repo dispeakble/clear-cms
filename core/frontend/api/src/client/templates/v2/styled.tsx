@@ -2,17 +2,18 @@ import styled, { createGlobalStyle } from "styled-components";
 import headerBg from "./assets/img/header-bg.jpg";
 import { CustomTheme } from "../../modules";
 
-export const GlobalStyle = createGlobalStyle<{theme: CustomTheme}>`
+export const GlobalStyle = createGlobalStyle<{ theme: CustomTheme }>`
   body, html {
     margin: 0;
     padding: 0;
     font-family: "Poppins", Arial, sans-serif, serif;
   }
+
   #__next {
     overflow: hidden;
   }
-  
-  .MuiTooltip-popper{
+
+  .MuiTooltip-popper {
     z-index: 10001 !important;
   }
 `;
@@ -40,13 +41,16 @@ export const device = {
   desktopL: `(min-width: ${size.desktopL})`
 };
 
-export const MainWrapper = styled.div<{isOrange?: boolean}>`
+export const MainWrapper = styled.div<{ isOrange?: boolean }>`
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${({isOrange}) => isOrange ? `linear-gradient(111.87deg, #FFD3A8 3.23%, #FFB369 98.39%)` : "#E5E5E5"};
+  background: ${({
+                   isOrange,
+                   theme
+                 }) => isOrange ? `linear-gradient(111.87deg, ${theme.colors.primaryLight} 3.23%, ${theme.colors.primaryColorHover} 98.39%)` : theme.colors.mainBackground};
 `;
 
 export const MainContentWrapper = styled.div`
@@ -75,32 +79,31 @@ export const MainContentWrapper = styled.div`
   }
   @media ${device.desktopL} {
     max-width: 1440px;
-    background: #f7f7f7;
   }
 `;
 
-export const Wrapper = styled.div<{isLogin?: boolean; isBreadcrumb?: boolean}>`
+export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>`
   width: 100%;
   max-width: 1440px;
   margin: 20px auto;
-  min-height: ${({isBreadcrumb}) => isBreadcrumb ? "auto" : "100vh"};
-  border-radius: ${({isLogin}) => isLogin ? "10px" : "0"};
-  border: ${({isLogin}) => isLogin ? "3px dashed #FF6B00" : "none"};
-  background: ${({isLogin}) => isLogin ? "#FFEDED" : "none"};
-  padding: ${({isLogin}) => isLogin ? "20px" : "0"};
-  
-  @media(max-width: ${size.laptopL}){
+  min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
+  border-radius: ${({ isLogin }) => isLogin ? "10px" : "0"};
+  border: ${({ isLogin, theme }) => isLogin ? `3px dashed ${theme.colors.primaryColor}` : "none"};
+  background: ${({ isLogin, theme }) => isLogin ? theme.colors.mainBackground : "none"};
+  padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
+
+  @media (max-width: ${size.laptopL}) {
     padding: 20px;
   }
 
-  @media(max-width: ${size.tablet}){
+  @media (max-width: ${size.tablet}) {
     padding: 20px;
   }
-`
+`;
 
 export const TopContentWrapper = styled.div`
   width: 100%;
-  padding: 114px 0 32px 0;
+  padding: 114px 0 57px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
@@ -116,7 +119,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  max-width: 320px;
+  max-width: 300px;
   @media ${device.mobileS} {
     max-width: 320px;
   }
@@ -187,14 +190,14 @@ export const StyledMiddleText = styled.div`
 export const StyledWebsiteName = styled.div`
   font-size: 80px;
   text-align: center;
-  color:  ${({theme}) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
 export const StyledWebsiteSlogan = styled.div`
   font-size: 24px;
   text-align: center;
-  color:  ${({theme}) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
 `;
 
@@ -213,7 +216,6 @@ export const StyledTermsOfUse = styled.div`
 
 export const BottomContentWrapper = styled.div`
   width: 100%;
-  padding: 32px 0 32px 0;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -230,7 +232,7 @@ export type BreadCrumbsProps = {
 
 export const BreadcrumbsContainer = styled.div<BreadCrumbsProps>`
   width: 100%;
-  margin: ${(props) => props.marg || '120px 0px 0px 0px'};
+  margin: ${(props) => props.marg || "120px 0px 0px 0px"};
   padding: 1rem;
 `;
 
@@ -250,8 +252,8 @@ export const BottomContentWrapperForFlightResults = styled.div`
 `;
 
 export const FlightResultsMainWrapper = styled.div`
-  background-color: #E5E5E5;
-`
+  background-color: ${({ theme }) => theme.colors.mainBackground};
+`;
 
 
 export const HotelResultsMainContent = styled.div`
@@ -260,7 +262,7 @@ export const HotelResultsMainContent = styled.div`
   justify-content: center;
   width: 100%;
   @media (max-width: ${size.laptopM}) {
-  flex-wrap: wrap;
+    flex-wrap: wrap;
   }
 `;
 

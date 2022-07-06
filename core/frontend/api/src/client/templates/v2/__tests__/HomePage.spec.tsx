@@ -170,7 +170,7 @@ describe("Home Page Suite", () => {
 
   });
 
-  it("Should not perform Search with no data", async () => {
+  /*it("Should not perform Search with no data", async () => {
     render(<Wrapper {...homePageProps} />);
 
     fireEvent.click(
@@ -181,7 +181,7 @@ describe("Home Page Suite", () => {
       expect(screen.getByTestId(/test-destination-search-input/)).toHaveFocus();
     });
 
-  });
+  });*/
 
   /*it("Should perform Hotel Search with data", async () => {
 

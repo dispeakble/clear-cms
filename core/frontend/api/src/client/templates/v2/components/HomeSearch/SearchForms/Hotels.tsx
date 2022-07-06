@@ -13,7 +13,7 @@ import {
   StyledPrimaryValue,
   StyledSearchButton,
   StyledSearchCheckinGroup,
-  StyledSearchDestinationInput,
+  StyledSearchHotelInput,
   StyledSearchInputHolder,
   StyledSearchOptions,
   StyledSearchOptionsGroup,
@@ -117,7 +117,7 @@ export const Hotels = () => {
   };
 
   const formatDateSearch = (date: any) => {
-    return Intl.DateTimeFormat('ro', {
+    return Intl.DateTimeFormat("ro", {
       month: "2-digit",
       day: "2-digit",
       year: "2-digit"
@@ -154,10 +154,9 @@ export const Hotels = () => {
     }
 
     if (destination.length > 0
-        && checkInDate
-        && checkOutDate
-        && formatDate(checkInDate) !== formatDate(checkOutDate))
-    {
+      && checkInDate
+      && checkOutDate
+      && formatDate(checkInDate) !== formatDate(checkOutDate)) {
       router.push({
         pathname: `/hotels/search/
           ${destination}/
@@ -171,7 +170,7 @@ export const Hotels = () => {
 
   return (<>
       <StyledSearchInputHolder className="hotelsSearchForm">
-        <StyledSearchDestinationInput
+        <StyledSearchHotelInput
           className="singleInput"
           ref={destinationRef}
           data-testid="test-destination-search-input"
@@ -179,8 +178,8 @@ export const Hotels = () => {
           value={destination}
           onChange={handleDestination} />
         {showDestinations && <AutocompleteList
-            data-testid="test-autocomplete-list"
-            className="destination">
+          data-testid="test-autocomplete-list"
+          className="destination">
           {destinationList.map(
             (dest, i) =>
               <AutocompleteItem
@@ -243,15 +242,15 @@ export const Hotels = () => {
                             onChange={handleFilterChange} />}
             </StyledPerson>
             <StyledChild>
-              <StyledCenterLabel  data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
+              <StyledCenterLabel data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
               {showFilter === "children" &&
-                <><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
+                <div><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
                               max={4} onChange={handleFilterChange} />
 
-                  { filterValues.children > 0 && <ValuePopupAges
+                  {filterValues.children > 0 && <ValuePopupAges
                     className="childrenAges"
                     name="childrenAges"
                     min={0}
@@ -259,14 +258,14 @@ export const Hotels = () => {
                     count={filterValues.children}
                     data={filterValues.childrenAges}
                     dataTestId="test-children-ages-handler"
-                    onChange={handleFilterChange}/> }
-                </>
+                    onChange={handleFilterChange} />}
+                </div>
 
               }
             </StyledChild>
           </StyledSearchOptionsGroup>
           <StyledSearchButton onClick={searchSubmitHandler}
-                              data-testid="search-submit-btn">{t("search.searchPackagesButton")}</StyledSearchButton>
+                              data-testid="search-submit-btn">{t("search.searchHotelsButton")}</StyledSearchButton>
         </StyledSearchOptions>
       </StyledFilterWrapper>
       {(
