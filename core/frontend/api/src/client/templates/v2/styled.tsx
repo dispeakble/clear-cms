@@ -97,7 +97,7 @@ export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>
   }
 
   @media (max-width: ${size.tablet}) {
-    padding: 20px;
+    padding: 10px;
   }
 `;
 
