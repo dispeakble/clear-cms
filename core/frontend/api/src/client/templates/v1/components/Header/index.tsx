@@ -1,26 +1,55 @@
 import Logo from "./Logo";
 import Link from "next/link";
+import {useRouter} from "next/router";
 
 import {
+  AuthWrapper,
   HeaderContent,
   HeaderWrapper,
+  IconContainer, InfosItem, InfosItemLabel,
   InputSearch,
   LanguagesWrapper,
+  LoginButton, LogoutButton,
   LogoWrapper,
   MenuWrapper,
-  SearchWrapper
+  ProfileButton,
+  ProfileContainer,
+  ProfileFirstName,
+  ProfileInfosContainer, ProfileInfosItem, ProfileMainInfos,
+  ProfilePicture, ProfilePictureBig,
+  ProfilePictureInfosContainer,
+  RegisterButton,
+  SearchWrapper, UserEmail, UserFullName
 } from "./styled";
 import Languages from "./Languages";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import Menu from "./Menu";
+import {useAuthentication} from "../../../../context/AuthContext";
+import Image from "next/image";
+import DefaultImage from "../../assets/img/accounts/profile-default.png"
+import ExpandIcon from "../../assets/img/accounts/expand-icon.svg"
+import ProfileIcon from "../../assets/img/accounts/profile-icon.svg"
+import ChangePasswordIcon from "../../assets/img/accounts/bag-icon.svg"
+import InvoiceIcon from "../../assets/img/accounts/invoice-icon.svg"
+import StarIcon from "../../assets/img/accounts/star-icon.svg"
+
+
+
 
 const Header = (props: any) => {
   const links: any[] = props.links;
+  const {isAuthenticated, user} = useAuthentication()
 
   const t = useTranslations();
+  const router = useRouter()
 
   const [fixedHeader, setFixedHeader] = useState(false);
+  const [profileIsOpen, setProfileIsOpen] = useState(false);
+
+  const doLogout = () => {
+    router.push('/logout')
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -60,6 +89,92 @@ const Header = (props: any) => {
         <SearchWrapper>
           <InputSearch data-testid="header-search-input" type="search" placeholder={t("global.search")} />
         </SearchWrapper>
+        {
+          !isAuthenticated &&
+            (<AuthWrapper>
+              <LoginButton>
+                {t('global.accounts.login')}
+              </LoginButton>
+
+              <RegisterButton>
+                {t('global.accounts.signup')}
+              </RegisterButton>
+            </AuthWrapper>)
+        }
+        {
+          (isAuthenticated && user) &&
+            (
+                <ProfileContainer>
+                  <ProfileButton onClick={() => setProfileIsOpen(!profileIsOpen)}>
+                    <ProfilePicture>
+                      <Image src={user.img || DefaultImage} alt="profile-picture" width={32} height={32} />
+                    </ProfilePicture>
+                    <ProfileFirstName>
+                      {user && user.firstName}
+                    </ProfileFirstName>
+                    <IconContainer>
+                      <Image src={ExpandIcon} alt="expand-icon" width={15} />
+                    </IconContainer>
+                  </ProfileButton>
+
+                  <ProfileInfosContainer isOpen={profileIsOpen}>
+                    <ProfilePictureInfosContainer>
+                      <ProfilePictureBig>
+                        <Image src={user.img || DefaultImage} alt="profile-picture" width={64} height={64} />
+                      </ProfilePictureBig>
+                      <ProfileMainInfos>
+                        <UserFullName>
+                          {`${user.firstName} ${user.lastName}`}
+                        </UserFullName>
+                        <UserEmail>
+                          {user && user.email}
+                        </UserEmail>
+                      </ProfileMainInfos>
+                    </ProfilePictureInfosContainer>
+
+                    <ProfileInfosItem>
+                      <InfosItem>
+                        <Image src={ProfileIcon} alt="icon-item" className="iconItem" />
+                        <InfosItemLabel>
+                          {t('global.accounts.myProfile')}
+                        </InfosItemLabel>
+                      </InfosItem>
+                    </ProfileInfosItem>
+
+                    <ProfileInfosItem>
+                      <InfosItem>
+                        <Image src={ChangePasswordIcon} alt="icon-item" className="iconItem" />
+                        <InfosItemLabel>
+                          {t('global.accounts.changePassword')}
+                        </InfosItemLabel>
+                      </InfosItem>
+                    </ProfileInfosItem>
+
+                    <ProfileInfosItem>
+                      <InfosItem>
+                        <Image src={InvoiceIcon} alt="icon-item" className="iconItem" />
+                        <InfosItemLabel>
+                          {t('global.accounts.invoices')}
+                        </InfosItemLabel>
+                      </InfosItem>
+                    </ProfileInfosItem>
+
+                    <ProfileInfosItem>
+                      <InfosItem>
+                        <Image src={StarIcon} alt="icon-item" className="iconItem" />
+                        <InfosItemLabel>
+                          {t('global.accounts.contracts')}
+                        </InfosItemLabel>
+                      </InfosItem>
+                    </ProfileInfosItem>
+
+                    <LogoutButton onClick={doLogout}>
+                      {t('global.accounts.logout')}
+                    </LogoutButton>
+                  </ProfileInfosContainer>
+                </ProfileContainer>
+            )
+        }
       </HeaderContent>
 
     </HeaderWrapper>

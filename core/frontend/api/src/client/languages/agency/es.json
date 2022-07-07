@@ -14,6 +14,15 @@
     "loading": "Cargando...",
     "redirecting": "Redirigiendo...",
     "loggingOut": "Cerrar la sesión...",
+    "accounts": {
+      "login": "Inicio de sesión",
+      "logout": "Cierre de sesión",
+      "signup": "Registrarse",
+      "myProfile": "Mi perfil",
+      "changePassword": "Cambiar la contraseña",
+      "invoices": "Facturas",
+      "contracts": "Contratos"
+    },
     "loader": {
       "waitAMoment": "Por favor, espere un momento...",
       "redirecting": "Redirigiendo..."

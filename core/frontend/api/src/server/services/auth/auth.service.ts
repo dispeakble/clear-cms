@@ -33,7 +33,7 @@ export class AuthService {
         const _user = await this.usersService.getUserById(user.userId).toPromise();
         if (_user) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { password, ...result } = _user;
+            const { password, refresh_token , ...result } = _user;
             return result;
         }
 

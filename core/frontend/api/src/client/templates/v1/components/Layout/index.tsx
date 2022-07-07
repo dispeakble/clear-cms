@@ -3,7 +3,7 @@ import { ThemeProvider } from "styled-components";
 import Header from "../Header";
 import {
     GlobalStyle,
-    MainWrapper,
+    MainWrapper, StyledMiddleText, StyledWebsiteName, StyledWebsiteSlogan,
     TopContentWrapper, Wrapper
 } from "../../styled";
 import Breadcrumbs from "../Breadcrumbs";
@@ -11,8 +11,17 @@ import { getIcon } from "../../helpers/icons";
 import Footer from "../Footer";
 import {MuiThemeProvider} from "@material-ui/core";
 import {createTheme} from "@material-ui/core/styles";
+import HomeSearch from "../HomeSearch";
 
-const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOrange, isInvisible }: any) => {
+const Layout = ({ websiteName,
+                    colorScheme,
+                    children,
+                    breadcrumbs,
+                    isLogin,
+                    isOrange,
+                    isInvisible,
+                    isHomePage,
+                    websiteSlogan }: any) => {
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -90,10 +99,25 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
                             <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
                                 <TopContentWrapper>
                                     <Header websiteName={websiteName} />
+                                    {
+                                        isHomePage &&
+                                        (
+                                            <>
+                                                <HomeSearch />
+                                                <StyledMiddleText>
+                                                    <StyledWebsiteName>{websiteName}</StyledWebsiteName>
+                                                    <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
+                                                </StyledMiddleText>
+                                            </>
+                                        )
+                                    }
                                 </TopContentWrapper>
-                                <Wrapper isBreadcrumb>
-                                    <Breadcrumbs {...breadcrumbs} />
-                                </Wrapper>
+                                {
+                                    breadcrumbs &&
+                                    <Wrapper isBreadcrumb>
+                                        <Breadcrumbs {...breadcrumbs} />
+                                    </Wrapper>
+                                }
                                 <Wrapper isLogin={isLogin}>
                                     {children}
                                 </Wrapper>
