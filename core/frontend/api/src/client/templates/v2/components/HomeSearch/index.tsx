@@ -4,14 +4,18 @@ import {
   StyledSearchTab,
   StyledSearchTabs,
 } from "./styled";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Packages } from "./SearchForms/Packages";
 import { Hotels } from "./SearchForms/Hotels";
 import { Flights } from "./SearchForms/Flights";
 
-const HomeSearch = () => {
+interface HomeSearchProps {
+  selectedTab: string
+}
+
+const HomeSearch: React.FC<HomeSearchProps> = ({ selectedTab }) => {
   const t = useTranslations();
-  const [formType, setFormType] = useState('hotels');
+  const [formType, setFormType] = useState(selectedTab);
 
   const changeForm = (type: string) => {
     setFormType(type);
@@ -20,13 +24,13 @@ const HomeSearch = () => {
   return <StyledHomeSearch>
     <StyledSearchTabs>
       <StyledSearchTab
-        onClick={() => changeForm('hotels')}
-        data-testid='test-hotels-search-tab'
-        className={formType === 'hotels' ? 'selected' : ''}>{t("search.hotels")}</StyledSearchTab>
-      <StyledSearchTab
         data-testid='test-packages-search-tab'
         onClick={() => changeForm('packages')}
         className={formType === 'packages' ? 'selected' : ''}>{t("search.packages")}</StyledSearchTab>
+      <StyledSearchTab
+        onClick={() => changeForm('hotels')}
+        data-testid='test-hotels-search-tab'
+        className={formType === 'hotels' ? 'selected' : ''}>{t("search.hotels")}</StyledSearchTab>
       <StyledSearchTab
         onClick={() => changeForm('flights')}
         data-testid='test-flights-search-tab'

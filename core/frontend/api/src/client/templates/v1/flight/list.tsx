@@ -40,7 +40,7 @@ const List = ({ websiteName, colorScheme }: any) => {
                 <MainWrapper>
                     <TopContentWrapperForFlightResults>
                         <ContentWrapper>
-                            <HomeSearch />
+                            <HomeSearch selectedTab='flights' />
                         </ContentWrapper>
                     </TopContentWrapperForFlightResults>
                     <Wrapper>

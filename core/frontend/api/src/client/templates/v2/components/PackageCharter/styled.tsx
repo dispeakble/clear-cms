@@ -178,15 +178,7 @@ export const ChildIcon = styled.div`
   cursor: pointer;
   background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
 `;
-export const InfantIcon = styled.div`
-  position: relative;
-  height: 26px;
-  width: 15px;
-  top: 0;
-  background: url(${({theme}) => theme.icon('infant')}) no-repeat left center;
-  cursor: pointer;
 
-`;
 export const HotelView = styled.div`
   flex: 1;
   height: 100%;
@@ -282,6 +274,7 @@ export const ViewMap = styled.div`
     font-size: 16px;
     cursor: pointer;
     font-weight: 500;
+    white-space: nowrap;
   }
 `;
 // Slider Section

@@ -1,7 +1,15 @@
 import React, {useState} from "react";
 import {useTranslations} from "next-intl";
 import {getIcon} from "../helpers/icons";
-import {GlobalStyle, MainWrapper, TopContentWrapper, Wrapper} from "../styled";
+import {
+  ContentWrapper,
+  GlobalStyle,
+  MainWrapper, PaperWrapper,
+  StyledMiddleText,
+  StyledWebsiteName, StyledWebsiteSlogan,
+  TopContentWrapper,
+  Wrapper
+} from "../styled";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { ThemeProvider } from "styled-components";
@@ -58,7 +66,7 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
                 }
             ],
             startingPrice: 1409,
-            packageOfferType: `${t("global.adults")} / 7 ${t("global.nights")}}`,
+            packageOfferType: `${t("global.adults")} / 7 ${t("global.nights")}`,
             description: t("filters.description"),
             services: [
                 t("filters.services.flightIncluded"),
@@ -172,20 +180,15 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
         <ThemeProvider theme={myTheme}>
             <GlobalStyle />
             <MainWrapper data-testid="hotel-page-wrapper">
-                <TopContentWrapper>
-                    <Header websiteName={websiteName} />
-                </TopContentWrapper>
-                <Wrapper>
-                    <Breadcrumbs />
-                </Wrapper>
-                <TopContentWrapper>
-                    <Wrapper
-                        style={{display: "flex", alignItems: "center", justifyContent: "center"}}
-                    >
-                        <HomeSearch />
-                    </Wrapper>
-                </TopContentWrapper>
-                <Wrapper>
+              <TopContentWrapper>
+                <ContentWrapper>
+                  <Header websiteName={websiteName} />
+                  <Breadcrumbs />
+                  <HomeSearch selectedTab='hotels' />
+                </ContentWrapper>
+              </TopContentWrapper>
+                <PaperWrapper>
+                  <ContentWrapper>
                     <PackagesLayout>
                         <FiltersContainer>
                             <Filters
@@ -209,7 +212,8 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
                             </ButtonContainer>
                         </PackagesContainer>
                     </PackagesLayout>
-                </Wrapper>
+                  </ContentWrapper>
+                </PaperWrapper>
                 <Footer />
             </MainWrapper>
         </ThemeProvider>

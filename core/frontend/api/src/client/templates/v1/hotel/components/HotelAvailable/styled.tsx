@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { size } from "../../styled";
 import Calendar from "react-calendar";
 import { Shadows } from "../../../../../assets/design-set";
-import {device} from "../../../styled";
+import { device } from "../../../styled";
 
 export const QueryTitle = styled.div`
   font-weight: 600;
@@ -25,11 +25,6 @@ export const ChildIcon = styled.div`
   background: url(${({ theme }) => theme.icon("child")}) no-repeat left center;
   cursor: pointer;
   width: 20px;
-`;
-export const InfantIcon = styled.div`
-  background: url(${({ theme }) => theme.icon("infant")}) no-repeat left center;
-  cursor: pointer;
-  width: 12px;
 `;
 export const CheckOutSvg = styled.div`
   background: url(${({ theme }) => theme.icon("checkOut")}) no-repeat left center;
@@ -97,7 +92,7 @@ export const StyledSearchOptionsGroup = styled.div`
 export const StyledPrimaryValue = styled.div`
   font-weight: bold;
   font-size: 14px;
-  color: ${({theme}) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.primaryColor};
 `;
 export const StyledPerson = styled.label`
   cursor: pointer;
@@ -105,15 +100,17 @@ export const StyledPerson = styled.label`
   display: inline-block;
   padding: 10px 0 10px 10px;
   position: relative;
-  background: url(${({theme}) => theme.icon('person')}) no-repeat 50px 12px;
+  background: url(${({ theme }) => theme.icon("person")}) no-repeat 50px 12px;
+
   &:hover {
     background-color: #F6F0DF;
     border-radius: 14px 0px 0px 14px;
   }
+
   @media ${device.laptop} {
     background-position: 40px 12px;
   }
-  
+
   @media ${device.laptopL} {
     background-position: 45px 12px;
   }
@@ -129,18 +126,20 @@ export const StyledChild = styled.label`
   display: inline-block;
   padding: 10px 0 10px 10px;
   position: relative;
-  background: url(${({theme}) => theme.icon('child')}) no-repeat 35px 12px;
+  background: url(${({ theme }) => theme.icon("child")}) no-repeat 35px 12px;
+
   &:hover {
     background-color: #F6F0DF;
     border-radius: 0px 14px 14px 0px;
   }
+
   @media (max-width: ${size.mobileL}) {
     border-radius: 0 8px 0 0;
   }
   @media ${device.laptop} {
     background-position: 25px 12px;
   }
-  
+
   @media ${device.desktop} {
     background-position: 50px 12px;
   }
@@ -160,6 +159,7 @@ export const StyledLabel = styled.label`
   color: #505050;
   font-size: inherit;
   white-space: nowrap;
+
   & > span {
     padding-right: 10px !important;
   }
@@ -230,6 +230,7 @@ export const RoomTable = styled.div`
 `;
 export const TableHead = styled.div`
   display: none;
+
   & > div {
     text-align: left;
   }
@@ -375,6 +376,7 @@ export const ColumnThree = styled.div`
     margin: 0;
     padding: 0;
     flex: 1;
+
     input {
       border: none;
       outline: none;
@@ -387,6 +389,7 @@ export const ColumnThree = styled.div`
       transition: all 500ms ease-in-out;
       cursor: pointer;
       padding-left: 10px;
+
       :focus {
         outline: none;
         border: none;
@@ -397,6 +400,7 @@ export const ColumnThree = styled.div`
       list-style-type: none;
     }
   }
+
   min-width: 155px;
 `;
 export const LeftIcon = styled.div`
@@ -484,7 +488,7 @@ export const InnerRoomList = styled.div`
       filter: drop-shadow(1px -2px 4px rgba(0, 0, 0, 0.17));
 
       transition: all 100ms ease-in-out;
-      
+
       & h3 {
         color: ${({ theme }) => theme.colors.gray};
       }
@@ -574,7 +578,7 @@ export const CalendarView = styled.div`
   top: 76px;
   left: -10px;
   z-index: 20;
-  
+
 `;
 export const CalendarViewCheckout = styled.div`
   position: absolute;
@@ -617,6 +621,7 @@ export const CounterBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   :hover {
     background-color: ${({ theme }) => theme.colors.primaryColor};
     color: ${({ theme }) => theme.colors.white};
@@ -873,13 +878,15 @@ export const StayingInfoWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
+
   p {
     font-size: 12px;
     font-weight: 500;
     margin: 0 0 5px 0;
     color: #333333;
   }
-  @media (min-width: ${size.laptop}){
+
+  @media (min-width: ${size.laptop}) {
     width: 115px;
   }
 `;
@@ -895,37 +902,41 @@ export const PassengerWrapper = styled.div`
   flex: 1;
   cursor: pointer;
   padding: 5px 0;
-  :first-child{
+
+  :first-child {
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
-    @media (max-width: ${size.tablet}){
+    @media (max-width: ${size.tablet}) {
       padding: 10px 0 10px 0;
     }
-    @media (min-width: ${size.laptop}){
+    @media (min-width: ${size.laptop}) {
       padding: 10px 0 10px 2px;
     }
 
   }
-  :last-child{
+
+  :last-child {
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
-    @media (max-width: ${size.tablet}){
+    @media (max-width: ${size.tablet}) {
       padding: 10px 0 10px 0;
     }
-    @media (min-width: ${size.laptop}){
+    @media (min-width: ${size.laptop}) {
       padding: 10px 10px 10px 0;
     }
   }
-  :hover{
+
+  :hover {
     background: #F6F0DF;
   }
+
   span {
     margin-left: 8px;
   }
 
   p {
     margin: 0;
-    color: ${({theme}) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.primaryColor};
     font-weight: 500;
     font-size: 16px;
   }
@@ -933,13 +944,14 @@ export const PassengerWrapper = styled.div`
   div {
     text-align: center;
   }
-  @media (max-width: ${size.tablet}){
+
+  @media (max-width: ${size.tablet}) {
     padding: 10px 0 10px 0;
   }
 `;
 
 export const PassengerDetailsWrapper = styled.div`
-  cursor:pointer;
+  cursor: pointer;
   display: flex;
 `;
 
@@ -953,36 +965,40 @@ export const CalenderWrapper = styled.div`
   justify-self: stretch;
   flex: 1;
   cursor: pointer;
-  :first-child{
+
+  :first-child {
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
     padding-left: 8px;
     padding-right: 8px;
 
-    @media (max-width: ${size.tablet}){
+    @media (max-width: ${size.tablet}) {
       padding: 10px 0 10px 0;
     }
   }
-  :last-child{
+
+  :last-child {
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     padding-right: 8px;
 
-    @media (max-width: ${size.tablet}){
+    @media (max-width: ${size.tablet}) {
       padding: 10px 0 10px 0;
-      
+
     }
   }
-  :hover{
+
+  :hover {
     background: #F6F0DF;
   }
+
   span {
     margin-left: 8px;
   }
 
   p {
     margin: 0;
-    color: ${({theme}) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.black};
     font-weight: 500;
     font-size: 14px;
     line-height: 21px;
@@ -996,14 +1012,14 @@ export const CalenderWrapper = styled.div`
 
 export const StyledTooltipWrapper = styled.div`
   & > * {
-    color: ${({theme}) => theme.colors.primaryColor} !important;
-    background: ${({theme}) => theme.colors.white} !important;
+    color: ${({ theme }) => theme.colors.primaryColor} !important;
+    background: ${({ theme }) => theme.colors.white} !important;
   }
-  
+
   & > .place-top::after {
-    border-top-color: ${({theme}) => theme.colors.white} !important;
+    border-top-color: ${({ theme }) => theme.colors.white} !important;
   }
-  
+
   & > .__react_component_tooltip {
     max-width: 350px;
   }

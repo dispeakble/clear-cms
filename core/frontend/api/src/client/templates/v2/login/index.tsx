@@ -39,7 +39,7 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
     const [error, setError] = React.useState<string>("")
     const {isLoading, isAuthenticated, setIsAuthenticated} = useAuthentication();
     const router = useRouter();
-    let reCAPTCHARef = React.useRef<ReCAPTCHA>(null)
+    const reCAPTCHARef = React.useRef<ReCAPTCHA>()
 
     const breadcrumbs = {
         login: "Log in"
@@ -91,9 +91,9 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                 (
                     <>
                         <ReCAPTCHA
-                            sitekey={recaptchaKey}
+                            sitekey="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH"
                             size="invisible"
-                            ref={(el: any) => reCAPTCHARef = el}
+                            ref={reCAPTCHARef}
                         />
                         <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
                             <LoginWrapper>
@@ -130,10 +130,10 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                                             }
                                             onSubmit={
                                                 async (values, actions) => {
-                                                    actions.setSubmitting(true)
-                                                    let token;
-                                                    if(reCAPTCHARef.current){
-                                                        token = await reCAPTCHARef.current.executeAsync();
+                                                    try{
+                                                        actions.setSubmitting(true)
+                                                        const token = await reCAPTCHARef?.current.executeAsync();
+                                                        console.log(token, "token")
 
                                                         if(token){
                                                             const verify = await isHuman(token)
@@ -146,10 +146,11 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                                                             setError(t('global.errors.errorOccurred'))
                                                         }
                                                         reCAPTCHARef.current.reset()
-                                                    } else{
-                                                        setError(t('global.errors.errorOccurred'))
+                                                        actions.setSubmitting(false)
+                                                    } catch(err){
+                                                        // eslint-disable-next-line no-console
+                                                        console.log(err)
                                                     }
-                                                    actions.setSubmitting(false)
                                                 }
                                             }
                                         >

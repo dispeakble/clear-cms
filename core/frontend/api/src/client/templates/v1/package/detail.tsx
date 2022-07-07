@@ -4,246 +4,221 @@ import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
 import { useTranslations } from "next-intl";
 import {
-    BottomContentWrapper,
-    BreadcrumbsContainer,
-    ContentWrapper,
-    ContentWrapperForPackageDetail,
-    DetailWrapper,
-    GlobalStyle,
-    MainContentWrapper,
-    MainWrapper,
-    PackageDetailMainContent,
-    ServiceAndMapWrapper
+  BottomContentWrapper,
+  BreadcrumbsContainer,
+  ContentWrapper,
+  ContentWrapperForPackageDetail,
+  DetailWrapper,
+  GlobalStyle,
+  MainContentWrapper,
+  MainWrapper,
+  PackageDetailMainContent, PaperWrapper,
+  ServiceAndMapWrapper, TopContentWrapper
 } from "../styled";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PackageDetailCard from "../components/PackageDetailCard";
 import moment from "moment";
 import { getIcon } from "../helpers/icons";
 import {
-    Cardtitle,
-    CheckedIcon,
-    Feature,
-    Highlights,
-    MapSection,
-    UncheckedIcon
+  Cardtitle,
+  CheckedIcon,
+  Feature,
+  Highlights,
+  MapSection,
+  UncheckedIcon
 } from "../hotel/components/HotelAbout/styled";
 import GoogleMapReact from "google-map-react";
 import Footer from "../components/Footer";
 import PackageCharter from "../components/PackageCharter";
 import HotelCardGrid from "../hotel/components/HotelCardGrid";
+import { PackagesDetail, PackagesLayout } from "./styled";
 
 
 const PackageDetail = ({ websiteName, colorScheme }: any) => {
-    // const t = useTranslations();
+  // const t = useTranslations();
 
-    const getIcons = (iconName: string) => {
-        return getIcon(iconName);
-    };
-    const t = useTranslations();
+  const getIcons = (iconName: string) => {
+    return getIcon(iconName);
+  };
+  const t = useTranslations();
 
-    const [mapData] = useState({
-        center: {
-            lat: 30.738270,
-            lng: 76.765144
-        },
-        zoom: 13
+  const [mapData] = useState({
+    center: {
+      lat: 30.738270,
+      lng: 76.765144
+    },
+    zoom: 13
+  });
+
+  const [data, setData] = useState({
+    hotel: "",
+    checkin: new Date(),
+    checkout: moment(new Date()).add(1, "d"),
+    passenger: {
+      adults: 1,
+      children: 0
+    }
+
+  });
+
+  const handleChangeInput = (name: string, value: any) => {
+    setData({
+      ...data,
+      [name]: value
+    });
+  };
+  const handleAdultPlus = () => {
+    setData({
+      ...data,
+      passenger: {
+        ...data.passenger,
+        adults: data.passenger.adults + 1
+      }
     });
 
-    const [data, setData] = useState({
-        hotel: "",
-        checkin: new Date(),
-        checkout: moment(new Date()).add(1, "d"),
+  };
+  const handleAdultMinus = () => {
+    if (Number(data.passenger.adults) > 0) {
+      setData({
+        ...data,
         passenger: {
-            adults: 1,
-            infants: 0,
-            children: 0
+          ...data.passenger,
+          adults: data.passenger.adults - 1
         }
+      });
+    }
 
+
+  };
+
+  const handleChildrenPlus = () => {
+    setData({
+      ...data,
+      passenger: {
+        ...data.passenger,
+        children: data.passenger.children + 1
+      }
     });
 
-    const handleChangeInput = (name: string, value: any) => {
-        setData({
-            ...data,
-            [name]: value
-        });
-    };
-    const handleAdultPlus = () => {
-        setData({
-            ...data,
-            passenger: {
-                ...data.passenger,
-                adults: data.passenger.adults + 1
-            }
-        });
-
-    };
-    const handleAdultMinus = () => {
-        if (Number(data.passenger.adults) > 0) {
-            setData({
-                ...data,
-                passenger: {
-                    ...data.passenger,
-                    adults: data.passenger.adults - 1
-                }
-            });
+  };
+  const handleChildrenMinus = () => {
+    if (Number(data.passenger.children) > 0) {
+      setData({
+        ...data,
+        passenger: {
+          ...data.passenger,
+          children: data.passenger.children - 1
         }
+      });
+    }
 
 
-    };
-    const handleInfantsPlus = () => {
-        setData({
-            ...data,
-            passenger: {
-                ...data.passenger,
-                infants: data.passenger.infants + 1
-            }
-        });
+  };
+  const handleHotelSearch = (hotelValue: any) => {
+    setData({
+      ...data,
+      hotel: hotelValue
+    });
 
-    };
-    const handleInfantsMinus = () => {
-        if (Number(data.passenger.infants) > 0) {
-            setData({
-                ...data,
-                passenger: {
-                    ...data.passenger,
-                    infants: data.passenger.infants - 1
-                }
-            });
-        }
+  };
+  const handleSearch = (value: any) => {
+    setData({
+      ...data,
+      hotel: value
+    });
+  };
 
-
-    };
-
-    const handleChildrenPlus = () => {
-        setData({
-            ...data,
-            passenger: {
-                ...data.passenger,
-                children: data.passenger.children + 1
-            }
-        });
-
-    };
-    const handleChildrenMinus = () => {
-        if (Number(data.passenger.children) > 0) {
-            setData({
-                ...data,
-                passenger: {
-                    ...data.passenger,
-                    children: data.passenger.children - 1
-                }
-            });
-        }
+  const myTheme: any = { colors: colorScheme, icon: getIcons };
+  const Features = [
+    t("packageDetails.services.flightIncluded"),
+    t("packageDetails.services.checkinBaggage"),
+    t("packageDetails.services.handBaggage"),
+    t("packageDetails.services.airportTaxes"),
+    t("packageDetails.services.airportToHotel"),
+    t("packageDetails.services.hotelToAirport"),
+    t("packageDetails.services.touristAssistance"),
+    `7 ${t("packageDetails.services.flightIncluded")}`
+  ];
 
 
-    };
-    const handleHotelSearch = (hotelValue: any) => {
-        setData({
-            ...data,
-            hotel: hotelValue
-        });
+  return (
+    <>
+      <ThemeProvider theme={myTheme}>
+        <GlobalStyle />
+        <MainWrapper data-testid="package-page-wrapper">
+          <Header websiteName={websiteName} />
+          <TopContentWrapper>
+            <ContentWrapper>
+              <Breadcrumbs countryName={t("packageDetails.countryName")}
+                           islandName={t("packageDetails.islandName")}
+                           townName={t("packageDetails.townName")}
+                           hotelName={t("packageDetails.hotelName", { hotelName: "Hotel Victoria" })} />
+              <PackageCharter
+                data={data}
+                handleChildrenMinus={handleChildrenMinus}
+                handleChildrenPlus={handleChildrenPlus}
+                handleChangeInput={handleChangeInput}
+                handleAdultPlus={handleAdultPlus}
+                handleAdultMinus={handleAdultMinus}
+                handleSearch={handleSearch}
+                handleHotelSearch={handleHotelSearch}
+              />
 
-    };
-    const handleSearch = (value: any) => {
-        setData({
-            ...data,
-            hotel: value
-        });
-    };
+            </ContentWrapper>
+          </TopContentWrapper>
+          <PaperWrapper style={{marginTop: "57px"}}>
+            <ContentWrapper>
+              <BottomContentWrapper>
+                <ServiceAndMapWrapper>
+                  <ContentWrapper>
+                    <Highlights>
+                      <Cardtitle>
+                        {t("packageDetails.incService")}
+                      </Cardtitle>
+                      <Feature>
+                        {
+                          Features.map((value, index) => {
+                            return (
+                              <li key={index}><CheckedIcon /><span>{value}</span></li>
+                            );
+                          })
+                        }
+                      </Feature>
+                      <Cardtitle>
+                        {t("packageDetails.notIncService")}
+                      </Cardtitle>
+                      <Feature>
+                        <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
+                      </Feature>
+                    </Highlights>
+                    <MapSection id="showmap">
+                      <GoogleMapReact
+                        bootstrapURLKeys={{
+                          key: "AIzaSyBX1z5nvjcjzyxSMT-QCVS3ERu6Y3iNSb0",
+                          libraries: ["places", "geometry"]
+                        }}
+                        defaultCenter={mapData.center}
+                        defaultZoom={mapData.zoom}
+                        yesIWantToUseGoogleMapApiInternals
 
-    const myTheme: any = { colors: colorScheme, icon: getIcons };
-    const Features = [
-        t("packageDetails.services.flightIncluded"),
-        t("packageDetails.services.checkinBaggage"),
-        t("packageDetails.services.handBaggage"),
-        t("packageDetails.services.airportTaxes"),
-        t("packageDetails.services.airportToHotel"),
-        t("packageDetails.services.hotelToAirport"),
-        t("packageDetails.services.touristAssistance"),
-        `7 ${t("packageDetails.services.flightIncluded")}`
-    ];
+                      />
+                    </MapSection>
+                  </ContentWrapper>
+                </ServiceAndMapWrapper>
+                <DetailWrapper>
+                  <PackageDetailCard />
+                  <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
+                  <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
+                </DetailWrapper>
+              </BottomContentWrapper>
+              <Footer />
+            </ContentWrapper>
 
-
-    return (
-      <>
-          <ThemeProvider theme={myTheme}>
-              <GlobalStyle />
-
-              <MainWrapper>
-                  <Header websiteName={websiteName} />
-                  <MainContentWrapper>
-                      <BreadcrumbsContainer>
-                          <Breadcrumbs countryName={t("packageDetails.countryName")}
-                                       islandName={t("packageDetails.islandName")}
-                                       townName={t("packageDetails.townName")}
-                                       hotelName={t("packageDetails.hotelName", { hotelName: "Hotel Victoria" })} />
-                      </BreadcrumbsContainer>
-                      <PackageDetailMainContent>
-                          <ContentWrapperForPackageDetail>
-                              <PackageCharter
-                                data={data}
-                                handleChildrenMinus={handleChildrenMinus}
-                                handleChildrenPlus={handleChildrenPlus}
-                                handleInfantsMinus={handleInfantsMinus}
-                                handleInfantsPlus={handleInfantsPlus}
-                                handleChangeInput={handleChangeInput}
-                                handleAdultPlus={handleAdultPlus}
-                                handleAdultMinus={handleAdultMinus}
-                                handleSearch={handleSearch}
-                                handleHotelSearch={handleHotelSearch}
-                              />
-                          </ContentWrapperForPackageDetail>
-
-                          <BottomContentWrapper>
-                              <ServiceAndMapWrapper>
-                                  <ContentWrapper>
-                                      <Highlights>
-                                          <Cardtitle>
-                                              {t("packageDetails.incService")}
-                                          </Cardtitle>
-                                          <Feature>
-                                              {
-                                                  Features.map((value, index) => {
-                                                      return (
-                                                        <li key={index}><CheckedIcon /><span>{value}</span></li>
-                                                      );
-                                                  })
-                                              }
-                                          </Feature>
-                                          <Cardtitle>
-                                              {t("packageDetails.notIncService")}
-                                          </Cardtitle>
-                                          <Feature>
-                                              <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
-                                          </Feature>
-                                      </Highlights>
-                                      <MapSection id="showmap">
-                                          <GoogleMapReact
-                                            bootstrapURLKeys={{
-                                                key: "AIzaSyBX1z5nvjcjzyxSMT-QCVS3ERu6Y3iNSb0",
-                                                libraries: ["places", "geometry"]
-                                            }}
-                                            defaultCenter={mapData.center}
-                                            defaultZoom={mapData.zoom}
-                                            yesIWantToUseGoogleMapApiInternals
-
-                                          />
-                                      </MapSection>
-                                  </ContentWrapper>
-                              </ServiceAndMapWrapper>
-                              <DetailWrapper>
-                                  <PackageDetailCard />
-                                  <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
-                                  <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
-                              </DetailWrapper>
-                          </BottomContentWrapper>
-                      </PackageDetailMainContent>
-                  </MainContentWrapper>
-                  <Footer />
-              </MainWrapper>
-          </ThemeProvider>
-      </>
-    );
+          </PaperWrapper>
+        </MainWrapper>
+      </ThemeProvider>
+    </>
+  );
 
 };
 

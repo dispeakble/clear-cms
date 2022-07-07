@@ -103,7 +103,7 @@ const Layout = ({ websiteName,
                                         isHomePage &&
                                         (
                                             <>
-                                                <HomeSearch />
+                                                <HomeSearch selectedTab="packages"/>
                                                 <StyledMiddleText>
                                                     <StyledWebsiteName>{websiteName}</StyledWebsiteName>
                                                     <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>

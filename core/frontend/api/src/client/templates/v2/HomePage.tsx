@@ -22,6 +22,7 @@ import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
 import Footer from "./components/Footer";
 import useWsContext from "../../context/SocketContext";
+import Layout from "./components/Layout";
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   /*
 
@@ -48,27 +49,8 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     sendEmail()
   }, [sendEmail]);*/
 
-
-  const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-  };
-
-  const myTheme: any = { colors: colorScheme, icon: getIcons };
-
   return (
-    <ThemeProvider theme={myTheme}>
-      <GlobalStyle />
-      <MainWrapper data-testid="home-main-wrapper">
-        <TopContentWrapper>
-          <ContentWrapper>
-            <Header websiteName={websiteName} />
-            <HomeSearch />
-            <StyledMiddleText>
-              <StyledWebsiteName>{websiteName}</StyledWebsiteName>
-              <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
-            </StyledMiddleText>
-          </ContentWrapper>
-        </TopContentWrapper>
+      <Layout isHomePage websiteSlogan={websiteSlogan} websiteName={websiteName} colorScheme={colorScheme} >
         <PaperWrapper>
           <ContentWrapper>
             <TopHotels />
@@ -79,8 +61,7 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
             <Footer />
           </ContentWrapper>
         </PaperWrapper>
-      </MainWrapper>
-    </ThemeProvider>
+      </Layout>
   );
 };
 

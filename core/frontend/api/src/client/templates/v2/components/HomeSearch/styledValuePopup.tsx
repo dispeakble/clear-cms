@@ -43,10 +43,14 @@ export const StyledButton = styled.button`
   border-radius: 50%;
   width: 24px;
   height: 24px;
-  border: 1px solid ${({theme}) => theme.colors.primaryColor};
+  border: none;
+  background: ${({theme}) => theme.colors.primaryColor};
   cursor: pointer;
-  color: ${({theme}) => theme.colors.primaryColor};
+  color: ${({theme}) => theme.colors.white};
   user-select: none;
+  &:hover {
+    background: ${({theme}) => theme.colors.primaryColorHover};
+  }
 `;
 
 export const StyledAgeLabel = styled.div`
