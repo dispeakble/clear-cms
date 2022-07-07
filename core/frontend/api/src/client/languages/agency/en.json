@@ -609,5 +609,16 @@
     "invoiceDetails": "Invoice details",
     "price": "Price",
     "download": "Download Invoice"
+  },
+  "clientArea": {
+    "greetings": "Hello, {name}!",
+    "daysCount": "You are part of {website} for",
+    "personalInfo": "Personal information",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "dateOfBirth": "Date of birth",
+    "contactNumber": "Contact number",
+    "editProfile": "Edit profile"
   }
 }

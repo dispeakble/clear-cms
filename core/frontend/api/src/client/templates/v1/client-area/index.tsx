@@ -29,6 +29,28 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
         return moment().diff(given, 'days');
     }
 
+    const personalInfo: any = user && {
+        'firstName': {
+            value: user.firstName,
+            label: t('clientArea.firstName')
+        },
+        'lastName': {
+            value: user.lastName,
+            label: t('clientArea.lastName')
+        },
+        'dateOfBirth': {
+            value: user.dateOfBirth || '-',
+            label: t('clientArea.dateOfBirth')
+        },
+        'contactNumber': {
+            value: user.contactNumber || '-',
+            label: t('clientArea.contactNumber')
+        },
+        'email': {
+            value: user.email,
+            label: t('clientArea.email')
+        },
+    }
     return(
         isLoading ? (
                 <>
@@ -47,50 +69,38 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
                                     </ClientProfilePicture>
                                     <div>
                                         <ClientGreetings>
-                                            {`Hello, ${user.firstName}!`}
+                                            {t('clientArea.greetings', {name: user.firstName})}
                                         </ClientGreetings>
                                         <Text>
-                                            You are part of Mario Viajes for
+                                            {t('clientArea.daysCount', {website: websiteName})}
                                         </Text>
                                         <NoOfDays>
-                                            {daysDiff(user.createdAt as Date)} days
+                                            {daysDiff(user.createdAt as Date)} {t('global.days')}
                                         </NoOfDays>
                                     </div>
                                 </div>
                                 <div>
                                     <EditProfileButton>
-                                        Edit profile
+                                        {t('clientArea.editProfile')}
                                     </EditProfileButton>
                                 </div>
                             </ClientProfileMainInfosContainer>
                             <ClientPersonalInfosContainer>
                                 <PersonalInfos>
-                                    Personal information
+                                    {t('clientArea.personalInfo')}
                                 </PersonalInfos>
-                                <PersonalInfoItem>
-                                    <ItemTitle>
-                                        First name
-                                    </ItemTitle>
-                                    <ItemInfo>
-                                        {user.firstName}
-                                    </ItemInfo>
-                                </PersonalInfoItem>
-                                <PersonalInfoItem>
-                                    <ItemTitle>
-                                        Last name
-                                    </ItemTitle>
-                                    <ItemInfo>
-                                        {user.lastName}
-                                    </ItemInfo>
-                                </PersonalInfoItem>
-                                <PersonalInfoItem>
-                                    <ItemTitle>
-                                        Email
-                                    </ItemTitle>
-                                    <ItemInfo>
-                                        {user.email}
-                                    </ItemInfo>
-                                </PersonalInfoItem>
+                                {
+                                    Object.keys(personalInfo).map((key: string, index:number) =>
+                                        (<PersonalInfoItem key={index}>
+                                            <ItemTitle>
+                                                {personalInfo[key].label}
+                                            </ItemTitle>
+                                            <ItemInfo>
+                                                {personalInfo[key].value}
+                                            </ItemInfo>
+                                        </PersonalInfoItem>))
+                                }
+
                             </ClientPersonalInfosContainer>
                         </ClientProfileMainInfos>
                     </ClientOuter>

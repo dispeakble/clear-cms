@@ -590,5 +590,16 @@
     "invoiceDetails": "Detalles de la factura",
     "price": "Precio",
     "download": "Descargar factura"
+  },
+  "clientArea": {
+    "greetings": "Hola, {name}!",
+    "daysCount": "Usted forma parte de {website} para",
+    "personalInfo": "Datos personales",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "dateOfBirth": "Fecha de nacimiento",
+    "contactNumber": "Número de contacto",
+    "editProfile": "Editar perfil"
   }
 }
