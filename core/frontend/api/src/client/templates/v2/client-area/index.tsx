@@ -12,14 +12,17 @@ import {useTranslations} from "next-intl";
 import Image from "next/image";
 import ProfileDefault from "../assets/img/accounts/profile-default.png"
 import moment from "moment";
+import {useRouter} from "next/router";
 
 const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
 
-    const {user, isAuthenticated, isLoading} = useAuthentication()
+    const {user, isAuthenticated, isLoading, setIsLoading} = useAuthentication()
 
     const breadcrumbs = {
         clientArea: "Client Area"
     }
+
+    const router = useRouter();
 
     const t = useTranslations()
 
@@ -29,6 +32,34 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
         return moment().diff(given, 'days');
     }
 
+    const personalInfo: any = user && {
+        'firstName': {
+            value: user.firstName,
+            label: t('clientArea.firstName')
+        },
+        'lastName': {
+            value: user.lastName,
+            label: t('clientArea.lastName')
+        },
+        'dateOfBirth': {
+            value: user.dateOfBirth || '-',
+            label: t('clientArea.dateOfBirth')
+        },
+        'contactNumber': {
+            value: user.contactNumber || '-',
+            label: t('clientArea.contactNumber')
+        },
+        'email': {
+            value: user.email,
+            label: t('clientArea.email')
+        },
+    }
+
+    const redirect = (path: string) => {
+        setIsLoading(true)
+        router.push(path).then(() => setIsLoading(false))
+    }
+
     return(
         isLoading ? (
                 <>
@@ -36,7 +67,7 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
                 </>
         ) :
         ((isAuthenticated && user) ?
-            (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
+            (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin>
                 <ClientAreaWrapper>
                     <ClientOuter>
                         <ClientProfileMainInfos>
@@ -47,50 +78,38 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
                                     </ClientProfilePicture>
                                     <div>
                                         <ClientGreetings>
-                                            {`Hello, ${user.firstName}!`}
+                                            {t('clientArea.greetings', {name: user.firstName})}
                                         </ClientGreetings>
                                         <Text>
-                                            You are part of Mario Viajes for
+                                            {t('clientArea.daysCount', {website: websiteName})}
                                         </Text>
                                         <NoOfDays>
-                                            {daysDiff(user.createdAt as Date)} days
+                                            {daysDiff(user.createdAt as Date)} {t('global.days')}
                                         </NoOfDays>
                                     </div>
                                 </div>
                                 <div>
-                                    <EditProfileButton>
-                                        Edit profile
+                                    <EditProfileButton onClick={() => redirect('client-area/edit')}>
+                                        {t('clientArea.editProfile')}
                                     </EditProfileButton>
                                 </div>
                             </ClientProfileMainInfosContainer>
                             <ClientPersonalInfosContainer>
                                 <PersonalInfos>
-                                    Personal information
+                                    {t('clientArea.personalInfo')}
                                 </PersonalInfos>
-                                <PersonalInfoItem>
-                                    <ItemTitle>
-                                        First name
-                                    </ItemTitle>
-                                    <ItemInfo>
-                                        {user.firstName}
-                                    </ItemInfo>
-                                </PersonalInfoItem>
-                                <PersonalInfoItem>
-                                    <ItemTitle>
-                                        Last name
-                                    </ItemTitle>
-                                    <ItemInfo>
-                                        {user.lastName}
-                                    </ItemInfo>
-                                </PersonalInfoItem>
-                                <PersonalInfoItem>
-                                    <ItemTitle>
-                                        Email
-                                    </ItemTitle>
-                                    <ItemInfo>
-                                        {user.email}
-                                    </ItemInfo>
-                                </PersonalInfoItem>
+                                {
+                                    Object.keys(personalInfo).map((key: string, index:number) =>
+                                        (<PersonalInfoItem key={index}>
+                                            <ItemTitle>
+                                                {personalInfo[key].label}
+                                            </ItemTitle>
+                                            <ItemInfo>
+                                                {personalInfo[key].value}
+                                            </ItemInfo>
+                                        </PersonalInfoItem>))
+                                }
+
                             </ClientPersonalInfosContainer>
                         </ClientProfileMainInfos>
                     </ClientOuter>

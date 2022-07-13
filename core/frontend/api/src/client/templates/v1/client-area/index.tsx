@@ -12,14 +12,17 @@ import {useTranslations} from "next-intl";
 import Image from "next/image";
 import ProfileDefault from "../assets/img/accounts/profile-default.png"
 import moment from "moment";
+import {useRouter} from "next/router";
 
 const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
 
-    const {user, isAuthenticated, isLoading} = useAuthentication()
+    const {user, isAuthenticated, isLoading, setIsLoading} = useAuthentication()
 
     const breadcrumbs = {
         clientArea: "Client Area"
     }
+
+    const router = useRouter();
 
     const t = useTranslations()
 
@@ -51,6 +54,12 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
             label: t('clientArea.email')
         },
     }
+
+    const redirect = (path: string) => {
+        setIsLoading(true)
+        router.push(path).then(() => setIsLoading(false))
+    }
+
     return(
         isLoading ? (
                 <>
@@ -58,7 +67,7 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
                 </>
         ) :
         ((isAuthenticated && user) ?
-            (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin isOrange>
+            (<Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin>
                 <ClientAreaWrapper>
                     <ClientOuter>
                         <ClientProfileMainInfos>
@@ -80,7 +89,7 @@ const ClientAreaPage = ({ websiteName, colorScheme }: any) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <EditProfileButton>
+                                    <EditProfileButton onClick={() => redirect('client-area/edit')}>
                                         {t('clientArea.editProfile')}
                                     </EditProfileButton>
                                 </div>

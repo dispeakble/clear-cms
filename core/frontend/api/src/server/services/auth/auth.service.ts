@@ -25,8 +25,23 @@ export class AuthService {
         };
     }
 
+    async update(user: any, _user: any) {
+        try{
+            // eslint-disable-next-line no-console
+            await this.usersService.updateUser(user, _user).toPromise();
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
+
     async logout(user: any){
-        await this.usersService.deleteRefreshToken(user.userId).toPromise();
+        try{
+            await this.usersService.deleteRefreshToken(user.userId).toPromise();
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
     }
 
     async getProfile(user: any){
@@ -56,6 +71,25 @@ export class AuthService {
             return null;
         }
         return null;
+    }
+
+    async checkPassword(body, _user) {
+        const user = await this.usersService.getOne(_user.email).toPromise();
+        return {
+            isMatch: user && user.password === md5.default(body.password)
+        };
+    }
+
+    async updatePassword(body, _user){
+        try{
+            await this.usersService.updateUserPassword(_user.email, body.password).toPromise();
+            return {
+                updated: await this.checkPassword(body, _user)
+            }
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
     }
 
     async isHuman(token: string){

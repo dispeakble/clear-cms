@@ -68,6 +68,15 @@ export default class UseAuth{
         }
     }
 
+    static async updateUser(access_token: string, user: any){
+        try{
+            const headers: any = {"Authorization": "Bearer " + access_token};
+            return this.useAxios("POST", "/api/user/update", user, headers)
+        } catch(err){
+            console.error(err)
+        }
+    }
+
     static async useRefreshToken(refresh_token: string) {
         try{
             const headers = {"Authorization": "Bearer " + refresh_token}
@@ -87,6 +96,26 @@ export default class UseAuth{
         try{
             const headers = {"Authorization": "Bearer " + access_token}
             return await this.useAxios("GET", "/api/user/profile", {}, headers)
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
+
+    static async useCheckPassword(access_token: string, oldPassword: string) {
+        try{
+            const headers = {"Authorization": "Bearer " + access_token}
+            return await this.useAxios("POST", "/api/user/checkPassword", {password: oldPassword}, headers)
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
+
+    static async useUpdatePassword(access_token: string, newPassword: string) {
+        try{
+            const headers = {"Authorization": "Bearer " + access_token}
+            return await this.useAxios("POST", "/api/user/updatePassword", {password: newPassword}, headers)
         } catch(err){
             // eslint-disable-next-line no-console
             console.error(err)

@@ -30,7 +30,9 @@
     "errors": {
       "credentialsMismatch": "Credentials mismatch.",
       "errorOccurred": "An error has occurred, please try again...",
-      "recaptchaError": "An error has occurred while validating ReCAPTCHA, please try again later..."
+      "recaptchaError": "An error has occurred while validating ReCAPTCHA, please try again later...",
+      "passwordMismatch": "Current password is not valid, please fill in your current password and try again.",
+      "passwordUpdateError": "An error has occurred while updating the password, please try again later."
     }
   },
   "input": {
@@ -619,6 +621,19 @@
     "email": "Email",
     "dateOfBirth": "Date of birth",
     "contactNumber": "Contact number",
-    "editProfile": "Edit profile"
+    "editProfile": "Edit profile",
+    "phoneNumber": "Phone Number",
+    "edit": {
+      "changeDetails": "Change your details here",
+      "updateInfos": "You can change here Name, Date of Birth etc.",
+      "uploadAvatar": "Upload Avatar",
+      "saveChanges": "Save changes",
+      "discardChanges": "Discard changes",
+      "password": {
+        "currentPassword": "Your current password",
+        "newPassword": "Your new password",
+        "newPasswordConfirm": "Confirm your new password"
+      }
+    }
   }
 }

@@ -24,6 +24,7 @@ import {AuthService} from "./services/auth/auth.service";
 import {LocalStrategy} from "./services/auth/strategies/local.strategy";
 import {PassportModule} from "@nestjs/passport";
 import {JwtRtStrategy} from "./services/auth/strategies/jwtRt.strategy";
+import {JwtUpdateStrategy} from "./services/auth/strategies/jwt.update.stategy";
 
 
 @Module({
@@ -84,7 +85,8 @@ import {JwtRtStrategy} from "./services/auth/strategies/jwtRt.strategy";
     HomeSearchHotelsService,
     HomeSearchFlightsService,
     EmailService,
-    WsGateway
+    WsGateway,
+    JwtUpdateStrategy
   ]
 })
 

@@ -27,6 +27,8 @@ const Layout = ({ websiteName,
         return getIcon(iconName);
     };
 
+    console.log('theme', colorScheme)
+
     const theme: any = { colors: colorScheme, icon: getIcons };
     const muiTheme: any = createTheme({
         palette: colorScheme,

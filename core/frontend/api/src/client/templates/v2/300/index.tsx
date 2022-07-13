@@ -32,7 +32,7 @@ const Custom404 = ({ websiteName, colorScheme }: any) => {
     const myTheme: any = { colors: colorScheme, icon: getIcons };
 
     const t = useTranslations();
-
+    
     const links = [
         {
             label: t('links.home'),
