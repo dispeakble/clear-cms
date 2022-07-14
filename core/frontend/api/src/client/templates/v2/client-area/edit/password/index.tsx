@@ -3,14 +3,14 @@ import {useAuthentication} from "../../../../../context/AuthContext";
 import Layout from "../../../components/Layout";
 import {useTranslations} from "next-intl";
 import {
-    ButtonsContainer,
+    ButtonsContainer, ChangeDetailsText,
     Container, DiscardButton,
     EditClientMainInfos,
     EditOuter, EditProfileContainer, EditProfileFormContainer,
     EditProfileMainInfosContainer,
     EditProfilePicture, EditProfileText,
-    EditWrapper, ErrorText, FormGroup, InputGroup, InputLabel,
-    ProfilePicture, SubmitButton, TextInput
+    EditWrapper, ErrorText, FatalErrorText, FormGroup, InputGroup, InputLabel,
+    ProfilePicture, SubmitButton, SuccessText, TextInput
 } from "../styled";
 import {
     ClientGreetings,
@@ -37,6 +37,7 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
     const router = useRouter();
 
     const [err, setErr] = React.useState<string>('')
+    const [success, setSuccess] = React.useState<string>('')
 
     const redirect = (path: string) => {
         setIsLoading(true)
@@ -84,6 +85,7 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                         const update_response = await UseAuth.useUpdatePassword(token, newPassword)
                         if(update_response && update_response.status === 200){
                             if(update_response.data.updated === true){
+                                setSuccess('Password has been updated successfully.')
                                 return true;
                             }
                             else{
@@ -145,7 +147,7 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                     {t('clientArea.greetings', {name: user.firstName})}
                                                 </ClientGreetings>
                                                 <Text>
-                                                    {t('clientArea.edit.updateInfos')}
+                                                    {t('clientArea.edit.password.updateInfos')}
                                                 </Text>
                                             </div>
                                         </div>
@@ -156,6 +158,9 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                         </EditProfileText>
                                     </EditProfileContainer>
                                     <EditProfileFormContainer>
+                                        <ChangeDetailsText>
+                                            {t('clientArea.edit.password.changePassword')}
+                                        </ChangeDetailsText>
                                         <Formik
                                             initialValues={{
                                                 oldPassword: "",
@@ -163,24 +168,10 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                 newPasswordConfirm: "",
                                             }}
                                             enableReinitialize
-                                            validate={(values) => {
-                                                const errors: any = {};
-                                                if (!values.oldPassword) {
-                                                    errors.oldPassword = 'Current Password required.';
-                                                } else if(!values.newPassword){
-                                                    errors.newPassword = 'New Password required.';
-                                                } else if(values.newPassword && values.newPassword.length < 6){
-                                                    errors.newPassword = 'Password should be at least 6 characters long.';
-                                                } else if(values.newPassword &&
-                                                    values.newPassword.length > 6 &&
-                                                    values.newPasswordConfirm !== values.newPassword){
-                                                    errors.newPasswordConfirm = 'Password must match.';
-                                                }
-                                                return errors;
-                                            }
-                                            }
                                             onSubmit={async (values, actions) => {
                                                 actions.setSubmitting(true)
+                                                setErr('')
+                                                setSuccess('')
                                                 if(values.newPassword === values.newPasswordConfirm && values.oldPassword){
                                                     const res = await useUpdatePassword(values.oldPassword, values.newPassword)
                                                     if(res){
@@ -189,8 +180,29 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                 }
                                                 actions.setSubmitting(false)
                                             }}
+                                            validate={(values) =>
+                                                {
+                                                    const errors: any = {};
+                                                    if (!values.oldPassword) {
+                                                        errors.oldPassword = 'Current Password required.';
+                                                    } else if(!values.newPassword){
+                                                        errors.newPassword = 'New Password required.';
+                                                    } else if(values.newPassword && values.newPassword.length < 8){
+                                                        errors.newPassword = 'Password should be at least 8-16 characters long.';
+                                                    } else if(values.newPassword &&
+                                                        values.newPassword.length > 8 &&
+                                                        values.newPasswordConfirm !== values.newPassword){
+                                                        errors.newPasswordConfirm = 'Password must match.';
+                                                    }
+
+                                                    errors.newPasswordValidation = (values.newPassword && values.newPassword.length < 8) &&
+                                                        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/.test(values.newPassword);
+
+                                                    return errors;
+                                                }
+                                            }
                                         >
-                                            {({errors, isSubmitting}: any) => (
+                                            {({errors, isSubmitting, resetForm}: any) => (
                                                 <Form style={{width: "100%"}}>
                                                     <Container>
                                                         <FormGroup>
@@ -206,6 +218,12 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                                         />
                                                                     )}
                                                                 </Field>
+                                                                {
+                                                                   ( errors && errors.oldPassword) &&
+                                                                    <ErrorText>
+                                                                        {errors.oldPassword}
+                                                                    </ErrorText>
+                                                                }
                                                             </InputGroup>
                                                         </FormGroup>
                                                         <FormGroup>
@@ -221,6 +239,12 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                                         />
                                                                     )}
                                                                 </Field>
+                                                                {
+                                                                    ( errors && errors.newPassword) &&
+                                                                    <ErrorText>
+                                                                        {errors.newPassword}
+                                                                    </ErrorText>
+                                                                }
                                                             </InputGroup>
                                                         </FormGroup>
                                                         <FormGroup>
@@ -236,19 +260,31 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                                         />
                                                                     )}
                                                                 </Field>
+                                                                {
+                                                                    ( errors && errors.newPasswordConfirm) &&
+                                                                    <ErrorText>
+                                                                        {errors.newPasswordConfirm}
+                                                                    </ErrorText>
+                                                                }
                                                             </InputGroup>
                                                         </FormGroup>
                                                         {
                                                             err.length > 0 &&
-                                                            <ErrorText>
+                                                            <FatalErrorText>
                                                                 {err}
-                                                            </ErrorText>
+                                                            </FatalErrorText>
+                                                        }
+                                                        {
+                                                            success.length > 0 &&
+                                                            <SuccessText>
+                                                                {success}
+                                                            </SuccessText>
                                                         }
                                                         <ButtonsContainer>
-                                                            <SubmitButton role="submit" disabled={isSubmitting}>
+                                                            <SubmitButton type={"button"} role="submit" disabled={isSubmitting}>
                                                                 {t('clientArea.edit.saveChanges')}
                                                             </SubmitButton>
-                                                            <DiscardButton>
+                                                            <DiscardButton type={"button"} onClick={resetForm}>
                                                                 {t('clientArea.edit.discardChanges')}
                                                             </DiscardButton>
                                                         </ButtonsContainer>

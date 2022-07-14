@@ -630,9 +630,11 @@
       "saveChanges": "Save changes",
       "discardChanges": "Discard changes",
       "password": {
+        "updateInfos": "You can change your password here.",
         "currentPassword": "Your current password",
         "newPassword": "Your new password",
-        "newPasswordConfirm": "Confirm your new password"
+        "newPasswordConfirm": "Confirm your new password",
+        "changePassword" : "Change your password here"
       }
     }
   }

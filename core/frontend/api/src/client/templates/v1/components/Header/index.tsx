@@ -39,7 +39,7 @@ import StarIcon from "../../assets/img/accounts/star-icon.svg"
 
 const Header = (props: any) => {
   const links: any[] = props.links;
-  const {isAuthenticated, user} = useAuthentication()
+  const {isAuthenticated, user, setIsLoading} = useAuthentication()
 
   const t = useTranslations();
   const router = useRouter()
@@ -68,6 +68,11 @@ const Header = (props: any) => {
     };
   }, []);
 
+  const redirect = (path: string) => {
+    setIsLoading(true)
+    return router.push(path).then(() => setIsLoading(false))
+  }
+
   return (
     <HeaderWrapper data-testid="header-wrapper" className={fixedHeader ? "fixedHeader" : ""}>
       <HeaderContent>
@@ -92,7 +97,7 @@ const Header = (props: any) => {
         {
           !isAuthenticated &&
             (<AuthWrapper>
-              <LoginButton>
+              <LoginButton onClick={() => redirect('/login')}>
                 {t('global.accounts.login')}
               </LoginButton>
 
@@ -132,7 +137,7 @@ const Header = (props: any) => {
                       </ProfileMainInfos>
                     </ProfilePictureInfosContainer>
 
-                    <ProfileInfosItem>
+                    <ProfileInfosItem onClick={() => redirect('/client-area')}>
                       <InfosItem>
                         <Image src={ProfileIcon} alt="icon-item" className="iconItem" />
                         <InfosItemLabel>
@@ -141,7 +146,7 @@ const Header = (props: any) => {
                       </InfosItem>
                     </ProfileInfosItem>
 
-                    <ProfileInfosItem>
+                    <ProfileInfosItem onClick={() => redirect('/client-area/edit/password')}>
                       <InfosItem>
                         <Image src={ChangePasswordIcon} alt="icon-item" className="iconItem" />
                         <InfosItemLabel>
@@ -150,7 +155,7 @@ const Header = (props: any) => {
                       </InfosItem>
                     </ProfileInfosItem>
 
-                    <ProfileInfosItem>
+                    <ProfileInfosItem onClick={() => redirect('/client-area/invoice')}>
                       <InfosItem>
                         <Image src={InvoiceIcon} alt="icon-item" className="iconItem" />
                         <InfosItemLabel>

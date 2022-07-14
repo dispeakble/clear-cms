@@ -39,7 +39,7 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
     const [error, setError] = React.useState<string>("")
     const {isLoading, isAuthenticated, setIsAuthenticated} = useAuthentication();
     const router = useRouter();
-    const reCAPTCHARef = React.useRef<ReCAPTCHA>()
+    const reCAPTCHARef = React.useRef<ReCAPTCHA>() as React.MutableRefObject<ReCAPTCHA>;
 
     const breadcrumbs = {
         login: "Log in"

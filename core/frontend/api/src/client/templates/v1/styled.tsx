@@ -89,7 +89,7 @@ export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>
   min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
   border-radius: ${({ isLogin }) => isLogin ? "10px" : "0"};
   border: ${({ isLogin, theme }) => isLogin ? `3px dashed ${theme.colors.primaryColor}` : "none"};
-  background: ${({ isLogin, theme }) => isLogin ? theme.colors.mainBackground : "none"};
+  background: ${({ isLogin, theme }) => isLogin ? "#FFEDED" : "none"};
   padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
 
   @media (max-width: ${size.laptopL}) {

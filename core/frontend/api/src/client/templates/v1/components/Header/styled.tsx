@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { device, size } from "../../styled";
+import Link from "next/link"
 
 type HeaderWrapperProps = {
   className: string

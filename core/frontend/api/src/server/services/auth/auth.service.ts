@@ -83,8 +83,9 @@ export class AuthService {
     async updatePassword(body, _user){
         try{
             await this.usersService.updateUserPassword(_user.email, body.password).toPromise();
+            const res = await this.checkPassword(body, _user)
             return {
-                updated: await this.checkPassword(body, _user)
+                updated: res.isMatch
             }
         } catch(err){
             // eslint-disable-next-line no-console

@@ -218,7 +218,7 @@ export const TextInput = styled.input`
   font-size: 18px;
   font-weight: 400;
   font-family: 'Poppins', sans-serif;
-  border: 1px ${({theme}) => theme.colors.greyBorder} solid;
+  border: 1px ${({theme}) => theme.colors.greyBorder } solid;
   line-height: 1.5;
   color: ${({theme}) => theme.colors.jetBlack};
   box-shadow: -1px -1px 4px rgba(38, 184, 147, 0.2), 2px 2px 4px rgba(38, 184, 147, 0.1);
@@ -228,6 +228,28 @@ export const TextInput = styled.input`
     color: #ADADAD;
   }
   
+  :is(.passwordInput){
+    position: relative;
+  }
+`
+
+export const NewPasswordTextInput = styled.input<{isValid?: boolean}>`
+  width: 100%;
+  outline: none;
+  padding: 11px;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  border: 1px ${({theme, isValid}) => isValid ? theme.colors.greyBorder : theme.colors.primaryRed } solid;
+  line-height: 1.5;
+  color: ${({theme}) => theme.colors.jetBlack};
+  box-shadow: -1px -1px 4px rgba(38, 184, 147, 0.2), 2px 2px 4px rgba(38, 184, 147, 0.1);
+  border-radius: 8px;
+
+  ::placeholder{
+    color: #ADADAD;
+  }
+
   :is(.passwordInput){
     position: relative;
   }
@@ -280,6 +302,32 @@ export const ErrorText = styled.span`
   margin:0;
 
   color: ${({theme}) => theme.colors.primaryRed};
+`
+
+export const SuccessText = styled.span`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.5;
+  margin:0;
+  padding: 8px 10px;
+  border-radius: 5px;
+  
+  color: rgba(39, 174, 96,1.0);
+  background: rgba(46, 204, 113,.3);
+`
+
+export const FatalErrorText = styled.span`
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.5;
+  margin:0;
+  padding: 8px 10px;
+  border-radius: 5px;
+
+  color: rgba(192, 57, 43,1.0);
+  background: rgba(231, 76, 60, .3);
 `
 
 export const SubmitButton = styled.button`
