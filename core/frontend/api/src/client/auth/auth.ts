@@ -73,6 +73,7 @@ export default class UseAuth{
             const headers: any = {"Authorization": "Bearer " + access_token};
             return this.useAxios("POST", "/api/user/update", user, headers)
         } catch(err){
+            // eslint-disable-next-line no-console
             console.error(err)
         }
     }
