@@ -47,13 +47,6 @@ export const EditProfileMainInfosContainer = styled.div`
     display: flex;
     gap: 20px;
     align-items: center;
-    div{
-      
-    }
-  }
-  
-  div:last-child {
-    
   }
 
   @media screen and (max-width: ${size.tablet}){
@@ -150,7 +143,7 @@ export const EditProfileContainer = styled.div`
 export const EditProfileText = styled.h3`
   padding-left: 16px;
   color: ${({theme}) => theme.colors.black};
-  font-family: 'Lexend', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: clamp(18px, 5vw, 24px);
@@ -169,7 +162,7 @@ export const EditProfileFormContainer = styled.div`
   
   p{
     color: ${({theme}) => theme.colors.primaryColor};
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;

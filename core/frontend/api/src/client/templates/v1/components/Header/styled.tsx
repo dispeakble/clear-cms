@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { device, size } from "../../styled";
-import Link from "next/link"
 
 type HeaderWrapperProps = {
   className: string
@@ -142,8 +141,8 @@ export const StyledButton = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   cursor: pointer;
   border: 3px solid;
@@ -231,7 +230,7 @@ export const UserFullName = styled.p`
   margin: 0;
   white-space: nowrap;
   
-  color: #171C37;
+  color: ${({theme}) => theme.colors.jetBlack};
 `
 
 export const UserEmail = styled.p`
@@ -239,7 +238,7 @@ export const UserEmail = styled.p`
   font-size: 16px;
   line-height: 1.5;
   margin:0;
-  color: #3A5163;
+  color: ${({theme}) => theme.colors.gray};
   text-overflow: ellipsis;
   overflow-x: clip;
   white-space: nowrap;
@@ -259,8 +258,8 @@ export const ProfileInfosContainer = styled.div<{isOpen?: boolean}>`
   
   display: ${({isOpen}) => isOpen ? 'block' : 'none'};
 
-  background: #FFEDED;
-  box-shadow: 0px 0px 24px rgba(0, 75, 139, 0.24);
+  background: rgb(${({theme}) => theme.colors.primaryColorFadedRBG});
+  box-shadow: 0 0 24px rgba(0, 75, 139, 0.24);
   border-radius: 8px;
   
   padding: 20px 25px;
@@ -268,7 +267,7 @@ export const ProfileInfosContainer = styled.div<{isOpen?: boolean}>`
 
 export const ProfileInfosItem = styled.div`
   padding: 24px;
-  border-bottom: 1px dashed #FF6B00;
+  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
   cursor: pointer;
 `
 
@@ -282,7 +281,7 @@ export const InfosItemLabel = styled.p`
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
-  color: #171C37;
+  color: ${({theme}) => theme.colors.jetBlack};
   white-space: nowrap;
 `
 
@@ -291,7 +290,7 @@ export const ProfilePictureInfosContainer = styled.div`
   gap: 20px;
   align-items: center;
   padding-bottom: 20px;
-  border-bottom: 1px dashed #FF6B00;
+  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
 `
 
 export const LogoutButton = styled.button`
@@ -299,7 +298,7 @@ export const LogoutButton = styled.button`
   color: ${({theme}) => theme.colors.white};
   outline: none;
   border: none; 
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   width: 100%;
   
