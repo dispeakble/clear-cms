@@ -100,10 +100,6 @@ const Header = (props: any) => {
               <LoginButton onClick={() => redirect('/login')}>
                 {t('global.accounts.login')}
               </LoginButton>
-
-              <RegisterButton>
-                {t('global.accounts.signup')}
-              </RegisterButton>
             </AuthWrapper>)
         }
         {

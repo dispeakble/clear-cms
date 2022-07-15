@@ -167,7 +167,6 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                 newPassword: "",
                                                 newPasswordConfirm: "",
                                             }}
-                                            enableReinitialize
                                             onSubmit={async (values, actions) => {
                                                 actions.setSubmitting(true)
                                                 setErr('')
@@ -180,6 +179,7 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                 }
                                                 actions.setSubmitting(false)
                                             }}
+                                            enableReinitialize
                                             validate={(values) =>
                                                 {
                                                     const errors: any = {};
@@ -194,9 +194,6 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                         values.newPasswordConfirm !== values.newPassword){
                                                         errors.newPasswordConfirm = 'Password must match.';
                                                     }
-
-                                                    errors.newPasswordValidation = (values.newPassword && values.newPassword.length < 8) &&
-                                                        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/.test(values.newPassword);
 
                                                     return errors;
                                                 }
@@ -281,7 +278,7 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
                                                             </SuccessText>
                                                         }
                                                         <ButtonsContainer>
-                                                            <SubmitButton type={"button"} role="submit" disabled={isSubmitting}>
+                                                            <SubmitButton type="submit" role="submit" disabled={isSubmitting}>
                                                                 {t('clientArea.edit.saveChanges')}
                                                             </SubmitButton>
                                                             <DiscardButton type={"button"} onClick={resetForm}>

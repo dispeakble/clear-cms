@@ -177,6 +177,9 @@ export const ProfileButton = styled.div`
   padding: 4px 12px;
   gap: 8px;
   cursor: pointer;
+  @media screen and (max-width: ${size.tablet}){
+    background: transparent;
+  }
 `
 
 export const ProfileFirstName = styled.p`
@@ -188,6 +191,10 @@ export const ProfileFirstName = styled.p`
   text-decoration-line: underline;
 
   color: ${({theme}) => theme.colors.white};
+  
+  @media screen and (max-width: ${size.tablet}){
+    display: none;
+  }
 `
 
 export const ProfilePicture = styled.div`
