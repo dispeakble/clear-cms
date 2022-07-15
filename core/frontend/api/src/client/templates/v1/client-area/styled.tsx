@@ -60,19 +60,19 @@ export const ClientProfileMainInfos = styled.div`
   }
 `
 
-export const Div = styled.div`
+export const StyledDiv = styled.div`
   padding: 20px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.22);
   border-radius: 12px;
   width: 100%;
 `
 
-export const ClientPersonalInfosContainer = styled(Div)`
+export const ClientPersonalInfosContainer = styled(StyledDiv)`
   
 `
 
 
-export const ClientProfileMainInfosContainer = styled(Div)`
+export const ClientProfileMainInfosContainer = styled(StyledDiv)`
   gap: 20px;
   display: flex;
   align-items: center;
@@ -82,13 +82,6 @@ export const ClientProfileMainInfosContainer = styled(Div)`
     display: flex;
     gap: 20px;
     align-items: center;
-    div{
-      
-    }
-  }
-  
-  div:last-child {
-    
   }
 
   @media screen and (max-width: ${size.tablet}){
@@ -111,7 +104,7 @@ export const ItemTitle = styled.p`
   line-height: 1.5;
   margin: 0;
 
-  color: #3A5163;
+  color: ${({theme}) => theme.colors.grey};
 `
 
 export const ItemInfo = styled.span`
@@ -120,7 +113,7 @@ export const ItemInfo = styled.span`
   line-height: 1.25;
   margin-top: 8px;
   
-  color: #171C37;
+  color: ${({theme}) => theme.colors.jetBlack};
 `
 
 export const EditProfileButton = styled.button`
@@ -142,36 +135,40 @@ export const EditProfileButton = styled.button`
 `
 
 export const ClientGreetings = styled.h2`
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: clamp(20px, 4vw, 40px);
   line-height: 1.5;
   margin: 0;
 
-  color: #171C37;
+  color: ${({theme}) => theme.colors.jetBlack};
 `
 
 export const Text = styled.p`
+  font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: clamp(13px, 2vw, 16px);
   line-height: 1.5;
   margin: 0;
-  color: #3A5163;
+  color: ${({theme}) => theme.colors.grey};
 `
 
 export const NoOfDays = styled.h3`
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: clamp(16px, 4vw, 24px);
   line-height: 1.5;
   margin: 0;
   
-  color: #171C37;
+  color: ${({theme}) => theme.colors.jetBlack};
 `
 
 export const PersonalInfos = styled.h3`
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
   font-size: clamp(18px, 4vw, 24px);
   line-height: 1.5;
   margin: 0;
 
-  color: #171C37;
+  color: ${({theme}) => theme.colors.jetBlack};
 `

@@ -91,7 +91,7 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                 (
                     <>
                         <ReCAPTCHA
-                            sitekey="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH"
+                            sitekey={recaptchaKey}
                             size="invisible"
                             ref={reCAPTCHARef}
                         />
@@ -112,28 +112,28 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                                                 rememberMe: false
                                             }}
                                             enableReinitialize
-                                            validate={(values) => {
-                                                const errors: any = {};
-                                                if (!values.email) {
-                                                    errors.email = 'Email required';
-                                                } else if (
-                                                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                                ) {
-                                                    errors.email = 'Invalid email address';
-                                                }
+                                            validate={(values) =>
+                                                {
+                                                    const errors: any = {};
+                                                    if (!values.email) {
+                                                        errors.email = 'Email required';
+                                                    } else if (
+                                                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                                                    ) {
+                                                        errors.email = 'Invalid email address';
+                                                    }
 
-                                                if (!values.password) {
-                                                    errors.password = 'Password required';
+                                                    if (!values.password) {
+                                                        errors.password = 'Password required';
+                                                    }
+                                                    return errors;
                                                 }
-                                                return errors;
-                                            }
                                             }
                                             onSubmit={
                                                 async (values, actions) => {
                                                     try{
                                                         actions.setSubmitting(true)
                                                         const token = await reCAPTCHARef?.current.executeAsync();
-                                                        console.log(token, "token")
 
                                                         if(token){
                                                             const verify = await isHuman(token)
@@ -149,7 +149,7 @@ const LoginPage = ({ websiteName, colorScheme, recaptchaKey }: any) => {
                                                         actions.setSubmitting(false)
                                                     } catch(err){
                                                         // eslint-disable-next-line no-console
-                                                        console.log(err)
+                                                        console.error(err)
                                                     }
                                                 }
                                             }
