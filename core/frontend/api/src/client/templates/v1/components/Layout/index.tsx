@@ -2,6 +2,7 @@ import * as React from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../Header";
 import {
+    ContentWrapper,
     GlobalStyle,
     MainWrapper, StyledMiddleText, StyledWebsiteName, StyledWebsiteSlogan,
     TopContentWrapper, Wrapper
@@ -102,13 +103,13 @@ const Layout = ({ websiteName,
                                     {
                                         isHomePage &&
                                         (
-                                            <>
+                                            <ContentWrapper>
                                                 <HomeSearch selectedTab="packages"/>
                                                 <StyledMiddleText>
                                                     <StyledWebsiteName>{websiteName}</StyledWebsiteName>
                                                     <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
                                                 </StyledMiddleText>
-                                            </>
+                                            </ContentWrapper>
                                         )
                                     }
                                 </TopContentWrapper>
@@ -121,7 +122,9 @@ const Layout = ({ websiteName,
                                 <Wrapper isLogin={isLogin}>
                                     {children}
                                 </Wrapper>
-                                <Footer />
+                                <Wrapper isBreadcrumb>
+                                    <Footer />
+                                </Wrapper>
                             </MainWrapper>
                         ) :
                         (

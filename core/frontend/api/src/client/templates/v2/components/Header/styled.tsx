@@ -209,6 +209,7 @@ export const ProfilePictureBig = styled.div`
   border-radius: 50%;
   width: 64px;
   height: 64px;
+  min-width: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,6 +218,7 @@ export const ProfilePictureBig = styled.div`
 export const ProfileMainInfos = styled.div`
   height: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 4px;
   justify-content: center;
@@ -227,8 +229,10 @@ export const UserFullName = styled.p`
   font-weight: 600;
   font-size: 16px;
   line-height: 1.5;
+  word-wrap: break-word;
+  max-width: 200px;
   margin: 0;
-  white-space: nowrap;
+  flex: 1;
   
   color: ${({theme}) => theme.colors.jetBlack};
 `
@@ -312,6 +316,12 @@ export const LogoutButton = styled.button`
   padding: 7px 110px;
   
   margin-top: 12px;
+  transition: .2s background ease-in-out;
+  
+  &:hover{
+    background: ${({theme}) => theme.colors.primaryColorHover};
+    transition: .2s background ease-in-out;
+  }
 `
 
 export const LanguagesWrapper = styled.div`

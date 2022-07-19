@@ -64,8 +64,9 @@ export const EditProfilePicture = styled.div`
   align-items: center;
   position: relative;
   justify-content: center;
-  padding: 8px;
-  background: ${({theme}) => theme.colors.primaryLight};
+  border: 8px solid ${({theme}) => theme.colors.primaryLight};
+  padding: 4px;
+  background: transparent;
   cursor: pointer;
 
   @media screen and (max-width: ${size.tablet}){
@@ -84,7 +85,6 @@ export const EditProfilePicture = styled.div`
     position: absolute;
     width: 100%;
     height: 50%;
-    opacity: 0;
 
     display: flex;
     
@@ -117,13 +117,6 @@ export const EditProfilePicture = styled.div`
       @media screen and (max-width: ${size.tablet}){
         display: none;
       }
-    }
-  }
-  
-  &:hover{
-    .profilePictureOnHover{
-      opacity: 1;
-      transition: .2s opacity ease-in-out;
     }
   }
 

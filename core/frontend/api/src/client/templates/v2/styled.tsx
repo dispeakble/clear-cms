@@ -82,7 +82,7 @@ export const MainContentWrapper = styled.div`
   }
 `;
 
-export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>`
+export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
   width: 100%;
   max-width: 1440px;
   margin: 20px auto;
