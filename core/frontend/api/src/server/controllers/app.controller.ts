@@ -23,6 +23,7 @@ import { EmailService } from "../services/email.service";
 import {LocalAuthGuard} from "../services/auth/common/guards/local-auth.guard";
 import { JwtAuthGuard } from "../services/auth/common/guards/jwt-auth.guard";
 import {JwtRtAuthGuard} from "../services/auth/common/guards/jwtRt-auth.guard";
+import {JwtUpdateAuthGuard} from "../services/auth/common/guards/jwtUpdate-auth.guard";
 
 @Controller('/')
 export class AppController {
@@ -207,6 +208,39 @@ export class AppController {
     @HttpCode(HttpStatus.OK)
     async logout(@Request() req) {
         return await this.authService.logout(req.user);
+    }
+
+    @UseGuards(JwtUpdateAuthGuard)
+    @Post('api/user/update')
+    @HttpCode(HttpStatus.OK)
+    async update(@Request() req) {
+        // eslint-disable-next-line no-console
+        if(req.user){
+            return await this.authService.update(req.body, req.user);
+        }
+        return HttpStatus.FORBIDDEN
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('/api/user/checkPassword')
+    @HttpCode(HttpStatus.OK)
+    async checkPassword(@Request() req) {
+        // eslint-disable-next-line no-console
+        if(req.user){
+            return await this.authService.checkPassword(req.body, req.user);
+        }
+        return HttpStatus.FORBIDDEN
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('/api/user/updatePassword')
+    @HttpCode(HttpStatus.OK)
+    async updatePassword(@Request() req) {
+        // eslint-disable-next-line no-console
+        if(req.user){
+            return await this.authService.updatePassword(req.body, req.user);
+        }
+        return HttpStatus.FORBIDDEN
     }
 
     @UseGuards(JwtRtAuthGuard)

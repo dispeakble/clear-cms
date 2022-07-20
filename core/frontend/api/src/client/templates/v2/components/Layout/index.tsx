@@ -2,8 +2,9 @@ import * as React from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../Header";
 import {
+    ContentWrapper,
     GlobalStyle,
-    MainWrapper,
+    MainWrapper, StyledMiddleText, StyledWebsiteName, StyledWebsiteSlogan,
     TopContentWrapper, Wrapper
 } from "../../styled";
 import Breadcrumbs from "../Breadcrumbs";
@@ -11,8 +12,17 @@ import { getIcon } from "../../helpers/icons";
 import Footer from "../Footer";
 import {MuiThemeProvider} from "@material-ui/core";
 import {createTheme} from "@material-ui/core/styles";
+import HomeSearch from "../HomeSearch";
 
-const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOrange, isInvisible }: any) => {
+const Layout = ({ websiteName,
+                    colorScheme,
+                    children,
+                    breadcrumbs,
+                    isLogin,
+                    isOrange,
+                    isInvisible,
+                    isHomePage,
+                    websiteSlogan }: any) => {
 
     const getIcons = (iconName: string) => {
         return getIcon(iconName);
@@ -88,10 +98,33 @@ const Layout = ({ websiteName, colorScheme, children, breadcrumbs, isLogin, isOr
                     !isInvisible ?
                         (
                             <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
-                                <Header websiteName={websiteName} />
-                                <Breadcrumbs {...breadcrumbs} />
-                                {children}
-                                <Footer />
+                                <TopContentWrapper>
+                                    <Header websiteName={websiteName} />
+                                    {
+                                        isHomePage &&
+                                        (
+                                            <ContentWrapper>
+                                                <HomeSearch selectedTab="packages"/>
+                                                <StyledMiddleText>
+                                                    <StyledWebsiteName>{websiteName}</StyledWebsiteName>
+                                                    <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
+                                                </StyledMiddleText>
+                                            </ContentWrapper>
+                                        )
+                                    }
+                                </TopContentWrapper>
+                                {
+                                    breadcrumbs &&
+                                    <Wrapper isBreadcrumb>
+                                        <Breadcrumbs {...breadcrumbs} />
+                                    </Wrapper>
+                                }
+                                <Wrapper isLogin={isLogin}>
+                                    {children}
+                                </Wrapper>
+                                <Wrapper isBreadcrumb>
+                                    <Footer />
+                                </Wrapper>
                             </MainWrapper>
                         ) :
                         (

@@ -82,14 +82,14 @@ export const MainContentWrapper = styled.div`
   }
 `;
 
-export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>`
+export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
   width: 100%;
   max-width: 1440px;
   margin: 20px auto;
   min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
   border-radius: ${({ isLogin }) => isLogin ? "10px" : "0"};
   border: ${({ isLogin, theme }) => isLogin ? `3px dashed ${theme.colors.primaryColor}` : "none"};
-  background: ${({ isLogin, theme }) => isLogin ? theme.colors.mainBackground : "none"};
+  background: ${({ isLogin, theme }) => isLogin ? `rgb(${theme.colors.primaryColorFadedRBG})` : "none"};
   padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
 
   @media (max-width: ${size.laptopL}) {
@@ -97,7 +97,7 @@ export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>
   }
 
   @media (max-width: ${size.tablet}) {
-    padding: 20px;
+    padding: 10px;
   }
 `;
 

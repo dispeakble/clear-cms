@@ -25,15 +25,30 @@ export class AuthService {
         };
     }
 
+    async update(user: any, _user: any) {
+        try{
+            // eslint-disable-next-line no-console
+            await this.usersService.updateUser(user, _user).toPromise();
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
+    }
+
     async logout(user: any){
-        await this.usersService.deleteRefreshToken(user.userId).toPromise();
+        try{
+            await this.usersService.deleteRefreshToken(user.userId).toPromise();
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
     }
 
     async getProfile(user: any){
         const _user = await this.usersService.getUserById(user.userId).toPromise();
         if (_user) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { password, ...result } = _user;
+            const { password, refresh_token , ...result } = _user;
             return result;
         }
 
@@ -56,6 +71,26 @@ export class AuthService {
             return null;
         }
         return null;
+    }
+
+    async checkPassword(body, _user) {
+        const user = await this.usersService.getOne(_user.email).toPromise();
+        return {
+            isMatch: user && user.password === md5.default(body.password)
+        };
+    }
+
+    async updatePassword(body, _user){
+        try{
+            await this.usersService.updateUserPassword(_user.email, body.password).toPromise();
+            const res = await this.checkPassword(body, _user)
+            return {
+                updated: res.isMatch
+            }
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
+        }
     }
 
     async isHuman(token: string){

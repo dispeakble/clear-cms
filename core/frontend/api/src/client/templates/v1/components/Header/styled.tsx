@@ -127,6 +127,203 @@ export const InputSearch = styled.input`
   }
 `;
 
+export const AuthWrapper = styled.div`
+  display: flex;
+  gap: 15px;
+  position: relative;
+  height: 100%;
+  margin-left: 15px ;
+  order: 5;
+`
+
+export const StyledButton = styled.div`
+  padding: 4px 30px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  cursor: pointer;
+  border: 3px solid;
+  display: flex;
+  align-items: center;
+  text-align: center;
+`
+
+export const LoginButton = styled(StyledButton)`
+  background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+  color: ${({theme}) => theme.colors.white};
+`
+
+export const RegisterButton = styled(StyledButton)`
+  background: ${({theme}) => theme.colors.white};
+  color: #70B915;
+`
+
+export const ProfileContainer = styled.div`
+  position: relative;
+  order: 5;
+  margin-left: 25px;
+`
+
+export const ProfileButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+  border-radius: 12px;
+  padding: 4px 12px;
+  gap: 8px;
+  cursor: pointer;
+  @media screen and (max-width: ${size.tablet}){
+    background: transparent;
+  }
+`
+
+export const ProfileFirstName = styled.p`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+
+  text-decoration-line: underline;
+
+  color: ${({theme}) => theme.colors.white};
+  
+  @media screen and (max-width: ${size.tablet}){
+    display: none;
+  }
+`
+
+export const ProfilePicture = styled.div`
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const ProfilePictureBig = styled.div`
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const ProfileMainInfos = styled.div`
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+`
+
+export const UserFullName = styled.p`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  max-width: 200px;
+  margin: 0;
+  flex: 1;
+  
+  color: ${({theme}) => theme.colors.jetBlack};
+`
+
+export const UserEmail = styled.p`
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  margin:0;
+  color: ${({theme}) => theme.colors.gray};
+  text-overflow: ellipsis;
+  overflow-x: clip;
+  white-space: nowrap;
+  width: 100%;
+`
+
+export const IconContainer = styled.div`
+
+`
+
+export const ProfileInfosContainer = styled.div<{isOpen?: boolean}>`
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  
+  width: 375px;
+  
+  display: ${({isOpen}) => isOpen ? 'block' : 'none'};
+
+  background: rgb(${({theme}) => theme.colors.primaryColorFadedRBG});
+  box-shadow: 0 0 24px rgba(0, 75, 139, 0.24);
+  border-radius: 8px;
+  
+  padding: 20px 25px;
+`
+
+export const ProfileInfosItem = styled.div`
+  padding: 24px;
+  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
+  cursor: pointer;
+`
+
+export const InfosItem = styled.div`
+  display: flex;
+  gap: 16px;
+`
+
+export const InfosItemLabel = styled.p`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  color: ${({theme}) => theme.colors.jetBlack};
+  white-space: nowrap;
+`
+
+export const ProfilePictureInfosContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
+`
+
+export const LogoutButton = styled.button`
+  background: ${({theme}) => theme.colors.primaryColor};
+  color: ${({theme}) => theme.colors.white};
+  outline: none;
+  border: none; 
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  width: 100%;
+  
+  cursor: pointer;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  
+  padding: 7px 110px;
+  
+  margin-top: 12px;
+  transition: .2s background ease-in-out;
+  
+  &:hover{
+    background: ${({theme}) => theme.colors.primaryColorHover};
+    transition: .2s background ease-in-out;
+  }
+`
+
 export const LanguagesWrapper = styled.div`
   order: 3;
   @media (max-width: ${size.laptop}) {

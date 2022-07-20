@@ -14,6 +14,15 @@
     "loading": "Cargando...",
     "redirecting": "Redirigiendo...",
     "loggingOut": "Cerrar la sesión...",
+    "accounts": {
+      "login": "Inicio de sesión",
+      "logout": "Cierre de sesión",
+      "signup": "Registrarse",
+      "myProfile": "Mi perfil",
+      "changePassword": "Cambiar la contraseña",
+      "invoices": "Facturas",
+      "contracts": "Contratos"
+    },
     "loader": {
       "waitAMoment": "Por favor, espere un momento...",
       "redirecting": "Redirigiendo..."
@@ -21,8 +30,9 @@
     "errors": {
       "credentialsMismatch": "No hay coincidencia de credenciales.",
       "errorOccurred": "Se ha producido un error, por favor, inténtelo de nuevo...",
-      "recaptchaError": "Se ha producido un error al validar el ReCAPTCHA, por favor, inténtelo más tarde..."
-
+      "recaptchaError": "Se ha producido un error al validar el ReCAPTCHA, por favor, inténtelo más tarde...",
+      "passwordMismatch": "La contraseña actual no es válida, por favor, introduzca su contraseña actual e inténtelo de nuevo.",
+      "passwordUpdateError": "Se ha producido un error al actualizar la contraseña, inténtelo de nuevo más tarde."
     }
   },
   "input": {
@@ -581,5 +591,31 @@
     "invoiceDetails": "Detalles de la factura",
     "price": "Precio",
     "download": "Descargar factura"
+  },
+  "clientArea": {
+    "greetings": "Hola, {name}!",
+    "daysCount": "Usted forma parte de {website} para",
+    "personalInfo": "Datos personales",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "dateOfBirth": "Fecha de nacimiento",
+    "contactNumber": "Número de contacto",
+    "editProfile": "Editar perfil",
+    "phoneNumber": "Número de teléfono",
+    "edit": {
+      "changeDetails": "Cambia tus datos aquí",
+      "updateInfos": "Puedes cambiar aquí Nombre, fecha de nacimiento, etc.",
+      "uploadAvatar": "Subir Avatar",
+      "saveChanges": "Guardar cambios",
+      "discardChanges": "Descartar cambios",
+      "password": {
+        "updateInfos": "Puedes cambiar tu contraseña aquí",
+        "currentPassword": "Tu contraseña actual",
+        "newPassword": "Su nueva contraseña",
+        "newPasswordConfirm": "Confirma tu nueva contraseña",
+        "changePassword" : "Cambia tu contraseña aquí"
+      }
+    }
   }
 }

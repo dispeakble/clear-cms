@@ -58,7 +58,8 @@ export const AuthProvider = ({ data , children }: any) => {
                         setIsAuthenticated(true)
                         setIsLoading(false)
                         if(['/login'].includes(router.asPath)){
-                            router.push('/client-area')
+                            setIsLoading(true)
+                            router.push('/client-area').then(() => setIsLoading(false))
                         }
                     } else{
                         setUser(null)
@@ -66,7 +67,8 @@ export const AuthProvider = ({ data , children }: any) => {
                         setIsLoading(false)
                         localStorage.removeItem('tokens')
                         if(['/client-area'].includes(router.asPath)){
-                            router.push('/login')
+                            setIsLoading(true)
+                            router.push('/login').then(() => setIsLoading(false))
                         }
                     }
                 } else {
@@ -74,7 +76,8 @@ export const AuthProvider = ({ data , children }: any) => {
                     setIsAuthenticated(false)
                     setIsLoading(false)
                     if(['/client-area'].includes(router.asPath)){
-                        router.push('/login')
+                        setIsLoading(true)
+                        router.push('/login').then(() => setIsLoading(false))
                     }
                 }
             } catch(err){
@@ -84,7 +87,7 @@ export const AuthProvider = ({ data , children }: any) => {
         }
 
         checkAuth()
-    }, [isAuthenticated])
+    }, [isAuthenticated, isLoading])
 
     return (
         <AuthContext.Provider value={{ setIsAuthenticated, setIsLoading, isAuthenticated, isLoading, user, setUser }}>
