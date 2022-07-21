@@ -63,7 +63,7 @@ export class HomeSearchHotelsService {
       }).toPromise();
 
       if(response && response.length) {
-        const result = response.map((el: any, i: any) => {
+        const result = response.map((el: any) => {
           return el['DestinationGeography'];
         });
         return {

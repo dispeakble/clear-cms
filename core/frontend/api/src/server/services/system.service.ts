@@ -84,8 +84,8 @@ export class SystemService {
                         this.waitForService({channel: `frontendproxy`})
                     ]);
                 }
-            } catch (err) {
-                console.log(err);
+            } catch {
+                'noop';
             }
 
 
