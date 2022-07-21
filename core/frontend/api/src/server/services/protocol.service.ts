@@ -53,7 +53,7 @@ export class ProtocolService {
             channel: `frontend`,
             payload: data
         };
-        return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();
+        return this.redisService.send({message: `hub`}, payload).toPromise();
     }
 
     public ping(data: any, config: ModuleInterface){
