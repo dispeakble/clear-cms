@@ -1,21 +1,34 @@
 import {Controller, Inject, Logger} from '@nestjs/common';
-import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
+import {EventPattern, MessagePattern, Payload} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {Observable} from "rxjs";
 import {ResourcesService} from "../services/resources.service";
+import { DashboardBoxService } from "../services/dashboardBox.service";
+import { AdminThemesService } from "../services/adminThemes.service";
+import { ProtocolService } from "../services/protocol.service";
+import { CategoriesService } from "../services/categories.service";
+import { PublicThemesService } from "../services/publicThemes.service";
+import { PagesService } from "../services/pages.service";
+import { BucketService } from "../services/bucket.service";
+import { SitemapService } from "../services/sitemap.service";
+import { ClientsService } from "../services/clients.service";
+import { GeneralSettingsService } from "../services/generalSettings.service";
+import { SystemService } from "../services/system.service";
+import { AdminProfileService } from "../services/adminProfile.service";
+import { AuthService } from "../services/auth.service";
 
 @Controller()
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
-        name: `${process.env.app}_system`,
+        name: `system`,
         version: '21.07.26',
         description: 'System Module',
         started: new Date(),
         config: {
-            channel: `${process.env.app}_system`,
+            channel: `system`,
             permissions: {
                 stop: false,
                 restart: true,
@@ -23,10 +36,10 @@ export class ProtocolController {
             }
         },
         dependencies: [{
-            name: `${process.env.app}_hub`,
+            name: `hub`,
             version: 'latest'
         }, {
-            name: `${process.env.app}_proxy`,
+            name: `proxy`,
             version: 'latest'
         }]
     };
@@ -38,32 +51,32 @@ export class ProtocolController {
     private mainService;
 
     constructor(
-        @Inject('SystemService') private systemService,
-        @Inject('ProtocolService') private protocolService,
-        @Inject('AdminProfileService') private adminProfileService,
-        @Inject('AdminThemesService') private adminThemesService,
-        @Inject('PublicThemesService') private publicThemesService,
-        @Inject('AuthService') private authService,
-        @Inject('BucketService') private bucketService,
-        @Inject('CategoriesService') private categoriesService,
-        @Inject('ClientsService') private clientsService,
-        @Inject('PagesService') private pagesService,
-        @Inject('GeneralSettingsService') private generalSettingsService,
-        @Inject('DashboardBoxService') private dashboardBoxService,
-        @Inject('SitemapService') private sitemapService,
-        @Inject('ResourcesService') private resourcesService,
+        private systemService: SystemService,
+        private protocolService: ProtocolService,
+        private adminProfileService: AdminProfileService,
+        private adminThemesService: AdminThemesService,
+        private publicThemesService: PublicThemesService,
+        private authService: AuthService,
+        private bucketService: BucketService,
+        private categoriesService: CategoriesService,
+        private clientsService: ClientsService,
+        private pagesService: PagesService,
+        private generalSettingsService: GeneralSettingsService,
+        private dashboardBoxService: DashboardBoxService,
+        private sitemapService: SitemapService,
+        private resourcesService: ResourcesService,
     ){
 
 
     }
 
     @MessagePattern({message: `${process.env.app}_system`})
-    public onMessage(@Payload() data: payloadInterface, @Ctx() context: RedisContext) {
+    public onMessage(@Payload() data: payloadInterface) {
         return this.perform(data);
     }
 
     @EventPattern({event: `${process.env.app}_system`})
-    public onEvent(@Payload() payload: payloadInterface, @Ctx() context: RedisContext) {
+    public onEvent(@Payload() payload: payloadInterface) {
         return this.perform(payload);
     }
 
@@ -82,12 +95,12 @@ export class ProtocolController {
             this.mainService = this;
 
             await this.protocolService.sendMessage({
-                channel: `${process.env.app}_hub`,
+                channel: `hub`,
                 api: 'module',
                 act: 'mapPort',
                 payload: {
-                    channel: `${process.env.app}_system`,
-                    target: `${process.env.app}_proxy`,
+                    channel: `system`,
+                    target: `proxy`,
                     port: process.env.backend_port,
                     defaults: {
                         url: '/',
@@ -99,7 +112,7 @@ export class ProtocolController {
             this.logger.log('System application started')
             console.log('System application started');
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
             console.log('cannot start system api');
         }
 

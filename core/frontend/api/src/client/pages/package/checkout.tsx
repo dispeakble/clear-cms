@@ -38,13 +38,12 @@ const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
 export async function getServerSideProps(context: any) {
 
     const payload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         protocolMethod: "sendMessage",
         api: "sql",
         act: "get",
         payload: {
             db: "main",
-            channel: `${process.env.app}_frontend`,
             data: {
                 what: "setting",
                 limit: [0, 1]

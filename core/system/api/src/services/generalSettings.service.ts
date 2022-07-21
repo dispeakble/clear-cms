@@ -1,28 +1,28 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
-import * as md5 from "md5";
 import {Observable} from "rxjs";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class GeneralSettingsService {
 
     private methods = ["getInfo", "setInfo"];
 
-    constructor(@Inject('ProtocolService') private protocolService) {
+    constructor(private protocolService: ProtocolService) {
 
     }
 
-    public async getInfo(params) {
+    public async getInfo() {
         return new Observable(subscriber => {
             (async () => {
                 const payload: payloadInterface = {
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: 'sql',
                     act: 'get',
                     payload: {
                         db: 'main',
-                        channel: `${process.env.app}_system`,
+                        channel: `system`,
                         data: {
                             what: 'setting',
                             fields: ["id", "data"],
@@ -58,12 +58,12 @@ export class GeneralSettingsService {
         return new Observable(subscriber => {
             (async () => {
                 const request: payloadInterface = {
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: 'sql',
                     act: 'set',
                     payload: {
                         db: 'main',
-                        channel: `${process.env.app}_system`,
+                        channel: `system`,
                         data: {
                             what: 'setting',
                             where: {

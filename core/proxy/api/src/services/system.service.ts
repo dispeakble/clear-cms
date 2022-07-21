@@ -44,7 +44,7 @@ export class SystemService {
             });
             const rejectTimeout = setTimeout(() => {
                 reject(false);
-            }, 50);
+            }, 300);
         })
 
     }
@@ -69,14 +69,14 @@ export class SystemService {
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: `${process.env.app}_hub`});
-            await this.waitForService({channel: `${process.env.app}_db`});
-            await this.waitForService({channel: `${process.env.app}_bucket`});
+            await this.waitForService({channel: `hub`});
+            await this.waitForService({channel: `db`});
+            await this.waitForService({channel: `bucket`});
 
             const payload: payloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: `${process.env.app}_hub`,
+                channel: `hub`,
                 config: {
                     restart: true,
                     stop: false

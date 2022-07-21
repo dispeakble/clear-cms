@@ -10,18 +10,18 @@ import {Observable} from "rxjs";
 export class AppController {
 
     private moduleConfig: ModuleInterface = {
-        name: `${process.env.app}_bucket`,
+        name: `bucket`,
         version: '21.05.16',
         description: 'CMS Bucket Module',
         started: new Date(),
         config: {
-            channel: `${process.env.app}_bucket`,
+            channel: `bucket`,
             restart: true,
             stop: false
         },
         dependencies: [
             {
-                name: `${process.env.app}_hub`,
+                name: `hub`,
                 version: 'latest'
             }
         ],

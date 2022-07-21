@@ -31,12 +31,11 @@ export class SettingsService {
       (async () => {
         try {
           const payload: payloadInterface = {
-            channel: `${process.env.app}_db`,
+            channel: `db`,
             api: "sql",
             act: "get",
             payload: {
               db: "main",
-              channel: `${process.env.app}_frontend`,
               data: {
                 what: "setting",
                 limit: [0, 1]

@@ -198,8 +198,8 @@ services:
       - redis_password=${REDIS_DEFAULT_PASSWORD}
       - NODE_ENV=production
       - CMS_JWT_EXP_H=${CMS_JWT_EXP_H}
-      - NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-      - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}
+      - recaptcha_public_key=${recaptcha_public_key}
+      - recaptcha_private_key=${recaptcha_private_key}
     ports:
       - "127.0.0.1:9898:9898"
     networks:

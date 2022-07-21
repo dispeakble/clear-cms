@@ -10,7 +10,6 @@ export class ProtocolService {
 
     private methods = ["start", "sendMessage", "emitMessage", "registerModule", "ping", "startHandshake", "requestHandshake", "confirmHandshake", "sendGet"];
     private handhakes: any = {};
-    private channelPrefix = process.env.app;
 
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy,
@@ -30,7 +29,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public emitMessage(data: any) {
@@ -47,10 +46,11 @@ export class ProtocolService {
     }
 
     public registerModule(data: ModuleInterface) {
+        //TODO use sendMessage here :)
         const payload: payloadInterface = {
             api: 'module',
             act: 'register',
-            channel: `${process.env.app}_frontend`,
+            channel: `frontend`,
             payload: data
         };
         return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();

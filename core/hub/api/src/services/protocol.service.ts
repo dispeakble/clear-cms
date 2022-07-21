@@ -9,20 +9,20 @@ export class ProtocolService {
     private methods = ["ping"];
 
     constructor(
-        @Inject('REDIS_SERVICE') private redisClient: ClientProxy
+        @Inject('REDIS_SERVICE') private redisService: ClientProxy
     ) {
     }
 
     public start() {
-        return this.redisClient.connect();
+        return this.redisService.connect();
     }
 
     public sendMessage(data: any){
-        return this.redisClient.send({ message: data.channel }, data.payload).toPromise();
+        return this.redisService.send({ message: `${process.env.app}_${data.channel}` }, data.payload).toPromise();
     }
 
     public emitEvent(data: any){
-        return this.redisClient.emit({ event: data.channel }, data.payload);
+        return this.redisService.emit({ event: `${process.env.app}_${data.channel}` }, data.payload);
     }
 
     public ping(data: any, config: ModuleInterface){

@@ -1,15 +1,15 @@
-import {Inject, Injectable} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import {ProtocolService} from "./protocol.service";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class SystemService {
 
-    private methods = ["registerModule"];
-
     constructor(private protocolService: ProtocolService) {
     }
+
+    private methods = ["registerModule"];
 
     public perform(data: any) {
         if (this.methods.includes(data.act)) {
@@ -36,10 +36,10 @@ export class SystemService {
                     resolve(true);
                 }
             }, err => {
-                console.log(err);
+                console.log(err.message);
                 reject(false);
             }, () => {
-                //resolve(true);
+                resolve(true);
             });
             const rejectTimeout = setTimeout(() => {
                 reject(false);
@@ -49,7 +49,7 @@ export class SystemService {
     }
 
     private async waitForService(params) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             const checkInterval = setInterval(async () => {
                 try {
                     const checkServiceResult = await this.checkService({channel: params.channel});
@@ -68,15 +68,18 @@ export class SystemService {
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: `${process.env.app}_hub`});
-            await this.waitForService({channel: `${process.env.app}_proxy`});
-            await this.waitForService({channel: `${process.env.app}_db`});
-            await this.waitForService({channel: `${process.env.app}_bucket`});
+
+            await Promise.all([
+                this.waitForService({channel: `hub`}),
+                this.waitForService({channel: `proxy`}),
+                this.waitForService({channel: `db`}),
+                this.waitForService({channel: `bucket`}),
+            ]);
 
             const payload: payloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: `${process.env.app}_hub`,
+                channel: `hub`,
                 config: {
                     restart: true,
                     stop: false

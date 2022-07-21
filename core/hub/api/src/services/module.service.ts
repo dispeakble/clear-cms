@@ -15,9 +15,9 @@ export class ModuleService {
   constructor(
     private protocolService: ProtocolService,
     private cacheService: RedisCacheService) {
-    this.modules[`${process.env.app}_hub`] = {
+    this.modules[`hub`] = {
       version: "version",
-      description: `The main hub for ${process.env.app}`,
+      description: `The main hub`,
       started: new Date(),
       dependencies: []
     };
@@ -34,9 +34,9 @@ export class ModuleService {
         });
 
         if(!pingResponse) {
-          delete this.modules[`${process.env.app}_${module}`];
+          delete this.modules[module];
         } else {
-          this.modules[`${process.env.app}_${module}`] = {
+          this.modules[module] = {
             version: pingResponse.version,
             description: '',
             started: new Date(),
@@ -58,12 +58,12 @@ export class ModuleService {
         const payload: payloadInterface = {//todo export this globally. lazy load
           api: "protocol",
           act: "ping",
-          channel: `${process.env.app}_hub`,
+          channel: `hub`,
           payload: dep
         };
 
         const module_response = await this.protocolService.sendMessage({
-          channel: `${process.env.app}_${dep.name}`,
+          channel: String(dep.name),
           payload: payload
         });
         resolve_ping(module_response);
@@ -195,7 +195,7 @@ export class ModuleService {
     }
 
     const adminPayload = {
-      channel: `${process.env.app}_db`,
+      channel: `db`,
       payload: {
         api: "sql",
         act: "add",
@@ -255,7 +255,7 @@ export class ModuleService {
     };
 
     const settingsPayload = {
-      channel: `${process.env.app}_db`,
+      channel: `db`,
       payload: {
         api: "sql",
         act: "add",
@@ -289,7 +289,7 @@ export class ModuleService {
 
     const addDoashboardBox = async (box) => {
       const boxPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -334,7 +334,7 @@ export class ModuleService {
     const addThemes = async () => {
       await Promise.all([darkTheme, dayTheme].map(async theme => {
         const themesPayload = {
-          channel: `${process.env.app}_db`,
+          channel: `db`,
           payload: {
             api: "sql",
             act: "add",
@@ -388,7 +388,7 @@ export class ModuleService {
       });
 
       const geoPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -452,7 +452,7 @@ export class ModuleService {
       });
 
       const geoPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -517,7 +517,7 @@ export class ModuleService {
       });
 
       const geoPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -581,7 +581,7 @@ export class ModuleService {
       });
 
       const hotelSearchPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -618,7 +618,7 @@ export class ModuleService {
     await this.cacheService.set("ports",
       JSON.stringify(ports));
     return this.protocolService.sendMessage({
-      channel: data.target || `${process.env.app}_proxy`,
+      channel: data.target || `proxy`,
       payload: {
         api: "app",
         act: "updatePortMapping",

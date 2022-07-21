@@ -30,7 +30,6 @@ class ClientsController extends Component {
         } catch (err) {
             console.log(err);
         }
-        console.log('got message in clients controller', params);
     }
 
     sendMessage(params) {

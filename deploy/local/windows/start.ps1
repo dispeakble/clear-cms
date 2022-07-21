@@ -11,8 +11,8 @@ $INIT_DEFAULT_EMAIL = "admin@example.com"
 $INIT_DEFAULT_PASSWORD = "1qaz"
 $INIT_TPL_VER = "v1"
 $INIT_CMS_JWT_EXP_H="3600s"
-$INIT_NEXT_PUBLIC_RECAPTCHA_SITE_KEY="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH"
-$INIT_RECAPTCHA_SECRET_KEY="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29"
+$INIT_recaptcha_public_key="6LdNqsESAAAAAPHt1ZG6vr4RBQHoM-eVcE4XB4wJ"
+$INIT_recaptcha_private_key="6LdNqsESAAAAANbWPLowt17zjEwNS4MuvVLfX7TQ"
 $INIT_POSTGRES_DEFAULT_USER = "cms"
 $INIT_POSTGRES_DEFAULT_PASSWORD = "1qaz"
 $INIT_POSTGRES_DEFAULT_DB = "main"
@@ -20,13 +20,13 @@ $INIT_POSTGRES_DEFAULT_CONNECTIONS = "main,agency"
 $INIT_PGADMIN_DEFAULT_EMAIL = "admin@example.com"
 $INIT_PGADMIN_DEFAULT_PASSWORD = "1qaz"
 $INIT_REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
-$CMS_HUB_VERSION="1655828652"
-$CMS_DB_VERSION="1655828652"
-$CMS_BUCKET_VERSION="1655828652"
-$CMS_FRONTEND_PROXY_VERSION="1655828652"
-$CMS_FRONTEND_VERSION="1655828652"
-$CMS_ADMIN_PROXY_VERSION="1655828652"
-$CMS_ADMIN_SYSTEM_VERSION="1655828652"
+$CMS_HUB_VERSION="1658353841"
+$CMS_DB_VERSION="1658353841"
+$CMS_BUCKET_VERSION="1658353841"
+$CMS_FRONTEND_PROXY_VERSION="1658353841"
+$CMS_FRONTEND_VERSION="1658353841"
+$CMS_ADMIN_PROXY_VERSION="1658353841"
+$CMS_ADMIN_SYSTEM_VERSION="1658353841"
 $PWD=$pwd.Path
 
 if (($INSTALL_VERSION = Read-Host "Install version (Enter for default:  $INIT_INSTALL_VERSION)") -eq '') { $INSTALL_VERSION = $INIT_INSTALL_VERSION }
@@ -41,8 +41,8 @@ if (($ADMIN_LNAME = Read-Host "Admin last name (Enter for default: $INIT_ADMIN_L
 if (($WEBSITE_DOMAIN = Read-Host "Website domain (Enter for default: $INIT_WEBSITE_DOMAIN)") -eq '') { $WEBSITE_DOMAIN = $INIT_WEBSITE_DOMAIN }
 if (($TPL_VER = Read-Host "App template E.G. v1 (Enter for default:  $INIT_TPL_VER)") -eq '') { $TPL_VER = $INIT_TPL_VER }
 if (($CMS_JWT_EXP_H = Read-Host "JWT expire time (Enter for default:  $CMS_JWT_EXP_H)") -eq '') { $CMS_JWT_EXP_H = $INIT_CMS_JWT_EXP_H }
-if (($NEXT_PUBLIC_RECAPTCHA_SITE_KEY = Read-Host "Next JS public recaptcha key (Enter for default:  $INIT_NEXT_PUBLIC_RECAPTCHA_SITE_KEY)") -eq '') { $NEXT_PUBLIC_RECAPTCHA_SITE_KEY = $INIT_NEXT_PUBLIC_RECAPTCHA_SITE_KEY }
-if (($RECAPTCHA_SECRET_KEY = Read-Host "Recaptcha secret key (Enter for default:  $INIT_RECAPTCHA_SECRET_KEY)") -eq '') { $RECAPTCHA_SECRET_KEY = $INIT_RECAPTCHA_SECRET_KEY }
+if (($recaptcha_public_key = Read-Host "Next JS public recaptcha key (Enter for default:  $INIT_recaptcha_public_key)") -eq '') { $recaptcha_public_key = $INIT_recaptcha_public_key }
+if (($recaptcha_private_key = Read-Host "Recaptcha secret key (Enter for default:  $INIT_recaptcha_private_key)") -eq '') { $recaptcha_private_key = $INIT_recaptcha_private_key }
 
 if (($REDIS_DEFAULT_PASSWORD = Read-Host "Redis password (Enter for default:  $INIT_REDIS_DEFAULT_PASSWORD)") -eq '') { $REDIS_DEFAULT_PASSWORD = $INIT_REDIS_DEFAULT_PASSWORD }
 if (($POSTGRES_DEFAULT_USER = Read-Host "Postgres user (Enter for default:  $INIT_POSTGRES_DEFAULT_USER)") -eq '') { $POSTGRES_DEFAULT_USER = $INIT_POSTGRES_DEFAULT_USER }
@@ -66,8 +66,8 @@ $env:WEBSITE_DOMAIN=$WEBSITE_DOMAIN
 $env:APP_DOMAIN=$APP_DOMAIN
 $env:TPL_VER=$TPL_VER
 $env:CMS_JWT_EXP_H=$CMS_JWT_EXP_H
-$env:NEXT_PUBLIC_RECAPTCHA_SITE_KEY=$NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-$env:RECAPTCHA_SECRET_KEY=$RECAPTCHA_SECRET_KEY
+$env:recaptcha_public_key=$recaptcha_public_key
+$env:recaptcha_private_key=$recaptcha_private_key
 
 $env:REDIS_DEFAULT_PASSWORD=$REDIS_DEFAULT_PASSWORD
 
@@ -105,8 +105,8 @@ echo "$WEBSITE_DOMAIN"
 echo "$APP_DOMAIN"
 echo "$TPL_VER"
 echo "$CMS_JWT_EXP_H"
-echo "$NEXT_PUBLIC_RECAPTCHA_SITE_KEY"
-echo "$RECAPTCHA_SECRET_KEY"
+echo "$recaptcha_public_key"
+echo "$recaptcha_private_key"
 echo "$REDIS_DEFAULT_PASSWORD"
 echo "$POSTGRES_DEFAULT_USER"
 echo "$POSTGRES_DEFAULT_PASSWORD"

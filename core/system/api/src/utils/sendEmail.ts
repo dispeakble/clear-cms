@@ -28,10 +28,10 @@ export async function sendEmail(emailSender,emailSenderPassword, email, subject:
         };
 
         // Send email
-        transporter.sendMail(options(), (error, info) => {
+        transporter.sendMail(options(), (error) => {
             if (error) {
-                console.log(error)
-                return error;
+                console.log(error.message)
+                return error.message;
             } else {
                 return true;
             }

@@ -22,7 +22,7 @@ export class BucketService {
         return new Promise((resolve) => {
             try {
                 const metaPayload: payloadInterface = {
-                    channel: `${process.env.app}_bucket`,
+                    channel: `bucket`,
                     api: 'fs',
                     act: 'info',
                     payload: {
@@ -59,53 +59,6 @@ export class BucketService {
         });
     }
 
-    /*private upload(params: any, config){
-        return new Observable(subscriber => {
-
-            const handshake = params.perform({
-                channel: config.config.channel,
-                api: 'protocol',
-                act: 'startHandshake',
-                payload: {
-                    channel: `${process.env.app}_bucket`,
-                    indication: {
-                        api: 'fs',
-                        act: 'upload'
-                    }
-                }
-            });
-
-            handshake.theObserver.subscribe(() => {
-                //console.log(data);
-            }, err => {
-                // eslint-disable-next-line no-console
-                console.log(err);
-            }, () => {
-                // eslint-disable-next-line no-console
-                console.log('upload complete');
-            })
-
-            handshake.thePromise.then(handshakeResponse => {
-                params.initiator.subscribe(data => {
-                    handshakeResponse.thePusher.next(data)
-                }, err => {
-                    // eslint-disable-next-line no-console
-                    console.log(err);
-                    handshakeResponse.thePusher.error(err);
-                    subscriber.error(err);
-                }, () => {
-                    // eslint-disable-next-line no-console
-                    console.log('Bucket.service: upload complete');
-                    handshakeResponse.thePusher.complete();
-                    subscriber.complete();
-                });
-
-                subscriber.next('.');
-            });
-
-        });
-    }*/
-
     private checkPaths(data: any){
         const params = data.params;
         let file_name = '';
@@ -141,7 +94,7 @@ export class BucketService {
         return new Promise((resolve) => {
             const path_parts = params.path.split('/');
             this.protocolService.sendMessage({
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'info',
                 payload: {
@@ -220,7 +173,7 @@ export class BucketService {
     private _getFromBucket(params: any) {
         const path_parts = params.path.split('/');
         this.protocolService.sendMessage({
-            channel: `${process.env.app}_bucket`,
+            channel: `bucket`,
             api: 'fs',
             act: 'read',
             payload: {
@@ -289,7 +242,7 @@ export class BucketService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'list',
                 payload: {
@@ -309,7 +262,7 @@ export class BucketService {
     public completePath (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'completePath',
                 payload: {
@@ -330,7 +283,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'download',
                 payload: {

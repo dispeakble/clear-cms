@@ -1,14 +1,15 @@
-import { Inject, Injectable} from "@nestjs/common";
+import { Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class SitemapService {
 
     private methods = ["getPages", "listCategories", "pagesByCategory"];
 
-    constructor(@Inject('ProtocolService') private protocolService) {
+    constructor(private protocolService: ProtocolService) {
     }
 
     public getPages (params: any){
@@ -16,12 +17,12 @@ export class SitemapService {
             (async () => {
                 try {
                     const pageReq: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_system`,
+                            channel: `system`,
                             data: {
                                 what: 'pages',
                                 fields: ["*"],//it's optional. defaults to *
@@ -52,17 +53,17 @@ export class SitemapService {
         })
     }
 
-    public listCategories (params: any){
+    public listCategories (){
         return new Observable(subscriber => {
             (async () => {
                 try {
                     const pageReq: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_system`,
+                            channel: `system`,
                             data: {
                                 what: 'categories',
                                 fields: ["*"],//it's optional. defaults to *,
@@ -88,12 +89,12 @@ export class SitemapService {
             (async () => {
                 try {
                     const pageToCategoryReq: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_system`,
+                            channel: `system`,
                             data: {
                                 what: 'pages_to_categories',
                                 fields: ["page_id"],//it's optional. defaults to *,
@@ -112,12 +113,12 @@ export class SitemapService {
                     }
 
                     const pageReq: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'db',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_system`,
+                            channel: `system`,
                             data: {
                                 what: 'pages',
                                 fields: ["*"],//it's optional. defaults to *,

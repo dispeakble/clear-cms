@@ -30,7 +30,7 @@ export class AppController {
 
     public logger: Logger = new Logger('App.Controller');
     private moduleConfig: ModuleInterface = {
-        name: `${process.env.app}_frontend`,
+        name: `frontend`,
         version: '22.04.12',
         description: 'Frontend Module',
         started: new Date(),
@@ -39,10 +39,10 @@ export class AppController {
             stop: false
         },
         dependencies: [{
-            name: `${process.env.app}_hub`,
+            name: `hub`,
             version: 'latest'
         }, {
-            name: `${process.env.app}_frontendproxy`,
+            name: `frontendproxy`,
             version: 'latest'
         }]
     };
@@ -90,12 +90,12 @@ export class AppController {
         const reg_msg = await this.systemService.registerModule(this.moduleConfig);
         this.logger.log(reg_msg);
         const port_map_msg = await this.protocolService.sendMessage({
-            channel: `${process.env.app}_hub`,
+            channel: `hub`,
             api: 'module',
             act: 'mapPort',
             payload: {
-                channel: `${process.env.app}_frontend`,
-                target: `${process.env.app}_frontendproxy`,
+                channel: `frontend`,
+                target: `frontendproxy`,
                 port: process.env.backend_port,
                 defaults: {
                     url: '/'
@@ -136,7 +136,7 @@ export class AppController {
     public async getFiles(@Request() req, @Res() res: Response) {
         req.params[0] = `files/${req.params[0]}`;
         const fileReq = {
-            channel: `${process.env.app}_frontend`,
+            channel: `frontend`,
             payload: {
                 ip: req.ip,
                 hostname: req.hostname,
@@ -261,7 +261,7 @@ export class AppController {
         //TODO get the db from a
         const parts = req.url.slice(1).split('/');
         return await this.perform({
-            channel: `${process.env.app}_frontend`,
+            channel: `frontend`,
             api: parts[1],
             act: parts[2]
         }).toPromise();
@@ -271,7 +271,7 @@ export class AppController {
     public async apiPost(@Request() req) {
         const parts = req.url.slice(1).split('/');
         return await this.perform({
-            channel: `${process.env.app}_frontend`,
+            channel: `frontend`,
             api: parts[1],
             act: parts[2],
             payload: req.body

@@ -35,7 +35,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
@@ -54,7 +54,7 @@ export class ProtocolService {
 
     public checkAccess(data: any){
         return new Promise((resolve) => {
-            this.redisService.send({message: data.channel}, {
+            this.redisService.send({message: `${process.env.app}_${data.channel}`}, {
                 api: 'bucket',
                 act: 'checkAccess',
                 payload: data.payload
@@ -74,7 +74,7 @@ export class ProtocolService {
             act: data.act,
             payload: data.payload.body.payload
         };
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public sendGet(data: any) {
@@ -83,7 +83,7 @@ export class ProtocolService {
             act: 'get',
             payload: data.payload
         };
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public getMeta(data: any){
@@ -92,7 +92,7 @@ export class ProtocolService {
             act: 'getMeta',
             payload: data.payload
         };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload).toPromise();
     }
 
     public ping(data: any, config: ModuleInterface){

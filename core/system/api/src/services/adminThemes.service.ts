@@ -2,25 +2,26 @@ import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class AdminThemesService {
 
     private methods = ["get", "list", "add", "set", "rem"];
 
-    constructor(@Inject('ProtocolService') private protocolService) {
+    constructor(private protocolService: ProtocolService) {
 
     }
 
     public list() {
         return new Observable((subscriber) => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'adminTheme',
                         fields: ["id", "title", "isDefault", "thumbnail"]
@@ -47,12 +48,12 @@ export class AdminThemesService {
     public get(params) {
         return new Observable((subscriber) => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'get',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'adminTheme',
                         fields: params.fields || ["title", "isDefault", "thumbnail", "data"],
@@ -76,12 +77,12 @@ export class AdminThemesService {
 
         if (params.data.isDefault) {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'adminTheme',
                         where: {
@@ -99,12 +100,12 @@ export class AdminThemesService {
 
         return new Observable((subscriber) => {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'adminTheme',
                         where: params.where,
@@ -113,7 +114,7 @@ export class AdminThemesService {
                 }
             };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
+            this.protocolService.sendMessage(request).subscribe(() => {
                 subscriber.next({
                     success: "The theme was updated",
                     data: null
@@ -139,12 +140,12 @@ export class AdminThemesService {
         }
         return new Observable((subscriber) => {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'add',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'adminTheme',
                         data: {
@@ -157,7 +158,7 @@ export class AdminThemesService {
                 }
             };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
+            this.protocolService.sendMessage(request).subscribe(() => {
                 subscriber.next({
                     success: "The theme was added",
                     data: null
@@ -174,12 +175,12 @@ export class AdminThemesService {
     public rem(params) {
         return new Observable((subscriber) => {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'adminTheme',
                         where: params
@@ -187,7 +188,7 @@ export class AdminThemesService {
                 }
             };
 
-            this.protocolService.sendMessage(request).subscribe(data => {
+            this.protocolService.sendMessage(request).subscribe(() => {
                 subscriber.next({
                     success: "The theme was removed",
                     data: null

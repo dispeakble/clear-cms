@@ -70,15 +70,30 @@ export class SystemService {
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: `${process.env.app}_hub`});
-            await this.waitForService({channel: `${process.env.app}_db`});
-            await this.waitForService({channel: `${process.env.app}_bucket`});
-            await this.waitForService({channel: `${process.env.app}_frontendproxy`});
+
+            try {
+                if(data.dependencies && data.dependencies.length) {
+                    await Promise.all(data.dependencies.map((dep: Record<string, any>) => {
+                        return this.waitForService({channel: dep.name});
+                    }));
+                } else {
+                    await Promise.all([
+                        this.waitForService({channel: `hub`}),
+                        this.waitForService({channel: `db`}),
+                        this.waitForService({channel: `bucket`}),
+                        this.waitForService({channel: `frontendproxy`})
+                    ]);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+
 
             const payload: payloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: `${process.env.app}_hub`,
+                channel: `hub`,
                 config: {
                     restart: true,
                     stop: false

@@ -18,12 +18,11 @@ export class CategoriesService {
 
                 try{
                     const payload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'category',
                                 attributes: ["id", "title", "description", "backgroundImage", "parentId"],

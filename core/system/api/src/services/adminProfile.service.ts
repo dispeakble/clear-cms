@@ -3,17 +3,14 @@ import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as md5 from "md5";
 import {Observable} from "rxjs";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class AdminProfileService {
 
     private methods = ["getInfo", "setInfo"];
 
-    constructor(@Inject('ProtocolService') private protocolService) {
-
-    }
-
-    onApplicationBootstrap() {
+    constructor(private protocolService: ProtocolService) {
 
     }
 
@@ -21,12 +18,12 @@ export class AdminProfileService {
         return new Observable(subscriber => {
             (async () => {
                 const payload: payloadInterface = {
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: 'sql',
                     act: 'get',
                     payload: {
                         db: 'main',
-                        channel: `${process.env.app}_system`,
+                        channel: `system`,
                         data: {
                             what: 'auth',
                             fields: ["fname", "lname", "email", "address"],
@@ -56,12 +53,12 @@ export class AdminProfileService {
         params.payload.fullName = params.payload.fname + " " + params.payload.lname;
 
         const request: payloadInterface = {
-            channel: `${process.env.app}_db`,
+            channel: `db`,
             api: 'sql',
             act: 'set',
             payload: {
                 db: 'main',
-                channel: `${process.env.app}_system`,
+                channel: `system`,
                 data: {
                     what: 'auth',
                     where: {
@@ -83,12 +80,12 @@ export class AdminProfileService {
             //check the old password
 
             const checkPasswordRequest: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'get',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'auth',
                         fields: ["password"],

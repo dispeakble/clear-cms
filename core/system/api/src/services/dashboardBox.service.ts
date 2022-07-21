@@ -2,13 +2,14 @@ import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class DashboardBoxService {
 
     private methods = ["list", "add", "remove", "edit"];
 
-    constructor(@Inject('ProtocolService') private protocolService) {
+    constructor(private protocolService: ProtocolService) {
     }
 
     private help = {
@@ -37,12 +38,12 @@ export class DashboardBoxService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'dashboardBox',
                         where: params?.where
@@ -93,12 +94,12 @@ export class DashboardBoxService {
             (async () => {
                 try {
                     const request: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_system`,
+                            channel: `system`,
                             data: {
                                 what: 'dashboardBox',
                                 data: this.help.giveBoxValues(params)
@@ -125,12 +126,12 @@ export class DashboardBoxService {
     public edit (params: any){
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'set',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'dashboardBox',
                         where: {
@@ -157,12 +158,12 @@ export class DashboardBoxService {
     public remove (params: any){
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'main',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'dashboardBox',
                         where: {

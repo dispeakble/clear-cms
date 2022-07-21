@@ -38,13 +38,13 @@ const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
 export async function getServerSideProps(context: any) {
 
     const payload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         protocolMethod: "sendMessage",
         api: "sql",
         act: "get",
         payload: {
             db: "main",
-            channel: `${process.env.app}_frontend`,
+            channel: `frontend`,
             data: {
                 what: "setting",
                 limit: [0, 1]
@@ -79,7 +79,7 @@ export async function getServerSideProps(context: any) {
         websiteData["websiteAdminEmail"] = dbWebsiteData["websiteAdminEmail"];
         websiteData["websiteDomain"] = dbWebsiteData["websiteDomain"];
         websiteData["websiteName"] = dbWebsiteData["websiteName"];
-        websiteData["recaptchaKey"] = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+        websiteData["recaptchaKey"] = process.env.recaptcha_public_key;
     } catch (err) {
         // eslint-disable-next-line no-console
         console.log(err);

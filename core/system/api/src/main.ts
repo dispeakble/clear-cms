@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
     try {
@@ -27,7 +27,7 @@ async function bootstrap() {
             }
         });
 
-        await app.startAllMicroservicesAsync();
+        await app.startAllMicroservices();
     } catch(err){
         console.error(err);
         process.exit(1);

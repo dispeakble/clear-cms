@@ -62,20 +62,23 @@ export class SystemService {
                 } catch (err) {
                     console.log(`${params.channel} not ready yet`);
                 }
-            }, 2000);
+            }, 300);
         });
     }
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: `${process.env.app}_hub`});
-            await this.waitForService({channel: `${process.env.app}_db`});
-            await this.waitForService({channel: `${process.env.app}_bucket`});
+
+            await Promise.all([
+                this.waitForService({channel: `hub`}),
+                this.waitForService({channel: `db`}),
+                this.waitForService({channel: `bucket`}),
+            ]);
 
             const payload: payloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: `${process.env.app}_hub`,
+                channel: `hub`,
                 config: {
                     restart: true,
                     stop: false

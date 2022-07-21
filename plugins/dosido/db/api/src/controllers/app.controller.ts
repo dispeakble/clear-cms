@@ -9,7 +9,7 @@ import { ConfigService } from "@nestjs/config";
 export class AppController {
 
     private moduleConfig: ModuleInterface = {
-        name: `${process.env.app}_db`,
+        name: `db`,
         version: '20.11.17',
         description: 'db module',
         started: new Date(),
@@ -20,7 +20,7 @@ export class AppController {
         },
         dependencies: [
             {
-                name: `${process.env.app}_hub`,
+                name: `hub`,
                 version: 'latest'
             }
         ],
@@ -55,7 +55,6 @@ export class AppController {
         }
 
         const data = await this.systemService.registerModule(this.moduleConfig);
-        console.log(data);
         if(!data) {
             throw 'Db not ready yet';
         }

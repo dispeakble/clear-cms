@@ -12,17 +12,17 @@ import {Observable} from "rxjs";
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: `${process.env.app}_frontendproxy`,
+        name: `frontendproxy`,
         version: '21.08.26',
         description: 'the main http frontend proxy (gateway)',
         started: new Date(),
         config: {
-            channel: `${process.env.app}_frontendproxy`,
+            channel: `frontendproxy`,
             restart: true,
             stop: false
         },
         dependencies: [{
-            name: `${process.env.app}_hub`,
+            name: `hub`,
             version: 'latest'
         }]
     };
@@ -157,7 +157,7 @@ export class AppController {
                                     handshakeResponse['thePusher'].complete();
                                     res.end(JSON.stringify({message: 'upload error'}));
                                 });
-                            }, 1000);
+                            }, 300);
                         });
                     },
                     _removeFile: () => {
@@ -210,7 +210,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: `${process.env.app}_frontendproxy`,
+                                channel: `frontendproxy`,
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {
@@ -256,7 +256,7 @@ export class AppController {
         try {
 
             const fileReq = {
-                channel: `${process.env.app}_frontend`,
+                channel: `frontend`,
                 payload: {
                     ip: req.ip,
                     hostname: req.hostname,
