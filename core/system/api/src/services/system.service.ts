@@ -71,7 +71,7 @@ export class SystemService {
 
             await Promise.all([
                 this.waitForService({channel: `hub`}),
-                this.waitForService({channel: `proxy`}),
+                this.waitForService({channel: `adminproxy`}),
                 this.waitForService({channel: `db`}),
                 this.waitForService({channel: `bucket`}),
             ]);

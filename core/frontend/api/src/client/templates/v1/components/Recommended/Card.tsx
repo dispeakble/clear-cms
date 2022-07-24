@@ -1,12 +1,12 @@
 import {
-  StyledActionButton,
-  StyledCard,
-  StyledDetails,
-  StyledLunch,
-  StyledPrice,
-  StyledStars,
-  StyledTitle,
-  StyledZoomImg,
+    StyledActionButton,
+    StyledCard,
+    StyledDetails,
+    StyledLunch,
+    StyledPrice,
+    StyledStars,
+    StyledTitle,
+    StyledZoomImg, StyledZoomPopup,
 } from "./styled";
 import { useTranslations } from "next-intl";
 
@@ -21,9 +21,9 @@ const Card = ({ title, meal, details, price, img, dataTestid }: any) => {
       <StyledPrice>{price}</StyledPrice>
       <StyledActionButton>{t("home.recommended.book-now")}</StyledActionButton>
       <StyledZoomImg src={img}>
-{/*
-        <StyledZoomPopup src={img} />
-*/}
+
+        {/*<StyledZoomPopup src={img} />*/}
+
       </StyledZoomImg>
     </StyledCard>
   );

@@ -14,7 +14,7 @@ const Recommended = () => {
     title: t("home.recommended.hotel1"),
     meal: t("home.recommended.description"),
     details: t("home.recommended.noOfNights"),
-    price: "199$",
+    price: "199 €",
     img: hotel1.src
   };
 

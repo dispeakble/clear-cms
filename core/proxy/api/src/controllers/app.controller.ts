@@ -11,12 +11,12 @@ import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: `proxy`,
+        name: `adminproxy`,
         version: '21.07.28',
         description: 'the main http proxy (gateway)',
         started: new Date(),
         config: {
-            channel: `proxy`,
+            channel: `adminproxy`,
             restart: true,
             stop: false
         },
@@ -216,7 +216,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: `proxy`,
+                                channel: `adminproxy`,
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {
@@ -401,12 +401,12 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: `${process.env.app}_proxy`})
+    @MessagePattern({message: `${process.env.app}_adminproxy`})
     public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: `${process.env.app}_proxy`})
+    @EventPattern({event: `${process.env.app}_adminproxy`})
     public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }

@@ -10,10 +10,11 @@ import { Hotels } from "./SearchForms/Hotels";
 import { Flights } from "./SearchForms/Flights";
 
 interface HomeSearchProps {
-  selectedTab: string
+  selectedTab: string,
+  isHome?: boolean
 }
 
-const HomeSearch: React.FC<HomeSearchProps> = ({ selectedTab }) => {
+const HomeSearch: React.FC<HomeSearchProps> = ({ isHome = false, selectedTab }) => {
   const t = useTranslations();
   const [formType, setFormType] = useState(selectedTab);
 
@@ -21,7 +22,7 @@ const HomeSearch: React.FC<HomeSearchProps> = ({ selectedTab }) => {
     setFormType(type);
   }
 
-  return <StyledHomeSearch>
+  return <StyledHomeSearch isHome={isHome}>
     <StyledSearchTabs>
       <StyledSearchTab
         data-testid='test-packages-search-tab'

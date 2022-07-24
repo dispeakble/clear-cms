@@ -316,7 +316,7 @@ export const Flights = () => {
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
               </StyledCenterLabel>
               {showFilter === "adults" &&
-                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={11}
+                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9 - filterValues.children}
                             onChange={handleFilterChange} />}
             </StyledPerson>
             <StyledChild>
@@ -332,7 +332,7 @@ export const Flights = () => {
                         className="childrenAges"
                         name="childrenAges"
                         min={0}
-                        max={17}
+                        max={12}
                         count={filterValues.children}
                         data={filterValues.childrenAges}
                         dataTestId="test-children-ages-handler"

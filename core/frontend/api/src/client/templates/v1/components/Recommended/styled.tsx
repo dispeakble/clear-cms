@@ -48,6 +48,7 @@ export const StyledPrice = styled.div`
   color: ${({theme}) => theme.colors.darkRed};
   font-size: 26px;
   margin-bottom: 10px;
+  text-align: right;
 `;
 
 export const StyledActionButton = styled.a`

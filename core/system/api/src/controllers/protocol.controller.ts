@@ -39,7 +39,7 @@ export class ProtocolController {
             name: `hub`,
             version: 'latest'
         }, {
-            name: `proxy`,
+            name: `adminproxy`,
             version: 'latest'
         }]
     };
@@ -100,7 +100,7 @@ export class ProtocolController {
                 act: 'mapPort',
                 payload: {
                     channel: `system`,
-                    target: `proxy`,
+                    target: `adminproxy`,
                     port: process.env.backend_port,
                     defaults: {
                         url: '/',

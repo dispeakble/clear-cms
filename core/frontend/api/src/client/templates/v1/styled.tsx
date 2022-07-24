@@ -99,6 +99,8 @@ export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
   @media (max-width: ${size.tablet}) {
     padding: 10px;
   }
+  display: flex;
+  justify-content: center;
 `;
 
 export const TopContentWrapper = styled.div`

@@ -96,9 +96,7 @@ export const SmallBookNow = styled.span`
   background: ${({theme}) => theme.colors.primaryColor};
   padding: 0 10px;
   color:  ${({theme}) => theme.colors.white};
-  white-space: nowrap;
   line-height: 21px;
-  height: 21px;
   cursor: pointer;
 
   &:hover {

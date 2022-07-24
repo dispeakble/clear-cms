@@ -15,13 +15,13 @@ const TopHotels = () => {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const fakePrices = [{
-    value: "299$",
+    value: "123 €",
     destination: "Gran Canaria"
   }, {
-    value: "299$",
+    value: "234 €",
     destination: "Tenerife"
   }, {
-    value: "299$",
+    value: "345 €",
     destination: "La Gomera"
   }];
   return <StyledWrapper>

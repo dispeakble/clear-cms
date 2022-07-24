@@ -5,10 +5,7 @@ import {
   ContentWrapper,
   GlobalStyle,
   MainWrapper, PaperWrapper,
-  StyledMiddleText,
-  StyledWebsiteName, StyledWebsiteSlogan,
   TopContentWrapper,
-  Wrapper
 } from "../styled";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -172,8 +169,6 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
         }
     ]
 
-    //console.log("filters index", filters)
-
     const myTheme: any = { colors: colorScheme, icon: getIcons };
 
     return(
@@ -183,7 +178,7 @@ const HotelList = ({ websiteName, colorScheme }: any) => {
               <TopContentWrapper>
                 <ContentWrapper>
                   <Header websiteName={websiteName} />
-                  <Breadcrumbs />
+                  <Breadcrumbs {...{'hotel/list':'Hotels Search'}} />
                   <HomeSearch selectedTab='hotels' />
                 </ContentWrapper>
               </TopContentWrapper>

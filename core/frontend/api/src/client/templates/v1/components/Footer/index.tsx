@@ -1,8 +1,9 @@
+import React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { FooterWrapper, StyledNewsletterForm, StyledNewsletterTitle } from "./styled";
 
-const Footer = (props: any) => {
+const Footer = () => {
   const t = useTranslations();
 
   return (<FooterWrapper>

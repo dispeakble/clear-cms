@@ -9,9 +9,9 @@ export const StyledBreadcrumbs = styled.div`
   width: 100%;
   padding: 0 20px;
   overflow: hidden;
-  margin: 50px 0 0 0;
+  margin: 0 0 0 0;
   @media (min-width: ${size.tablet}) {
-    margin: 50px 20px;
+    margin: 0 20px;
     width: calc(100% - 40px);
   }
 `;

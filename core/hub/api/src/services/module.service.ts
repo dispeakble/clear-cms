@@ -53,12 +53,12 @@ export class ModuleService {
       try {
         setTimeout(() => {
           resolve_ping(null);
-        }, 1000);
+        }, 10000);
 
         const payload: payloadInterface = {//todo export this globally. lazy load
           api: "protocol",
           act: "ping",
-          channel: `hub`,
+          channel: String(dep.name),
           payload: dep
         };
 

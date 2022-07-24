@@ -15,7 +15,7 @@
     "redirecting": "Redirigiendo...",
     "loggingOut": "Cerrar la sesión...",
     "accounts": {
-      "login": "Inicio de sesión",
+      "login": "Acceso",
       "logout": "Cierre de sesión",
       "signup": "Registrarse",
       "myProfile": "Mi perfil",
@@ -234,7 +234,7 @@
       "file-a-complaint": "Presentar una queja",
       "working-hours": "Horas Laborales"
     },
-    "email-address": "Dirección de correo electrónico",
+    "email-address": "Correo electrónico",
     "subscribe-title": "Suscríbete a nuestro boletín",
     "subscribe": "Suscribir"
   },
@@ -291,7 +291,7 @@
       "address": "Dirección",
       "childAge": "Edad del niño",
       "country": "País",
-      "emailAddress": "Dirección de correo electrónico",
+      "emailAddress": "Correo electrónico",
       "previousStep": "Paso anterior",
       "nextStep": "Próximo paso",
       "type": {

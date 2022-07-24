@@ -104,7 +104,7 @@ const Layout = ({ websiteName,
                                         isHomePage &&
                                         (
                                             <ContentWrapper>
-                                                <HomeSearch selectedTab="packages"/>
+                                                <HomeSearch isHome={isHomePage} selectedTab="packages"/>
                                                 <StyledMiddleText>
                                                     <StyledWebsiteName>{websiteName}</StyledWebsiteName>
                                                     <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
@@ -114,7 +114,7 @@ const Layout = ({ websiteName,
                                     }
                                 </TopContentWrapper>
                                 {
-                                    breadcrumbs &&
+                                    !isHomePage && breadcrumbs &&
                                     <Wrapper isBreadcrumb>
                                         <Breadcrumbs {...breadcrumbs} />
                                     </Wrapper>

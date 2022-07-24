@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 import { device, size } from "../../styled";
 
-export const StyledHomeSearch = styled.div`
+export const StyledHomeSearch = styled.div<{isHome: boolean}>`
   background-size: cover;
-  padding: 114px 0 0;
+  padding: ${({isHome}) => isHome ? 114 : 40}px 0 0;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@ export const StyledHomeSearch = styled.div`
   }
   @media ${device.laptop} {
     max-width: 768px;
-    padding: 114px 20px 0;
+    padding: ${({isHome}) => isHome ? 114 : 40}px 20px 0;
   }
   @media ${device.laptopL} {
     max-width: 1024px;
@@ -496,7 +496,6 @@ export const CalendarContainer = styled.div`
     @media ${device.tablet} {
       width: 50%;
     }
-    margin: 0.5em;
   }
 
   .react-calendar,
@@ -551,6 +550,12 @@ export const CalendarContainer = styled.div`
     text-transform: uppercase;
     font-weight: bold;
     font-size: 0.75em;
+  }
+  
+  .react-calendar__month-view:not(:first-of-type) {
+    @media ${device.tablet} {
+      border-left: 1px solid ${({ theme }) => theme.colors.primaryLight};
+    }    
   }
 
   .react-calendar__month-view__weekdays__weekday {

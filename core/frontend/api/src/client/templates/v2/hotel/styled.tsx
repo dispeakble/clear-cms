@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Image from "next/image";
 import {Field} from "formik";
+import {device} from "../styled";
 
 
 interface IDetailsContainer{
@@ -23,9 +24,10 @@ export const PackagesLayout = styled.div`
   display: flex;
   gap: 20px;
   margin-top: 50px;
+  flex-direction: column;
   
-  @media screen and (max-width: 1300px){
-    flex-direction: column;
+  @media ${device.laptopL} {
+    flex-direction: row;
   }
   
 `
@@ -395,37 +397,38 @@ export const DescriptionContainer = styled.div`
 
 /* start Filters styles */
 
-export const FiltersWrapper = styled.div`
-  max-width: 290px;
-  width:100%;
-  background: #FFFFFF;
-  box-shadow: 0 0 18px rgba(0, 0, 0, 0.11);
-  
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-
-  @media screen and (max-width: 1300px){
-    flex-direction: row;
-    justify-content: space-between;
-    max-width: 100%;
-  }
-
-  @media screen and (max-width: 500px){
-    flex-direction: column;
-  }
-`
 
 export const FiltersHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 22px 11px;
   align-items: center;
-  border-bottom: 1px #C4C4C4 solid;
+  
   width: 100%;
-  cursor: pointer;
+  cursor: pointer;  
+`
+
+export const FiltersWrapper = styled.div`
+  width:100%;
+  background: #FFFFFF;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.11);
   
-  
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  border-radius: 8px;
+
+  @media screen and ${device.laptopL} {
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 290px;
+
+    ${FiltersHeaderWrapper}:not(:last-of-type) {
+      border-bottom: 1px #C4C4C4 solid;
+    }
+    
+  }
+
 `
 
 export const FiltersHeader = styled.h2`
