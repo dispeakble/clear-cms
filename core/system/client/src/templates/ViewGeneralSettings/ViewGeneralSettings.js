@@ -380,19 +380,28 @@ class ViewGeneralSettings extends Component {
                         await this.refresh();
                         resolve();
                     }),
-                onRowDelete: (oldData) =>
-                    new Promise(async (resolve) => {
-                        await this.props.control.rem({
-                            id: [oldData.id]
-                        });
-                        this.refresh();
-                        resolve();
+                onRowDelete: async (data) =>
+                {
+                    const temp = this.state.colorScheme
+                    delete temp[data.slug]
+                    this.setState({
+                        colorScheme: temp
                     })
+
+                    await this.setData();
+                    await this.refresh();
+                }
             }
         },
         props: {
             icons: {
-                Add: () => <AddCircle style={{ color: this.props.defaultTheme.primary?.main || "green" }} />,
+                Add: () => <AddCircle
+                    style={{ color: this.props.defaultTheme.primary?.main || "green" }}
+                    onClick={() => {
+                            window.scrollTo(0, document.body.scrollHeight)
+                        }
+                    }
+                />,
                 Check: () => (
                     <Check color="primary" />
                 ),
@@ -431,6 +440,8 @@ class ViewGeneralSettings extends Component {
                                     }}
                                 />
                             )
+                        } if(color.tableData.editable && color.tableData.editing !== "update"){
+                            console.log('here', color)
                         }
 
                         return (
