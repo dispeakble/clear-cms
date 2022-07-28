@@ -63,6 +63,10 @@ const generalSettingsPageStyle = {
         gap: "10px",
         width: "100%",
     },
+    actionButtonsContainer: {
+        display: "flex",
+        gap: "8px"
+    },
     gridItem: {
         padding: 0
     },

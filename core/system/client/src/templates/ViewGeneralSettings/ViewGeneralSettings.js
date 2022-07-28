@@ -43,6 +43,7 @@ class ViewGeneralSettings extends Component {
         contactEmail: "",
         selectedTheme: "v1",
         colorScheme: {},
+        editedColorScheme: {},
         colorPickerIsOpen: false,
         validation: {
             websiteName: { valid: false, empty: true },
@@ -212,6 +213,7 @@ class ViewGeneralSettings extends Component {
                 websiteDomain: generalSettingsData.websiteDomain,
                 websiteOwner: generalSettingsData.websiteOwner,
                 colorScheme: generalSettingsData.colorScheme,
+                editedColorScheme: generalSettingsData.colorScheme,
                 websiteAdminEmail: generalSettingsData.websiteAdminEmail,
                 applicationVersion: generalSettingsData.applicationVersion,
                 defaultMetaTitle: generalSettingsData.defaultMetaTitle,
@@ -227,6 +229,8 @@ class ViewGeneralSettings extends Component {
                 contactEmail: generalSettingsData.contactEmail
             });
         }
+        console.log(this.state.colorScheme, this.state.editedColorScheme)
+
     }
 
     openErrorModal = (message) => {
@@ -273,6 +277,8 @@ class ViewGeneralSettings extends Component {
         },
         actions: {
             getData: (query) => {
+                console.log(this.state.colorScheme, this.state.editedColorScheme)
+
                 return new Promise((resolve) => {
 
                     (async () => {
@@ -289,20 +295,20 @@ class ViewGeneralSettings extends Component {
                         }
 
                         const result = query.search.length > 0 ?
-                            Object.keys(this.state.colorScheme).filter((color) => this.state.colorScheme[color].slug.toLowerCase().includes(query.search.toLowerCase())
-                                || this.state.colorScheme[color].colorName.toLowerCase().includes(query.search.toLowerCase()))
+                            Object.keys(this.state.editedColorScheme).filter((color) => this.state.editedColorScheme[color].slug.toLowerCase().includes(query.search.toLowerCase())
+                                || this.state.editedColorScheme[color].colorName.toLowerCase().includes(query.search.toLowerCase()))
                                 .filter(Boolean)
                                 .map((color) => (
                                     {
-                                        ...this.state.colorScheme[color],
-                                        hex: tinycolor(this.state.colorScheme[color].hex).toHexString(),
+                                        ...this.state.editedColorScheme[color],
+                                        hex: tinycolor(this.state.editedColorScheme[color].hex).toHexString(),
                                     }
                                 ))
 
-                            : Object.keys(this.state.colorScheme).map((color) => (
+                            : Object.keys(this.state.editedColorScheme).map((color) => (
                                 {
-                                    ...this.state.colorScheme[color],
-                                    hex: tinycolor(this.state.colorScheme[color].hex).toHexString(),
+                                    ...this.state.editedColorScheme[color],
+                                    hex: tinycolor(this.state.editedColorScheme[color].hex).toHexString(),
                                 })
                             )
 
@@ -327,14 +333,14 @@ class ViewGeneralSettings extends Component {
                             reject();
                         }
 
-                        if(Object.keys(this.state.colorScheme).filter((slug) => data.slug === slug).length > 0){
+                        if(Object.keys(this.state.editedColorScheme).filter((slug) => data.slug === slug).length > 0){
                             this.openErrorModal("A color with similar slug already exists, please use a unique slug and try again!");
                             reject();
                         }
 
                         this.setState(
-                            {colorScheme: {
-                                    ...this.state.colorScheme, ...{
+                            {editedColorScheme: {
+                                    ...this.state.editedColorScheme, ...{
                                         [data.slug]: {
                                             colorName: data.colorName,
                                             slug: data.slug,
@@ -355,8 +361,8 @@ class ViewGeneralSettings extends Component {
                         }
                         this.setState(
                             {
-                                colorScheme: {
-                                    ...this.state.colorScheme, ...{
+                                editedColorScheme: {
+                                    ...this.state.editedColorScheme, ...{
                                         [data.slug]: {
                                             colorName: data.colorName,
                                             slug: data.slug,
@@ -372,10 +378,10 @@ class ViewGeneralSettings extends Component {
                     }),
                 onRowDelete: async (data) =>
                 {
-                    const temp = this.state.colorScheme
+                    const temp = this.state.editedColorScheme
                     delete temp[data.slug]
                     this.setState({
-                        colorScheme: temp
+                        editedColorScheme: temp
                     })
 
                     await this.setData();
@@ -573,6 +579,11 @@ class ViewGeneralSettings extends Component {
         }, 5000);
     }
 
+    resetColorScheme = async () => {
+        this.setState({ editedColorScheme: this.state.colorScheme })
+        await this.refresh()
+    }
+
     async setData() {
         const result = await this.props.control.set({
             data: {
@@ -592,7 +603,7 @@ class ViewGeneralSettings extends Component {
                 emailSender: this.state.emailSender,
                 emailPassword: this.state.emailPassword,
                 contactEmail: this.state.contactEmail,
-                colorScheme: this.state.colorScheme,
+                colorScheme: this.state.editedColorScheme,
                 selectedTheme: this.state.selectedTheme
             }
         });
@@ -922,9 +933,12 @@ class ViewGeneralSettings extends Component {
 
                                   <p style={{ width: "15px" }}></p>
 
-                                  <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit"
-                                          color="primary" size="lg" className={classes.button}>Save Theme
-                                      Settings</Button>
+                                  <div style={styles.actionButtonsContainer}>
+                                      <Button onClick={this.resetColorScheme} color="primary" size="lg" className={classes.button}>Discard Changes</Button>
+                                      <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit"
+                                              color="primary" size="lg" className={classes.button}>Save Theme
+                                          Settings</Button>
+                                  </div>
 
                                   <p style={{ width: "15px" }}></p>
 
@@ -1020,7 +1034,6 @@ class ViewGeneralSettings extends Component {
 
                                   <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit"
                                           color="primary" size="lg" className={classes.button}>Save Settings</Button>
-
                               </form>
                           </div>
                       </div>
