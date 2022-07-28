@@ -229,7 +229,6 @@ class ViewGeneralSettings extends Component {
                 contactEmail: generalSettingsData.contactEmail
             });
         }
-        console.log(this.state.colorScheme, this.state.editedColorScheme)
 
     }
 
@@ -277,7 +276,6 @@ class ViewGeneralSettings extends Component {
         },
         actions: {
             getData: (query) => {
-                console.log(this.state.colorScheme, this.state.editedColorScheme)
 
                 return new Promise((resolve) => {
 
@@ -348,7 +346,7 @@ class ViewGeneralSettings extends Component {
                                         }
                                     }
                             }})
-                        await this.setData();
+
                         await this.refresh();
                         resolve();
                     }),
@@ -384,7 +382,6 @@ class ViewGeneralSettings extends Component {
                         editedColorScheme: temp
                     })
 
-                    await this.setData();
                     await this.refresh();
                 }
             }
