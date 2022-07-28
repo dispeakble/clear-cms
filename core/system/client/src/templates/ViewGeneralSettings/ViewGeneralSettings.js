@@ -25,7 +25,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import imageHelper from "../../helpers/image.helper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
-import {AddCircle, Check, Clear, DeleteForever, Edit} from "@material-ui/icons";
+import {AddCircle, Check, Clear, DeleteForever, Edit, Colorize} from "@material-ui/icons";
 import MaterialTable from "material-table";
 import {ThemeProvider as MuiThemeProvider} from "@material-ui/styles";
 
@@ -42,28 +42,8 @@ class ViewGeneralSettings extends Component {
         emailPassword: "",
         contactEmail: "",
         selectedTheme: "v1",
-        colorScheme: {
-            primaryColor: { colorName: "Primary Color",slug:"", hex: "#DC6B03" },
-            primaryColorRBG: { colorName: "Primary Color RBG",slug:"", hex: { r: 220, g: 107, b: 3 } },
-            primaryColorFadedRBG: { colorName: "Primary Color Faded RBG",slug:"", hex: { r: 252, g: 232, b: 221 } },
-            primaryDark: { colorName: "Primary Dark",slug:"", hex: "orange" },
-            primaryLight: { colorName: "Primary Light",slug:"", hex: "#FF9F5A" },
-            primaryColorHover: { colorName: "Primary Color Hover",slug:"", hex: "#FC8C25" },
-            primaryRed: { colorName: "Primary Red",slug:"", hex: "#DC0303" },
-            secondaryColor: { colorName: "Secondary Color",slug:"", hex: "#FF0000" },
-            accentColor: { colorName: "Accent Color",slug:"", hex: "#f39200" },
-            darkRed: { colorName: "Dark Red",slug:"", hex: "#E90000" },
-            jetBlack: { colorName: "Jet Black",slug:"", hex: "#333" },
-            black: { colorName: "Black",slug:"", hex: "#000" },
-            offWhite: { colorName: "Off White",slug:"", hex: "#f5f5f5" },
-            white: { colorName: "White",slug:"", hex: "#fff" },
-            gray: { colorName: "Gray",slug:"", hex: "#505050" },
-            mainBackground: { colorName: "Main Background",slug:"", hex: "#E5E5E5" },
-            footerLinks: { colorName: "Footer Links",slug:"", hex: "#868484" },
-            greyBorder: { colorName: "Grey Border",slug:"", hex: "#ACACAC" },
-            borderOutline: { colorName: "Border Outline",slug:"", hex: "#DBDBDB" }
-        },
-        colorPickerIsOpen: "",
+        colorScheme: {},
+        colorPickerIsOpen: false,
         validation: {
             websiteName: { valid: false, empty: true },
             websiteDomain: { valid: false, empty: true },
@@ -120,6 +100,10 @@ class ViewGeneralSettings extends Component {
             picker: {
                 width: "200px",
                 height: "300px",
+                position: "absolute",
+                left: '50%',
+                zIndex: '1000',
+                transform: 'translateX(-50%)'
             }
         }
     };
@@ -363,20 +347,26 @@ class ViewGeneralSettings extends Component {
                         resolve();
                     }),
                 onRowUpdate: (data, oldData) =>
+                    // eslint-disable-next-line no-async-promise-executor
                     new Promise(async (resolve, reject) => {
                         if (!data.hex || !data.colorName || !data.slug) {
                             this.openErrorModal("Please, fill in all the fields and try again!");
                             reject();
                         }
                         this.setState(
-                            {colorScheme: {
+                            {
+                                colorScheme: {
                                     ...this.state.colorScheme, ...{
-                                        colorName: data.colorName,
-                                        slug: data.slug,
-                                        hex: data.hex,
+                                        [data.slug]: {
+                                            colorName: data.colorName,
+                                            slug: data.slug,
+                                            hex: data.hex,
+                                        }
                                     }
-                                }})
-                        await this.setData();
+                                }
+                            }
+                        )
+
                         await this.refresh();
                         resolve();
                     }),
@@ -397,10 +387,6 @@ class ViewGeneralSettings extends Component {
             icons: {
                 Add: () => <AddCircle
                     style={{ color: this.props.defaultTheme.primary?.main || "green" }}
-                    onClick={() => {
-                            window.scrollTo(0, document.body.scrollHeight)
-                        }
-                    }
                 />,
                 Check: () => (
                     <Check color="primary" />
@@ -419,41 +405,16 @@ class ViewGeneralSettings extends Component {
                 {
                     field: "",
                     title: "",
-                    render: color => {
-                        if(color.tableData.editing === "update"){
-                            return (
-                                <SketchPicker
-                                    color={this.state.colorScheme[color.slug].hex}
-                                    styles={this.pickerStyles}
-                                    onChange={(changedColor) => {
-                                        const newColor = {};
-                                        newColor[color.slug] = {
-                                            colorName: color.colorName,
-                                            slug: color.slug,
-                                            hex: color.hex
-                                        };
-                                        newColor[color.slug].hex = changedColor.hex
-
-                                        this.setState({
-                                            colorScheme: { ...this.state.colorScheme, [color.slug]: newColor[color.slug]}
-                                        });
-                                    }}
-                                />
-                            )
-                        } if(color.tableData.editable && color.tableData.editing !== "update"){
-                            console.log('here', color)
-                        }
-
-                        return (
-                            <div style={{
-                                width: "60px",
-                                height: "40px",
-                                backgroundColor: color.hex,
-                                cursor: "pointer",
-                                position: "relative"
-                            }}/>
-                        )
-                    }
+                    render: rowData => (
+                        <div style={{
+                            width: "60px",
+                            height: "40px",
+                            backgroundColor: rowData.hex,
+                            cursor: "pointer",
+                            position: "relative",
+                            borderRadius: "2px"
+                        }}/>
+                    )
                 },
                 {
                     type: "string",
@@ -468,7 +429,38 @@ class ViewGeneralSettings extends Component {
                 {
                     type: "string",
                     field: "hex",
-                    title: "Hexadecimal"
+                    title: "Hexadecimal",
+                    editComponent: props => (
+                        <div style={{position: 'relative'}}>
+                            <div style={styles.hexFormGroup}>
+                                <input
+                                    type="text"
+                                    value={props.value}
+                                    onChange={e => props.onChange(e.target.value)}
+                                />
+
+                                <Colorize style={{ color: this.props.defaultTheme.primary?.main || "green",
+                                    cursor: 'pointer'
+                                    }} onClick={() => this.setState({colorPickerIsOpen : !this.state.colorPickerIsOpen})}
+                                />
+                            </div>
+
+                            {
+                                this.state.colorPickerIsOpen &&
+                                <>
+                                    <SketchPicker
+                                        color={props.value}
+                                        styles={this.pickerStyles}
+                                        onChange={(color) => props.onChange(color.hex)}
+                                    />
+                                    <div style={styles.colorPickerOverlay}
+                                         onClick={() => this.setState({colorPickerIsOpen : false})}>
+                                    </div>
+                                </>
+                            }
+
+                        </div>
+                    )
                 }
             ],
             localization: {
