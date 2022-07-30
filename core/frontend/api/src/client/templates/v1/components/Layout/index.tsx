@@ -22,6 +22,7 @@ const Layout = ({ websiteName,
                     isOrange,
                     isInvisible,
                     isHomePage,
+                    showSearch = false,
                     websiteSlogan }: any) => {
 
     const getIcons = (iconName: string) => {
@@ -101,14 +102,14 @@ const Layout = ({ websiteName,
                                 <TopContentWrapper>
                                     <Header websiteName={websiteName} />
                                     {
-                                        isHomePage &&
+                                        (isHomePage || showSearch) &&
                                         (
                                             <ContentWrapper>
                                                 <HomeSearch isHome={isHomePage} selectedTab="packages"/>
-                                                <StyledMiddleText>
+                                                {isHomePage && <StyledMiddleText>
                                                     <StyledWebsiteName>{websiteName}</StyledWebsiteName>
                                                     <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
-                                                </StyledMiddleText>
+                                                </StyledMiddleText>}
                                             </ContentWrapper>
                                         )
                                     }

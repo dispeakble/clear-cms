@@ -194,7 +194,9 @@
     "packages": "Paquetes",
     "flights": "Vuelos",
     "hotel-stars": "Categoría",
-    "activities": "Ocupaciones"
+    "activities": "Ocupaciones",
+    "login": "Acceso",
+    "logout": "Cerrar Sesión"
   },
   "deals": {
     "hotel": "Hotel Victoria",

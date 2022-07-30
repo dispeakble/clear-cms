@@ -23,7 +23,7 @@ export const FooterWrapper = styled.footer`
     }
   }
 
-  padding: 40px 120px;
+  padding: 40px 0;
 
   @media (min-width: ${size.tablet}) {
     flex-direction: row;

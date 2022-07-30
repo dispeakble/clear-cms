@@ -13,7 +13,7 @@ import Layout from "./components/Layout";
 const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   return (
-      <Layout isHomePage websiteSlogan={websiteSlogan} websiteName={websiteName} colorScheme={colorScheme} >
+      <Layout isHomePage={true} websiteSlogan={websiteSlogan} websiteName={websiteName} colorScheme={colorScheme} >
         <PaperWrapper>
           <ContentWrapper>
             <TopHotels />

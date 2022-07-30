@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import Link from "next/link"
 import Image from "next/image"
+import { device } from "../styled";
 
 export const size = {
-    mobileS: "320px",
-    mobileM: "375px",
-    mobileL: "425px",
-    tablet: "768px",
-    laptop: "1024px",
-    laptopL: "1440px",
-    desktop: "1919px",
-    desktopL: "2560px"
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  laptop: "1024px",
+  laptopL: "1440px",
+  desktop: "1919px",
+  desktopL: "2560px"
 };
 
 export const LoginWrapper = styled.div`
@@ -34,10 +35,13 @@ export const LoginFormWrapper = styled.div`
   flex: 1;
   border-radius: 40px;
   box-shadow: 0 0 18px rgba(0, 0, 0, 0.3);
-  padding: 20px 35px;
+
   min-height: 765px;
   display: flex;
   flex-direction: column;
+  @media ${device.mobileM} {
+    padding: 20px 35px;
+  }
 `
 
 export const StyledLoginTitle = styled.h2`
@@ -98,7 +102,7 @@ export const TextInput = styled.input<{icon: string}>`
   ::placeholder{
     color: #ADADAD;
   }
-  
+
   :is(.passwordInput){
     position: relative;
   }
@@ -114,7 +118,7 @@ export const ShowPasswordContainer = styled.div`
 `
 
 export const ShowPasswordIcon = styled(Image)`
-   
+
 `
 
 export const ErrorText = styled.span`
@@ -174,9 +178,14 @@ export const ForgotPassword = styled(Link)`
 export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   margin-bottom: 40px;
+  @media ${device.mobileM} {
+    & button {
+      max-width: 230px;
+    }
+  }
 `
 
 export const ContinueButton = styled.button`
@@ -185,16 +194,17 @@ export const ContinueButton = styled.button`
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  font-size: clamp(18px, 3vw, 36px);
+  font-size: 20px;
   line-height: 1.5;
   color: #FFFFFF;
-  display: flex;
   align-items: center;
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 18px 130px;
+  padding: 18px 0;
   justify-content: space-between;
+  text-align: center;
+  width: 100%;
 
   gap: 20px;
 

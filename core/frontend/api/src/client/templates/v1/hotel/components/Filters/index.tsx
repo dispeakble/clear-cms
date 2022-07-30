@@ -18,37 +18,7 @@ const Filters = ({setSelectedFilters, selectedFilters, filters}: any) => {
     }
 
     return(
-        <FiltersWrapper>
-            <FiltersHeaderWrapper>
-                <FiltersHeader>
-                    {t('filters.main.title')}
-                </FiltersHeader>
-                <ResetText onClick={() => setSelectedFilters([])}>
-                    {t('filters.main.reset')}
-                </ResetText>
-            </FiltersHeaderWrapper>
-
-            {
-                filters &&
-                filters.map((filter: any, index: number) => {
-                    return(
-                        <FiltersHeaderWrapper className={`filterHeaderWrapper ${(isOpen?.includes(filter.slug as string)) ? "isOpen" : ""}`} onClick={() => handleFilterOpen(filter.slug)} key={index}>
-                            <FiltersHeader>
-                                {filter.title}
-                            </FiltersHeader>
-                            <Image
-                                src={FiltersArrow}
-                                width={10}
-                                height={5}
-                                style={{
-                                    cursor: 'pointer'
-                                }}
-                            />
-                        </FiltersHeaderWrapper>
-                    )
-                })
-            }
-        </FiltersWrapper>
+        <></>
     )
 }
 

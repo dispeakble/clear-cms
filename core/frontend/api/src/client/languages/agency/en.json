@@ -198,7 +198,9 @@
     "packages": "Packages",
     "flights": "Flights",
     "hotel-stars": "Category",
-    "activities": "Activities"
+    "activities": "Activities",
+    "login": "Login",
+    "logout": "Logout"
   },
 
   "deals": {
@@ -250,7 +252,7 @@
 
   "custom404": {
     "header": "Going somewhere? You have reached a very lost page.",
-    "links": "Please click on the below links",
+    "links": "Please click on the links below",
     "return": "Or return to the home page",
     "goBackHome": "Go back home"
   },

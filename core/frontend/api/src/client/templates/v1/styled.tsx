@@ -86,21 +86,22 @@ export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
   width: 100%;
   max-width: 1440px;
   margin: 20px auto;
+  
   min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
   border-radius: ${({ isLogin }) => isLogin ? "10px" : "0"};
   border: ${({ isLogin, theme }) => isLogin ? `3px dashed ${theme.colors.primaryColor}` : "none"};
   background: ${({ isLogin, theme }) => isLogin ? `rgb(${theme.colors.primaryColorFadedRBG})` : "none"};
-  padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
-
-  @media (max-width: ${size.laptopL}) {
-    padding: 20px;
-  }
-
-  @media (max-width: ${size.tablet}) {
-    padding: 10px;
-  }
+  padding: 0;
+  
   display: flex;
   justify-content: center;
+  align-items: center;
+  ${({isLogin}) => !isLogin && 'flex-direction: column;'}
+
+  @media ${device.tablet} {
+    margin: 20px;
+    padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
+  }
 `;
 
 export const TopContentWrapper = styled.div`
@@ -146,6 +147,7 @@ export const ContentWrapper = styled.div`
   @media ${device.desktopL} {
     max-width: 1440px;
   }
+  width: 100%;
 `;
 
 export const ContentWrapperForPackageDetail = styled.div`

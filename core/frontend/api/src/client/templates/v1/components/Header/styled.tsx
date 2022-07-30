@@ -151,9 +151,13 @@ export const StyledButton = styled.div`
   text-align: center;
 `
 
-export const LoginButton = styled(StyledButton)`
-  background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
+export const LoginButton = styled.a`
+  cursor: pointer;
   color: ${({theme}) => theme.colors.white};
+  :hover {
+    text-decoration: underline;
+    color: ${({theme}) => theme.colors.white};
+  }
 `
 
 export const RegisterButton = styled(StyledButton)`
