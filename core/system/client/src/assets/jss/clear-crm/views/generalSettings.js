@@ -43,11 +43,29 @@ const generalSettingsPageStyle = {
         position: "relative",
         maxHeight:"64px",
     },
+    hexFormGroup: {
+        display: 'flex',
+        gap: '4px',
+    },
+    colorPickerOverlay: {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        right: '0',
+        bottom: '0',
+        zIndex: '999',
+        background: 'transparent',
+        cursor: 'pointer'
+    },
     accordionColorItems: {
         display: "flex",
         flexDirection: "column",
         gap: "10px",
         width: "100%",
+    },
+    actionButtonsContainer: {
+        display: "flex",
+        gap: "8px"
     },
     gridItem: {
         padding: 0

@@ -1,12 +1,13 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
-import { SketchPicker } from "react-color";
-import { withStyles } from "@material-ui/core/styles";
+import tinycolor from 'tinycolor2'
+import {SketchPicker} from "react-color";
+import {createTheme, withStyles} from "@material-ui/core/styles";
 import Button from "components/CustomButtons/Button.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
 
 import CustomInput from "components/CustomInput/CustomInput.js";
 import AddAlert from "@material-ui/icons/AddAlert";
@@ -15,24 +16,22 @@ import Snackbar from "components/Snackbar/Snackbar.js";
 
 import styles from "assets/jss/clear-crm/views/generalSettings";
 
-import { FormControlLabel, TextField } from "@material-ui/core";
+import {FormControlLabel, TextField} from "@material-ui/core";
 import moment from "moment-timezone";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
-import { ToggleButtonGroup } from "@material-ui/lab";
+import {ToggleButtonGroup} from "@material-ui/lab";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import imageHelper from "../../helpers/image.helper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Accordion from "@material-ui/core/Accordion";
+import {AddCircle, Check, Clear, DeleteForever, Edit, Colorize} from "@material-ui/icons";
+import MaterialTable from "material-table";
+import {ThemeProvider as MuiThemeProvider} from "@material-ui/styles";
 
 class ViewGeneralSettings extends Component {
     state = {
+        tableRef: React.createRef(),
         websiteName: "",
         websiteDomain: "",
         websiteOwner: "",
@@ -43,28 +42,9 @@ class ViewGeneralSettings extends Component {
         emailPassword: "",
         contactEmail: "",
         selectedTheme: "v1",
-        colorScheme: {
-            primaryColor: { label: "Primary Color", value: "#DC6B03" },
-            primaryColorRBG: { label: "Primary Color RBG", value: { r: 220, g: 107, b: 3 } },
-            primaryColorFadedRBG: { label: "Primary Color Faded RBG", value: { r: 252, g: 232, b: 221 } },
-            primaryDark: { label: "Primary Dark", value: "orange" },
-            primaryLight: { label: "Primary Light", value: "#FF9F5A" },
-            primaryColorHover: { label: "Primary Color Hover", value: "#FC8C25" },
-            primaryRed: { label: "Primary Red", value: "#DC0303" },
-            secondaryColor: { label: "Secondary Color", value: "#FF0000" },
-            accentColor: { label: "Accent Color", value: "#f39200" },
-            darkRed: { label: "Dark Red", value: "#E90000" },
-            jetBlack: { label: "Jet Black", value: "#333" },
-            black: { label: "Black", value: "#000" },
-            offWhite: { label: "Off White", value: "#f5f5f5" },
-            white: { label: "White", value: "#fff" },
-            gray: { label: "Gray", value: "#505050" },
-            mainBackground: { label: "Main Background", value: "#E5E5E5" },
-            footerLinks: { label: "Footer Links", value: "#868484" },
-            greyBorder: { label: "Grey Border", value: "#ACACAC" },
-            borderOutline: { label: "Border Outline", value: "#DBDBDB" }
-        },
-        colorPickerIsOpen: "",
+        colorScheme: {},
+        editedColorScheme: {},
+        colorPickerIsOpen: false,
         validation: {
             websiteName: { valid: false, empty: true },
             websiteDomain: { valid: false, empty: true },
@@ -97,7 +77,19 @@ class ViewGeneralSettings extends Component {
         includeWebsiteTitle: false,
         themeVersions: ["v1", "v2"],
         colorSchemeAccordionIsOpen: false,
-        timezones: moment.tz.names()
+        timezones: moment.tz.names(),
+        showErrorModal: false,
+        errorModal: {
+            name: "error",
+            title: "Error",
+            content: "",
+            closeButton: {
+                callback: () => {
+                    this.setState({ showErrorModal: false });
+                },
+                label: "Close"
+            }
+        }
     };
     help = {
         between: (params) => {
@@ -107,10 +99,12 @@ class ViewGeneralSettings extends Component {
     pickerStyles = {
         default: {
             picker: {
+                width: "200px",
+                height: "300px",
                 position: "absolute",
-                top: "calc(100% + 10px)",
-                left: "0",
-                zIndex: "1000"
+                left: '50%',
+                zIndex: '1000',
+                transform: 'translateX(-50%)'
             }
         }
     };
@@ -218,6 +212,8 @@ class ViewGeneralSettings extends Component {
                 websiteName: generalSettingsData.websiteName,
                 websiteDomain: generalSettingsData.websiteDomain,
                 websiteOwner: generalSettingsData.websiteOwner,
+                colorScheme: generalSettingsData.colorScheme,
+                editedColorScheme: generalSettingsData.colorScheme,
                 websiteAdminEmail: generalSettingsData.websiteAdminEmail,
                 applicationVersion: generalSettingsData.applicationVersion,
                 defaultMetaTitle: generalSettingsData.defaultMetaTitle,
@@ -233,7 +229,277 @@ class ViewGeneralSettings extends Component {
                 contactEmail: generalSettingsData.contactEmail
             });
         }
+
     }
+
+    openErrorModal = (message) => {
+        this.setState((prevState) => {
+            return {
+                ...prevState,
+                errorModal: {
+                    ...prevState.errorModal,
+                    content: message
+                },
+                showErrorModal: true
+            };
+        });
+    };
+
+    refresh = async () => {
+        this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
+    };
+
+    tableOptions = {
+        getTheme: () => {
+            return createTheme({
+                palette: this.props.defaultTheme,
+                overrides: {
+                    MuiTableCell: {
+                        head: {
+                            "&:last-child": {
+                                width: "1px !important",
+                                whiteSpace: "nowrap"
+                            }
+                        }
+                    },
+                    MuiTypography: {},
+                    MuiIcon: {
+                        root: {
+                            padding: "3px",
+                            "&:hover": {
+                                backgroundColor: "transparent"
+                            }
+                        }
+                    }
+                }
+            });
+        },
+        actions: {
+            getData: (query) => {
+
+                return new Promise((resolve) => {
+
+                    (async () => {
+
+                        const payload = {
+                            search: query.search,
+                            limit: [query.page * query.pageSize, query.pageSize]
+                        };
+
+                        if (query.orderBy) {
+                            const orderBy = [query.orderBy.field, query.orderDirection];
+
+                            payload.order = [orderBy];
+                        }
+
+                        const result = query.search.length > 0 ?
+                            Object.keys(this.state.editedColorScheme).filter((color) => this.state.editedColorScheme[color].slug.toLowerCase().includes(query.search.toLowerCase())
+                                || this.state.editedColorScheme[color].colorName.toLowerCase().includes(query.search.toLowerCase()))
+                                .filter(Boolean)
+                                .map((color) => (
+                                    {
+                                        ...this.state.editedColorScheme[color],
+                                        hex: tinycolor(this.state.editedColorScheme[color].hex).toHexString(),
+                                    }
+                                ))
+
+                            : Object.keys(this.state.editedColorScheme).map((color) => (
+                                {
+                                    ...this.state.editedColorScheme[color],
+                                    hex: tinycolor(this.state.editedColorScheme[color].hex).toHexString(),
+                                })
+                            )
+
+                        if (result) {
+                            resolve({
+                                data: result,
+                                page: query.page,
+                                totalCount: result.length
+                            });
+                        }
+                    })();
+
+
+                });
+            },
+            editable: {
+                onRowAdd: (data) =>
+                    // eslint-disable-next-line no-async-promise-executor
+                    new Promise(async (resolve, reject) => {
+                        if (!data.hex || !data.colorName || !data.slug) {
+                            this.openErrorModal("Please, fill in all the fields and try again!");
+                            reject();
+                        }
+
+                        if(Object.keys(this.state.editedColorScheme).filter((slug) => data.slug === slug).length > 0){
+                            this.openErrorModal("A color with similar slug already exists, please use a unique slug and try again!");
+                            reject();
+                        }
+
+                        this.setState(
+                            {editedColorScheme: {
+                                    ...this.state.editedColorScheme, ...{
+                                        [data.slug]: {
+                                            colorName: data.colorName,
+                                            slug: data.slug,
+                                            hex: data.hex,
+                                        }
+                                    }
+                            }})
+
+                        await this.refresh();
+                        resolve();
+                    }),
+                onRowUpdate: (data, oldData) =>
+                    // eslint-disable-next-line no-async-promise-executor
+                    new Promise(async (resolve, reject) => {
+                        if (!data.hex || !data.colorName || !data.slug) {
+                            this.openErrorModal("Please, fill in all the fields and try again!");
+                            reject();
+                        }
+                        this.setState(
+                            {
+                                editedColorScheme: {
+                                    ...this.state.editedColorScheme, ...{
+                                        [data.slug]: {
+                                            colorName: data.colorName,
+                                            slug: data.slug,
+                                            hex: data.hex,
+                                        }
+                                    }
+                                }
+                            }
+                        )
+
+                        await this.refresh();
+                        resolve();
+                    }),
+                onRowDelete: async (data) =>
+                {
+                    const temp = this.state.editedColorScheme
+                    delete temp[data.slug]
+                    this.setState({
+                        editedColorScheme: temp
+                    })
+
+                    await this.refresh();
+                }
+            }
+        },
+        props: {
+            icons: {
+                Add: () => <AddCircle
+                    style={{ color: this.props.defaultTheme.primary?.main || "green" }}
+                />,
+                Check: () => (
+                    <Check color="primary" />
+                ),
+                Clear: () => (
+                    <Clear color="error" />
+                ),
+                Edit: () => (
+                    <Edit color="primary" />
+                ),
+                Delete: () => (
+                    <DeleteForever color="error" />
+                )
+            },
+            columns: [
+                {
+                    field: "",
+                    title: "",
+                    render: rowData => (
+                        <div style={{
+                            width: "60px",
+                            height: "40px",
+                            backgroundColor: rowData.hex,
+                            cursor: "pointer",
+                            position: "relative",
+                            borderRadius: "2px"
+                        }}/>
+                    )
+                },
+                {
+                    type: "string",
+                    field: "colorName",
+                    title: "Color Name"
+                },
+                {
+                    type: "string",
+                    field: "slug",
+                    title: "Color Slug"
+                },
+                {
+                    type: "string",
+                    field: "hex",
+                    title: "Hexadecimal",
+                    editComponent: props => (
+                        <div style={{position: 'relative'}}>
+                            <div style={styles.hexFormGroup}>
+                                <input
+                                    type="text"
+                                    value={props.value}
+                                    onChange={e => props.onChange(e.target.value)}
+                                />
+
+                                <Colorize style={{ color: this.props.defaultTheme.primary?.main || "green",
+                                    cursor: 'pointer'
+                                    }} onClick={() => this.setState({colorPickerIsOpen : !this.state.colorPickerIsOpen})}
+                                />
+                            </div>
+
+                            {
+                                this.state.colorPickerIsOpen &&
+                                <>
+                                    <SketchPicker
+                                        color={props.value}
+                                        styles={this.pickerStyles}
+                                        onChange={(color) => props.onChange(color.hex)}
+                                    />
+                                    <div style={styles.colorPickerOverlay}
+                                         onClick={() => this.setState({colorPickerIsOpen : false})}>
+                                    </div>
+                                </>
+                            }
+
+                        </div>
+                    )
+                }
+            ],
+            localization: {
+                body: {
+                    editRow: {
+                        deleteText: "Are you sure you want to delete this color?"
+                    }
+                }
+            },
+            options: {
+                actionsColumnIndex: -1,
+                paging: false,
+            }
+        }
+    };
+
+    showMultipleDeleteModal = (evt, data) => {
+        this.setState({ multipleDeleteData: data, showMultipleDeleteModal: true });
+    };
+
+    closeMultipleDeleteModal = () => {
+        this.setState({ showMultipleDeleteModal: false });
+    };
+
+    multipleDeleteCallback = async () => {
+        let ids = [];
+        this.state.multipleDeleteData.map((client) => ids.push(client.id));
+        await this.props.control.rem({
+            id: {
+                "or": ids
+            }
+        });
+        this.refresh();
+        this.state.tableRef.current && this.state.tableRef.current.onQueryChange();
+        this.closeMultipleDeleteModal();
+    };
 
     handleInputChange = async (event) => {
         let errors = this.state.errors;
@@ -310,6 +576,11 @@ class ViewGeneralSettings extends Component {
         }, 5000);
     }
 
+    resetColorScheme = async () => {
+        this.setState({ editedColorScheme: this.state.colorScheme })
+        await this.refresh()
+    }
+
     async setData() {
         const result = await this.props.control.set({
             data: {
@@ -329,7 +600,7 @@ class ViewGeneralSettings extends Component {
                 emailSender: this.state.emailSender,
                 emailPassword: this.state.emailPassword,
                 contactEmail: this.state.contactEmail,
-                colorScheme: this.state.colorScheme,
+                colorScheme: this.state.editedColorScheme,
                 selectedTheme: this.state.selectedTheme
             }
         });
@@ -618,7 +889,6 @@ class ViewGeneralSettings extends Component {
                       <div className={classes.profile}>
                           <div className={classes.name}>
                               <form onSubmit={this.validateForm} autoComplete={"off"}>
-
                                   <Autocomplete
                                     options={this.state.themeVersions}
                                     autoHighlight
@@ -644,79 +914,28 @@ class ViewGeneralSettings extends Component {
 
                                   <p style={{ width: "15px" }}></p>
 
-                                  <Accordion
-                                    expanded={true}
-                                    onChange={() => {
-                                        this.setState({
-                                            colorSchemeAccordionIsOpen: !this.state.colorSchemeAccordionIsOpen
-                                        });
-                                    }}
-                                  >
-                                      <AccordionSummary
-                                        className={classes.menuCategory}
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1bh-content"
-                                        id="panel1bh-header"
-                                      >
-                                          <Typography className={classes.heading}>Color Options</Typography>
-                                      </AccordionSummary>
-                                      <Divider />
-                                      <AccordionDetails className={classes.accordion}>
-                                          <div className={classes.accordionColorItems}>
-
-                                              {Object.keys(this.state.colorScheme).map((color, index) => {
-
-                                                  const colorValue = this.state.colorScheme[color].value;
-
-                                                  const bgColor = typeof colorValue === "object" ? `rgba(${colorValue.r},${colorValue.g},${colorValue.b})` : colorValue;
-
-                                                  return (
-                                                    <div
-                                                      key={index}
-                                                      className={classes.colorPickerContainer}
-                                                      style={{ background: bgColor }}
-                                                      onClick={(e) => {
-                                                          this.setState({
-                                                              colorPickerIsOpen: color
-                                                          });
-                                                      }}
-                                                    >
-                                                        <Typography
-                                                          className={classes.heading}>{this.state.colorScheme[color].label}: {bgColor}</Typography>
-                                                        {
-                                                          this.state.colorPickerIsOpen === color &&
-                                                          <SketchPicker
-                                                            color={this.state.colorScheme[color].value}
-                                                            styles={this.pickerStyles}
-                                                            onChange={(changedColor) => {
-                                                                const newColor = {};
-                                                                const currentColor = this.state.colorScheme[color];
-
-                                                                newColor[color] = currentColor;
-
-                                                                if (typeof currentColor.value === "object") {
-                                                                    newColor[color].value = changedColor.rgb;
-                                                                } else {
-                                                                    newColor[color].value = changedColor.hex;
-                                                                }
-                                                                this.setState({
-                                                                    colorScheme: { ...this.state.colorScheme, ...newColor }
-                                                                });
-                                                            }}
-                                                          />
-                                                        }
-                                                    </div>
-                                                  );
-                                              })}
-                                          </div>
-                                      </AccordionDetails>
-                                  </Accordion>
+                                  <MuiThemeProvider theme={this.tableOptions.getTheme()}>
+                                      <MaterialTable
+                                          title="Color options"
+                                          tableRef={this.state.tableRef}
+                                          columns={this.tableOptions.props.columns}
+                                          data={this.tableOptions.actions.getData.bind(this)}
+                                          icons={this.tableOptions.props.icons}
+                                          options={this.tableOptions.props.options}
+                                          editable={this.tableOptions.actions.editable}
+                                          actions={this.tableOptions.actions.customActions}
+                                          localization={this.tableOptions.props.localization}
+                                      />
+                                  </MuiThemeProvider>
 
                                   <p style={{ width: "15px" }}></p>
 
-                                  <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit"
-                                          color="primary" size="lg" className={classes.button}>Save Theme
-                                      Settings</Button>
+                                  <div style={styles.actionButtonsContainer}>
+                                      <Button onClick={this.resetColorScheme} color="primary" size="lg" className={classes.button}>Discard Changes</Button>
+                                      <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit"
+                                              color="primary" size="lg" className={classes.button}>Save Theme
+                                          Settings</Button>
+                                  </div>
 
                                   <p style={{ width: "15px" }}></p>
 
@@ -812,7 +1031,6 @@ class ViewGeneralSettings extends Component {
 
                                   <Button disabled={this.state.saveDisabled} onClick={this.validateForm} type="submit"
                                           color="primary" size="lg" className={classes.button}>Save Settings</Button>
-
                               </form>
                           </div>
                       </div>
@@ -861,5 +1079,6 @@ export default withStyles(styles)(ViewGeneralSettings);
 
 ViewGeneralSettings.propTypes = {
     control: PropTypes.object,
+    defaultTheme: PropTypes.object,
     classes: PropTypes.object
 };
