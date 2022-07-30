@@ -128,7 +128,6 @@ class Clients extends Component {
             const result = await this.props.control.list(payload);
 
             if (result && result.rows) {
-              console.log(result.rows)
               resolve({
                 data: result.rows,
                 page: query.page,
