@@ -1,4 +1,4 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import {Column, Index, Model, Table} from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 
 @Table
@@ -30,6 +30,9 @@ export class Auth extends Model {
 
   @Column
   active: number;
+
+  @Column
+  refresh_token: string;
 
   @Column({ type: DataTypes.DATE, allowNull: true })
   accessedAt: number;

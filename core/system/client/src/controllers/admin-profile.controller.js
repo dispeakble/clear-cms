@@ -1,130 +1,127 @@
-import React, { Component } from "react";
-import * as shortId from "shortid";
+import React from "react";
 import PropTypes from "prop-types";
 import ViewAdminProfile from "../templates/ViewAdminProfile/ViewAdminProfile";
 import Snackbar from "components/Snackbar/Snackbar.js";
+import {useAuthentication} from "../context/auth.context";
+import jwtDecode from "jwt-decode";
+import UseAuth from "../auth/auth";
+import * as md5 from "md5"
 
-class AdminProfileController extends Component {
-    state = {
-        errorNotification : [],
-    };
-    services = this.props.services;
-    messageCallbacks = {};
-    config = {
-        prefix: 'admin-profile/'
-    };
-    control = {
-        get: () => this.getData(),
-        set: (params) => this.setData(params),
+const AdminProfileController = (props) => {
+    const context = useAuthentication();
+    const [errorNotification, setErrorNotification] = React.useState([])
+    const control = {
+        get: () => getData(),
+        set: (params) => setData(params),
     };
 
-    
 
-    async componentDidMount() {
-
-        this.services.ws.subscribe({
-            channel: 'admin-profile',
-            callbacks: {
-                message: (response) => this.onMessage(response)
-            }
-        });
-
+    async function getData() {
+        return context.user
     }
 
-    async getData() {
-        return this.sendMessage({
-            module: "system",
-            api: "adminProfile",
-            act: "getInfo",
-            payload: {
-                useSession: true
-            }
-        });
-    }
+    async function checkTokens() {
+        try{
+            const getTokens = localStorage.getItem('tokens')
+            const tokens = JSON.parse(getTokens)
 
-    async setData(params) {
+            const isExpired = (token) => {
+                const decodedToken = jwtDecode(token)
+                const currentDate = new Date()
 
-        const response = await this.sendMessage({
-            module: "system",
-            api: "adminProfile",
-            act: "setInfo",
-            payload: {
-                useSession: true,
-                payload: params
+                return decodedToken?.exp * 1000 < currentDate.getTime();
             }
-        });
-        if (response?.success) {
-            localStorage.setItem('admin', JSON.stringify({ fullname: response.data.fullName }));
-            document.location.reload();
+
+            let response;
+
+            if(tokens) {
+                if (isExpired(tokens['access_token'])) {
+                    response = await UseAuth.useRefreshToken(tokens['refresh_token'])
+                    if(response && response?.status === 200){
+                        return JSON.parse(localStorage.getItem('tokens'))['access_token']
+                    }
+                }
+            }
+
+            return tokens['access_token']
+        } catch(err){
+            // eslint-disable-next-line no-console
+            console.error(err)
         }
-
-        return response;
     }
 
-    onMessage(params) {
+    function refreshPage() {
+        window.location.reload(false);
+    }
+
+    async function compareOldPassword(token, password) {
+        try{
+            return await UseAuth.useCheckPassword(token, password)
+        } catch(err){
+            console.error(err)
+        }
+    }
+
+
+    async function setData(values) {
         try {
-            if (params.data) {
-                this.messageCallbacks[params.id](params.data);
-            } else {
-                this.updateErrorNotification(params.error);
+            const token = await checkTokens()
+            if (token) {
+                if(values.password) {
+                    values.password = md5.default(values.password)
+                    const res = await compareOldPassword(token, values.password)
+                    if(!res.data.isMatch){
+                        updateErrorNotification("Current password mismatch, please try again with your current password!")
+                        return;
+                    }
+                }
+                await UseAuth.updateUser(token, values)
+                return refreshPage()
             }
 
+            updateErrorNotification('Your session has expired. You will be redirected to login page.')
+            setTimeout(async() => {
+                context.setIsAuthenticated(false)
+                localStorage.removeItem('tokens')
+                await props.history.push('/view-auth')
+            }, 3000)
         } catch (err) {
-            console.log(err);
+            // eslint-disable-next-line no-console
+            console.error(err)
         }
-        console.log('got message in admin profile controller', params);
     }
 
-    sendMessage(params) {
-        return new Promise((resolve_send, reject_send) => {
-            const uniqueId = shortId.generate();
-            this.messageCallbacks[uniqueId] = resolve_send;
-            this.services.ws.emit({
-                id: uniqueId,
-                channel: 'admin-profile',
-                module: params.module,
-                api: params.api,
-                act: params.act,
-                payload: params.payload
-            });
-        });
+    function updateErrorNotification (errMsg) {
+        setErrorNotification(prev => [...prev, errMsg])
     }
 
-    updateErrorNotification (errMsg) {
-        this.setState({
-            errorNotification : [...this.state.errorNotification, errMsg]
-        })
+    function removeErrorNotification (errMsg) {
+        setErrorNotification(prev => prev.filter(msg => msg !== errMsg))
     }
-
-    removeErrorNotification (errMsg) {
-        const updatedErrorNotification = this.state.errorNotification.filter(msg => msg !== errMsg);
-        this.setState({
-            errorNotification: updatedErrorNotification,
-        })
-    }
-
-    render() {
-        return (
-            <>
+    return (
+        <>
             {
-                this.state.errorNotification.map((msg) => {
+                errorNotification.map((msg, index) => {
                     return (
-                        <Snackbar 
-                            place='tc' 
-                            message={msg} 
-                            open 
-                            close 
-                            closeNotification={() => {this.removeErrorNotification(msg)}}
+                        <Snackbar
+                            key={index}
+                            place='tc'
+                            message={msg}
+                            open
+                            close
+                            closeNotification={() => {removeErrorNotification(msg)}}
                             color='warning'
                         />
 
                     )
                 })
             }
-                <ViewAdminProfile control={this.control} {...this.props} />
-            </>
-        );
-    }
+            {
+                !context.isLoading &&
+                    <ViewAdminProfile control={control} {...props} />
+            }
+        </>
+    );
 
 }
 

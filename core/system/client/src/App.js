@@ -27,6 +27,7 @@ import WsService from "services/ws.service";
 import AuthGuardService from "./services/authGuard.service";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
+import {AuthProvider} from "./context/auth.context";
 
 class App extends Component {
     header = null
@@ -104,6 +105,7 @@ class App extends Component {
     constructor() {
         super();
         this.state.services.ws = new WsService();
+        /*
         this.state.services.ws.start().then((connected) => {
 
             this.unlisten = this.props.history.listen((location) => {
@@ -129,6 +131,7 @@ class App extends Component {
                 }
             });
         });
+         */
 
     }
 
@@ -371,95 +374,97 @@ class App extends Component {
         const {pathname} = this.props.location;
         const locationPath = pathname.substring(1);
         return (
-            <React.Fragment>
-                <Helmet>
-                    <title>App</title>
-                </Helmet>
-                <MuiThemeProvider theme={this.createTheme()}>
-                    <CssBaseline/>
-                    {!this.state.excludeHeader.find((path) => {
-                        return !(locationPath.indexOf(path) === -1)
-                    }) && <Header
-                        history={this.props.history}
-                        onRef={ref => (this.header = ref)}
-                        services={this.state.services}
-                        color="transparent"
-                        brand="Clear CRM"
-                        leftLinks={
-                            <SideMenuLinks
-                                currentModule={this.state.currentModule}
-                                closeDrawer={() => this.handleDrawerToggleToMenu()}
-                                moduleList={this.state.moduleList}
-                                onNavigate={(params) => this.onNavigate(params)}
+            <AuthProvider user={null}>
+                <React.Fragment>
+                    <Helmet>
+                        <title>App</title>
+                    </Helmet>
+                    <MuiThemeProvider theme={this.createTheme()}>
+                        <CssBaseline/>
+                        {!this.state.excludeHeader.find((path) => {
+                            return !(locationPath.indexOf(path) === -1)
+                        }) && <Header
+                            history={this.props.history}
+                            onRef={ref => (this.header = ref)}
+                            services={this.state.services}
+                            color="transparent"
+                            brand="Clear CRM"
+                            leftLinks={
+                                <SideMenuLinks
+                                    currentModule={this.state.currentModule}
+                                    closeDrawer={() => this.handleDrawerToggleToMenu()}
+                                    moduleList={this.state.moduleList}
+                                    onNavigate={(params) => this.onNavigate(params)}
+                                />
+                            }
+                            fixed
+                            changeColorOnScroll={{
+                                height: 10,
+                                color: "primary",
+                            }}
+                        />}
+                        <Switch>
+                            <Route
+                                path="/view-auth"
+                                render={(props) => {
+                                    return (
+                                        <AuthController {...props} services={this.state.services}/>
+                                    );
+                                }}
                             />
-                        }
-                        fixed
-                        changeColorOnScroll={{
-                            height: 10,
-                            color: "primary",
-                        }}
-                    />}
-                    <Switch>
-                        <Route
-                            path="/view-auth"
-                            render={(props) => {
-                                return (
-                                    <AuthController {...props} services={this.state.services}/>
-                                );
-                            }}
-                        />
-                        <Route
-                            path="/logout"
-                            render={(props) => {
-                                return (
-                                    <AuthController {...props} services={this.state.services}/>
-                                );
-                            }}
-                        />
-                        <Route
-                            path="/recover-password"
-                            render={(props) => {
-                                return (
-                                    <AuthController {...props} services={this.state.services}/>
-                                );
-                            }}
-                        />
-                        <Route
-                            path="/password-reset"
-                            render={(props) => {
-                                return (
-                                    <AuthController {...props} services={this.state.services}/>
-                                );
-                            }}
-                        />
-                        <Route path="/admin-profile"
-                               render={(props) => {
-                                   return (
-                                       <AdminProfileController {...props} services={this.state.services}/>
-                                   );
-                               }}
-                        />
-                        <Route
-                            render={(props) => {
-                                return (
-                                    <Scrollbars style={{
-                                        height: '100%'
-                                    }}>
-                                        <MainController
-                                            {...props}
-                                            defaultTheme={this.state.defaultPalette}
-                                            services={this.state.services}
-                                            moduleList={this.state.moduleList}
-                                        />
-                                    </Scrollbars>
+                            <Route
+                                path="/logout"
+                                render={(props) => {
+                                    return (
+                                        <AuthController {...props} services={this.state.services}/>
+                                    );
+                                }}
+                            />
+                            <Route
+                                path="/recover-password"
+                                render={(props) => {
+                                    return (
+                                        <AuthController {...props} services={this.state.services}/>
+                                    );
+                                }}
+                            />
+                            <Route
+                                path="/password-reset"
+                                render={(props) => {
+                                    return (
+                                        <AuthController {...props} services={this.state.services}/>
+                                    );
+                                }}
+                            />
+                            <Route path="/admin-profile"
+                                   render={(props) => {
+                                       return (
+                                           <AdminProfileController {...props} services={this.state.services}/>
+                                       );
+                                   }}
+                            />
+                            <Route
+                                render={(props) => {
+                                    return (
+                                        <Scrollbars style={{
+                                            height: '100%'
+                                        }}>
+                                            <MainController
+                                                {...props}
+                                                defaultTheme={this.state.defaultPalette}
+                                                services={this.state.services}
+                                                moduleList={this.state.moduleList}
+                                            />
+                                        </Scrollbars>
 
-                                );
-                            }}
-                        />
-                    </Switch>
-                </MuiThemeProvider>
-                <AuthGuardService services={{ws: this.state.services.ws}}/>
-            </React.Fragment>
+                                    );
+                                }}
+                            />
+                        </Switch>
+                    </MuiThemeProvider>
+                    <AuthGuardService services={{ws: this.state.services.ws}}/>
+                </React.Fragment>
+            </AuthProvider>
         );
     }
 }

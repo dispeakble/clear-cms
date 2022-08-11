@@ -1,12 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
+import compression from 'compression'
 
 async function bootstrap() {
     try {
         const app = await NestFactory.create(
             AppModule
         );
+        app.use(compression());
+
+        app.enableCors({
+            allowedHeaders: '*',
+            origin: '*',
+            credentials: true,
+        });
 
         await app.init();
 
@@ -28,6 +36,7 @@ async function bootstrap() {
         });
 
         await app.startAllMicroservicesAsync();
+        await app.listen(Number(process.env.backend_port), 'localhost');
     } catch(err){
         console.error(err);
         process.exit(1);

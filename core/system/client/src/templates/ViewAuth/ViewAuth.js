@@ -68,9 +68,6 @@ class ViewAuth extends Component {
                 )
             });
         }
-        else if (this.props.location.pathname === "/view-auth" && localStorage.getItem("admin")) {
-            this.props.history.push("/");
-        }
 
         this.changeTexts();
 
@@ -199,7 +196,6 @@ class ViewAuth extends Component {
     onSubmit = async (event) => {
         event.preventDefault();
 
-        const {history} = this.props;
         let errorMessage = "";
         let credentialsPassed = true;
         const normalViews = ["/view-auth", "/view-auth/recovered", "logout"];
@@ -212,8 +208,6 @@ class ViewAuth extends Component {
             });
 
             if (response && response.email === this.state.email) {
-
-                history.push("/");
                 this.changeTexts();
             } else {
                 credentialsPassed = false;

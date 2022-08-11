@@ -1,11 +1,14 @@
-import {Controller, Inject, Logger} from '@nestjs/common';
+import {Controller, Request, Res, UseGuards, Get, Post, HttpCode, Inject, Logger, HttpStatus} from '@nestjs/common';
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {Observable} from "rxjs";
-import {ResourcesService} from "../services/resources.service";
+import {LocalAuthGuard} from "../services/auth/common/guards/local-auth.guard";
+import {JwtAuthGuard} from "../services/auth/common/guards/jwt-auth.guard";
+import {JwtUpdateAuthGuard} from "../services/auth/common/guards/jwtUpdate-auth.guard";
+import {JwtRtAuthGuard} from "../services/auth/common/guards/jwtRt-auth.guard";
 
-@Controller()
+@Controller('/')
 export class ProtocolController {
 
     public logger: Logger = new Logger('App.Controller');
@@ -52,6 +55,7 @@ export class ProtocolController {
         @Inject('DashboardBoxService') private dashboardBoxService,
         @Inject('SitemapService') private sitemapService,
         @Inject('ResourcesService') private resourcesService,
+        @Inject('ResetEmailService') private resetEmailService,
     ){
 
 
@@ -96,14 +100,82 @@ export class ProtocolController {
                 }
             }).toPromise();
 
-            this.logger.log('System application started')
-            console.log('System application started');
+            this.logger.log('System application started', process.env.backend_port)
+            console.log('System application started', process.env.backend_port);
         } catch (err) {
             console.log(err);
             console.log('cannot start system api');
         }
+    }
 
+    @UseGuards(LocalAuthGuard)
+    @Post('api/auth/login')
+    @HttpCode(HttpStatus.OK)
+    async login(@Request() req) {
+        try{
+            return await this.authService.login(req.user);
+        } catch(err) {
+            console.error(err)
+        }
+    }
 
+    @UseGuards(JwtAuthGuard)
+    @Get('api/user/profile')
+    async getProfile(@Request() req) {
+        return await this.authService.getProfile(req.user);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('api/auth/logout')
+    @HttpCode(HttpStatus.OK)
+    async logout(@Request() req) {
+        return await this.authService.logout(req.user);
+    }
+
+    @UseGuards(JwtUpdateAuthGuard)
+    @Post('api/user/update')
+    @HttpCode(HttpStatus.OK)
+    async update(@Request() req) {
+        // eslint-disable-next-line no-console
+        if(req.user){
+            return await this.authService.update(req.body, req.user);
+        }
+        return HttpStatus.FORBIDDEN
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('/api/user/checkPassword')
+    @HttpCode(HttpStatus.OK)
+    async checkPassword(@Request() req) {
+        // eslint-disable-next-line no-console
+        if(req.user){
+            return await this.authService.checkPassword(req.body, req.user);
+        }
+        return HttpStatus.FORBIDDEN
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('/api/user/updatePassword')
+    @HttpCode(HttpStatus.OK)
+    async updatePassword(@Request() req) {
+        // eslint-disable-next-line no-console
+        if(req.user){
+            return await this.authService.updatePassword(req.body, req.user);
+        }
+        return HttpStatus.FORBIDDEN
+    }
+
+    @UseGuards(JwtRtAuthGuard)
+    @Post('api/auth/refresh')
+    @HttpCode(HttpStatus.OK)
+    async refresh(@Request() req) {
+        return "zbila"
+    }
+
+    @Get('api/auth/recaptcha')
+    @HttpCode(HttpStatus.OK)
+    async isHuman(@Request() req){
+        return await this.authService.isHuman(req.query.token)
     }
 
     private perform(params: payloadInterface) {

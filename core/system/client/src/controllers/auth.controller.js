@@ -1,84 +1,93 @@
-import React, { Component } from "react";
+import React from "react";
 import ViewAuth from "templates/ViewAuth/ViewAuth";
 import * as shortId from "shortid";
 import PropTypes from "prop-types";
+import UseAuth from "../auth/auth"
+import {useAuthentication} from "../context/auth.context";
+import * as md5 from "md5"
 
-class AuthController extends Component {
-    services = {};
-    messageCallbacks = {};
-    config = {
+const AuthController = (props) => {
+    let services = {};
+    let messageCallbacks = {};
+    let config = {
         prefix: 'system/'
     };
-    control = {
-        login: (params) => this.login(params),
-        logout: (params) => this.logout(params),
-        recover: (params) => this.recover(params),
-        reset: (params) => this.reset(params)
+    const control = {
+        login: (params) => login(params),
+        logout: (params) => logout(params),
+        recover: (params) => recover(params),
+        reset: (params) => reset(params)
     };
 
-    async componentDidMount() {
-        this.services = this.props.services;
+    React.useEffect(() => {
+        services = props.services;
 
-        this.services.ws.subscribe({
+        services.ws.subscribe({
             channel: 'auth',
             callbacks: {
-                message: (response) => this.onMessage(response)
+                message: (response) => onMessage(response)
             }
         });
 
-        this.sendMessage({
+        sendMessage({
             module: 'system',
-            api: 'auth',
+            api: 'resetEmail',
             act: 'ping',
             payload: 'ping'
         }).then((response) => {
             console.log(response);
         });
+    }, [])
+
+    const context = useAuthentication()
+
+    async function login(params) {
+        try{
+            const res = await UseAuth.useLogin({
+                ...params,
+                password: md5.default(params.password)
+            })
+            if(res && res?.status === 200){
+                await setProfile(res.data)
+                return{
+                    email: params.email
+                };
+            }
+            return null
+        } catch(err){
+            console.error(err)
+        }
     }
 
-     login(params) {
+    async function setProfile(tokens){
+        localStorage.setItem('tokens', JSON.stringify(tokens))
+        await props.history.push('/')
+        context.setIsAuthenticated(true)
+    }
+
+    async function logout() {
+        const tokens = localStorage.getItem('tokens')
+        if(tokens && tokens.access_token && tokens.refresh_token){
+            await UseAuth.useLogout(tokens.access_token, tokens.refresh_token)
+        }
+        await props.history.push('/view-auth')
+        context.setIsAuthenticated(false)
+        localStorage.removeItem('tokens')
+    }
+
+    function recover(params) {
+
         return new Promise((resolve) => {
-            this.sendPost({
+            sendPost({
                 module: 'system',
-                api: 'auth',
-                act: 'doLogin',
-                payload: params
-            }).then(async (response) => {
-                if (response && response.email && response.email === params.email) {
-                    localStorage.setItem('admin', JSON.stringify({ fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email }));
-                    const wsConnected = await this.props.services.ws.start();
-                    if (wsConnected) {
-                        this.props.history.push('/');
-                    }
-                    return resolve(response);
-                }
-
-                resolve(false);
-            });
-        });
-    }
-
-    logout() {
-        this.services.ws.client.emit('D', null);
-        return this.sendPost({
-            module: 'system',
-            api: 'auth',
-            act: 'doLogout'
-        });
-    }
-
-    recover(params) {
-        return new Promise((resolve) => {
-            this.sendPost({
-                module: 'system',
-                api: 'auth',
+                api: 'resetEmail',
                 act: 'generateRecoverEmail',
                 payload: params
             }).then(async (response) => {
                 if (response && response.success) {
-                    const wsConnected = await this.props.services.ws.start();
+                    const wsConnected = await props.services.ws.start();
                     if (wsConnected) {
-                        this.props.history.push('/view-auth/recovered');
+                        props.history.push('/view-auth/recovered');
                         window.location.reload(false);
                     }
                     return resolve(response);
@@ -86,42 +95,46 @@ class AuthController extends Component {
                 resolve(false);
             });
         });
+
     }
 
-    reset(params) {
+    function reset(params) {
        return new Promise((resolve) => {
-           this.sendPost({
+           sendPost({
                module: 'system',
-               api: 'auth',
+               api: 'resetEmail',
                act :'doChangePassword',
                payload: params
            }).then(async (response) => {
-               if(response && response.email) {
-                   localStorage.setItem('admin', JSON.stringify({ fullname: response.fullname, fname: response.fname, lname: response.lname, email: response.email }));
-                   const wsConnected = await this.props.services.ws.start();
+               console.log(response)
+               if(response && response?.status === 200) {
+                   await setProfile(response)
+                   const wsConnected = await props.services.ws.start();
                    if (wsConnected) {
-                       this.props.history.push('/');
+                       props.history.push('/');
                    }
-                   return resolve(response)
+                   return resolve({
+                       email: params.email
+                   });
                }
                resolve(false)
            })
        })
     }
 
-    onMessage(params) {
+    function onMessage(params) {
         try {
-            this.messageCallbacks[params.id](params.data);
+            messageCallbacks[params.id](params.data);
         } catch (err) {
             console.log(err);
         }
     }
 
-    sendMessage(params) {
+    function sendMessage(params) {
         return new Promise((resolve_send, reject_send) => {
             const uniqueId = shortId.generate();
-            this.messageCallbacks[uniqueId] = resolve_send;
-            this.services.ws.emit({
+            messageCallbacks[uniqueId] = resolve_send;
+            services.ws.emit({
                 id: uniqueId,
                 channel: 'auth',
                 module: params.module,
@@ -132,7 +145,7 @@ class AuthController extends Component {
         });
     }
 
-    sendPost(params) {
+    function sendPost(params) {
         return new Promise((resolve_send) => {
             const uniqueId = shortId.generate();
 
@@ -179,10 +192,14 @@ class AuthController extends Component {
         });
     }
 
-    render() {
-        return <ViewAuth control={this.control} {...this.props} />;
-    }
-
+    return (
+        <>
+            {
+                !context.isLoading &&
+                <ViewAuth control={control} {...props} />
+            }
+        </>
+    )
 }
 
 export default AuthController;
