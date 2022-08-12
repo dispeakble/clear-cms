@@ -24,9 +24,9 @@ const Item = styled.li`
 `;
 
 const LinkItem = styled.a`
-  color:${({theme}) => theme.colors.white};
+  color:${({ theme }) => theme.colors.white};
   :hover {
-    color: ${({theme}) => theme.colors.white};
-    border-bottom: 1px solid ${({theme}) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.white};
   }
 `;

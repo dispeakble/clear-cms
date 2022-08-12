@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 import {
   StyledHomeSearch,
   StyledSearchTab,
-  StyledSearchTabs,
+  StyledSearchTabs
 } from "./styled";
 import React, { useState } from "react";
 import { Packages } from "./SearchForms/Packages";
@@ -20,26 +20,26 @@ const HomeSearch: React.FC<HomeSearchProps> = ({ isHome = false, selectedTab }) 
 
   const changeForm = (type: string) => {
     setFormType(type);
-  }
+  };
 
   return <StyledHomeSearch isHome={isHome}>
     <StyledSearchTabs>
       <StyledSearchTab
-        data-testid='test-packages-search-tab'
-        onClick={() => changeForm('packages')}
-        className={formType === 'packages' ? 'selected' : ''}>{t("search.packages")}</StyledSearchTab>
+        data-testid="test-packages-search-tab"
+        onClick={() => changeForm("packages")}
+        className={formType === "packages" ? "selected" : ""}>{t("search.packages")}</StyledSearchTab>
       <StyledSearchTab
-        onClick={() => changeForm('hotels')}
-        data-testid='test-hotels-search-tab'
-        className={formType === 'hotels' ? 'selected' : ''}>{t("search.hotels")}</StyledSearchTab>
+        onClick={() => changeForm("hotels")}
+        data-testid="test-hotels-search-tab"
+        className={formType === "hotels" ? "selected" : ""}>{t("search.hotels")}</StyledSearchTab>
       <StyledSearchTab
-        onClick={() => changeForm('flights')}
-        data-testid='test-flights-search-tab'
-        className={formType === 'flights' ? 'selected' : ''}>{t("search.flights")}</StyledSearchTab>
+        onClick={() => changeForm("flights")}
+        data-testid="test-flights-search-tab"
+        className={formType === "flights" ? "selected" : ""}>{t("search.flights")}</StyledSearchTab>
     </StyledSearchTabs>
-    { formType === 'packages' && <Packages/> }
-    { formType === 'hotels' && <Hotels/> }
-    { formType === 'flights' && <Flights/> }
+    {formType === "packages" && <Packages />}
+    {formType === "hotels" && <Hotels />}
+    {formType === "flights" && <Flights />}
   </StyledHomeSearch>;
 };
 

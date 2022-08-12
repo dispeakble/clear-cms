@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {size} from "../../styled";
+import { size } from "../../styled";
 
 
 export const Body = styled.div`

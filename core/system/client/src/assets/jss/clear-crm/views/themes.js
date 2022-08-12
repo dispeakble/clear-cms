@@ -15,7 +15,7 @@ const javascriptStyles = {
     width: "100%",
     display: "grid",
     gridGap: "12px",
-    gridTemplateColumns: "repeat( auto-fit, minmax(200px, 1fr) )",
+    gridTemplateColumns: "repeat( auto-fill, minmax(250px, 1fr) )",
     margin: "12px",
   },
   column: {
@@ -78,6 +78,9 @@ const javascriptStyles = {
   themeModal: {
     height: "100%",
     overflow: "initial"
+  },
+  ThemeCard: {
+    minWidth: "250px"
   }
 };
 

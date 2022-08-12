@@ -19,7 +19,7 @@ export const StyledMenu = styled.ul`
     &:before {
       display: block;
       content: "⌯";
-      color: ${({theme}) => theme.colors.white};
+      color: ${({ theme }) => theme.colors.white};
       width: 52px;
       height: 52px;
       line-height: 52px;
@@ -41,11 +41,11 @@ export const StyledMenu = styled.ul`
     & li {
       display: none;
       gap: 0;
-      background: ${({theme}) => theme.colors.primaryColor};
-      color:  ${({theme}) => theme.colors.jetBlack};
+      background: ${({ theme }) => theme.colors.primaryColor};
+      color:  ${({ theme }) => theme.colors.jetBlack};
 
       &:hover {
-        background: ${({theme}) => theme.colors.primaryColorHover};
+        background: ${({ theme }) => theme.colors.primaryColorHover};
       }
     }
   }
@@ -56,7 +56,7 @@ export const Item = styled.li`
 `;
 
 export const LinkItem = styled.a`
-  color: ${({theme}) => theme.colors.white} !important;
+  color: ${({ theme }) => theme.colors.white} !important;
   text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
   display: inline-block;
   text-align: center;

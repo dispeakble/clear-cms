@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import card1 from "../../assets/img/hotelresults/card1.jpg"
+import card1 from "../../assets/img/hotelresults/card1.jpg";
 
 
 export const Wrapper = styled.div`
@@ -26,13 +26,13 @@ export const SliderContainer = styled.div`
 `;
 
 export const LeftArrow = styled.div`
-  background: url(${({theme}) => theme.icon('leftArrow')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("leftArrow")}) no-repeat left center;
   width: 30px;
   height: 75px;
 `;
 
 export const RightArrow = styled.div`
-  background: url(${({theme}) => theme.icon('rightArrow')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("rightArrow")}) no-repeat left center;
   background-position-x: right;
   width: 30px;
   height: 75px;
@@ -45,7 +45,7 @@ export const SliderWrapper = styled.div`
   box-shadow: 4px 4px 25px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 23px 10px 20px 10px;
-`
+`;
 
 
 export const CardContainer = styled.div`
@@ -62,7 +62,7 @@ export const Card = styled.div`
 `;
 
 interface ICardImage {
-    url: string
+  url: string;
 };
 
 export const CardImage = styled.div<ICardImage>`

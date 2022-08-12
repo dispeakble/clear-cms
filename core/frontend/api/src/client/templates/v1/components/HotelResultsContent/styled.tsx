@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {device, size} from "../../500/styled";
+import { device, size } from "../../500/styled";
 
 export const Wrapper = styled.div`
     justify-content: center;
@@ -37,7 +37,7 @@ export const ViewMoreButton = styled.button`
 `;
 
 export const ViewMoreIcon = styled.div`
-  background: url(${({theme}) => theme.icon('viewMore')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("viewMore")}) no-repeat left center;
   width: 30px;
   height: 30px;
   margin-left: 8px;

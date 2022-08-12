@@ -298,10 +298,10 @@ export const BookNow = styled.div`
   }
 `;
 export const TableBody = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  align-items: center;
+  display: grid;
+  grid-gap: 30px;
+  /*grid-template-columns: repeat(auto-fill, minmax(min-content, 1fr));*/
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   width: 100%;
   border: 2px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 16px;
@@ -521,9 +521,9 @@ export const ColumnFive = styled.div`
   }
 
   button {
-    width: 100%;
     height: 50px;
-    background: linear-gradient(180deg, #FFAC5C 0%, #FF840D 100%);
+    background: linear-gradient(180deg, #7CCF13 0%, #639722 100%);
+
     color: ${({ theme }) => theme.colors.white};
     border-radius: 12px;
     border: none;
@@ -537,7 +537,7 @@ export const ColumnFive = styled.div`
     white-space: nowrap;
 
     &:hover {
-      background: linear-gradient(180deg, #FDB773 0%, #E19046 100%);
+      background: linear-gradient(180deg, #ABFB47 0%, #68AC14 100%);
     }
 
   }
@@ -796,15 +796,6 @@ export const HotelCalendar = styled(Calendar)`
   .react-calendar__tile:enabled:focus {
     background-color: #F4AC67;
     color: #fff;
-  }
-
-  .react-calendar__tile--now {
-    background: red;
-  }
-
-  .react-calendar__tile--now:enabled:hover,
-  .react-calendar__tile--now:enabled:focus {
-    background: red;
   }
 
   .react-calendar__tile--hasActive {

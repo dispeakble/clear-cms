@@ -166,7 +166,7 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
 
             </ContentWrapper>
           </TopContentWrapper>
-          <PaperWrapper style={{marginTop: "57px"}}>
+          <PaperWrapper style={{ marginTop: "57px" }}>
             <ContentWrapper>
               <BottomContentWrapper>
                 <ServiceAndMapWrapper>

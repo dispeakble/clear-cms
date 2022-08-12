@@ -13,7 +13,7 @@ async function bootstrap() {
         await app.connectMicroservice({
             transport: Transport.REDIS,
             options: {
-                url: 'redis://' + process.env.redis_server,
+                url: `redis://${process.env.redis_server}`,
                 port: +process.env.redis_port,
                 password: process.env.redis_password,
                 retryAttempts: 20,

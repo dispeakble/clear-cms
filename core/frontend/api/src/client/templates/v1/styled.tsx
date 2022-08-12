@@ -48,9 +48,9 @@ export const MainWrapper = styled.div<{ isOrange?: boolean }>`
   flex-direction: column;
   align-items: center;
   background: ${({
-                   isOrange,
-                   theme
-                 }) => isOrange ? `linear-gradient(111.87deg, ${theme.colors.primaryLight} 3.23%, ${theme.colors.primaryColorHover} 98.39%)` : theme.colors.mainBackground};
+                                                                                 isOrange,
+                                                                                 theme
+                                                                               }) => isOrange ? `linear-gradient(111.87deg, ${theme.colors.primaryLight} 3.23%, ${theme.colors.primaryColorHover} 98.39%)` : theme.colors.mainBackground};
 `;
 
 export const MainContentWrapper = styled.div`
@@ -82,9 +82,7 @@ export const MainContentWrapper = styled.div`
   }
 `;
 
-export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
-  width: 100%;
-  max-width: 1440px;
+export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>`
   margin: 20px auto;
   
   min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
@@ -96,17 +94,17 @@ export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({isLogin}) => !isLogin && 'flex-direction: column;'}
+  ${({ isLogin }) => !isLogin && "flex-direction: column;"}
+  ${({ isLogin }) => !isLogin && "width: 100%;"}
 
   @media ${device.tablet} {
-    margin: 20px;
-    padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
+    padding: ${({ isLogin }) => isLogin ? "20px" : "0"}; 
   }
 `;
 
 export const TopContentWrapper = styled.div`
   width: 100%;
-  padding: 114px 0 57px 0;
+  padding: 54px 0 57px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;

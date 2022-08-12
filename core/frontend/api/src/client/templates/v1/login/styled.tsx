@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Link from "next/link"
-import Image from "next/image"
+import Link from "next/link";
+import Image from "next/image";
 import { device } from "../styled";
 
 export const size = {
@@ -21,14 +21,14 @@ export const LoginWrapper = styled.div`
   min-height: 100vh;
   width: 100%;
   gap: 20px;
-`
+`;
 
 export const ImageContainer = styled.div`
   display: flex;
   @media screen and (max-width: ${size.laptop}){
     display: none;
   }
-`
+`;
 
 export const LoginFormWrapper = styled.div`
   background: #FFFFFF;
@@ -42,7 +42,7 @@ export const LoginFormWrapper = styled.div`
   @media ${device.mobileM} {
     padding: 20px 35px;
   }
-`
+`;
 
 export const StyledLoginTitle = styled.h2`
   font-style: normal;
@@ -52,31 +52,31 @@ export const StyledLoginTitle = styled.h2`
   margin: 0 0 40px 0;
 
   color: #FF8C1D;
-`
+`;
 
 export const InputContainer = styled.div`
   flex: 1;
   display: flex;
-`
+`;
 
 export const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content:space-between;
-`
+`;
 
 export const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 40px;
-`
+`;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-`
+`;
 
 export const InputLabel = styled.label`
   font-family: 'Poppins', sans-serif;
@@ -85,9 +85,9 @@ export const InputLabel = styled.label`
   line-height: 1.5;
   margin: 0;
   color: #999999;
-`
+`;
 
-export const TextInput = styled.input<{icon: string}>`
+export const TextInput = styled.input<{ icon: string }>`
   outline: none;
   border: none;
   padding: 11px 38px;
@@ -97,7 +97,7 @@ export const TextInput = styled.input<{icon: string}>`
   border-bottom: 2px #999999 solid;
   line-height: 1.5;
   color: #434343;
-  background: url(${({theme,icon}) => theme.icon(icon)}) no-repeat 10px 50%;
+  background: url(${({ theme, icon }) => theme.icon(icon)}) no-repeat 10px 50%;
 
   ::placeholder{
     color: #ADADAD;
@@ -106,7 +106,7 @@ export const TextInput = styled.input<{icon: string}>`
   :is(.passwordInput){
     position: relative;
   }
-`
+`;
 
 export const ShowPasswordContainer = styled.div`
   position: absolute;
@@ -115,11 +115,11 @@ export const ShowPasswordContainer = styled.div`
   transform: translateY(50%);
   cursor: pointer;
   z-index: 999;
-`
+`;
 
 export const ShowPasswordIcon = styled(Image)`
 
-`
+`;
 
 export const ErrorText = styled.span`
   font-family: 'Poppins', sans-serif;
@@ -129,14 +129,14 @@ export const ErrorText = styled.span`
   margin:0;
 
   color: #e74c3c;
-`
+`;
 
 export const RememberMeContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 200px;
-`
+`;
 
 export const StyledCheckboxLabel = styled.label`
   display: flex;
@@ -159,7 +159,7 @@ export const StyledCheckboxLabel = styled.label`
   }
 
   color: #868484;
-`
+`;
 
 export const ForgotPassword = styled(Link)`
   text-decoration: none;
@@ -173,7 +173,7 @@ export const ForgotPassword = styled(Link)`
   &:hover{
     text-decoration: none;
   }
-`
+`;
 
 export const ButtonContainer = styled.div`
   width: 100%;
@@ -186,7 +186,7 @@ export const ButtonContainer = styled.div`
       max-width: 230px;
     }
   }
-`
+`;
 
 export const ContinueButton = styled.button`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
@@ -221,7 +221,7 @@ export const ContinueButton = styled.button`
     justify-content: center;
     padding: 18px 0;
   }
-`
+`;
 
 export const InformationText = styled.p`
   text-align: center;
@@ -235,4 +235,4 @@ export const InformationText = styled.p`
   a{
     color: #FF8C1D;
   }
-`
+`;

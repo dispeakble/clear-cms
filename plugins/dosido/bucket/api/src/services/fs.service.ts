@@ -3,7 +3,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import * as path from 'path';
 import * as fs from "fs";
 import {v4 as uuid} from "uuid";
-import {Observable, Subscriber} from "rxjs";
+import {Observable} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
 import { Readable } from 'stream';
@@ -238,6 +238,7 @@ export class FsService {
         let options: any = {};
 
 
+        //TODO add support for multiple files
         params.initiator.subscribe(data => {
             //first will be the meta data
             //create a write stream

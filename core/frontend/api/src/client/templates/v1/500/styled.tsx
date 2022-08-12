@@ -1,10 +1,10 @@
 import styled, { createGlobalStyle } from "styled-components";
 import headerBg from "../assets/img/header-bg.jpg";
-import check from "../assets/img/check-sign-gold-icon.svg"
+import check from "../assets/img/check-sign-gold-icon.svg";
 import { CustomTheme } from "../../../modules";
 import Link from "next/link";
 
-export const GlobalStyle = createGlobalStyle<{theme: CustomTheme}>`
+export const GlobalStyle = createGlobalStyle<{ theme: CustomTheme }>`
   body, html {
     margin: 0;
     padding: 0;
@@ -12,31 +12,31 @@ export const GlobalStyle = createGlobalStyle<{theme: CustomTheme}>`
   }
 `;
 
-interface IText{
-    center?: boolean;
+interface IText {
+  center?: boolean;
 }
 
 export const size = {
-    mobileS: "320px",
-    mobileM: "375px",
-    mobileL: "425px",
-    tablet: "768px",
-    laptop: "1024px",
-    laptopM: "1200px",
-    laptopL: "1440px",
-    desktop: "1920px",
-    desktopL: "2560px"
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  laptop: "1024px",
+  laptopM: "1200px",
+  laptopL: "1440px",
+  desktop: "1920px",
+  desktopL: "2560px"
 };
 
 export const device = {
-    mobileS: `(min-width: ${size.mobileS})`,
-    mobileM: `(min-width: ${size.mobileM})`,
-    mobileL: `(min-width: ${size.mobileL})`,
-    tablet: `(min-width: ${size.tablet})`,
-    laptop: `(min-width: ${size.laptop})`,
-    laptopL: `(min-width: ${size.laptopL})`,
-    desktop: `(min-width: ${size.desktop})`,
-    desktopL: `(min-width: ${size.desktopL})`
+  mobileS: `(min-width: ${size.mobileS})`,
+  mobileM: `(min-width: ${size.mobileM})`,
+  mobileL: `(min-width: ${size.mobileL})`,
+  tablet: `(min-width: ${size.tablet})`,
+  laptop: `(min-width: ${size.laptop})`,
+  laptopL: `(min-width: ${size.laptopL})`,
+  desktop: `(min-width: ${size.desktop})`,
+  desktopL: `(min-width: ${size.desktopL})`
 };
 
 export const TopContentWrapper = styled.div`
@@ -60,7 +60,7 @@ export const StyledContainer = styled.div`
   @media ${device.laptop} {
     flex-direction: row;
   }
-`
+`;
 
 export const StyledErrorImageContainer = styled.div`
   img{
@@ -74,11 +74,11 @@ export const StyledErrorImageContainer = styled.div`
       display: flex;
     }
   }
-`
+`;
 
 export const ContentContainer = styled.div`
   max-width: 500px;
-`
+`;
 
 export const StyledHomeLink = styled.a`
     width: 100%;
@@ -103,7 +103,7 @@ export const StyledHomeLink = styled.a`
       background: linear-gradient(180deg, #AEFF49 0%, #66AA12 100%);
       color: ${({ theme }) => theme.colors.white};
     }
-`
+`;
 
 export const StyledHeader = styled.h3`
   font-family: "Poppins", sans-serif;
@@ -113,15 +113,15 @@ export const StyledHeader = styled.h3`
   color: #77838F;
   font-weight: 500;
   margin-bottom: 20px;
-`
+`;
 
 export const StyledInfoText = styled.h3<IText>`
   font-family: "Poppins", sans-serif;
   font-size: 30px;
   color: #FF840D;
   font-weight: 500;
-  text-align: ${({center}) => center ? "center" : "start"};
-`
+  text-align: ${({ center }) => center ? "center" : "start"};
+`;
 
 export const StyledLinksList = styled.ul`
   margin: 48px 0;
@@ -129,7 +129,7 @@ export const StyledLinksList = styled.ul`
   gap: 10px;
   display: flex;
   flex-direction: column;
-`
+`;
 
 export const StyledLinkItem = styled.li`
   margin-left: 8px;
@@ -138,11 +138,11 @@ export const StyledLinkItem = styled.li`
     content: '';
     margin-left: 10px;
   }
-`
+`;
 
 export const StyledLink = styled(Link)`
   color: #000000;
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
-`
+`;

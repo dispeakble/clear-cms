@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {size} from "../../styled";
+import { size } from "../../styled";
 
 export const HotelPhotoSliderWrapper = styled.div`
   overflow: hidden;
@@ -12,12 +12,12 @@ export const HotelPhotoSliderWrapper = styled.div`
       height: 440px;
   }
   & .image-gallery-icon {
-    color: ${({theme}) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
     filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
-        color: ${({theme}) => theme.colors.primaryColorHover};
+        color: ${({ theme }) => theme.colors.primaryColorHover};
       }
     }
 
@@ -29,7 +29,7 @@ export const HotelPhotoSliderWrapper = styled.div`
 `;
 
 interface IImageDiv {
-    url: string
+  url: string;
 };
 
 export const ImageDiv = styled.div<IImageDiv>`
@@ -37,4 +37,4 @@ export const ImageDiv = styled.div<IImageDiv>`
   background-size: cover;
   display: block;
   height: 100% 
-`
+`;

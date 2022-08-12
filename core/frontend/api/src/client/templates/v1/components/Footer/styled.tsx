@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
+import { device, size } from "../../styled";
 
-export const FooterWrapper = styled.footer`
+export const FooterWrapper = styled.footer<{ isLogin?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -10,13 +10,14 @@ export const FooterWrapper = styled.footer`
     flex: 1;
   }
 
-  background: ${({theme}) => theme.colors.mainBackground};
+  background: ${({ theme, isLogin }) => isLogin ? "transparent" : theme.colors.mainBackground};
+  flex: 1;
   line-height: 200%;
   font-size: 16px;
-  color: ${({theme}) => theme.colors.footerLinks};
+  color: ${({ theme, isLogin }) => isLogin ? "white" : theme.colors.footerLinks};
 
   & a {
-    color: ${({theme}) => theme.colors.footerLinks};
+    color: ${({ theme, isLogin }) => isLogin ? "white" : theme.colors.footerLinks};
 
     &:hover {
       text-decoration: underline;
@@ -66,7 +67,7 @@ export const StyledNewsletterTitle = styled.div`
 
 export const StyledNewsletterForm = styled.div`
   margin-top: 10px;
-  border: 1px solid ${({theme}) => theme.colors.primaryColor};
+  border: 1px solid ${({ theme }) => theme.colors.primaryColor};
   display: flex;
   border-radius: 12px;
 
@@ -91,11 +92,11 @@ export const StyledNewsletterForm = styled.div`
   & button {
     border-radius: 0 10px 10px 0;
     cursor: pointer;
-    background: ${({theme}) => theme.colors.primaryColor};
-    color: ${({theme}) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.white};
 
     &:hover {
-      background: ${({theme}) => theme.colors.primaryColorHover};
+      background: ${({ theme }) => theme.colors.primaryColorHover};
     }
   }
 `;

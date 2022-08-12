@@ -31,6 +31,7 @@ import { StyledStarsSmall } from "../../../components/Styled/stars";
 import collapseUpIcon from "../../../assets/img/collapse-up-icon.svg";
 import collapseDownIcon from "../../../assets/img/collapse-down-icon.svg";
 import checkCircleWhiteIcon from "../../../assets/img/check-circle-white-icon.svg";
+import { AddressText } from "../../../hotel/styled";
 
 
 interface PackageCardProps {
@@ -66,6 +67,9 @@ const PackageCard = ({ details }: PackageCardProps) => {
                 <PackageTitle>
                   {details.title}
                 </PackageTitle>
+                <AddressText>
+                  {details.address}
+                </AddressText>
                 <RatingContainer>
                   <StyledStarsSmall stars={details.rating} />
                 </RatingContainer>
@@ -92,8 +96,8 @@ const PackageCard = ({ details }: PackageCardProps) => {
                     <ServicesDescriptionText>
                       {t("packages.main.includedServices")}
                     </ServicesDescriptionText>
-                    { isExpanded === "services" && <img src={collapseUpIcon.src} /> }
-                    { isExpanded !== "services" && <img src={collapseDownIcon.src} /> }
+                    {isExpanded === "services" && <img src={collapseUpIcon.src} />}
+                    {isExpanded !== "services" && <img src={collapseDownIcon.src} />}
                   </ServicesTextContainer>
                   <ServicesTextContainer
                     onClick={() => handleDetails("description")}
@@ -102,8 +106,8 @@ const PackageCard = ({ details }: PackageCardProps) => {
                     <ServicesDescriptionText>
                       {t("packages.main.hotelDescription")}
                     </ServicesDescriptionText>
-                    { isExpanded === "description" && <img src={collapseUpIcon.src} /> }
-                    { isExpanded !== "description" && <img src={collapseDownIcon.src} /> }
+                    {isExpanded === "description" && <img src={collapseUpIcon.src} />}
+                    {isExpanded !== "description" && <img src={collapseDownIcon.src} />}
                   </ServicesTextContainer>
                 </DetailsContainer>
               </PackageDetails>
@@ -149,8 +153,11 @@ const PackageCard = ({ details }: PackageCardProps) => {
               {[...details.services].map((service: any) => {
 
                 return (
-                  <div style={{height: "30px", display: "flex", alignItems: "center", gap: "10px"}}><Image width={25} height={26} src={checkCircleWhiteIcon}/> {service}</div>
-                )
+                  <div style={{ height: "30px", display: "flex", alignItems: "center", gap: "10px" }}><Image width={25}
+                                                                                                             height={26}
+                                                                                                             src={checkCircleWhiteIcon} /> {service}
+                  </div>
+                );
 
               })}
             </PackageServicesContainer>

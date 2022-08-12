@@ -79,19 +79,19 @@ export const SearchIcon = styled.div`
   width: 23px;
   height: 23px;
   margin: 13px 10px 0 10px;
-  background: url(${({theme}) => theme.icon('search')}) no-repeat left center;`;
+  background: url(${({ theme }) => theme.icon("search")}) no-repeat left center;`;
 
 export const CalenderIcon = styled.div`
   width: 23px;
   height: 24px;
   margin: 13px 10px 0 10px;
-  background: url(${({theme}) => theme.icon('calendar')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("calendar")}) no-repeat left center;
 `;
 export const DropdownIcon = styled.div`
   width: 40px;
   height: 48px;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
 `;
 export const NewSearch = styled.div`
   display: flex;
@@ -131,7 +131,7 @@ export const WhiteIcon = styled.div`
   width: 32px;
   height: 50px;
   display: inline-block;
-  background: url(${({theme}) => theme.icon('searchWhite')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("searchWhite")}) no-repeat center center;
 
 `;
 export const GuestType = styled.div`
@@ -161,7 +161,7 @@ export const AdultIcon = styled.div`
   height: 26px;
   width: 10px;
   top: 0;
-  background: url(${({theme}) => theme.icon('adults')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("adults")}) no-repeat left center;
   cursor: pointer;
 `;
 export const AdultNumber = styled.div`
@@ -176,7 +176,7 @@ export const ChildIcon = styled.div`
   width: 20px;
   top: 0;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("child")}) no-repeat left center;
 `;
 
 export const HotelView = styled.div`
@@ -237,18 +237,18 @@ export const Price = styled.div`
   span {
     font-size: 16px;
   }
-`
+`;
 
 export const AboutPrice = styled.div`
   
-`
+`;
 export const InfoIcon = styled.span`
   display: inline-block;
   height: 32px;
   width: 32px;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('info')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("info")}) no-repeat center center;
 
 `;
 export const LeftSide = styled.div``;
@@ -368,11 +368,11 @@ export const ImageCount = styled.div`
   margin-top: 10px;
 `;
 
-export const StyledDescription = styled.div<{readMore: boolean}>`
+export const StyledDescription = styled.div<{ readMore: boolean }>`
   width: 100%;
   
-  max-height: ${props=> props.readMore ? ' ' : '600px'};
-  overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
+  max-height: ${props => props.readMore ? " " : "600px"};
+  overflow: ${props => props.readMore ? " " : "hidden"} ;
   font-size: 20px;
   color: rgba(0, 0, 0, 0.5);
   @media only screen and (max-width: ${size.tablet}) {
@@ -482,7 +482,7 @@ export const DetailTop = styled.div`
   margin-bottom: 12px;
 `;
 export const CloseIcon = styled.div`
-  background: url(${({theme}) => theme.icon('close')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("close")}) no-repeat left center;
   width: 22px;
   height: 12px;
   position: relative;
@@ -749,8 +749,8 @@ export const HotelCalendar = styled(Calendar)`
 `;
 export const H4 = styled("h4")`
   
-`
+`;
 
 export const SPAN = styled("span")`
 user-select: none;
-`
+`;

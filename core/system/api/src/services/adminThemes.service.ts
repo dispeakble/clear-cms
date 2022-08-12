@@ -3,14 +3,67 @@ import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import { ProtocolService } from "./protocol.service";
+import { BucketService } from "./bucket.service";
+import { Readable } from 'stream';
 
 @Injectable()
 export class AdminThemesService {
 
     private methods = ["get", "list", "add", "set", "rem"];
 
-    constructor(private protocolService: ProtocolService) {
+    constructor(private protocolService: ProtocolService, private bucketService: BucketService) {
 
+    }
+
+    private uploadFromBase64(params) {
+        const initiator = new Observable(subscriber => {
+            (async () => {
+                let buff = Buffer.from(params.base64, 'base64');
+                subscriber.next({
+                    payload: {
+                        type: "meta",
+                        length: buff.length,
+                        filename: params.filename,
+                        path: "themes",
+                        replace: true
+                    }
+                });
+
+                await (() => new Promise((resolve) => {
+                    setTimeout(resolve, 300);
+                }))();
+
+                const stream = Readable.from(buff);
+
+                let index = 0;
+
+                stream.on('data', (chunk: any) => {
+                    index++;
+                    subscriber.next({
+                        payload: {
+                            type: "data",
+                            index: `${Math.random()}-${index}`,
+                            buffer: chunk
+                        }
+                    });
+                });
+
+                stream.on('end', () => {
+                    subscriber.complete();
+                });
+
+                stream.on('error', () => {
+                    subscriber.error(`upload failed for ${params.filename}`);
+                })
+            })();
+        });
+
+        return this.bucketService.perform({
+            act: 'upload',
+            payload: {
+                initiator: initiator
+            }
+        }).toPromise();
     }
 
     public list() {
@@ -99,6 +152,7 @@ export class AdminThemesService {
         }
 
         return new Observable((subscriber) => {
+            const {title, isDefault, data} = params.data;
             const request: payloadInterface = {
                 channel: `db`,
                 api: 'sql',
@@ -109,7 +163,11 @@ export class AdminThemesService {
                     data: {
                         what: 'adminTheme',
                         where: params.where,
-                        fields: params.data
+                        data: {
+                            title,
+                            isDefault,
+                            data,
+                        }
                     }
                 }
             };
@@ -121,7 +179,13 @@ export class AdminThemesService {
                 });
             }, err => {
                 subscriber.error(err);
-            }, () => {
+            }, async () => {
+                const parts = params.data.thumbnail.split(';base64,');
+                const ext = parts[0].split('/');
+                await this.uploadFromBase64({
+                    filename: `${params.where.id}.${ext[1]}`,
+                    base64: parts[1]
+                });
                 subscriber.complete();
             });
         });
@@ -151,22 +215,30 @@ export class AdminThemesService {
                         data: {
                             title: params.title,
                             isDefault: params.isDefault,
-                            thumbnail: params.thumbnail,
                             data: params.data,
                         }
                     }
                 }
             };
 
-            this.protocolService.sendMessage(request).subscribe(() => {
-                subscriber.next({
-                    success: "The theme was added",
-                    data: null
-                })
+            this.protocolService.sendMessage(request).subscribe((data) => {
+                (async () => {
+                    const parts = params.thumbnail.split(';base64,');
+                    const ext = parts[0].split('/');
+                    await this.uploadFromBase64({
+                        filename: `${data.id}.${ext[1]}`,
+                        base64: parts[1]
+                    });
+                    subscriber.next({
+                        success: "The theme was added",
+                        data: null
+                    })
+                    subscriber.complete();
+                })()
             }, err => {
                 subscriber.error(err);
             }, () => {
-                subscriber.complete();
+
             });
         })
 

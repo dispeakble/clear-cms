@@ -34,9 +34,12 @@ const TopHotels = () => {
                     className={selectedTab === 2 ? "selected" : ""}>{t("home.promo.flights")}</StyledTabBtn>
     </StyledTabs>
     <StyledCardsWrapper>
-      <TopHotelsCard dataTestid="test-topHotel-card-first" src={Hotel1.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
-      <TopHotelsCard dataTestid="test-topHotel-card-second" src={Hotel2.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
-      <TopHotelsCard dataTestid="test-topHotel-card-third" src={Hotel3.src} tag={t("home.relax")} details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard dataTestid="test-topHotel-card-first" src={Hotel1.src} tag={t("home.relax")}
+                     details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard dataTestid="test-topHotel-card-second" src={Hotel2.src} tag={t("home.relax")}
+                     details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
+      <TopHotelsCard dataTestid="test-topHotel-card-third" src={Hotel3.src} tag={t("home.relax")}
+                     details={t("home.detail")} action={t("home.bookNow")} prices={fakePrices} />
     </StyledCardsWrapper>
 
   </StyledWrapper>;

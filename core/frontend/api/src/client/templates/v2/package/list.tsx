@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { getIcon } from "../helpers/icons";
-import { ContentWrapper, GlobalStyle, MainWrapper, PaperWrapper, TopContentWrapper } from "../styled";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { ThemeProvider } from "styled-components";
-import Breadcrumbs from "../components/Breadcrumbs";
-import HomeSearch from "../components/HomeSearch";
+import { ContentWrapper, PaperWrapper } from "../styled";
 import { ButtonContainer, FiltersContainer, LoadMoreButton, PackagesContainer, PackagesLayout } from "./styled";
 import Filters from "./components/Filters";
 import PackageCard from "./components/PackageCard";
@@ -15,15 +9,12 @@ import HotelImage from "../assets/img/hotels/small/hotel3.jpg";
 import PackageFlight from "../assets/img/packageFlight-icon.svg";
 import PackageHotel from "../assets/img/packageHotel-icon.svg";
 import BusIcon from "../assets/img/bus-icon.svg";
+import Layout from "../components/Layout";
 
 
-const PackagesPage = ({ websiteName, colorScheme }: any) => {
+const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   const t = useTranslations();
-
-  const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-  };
 
   const [page, setPage] = useState(5);
 
@@ -157,56 +148,54 @@ const PackagesPage = ({ websiteName, colorScheme }: any) => {
     }
   ];
 
-  const myTheme: any = { colors: colorScheme, icon: getIcons };
+  const breadcrumbs = {
+    //TODO translate this
+    "packages/list": "Packages"
+  };
 
   return (
-    <ThemeProvider theme={myTheme}>
-      <GlobalStyle />
-      <MainWrapper data-testid="package-page-wrapper">
-        <Header websiteName={websiteName} />
-        <TopContentWrapper>
-          <ContentWrapper>
-            <Breadcrumbs countryName="Spain" islandName="Tenerife" townName="Adeje"
-                         hotelName="Hotel Victoria (Package)" />
-            <HomeSearch selectedTab="packages" />
-          </ContentWrapper>
-        </TopContentWrapper>
-        <PaperWrapper style={{marginTop: "57px"}}>
-          <ContentWrapper>
-            <PackagesLayout>
-              <FiltersContainer>
-                <Filters
-                  setSelectedFilters={setSelectedFilters}
-                  selectedFilters={selectedFilters}
-                  filters={filters}
-                />
-              </FiltersContainer>
-              <PackagesContainer>
-                {
-                  [...Array(page)]
-                    .map(() => (
-                      <PackageCard details={packageMock} />
-                    ))
-                }
+    <Layout
+      isHomePage={false}
+      selectedTab="packages"
+      showSearch={true}
+      breadcrumbs={breadcrumbs}
+      websiteSlogan={websiteSlogan}
+      websiteName={websiteName}
+      colorScheme={colorScheme}>
+      <PaperWrapper>
+        <ContentWrapper>
+          <PackagesLayout>
+            <FiltersContainer>
+              <Filters
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+                filters={filters}
+              />
+            </FiltersContainer>
+            <PackagesContainer>
+              {
+                [...Array(page)]
+                  .map(() => (
+                    <PackageCard details={packageMock} />
+                  ))
+              }
 
-                <ButtonContainer style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "30px 0"
-                }}>
-                  <LoadMoreButton onClick={() => loadMorePages()}>
-                    {t("packages.main.loadMore")}
-                  </LoadMoreButton>
-                </ButtonContainer>
-              </PackagesContainer>
-            </PackagesLayout>
-            <Footer />
-          </ContentWrapper>
-        </PaperWrapper>
-      </MainWrapper>
-    </ThemeProvider>
+              <ButtonContainer style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "30px 0"
+              }}>
+                <LoadMoreButton onClick={() => loadMorePages()}>
+                  {t("packages.main.loadMore")}
+                </LoadMoreButton>
+              </ButtonContainer>
+            </PackagesContainer>
+          </PackagesLayout>
+        </ContentWrapper>
+      </PaperWrapper>
+    </Layout>
   );
 };
 

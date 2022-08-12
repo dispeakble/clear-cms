@@ -18,7 +18,7 @@ export const FilterTitle = styled.h3`
 `;
 
 export const FilteringIcon = styled.div`
-  background: url(${({theme}) => theme.icon('resultFilter')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("resultFilter")}) no-repeat center center;
   width: 40px;
   cursor: pointer;
 `;

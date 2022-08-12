@@ -41,14 +41,14 @@ export class ProtocolService {
 
     public emitMessage(data: any) {
 
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             api: data.module,
             act: data.act,
             channel: data.channel,
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload);
+        return this.redisService.emit({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 

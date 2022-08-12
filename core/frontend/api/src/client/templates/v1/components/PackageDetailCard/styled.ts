@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
-import {Shadows} from "../../../../assets/design-set";
+import { device, size } from "../../styled";
+import { Shadows } from "../../../../assets/design-set";
 
 export const PackageDetailContainer = styled.div`
   background: #FFFFFF;
@@ -60,7 +60,7 @@ export const BookingCard = styled.div`
   padding: 2rem;
   position: relative;
   
-  background: url(${({theme}) => theme.icon('bookingDetailBg')}) no-repeat center;
+  background: url(${({ theme }) => theme.icon("bookingDetailBg")}) no-repeat center;
   background-size: cover;
   
   white-space: nowrap;
@@ -74,11 +74,11 @@ export const BookingCard = styled.div`
 
 export const FlightInformation = styled.div`
     
-`
+`;
 
 export const FlightTakeOffInput = styled.div`
   flex: 1 0 40%;
-`
+`;
 export const InputContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -97,9 +97,8 @@ export const DropdownIcon = styled.div`
   width: 40px;
   height: 48px;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
 `;
-
 
 
 // -------------- inputs section -------------
@@ -108,11 +107,11 @@ export const TakeOffInputContainer = styled.div`
   border: 1px solid #DBDBDB;
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
-`
+`;
 
 export const StyledSearchInput = styled.input`
   flex: 1;
-  background: url(${({theme}) => theme.icon('departure')}) no-repeat 16px center white;
+  background: url(${({ theme }) => theme.icon("departure")}) no-repeat 16px center white;
   padding: 8px 0 8px 64px;
   width: 100%;
   border: none;
@@ -131,7 +130,7 @@ export const StyledSearchInput = styled.input`
 
 export const StyledSearchDestinationInput = styled.input`
   flex: 1;
-  background: url(${({theme}) => theme.icon('destination')}) no-repeat 16px center white;
+  background: url(${({ theme }) => theme.icon("destination")}) no-repeat 16px center white;
   padding: 0 0 0 64px;
   line-height: 48px;
   box-sizing: border-box;
@@ -157,17 +156,17 @@ export const AutocompleteItem = styled.li`
   line-height: 34px;
   cursor: pointer;
   &:hover {
-    background: ${({theme}) => theme.colors.primaryColor};
-    color: ${({theme}) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 
 export const AutocompleteList = styled.ul`
   position: absolute;
   z-index: 20;
-  background: ${({theme}) => theme.colors.white};
-  border: 1px solid ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.jetBlack};
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.jetBlack};
   list-style: none;
   
   padding: 0;
@@ -197,7 +196,7 @@ export const FlightDetailsContainer = styled.div`
 
 export const ImageForCompany = styled.div`
   width: 40%;
-  background: url(${({theme}) => theme.icon('companyImage')}) no-repeat 16px center white;
+  background: url(${({ theme }) => theme.icon("companyImage")}) no-repeat 16px center white;
   position: absolute;
   height: 4rem;
   left: 30%;
@@ -261,7 +260,7 @@ export const PassengerWrapper = styled.div`
 
   p {
     margin: 0;
-    color: ${({theme}) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.primaryColor};
     font-weight: 500;
     font-size: 16px;
   }
@@ -392,7 +391,6 @@ export const BookingButton = styled.button`
 `;
 
 
-
 export const PackageCharterContainer = styled.div`
   margin-top: 3rem;
   padding-left: 3rem;
@@ -425,13 +423,13 @@ export const CustomHeading = styled.p`
 export const QuotedPara = styled.p`
   position: relative;
   &:before {
-    content: url(${({theme})=>theme.icon('quoteUp')});
+    content: url(${({ theme }) => theme.icon("quoteUp")});
     position: absolute;
     top: -10px;
     left: -50px;
   };
   &:after {
-    content: url(${({theme})=>theme.icon('quoteDown')});
+    content: url(${({ theme }) => theme.icon("quoteDown")});
     position: absolute;
     bottom: -20px;
     right: 0;
@@ -443,10 +441,10 @@ export const BetweenInputsContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex: 0 1 20%;
-`
+`;
 
 export const BetweenInputs = styled.div`
   border-bottom: 1px dotted grey;
   height: 0;
   width: 80%;
-`
+`;

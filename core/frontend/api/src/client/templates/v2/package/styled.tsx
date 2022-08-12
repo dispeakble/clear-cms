@@ -28,6 +28,7 @@ interface ITicketItem {
 }
 
 export const PackagesLayout = styled.div`
+  margin-top: 40px;
   width: 100%;
   display: flex;
   gap: 20px;
@@ -92,7 +93,7 @@ export const CardWrapper = styled.div`
   padding: 14px;
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
-  border-radius: 24px;
+  border-radius: 10px;
   display: flex;
   width: 100%;
   margin-bottom: 10px;
@@ -226,8 +227,8 @@ export const PackageItems = styled.div`
   display: flex;
   align-items: center;
   background: ${({ theme }) => theme.colors.primaryColorHover};
-  border-radius: 27px;
-  max-width: 425px;
+  border-radius: 30px;
+  width: 100%;
   justify-content: space-between;
   padding: 2px 10px;
   margin-bottom: 8px;
@@ -245,6 +246,7 @@ export const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  height: 30px;
 `;
 
 export const ItemText = styled.p`
@@ -435,7 +437,7 @@ export const FiltersWrapper = styled.div`
 export const FiltersHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 22px 11px;
+  padding: 10px;
   align-items: center;
   width: 100%;
   cursor: pointer;

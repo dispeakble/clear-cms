@@ -215,6 +215,14 @@
   },
 
   "hotels": {
+    "main": {
+      "bookNow": "Book Now",
+      "taxes": "*Including all taxes",
+      "includedServices": "Included Services",
+      "hotelDescription": "Hotel Description",
+      "loadMore": "View more hotels",
+      "from": "From"
+    },
     "seo": {
       "pageTitle": "Hotels :: {websiteName}",
       "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."

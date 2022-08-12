@@ -20,7 +20,17 @@ type valuePopupAgesProps = {
   onChange: (value: Record<string, number[]>) => void;
 }
 
-const ValuePopupAges: React.FC<valuePopupAgesProps> = ({ name, data, count, min, max, dataTestId, className, style, onChange }) => {
+const ValuePopupAges: React.FC<valuePopupAgesProps> = ({
+                                                         name,
+                                                         data,
+                                                         count,
+                                                         min,
+                                                         max,
+                                                         dataTestId,
+                                                         className,
+                                                         style,
+                                                         onChange
+                                                       }) => {
 
   const [values, setValues] = useState<number[]>([]);
 

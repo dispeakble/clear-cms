@@ -13,22 +13,21 @@ export const ResultMainContent = styled.div`
   };
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-`
+`;
 
 export const Description = styled.div`
-    flex: 1 1 80%;
-    min-width: 750px;
+    flex: 1;
     border-right: 1px solid #CBCBCB;
     padding: 4px 12px 4px 12px;
 `;
 
 export const PriceContainer = styled.div`
-  flex: 0 0 22%;
-  min-width: 210px;
+  white-space: nowrap;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 10px;
 `;
 
 export const DescriptionRowOne = styled.div`
@@ -116,7 +115,7 @@ export const PlanName = styled.div`
 `;
 
 export const PlanIcon = styled.div`
-  background: url(${({theme}) => theme.icon('companyImage')}) no-repeat 16px center white;
+  background: url(${({ theme }) => theme.icon("companyImage")}) no-repeat 16px center white;
   width: 110px;
   height: 20px;
 `;

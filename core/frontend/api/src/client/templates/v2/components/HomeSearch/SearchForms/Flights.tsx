@@ -96,7 +96,7 @@ export const Flights = () => {
     } else {
       setShowDepartures(false);
     }
-  }
+  };
 
   const searchDestinationByName = useCallback(async (value: string) => {
     const response = await ws.sendMessage({
@@ -110,7 +110,7 @@ export const Flights = () => {
         }
       }
     });
-    
+
     if (response && response.destination && response.destination.length) {
       setDestinationList(response.destination);
       setShowDestinations(true);
@@ -133,9 +133,9 @@ export const Flights = () => {
       }
     });
     if (response && response.dateInterval) {
-      setMinCheckInDate(new Date(response.dateInterval))
+      setMinCheckInDate(new Date(response.dateInterval));
     }
-  }
+  };
 
   const debouncedDepartureSearch = useCallback(debounce(searchDepartureByName, 500), []);
   const debouncedDestinationSearch = useCallback(debounce(searchDestinationByName, 500), [departureId]);
@@ -200,7 +200,7 @@ export const Flights = () => {
   };
 
   const formatDateSearch = (date: any) => {
-    return Intl.DateTimeFormat('ro', {
+    return Intl.DateTimeFormat("ro", {
       month: "2-digit",
       day: "2-digit",
       year: "2-digit"
@@ -208,7 +208,7 @@ export const Flights = () => {
   };
 
   const toggleFilters = (type: string) => {
-    setShowFilter(type)
+    setShowFilter(type);
   };
 
   const onDateChange = (dates: any[]) => {
@@ -225,7 +225,7 @@ export const Flights = () => {
 
   const focusElement = (elem: any) => {
     elem.current.focus();
-  }
+  };
 
   const searchSubmitHandler = (e: any) => {
     e.preventDefault();
@@ -237,9 +237,9 @@ export const Flights = () => {
     }
 
     if (destination.length > 0
-        && checkInDate
-        && checkOutDate
-        && formatDate(checkInDate) !== formatDate(checkOutDate)) {
+      && checkInDate
+      && checkOutDate
+      && formatDate(checkInDate) !== formatDate(checkOutDate)) {
       router.push(`/flights/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
@@ -256,10 +256,10 @@ export const Flights = () => {
         />
         {showDepartures && <AutocompleteList data-testid="flights-departure-list">
           {departureList.map(
-              (dep, i) =>
-                  <AutocompleteItem
-                      onClick={() => handleDeparture({ id: dep.Id, name: dep.Name })}
-                      key={i}>{dep.IntName} ({dep.Name})</AutocompleteItem>
+            (dep, i) =>
+              <AutocompleteItem
+                onClick={() => handleDeparture({ id: dep.Id, name: dep.Name })}
+                key={i}>{dep.IntName} ({dep.Name})</AutocompleteItem>
           )}
         </AutocompleteList>}
         <StyledSearchDestinationInput
@@ -269,43 +269,43 @@ export const Flights = () => {
           onChange={handleDestination} />
         {showDestinations && <AutocompleteList data-testid="flights-destination-list" className="destination">
           {destinationList.map(
-              (dest, i) =>
-                  <AutocompleteItem
-                      onClick={() => handleDestination({ id: dest.Id, name: dest.Name })}
-                      key={i}>{dest.IntName} ({dest.Name})</AutocompleteItem>
+            (dest, i) =>
+              <AutocompleteItem
+                onClick={() => handleDestination({ id: dest.Id, name: dest.Name })}
+                key={i}>{dest.IntName} ({dest.Name})</AutocompleteItem>
           )}
         </AutocompleteList>}
       </StyledSearchInputHolder>
       <StyledFilterWrapper>
         <StyledSearchOptions>
           <StyledSearchCheckinGroup>
-              <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
+            <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
               <StyledLabel>{t("search.checkinDate")}</StyledLabel>
               <StyledValue data-testid="test-checkIn-date-value">{
-              checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
-            }</StyledValue>
-              </StyledCheckIn>
-              <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
+                checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
+              }</StyledValue>
+            </StyledCheckIn>
+            <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
               <StyledLabel>{t("search.checkout")}</StyledLabel>
               <StyledValue data-testid="test-checkOut-date-value">{
-              checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
-            }</StyledValue>
-              </StyledCheckOut>
+                checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
+              }</StyledValue>
+            </StyledCheckOut>
             {
               calendarIsOpen &&
               <>
-              <CalendarContainer data-testid="test-calendar">
-              <Calendar
-              formatMonthYear={(locale, date) => formatDate(date)}
-              view="month"
-              showDoubleView={true}
-              selectRange={true}
-              onChange={onDateChange}
-              value={[checkInDate, checkOutDate]}
-              minDate={minCheckInDate}
-              returnValue="range"
-              />
-              </CalendarContainer>
+                <CalendarContainer data-testid="test-calendar">
+                  <Calendar
+                    formatMonthYear={(locale, date) => formatDate(date)}
+                    view="month"
+                    showDoubleView={true}
+                    selectRange={true}
+                    onChange={onDateChange}
+                    value={[checkInDate, checkOutDate]}
+                    minDate={minCheckInDate}
+                    returnValue="range"
+                  />
+                </CalendarContainer>
               </>
             }
           </StyledSearchCheckinGroup>
@@ -316,49 +316,52 @@ export const Flights = () => {
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
               </StyledCenterLabel>
               {showFilter === "adults" &&
-                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9 - filterValues.children}
+                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
+                            max={9 - filterValues.children}
                             onChange={handleFilterChange} />}
             </StyledPerson>
             <StyledChild>
-              <StyledCenterLabel  data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
+              <StyledCenterLabel data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
               {showFilter === "children" &&
-                  <><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
-                                max={4} onChange={handleFilterChange} />
+                <><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
+                              max={4} onChange={handleFilterChange} />
 
-                    { filterValues.children > 0 && <ValuePopupAges
-                        className="childrenAges"
-                        name="childrenAges"
-                        min={0}
-                        max={12}
-                        count={filterValues.children}
-                        data={filterValues.childrenAges}
-                        dataTestId="test-children-ages-handler"
-                        onChange={handleFilterChange}/> }
-                  </>
+                  {filterValues.children > 0 && <ValuePopupAges
+                    className="childrenAges"
+                    name="childrenAges"
+                    min={0}
+                    max={12}
+                    count={filterValues.children}
+                    data={filterValues.childrenAges}
+                    dataTestId="test-children-ages-handler"
+                    onChange={handleFilterChange} />}
+                </>
 
               }
             </StyledChild>
             <StyledOneWay data-testid="test-checkbox-oneway-handler">
-              <StyledCenterLabel style={{height: "100%", width: "100%"}}>
+              <StyledCenterLabel style={{ height: "100%", width: "100%" }}>
                 <StyledLabel>{t("search.oneway")}</StyledLabel>
                 <StyledPrimaryValue>
-                  <input onChange={() => setOneWay(!oneWay)} type="checkbox" data-testid="test-checkbox-oneway" checked={oneWay} />
+                  <input onChange={() => setOneWay(!oneWay)} type="checkbox" data-testid="test-checkbox-oneway"
+                         checked={oneWay} />
                 </StyledPrimaryValue>
               </StyledCenterLabel>
             </StyledOneWay>
           </StyledSearchOptionsGroup>
-          <StyledSearchButton onClick={searchSubmitHandler} data-testid="search-submit-btn">{t("search.searchFlightsButton")}</StyledSearchButton>
+          <StyledSearchButton onClick={searchSubmitHandler}
+                              data-testid="search-submit-btn">{t("search.searchFlightsButton")}</StyledSearchButton>
         </StyledSearchOptions>
       </StyledFilterWrapper>
-        {(
-            showFilter.length
-            || calendarIsOpen
-            || showDepartures
-            || showDestinations
-        ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
+      {(
+        showFilter.length
+        || calendarIsOpen
+        || showDepartures
+        || showDestinations
+      ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
     </>
   );
 };

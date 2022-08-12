@@ -4,7 +4,7 @@ import { device } from "../../styled";
 import goldStar from "../../assets/img/gold-star-icon.svg";
 import smallGoldStarIcon from "../../assets/img/small-gold-star-icon.svg";
 
-export const StyledStarsBig = styled.div<{stars: number}>`
+export const StyledStarsBig = styled.div<{ stars: number }>`
   height: 25px;
   background: url(${coldStar.src}) space top left;
   background-size: 25px 25px;
@@ -21,18 +21,18 @@ export const StyledStarsBig = styled.div<{stars: number}>`
     position: absolute;
     left: 0;
     height: 25px;
-    width: ${({stars}) => stars * 25}px;
+    width: ${({ stars }) => stars * 25}px;
     background: url(${goldStar.src}) space left center;
     background-size: 25px 25px;
     @media ${device.tablet} {
-      width: ${({stars}) => stars * 50}px;
+      width: ${({ stars }) => stars * 50}px;
       height: 50px;
       background-size: 50px 50px;
     }
   }
 `;
 
-export const StyledStarsSmall = styled.div<{stars: number}>`
+export const StyledStarsSmall = styled.div<{ stars: number }>`
   height: 25px;
   width: 125px;
   display: flex;
@@ -44,7 +44,7 @@ export const StyledStarsSmall = styled.div<{stars: number}>`
     display: block;
     position: absolute;
     right: 0;
-    width: ${({stars}) => (5 - stars) * 25}px;
+    width: ${({ stars }) => (5 - stars) * 25}px;
     background: url(${coldStar.src}) space top left;
     background-size: 25px 25px;
     opacity: .25;
@@ -55,7 +55,7 @@ export const StyledStarsSmall = styled.div<{stars: number}>`
     position: absolute;
     left: 0;
     height: 25px;
-    width: ${({stars}) => stars * 25}px;
+    width: ${({ stars }) => stars * 25}px;
     background: url(${smallGoldStarIcon.src}) space left center;
     background-size: 25px 25px;
   }

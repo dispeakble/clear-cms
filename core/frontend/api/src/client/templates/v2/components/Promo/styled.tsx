@@ -33,7 +33,7 @@ export const StyledCardsWrapper = styled.div`
 `;
 
 export const StyledCard = styled.div`
-  background:  ${({theme}) => theme.colors.white};
+  background:  ${({ theme }) => theme.colors.white};
   border-radius: 22px;
   padding: 20px 35px;
 `;
@@ -75,9 +75,9 @@ export const StyledLightLabel = styled.span`
   max-width: 25%;
   border-radius: 10px;
   height: 21px;
-  background:  ${({theme}) => theme.colors.primaryLight};
+  background:  ${({ theme }) => theme.colors.primaryLight};
   padding: 0 10px;
-  color: ${({theme}) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.primaryColor};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,21 +93,21 @@ export const StyledGrayLabel = styled.span`
 
 export const SmallBookNow = styled.span`
   border-radius: 10px;
-  background: ${({theme}) => theme.colors.primaryColor};
+  background: ${({ theme }) => theme.colors.primaryColor};
   padding: 0 10px;
-  color:  ${({theme}) => theme.colors.white};
+  color:  ${({ theme }) => theme.colors.white};
   line-height: 21px;
   cursor: pointer;
 
   &:hover {
-    background: ${({theme}) => theme.colors.primaryLight};
+    background: ${({ theme }) => theme.colors.primaryLight};
   }
 `;
 
 export const StyledFeaturedPrices = styled.div`
   display: flex;
   font-weight: bold;
-  color:  ${({theme}) => theme.colors.black};
+  color:  ${({ theme }) => theme.colors.black};
   font-size: 12px;
   line-height: 27px;
 `;
@@ -121,7 +121,7 @@ export const StyledPrice = styled.div`
 `;
 
 export const StyledTabs = styled.div`
-  background:  ${({theme}) => theme.colors.white};
+  background:  ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   padding: 10px;
   display: flex;
@@ -133,8 +133,8 @@ export const StyledTabs = styled.div`
 
 export const StyledTabBtn = styled.div`
   flex: 1;
-  background:  ${({theme}) => theme.colors.white};
-  color: ${({theme}) => theme.colors.gray};
+  background:  ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.gray};
   padding: 15px;
   text-align: center;
   cursor: pointer;
@@ -146,14 +146,14 @@ export const StyledTabBtn = styled.div`
   }
 
   &:hover {
-    background: ${({theme}) => theme.colors.primaryLight};
-    color:  ${({theme}) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryLight};
+    color:  ${({ theme }) => theme.colors.white};
     border-radius: 8px;
   }
 
   &.selected {
-    background: ${({theme}) => theme.colors.primaryColor};
-    color:  ${({theme}) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryColor};
+    color:  ${({ theme }) => theme.colors.white};
     border-radius: 8px;
   }
 `;

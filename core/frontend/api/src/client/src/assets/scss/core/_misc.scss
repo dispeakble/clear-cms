@@ -103,11 +103,6 @@ a {
   color: $link-color;
   text-decoration: none;
   background-color: transparent;
-  &:hover,
-  &:focus {
-    color: darken($link-color, 5%);
-    text-decoration: none;
-  }
 }
 
 label {

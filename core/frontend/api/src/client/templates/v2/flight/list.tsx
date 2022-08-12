@@ -1,59 +1,32 @@
 import * as React from "react";
-import { ThemeProvider } from "styled-components";
-
-import Header from "../components/Header";
-import { getIcon } from "../helpers/icons";
-import {useTranslations} from "next-intl";
 
 import {
-    BreadcrumbsContainer,
-    ContentWrapper,
-    GlobalStyle,
-    MainWrapper,
-    TopContentWrapperForFlightResults,
-    BottomContentWrapperForFlightResults,
-    FlightResultsMainWrapper, Wrapper
+  ContentWrapper, PaperWrapper
 } from "../styled";
-import HomeSearch from "../components/HomeSearch";
-import Footer from "../components/Footer";
-import Breadcrumbs from "../components/Breadcrumbs";
 import ResultsMainContent from "../components/ResultsMainContent";
-import FilteringFlightResult from "../components/FilteringFlightResult"
+import FilteringFlightResult from "../components/FilteringFlightResult";
+import Layout from "../components/Layout";
+import { FlightsLayout } from "./styled";
 
-const List = ({ websiteName, colorScheme }: any) => {
-    const t = useTranslations()
+const List = ({ websiteName, websiteSlogan, colorScheme }: any) => {
+  const breadcrumbs = {
+    //TODO translate this
+    "flights/list": "Flights"
+  };
 
-    const getIcons = (iconName: string) => {
-        return getIcon(iconName);
-    };
-
-    const myTheme: any = { colors: colorScheme, icon: getIcons };
-
-    return (
-        <ThemeProvider theme={myTheme}>
-            <GlobalStyle />
-            <Header websiteName={websiteName} />
-            <FlightResultsMainWrapper>
-                <BreadcrumbsContainer>
-                    <Breadcrumbs countryName={t("packageDetails.countryName")} islandName={t("packageDetails.islandName")} townName={t("packageDetails.islandName")} hotelName={t("packageDetails.townName")}/>
-                </BreadcrumbsContainer>
-                <MainWrapper>
-                    <TopContentWrapperForFlightResults>
-                        <ContentWrapper>
-                            <HomeSearch selectedTab='flights' />
-                        </ContentWrapper>
-                    </TopContentWrapperForFlightResults>
-                    <Wrapper>
-                        <BottomContentWrapperForFlightResults>
-                            <FilteringFlightResult />
-                            <ResultsMainContent />
-                        </BottomContentWrapperForFlightResults>
-                    </Wrapper>
-                </MainWrapper>
-            </FlightResultsMainWrapper>
-            <Footer />
-        </ThemeProvider>
-    );
+  return (
+    <Layout selectedTab="flights" websiteName={websiteName} colorScheme={colorScheme} breadcrumbs={breadcrumbs}
+            showSearch websiteSlogan={websiteSlogan}>
+      <PaperWrapper>
+        <ContentWrapper>
+          <FlightsLayout>
+            <FilteringFlightResult />
+            <ResultsMainContent />
+          </FlightsLayout>
+        </ContentWrapper>
+      </PaperWrapper>
+    </Layout>
+  );
 };
 
 export default List;

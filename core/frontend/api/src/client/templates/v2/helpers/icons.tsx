@@ -25,21 +25,21 @@ import searchWhiteIcon from "../assets/img/search-white-icon.svg";
 import zoomIcon from "../assets/img/zoom-icon.svg";
 import departureIcon from "../assets/img/departure-icon.svg";
 import arrivalIcon from "../assets/img/arrival-icon.svg";
-import destinationIcon from '../assets/img/destination-icon.svg'
-import companyIcon from '../assets/img/company-icon.svg'
+import destinationIcon from "../assets/img/destination-icon.svg";
+import companyIcon from "../assets/img/company-icon.svg";
 import worldMap from "../assets/img/world-map.svg";
 import bookingDetailBg from "../assets/img/booking-detailbg.png";
 import quoteUp from "../assets/img/quote-up.svg";
 import quoteDown from "../assets/img/quote-down.svg";
 import starIcon from "../assets/img/star-icon.svg";
 import calendarCheckIcon from "../assets/img/calendar-check-icon.svg";
-import uncheckIcon from "../assets/img/uncheck.svg"
-import filterIcon from "../assets/img/filter-icon.svg"
-import rightArrowIcon from '../assets/img/right-arrow-icon.svg';
-import leftArrowIcon from '../assets/img/left-arrow-icon.svg';
-import viewMoreIcon from '../assets/img/view-more-icon.svg'
-import loginEmail from '../assets/img/login/email-icon.svg'
-import loginPassword from '../assets/img/login/password-icon.svg'
+import uncheckIcon from "../assets/img/uncheck.svg";
+import filterIcon from "../assets/img/filter-icon.svg";
+import rightArrowIcon from "../assets/img/right-arrow-icon.svg";
+import leftArrowIcon from "../assets/img/left-arrow-icon.svg";
+import viewMoreIcon from "../assets/img/view-more-icon.svg";
+import loginEmail from "../assets/img/login/email-icon.svg";
+import loginPassword from "../assets/img/login/password-icon.svg";
 
 const icons: Record<string, any> = {
   loginEmail: loginEmail,
@@ -84,7 +84,7 @@ const icons: Record<string, any> = {
   rightArrow: rightArrowIcon,
   leftArrow: leftArrowIcon,
   viewMore: viewMoreIcon
-}
+};
 
 export const getIcon = (iconName: string) => {
   let icon;
@@ -93,4 +93,4 @@ export const getIcon = (iconName: string) => {
   } catch {
   }
   return icon;
-}
+};

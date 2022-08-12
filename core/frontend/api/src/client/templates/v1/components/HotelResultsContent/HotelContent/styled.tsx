@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -23,7 +23,7 @@ export const SectionOne = styled.div`
 
 
 interface HotelImage {
-    url: string
+  url: string;
 };
 
 export const HotelImageContainer = styled.div`
@@ -45,7 +45,6 @@ export const HotelImage = styled.div<HotelImage>`
   width: 100%;
   height: 100%;
 `;
-
 
 
 export const HotelInfo = styled.div`

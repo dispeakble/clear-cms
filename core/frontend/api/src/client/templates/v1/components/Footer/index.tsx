@@ -3,10 +3,14 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { FooterWrapper, StyledNewsletterForm, StyledNewsletterTitle } from "./styled";
 
-const Footer = () => {
+interface FooterProps {
+  isLogin?: boolean;
+}
+
+const Footer = ({ isLogin }: FooterProps) => {
   const t = useTranslations();
 
-  return (<FooterWrapper>
+  return (<FooterWrapper isLogin={isLogin}>
     {/*//TODO make this configurable*/}
     <div>
       <div>

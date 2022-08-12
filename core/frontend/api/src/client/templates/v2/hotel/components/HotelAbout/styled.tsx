@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {size} from "../../styled";
+import { size } from "../../styled";
 import hotel1 from "../../../assets/img/hotels/small/hotel1.jpg";
 
 
@@ -12,7 +12,7 @@ export const About = styled.div`
     padding: 0;
     justify-content: space-between;
   }
-`
+`;
 
 export const LeftSection = styled.div`
   height: 100%;
@@ -23,12 +23,12 @@ export const LeftSection = styled.div`
     padding:10px;
   }
   
-`
+`;
 export const HotelName = styled.div`
   font-weight: 600;
   font-size: 32px;
   line-height: 30px;
-`
+`;
 export const HotelRate = styled.div`
   display: flex;
   padding: 5px 0;
@@ -42,7 +42,7 @@ export const HotelRate = styled.div`
     display: flex;
     align-items: center;
   }
-`
+`;
 export const Description = styled.div`
   margin-bottom: 2rem;
   p {
@@ -55,13 +55,13 @@ export const Description = styled.div`
   span {
     font-weight: 500;
     font-size: 20px;
-    color: ${({theme}) => theme.colors.secondaryColor};
+    color: ${({ theme }) => theme.colors.secondaryColor};
     cursor: pointer;
     :hover{
-      color: ${({theme}) => theme.colors.primaryColor};
+      color: ${({ theme }) => theme.colors.primaryColor};
     }
   }
-`
+`;
 export const RightSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -70,7 +70,7 @@ export const RightSection = styled.div`
   @media only screen and (max-width:${size.tablet}){
     padding:10px;
   }
-`
+`;
 export const MapSection = styled.div`
   width: 100%;
   height: 298px;
@@ -84,7 +84,7 @@ export const MapSection = styled.div`
     width: 485px;
     border-radius: 10px;
   }*/
-`
+`;
 
 
 export const Highlights = styled.div`
@@ -115,14 +115,14 @@ export const Highlights = styled.div`
   /*@media (min-width: ${size.laptopL}) {
     width: 497px;
   }*/
-`
+`;
 
 export const Cardtitle = styled.div`
   font-weight: 600;
   font-size: 33px;
   line-height: 50px;
   text-align: center;
-  color: ${({theme}) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.primaryColor};
   text-shadow: 0 4px 4px rgb(0 0 0 / 55%);
   position: relative;
   z-index: 2;
@@ -132,7 +132,7 @@ export const Cardtitle = styled.div`
   }
   
   ::after {
-    border-bottom: 2px solid ${({theme}) => theme.colors.white};
+    border-bottom: 2px solid ${({ theme }) => theme.colors.white};
     content: '';
     width: 90%;
     display: block;
@@ -143,7 +143,7 @@ export const Cardtitle = styled.div`
       top: 5px;
     }
   }
-`
+`;
 export const Feature = styled.div`
   position: relative;
   z-index: 2;
@@ -152,20 +152,20 @@ export const Feature = styled.div`
     gap: 5px;
     font-size: 23px;
     line-height: 34px;
-    color: ${({theme}) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
     text-shadow: 0 4px 4px rgba(0, 0, 0, 0.55);
     list-style: none;
     & span {
       flex: 1;
     }
   }
-`
+`;
 export const CheckedIcon = styled.div`
   width: 29px;
   height: 28px;
   position: relative;
   margin-top: 5px;
-  background: url(${({theme}) => theme.icon('check')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("check")}) no-repeat left center;
 `;
 
 export const UncheckedIcon = styled.div`
@@ -173,5 +173,5 @@ export const UncheckedIcon = styled.div`
   height: 28px;
   position: relative;
   margin-top: 5px;
-  background: url(${({theme}) => theme.icon('uncheck')}) no-repeat left center;
-`
+  background: url(${({ theme }) => theme.icon("uncheck")}) no-repeat left center;
+`;

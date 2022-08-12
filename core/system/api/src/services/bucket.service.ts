@@ -3,17 +3,18 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
 import {promises as fsp} from "fs";
 import * as mime from "mime";
-import {Observable} from "rxjs";
+import { Observable, Subscriber } from "rxjs";
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
 import path from "path";
 import {HelpService} from "./help.service";
 import { ProtocolService } from "./protocol.service";
+import { Readable } from "stream";
 
 @Injectable()
 export class BucketService {
 
-    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "uploadFromBase64", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private publicPaths = ["view-auth", "recover-password", "static", "manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
     private help: any;
@@ -66,26 +67,21 @@ export class BucketService {
     private upload(params: any, config){
         return new Observable(subscriber => {
 
-            const handshake = params.perform({
-                channel: config.config.channel,
-                api: 'protocol',
-                act: 'startHandshake',
-                payload: {
-                    channel: `bucket`,
-                    indication: {
-                        api: 'fs',
-                        act: 'upload'
-                    }
+            const handShake = this.protocolService.startHandshake({
+                channel: 'bucket',
+                indication: {
+                    api: 'fs',
+                    act: 'upload'
                 }
-            });
+            }, {channel: 'system'});
 
-            handshake.theObserver.subscribe(() => {
-
+            handShake.theObserver.subscribe((data) => {
+                console.log(data);
             }, (err) => {
                 console.log(err.message);
             })
 
-            handshake.thePromise.then(handshakeResponse => {
+            handShake.thePromise.then((handshakeResponse: {thePusher: Subscriber<any>}) => {
                 params.initiator.subscribe(data => {
                     handshakeResponse.thePusher.next(data)
                 }, err => {
@@ -101,6 +97,53 @@ export class BucketService {
             });
 
         });
+    }
+
+    private uploadFromBase64(params) {
+
+        const initiator = new Observable(subscriber => {
+            let buff = Buffer.from(params.base64, 'base64');
+            subscriber.next({
+                payload: {
+                    type: "meta",
+                    length: buff.length,
+                    filename: params.filename,
+                    path: "themes",
+                    replace: true
+                }
+            });
+
+            const stream = Readable.from(buff);
+
+            let index = 0;
+            const t = Math.random();
+
+            stream.on('data', (chunk: any) => {
+                index++;
+                subscriber.next({
+                    payload: {
+                        type: "data",
+                        index: `${t}-${index}`,
+                        buffer: chunk
+                    }
+                });
+            });
+
+            stream.on('end', () => {
+                subscriber.complete();
+            });
+
+            stream.on('error', () => {
+                subscriber.error(`upload failed for: ${params.filename}`);
+            })
+        });
+
+        return this.perform({
+            act: 'upload',
+            payload: {
+                initiator: initiator
+            }
+        }).toPromise();
     }
 
     private checkPaths(data: any){

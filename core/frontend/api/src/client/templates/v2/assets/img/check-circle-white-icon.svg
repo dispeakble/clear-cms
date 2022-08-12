@@ -1,12 +1,18 @@
 <svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g filter="url(#filter0_d_49_63)">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M4 10.8612C4 6.35523 7.6053 2.70245 12.0527 2.70245C16.5 2.70245 20.1053 6.35523 20.1053 10.8612C20.1053 15.3671 16.5 19.0199 12.0527 19.0199C7.6053 19.0199 4 15.3671 4 10.8612Z" fill="white"/>
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M4 10.8612C4 6.35523 7.6053 2.70245 12.0527 2.70245C16.5 2.70245 20.1053 6.35523 20.1053 10.8612C20.1053 15.3671 16.5 19.0199 12.0527 19.0199C7.6053 19.0199 4 15.3671 4 10.8612Z"
+              fill="white"/>
     </g>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.4709 7.26298C16.7958 7.61809 16.7958 8.19383 16.4709 8.54894L11.3066 14.4595C10.9816 14.8146 10.4548 14.8146 10.1299 14.4595L7.63393 11.7315C7.30901 11.3764 7.30901 10.8007 7.63393 10.4456C7.95884 10.0905 8.48563 10.0905 8.81055 10.4456L10.7182 12.5305L15.2942 7.26298C15.6192 6.90787 16.1459 6.90787 16.4709 7.26298Z" fill="#5D9519"/>
+    <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M16.4709 7.26298C16.7958 7.61809 16.7958 8.19383 16.4709 8.54894L11.3066 14.4595C10.9816 14.8146 10.4548 14.8146 10.1299 14.4595L7.63393 11.7315C7.30901 11.3764 7.30901 10.8007 7.63393 10.4456C7.95884 10.0905 8.48563 10.0905 8.81055 10.4456L10.7182 12.5305L15.2942 7.26298C15.6192 6.90787 16.1459 6.90787 16.4709 7.26298Z"
+          fill="#5D9519"/>
     <defs>
-        <filter id="filter0_d_49_63" x="0" y="0.702454" width="24.1053" height="24.3174" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <filter id="filter0_d_49_63" x="0" y="0.702454" width="24.1053" height="24.3174" filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB">
             <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                           result="hardAlpha"/>
             <feOffset dy="2"/>
             <feGaussianBlur stdDeviation="2"/>
             <feComposite in2="hardAlpha" operator="out"/>

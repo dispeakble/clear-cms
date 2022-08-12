@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {device, size} from "../../500/styled";
+import { device, size } from "../../500/styled";
 
 export const Wrapper = styled.div`
     max-width:  421px;

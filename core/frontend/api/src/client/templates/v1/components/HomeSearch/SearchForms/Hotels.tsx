@@ -238,7 +238,8 @@ export const Hotels = () => {
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
               </StyledCenterLabel>
               {showFilter === "adults" &&
-                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9 - filterValues.children}
+                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
+                            max={9 - filterValues.children}
                             onChange={handleFilterChange} />}
             </StyledPerson>
             <StyledChild>
@@ -247,8 +248,9 @@ export const Hotels = () => {
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
               {showFilter === "children" &&
-                <div><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
-                              max={4} onChange={handleFilterChange} />
+                <div><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children}
+                                 min={0}
+                                 max={4} onChange={handleFilterChange} />
 
                   {filterValues.children > 0 && <ValuePopupAges
                     className="childrenAges"

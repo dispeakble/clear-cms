@@ -13,7 +13,17 @@ type valuePopupProps = {
   onChange: (value: Record<string, number>) => void;
 }
 
-const ValuePopup = ({name, value, min, max, dataTestId, onChange, incTestId, decrTestId, inputTestId}: valuePopupProps) => {
+const ValuePopup = ({
+                      name,
+                      value,
+                      min,
+                      max,
+                      dataTestId,
+                      onChange,
+                      incTestId,
+                      decrTestId,
+                      inputTestId
+                    }: valuePopupProps) => {
 
   const [currentValue, setCurrentValue] = useState(value);
 
@@ -23,7 +33,7 @@ const ValuePopup = ({name, value, min, max, dataTestId, onChange, incTestId, dec
     setTimeout(() => {
       setVisible(true);
     }, 30);
-  }, [])
+  }, []);
 
   const decreaseValue = () => {
     const newVal = currentValue - 1 >= min ? currentValue - 1 : currentValue;
@@ -31,7 +41,7 @@ const ValuePopup = ({name, value, min, max, dataTestId, onChange, incTestId, dec
     result[name] = newVal;
     onChange(result);
     setCurrentValue(newVal);
-  }
+  };
 
   const increaseValue = () => {
     const newVal = currentValue + 1 <= max ? currentValue + 1 : currentValue;
@@ -39,13 +49,13 @@ const ValuePopup = ({name, value, min, max, dataTestId, onChange, incTestId, dec
     result[name] = newVal;
     onChange(result);
     setCurrentValue(newVal);
-  }
+  };
 
   return visible ? <StyledValuePopup data-testid={dataTestId}>
     <StyledButton onClick={decreaseValue} data-testid={decrTestId}>-</StyledButton>
     <StyledValue data-testid={inputTestId}>{currentValue}</StyledValue>
     <StyledButton onClick={increaseValue} data-testid={incTestId}>+</StyledButton>
   </StyledValuePopup> : <></>;
-}
+};
 
 export default ValuePopup;

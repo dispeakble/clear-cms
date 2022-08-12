@@ -27,14 +27,14 @@ const VerticalPhotoSlider = ({ maxWidth, maxHeight }: VerticalPhotoSliderProps) 
     showIndex: false,
     slideOnThumbnailOver: false,
     slideInterval: 5000,
-    slideDuration: 300,
+    slideDuration: 300
   };
 
   const imgSources = [{
     src: hotel1.src
-  },{
+  }, {
     src: hotel2.src
-  },{
+  }, {
     src: hotel3.src
   }];
 
@@ -48,13 +48,13 @@ const VerticalPhotoSlider = ({ maxWidth, maxHeight }: VerticalPhotoSliderProps) 
       imgObject.renderItem = (item: any) => {
         const style = {
           background: `url(${item.original}) no-repeat center center`,
-          backgroundSize: 'cover',
-          display: 'block',
-          height: '100%'
+          backgroundSize: "cover",
+          display: "block",
+          height: "100%"
         };
 
-        return <div style={style}>&nbsp;</div>
-      }
+        return <div style={style}>&nbsp;</div>;
+      };
 
       return imgObject;
     } catch (err) {
@@ -99,14 +99,14 @@ const VerticalPhotoSlider = ({ maxWidth, maxHeight }: VerticalPhotoSliderProps) 
     items: images,
     renderItem: (...args: any[]) => {
       return renderZoom(args[0]);
-    },
+    }
   }), [gallery]);
 
   return <StyledSliderWrapper>
     <ImageGallery
       {...galleryProps}
     />
-    <div id={`vertical-slider-enlargeImage`}/>
+    <div id={`vertical-slider-enlargeImage`} />
   </StyledSliderWrapper>;
 };
 

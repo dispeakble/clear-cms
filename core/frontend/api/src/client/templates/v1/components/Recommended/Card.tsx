@@ -1,19 +1,19 @@
 import {
-    StyledActionButton,
-    StyledCard,
-    StyledDetails,
-    StyledLunch,
-    StyledPrice,
-    StyledStars,
-    StyledTitle,
-    StyledZoomImg, StyledZoomPopup,
+  StyledActionButton,
+  StyledCard,
+  StyledDetails,
+  StyledLunch,
+  StyledPrice,
+  StyledStars,
+  StyledTitle,
+  StyledZoomImg, StyledZoomPopup
 } from "./styled";
 import { useTranslations } from "next-intl";
 
 const Card = ({ title, meal, details, price, img, dataTestid }: any) => {
   const t = useTranslations();
   return (
-    <StyledCard data-testid={dataTestid} >
+    <StyledCard data-testid={dataTestid}>
       <StyledStars stars={3} />
       <StyledTitle>{title}</StyledTitle>
       <StyledLunch>{meal}</StyledLunch>

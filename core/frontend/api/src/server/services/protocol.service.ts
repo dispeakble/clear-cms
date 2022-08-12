@@ -41,7 +41,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload);
+        return this.redisService.emit({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
@@ -53,7 +53,7 @@ export class ProtocolService {
             channel: `frontend`,
             payload: data
         };
-        return this.redisService.send({message: `hub`}, payload).toPromise();
+        return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();
     }
 
     public ping(data: any, config: ModuleInterface){

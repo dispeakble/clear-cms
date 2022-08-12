@@ -19,8 +19,16 @@ export const size = {
   desktopL: "2560px"
 };
 
-export const PackagesLayout = styled.div`
-  margin-top: 50px;
+export const HotelsLayout = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  @media ${device.laptopL} {
+    flex-direction: row;
+  }
 `;
 
 
@@ -29,16 +37,16 @@ export const FiltersContainer = styled.div`
   align-items: flex-start;
 `;
 
-export const PackagesContainer = styled.div`
+export const HotelsContainer = styled.div`
   width: 100%;
 `;
 
 export const LoadMoreButton = styled.button`
-  background: linear-gradient(180deg, #FF840D 0%, #DC6B03 100%);
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
 
-  color: #FFFFFF;
+  color: ${({ theme }) => theme.colors.white};
 
   padding: 7px 33px;
 
@@ -57,13 +65,13 @@ export const LoadMoreButton = styled.button`
   transition: background .4s ease-in-out;
 
   :hover {
-    background: linear-gradient(180deg, #FFAC5C 0%, #E78F3C 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColorHover} 100%);
     transition: background .4s ease-in-out;
   }
 `;
 
 
-/* start Packages styles */
+/* start Hotels styles */
 
 export const CardWrapper = styled.div`
   padding: 14px;
@@ -81,6 +89,7 @@ export const CardWrapper = styled.div`
 
 export const ImageContainer = styled.div`
   padding: 11px;
+  overflow: hidden;
   background: #ffffff;
   width: 340px;
   border-radius: 10px;
@@ -88,7 +97,7 @@ export const ImageContainer = styled.div`
   margin-right: 25px;
   position: relative;
 
-  .package-image {
+  .hotel-image {
     height: 100%;
     width: 100%;
   }
@@ -102,7 +111,7 @@ export const ImageContainer = styled.div`
     margin-bottom: 10px;
   }
 `;
-export const PackageDetailsWrapper = styled.div`
+export const HotelDetailsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
 
@@ -112,13 +121,13 @@ export const PackageDetailsWrapper = styled.div`
   }
 `;
 
-export const PackageMain = styled.div`
+export const HotelMain = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
 `;
 
-export const PackageMainContainer = styled.div`
+export const HotelMainContainer = styled.div`
   display: flex;
   flex: 1;
   gap: 10px;
@@ -128,22 +137,22 @@ export const PackageMainContainer = styled.div`
   }
 `;
 
-export const PackageDetailsContainer = styled.div`
+export const HotelDetailsContainer = styled.div`
   display: flex;
 `;
 
-export const PackageDescriptionContainer = styled.div`
+export const HotelDescriptionContainer = styled.div`
 
 `;
 
-export const PackageServicesContainer = styled.div`
+export const HotelServicesContainer = styled.div`
 `;
 
 export const ServiceItem = styled.div`
 
 `;
 
-export const PackageDescription = styled.p`
+export const HotelDescription = styled.p`
   font-family: 'Poppins', sans-serif;
   font-style: italic;
   font-weight: 500;
@@ -153,7 +162,7 @@ export const PackageDescription = styled.p`
   color: rgba(86, 82, 82, 0.97);
 `;
 
-export const PackageDetails = styled.div`
+export const HotelDetails = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -163,7 +172,7 @@ export const PackageDetails = styled.div`
   }
 `;
 
-export const PackageTitle = styled.h2`
+export const HotelTitle = styled.h2`
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: clamp(18px, 3vw, 29px);
@@ -195,13 +204,12 @@ export const RatingContainer = styled.div`
   margin-bottom: 11px;
 `;
 
-export const PackageItems = styled.div`
+export const HotelItems = styled.div`
   display: flex;
-  background: #FFAC5C;
-  border-radius: 10px;
-  max-width: 100%;
+  background: ${({ theme }) => theme.colors.primaryColorHover};
+  border-radius: 30px;
   align-items: flex-start;
-  padding: 5px 10px;
+  padding: 2px 10px;
   margin-bottom: 8px;
   gap: 8px;
   flex-direction: column;
@@ -216,6 +224,7 @@ export const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  height: 30px;
 `;
 
 export const ItemText = styled.p`
@@ -322,12 +331,12 @@ export const ButtonContainer = styled.div`
 
 `;
 
-export const BookNowButton = styled.button`
+export const BookNowButton = styled.a`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
 
-  color: #FFFFFF;
+  color: ${({ theme }) => theme.colors.white};
 
   padding: 7px 33px;
 
@@ -346,6 +355,7 @@ export const BookNowButton = styled.button`
   transition: background .4s ease-in-out;
 
   :hover {
+    text-shadow: none;
     background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
     transition: background .4s ease-in-out;
   }
@@ -371,15 +381,18 @@ export const ServicesDescriptionText = styled.p`
   font-weight: 600;
   font-size: 13px;
   line-height: 1.5;
-
   margin: 0;
+  user-select: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const DescriptionContainer = styled.div`
 
 `;
 
-/* end Packages styles */
+/* end Hotels styles */
 
 /*-------------------------------------------------------------------------------*/
 
@@ -389,7 +402,7 @@ export const DescriptionContainer = styled.div`
 export const FiltersHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 22px 11px;
+  padding: 10px;
   align-items: center;
 
   width: 100%;
@@ -1072,12 +1085,6 @@ export const FlightDescriptionContainer = styled.div`
   padding: 25px 0;
   border-bottom: 1px solid #FF840D;
   margin-bottom: 5px;
-`;
-
-export const HotelDetailsWrapper = styled.div`
-  border-radius: 10px;
-  border: 1px solid #FF840D;
-  background: #FFFFFF;
 `;
 
 export const HotelDetailsHeader = styled.div`

@@ -133,9 +133,9 @@ export const Packages = () => {
       }
     });
     if (response && response.dateInterval) {
-      setMinCheckInDate(new Date(response.dateInterval))
+      setMinCheckInDate(new Date(response.dateInterval));
     }
-  }
+  };
 
   const debouncedDepartureSearch = useCallback(debounce(searchDepartureByName, 500), []);
   const debouncedDestinationSearch = useCallback(debounce(searchDestinationByName, 500), [departureId]);
@@ -198,7 +198,7 @@ export const Packages = () => {
   };
 
   const formatDateSearch = (date: any) => {
-    return Intl.DateTimeFormat('ro', {
+    return Intl.DateTimeFormat("ro", {
       month: "2-digit",
       day: "2-digit",
       year: "2-digit"
@@ -221,7 +221,7 @@ export const Packages = () => {
       left: Math.floor(boundaries.left),
       top: Math.floor(boundaries.top + 22 + boundaries.height),
       width: Math.floor(boundaries.width)
-    })
+    });
     setShowFilter(type);
   };
 
@@ -245,10 +245,10 @@ export const Packages = () => {
     }
 
     if (destination.length > 0
-        && checkInDate
-        && checkOutDate
-        && formatDate(checkInDate) !== formatDate(checkOutDate)
-        && guestsCount() > 0) {
+      && checkInDate
+      && checkOutDate
+      && formatDate(checkInDate) !== formatDate(checkOutDate)
+      && guestsCount() > 0) {
       router.push(`/packages/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
@@ -335,7 +335,8 @@ export const Packages = () => {
 
             </StyledPerson>
             <StyledChild>
-              <StyledCenterLabel  data-testid="test-open-children-handler" onClick={(evt) => toggleFilters(evt, "children")}>
+              <StyledCenterLabel data-testid="test-open-children-handler"
+                                 onClick={(evt) => toggleFilters(evt, "children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
@@ -353,17 +354,20 @@ export const Packages = () => {
         || showDestinations
       ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
       {showFilter === "stars" &&
-        <ValuePopup style={filterCss} dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1} max={5}
+        <ValuePopup style={filterCss} dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1}
+                    max={5}
                     onChange={handleFilterChange} />}
       {showFilter === "adults" &&
-        <ValuePopup style={filterCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9 - filterValues.children}
+        <ValuePopup style={filterCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
+                    max={9 - filterValues.children}
                     onChange={handleFilterChange} />}
       {showFilter === "children" ?
-        <div><ValuePopup style={filterCss} dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
+        <div><ValuePopup style={filterCss} dataTestId="test-children-handler" name="children"
+                         value={filterValues.children} min={0}
                          max={4} onChange={handleFilterChange} />
 
-          { filterValues.children > 0 && <ValuePopupAges
-            style={{...filterCss, ...{top: filterCss.top + 50}}}
+          {filterValues.children > 0 && <ValuePopupAges
+            style={{ ...filterCss, ...{ top: filterCss.top + 50 } }}
             className="childrenAges"
             name="childrenAges"
             min={0}
@@ -371,7 +375,7 @@ export const Packages = () => {
             count={filterValues.children}
             data={filterValues.childrenAges}
             dataTestId="test-children-ages-handler"
-            onChange={handleFilterChange}/> }
+            onChange={handleFilterChange} />}
         </div> : ""
       }
     </>

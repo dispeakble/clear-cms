@@ -48,9 +48,9 @@ export const MainWrapper = styled.div<{ isOrange?: boolean }>`
   flex-direction: column;
   align-items: center;
   background: ${({
-                   isOrange,
-                   theme
-                 }) => isOrange ? `linear-gradient(111.87deg, ${theme.colors.primaryLight} 3.23%, ${theme.colors.primaryColorHover} 98.39%)` : theme.colors.mainBackground};
+                                                                                 isOrange,
+                                                                                 theme
+                                                                               }) => isOrange ? `linear-gradient(111.87deg, ${theme.colors.primaryLight} 3.23%, ${theme.colors.primaryColorHover} 98.39%)` : theme.colors.mainBackground};
 `;
 
 export const MainContentWrapper = styled.div`
@@ -82,30 +82,29 @@ export const MainContentWrapper = styled.div`
   }
 `;
 
-export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean}>`
-  width: 100%;
-  max-width: 1440px;
+export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>`
   margin: 20px auto;
+  
   min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
   border-radius: ${({ isLogin }) => isLogin ? "10px" : "0"};
   border: ${({ isLogin, theme }) => isLogin ? `3px dashed ${theme.colors.primaryColor}` : "none"};
   background: ${({ isLogin, theme }) => isLogin ? `rgb(${theme.colors.primaryColorFadedRBG})` : "none"};
-  padding: ${({ isLogin }) => isLogin ? "20px" : "0"};
-
-  @media (max-width: ${size.laptopL}) {
-    padding: 20px;
-  }
-
-  @media (max-width: ${size.tablet}) {
-    padding: 10px;
-  }
+  padding: 0;
+  
   display: flex;
   justify-content: center;
+  align-items: center;
+  ${({ isLogin }) => !isLogin && "flex-direction: column;"}
+  ${({ isLogin }) => !isLogin && "width: 100%;"}
+
+  @media ${device.tablet} {
+    padding: ${({ isLogin }) => isLogin ? "20px" : "0"}; 
+  }
 `;
 
 export const TopContentWrapper = styled.div`
   width: 100%;
-  padding: 114px 0 57px 0;
+  padding: 54px 0 57px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
@@ -146,6 +145,7 @@ export const ContentWrapper = styled.div`
   @media ${device.desktopL} {
     max-width: 1440px;
   }
+  width: 100%;
 `;
 
 export const ContentWrapperForPackageDetail = styled.div`

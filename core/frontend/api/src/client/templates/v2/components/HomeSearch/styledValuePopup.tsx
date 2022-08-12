@@ -3,10 +3,10 @@ import styled from "styled-components";
 export const StyledValuePopup = styled.div`
   position: absolute;
   z-index: 20;
-  background: ${({theme}) => theme.colors.white};
-  border: 1px solid ${({theme}) => theme.colors.greyBorder};
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.greyBorder};
   border-radius: 10px;
-  color: ${({theme}) => theme.colors.black} !important;
+  color: ${({ theme }) => theme.colors.black} !important;
   padding: 7px;
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@ export const StyledValuePopupControl = styled.div`
 export const StyledValue = styled.span`
   min-width: 30px;
   text-align: center;
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   user-select: none;
 `;
 
@@ -44,12 +44,12 @@ export const StyledButton = styled.button`
   width: 24px;
   height: 24px;
   border: none;
-  background: ${({theme}) => theme.colors.primaryColor};
+  background: ${({ theme }) => theme.colors.primaryColor};
   cursor: pointer;
-  color: ${({theme}) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   user-select: none;
   &:hover {
-    background: ${({theme}) => theme.colors.primaryColorHover};
+    background: ${({ theme }) => theme.colors.primaryColorHover};
   }
 `;
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {size} from "../styled";
-import Image from "next/image"
-import {Field} from "formik";
+import { size } from "../styled";
+import Image from "next/image";
+import { Field } from "formik";
 
 export const EditWrapper = styled.div`
     padding: 64px;
@@ -21,7 +21,7 @@ export const EditOuter = styled.div`
     align-items: center;
     padding: 0;
   }
-`
+`;
 
 export const EditClientMainInfos = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ export const EditClientMainInfos = styled.div`
   @media screen and (max-width: ${size.tablet}){
     gap: 10px;
   }
-`
+`;
 
 export const EditProfileMainInfosContainer = styled.div`
   border-radius: 12px;
@@ -53,7 +53,7 @@ export const EditProfileMainInfosContainer = styled.div`
     flex-direction: column;
     align-items: stretch;
   }
-`
+`;
 
 export const EditProfilePicture = styled.div`
   width: 180px;
@@ -64,7 +64,7 @@ export const EditProfilePicture = styled.div`
   align-items: center;
   position: relative;
   justify-content: center;
-  border: 8px solid ${({theme}) => theme.colors.primaryLight};
+  border: 8px solid ${({ theme }) => theme.colors.primaryLight};
   padding: 4px;
   background: transparent;
   cursor: pointer;
@@ -113,7 +113,7 @@ export const EditProfilePicture = styled.div`
       font-weight: 500;
       font-size: 13px;
       line-height: 1.5;
-      color: ${({theme}) => theme.colors.white};
+      color: ${({ theme }) => theme.colors.white};
       @media screen and (max-width: ${size.tablet}){
         display: none;
       }
@@ -122,20 +122,20 @@ export const EditProfilePicture = styled.div`
 
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   
-`
+`;
 
 export const ProfilePicture = styled(Image)`
   width: 100%;
   height: 100%;
-`
+`;
 
 export const EditProfileContainer = styled.div`
   
-`
+`;
 
 export const EditProfileText = styled.h3`
   padding-left: 16px;
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 700;
@@ -146,7 +146,7 @@ export const EditProfileText = styled.h3`
   @media screen and (max-width: ${size.tablet}){
     padding-left: 0;
   }
-`
+`;
 
 export const EditProfileFormContainer = styled.div`
   padding: 20px;
@@ -154,7 +154,7 @@ export const EditProfileFormContainer = styled.div`
   border-radius: 12px;
   
   p{
-    color: ${({theme}) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.primaryColor};
     font-family: 'Poppins', sans-serif;
     font-style: normal;
     font-weight: 700;
@@ -162,14 +162,14 @@ export const EditProfileFormContainer = styled.div`
     line-height: 1.25;
     margin: 0 0 25px 0;
   }
-`
+`;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content:space-between;
   gap: 20px;
-`
+`;
 
 export const FormGroup = styled.div`
   display: flex;
@@ -179,14 +179,14 @@ export const FormGroup = styled.div`
   @media screen and (max-width: ${size.tablet}){
     flex-direction: column;
   }
-`
+`;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
   flex: 1;
-`
+`;
 
 export const InputLabel = styled.label`
   font-family: 'Poppins', sans-serif;
@@ -194,8 +194,8 @@ export const InputLabel = styled.label`
   font-size: 18px;
   line-height: 1.5;
   margin: 0;
-  color: ${({theme}) => theme.colors.jetBlack};
-`
+  color: ${({ theme }) => theme.colors.jetBlack};
+`;
 
 export const TextInput = styled.input`
   width: 100%;
@@ -204,9 +204,9 @@ export const TextInput = styled.input`
   font-size: 18px;
   font-weight: 400;
   font-family: 'Poppins', sans-serif;
-  border: 1px ${({theme}) => theme.colors.greyBorder } solid;
+  border: 1px ${({ theme }) => theme.colors.greyBorder} solid;
   line-height: 1.5;
-  color: ${({theme}) => theme.colors.jetBlack};
+  color: ${({ theme }) => theme.colors.jetBlack};
   box-shadow: -1px -1px 4px rgba(38, 184, 147, 0.2), 2px 2px 4px rgba(38, 184, 147, 0.1);
   border-radius: 8px;
 
@@ -217,18 +217,18 @@ export const TextInput = styled.input`
   :is(.passwordInput){
     position: relative;
   }
-`
+`;
 
-export const NewPasswordTextInput = styled.input<{isValid?: boolean}>`
+export const NewPasswordTextInput = styled.input<{ isValid?: boolean }>`
   width: 100%;
   outline: none;
   padding: 11px;
   font-size: 18px;
   font-weight: 400;
   font-family: 'Poppins', sans-serif;
-  border: 1px ${({theme, isValid}) => isValid ? theme.colors.greyBorder : theme.colors.primaryRed } solid;
+  border: 1px ${({ theme, isValid }) => isValid ? theme.colors.greyBorder : theme.colors.primaryRed} solid;
   line-height: 1.5;
-  color: ${({theme}) => theme.colors.jetBlack};
+  color: ${({ theme }) => theme.colors.jetBlack};
   box-shadow: -1px -1px 4px rgba(38, 184, 147, 0.2), 2px 2px 4px rgba(38, 184, 147, 0.1);
   border-radius: 8px;
 
@@ -239,7 +239,7 @@ export const NewPasswordTextInput = styled.input<{isValid?: boolean}>`
   :is(.passwordInput){
     position: relative;
   }
-`
+`;
 
 export const ButtonsContainer = styled.div`
   width: 100%;
@@ -253,11 +253,11 @@ export const ButtonsContainer = styled.div`
     flex-direction: column;
     gap: 25px;
   }
-`
+`;
 
-export const StyledField= styled(Field)`
+export const StyledField = styled(Field)`
   outline: none;
-  border: 1px solid ${({theme}) => theme.colors.greyBorder};
+  border: 1px solid ${({ theme }) => theme.colors.greyBorder};
   border-radius: 10px;
   padding: 11px 5px;
   font-size: 18px;
@@ -265,9 +265,9 @@ export const StyledField= styled(Field)`
   font-weight: 400;
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
-  color: ${({theme}) => theme.colors.jetBlack};
+  color: ${({ theme }) => theme.colors.jetBlack};
   cursor: pointer;
-`
+`;
 
 export const ChangeDetailsText = styled.h4`
   font-family: 'Lexend', sans-serif;
@@ -277,8 +277,8 @@ export const ChangeDetailsText = styled.h4`
   line-height: 1.5;
   margin: 0 0 25px 0;
   
-  color: ${({theme}) => theme.colors.primaryColor};
-`
+  color: ${({ theme }) => theme.colors.primaryColor};
+`;
 
 export const ErrorText = styled.span`
   font-family: 'Poppins', sans-serif;
@@ -287,8 +287,8 @@ export const ErrorText = styled.span`
   line-height: 1.5;
   margin:0;
 
-  color: ${({theme}) => theme.colors.primaryRed};
-`
+  color: ${({ theme }) => theme.colors.primaryRed};
+`;
 
 export const SuccessText = styled.span`
   font-family: 'Poppins', sans-serif;
@@ -301,7 +301,7 @@ export const SuccessText = styled.span`
   
   color: rgba(39, 174, 96,1.0);
   background: rgba(46, 204, 113,.3);
-`
+`;
 
 export const FatalErrorText = styled.span`
   font-family: 'Poppins', sans-serif;
@@ -314,7 +314,7 @@ export const FatalErrorText = styled.span`
 
   color: rgba(192, 57, 43,1.0);
   background: rgba(231, 76, 60, .3);
-`
+`;
 
 export const SubmitButton = styled.button`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
@@ -323,7 +323,7 @@ export const SubmitButton = styled.button`
   font-weight: 600;
   font-size: 16px;
   line-height: 1.5;
-  color: ${({theme}) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   cursor: pointer;
   border: none;
   outline: none;
@@ -333,13 +333,13 @@ export const SubmitButton = styled.button`
     cursor: not-allowed;
     background: linear-gradient(180deg, #D0D0D0 0%, #919191 100%) !important;
   }
-`
+`;
 
 export const PhoneFieldsContainer = styled.div`
   display: flex;
   gap: 8px;
   width: 100%;
-`
+`;
 
 export const DiscardButton = styled.button`
   font-family: 'Lexend', sans-serif;
@@ -352,5 +352,5 @@ export const DiscardButton = styled.button`
   line-height: 1.5;
   background: none;
   
-  color: ${({theme}) => theme.colors.primaryColor};
-`
+  color: ${({ theme }) => theme.colors.primaryColor};
+`;

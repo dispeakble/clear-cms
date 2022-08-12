@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 import { device, size } from "../../styled";
 
-export const StyledHomeSearch = styled.div<{isHome: boolean}>`
+export const StyledHomeSearch = styled.div<{ isHome: boolean }>`
   background-size: cover;
-  padding: ${({isHome}) => isHome ? 114 : 40}px 0 0;
+  padding: ${({ isHome }) => isHome ? 114 : 40}px 0 0;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@ export const StyledHomeSearch = styled.div<{isHome: boolean}>`
   }
   @media ${device.laptop} {
     max-width: 768px;
-    padding: ${({isHome}) => isHome ? 114 : 40}px 20px 0;
+    padding: ${({ isHome }) => isHome ? 114 : 40}px 20px 0;
   }
   @media ${device.laptopL} {
     max-width: 1024px;
@@ -444,6 +444,7 @@ export const StyledOneWay = styled.label`
   display: inline-block;
   position: relative;
   border-radius: 0 8px 8px 0;
+  padding: 10px;
 
   & input {
     cursor: pointer;
