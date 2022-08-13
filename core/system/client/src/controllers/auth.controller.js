@@ -12,6 +12,7 @@ const AuthController = (props) => {
     let config = {
         prefix: 'system/'
     };
+
     const control = {
         login: (params) => login(params),
         logout: (params) => logout(params),
@@ -106,7 +107,6 @@ const AuthController = (props) => {
                act :'doChangePassword',
                payload: params
            }).then(async (response) => {
-               console.log(response)
                if(response && response?.status === 200) {
                    await setProfile(response)
                    const wsConnected = await props.services.ws.start();

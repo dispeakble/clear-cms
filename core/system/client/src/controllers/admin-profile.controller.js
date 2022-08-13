@@ -74,6 +74,14 @@ const AdminProfileController = (props) => {
                         updateErrorNotification("Current password mismatch, please try again with your current password!")
                         return;
                     }
+                } else{
+                    if((values.newPassword && values.confirmPassword) || values.newPassword || values.confirmPassword){
+                        updateErrorNotification("In order to update password, please enter your current password and try again!")
+                        return;
+                    }
+                    delete values.newPassword;
+                    delete values.password;
+                    delete values.confirmPassword;
                 }
                 await UseAuth.updateUser(token, values)
                 return refreshPage()
