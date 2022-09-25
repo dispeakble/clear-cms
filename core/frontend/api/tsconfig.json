@@ -7,7 +7,6 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "useUnknownInCatchVariables": false,
     "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
