@@ -10,19 +10,19 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const HotelPhotoSlider = () => {
   const gallery = {
-    showBullets: true,
+    showBullets: false,
     showThumbnails: true,
     thumbnailPosition: "left" as "top" | "bottom" | "left" | "right",
     infinite: true,
-    showFullscreenButton: false,
+    showFullscreenButton: true,
     zoom: false,
-    autoPlay: false,
+    autoPlay: true,
     showPlayButton: false,
     showNav: true,
     showIndex: false,
     slideOnThumbnailOver: false,
-    slideInterval: 3000,
-    slideDuration: 300
+    slideInterval: 5000,
+    slideDuration: 500
   };
 
   const imgSources = [{

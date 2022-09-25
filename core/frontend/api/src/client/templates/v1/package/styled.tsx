@@ -81,7 +81,7 @@ export const LoadMoreButton = styled.button`
   transition: background .4s ease-in-out;
 
   :hover {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColorHover} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
     transition: background .4s ease-in-out;
   }
 `;
@@ -168,7 +168,10 @@ export const PackageServicesContainer = styled.div`
 `;
 
 export const ServiceItem = styled.div`
-
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const PackageDescription = styled.p`
@@ -345,11 +348,14 @@ export const TaxText = styled.p`
   color: #646464;
 `;
 
-export const ButtonContainer = styled.div`
-
+export const BookNowContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
 `;
-
-export const BookNowButton = styled.button`
+export const BookNowButton = styled.a`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;

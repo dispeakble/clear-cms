@@ -2,11 +2,10 @@
   "global": {
     "home": "Home",
     "search": "Búsqueda",
-    "pageTitle": "Hotels page :: {websiteName}",
+    "pageTitle": "{websiteName}",
     "adults": "Adultos",
     "children": "Niños",
     "nights": "noches",
-    "infants": "Infantes",
     "days": "dias",
     "included": "Incluye",
     "termsAndConditions": "Términos y Condiciones.",
@@ -37,8 +36,8 @@
   },
   "input": {
     "placeholder": {
-      "firstName" : "E.G. John (Nombre)",
-      "lastName" : "E.G. Smith (Apellido)",
+      "firstName": "P.EJ. John (Nombre)",
+      "lastName": "P.EJ. Smith (Apellido)",
       "login": {
         "email": "Introduzca su correo electrónico",
         "password": "Introduzca su contraseña"
@@ -47,7 +46,7 @@
   },
   "day": {
     "monday": "Lunes",
-    "tuesday":"Martes",
+    "tuesday": "Martes",
     "wednesday": "Miércoles",
     "thursday": "Jueves",
     "friday": "Viernes",
@@ -55,12 +54,12 @@
     "sunday": "Domingo"
   },
   "month": {
-    "january": "enero" ,
+    "january": "enero",
     "february": "Febrero",
-    "march": "Marzo" ,
-    "april": "Abril" ,
+    "march": "Marzo",
+    "april": "Abril",
     "may": "Puede",
-    "june": "Junio" ,
+    "june": "Junio",
     "july": "Julio",
     "august": "Agosto",
     "september": "Septiembre",
@@ -70,7 +69,7 @@
   },
   "home": {
     "seo": {
-      "pageTitle": "Hotels, Plane tickets, Vacation Packages :: {websiteName}"
+      "pageTitle": "Hoteles, Boletos de avión, Paquetes vacacionales :: {websiteName}"
     },
     "info-box-title": "Aventuras",
     "info-box-description": "Vacaciones y excursiones",
@@ -94,11 +93,12 @@
         "relax": "Relax",
         "see-prices": "Ver precios"
       },
-      "hotel1": "hoteles 1" ,
+      "hotel1": "hoteles 1",
       "description": "Alojamiento y desayuno completo",
-      "noOfNights": "Vuelo + Hotel 3 noches"
+      "noOfNights": "Vuelo + Hotel 3 noches",
+      "bookNow": "Reservar ahora"
     },
-    "relax": "Relax",
+    "relax": "Relájese",
     "breakfast": "desayuno",
     "detail": "7 días, desayuno",
     "bookNow": "Reservar ahora",
@@ -173,11 +173,9 @@
     "guests": "Huéspedes",
     "adults": "Adultos",
     "children": "Niños",
-    "infants": "Bebés",
     "oneway": "One way",
     "adults-age": "13 años o más.",
     "children-age": "De 2 a 12 años.",
-    "infants-age": "Menos de 2.",
     "search-btn": "Buscar",
     "homeSearchPackageDeparturePlaceholder": "Salida",
     "homeSearchPackageDestinationPlaceholder": "Destino",
@@ -205,14 +203,21 @@
     "checkout": "sábado, 13 marzo...",
     "detail": {
       "adult": "Adulto-",
-      "child": "Niñas-",
-      "infant": "Infantes-"
+      "child": "Niñas-"
     }
   },
   "hotels": {
+    "main": {
+      "bookNow": "Reservar ahora",
+      "taxes": "*Incluyendo todos los impuestos",
+      "includedServices": "Servicios incluidos",
+      "hotelDescription": "Descripción del hotel",
+      "loadMore": "Ver más hoteles",
+      "from": "De"
+    },
     "seo": {
-      "pageTitle": "Hotels :: {websiteName}",
-      "description": "build your perfect trip on {websiteName} with any budget. On {websiteName} you can find big savings on hotels, flights and packages."
+      "pageTitle": "{websiteName}",
+      "description": "Construye tu viaje perfecto en {websiteName} con cualquier presupuesto. En {websiteName} puedes encontrar grandes ahorros en hoteles, vuelos y paquetes."
     }
   },
   "hotelAbout": {
@@ -264,7 +269,7 @@
   "custom500": {
     "header": "Por el momento nuestros servicios están en mantenimiento."
   },
-  "flightsCheckout" : {
+  "flightsCheckout": {
     "cart": {
       "header": "Su cesta de la compra",
       "tax": "Impuesto sobre los servicios",
@@ -285,11 +290,11 @@
       "lastName": "Apellido",
       "adult": "Adulto",
       "child": "Niño",
+      "city": "Ciudad",
       "contactDetails": "Detalles de contacto",
+      "zipCode": "Código postal",
       "invoiceDetails": "Detalles de la factura",
       "phoneNumber": "Número de teléfono",
-      "city": "Ciudad",
-      "zipCode": "Código postal",
       "address": "Dirección",
       "childAge": "Edad del niño",
       "country": "País",
@@ -310,15 +315,16 @@
         }
       },
       "ticket": "billete",
-      "firstNamePlaceHolder": "E.G. Juan (nombre de pila)",
-      "lastNamePlaceHolder": "E.G. Juan (nombre de pila)"
+      "firstNamePlaceHolder": "P.EJ. Juan (nombre de pila)",
+      "lastNamePlaceHolder": "P.EJ. Juan (nombre de pila)",
+      "sameAsContact": "Igual que los detalles de contacto"
     }
   },
   "flightList": {
     "filters": {
       "sortCheckboxes": {
-        "all": "All",
-        "theBest":  "El mejor",
+        "all": "Todos",
+        "theBest": "El mejor",
         "theCheapest": "El mas barato",
         "theFastest": "El mas rapido",
         "airline": "Aerolínea"
@@ -345,8 +351,8 @@
       "reset": "Reiniciar"
     },
     "packages": {
-      "title" : "Paquete Charter para {hotelName}",
-      "address" : "Bischofshofen, 4, 38660 Adeje, Spain",
+      "title": "Paquete Charter para {hotelName}",
+      "address": "Bischofshofen, 4, 38660 Adeje, Spain",
       "type": {
         "flights": "Vuelos",
         "hotel": "Hotel",
@@ -362,8 +368,8 @@
       "airportTaxes": "Impuestos de aeropuerto",
       "airportToHotel": "Traslado del aeropuerto al hotel",
       "hotelToAirport": "Transfer from hotel to airport",
-      "touristAssistance":  "asistencia turística",
-      "nightStay": "noches de estancia"
+      "touristAssistance": "asistencia turística",
+      "nightStay": "noches de night"
     }
   },
   "packages": {
@@ -372,8 +378,8 @@
       "taxes": "*Incluyendo todos los impuestos",
       "includedServices": "Servicios incluidos",
       "hotelDescription": "Descripción del hotel",
-      "from": "Desde",
-      "loadMore": "Ver más paquetes"
+      "loadMore": "Ver más paquetes",
+      "from": "Desde"
     }
   },
   "packageDetails": {
@@ -402,8 +408,8 @@
       "airportTaxes": "Impuestos de aeropuerto",
       "airportToHotel": "Traslado del aeropuerto al hotel",
       "hotelToAirport": "Transfer from hotel to airport",
-      "touristAssistance":  "asistencia turística",
-      "nightStay": "noches de estancia"
+      "touristAssistance": "asistencia turística",
+      "nightStay": "noches de night"
     },
     "notIncService": "Servicios No Incluidos",
     "travelIns": "Seguro de viaje",
@@ -429,11 +435,9 @@
     "packageCharter": {
       "showMap": "Mostrar mapa",
       "from": "desde",
-      "perStay": "pers / estancia"
+      "perStay": "pers / night"
     }
   },
-
-
   "hotelDetail": {
     "hotelDetailComponent": {
       "find": "Encontrar",
@@ -443,7 +447,6 @@
       "details": "Detalles",
       "addNumbersOfPersons": "Añadir números de personas",
       "ageOnTheDayOfTravel": "Años y más el día del viaje",
-      "infantsAgeAtTheDayOfTravel": "Menores de 2 años el día del viaje",
       "infoIconDes": "Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
       "viewPrices": "Ver precios",
       "newSearch": "Nueva búsqueda",
@@ -479,7 +482,6 @@
       "bookNow": "Reservar ahora"
     }
   },
-
   "hotelCheckout": {
     "main": {
       "stars": "{stars} estrellas",
@@ -489,7 +491,7 @@
     "headers": {
       "first": "Detalles de la reserva",
       "second": "Detalles del pasajero",
-      "third": "Third Step",
+      "third": "Tercer paso",
       "fourthError": "Error de pago",
       "fourthSuccess": "Procesamiento de pagos",
       "confirmed": "Procesamiento de pagos"
@@ -524,11 +526,10 @@
         "title2": "Principales búsquedas de 2022"
       },
       "search": {
-        "detail": "Details",
+        "passengers": "Pasajeros",
         "addPersons": "Añadir números de personas",
         "adultsAge": "12 años o más el día del viaje",
         "childrensAge": "2-12 años el día del viaje",
-        "infantsAge": "Menores de 2 años el día del viaje",
         "done": "Hecho",
         "newSearch": "Nueva búsqueda"
       }
@@ -549,12 +550,11 @@
       "children": "Niños",
       "termsAndConditionsApply": "Se aplican los términos y condiciones.",
       "termsAndConditionsLong": "Al continuar con el siguiente paso, confirmo que estoy de acuerdo con los"
-
     },
     "headers": {
       "first": "Detalles de la reserva del paquete",
       "second": "Detalles del pasajero",
-      "third": "Third Step",
+      "third": "Tercer paso",
       "fourthError": "Error de pago",
       "fourthSuccess": "Procesamiento de pagos",
       "confirmed": "Procesamiento de pagos"
@@ -563,9 +563,9 @@
       "total": "Precio del paquete"
     },
     "details": {
-      "title" : "Mi superpaquete extraordinario",
+      "title": "Mi superpaquete extraordinario",
       "bedAndBreakfast": "Alojamiento y desayuno",
-      "doubleRoom" : "Habitación doble",
+      "doubleRoom": "Habitación doble",
       "airportHotelTransfer": "Traslado al aeropuerto + traslado al hotel",
       "smallBags": "bolsa pequeña para cada persona",
       "suitcase": "maleta grande para cada adulto",
@@ -586,7 +586,6 @@
     "passwordReset": {
       "title": "Inicia sesión",
       "infos": "Recibirás un correo electrónico con las indicaciones para el proceso de restablecimiento de la contraseña."
-
     }
   },
   "invoice": {
@@ -616,7 +615,7 @@
         "currentPassword": "Tu contraseña actual",
         "newPassword": "Su nueva contraseña",
         "newPasswordConfirm": "Confirma tu nueva contraseña",
-        "changePassword" : "Cambia tu contraseña aquí"
+        "changePassword": "Cambia tu contraseña aquí"
       }
     }
   }

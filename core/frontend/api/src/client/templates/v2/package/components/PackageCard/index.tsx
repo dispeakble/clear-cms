@@ -13,7 +13,7 @@ import {
   StartingPriceText,
   AdultNightText,
   TaxText,
-  ButtonContainer,
+  BookNowContainer,
   BookNowButton,
   PriceTextContainer,
   DetailsContainer,
@@ -22,7 +22,7 @@ import {
   PackageMain,
   PackageMainContainer,
   PackageDetailsContainer,
-  PackageDescriptionContainer, PackageDescription, PackageServicesContainer
+  PackageDescriptionContainer, PackageDescription, PackageServicesContainer, ServiceItem
 } from "../../styled";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -30,9 +30,9 @@ import React, { useState } from "react";
 import { StyledStarsSmall } from "../../../components/Styled/stars";
 import collapseUpIcon from "../../../assets/img/collapse-up-icon.svg";
 import collapseDownIcon from "../../../assets/img/collapse-down-icon.svg";
-import checkCircleWhiteIcon from "../../../assets/img/check-circle-white-icon.svg";
 import { AddressText } from "../../../hotel/styled";
-
+import Link from "next/link";
+import { CheckedIcon } from "../../../hotel/components/HotelAbout/styled";
 
 interface PackageCardProps {
   details: any;
@@ -65,7 +65,9 @@ const PackageCard = ({ details }: PackageCardProps) => {
             <PackageDetailsWrapper>
               <PackageDetails>
                 <PackageTitle>
-                  {details.title}
+                  <Link href="/packages/detail">
+                    {details.title}
+                  </Link>
                 </PackageTitle>
                 <AddressText>
                   {details.address}
@@ -128,16 +130,26 @@ const PackageCard = ({ details }: PackageCardProps) => {
                 {t("packages.main.taxes")}
               </TaxText>
             </PriceTextContainer>
-
-            <ButtonContainer>
-              <BookNowButton>
-                {t("packages.main.bookNow")}
-              </BookNowButton>
-            </ButtonContainer>
+            <BookNowContainer>
+              <Link href="/packages/detail">
+                <BookNowButton href="/packages/detail">
+                  {t("packages.main.bookNow")}
+                </BookNowButton>
+              </Link>
+            </BookNowContainer>
           </PricingDetailsWrapper>
         </PackageMainContainer>
-
         <PackageDetailsContainer>
+          {
+            isExpanded === "services" &&
+            <PackageServicesContainer>
+              {[...details.services].map(
+                (service: any) => <ServiceItem key={service}>
+                  <CheckedIcon />{service}
+                </ServiceItem>
+              )}
+            </PackageServicesContainer>
+          }
           {
             isExpanded === "description" &&
             <PackageDescriptionContainer>
@@ -146,23 +158,6 @@ const PackageCard = ({ details }: PackageCardProps) => {
               </PackageDescription>
             </PackageDescriptionContainer>
           }
-
-          {
-            isExpanded === "services" &&
-            <PackageServicesContainer>
-              {[...details.services].map((service: any) => {
-
-                return (
-                  <div style={{ height: "30px", display: "flex", alignItems: "center", gap: "10px" }}><Image width={25}
-                                                                                                             height={26}
-                                                                                                             src={checkCircleWhiteIcon} /> {service}
-                  </div>
-                );
-
-              })}
-            </PackageServicesContainer>
-          }
-
         </PackageDetailsContainer>
       </PackageMain>
 

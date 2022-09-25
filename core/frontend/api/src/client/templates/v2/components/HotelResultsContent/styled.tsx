@@ -23,7 +23,7 @@ export const ViewMoreButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #FF840D 0%, #DC6B03 100%);
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   width: 321px;

@@ -77,7 +77,7 @@ export const StyledLightLabel = styled.span`
   height: 21px;
   background:  ${({ theme }) => theme.colors.primaryLight};
   padding: 0 10px;
-  color: ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.white};
   display: flex;
   align-items: center;
   justify-content: center;

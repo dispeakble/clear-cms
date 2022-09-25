@@ -4,16 +4,15 @@ import { device, size } from "../../styled";
 
 export const StyledHomeSearch = styled.div<{ isHome: boolean }>`
   background-size: cover;
-  padding: ${({ isHome }) => isHome ? 114 : 40}px 0 0;
   width: 100%;
   display: flex;
   flex-direction: column;
+  ${({isHome}) => isHome && 'padding-top: 90px;'}
   @media ${device.tablet} {
     max-width: 720px;
   }
   @media ${device.laptop} {
     max-width: 768px;
-    padding: ${({ isHome }) => isHome ? 114 : 40}px 20px 0;
   }
   @media ${device.laptopL} {
     max-width: 1024px;
@@ -215,6 +214,11 @@ export const StyledSearchInputHolder = styled.div`
 
 export const StyledSearchButton = styled.button`
   font-size: 14px;
+  white-space: nowrap;
+  flex: 1;
+  @media ${device.tablet} {
+    flex: none;
+  }
   background: ${({ theme }) => theme.colors.primaryColor};
 
   &:hover {
@@ -244,6 +248,7 @@ export const StyledSearchOptions = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  gap: 10px;
   @media ${device.tablet} {
     flex-direction: row;
   }
@@ -288,27 +293,27 @@ export const StyledSearchCheckinGroup = styled.div`
   border: 2px solid #EFEFEF;
   border-radius: 10px;
   display: flex;
-  @media ${device.tablet} {
-    width: auto;
-  }
-  @media ${device.laptop} {
-    min-width: 250px;
-  }
-  @media ${device.laptopL} {
-    width: 350px;
-  }
-  @media ${device.desktop} {
-    width: 420px;
-  }
+  flex: 1;
 
   & > span:hover {
     background-color: ${({ theme }) => theme.colors.primaryLight};
 
     & > label {
       color: #FFFFFF !important;
+      flex: 1;
     }
 
   }
+`;
+
+export const StyledSearchSecondGroup = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @media ${device.tablet} {
+    flex-direction: row;
+  }  
 `;
 
 export const StyledCheckIn = styled.span`
@@ -357,12 +362,10 @@ export const StyledSearchOptionsGroup = styled.div`
   cursor: pointer !important;
   border: 2px solid #EFEFEF;
   border-radius: 10px;
-  margin-top: 10px;
   display: flex;
-  
+  flex: 1;
   @media ${device.tablet} {
     flex: 1;
-    margin: 0 0 0 10px;
   }
 
   & > label:hover {
@@ -386,6 +389,10 @@ export const StyledSearchOptionsGroup = styled.div`
     @media (max-width: ${size.mobileL}) {
       border-radius: 0 0 8px 0;
     }
+  }
+  
+  & label {
+    flex: 1;
   }
 `;
 

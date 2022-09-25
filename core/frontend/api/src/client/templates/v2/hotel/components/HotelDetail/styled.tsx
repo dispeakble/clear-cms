@@ -95,7 +95,7 @@ export const NewSearch = styled.div`
   flex: 1;
 
   button {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
     color: ${({ theme }) => theme.colors.white};
     height: 50px;
     padding-right: 20px;
@@ -113,7 +113,7 @@ export const NewSearch = styled.div`
     flex: 1;
 
     &:hover {
-      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
       color: #FFFFFF;
       text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
     }
@@ -429,7 +429,7 @@ export const SubDetail = styled.div`
   margin-top: 15px;
 
   button {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
     color: ${({ theme }) => theme.colors.white};
     width: 340px;
     height: 45px;
@@ -448,7 +448,7 @@ export const SubDetail = styled.div`
     flex: 1;
 
     &:hover {
-      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
       color: #FFFFFF;
       text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
     }

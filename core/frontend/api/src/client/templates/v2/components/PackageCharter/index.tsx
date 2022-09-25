@@ -14,24 +14,24 @@ import {
   Price,
   DateDiv,
   DealCard,
-  Destination,
+  FieldGroup,
   DropdownIcon,
   EditDeals,
   GuestType,
   HotelInfo,
   HotelLocation,
   HotelName,
-  HotelSearch,
+  FormElement,
   HotelView,
   LeftSide,
-  NewSearch,
+  SearchButton,
   SearchIcon,
   ShortDescription,
   SliderSection,
   ViewMap,
   ViewPrice,
-  WhiteIcon,
-  Wrapper,
+  SearchIconWhite,
+  PackageWrapper,
   DetailsCard,
   CardDesc,
   Person,
@@ -42,7 +42,7 @@ import {
   PersonEntry,
   SubDetail,
   CloseIcon,
-  HotelCalendar, H4, SPAN
+  HotelCalendar, H4, SPAN, ResponsiveFieldGroup
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../../hotel/components/HotelPhotoSlider";
@@ -52,7 +52,6 @@ type HotelDetailProps = {
   data: any;
   handleAdultPlus: () => void;
   handleAdultMinus: () => void;
-  handleHotelSearch: (data: string) => void;
   handleChangeInput: (data: string, value: any) => void;
   handleChildrenMinus: () => void;
   handleChildrenPlus: () => void;
@@ -63,7 +62,6 @@ const PackageCharter = ({
                           data,
                           handleAdultPlus,
                           handleAdultMinus,
-                          handleHotelSearch,
                           handleChangeInput,
                           handleChildrenMinus,
                           handleChildrenPlus,
@@ -75,78 +73,6 @@ const PackageCharter = ({
     checkout: false,
     details: false
   });
-
-  const [mainValue, setMainValue] = React.useState<any[]>([]);
-  const [backUpData, setBackUpData] = useState<any[]>([]);
-  const arr = [
-    {
-      hotel: "Aroma",
-      price: 200,
-      location: "chandigarh"
-    },
-    {
-      hotel: "Titan",
-      price: 200,
-      location: "chandigarh"
-    },
-    {
-      hotel: "Noval",
-      price: 200,
-      location: "Mohali"
-    },
-    {
-      hotel: "RajHotel",
-      price: 200,
-      location: "Mohali"
-    }
-  ];
-  React.useEffect(() => {
-    const getHotel = arr.map((value: any) => {
-      return value.location;
-    });
-    const uniqueChars = [...getHotel];
-
-    const mainFilter = uniqueChars.map((hotel: any) => {
-      const lableFilter = arr.map((value) => {
-        if (value.location == hotel) {
-          return (
-            {
-              value: `${value.hotel}`,
-              label: (
-                <div
-                  key={
-                    value.location
-                  }
-                  style={{
-                    marginLeft: "12px",
-                    display: "flex",
-                    justifyContent: "space-between"
-                  }}
-                >
-                  {value.hotel}
-                  <span>
-                                 {value.price}
-                                  </span>
-                </div>
-              )
-            }
-          );
-        }
-      });
-      const filtered = lableFilter.filter(function(x) {
-        return x !== undefined;
-      });
-      return (
-        {
-          label: hotel,
-          options: [filtered][0]
-        }
-      );
-    });
-    setBackUpData(mainFilter);
-    setMainValue(mainFilter);
-
-  }, []);
 
   const t = useTranslations();
 
@@ -184,11 +110,11 @@ const PackageCharter = ({
     });
   };
   const onSearch = (searchText: string) => {
-    const str: string = String(searchText).toLowerCase();
+    /*const str: string = String(searchText).toLowerCase();
     const searchData = backUpData.map((valueMap) => {
       const SearchHotel = valueMap.options.filter((valuehotel: any) => {
-        const fildata = String(valuehotel?.value).toLowerCase();
-        if (fildata?.includes(str)) {
+        const fieldData = String(valuehotel?.value).toLowerCase();
+        if (fieldData?.includes(str)) {
           return true;
         }
       });
@@ -207,97 +133,86 @@ const PackageCharter = ({
     const filtered = searchData.filter(function(x) {
       return x !== undefined;
     });
-    setMainValue(filtered);
+    setMainValue(filtered);*/
   };
 
   return (
-    <Wrapper>
+    <PackageWrapper style={{alignItems: "stretch"}}>
       <DealCard>
         <CardHead>
           {t("packageDetails.findDeals")}
         </CardHead>
         <EditDeals>
-          <Destination>
+          <FieldGroup>
             <H4>{t("packageDetails.destinationOrHotel")}</H4>
-            <HotelSearch>
+            <FormElement>
               <SearchIcon />
-              <input value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
+              <input data-lpignore="true" value={data.hotel} type="search" placeholder={t("deals.hotel")} onChange={(e) => {
                 onSearch(e.target.value);
                 handleSearch(e.target.value);
               }} />
-            </HotelSearch>
-          </Destination>
-          <Destination>
-            <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
-              <DateDiv>
-                <H4>{t("packageDetails.checkInDate")}</H4>
-                <HotelSearch onClick={() => {
-                  handleShowCheckin();
+            </FormElement>
+          </FieldGroup>
+          <ResponsiveFieldGroup>
+            <FieldGroup>
+              <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
+                <DateDiv>
+                  <H4>{t("packageDetails.checkInDate")}</H4>
+                  <FormElement onClick={() => {
+                    handleShowCheckin();
+                  }}>
+                    <CalenderIcon />
+                    <input placeholder={t("deals.checkin")}
+                           style={{ cursor: "pointer" }}
+                           value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
+
+                    <DropdownIcon />
+                  </FormElement>
+                  {show.checkin ? (
+                    <HotelCalendar
+                      minDate={new Date()}
+                      value={data.checkin}
+                      onChange={(value: any) => {
+                        handleChangeInput("checkin", value);
+                        handleDateAway("checkin");
+                      }}
+                    />
+                  ) : null}
+                </DateDiv>
+              </ClickAwayListener>
+            </FieldGroup>
+            <FieldGroup>
+              <ClickAwayListener onClickAway={() => handleClickAway("checkout")}>
+                <DateDiv onClick={() => {
+                  handleShowCheckout();
                 }}>
-                  <CalenderIcon />
-                  <input placeholder={t("deals.checkin")}
-                         style={{ cursor: "pointer" }}
-                         value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
-
-                  <DropdownIcon />
-                </HotelSearch>
-
-                {show.checkin ? (
-
-                  <HotelCalendar
-                    minDate={data.checkin}
-                    value={data.checkin}
-
-                    onChange={(value: any) => {
-                      handleChangeInput("checkin", value);
-                      handleDateAway("checkin");
-                    }}
-                  />
-
-                ) : null}
-              </DateDiv>
-            </ClickAwayListener>
-
-          </Destination>
-          <Destination>
-
-            <ClickAwayListener onClickAway={() => handleClickAway("checkout")}>
-              <DateDiv onClick={() => {
-                handleShowCheckout();
-              }}>
-                <H4>{t("packageDetails.checkOutDate")}</H4>
-                <HotelSearch>
-                  <CalenderIcon />
-                  <input placeholder={t("deals.checkout")}
-                         value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
-                         style={{ cursor: "pointer" }}
-                  />
-                  <DropdownIcon />
-
-                </HotelSearch>
-
-
-                {show.checkout ? (
-
-                  <HotelCalendar
-                    minDate={new Date(String(moment(data.checkin).add(1, "d")))}
-                    value={new Date(data.checkout)}
-                    onChange={(value: any) => {
-                      handleChangeInput("checkout", value);
-                      handleDateAway("checkout");
-                    }}
-                  />
-
-                ) : null}
-              </DateDiv>
-            </ClickAwayListener>
-
-
-          </Destination>
-          <Destination>
+                  <H4>{t("packageDetails.checkOutDate")}</H4>
+                  <FormElement>
+                    <CalenderIcon />
+                    <input placeholder={t("deals.checkout")}
+                           value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
+                           style={{ cursor: "pointer" }}
+                    />
+                    <DropdownIcon />
+                  </FormElement>
+                  {show.checkout ? (
+                    <HotelCalendar
+                      minDate={new Date(String(moment(data.checkin).add(1, "d")))}
+                      value={data.checkout}
+                      onChange={(value: any) => {
+                        handleChangeInput("checkout", value);
+                        handleDateAway("checkout");
+                      }}
+                    />
+                  ) : null}
+                </DateDiv>
+              </ClickAwayListener>
+            </FieldGroup>
+          </ResponsiveFieldGroup>
+          <FieldGroup>
             <ClickAwayListener onClickAway={() => handleClickAway("details")}>
               <DateDiv>
-                <H4>Details:</H4>
+                <H4>{t("hotelResult.sideBar.search.passengers")}:</H4>
                 <GuestType>
                   <AdultBox onClick={() => handleShowPassenger()}>
                     <AdultIcon />
@@ -310,7 +225,6 @@ const PackageCharter = ({
                     <ChildIcon />
                     <AdultNumber>
                       {t(`deals.detail.child`)}{data.passenger.children}
-
                     </AdultNumber>
                   </AdultBox>
                   <div style={{ position: "relative", left: "7px" }}>
@@ -320,24 +234,23 @@ const PackageCharter = ({
                 {show.details ? (
                   <DetailsCard>
                     <DetailTop>
+                      {t("hotelResult.sideBar.search.passengers")}
                       <CloseIcon onClick={() =>
                         setShow({
                           ...show,
                           details: false
                         })} />
-                      {t("hotelResult.sideBar.search.detail")}
                     </DetailTop>
                     <PersonEntry>
                       <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>
                       <Person>
                         <BoxLeft>
                           <h3>{t("global.adults")}</h3>
-                          <p>{t("hotelResult.sideBar.search.adultsAge")}</p>
                         </BoxLeft>
                         <BoxRight>
                           <Quantity>
                             <SPAN onClick={handleAdultMinus}>-</SPAN>
-                            <h5>{data?.passenger.adults < 10 ? `0${data?.passenger.adults}` : data?.passenger.adults}</h5>
+                            <h5>{data?.passenger.adults}</h5>
                             <SPAN onClick={handleAdultPlus}>+</SPAN>
                           </Quantity>
                         </BoxRight>
@@ -345,12 +258,11 @@ const PackageCharter = ({
                       <Person>
                         <BoxLeft>
                           <h3>{t("global.children")}</h3>
-                          <p>{t("hotelResult.sideBar.search.childrensAge")}</p>
                         </BoxLeft>
                         <BoxRight>
                           <Quantity>
                             <SPAN onClick={handleChildrenMinus}>-</SPAN>
-                            <h5>{data?.passenger.children < 10 ? `0${data?.passenger.children}` : data?.passenger.children}</h5>
+                            <h5>{data?.passenger.children}</h5>
                             <SPAN onClick={handleChildrenPlus}>+</SPAN>
                           </Quantity>
                         </BoxRight>
@@ -364,18 +276,18 @@ const PackageCharter = ({
                       </SubDetail>
                     </PersonEntry>
                   </DetailsCard>
-
                 ) : null}
               </DateDiv>
             </ClickAwayListener>
-
-          </Destination>
-          <NewSearch>
-            <button><WhiteIcon /><Link to="prices" spy={true}
-                                       smooth={true}><span>{t("hotelResult.sideBar.search.newSearch")}</span></Link>
+          </FieldGroup>
+          <SearchButton>
+            <button>
+              <SearchIconWhite />
+              <Link to="prices" spy={true} smooth={true}>
+                <span>{t("hotelResult.sideBar.search.newSearch")}</span>
+              </Link>
             </button>
-          </NewSearch>
-
+          </SearchButton>
         </EditDeals>
       </DealCard>
       <HotelView>
@@ -401,7 +313,7 @@ const PackageCharter = ({
           <HotelPhotoSlider />
         </SliderSection>
       </HotelView>
-    </Wrapper>
+    </PackageWrapper>
   );
 };
 export default PackageCharter;

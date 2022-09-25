@@ -21,7 +21,6 @@ interface LayoutProps {
   breadcrumbs?: Record<string, any>,
   isLogin?: boolean,
   isOrange?: boolean,
-  isInvisible?: boolean,
   isHomePage?: boolean,
   selectedTab?: string,
   showSearch?: boolean,
@@ -32,10 +31,9 @@ const Layout = ({
                   websiteName,
                   colorScheme,
                   children,
-                  breadcrumbs = null,
+                  breadcrumbs,
                   isLogin = false,
                   isOrange = false,
-                  isInvisible = false,
                   isHomePage = false,
                   selectedTab = "packages",
                   showSearch = false,
@@ -112,45 +110,31 @@ const Layout = ({
     <MuiThemeProvider theme={muiTheme}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        {
-          !isInvisible ?
-            (
-              <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
-                <TopContentWrapper>
-                  <Header websiteName={websiteName} />
-                  {
-                    !isHomePage && breadcrumbs &&
-                    <Wrapper isBreadcrumb>
-                      <ContentWrapper>
-                        <Breadcrumbs {...breadcrumbs} />
-                      </ContentWrapper>
-                    </Wrapper>
-                  }
-                  {
-                    (isHomePage || showSearch) &&
-                    (
-                      <ContentWrapper>
-                        <HomeSearch isHome={isHomePage} selectedTab={selectedTab} />
-                        {isHomePage && <StyledMiddleText>
-                          <StyledWebsiteName>{websiteName}</StyledWebsiteName>
-                          <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
-                        </StyledMiddleText>}
-                      </ContentWrapper>
-                    )
-                  }
-                </TopContentWrapper>
-                <Wrapper isLogin={isLogin}>
-                  {children}
-                </Wrapper>
-                <Wrapper isBreadcrumb>
-                  <Footer isLogin={isLogin} />
-                </Wrapper>
-              </MainWrapper>
-            ) :
-            (
-              <></>
-            )
-        }
+        <MainWrapper data-testid="hotel-page-wrapper" isOrange={isOrange}>
+          <TopContentWrapper isHome={isHomePage} showSearch={showSearch}>
+            <Header websiteName={websiteName} />
+            { !isHomePage && breadcrumbs &&
+              <ContentWrapper>
+                <Breadcrumbs {...breadcrumbs} />
+              </ContentWrapper>
+            }
+            { (isHomePage || showSearch) &&
+              <ContentWrapper>
+                <HomeSearch isHome={isHomePage} selectedTab={selectedTab} />
+                {isHomePage && <StyledMiddleText>
+                  <StyledWebsiteName>{websiteName}</StyledWebsiteName>
+                  <StyledWebsiteSlogan>{websiteSlogan}</StyledWebsiteSlogan>
+                </StyledMiddleText>}
+              </ContentWrapper>
+            }
+          </TopContentWrapper>
+          <Wrapper isLogin={isLogin}>
+            {children}
+          </Wrapper>
+          <Wrapper isBreadcrumb>
+            <Footer isLogin={isLogin} />
+          </Wrapper>
+        </MainWrapper>
       </ThemeProvider>
     </MuiThemeProvider>
   );

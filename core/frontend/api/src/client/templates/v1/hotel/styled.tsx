@@ -65,7 +65,7 @@ export const LoadMoreButton = styled.button`
   transition: background .4s ease-in-out;
 
   :hover {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColorHover} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
     transition: background .4s ease-in-out;
   }
 `;
@@ -327,8 +327,12 @@ export const TaxText = styled.p`
   color: #646464;
 `;
 
-export const ButtonContainer = styled.div`
-
+export const BookNowContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
 `;
 
 export const BookNowButton = styled.a`

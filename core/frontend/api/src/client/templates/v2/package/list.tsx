@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ContentWrapper, PaperWrapper } from "../styled";
-import { ButtonContainer, FiltersContainer, LoadMoreButton, PackagesContainer, PackagesLayout } from "./styled";
+import {
+  BookNowContainer,
+  FiltersContainer,
+  LoadMoreButton,
+  PackagesContainer,
+  PackagesLayout
+} from "./styled";
 import Filters from "./components/Filters";
 import PackageCard from "./components/PackageCard";
 
@@ -175,22 +181,15 @@ const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
             <PackagesContainer>
               {
                 [...Array(page)]
-                  .map(() => (
-                    <PackageCard details={packageMock} />
+                  .map((_: any, i: number) => (
+                    <PackageCard key={`${JSON.stringify(_)}-${i}`} details={packageMock} />
                   ))
               }
-
-              <ButtonContainer style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "30px 0"
-              }}>
+              <BookNowContainer>
                 <LoadMoreButton onClick={() => loadMorePages()}>
                   {t("packages.main.loadMore")}
                 </LoadMoreButton>
-              </ButtonContainer>
+              </BookNowContainer>
             </PackagesContainer>
           </PackagesLayout>
         </ContentWrapper>

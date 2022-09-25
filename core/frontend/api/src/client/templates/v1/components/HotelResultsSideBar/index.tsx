@@ -1,4 +1,4 @@
-import { Wrapper, SearchOptions } from "./styled";
+import { Wrapper } from "./styled";
 
 
 import { useTranslations } from "next-intl";
@@ -14,15 +14,14 @@ import {
   ChildIcon,
   DateDiv,
   DealCard,
-  Destination,
+  FieldGroup,
   DropdownIcon,
   EditDeals,
   GuestType,
   HotelSearch,
-  InfantIcon,
-  NewSearch,
+  SearchButton,
   SearchIcon,
-  WhiteIcon,
+  SearchIconWhite,
   DetailsCard,
   CardDesc,
   Person,
@@ -124,7 +123,7 @@ const HotelResultSideBar = ({
     <Wrapper>
       <DealCard>
         <EditDeals>
-          <Destination>
+          <FieldGroup>
             <H4>{t("packageDetails.destinationOrHotel")}</H4>
             <HotelSearch>
               <SearchIcon />
@@ -132,8 +131,8 @@ const HotelResultSideBar = ({
                 handleSearch(e.target.value);
               }} />
             </HotelSearch>
-          </Destination>
-          <Destination>
+          </FieldGroup>
+          <FieldGroup>
             <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
               <DateDiv>
                 <H4>{t("packageDetails.checkInDate")}</H4>
@@ -142,8 +141,6 @@ const HotelResultSideBar = ({
                 }}>
                   <CalenderIcon />
                   <input placeholder={t("deals.checkin")}
-                         onChange={() => {
-                         }}
                          style={{ cursor: "pointer" }}
                          value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
 
@@ -166,8 +163,8 @@ const HotelResultSideBar = ({
               </DateDiv>
             </ClickAwayListener>
 
-          </Destination>
-          <Destination>
+          </FieldGroup>
+          <FieldGroup>
 
             <ClickAwayListener onClickAway={() => handleClickAway("checkout")}>
               <DateDiv onClick={() => {
@@ -176,8 +173,7 @@ const HotelResultSideBar = ({
                 <H4>{t("packageDetails.checkOutDate")}</H4>
                 <HotelSearch>
                   <CalenderIcon />
-                  <input placeholder={t("deals.checkout")} onChange={() => {
-                  }}
+                  <input placeholder={t("deals.checkout")}
                          value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
                          style={{ cursor: "pointer" }}
                   />
@@ -202,8 +198,8 @@ const HotelResultSideBar = ({
             </ClickAwayListener>
 
 
-          </Destination>
-          <Destination>
+          </FieldGroup>
+          <FieldGroup>
             <ClickAwayListener onClickAway={() => handleClickAway("details")}>
               <DateDiv>
                 <H4>{t("hotelResult.sideBar.search.detail")}</H4>
@@ -278,12 +274,12 @@ const HotelResultSideBar = ({
               </DateDiv>
             </ClickAwayListener>
 
-          </Destination>
-          <NewSearch>
-            <button><WhiteIcon /><Link to="prices" spy={true}
+          </FieldGroup>
+          <SearchButton>
+            <button><SearchIconWhite /><Link to="prices" spy={true}
                                        smooth={true}><span>{t("hotelResult.sideBar.search.newSearch")}</span></Link>
             </button>
-          </NewSearch>
+          </SearchButton>
         </EditDeals>
       </DealCard>
 

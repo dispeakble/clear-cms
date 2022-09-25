@@ -17,6 +17,7 @@ import {
   StyledSearchInputHolder,
   StyledSearchOptions,
   StyledSearchOptionsGroup,
+  StyledSearchSecondGroup,
   StyledStars,
   StyledValue
 } from "../styled";
@@ -190,38 +191,6 @@ export const Hotels = () => {
       </StyledSearchInputHolder>
       <StyledFilterWrapper>
         <StyledSearchOptions>
-          <StyledSearchCheckinGroup>
-            <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
-              <StyledLabel>{t("search.checkinDate")}</StyledLabel>
-              <StyledValue data-testid="test-checkIn-date-value">{
-                checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckIn>
-            <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
-              <StyledLabel>{t("search.checkout")}</StyledLabel>
-              <StyledValue data-testid="test-checkOut-date-value">{
-                checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckOut>
-            {
-              calendarIsOpen &&
-              <>
-                <CalendarContainer data-testid="test-calendar">
-                  <Calendar
-                    formatMonthYear={(locale, date) => formatDate(date)}
-                    view="month"
-                    showDoubleView={true}
-                    selectRange={true}
-                    onChange={onDateChange}
-                    value={[checkInDate, checkOutDate]}
-                    minDate={minCheckInDate}
-                    returnValue="range"
-                  />
-                </CalendarContainer>
-              </>
-            }
-          </StyledSearchCheckinGroup>
-
           <StyledSearchOptionsGroup>
             <StyledStars>
               <StyledCenterLabel data-testid="test-open-stars-handler" onClick={() => toggleFilters("stars")}>
@@ -266,8 +235,41 @@ export const Hotels = () => {
               }
             </StyledChild>
           </StyledSearchOptionsGroup>
-          <StyledSearchButton onClick={searchSubmitHandler}
-                              data-testid="search-submit-btn">{t("search.searchHotelsButton")}</StyledSearchButton>
+          <StyledSearchSecondGroup>
+            <StyledSearchCheckinGroup>
+              <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
+                <StyledLabel>{t("search.checkinDate")}</StyledLabel>
+                <StyledValue data-testid="test-checkIn-date-value">{
+                  checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckIn>
+              <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
+                <StyledLabel>{t("search.checkout")}</StyledLabel>
+                <StyledValue data-testid="test-checkOut-date-value">{
+                  checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckOut>
+              {
+                calendarIsOpen &&
+                <>
+                  <CalendarContainer data-testid="test-calendar">
+                    <Calendar
+                      formatMonthYear={(locale, date) => formatDate(date)}
+                      view="month"
+                      showDoubleView={true}
+                      selectRange={true}
+                      onChange={onDateChange}
+                      value={[checkInDate, checkOutDate]}
+                      minDate={minCheckInDate}
+                      returnValue="range"
+                    />
+                  </CalendarContainer>
+                </>
+              }
+            </StyledSearchCheckinGroup>
+            <StyledSearchButton onClick={searchSubmitHandler}
+                                data-testid="search-submit-btn">{t("global.search")}</StyledSearchButton>
+          </StyledSearchSecondGroup>
         </StyledSearchOptions>
       </StyledFilterWrapper>
       {(

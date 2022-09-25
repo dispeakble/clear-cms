@@ -1,24 +1,15 @@
 import * as React from "react";
 import { useState } from "react";
-import { ThemeProvider } from "styled-components";
-import Header from "../components/Header";
 import { useTranslations } from "next-intl";
 import {
   BottomContentWrapper,
-  BreadcrumbsContainer,
   ContentWrapper,
-  ContentWrapperForPackageDetail,
   DetailWrapper,
-  GlobalStyle,
-  MainContentWrapper,
-  MainWrapper,
-  PackageDetailMainContent, PaperWrapper,
-  ServiceAndMapWrapper, TopContentWrapper
+  PaperWrapper,
+  ServiceAndMapWrapper
 } from "../styled";
-import Breadcrumbs from "../components/Breadcrumbs";
 import PackageDetailCard from "../components/PackageDetailCard";
 import moment from "moment";
-import { getIcon } from "../helpers/icons";
 import {
   Cardtitle,
   CheckedIcon,
@@ -28,32 +19,25 @@ import {
   UncheckedIcon
 } from "../hotel/components/HotelAbout/styled";
 import GoogleMapReact from "google-map-react";
-import Footer from "../components/Footer";
 import PackageCharter from "../components/PackageCharter";
 import HotelCardGrid from "../hotel/components/HotelCardGrid";
-import { PackagesDetail, PackagesLayout } from "./styled";
+import Layout from "../components/Layout";
 
-
-const PackageDetail = ({ websiteName, colorScheme }: any) => {
-  // const t = useTranslations();
-
-  const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-  };
+const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   const t = useTranslations();
 
   const [mapData] = useState({
     center: {
-      lat: 30.738270,
-      lng: 76.765144
+      lat: 28.251449164136275,
+      lng: -16.623471598750548
     },
-    zoom: 13
+    zoom: 10
   });
 
   const [data, setData] = useState({
     hotel: "",
     checkin: new Date(),
-    checkout: moment(new Date()).add(1, "d"),
+    checkout: moment(new Date()).add(1, "d").toDate(),
     passenger: {
       adults: 1,
       children: 0
@@ -68,6 +52,7 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
     });
   };
   const handleAdultPlus = () => {
+    if(data.passenger.adults >= 9) return;
     setData({
       ...data,
       passenger: {
@@ -87,11 +72,10 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
         }
       });
     }
-
-
   };
 
   const handleChildrenPlus = () => {
+    if(data.passenger.children >= 4) return;
     setData({
       ...data,
       passenger: {
@@ -111,8 +95,6 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
         }
       });
     }
-
-
   };
   const handleHotelSearch = (hotelValue: any) => {
     setData({
@@ -128,7 +110,6 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
     });
   };
 
-  const myTheme: any = { colors: colorScheme, icon: getIcons };
   const Features = [
     t("packageDetails.services.flightIncluded"),
     t("packageDetails.services.checkinBaggage"),
@@ -140,83 +121,74 @@ const PackageDetail = ({ websiteName, colorScheme }: any) => {
     `7 ${t("packageDetails.services.flightIncluded")}`
   ];
 
+  const breadcrumbs = {
+    //TODO translate this
+    "packages/list": "Packages"
+  };
 
   return (
     <>
-      <ThemeProvider theme={myTheme}>
-        <GlobalStyle />
-        <MainWrapper data-testid="package-page-wrapper">
-          <Header websiteName={websiteName} />
-          <TopContentWrapper>
-            <ContentWrapper>
-              <Breadcrumbs countryName={t("packageDetails.countryName")}
-                           islandName={t("packageDetails.islandName")}
-                           townName={t("packageDetails.townName")}
-                           hotelName={t("packageDetails.hotelName", { hotelName: "Hotel Victoria" })} />
-              <PackageCharter
-                data={data}
-                handleChildrenMinus={handleChildrenMinus}
-                handleChildrenPlus={handleChildrenPlus}
-                handleChangeInput={handleChangeInput}
-                handleAdultPlus={handleAdultPlus}
-                handleAdultMinus={handleAdultMinus}
-                handleSearch={handleSearch}
-                handleHotelSearch={handleHotelSearch}
-              />
-
-            </ContentWrapper>
-          </TopContentWrapper>
-          <PaperWrapper style={{ marginTop: "57px" }}>
-            <ContentWrapper>
-              <BottomContentWrapper>
-                <ServiceAndMapWrapper>
-                  <ContentWrapper>
-                    <Highlights>
-                      <Cardtitle>
-                        {t("packageDetails.incService")}
-                      </Cardtitle>
-                      <Feature>
-                        {
-                          Features.map((value, index) => {
-                            return (
-                              <li key={index}><CheckedIcon /><span>{value}</span></li>
-                            );
-                          })
-                        }
-                      </Feature>
-                      <Cardtitle>
-                        {t("packageDetails.notIncService")}
-                      </Cardtitle>
-                      <Feature>
-                        <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
-                      </Feature>
-                    </Highlights>
-                    <MapSection id="showmap">
-                      <GoogleMapReact
-                        bootstrapURLKeys={{
-                          key: "AIzaSyBX1z5nvjcjzyxSMT-QCVS3ERu6Y3iNSb0",
-                          libraries: ["places", "geometry"]
-                        }}
-                        defaultCenter={mapData.center}
-                        defaultZoom={mapData.zoom}
-                        yesIWantToUseGoogleMapApiInternals
-
-                      />
-                    </MapSection>
-                  </ContentWrapper>
-                </ServiceAndMapWrapper>
-                <DetailWrapper>
-                  <PackageDetailCard />
-                  <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
-                  <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
-                </DetailWrapper>
-              </BottomContentWrapper>
-              <Footer />
-            </ContentWrapper>
-
-          </PaperWrapper>
-        </MainWrapper>
-      </ThemeProvider>
+      <Layout
+        isHomePage={false}
+        breadcrumbs={breadcrumbs}
+        websiteSlogan={websiteSlogan}
+        websiteName={websiteName}
+        colorScheme={colorScheme}
+      >
+        <ContentWrapper>
+          <PackageCharter
+            data={data}
+            handleChildrenMinus={handleChildrenMinus}
+            handleChildrenPlus={handleChildrenPlus}
+            handleChangeInput={handleChangeInput}
+            handleAdultPlus={handleAdultPlus}
+            handleAdultMinus={handleAdultMinus}
+            handleSearch={handleSearch}
+          />
+        </ContentWrapper>
+        <PaperWrapper style={{ marginTop: "20px" }}>
+          <ContentWrapper>
+            <BottomContentWrapper>
+              <ServiceAndMapWrapper>
+                <Highlights>
+                  <Cardtitle>
+                    {t("packageDetails.incService")}
+                  </Cardtitle>
+                  <Feature>
+                    {
+                      Features.map((value, index) => {
+                        return <li key={index}><CheckedIcon /><span>{value}</span></li>
+                      })
+                    }
+                  </Feature>
+                  <Cardtitle>
+                    {t("packageDetails.notIncService")}
+                  </Cardtitle>
+                  <Feature>
+                    <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
+                  </Feature>
+                </Highlights>
+                <MapSection id="showmap">
+                  <GoogleMapReact
+                    bootstrapURLKeys={{
+                      key: "AIzaSyCpo_BJKJ9KZOTDlAXaI7o8mH1Q70Kq8v4",
+                      libraries: ["places", "geometry"]
+                    }}
+                    defaultCenter={mapData.center}
+                    defaultZoom={mapData.zoom}
+                    yesIWantToUseGoogleMapApiInternals
+                  />
+                </MapSection>
+              </ServiceAndMapWrapper>
+              <DetailWrapper>
+                <PackageDetailCard />
+                <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
+                <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
+              </DetailWrapper>
+            </BottomContentWrapper>
+          </ContentWrapper>
+        </PaperWrapper>
+      </Layout>
     </>
   );
 

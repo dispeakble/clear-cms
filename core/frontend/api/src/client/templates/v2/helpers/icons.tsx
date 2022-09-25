@@ -13,7 +13,6 @@ import dropDarkIcon from "../assets/img/list-dd-dark-icon.svg";
 import dropLightIcon from "../assets/img/list-dd-light-icon.svg";
 import dropdownIcon from "../assets/img/dropdown-icon.svg";
 import goldStarIcon from "../assets/img/gold-star-icon.svg";
-import infantIcon from "../assets/img/infant-icon.svg";
 import infoIcon from "../assets/img/info-icon.svg";
 import orginfoIcon from "../assets/img/orginfo-icon.svg";
 import personIcon from "../assets/img/person-icon.svg";
@@ -65,7 +64,6 @@ const icons: Record<string, any> = {
   dropdown: dropdownIcon,
   dropLight: dropLightIcon,
   goldStar: goldStarIcon,
-  infant: infantIcon,
   info: infoIcon,
   orginfo: orginfoIcon,
   person: personIcon,

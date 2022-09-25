@@ -17,7 +17,7 @@ import {
   StyledSearchInput,
   StyledSearchInputHolder,
   StyledSearchOptions,
-  StyledSearchOptionsGroup,
+  StyledSearchOptionsGroup, StyledSearchSecondGroup,
   StyledValue
 } from "../styled";
 import { useTranslations } from "next-intl";
@@ -278,37 +278,6 @@ export const Flights = () => {
       </StyledSearchInputHolder>
       <StyledFilterWrapper>
         <StyledSearchOptions>
-          <StyledSearchCheckinGroup>
-            <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
-              <StyledLabel>{t("search.checkinDate")}</StyledLabel>
-              <StyledValue data-testid="test-checkIn-date-value">{
-                checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckIn>
-            <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
-              <StyledLabel>{t("search.checkout")}</StyledLabel>
-              <StyledValue data-testid="test-checkOut-date-value">{
-                checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckOut>
-            {
-              calendarIsOpen &&
-              <>
-                <CalendarContainer data-testid="test-calendar">
-                  <Calendar
-                    formatMonthYear={(locale, date) => formatDate(date)}
-                    view="month"
-                    showDoubleView={true}
-                    selectRange={true}
-                    onChange={onDateChange}
-                    value={[checkInDate, checkOutDate]}
-                    minDate={minCheckInDate}
-                    returnValue="range"
-                  />
-                </CalendarContainer>
-              </>
-            }
-          </StyledSearchCheckinGroup>
           <StyledSearchOptionsGroup>
             <StyledPerson onClick={() => toggleFilters("adults")} data-testid="test-open-adults-handler">
               <StyledCenterLabel>
@@ -352,8 +321,41 @@ export const Flights = () => {
               </StyledCenterLabel>
             </StyledOneWay>
           </StyledSearchOptionsGroup>
-          <StyledSearchButton onClick={searchSubmitHandler}
-                              data-testid="search-submit-btn">{t("search.searchFlightsButton")}</StyledSearchButton>
+          <StyledSearchSecondGroup>
+            <StyledSearchCheckinGroup>
+              <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
+                <StyledLabel>{t("search.checkinDate")}</StyledLabel>
+                <StyledValue data-testid="test-checkIn-date-value">{
+                  checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckIn>
+              <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
+                <StyledLabel>{t("search.checkout")}</StyledLabel>
+                <StyledValue data-testid="test-checkOut-date-value">{
+                  checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckOut>
+              {
+                calendarIsOpen &&
+                <>
+                  <CalendarContainer data-testid="test-calendar">
+                    <Calendar
+                      formatMonthYear={(locale, date) => formatDate(date)}
+                      view="month"
+                      showDoubleView={true}
+                      selectRange={true}
+                      onChange={onDateChange}
+                      value={[checkInDate, checkOutDate]}
+                      minDate={minCheckInDate}
+                      returnValue="range"
+                    />
+                  </CalendarContainer>
+                </>
+              }
+            </StyledSearchCheckinGroup>
+            <StyledSearchButton onClick={searchSubmitHandler}
+                                data-testid="search-submit-btn">{t("global.search")}</StyledSearchButton>
+          </StyledSearchSecondGroup>
         </StyledSearchOptions>
       </StyledFilterWrapper>
       {(

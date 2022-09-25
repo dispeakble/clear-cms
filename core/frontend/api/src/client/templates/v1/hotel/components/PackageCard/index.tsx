@@ -14,7 +14,7 @@ import {
   StartingPriceText,
   AdultNightText,
   TaxText,
-  ButtonContainer,
+  BookNowContainer,
   BookNowButton,
   PriceTextContainer,
   DetailsContainer,
@@ -130,13 +130,13 @@ const HotelCard = ({ _package }: IProps) => {
               </TaxText>
             </PriceTextContainer>
 
-            <ButtonContainer>
+            <BookNowContainer>
               <Link href="/hotels/detail">
                 <BookNowButton href="/hotels/detail">
                   {t("hotels.main.bookNow")}
                 </BookNowButton>
               </Link>
-            </ButtonContainer>
+            </BookNowContainer>
           </PricingDetailsWrapper>
         </HotelMainContainer>
 

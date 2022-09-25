@@ -4,7 +4,7 @@ import {
   ContentWrapper,
   PaperWrapper
 } from "../styled";
-import { ButtonContainer, HotelsLayout, LoadMoreButton, HotelsContainer } from "./styled";
+import { BookNowContainer, HotelsLayout, LoadMoreButton, HotelsContainer } from "./styled";
 
 import HotelImage from "../assets/img/hotelImage.png";
 import PackageTransfers from "../assets/img/packageTransfers-icon.svg";
@@ -173,7 +173,7 @@ const HotelList = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                     <HotelCard key={index} _package={data[0]} />
                   ))
               }
-              <ButtonContainer style={{
+              <BookNowContainer style={{
                 width: "100%",
                 display: "flex",
                 alignItems: "center",
@@ -183,7 +183,7 @@ const HotelList = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                 <LoadMoreButton data-testid="test-loadMore-button" onClick={() => loadMorePages()}>
                   {t("hotels.main.loadMore")}
                 </LoadMoreButton>
-              </ButtonContainer>
+              </BookNowContainer>
             </HotelsContainer>
           </HotelsLayout>
         </ContentWrapper>
