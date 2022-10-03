@@ -8,12 +8,7 @@ import hotel3 from "../../assets/img/hotels/small/hotel6.jpg";
 import { useMemo } from "react";
 import * as React from "react";
 
-type VerticalPhotoSliderProps = {
-  maxWidth: string;
-  maxHeight: string;
-};
-
-const VerticalPhotoSlider = ({ maxWidth, maxHeight }: VerticalPhotoSliderProps) => {
+const HomePhotoSlider = () => {
 
   const gallery = {
     showBullets: false,
@@ -110,5 +105,5 @@ const VerticalPhotoSlider = ({ maxWidth, maxHeight }: VerticalPhotoSliderProps) 
   </StyledSliderWrapper>;
 };
 
-export default VerticalPhotoSlider;
+export default HomePhotoSlider;
 

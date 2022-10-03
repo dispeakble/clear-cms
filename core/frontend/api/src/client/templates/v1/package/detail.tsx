@@ -40,7 +40,8 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     checkout: moment(new Date()).add(1, "d").toDate(),
     passenger: {
       adults: 1,
-      children: 0
+      children: 0,
+      childAges: []
     }
 
   });
@@ -76,22 +77,55 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   const handleChildrenPlus = () => {
     if(data.passenger.children >= 4) return;
+    const childAges = [...data.passenger.childAges];
+    childAges[data.passenger.children] = 0;
     setData({
       ...data,
       passenger: {
         ...data.passenger,
-        children: data.passenger.children + 1
+        children: data.passenger.children + 1,
+        childAges: childAges
       }
     });
 
   };
   const handleChildrenMinus = () => {
     if (Number(data.passenger.children) > 0) {
+      const childAges = [...data.passenger.childAges];
+      delete childAges[data.passenger.children - 1];
       setData({
         ...data,
         passenger: {
           ...data.passenger,
-          children: data.passenger.children - 1
+          children: data.passenger.children - 1,
+          childAges: childAges
+        }
+      });
+    }
+  };
+
+  const handleChildAgePlus = (i: number) => {
+    const childAges = [...data.passenger.childAges];
+    if(childAges[i] >= 9) return;
+    childAges[i] = Number(childAges[i]) + 1;
+    setData({
+      ...data,
+      passenger: {
+        ...data.passenger,
+        childAges: childAges
+      }
+    });
+
+  };
+  const handleChildAgeMinus = (i: number) => {
+    const childAges = [...data.passenger.childAges];
+    childAges[i] = Number(childAges[i]) - 1;
+    if (Number(childAges[i]) > 0) {
+      setData({
+        ...data,
+        passenger: {
+          ...data.passenger,
+          childAges: childAges
         }
       });
     }
@@ -140,6 +174,8 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
             data={data}
             handleChildrenMinus={handleChildrenMinus}
             handleChildrenPlus={handleChildrenPlus}
+            handleChildAgeMinus={handleChildAgeMinus}
+            handleChildAgePlus={handleChildAgePlus}
             handleChangeInput={handleChangeInput}
             handleAdultPlus={handleAdultPlus}
             handleAdultMinus={handleAdultMinus}

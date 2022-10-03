@@ -32,21 +32,21 @@ import {
   ViewPrice,
   SearchIconWhite,
   PackageWrapper,
-  DetailsCard,
+  PopupFilters,
   CardDesc,
   Person,
   BoxLeft,
   BoxRight,
-  DetailTop,
+  PopupFilterTitle,
   Quantity,
   PersonEntry,
   SubDetail,
   CloseIcon,
-  HotelCalendar, H4, SPAN, ResponsiveFieldGroup
+  HotelCalendar, H4, span, ResponsiveFieldGroup
 } from "./styled";
 import moment from "moment";
 import HotelPhotoSlider from "../../hotel/components/HotelPhotoSlider";
-import { StyledStarsSmall } from "../Styled/stars";
+import { StyledStars } from "../Styled/stars";
 
 type HotelDetailProps = {
   data: any;
@@ -55,6 +55,8 @@ type HotelDetailProps = {
   handleChangeInput: (data: string, value: any) => void;
   handleChildrenMinus: () => void;
   handleChildrenPlus: () => void;
+  handleChildAgeMinus: (i: number) => void;
+  handleChildAgePlus: (i: number) => void;
   handleSearch: (data: string) => void;
 }
 
@@ -65,6 +67,8 @@ const PackageCharter = ({
                           handleChangeInput,
                           handleChildrenMinus,
                           handleChildrenPlus,
+                          handleChildAgeMinus,
+                          handleChildAgePlus,
                           handleSearch
 
                         }: HotelDetailProps) => {
@@ -164,7 +168,7 @@ const PackageCharter = ({
                     <CalenderIcon />
                     <input placeholder={t("deals.checkin")}
                            style={{ cursor: "pointer" }}
-                           value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
+                           value={moment(data.checkin).format("ddd, DD MMM, YYYY")} readOnly />
 
                     <DropdownIcon />
                   </FormElement>
@@ -190,7 +194,7 @@ const PackageCharter = ({
                   <FormElement>
                     <CalenderIcon />
                     <input placeholder={t("deals.checkout")}
-                           value={moment(data.checkout).format("dddd, DD MMMM, YYYY")} readOnly
+                           value={moment(data.checkout).format("ddd, DD MMM, YYYY")} readOnly
                            style={{ cursor: "pointer" }}
                     />
                     <DropdownIcon />
@@ -232,15 +236,15 @@ const PackageCharter = ({
                   </div>
                 </GuestType>
                 {show.details ? (
-                  <DetailsCard>
-                    <DetailTop>
+                  <PopupFilters>
+                    <PopupFilterTitle>
                       {t("hotelResult.sideBar.search.passengers")}
                       <CloseIcon onClick={() =>
                         setShow({
                           ...show,
                           details: false
                         })} />
-                    </DetailTop>
+                    </PopupFilterTitle>
                     <PersonEntry>
                       <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>
                       <Person>
@@ -249,9 +253,9 @@ const PackageCharter = ({
                         </BoxLeft>
                         <BoxRight>
                           <Quantity>
-                            <SPAN onClick={handleAdultMinus}>-</SPAN>
+                            <span onClick={handleAdultMinus}>-</span>
                             <h5>{data?.passenger.adults}</h5>
-                            <SPAN onClick={handleAdultPlus}>+</SPAN>
+                            <span onClick={handleAdultPlus}>+</span>
                           </Quantity>
                         </BoxRight>
                       </Person>
@@ -261,12 +265,29 @@ const PackageCharter = ({
                         </BoxLeft>
                         <BoxRight>
                           <Quantity>
-                            <SPAN onClick={handleChildrenMinus}>-</SPAN>
+                            <span onClick={handleChildrenMinus}>-</span>
                             <h5>{data?.passenger.children}</h5>
-                            <SPAN onClick={handleChildrenPlus}>+</SPAN>
+                            <span onClick={handleChildrenPlus}>+</span>
                           </Quantity>
                         </BoxRight>
                       </Person>
+                      {
+                        [...Array(data?.passenger.children)].map((n: number, i: number) => (
+                          <Person>
+                            <BoxLeft>
+                              <h3>{t('search.childAgeVar', {n: i + 1})}</h3>
+                            </BoxLeft>
+                            <BoxRight>
+                              <Quantity>
+                                <span onClick={() => handleChildAgeMinus(i)}>-</span>
+                                <h5>{data?.passenger.childAges[i]}</h5>
+                                <span onClick={() => handleChildAgePlus(i)}>+</span>
+                              </Quantity>
+                            </BoxRight>
+                          </Person>
+                        ))
+                      }
+
                       <SubDetail>
                         <button onClick={() =>
                           setShow({
@@ -275,7 +296,7 @@ const PackageCharter = ({
                           })}>{t("hotelResult.sideBar.search.done")}</button>
                       </SubDetail>
                     </PersonEntry>
-                  </DetailsCard>
+                  </PopupFilters>
                 ) : null}
               </DateDiv>
             </ClickAwayListener>
@@ -294,7 +315,7 @@ const PackageCharter = ({
         <HotelInfo>
           <LeftSide>
             <HotelName>Hotel Victoria</HotelName>
-            <StyledStarsSmall stars={3}></StyledStarsSmall>
+            <StyledStars stars={3} size='small'></StyledStars>
             <ShortDescription>
               <HotelLocation>
                 {t("deals.location")}

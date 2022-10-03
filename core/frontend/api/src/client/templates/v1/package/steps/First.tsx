@@ -35,6 +35,7 @@ import {
   FLightProviderImg, FlightTimeContainer, TimeText
 } from "../../flight/styled";
 import Link from "next/link";
+import { StyledStars } from "../../components/Styled/stars";
 
 interface IProps {
   packageDetails: any;
@@ -67,38 +68,10 @@ const FirstStep = ({ packageDetails, setCurrentStep, currentStep, passengersCoun
                         {hotel.name}
                       </HotelPackageTitle>
                       <StarsWrapper style={{ gap: "2px" }}>
-                        {
-                          [...Array(hotel.rating)]
-                            .map((value: undefined, index: number) =>
-                              (
-                                <Image
-                                  key={index}
-                                  src={YellowStar}
-                                  width={26}
-                                  height={25}
-                                  alt={"rating-positive"}
-                                />
-                              ))
-                        }
-                        {
-                          hotel.rating < 5 &&
-                          [...Array(5 - hotel.rating)]
-                            .map((value: undefined, index: number) =>
-                              (
-                                <Image
-                                  key={index}
-                                  src={GrayStar}
-                                  width={26}
-                                  height={25}
-                                  alt={"rating-negative"}
-                                />
-                              ))
-                        }
-
+                        <StyledStars  stars={hotel.rating} size='small'/>
                         <StarsText style={{ marginLeft: "5px" }}>
                           ({t("hotelCheckout.main.stars", { stars: hotel.rating })})
                         </StarsText>
-
                       </StarsWrapper>
                     </TicketHotelTitleContainer>
                     <HotelPackageAddress>
@@ -109,11 +82,9 @@ const FirstStep = ({ packageDetails, setCurrentStep, currentStep, passengersCoun
                     <IncludedText>
                       {t("global.included")}:
                     </IncludedText>
-
                     <PackageHotelInfos>
                       {hotel.roomType}
                     </PackageHotelInfos>
-
                     <PackageHotelInfos>
                       {hotel.roomDetails}
                     </PackageHotelInfos>
@@ -131,9 +102,6 @@ const FirstStep = ({ packageDetails, setCurrentStep, currentStep, passengersCoun
               );
             })
           }
-          <PlusContainer>
-            <Image src={PackagePlus} height={64} width={64} alt="plus-package" />
-          </PlusContainer>
           {
             packageDetails.flights.map((flight: any, index: number) => {
               return (

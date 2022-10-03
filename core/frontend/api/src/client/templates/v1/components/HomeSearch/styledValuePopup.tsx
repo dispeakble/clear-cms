@@ -43,6 +43,7 @@ export const StyledButton = styled.button`
   border-radius: 50%;
   width: 24px;
   height: 24px;
+  line-height: 24px;
   border: none;
   background: ${({ theme }) => theme.colors.primaryColor};
   cursor: pointer;

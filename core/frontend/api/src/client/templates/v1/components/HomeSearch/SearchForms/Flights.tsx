@@ -6,10 +6,10 @@ import {
   StyledCenterLabel,
   StyledCheckIn,
   StyledCheckOut,
-  StyledChild,
+  StyledChildFilter,
   StyledFilterWrapper,
   StyledLabel, StyledOneWay,
-  StyledPerson,
+  StyledPersonFilter,
   StyledPrimaryValue,
   StyledSearchButton,
   StyledSearchCheckinGroup,
@@ -279,7 +279,7 @@ export const Flights = () => {
       <StyledFilterWrapper>
         <StyledSearchOptions>
           <StyledSearchOptionsGroup>
-            <StyledPerson onClick={() => toggleFilters("adults")} data-testid="test-open-adults-handler">
+            <StyledPersonFilter onClick={() => toggleFilters("adults")} data-testid="test-open-adults-handler">
               <StyledCenterLabel>
                 <StyledLabel>{t("search.adults")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
@@ -288,8 +288,8 @@ export const Flights = () => {
                 <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
                             max={9 - filterValues.children}
                             onChange={handleFilterChange} />}
-            </StyledPerson>
-            <StyledChild>
+            </StyledPersonFilter>
+            <StyledChildFilter>
               <StyledCenterLabel data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
@@ -297,7 +297,6 @@ export const Flights = () => {
               {showFilter === "children" &&
                 <><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
                               max={4} onChange={handleFilterChange} />
-
                   {filterValues.children > 0 && <ValuePopupAges
                     className="childrenAges"
                     name="childrenAges"
@@ -308,9 +307,8 @@ export const Flights = () => {
                     dataTestId="test-children-ages-handler"
                     onChange={handleFilterChange} />}
                 </>
-
               }
-            </StyledChild>
+            </StyledChildFilter>
             <StyledOneWay data-testid="test-checkbox-oneway-handler">
               <StyledCenterLabel style={{ height: "100%", width: "100%" }}>
                 <StyledLabel>{t("search.oneway")}</StyledLabel>

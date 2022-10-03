@@ -22,10 +22,6 @@
       "invoices": "Facturas",
       "contracts": "Contratos"
     },
-    "loader": {
-      "waitAMoment": "Por favor, espere un momento...",
-      "redirecting": "Redirigiendo..."
-    },
     "errors": {
       "credentialsMismatch": "No hay coincidencia de credenciales.",
       "errorOccurred": "Se ha producido un error, por favor, inténtelo de nuevo...",
@@ -33,6 +29,15 @@
       "passwordMismatch": "La contraseña actual no es válida, por favor, introduzca su contraseña actual e inténtelo de nuevo.",
       "passwordUpdateError": "Se ha producido un error al actualizar la contraseña, inténtelo de nuevo más tarde."
     }
+  },
+  "menu": {
+    "home": "Home",
+    "packages": "Paquetes",
+    "hotels": "Hoteles",
+    "flights": "Vuelos",
+    "activities": "Ocupaciones",
+    "login": "Acceso",
+    "search": "Búsqueda"
   },
   "input": {
     "placeholder": {
@@ -173,6 +178,7 @@
     "guests": "Huéspedes",
     "adults": "Adultos",
     "children": "Niños",
+    "childAgeVar": "Niño #{n} edad:",
     "oneway": "One way",
     "adults-age": "13 años o más.",
     "children-age": "De 2 a 12 años.",
@@ -191,10 +197,7 @@
     "hotels": "Hoteles",
     "packages": "Paquetes",
     "flights": "Vuelos",
-    "hotel-stars": "Categoría",
-    "activities": "Ocupaciones",
-    "login": "Acceso",
-    "logout": "Cerrar Sesión"
+    "hotel-stars": "Categoría"
   },
   "deals": {
     "hotel": "Hotel Victoria",
@@ -422,9 +425,10 @@
       "singleRoom": "Habitación individual",
       "allIncl": "Todo incluido",
       "bookNow": "Reservar ahora",
+      "seePrices": "Ver Precios",
       "doubleRoom": "Doble habitacion",
       "henri": "enrique",
-      "coanda": "Coandá",
+      "coanda": "Coanda",
       "tenerife": "Tenerfie",
       "spain": "España",
       "sur": "Sur",

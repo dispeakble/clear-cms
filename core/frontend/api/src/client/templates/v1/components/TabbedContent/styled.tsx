@@ -65,7 +65,7 @@ export const StyledContent = styled.div`
 
 export const StyledTitle = styled.div`
   margin: 20px 0;
-  font-size: 44px;
+  font-size: clamp(25px, 3vw, 40px);;
   color: ${({ theme }) => theme.colors.primaryColor}
 `;
 
@@ -77,7 +77,7 @@ export const StyledContentTitle = styled.div`
   font-size: 22px;
   color:  ${({ theme }) => theme.colors.black};
   background: url(${({ theme }) => theme.icon("checkSignGold")}) no-repeat left 3px;
-  padding-left: 20px;
+  padding: 0 0 10px 20px;
 `;
 export const StyledContentSubtitle = styled.div`
   padding-left: 20px;

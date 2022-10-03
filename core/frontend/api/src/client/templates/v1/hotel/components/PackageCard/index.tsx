@@ -30,7 +30,7 @@ import YellowStar from "../../../assets/img/starYellowImage.png";
 import GrayStar from "../../../assets/img/starGrayImage.png";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { StyledStarsSmall } from "../../../components/Styled/stars";
+import { StyledStars } from "../../../components/Styled/stars";
 import collapseUpIcon from "../../../assets/img/collapse-up-icon.svg";
 import collapseDownIcon from "../../../assets/img/collapse-down-icon.svg";
 import Link from "next/link";
@@ -72,7 +72,7 @@ const HotelCard = ({ _package }: IProps) => {
                   {_package.address}
                 </AddressText>
                 <RatingContainer>
-                  <StyledStarsSmall stars={_package.rating} />
+                  <StyledStars stars={_package.rating} size='small' />
                 </RatingContainer>
                 <HotelItems>
                   {

@@ -22,10 +22,6 @@
       "invoices": "Invoices",
       "contracts": "Contracts"
     },
-    "loader": {
-      "waitAMoment": "Please, wait a moment...",
-      "redirecting": "Redirecting..."
-    },
     "errors": {
       "credentialsMismatch": "Credentials mismatch.",
       "errorOccurred": "An error has occurred, please try again...",
@@ -33,6 +29,15 @@
       "passwordMismatch": "Current password is not valid, please fill in your current password and try again.",
       "passwordUpdateError": "An error has occurred while updating the password, please try again later."
     }
+  },
+  "menu": {
+    "home": "Home",
+    "packages": "Packages",
+    "hotels": "Hotels",
+    "flights": "Flights",
+    "activities": "Activities",
+    "login": "Login",
+    "search": "Search"
   },
   "input": {
     "placeholder": {
@@ -173,6 +178,7 @@
     "guests": "Guests",
     "adults": "Adults",
     "children": "Children",
+    "childAgeVar": "Child #{n} age:",
     "oneway": "One way",
     "adults-age": "Ages 13 or above.",
     "children-age": "Ages between 2 and 13.",
@@ -191,10 +197,7 @@
     "hotels": "Hotels",
     "packages": "Packages",
     "flights": "Flights",
-    "hotel-stars": "Category",
-    "activities": "Activities",
-    "login": "Login",
-    "logout": "Logout"
+    "hotel-stars": "Category"
   },
   "deals": {
     "hotel": "Hotel Victoria",
@@ -428,7 +431,7 @@
       "coanda": "Coanda",
       "tenerife": "Tenerfie",
       "spain": "Spain",
-      "sur": "Sur",
+      "sur": "South",
       "bucharest": "Bucharest",
       "checkAvailable": "Check Availability",
       "otherDestinations": "Other Destinations"

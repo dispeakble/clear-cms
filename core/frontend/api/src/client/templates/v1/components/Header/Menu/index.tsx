@@ -13,7 +13,7 @@ const Menu = ({ links }: MenuProps) => {
       <StyledMenu>
         {links && links.map((link) => <Item key={`menu-link-${link.linkSlug}`}>
             <LinkItem href={`/${link.linkHref}`}>
-              {t(`search.${link.linkText}`)}
+              {t(`menu.${link.linkText}`)}
             </LinkItem>
           </Item>
         )}

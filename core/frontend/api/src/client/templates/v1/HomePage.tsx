@@ -5,7 +5,7 @@ import {
   PaperWrapper
 } from "./styled";
 import TopHotels from "./components/Promo/TopHotels";
-import VerticalPhotoSlider from "./components/VerticalPhotoSlider";
+import HomePhotoSlider from "./components/HomePhotoSlider";
 import QuickAboutUs from "./components/QuickAboutUs";
 import Recommended from "./components/Recommended";
 import TabbedContent from "./components/TabbedContent";
@@ -23,7 +23,7 @@ const HomePage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       <PaperWrapper>
         <ContentWrapper>
           <TopHotels />
-          <VerticalPhotoSlider maxWidth="890px" maxHeight="370px" />
+          <HomePhotoSlider />
           <QuickAboutUs />
           <Recommended />
           <TabbedContent />
