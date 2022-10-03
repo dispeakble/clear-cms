@@ -34,6 +34,9 @@ const Recommended = () => {
         <Card {...cardProps} dataTestid="test-recommended-card-first" />
         <Card {...cardProps} dataTestid="test-recommended-card-second" />
         <Card {...cardProps} dataTestid="test-recommended-card-third" />
+        <Card {...cardProps} dataTestid="test-recommended-card-third" />
+        <Card {...cardProps} dataTestid="test-recommended-card-third" />
+        <Card {...cardProps} dataTestid="test-recommended-card-third" />
       </Wrapper>
     </>
   );

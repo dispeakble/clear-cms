@@ -27,7 +27,7 @@ import {
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { StyledStarsSmall } from "../../../components/Styled/stars";
+import { StyledStars } from "../../../components/Styled/stars";
 import collapseUpIcon from "../../../assets/img/collapse-up-icon.svg";
 import collapseDownIcon from "../../../assets/img/collapse-down-icon.svg";
 import { AddressText } from "../../../hotel/styled";
@@ -73,7 +73,7 @@ const PackageCard = ({ details }: PackageCardProps) => {
                   {details.address}
                 </AddressText>
                 <RatingContainer>
-                  <StyledStarsSmall stars={details.rating} />
+                  <StyledStars stars={details.rating} size='small' />
                 </RatingContainer>
                 <PackageItems>
                   {

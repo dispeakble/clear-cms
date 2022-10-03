@@ -237,10 +237,6 @@ export const PackageItems = styled.div`
   margin-bottom: 8px;
 
   @media screen and (max-width: ${size.mobileL}) {
-    flex-direction: column;
-    gap: 8px;
-    max-width: 100%;
-    width: 100%;
     border-radius: 5px;
   }
 `;
@@ -352,8 +348,8 @@ export const BookNowContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 `;
 export const BookNowButton = styled.a`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
@@ -367,7 +363,7 @@ export const BookNowButton = styled.a`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.5;
   white-space: nowrap;
 
@@ -383,6 +379,11 @@ export const BookNowButton = styled.a`
     background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
     transition: background .4s ease-in-out;
   }
+
+  @media screen and ${device.tablet} {
+    font-size: 20px;
+  }
+  
 `;
 
 export const DetailsContainer = styled.div`

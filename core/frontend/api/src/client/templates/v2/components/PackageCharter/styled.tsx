@@ -231,11 +231,6 @@ export const ViewPrice = styled.div`
   @media (min-width: ${size.laptop}) {
     margin: 18px 18px 18px 0;
   }
-  
-  @media (min-width: ${size.tablet}) {
-      width: 268px;
-    }
-  }
 `;
 
 export const Price = styled.div`
@@ -397,7 +392,7 @@ export const StyledDescriptionMore = styled.a`
   color: ${({ theme }) => theme.colors.primaryColor};
 `;
 
-export const DetailsCard = styled.div`
+export const PopupFilters = styled.div`
   position: absolute;
   right: 0;
   z-index: 2;
@@ -414,6 +409,9 @@ export const DetailsCard = styled.div`
   }
   @media (min-width: ${size.mobileL}) {
     width: 360px;
+  }
+  @media (min-width: ${size.laptop}) {
+    width: 290px;
   }
 `;
 export const PersonEntry = styled.div`
@@ -484,7 +482,7 @@ export const BoxLeft = styled.div`
   }
 `;
 export const BoxRight = styled.div``;
-export const DetailTop = styled.div`
+export const PopupFilterTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -776,6 +774,6 @@ export const H4 = styled("h4")`
   
 `;
 
-export const SPAN = styled("span")`
+export const span = styled("span")`
 user-select: none;
 `;

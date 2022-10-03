@@ -46,7 +46,7 @@ import {
 import CustomTooltip from "../../../components/Tooltip";
 import moment from "moment";
 import HotelPhotoSlider from "../HotelPhotoSlider";
-import { StyledStarsSmall } from "../../../components/Styled/stars";
+import { StyledStars } from "../../../components/Styled/stars";
 
 type HotelDetailProps = {
   data: any;
@@ -387,7 +387,7 @@ const HotelDetailComponent = ({
         <HotelInfo>
           <LeftSide>
             <HotelName>Hotel Victoria</HotelName>
-            <StyledStarsSmall stars={3} />
+            <StyledStars stars={3} size='small' />
             <ShortDescription>
               <HotelLocation>
                 {t("deals.location")}

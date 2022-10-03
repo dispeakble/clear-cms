@@ -58,35 +58,6 @@ export const MainWrapper = styled.div<{ isOrange?: boolean }>`
                  }) => isOrange ? `linear-gradient(111.87deg, ${theme.colors.primaryLight} 3.23%, ${theme.colors.primaryColorHover} 98.39%)` : theme.colors.mainBackground};
 `;
 
-export const MainContentWrapper = styled.div`
-  width: 100%;
-  max-width: 320px;
-  @media ${device.mobileS} {
-    max-width: 320px;
-  }
-  @media ${device.mobileM} {
-    max-width: 375px;
-  }
-  @media ${device.mobileL} {
-    max-width: 400px;
-  }
-  @media ${device.tablet} {
-    max-width: 720px;
-  }
-  @media ${device.laptop} {
-    max-width: 900px;
-  }
-  @media ${device.laptopL} {
-    max-width: 1280px;
-  }
-  @media ${device.desktop} {
-    max-width: 1440px;
-  }
-  @media ${device.desktopL} {
-    max-width: 1440px;
-  }
-`;
-
 export const Wrapper = styled.div<{ isLogin?: boolean; isBreadcrumb?: boolean }>`
   min-height: ${({ isBreadcrumb }) => isBreadcrumb ? "auto" : "100vh"};
   border-radius: ${({ isLogin }) => isLogin ? "10px" : "0"};
@@ -107,12 +78,6 @@ export const TopContentWrapper = styled.div<{ isHome?: boolean, showSearch?: boo
   width: 100%;
   padding: 54px 0 0;
   ${({ showSearch }) => showSearch && "padding-bottom: 40px;"}
-  background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
-  background-size: cover;
-`;
-export const TopContentWrapperForFlightResults = styled.div`
-  width: 100%;
-  padding: 0 0 32px 0;
   background: url('${headerBg.src}') no-repeat center center ${({ theme }) => theme.colors.mainBackground};
   background-size: cover;
 `;
@@ -201,44 +166,3 @@ export const BottomContentWrapper = styled.div`
     flex-direction: row;
   }
 `;
-
-export type BreadCrumbsProps = {
-  marg?: string
-}
-
-export const BreadcrumbsContainer = styled.div<BreadCrumbsProps>`
-  width: 100%;
-  margin: ${(props) => props.marg || "120px 0px 0px 0px"};
-  padding: 1rem;
-`;
-
-
-// ----------------------- for flight Results ---------------------------
-
-export const BottomContentWrapperForFlightResults = styled.div`
-  display: flex;
-  margin-top: 16px;
-  justify-content: center;
-  padding: 20px;
-  width: 100%;
-  flex-direction: column;
-  @media ${device.laptop} {
-    flex-direction: row;
-  }
-`;
-
-export const FlightResultsMainWrapper = styled.div`
-  background-color: ${({ theme }) => theme.colors.mainBackground};
-`;
-
-
-export const HotelResultsMainContent = styled.div`
-  display: flex;
-  padding-left: 8px;
-  justify-content: center;
-  width: 100%;
-  @media (max-width: ${size.laptopM}) {
-    flex-wrap: wrap;
-  }
-`;
-

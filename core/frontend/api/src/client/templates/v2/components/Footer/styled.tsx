@@ -36,7 +36,7 @@ export const FooterWrapper = styled.footer<{ isLogin?: boolean }>`
   }
   
   @media ${device.mobileS} {
-    max-width: 320px;
+    max-width: 300px;
   }
   @media ${device.mobileM} {
     max-width: 375px;

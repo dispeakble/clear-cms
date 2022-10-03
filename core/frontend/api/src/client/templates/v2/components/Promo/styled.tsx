@@ -14,12 +14,18 @@ export const StyledWrapper = styled.div`
 export const StyledCardsWrapper = styled.div`
   width: 100%;
 
-  @media ${device.laptop} {
-    padding: 0 20px;
-  }
-
   @media ${device.laptopL} {
     padding: 0 100px;
+  }
+
+  & div{
+    grid-column: span 2;
+  }
+
+  @media (${device.laptop}) {
+    & div{
+      grid-column: span 1;
+    }
   }
 
   display: grid;
@@ -65,6 +71,7 @@ export const StyledCardImage = styled.div<{ src: any }>`
 
 export const StyledFirstRow = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
   font-size: 12px;
   margin-bottom: 10px;
@@ -92,6 +99,7 @@ export const StyledGrayLabel = styled.span`
 `;
 
 export const SmallBookNow = styled.span`
+  height: 21px;
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.primaryColor};
   padding: 0 10px;
@@ -132,6 +140,9 @@ export const StyledTabs = styled.div`
 `;
 
 export const StyledTabBtn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
   background:  ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.gray};

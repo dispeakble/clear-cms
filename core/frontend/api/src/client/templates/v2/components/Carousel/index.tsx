@@ -7,7 +7,7 @@ import React, { useRef } from "react";
 import Slider from "react-slick";
 
 import card1 from "../../assets/img/hotelresults/card1.jpg";
-import { StyledStarsSmall } from "../Styled/stars";
+import { StyledStars } from "../Styled/stars";
 import { useTranslations } from "next-intl";
 
 interface ICarousal {
@@ -51,7 +51,7 @@ const Carousal = ({
               <CardDetail>
                 <CardDetailLeft>
                   <HotelName>{hotelName}</HotelName>
-                  <StyledStarsSmall stars={averageStars}></StyledStarsSmall>
+                  <StyledStars stars={averageStars} size='small'></StyledStars>
                 </CardDetailLeft>
                 <CardDetailRight>
                   <StartingPrice>{t("hotelResult.from")} <span>{price}€</span></StartingPrice>
@@ -65,7 +65,7 @@ const Carousal = ({
               <CardDetail>
                 <CardDetailLeft>
                   <HotelName>{hotelName}</HotelName>
-                  <StyledStarsSmall stars={averageStars}></StyledStarsSmall>
+                  <StyledStars stars={averageStars} size='small'></StyledStars>
                 </CardDetailLeft>
                 <CardDetailRight>
                   <StartingPrice>From <span>{price}€</span></StartingPrice>

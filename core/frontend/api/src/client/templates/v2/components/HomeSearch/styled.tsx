@@ -42,7 +42,7 @@ export const StyledSearchTabs = styled.div`
 export const StyledSearchTab = styled.a`
   display: block;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
   background: white;
   cursor: pointer;
   user-select: none;
@@ -67,6 +67,7 @@ export const StyledSearchTab = styled.a`
   }
 
   @media ${device.tablet} {
+    padding: 20px;
     display: inline-block;
     flex: none;
   }
@@ -240,7 +241,6 @@ export const StyledSearchButton = styled.button`
 `;
 
 export const StyledSearchOptions = styled.div`
-  position: relative;
   margin-top: 5px;
   padding: 10px;
   border-radius: 0 0 16px 16px;
@@ -290,13 +290,14 @@ export const StyledPrimaryValue = styled.div`
 `;
 
 export const StyledSearchCheckinGroup = styled.div`
-  border: 2px solid #EFEFEF;
+  border: 1px solid ${({ theme }) => theme.colors.greyBorder};
   border-radius: 10px;
   display: flex;
   flex: 1;
 
   & > span:hover {
-    background-color: ${({ theme }) => theme.colors.primaryLight};
+    background-color: ${({ theme }) => theme.colors.primaryColorHover};
+    
 
     & > label {
       color: #FFFFFF !important;
@@ -360,7 +361,7 @@ export const StyledFilterWrapper = styled.div`
 
 export const StyledSearchOptionsGroup = styled.div`
   cursor: pointer !important;
-  border: 2px solid #EFEFEF;
+  border: 1px solid ${({ theme }) => theme.colors.primaryColorHover};
   border-radius: 10px;
   display: flex;
   flex: 1;
@@ -370,7 +371,7 @@ export const StyledSearchOptionsGroup = styled.div`
 
   & > label:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.primaryLight};
+    background-color: ${({ theme }) => theme.colors.primaryColorHover};
 
     & > ${StyledCenterLabel} * {
       color: white !important;
@@ -396,7 +397,7 @@ export const StyledSearchOptionsGroup = styled.div`
   }
 `;
 
-export const StyledPerson = styled.label`
+export const StyledPersonFilter = styled.label`
   flex: 1;
   user-select: none;
   padding: 10px 0 10px 10px;
@@ -411,7 +412,7 @@ export const StyledPerson = styled.label`
   }
 `;
 
-export const StyledChild = styled.label`
+export const StyledChildFilter = styled.label`
   flex: 1;
   user-select: none;
   padding: 10px 0 10px 10px;
@@ -431,7 +432,7 @@ export const StyledChild = styled.label`
   }
 `;
 
-export const StyledStars = styled.label`
+export const StyledStarsFilter = styled.label`
   flex: 1;
   user-select: none;
   padding: 10px 0 10px 10px;
@@ -621,6 +622,7 @@ export const CalendarContainer = styled.div`
   }
 
   .react-calendar__tile--hasActive {
+    color: ${({ theme }) => theme.colors.white};
     background: ${({ theme }) => theme.colors.primaryColor};
   }
 
@@ -636,7 +638,7 @@ export const CalendarContainer = styled.div`
 
   .react-calendar__tile--rangeStart, .react-calendar__tile--rangeEnd {
     background: ${({ theme }) => theme.colors.primaryColor} !important;
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white} !important;
   }
 
   .react-calendar__tile--active:enabled:hover,

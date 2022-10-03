@@ -3,17 +3,17 @@ import {
   StyledDetails,
   StyledLunch,
   StyledPrice,
-  StyledStars,
   StyledTitle,
   StyledZoomImg, StyledZoomPopup
 } from "./styled";
 import { useTranslations } from "next-intl";
+import { StyledStars } from "../Styled/stars";
 
 const Card = ({ title, meal, details, price, img }: any) => {
   const t = useTranslations();
   return (
     <StyledCard>
-      <StyledStars stars={3} />
+      <StyledStars stars={3} size='small' />
       <StyledTitle>{title}</StyledTitle>
       <StyledLunch>{meal}</StyledLunch>
       <StyledDetails>{details}</StyledDetails>
