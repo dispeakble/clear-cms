@@ -567,7 +567,7 @@ describe("Home Page Suite", () => {
 });
 
 describe("Children age popup suite", () => {
-  it("Should not go less than 0 and more than 17", async () => {
+  it("Should not go less than 0 and more than 12", async () => {
     const homePage = render(<Wrapper {...homePageProps} />);
     fireEvent.click(homePage.getByTestId(/test-open-children-handler/));
 
@@ -586,7 +586,7 @@ describe("Children age popup suite", () => {
     }
 
     await waitFor(() => {
-      expect(homePage.getByTestId(/test-age-handler-value/).textContent).toBe("17");
+      expect(homePage.getByTestId(/test-age-handler-value/).textContent).toBe("12");
     });
 
     for (let i = 0; i < 20; i++) {

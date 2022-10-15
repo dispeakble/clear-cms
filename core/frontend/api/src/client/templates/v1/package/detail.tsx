@@ -23,6 +23,17 @@ import PackageCharter from "../components/PackageCharter";
 import HotelCardGrid from "../hotel/components/HotelCardGrid";
 import Layout from "../components/Layout";
 
+type searchFilterState = {
+  hotel: string,
+  checkin: Date,
+  checkout: Date,
+  passenger: {
+    adults: number,
+    children: number,
+    childAges: number[]
+  }
+}
+
 const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   const t = useTranslations();
 
@@ -34,7 +45,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     zoom: 10
   });
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<searchFilterState>({
     hotel: "",
     checkin: new Date(),
     checkout: moment(new Date()).add(1, "d").toDate(),
@@ -43,7 +54,6 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       children: 0,
       childAges: []
     }
-
   });
 
   const handleChangeInput = (name: string, value: any) => {

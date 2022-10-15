@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
 export const StyledCard = styled.div`
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 25px rgba(0, 0, 0, .1);
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   padding: 10px;

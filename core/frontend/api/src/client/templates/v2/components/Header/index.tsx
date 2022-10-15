@@ -3,13 +3,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import {
-  AuthWrapper,
   HeaderContent,
   HeaderWrapper,
   IconContainer, InfosItem, InfosItemLabel,
   InputSearch,
   LanguagesWrapper,
-  LoginButton, LogoutButton,
+  LogoutButton,
   LogoWrapper,
   MenuWrapper,
   ProfileButton,

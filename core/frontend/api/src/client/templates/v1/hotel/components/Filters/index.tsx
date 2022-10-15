@@ -8,7 +8,7 @@ import { useState } from "react";
 const Filters = ({ setSelectedFilters, selectedFilters, filters }: any) => {
 
   const t = useTranslations();
-  const [isOpen, setIsOpen] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState([]);
 
 
   const handleFilterOpen = (slug: string) => {
@@ -18,7 +18,38 @@ const Filters = ({ setSelectedFilters, selectedFilters, filters }: any) => {
   };
 
   return (
-    <></>
+    <FiltersWrapper>
+      <FiltersHeaderWrapper>
+        <FiltersHeader>
+          {t("filters.main.title")}
+        </FiltersHeader>
+        <ResetText onClick={() => setSelectedFilters([])}>
+          {t("filters.main.reset")}
+        </ResetText>
+      </FiltersHeaderWrapper>
+
+      {
+        filters &&
+        filters.map((filter: any, index: number) => {
+          return (
+            <FiltersHeaderWrapper key={index}>
+              <FiltersHeader>
+                {filter.title}
+              </FiltersHeader>
+              <Image
+                src={FiltersArrow}
+                width={10}
+                height={5}
+                onClick={() => handleFilterOpen(filter.slug)}
+                style={{
+                  cursor: "pointer"
+                }}
+              />
+            </FiltersHeaderWrapper>
+          );
+        })
+      }
+    </FiltersWrapper>
   );
 };
 

@@ -4,7 +4,6 @@ import { IntlProvider } from "next-intl";
 import PackageCheckoutPage from "../package/checkout";
 import "@testing-library/jest-dom";
 
-
 jest.mock("next/router", () => ({
   useRouter() {
     return {

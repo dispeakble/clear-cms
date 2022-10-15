@@ -14,9 +14,6 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   position: fixed;
   z-index: 9999;
   top: 0;
-  
-  
-
   -webkit-transition: background-color 1000ms linear;
   -ms-transition: background-color 1000ms linear;
   transition: background-color 1000ms linear;
@@ -60,7 +57,6 @@ export const HeaderContent = styled.div`
     max-width: 1440px;
   }
 `;
-
 
 export const LogoWrapper = styled.div`
   filter: drop-shadow(0px 0 4px rgba(255,255,255,0.7));
@@ -124,15 +120,6 @@ export const InputSearch = styled.input`
   }
 `;
 
-export const AuthWrapper = styled.div`
-  display: flex;
-  gap: 15px;
-  position: relative;
-  height: 100%;
-  margin-left: 15px ;
-  order: 5;
-`;
-
 export const StyledButton = styled.div`
   padding: 4px 30px;
   font-style: normal;
@@ -146,20 +133,6 @@ export const StyledButton = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-`;
-
-export const LoginButton = styled.a`
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.white};
-  :hover {
-    text-decoration: underline;
-    color: ${({ theme }) => theme.colors.white};
-  }
-`;
-
-export const RegisterButton = styled(StyledButton)`
-  background: ${({ theme }) => theme.colors.white};
-  color: #70B915;
 `;
 
 export const ProfileContainer = styled.div`
@@ -187,11 +160,8 @@ export const ProfileFirstName = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
-
   text-decoration-line: underline;
-
   color: ${({ theme }) => theme.colors.white};
-  
   @media screen and (max-width: ${size.tablet}){
     display: none;
   }
@@ -258,15 +228,11 @@ export const ProfileInfosContainer = styled.div<{ isOpen?: boolean }>`
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  
   width: 375px;
-  
   display: ${({ isOpen }) => isOpen ? "block" : "none"};
-
   background: rgb(${({ theme }) => theme.colors.primaryColorFadedRBG});
   box-shadow: 0 0 24px rgba(0, 75, 139, 0.24);
   border-radius: 8px;
-  
   padding: 20px 25px;
 `;
 
@@ -306,19 +272,14 @@ export const LogoutButton = styled.button`
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   width: 100%;
-  
   cursor: pointer;
-
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
   text-align: center;
-  
   padding: 7px 110px;
-  
   margin-top: 12px;
   transition: .2s background ease-in-out;
-  
   &:hover{
     background: ${({ theme }) => theme.colors.primaryColorHover};
     transition: .2s background ease-in-out;
