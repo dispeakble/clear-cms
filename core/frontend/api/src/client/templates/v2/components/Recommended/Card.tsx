@@ -10,11 +10,11 @@ import {
 import { useTranslations } from "next-intl";
 import { StyledStars } from "../Styled/stars";
 
-const Card = ({ title, meal, details, price, img, dataTestid }: any) => {
+const Card = ({ title, meal, details, price, img, stars, dataTestid }: any) => {
   const t = useTranslations();
   return (
     <StyledCard data-testid={dataTestid}>
-      <StyledStars stars={1} />
+      <StyledStars stars={stars} />
       <StyledTitle>{title}</StyledTitle>
       <StyledLunch>{meal}</StyledLunch>
       <StyledDetails>{details}</StyledDetails>

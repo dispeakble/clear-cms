@@ -106,12 +106,12 @@ export const InputSearch = styled.input`
   }
 
   &:focus {
-    padding: 8px 8px 8px 65px;
+    padding: 8px 8px 8px 54px;
     width: 100%;
   }
 
   @media (min-width: ${size.laptop}) {
-    padding: 8px 8px 8px 65px;
+    padding: 8px 8px 8px 54px;
 
     width: 100%;
     &::placeholder {

@@ -58,7 +58,7 @@ export const HotelSearch = styled.div`
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   cursor: pointer;
-  flex: 1 0 40%;
+  flex: 1;
 
   input {
     border: none;
@@ -303,7 +303,7 @@ export const SliderSection = styled.div`
   display: flex;
 `;
 export const DateDiv = styled.div`
-  position: relative;
+  
 `;
 
 export const ShowDate = styled.div`

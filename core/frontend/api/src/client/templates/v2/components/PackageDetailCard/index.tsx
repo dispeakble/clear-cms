@@ -1,10 +1,10 @@
 import {
   PackageDetailContainer, TitleText, FlightInformation, InputContainer,
   StyledSearchDestinationInput, AutocompleteItem, AutocompleteList, FlightTakeOffInput, DropdownIcon,
-  StyledSearchInput, ImageForCompany, FlightDetailsContainer, FlightPort,
+  FlightDetailsContainer, FlightPort,
   Time, TakeOffInputContainer, PassengerWrapper, Passenger, ChildIcon,
   CounterBtn, CounterDiv, DivView, PassengerDetailsWrapper, SpanDiv, PassengerView, BetweenInputs
-  , BetweenInputsContainer, BookingCardContent, BookingCardPrice
+  , BetweenInputsContainer, BookingCardContent, BookingCardPrice, StyledSearchDepartureInput
 } from "./styled";
 
 import {
@@ -256,7 +256,7 @@ const PackageDetailCard = () => {
         <InputContainer>
           <FlightTakeOffInput>
             <TakeOffInputContainer>
-              <StyledSearchInput
+              <StyledSearchDepartureInput
                 ref={departureRef}
                 placeholder={t("search.homeSearchPackageDeparturePlaceholder")}
                 value={departure}
@@ -297,37 +297,27 @@ const PackageDetailCard = () => {
         </InputContainer>
 
         <label>{t("packageDetails.detailCard.flightDate")}</label>
-
         <InputContainer>
-          <div style={{ flex: "1 0 40%" }}>
-
+          <div style={{ flex: 1 }}>
             <ClickAwayListener onClickAway={() => handleClickAway("checkin")}>
               <DateDiv>
                 <HotelSearch onClick={() => {
                   handleShowCheckin();
                 }}>
                   <CalenderIcon />
-                  <input placeholder={t("deals.checkin")}
-                         onChange={() => {
-                         }}
-                         style={{ cursor: "pointer" }}
-                         value={moment(data.checkin).format("dddd, DD MMMM, YYYY")} readOnly />
-
+                  <input style={{ cursor: "pointer" }}
+                         value={moment(data.checkin).format("DD MMM, YYYY")} readOnly />
                   <DropdownIcon />
                 </HotelSearch>
-
                 {show.checkin ? (
-
                   <HotelCalendar
                     minDate={data.checkin}
                     value={data.checkin}
-
                     onChange={(value: any) => {
                       handleChangeInput("checkin", value);
                       handleDateAway("checkin");
                     }}
                   />
-
                 ) : null}
               </DateDiv>
             </ClickAwayListener>
@@ -340,8 +330,6 @@ const PackageDetailCard = () => {
           }}>
             <CalenderIcon />
             <input placeholder={t("deals.checkin")}
-                   onChange={() => {
-                   }}
                    style={{ cursor: "pointer" }}
                    value={`7 ${t("global.nights")}`} readOnly />
 
@@ -358,7 +346,7 @@ const PackageDetailCard = () => {
                   <PassengerDetailsWrapper>
                     <div className="icon-and-title__wrapper">
                       <Image src={adultsIcon.src} width={9} height={22} />
-                      <SpanDiv>{data?.passenger.adults} {t("packageDetails.adult")}</SpanDiv>
+                      <SpanDiv>{data?.passenger.adults} {data?.passenger.adults > 1 ? t("packageDetails.adults") : t("packageDetails.adult")}</SpanDiv>
                     </div>
                     <DropdownIcon />
                   </PassengerDetailsWrapper>
@@ -373,8 +361,6 @@ const PackageDetailCard = () => {
                       <CounterBtn onClick={handleAdultPlus}>
                         +
                       </CounterBtn>
-
-
                     </CounterDiv>
                   </PassengerView>
                 ) : null}
@@ -391,7 +377,7 @@ const PackageDetailCard = () => {
                   <PassengerDetailsWrapper onClick={() => handleShowChildren()}>
                     <div className="icon-and-title__wrapper">
                       <ChildIcon />
-                      <SpanDiv>{data?.passenger.children} {t("packageDetails.children")}</SpanDiv>
+                      <SpanDiv>{data?.passenger.children} {data?.passenger.children > 1 ? t("packageDetails.children") : t("packageDetails.child")}</SpanDiv>
                     </div>
                     <DropdownIcon />
                   </PassengerDetailsWrapper>
@@ -469,7 +455,7 @@ const PackageDetailCard = () => {
         })}</ParaTextBold>
 
         <BookingCard>
-          <div style={{ flexBasis: "15%"}}>
+          <div style={{ flexBasis: "15%" }}>
             <BookingHeadingText>{t("packageDetails.detailCard.singleRoom")}</BookingHeadingText>
             <BookingHeadingText>{t("packageDetails.detailCard.allIncl")}</BookingHeadingText>
           </div>
@@ -484,7 +470,7 @@ const PackageDetailCard = () => {
         </BookingCard>
 
         <BookingCard>
-          <div style={{ flexBasis: "15%"}}>
+          <div style={{ flexBasis: "15%" }}>
             <BookingHeadingText>{t("packageDetails.detailCard.singleRoom")}</BookingHeadingText>
             <BookingHeadingText>{t("packageDetails.detailCard.allIncl")}</BookingHeadingText>
           </div>

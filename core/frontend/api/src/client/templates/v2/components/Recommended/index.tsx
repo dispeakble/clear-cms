@@ -15,6 +15,7 @@ const Recommended = () => {
     meal: t("home.recommended.description"),
     details: t("home.recommended.noOfNights"),
     price: "199 €",
+    stars: 3,
     img: hotel1.src
   };
 

@@ -7,7 +7,7 @@ export const Body = styled.div`
   border-radius: 20px;
   width: 100%;
   padding: 20px;
-  margin-top: 20px;
+  margin: 20px 0 14px;
 `;
 
 export const TitleText = styled.h3`

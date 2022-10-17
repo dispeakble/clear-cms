@@ -402,39 +402,37 @@ export const DescriptionContainer = styled.div`
 
 /* start Filters styles */
 
+export const FiltersWrapper = styled.div`
+  max-width: 100%;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.white};
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.11);
+
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-radius: 8px;
+
+  @media screen and ${device.laptopL} {
+    flex-direction: column;
+    max-width: 290px;
+  }
+
+`;
 
 export const FiltersHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 10px;
   align-items: center;
-
   width: 100%;
   cursor: pointer;
-`;
 
-export const FiltersWrapper = styled.div`
-  
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  max-width: 100%;
-  border-radius: 10px;
-  margin: 5px 0;
-  
-  @media ${device.tablet} {
-    max-width: 720px;
+  @media screen and ${device.laptopL} {
+    &:not(:last-of-type) {
+      border-bottom: 1px #C4C4C4 solid;
+    }
   }
-  @media ${device.laptop} {
-    max-width: 768px;
-  }
-  @media ${device.laptopL} {
-    max-width: 1024px;
-  }
-  @media ${device.desktop} {
-    max-width: 1200px;
-  }
-
 `;
 
 export const FiltersHeader = styled.h2`
@@ -443,7 +441,7 @@ export const FiltersHeader = styled.h2`
   font-weight: 500;
   font-size: clamp(14px, 2vw, 21px);
   line-height: 1.5;
-  color: #000000;
+  color: ${({ theme }) => theme.colors.black};
   margin: 0;
   text-transform: capitalize;
   letter-spacing: 0.15px;
@@ -459,7 +457,10 @@ export const ResetText = styled.span`
   cursor: pointer;
 
   letter-spacing: 0.15px;
-  color: #DC6B03;
+  color: ${({ theme }) => theme.colors.primaryColor};
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 /* end Filters styles */

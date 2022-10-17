@@ -102,7 +102,7 @@ export const InputContainer = styled.div`
 `;
 
 export const DropdownIcon = styled.div`
-  width: 40px;
+  width: 30px;
   height: 48px;
   cursor: pointer;
   background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
@@ -117,10 +117,11 @@ export const TakeOffInputContainer = styled.div`
   border-radius: 10px;
 `;
 
-export const StyledSearchInput = styled.input`
+export const StyledSearchDepartureInput = styled.input`
   flex: 1;
-  background: url(${({ theme }) => theme.icon("departure")}) no-repeat 16px center white;
-  padding: 8px 0 8px 64px;
+  background: url(${({ theme }) => theme.icon("departure")}) no-repeat 10px center white;
+  background-size: 23px 24px;
+  padding: 0 0 0 43px;
   width: 100%;
   border: none;
   border-radius: 10px;
@@ -140,8 +141,9 @@ export const StyledSearchInput = styled.input`
 
 export const StyledSearchDestinationInput = styled.input`
   flex: 1;
-  background: url(${({ theme }) => theme.icon("destination")}) no-repeat 16px center white;
-  padding: 0 0 0 64px;
+  background: url(${({ theme }) => theme.icon("destination")}) no-repeat 10px center white;
+  background-size: 23px 24px;
+  padding: 0 0 0 43px;
   line-height: 48px;
   box-sizing: border-box;
   width: 100%;
@@ -359,7 +361,6 @@ export const PassengerDetailsWrapper = styled.div`
   .icon-and-title__wrapper {
     width: 60%;
     display: flex;
-    align-items: center;
   }
 `;
 
@@ -399,19 +400,18 @@ export const BookingDetailContainer = styled.div`
 
 export const BookingButton = styled.button`
   padding: 10px;
-  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+  color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 7px;
   font-weight: bolder;
   font-size: 20px;
-  color: #fff;
   border: none;
-  text-shadow: 0 2px 2px #00000040;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
+
   &:hover {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryDark} 100%);
-    color: #FFFFFF;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
   }
 `;
 
@@ -451,20 +451,23 @@ export const QuotedPara = styled.p`
     bottom: -20px;
     right: 0;
   }
-  
-  text-align: justify;
-;
+
+  text-align: justify;;
 `;
 
 export const BetweenInputsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 1 20%;
+  padding: 0 10px;
+  @media ${device.tablet} {
+    flex: 1;
+    max-width: 50px;
+  }
 `;
 
 export const BetweenInputs = styled.div`
   border-bottom: 1px dotted grey;
   height: 0;
-  width: 80%;
+  width: 100%;
 `;

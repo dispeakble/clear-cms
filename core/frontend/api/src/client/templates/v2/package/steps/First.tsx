@@ -16,13 +16,10 @@ import {
   TicketHotelTitleContainer,
   IncludedText,
   HotelPackageAddress,
-  PackageHotelInfos, PlusContainer,
+  PackageHotelInfos,
   TextInfoItem, TextContainer, PackagePriceWrapper, PackagePriceText, PackagePrice
 } from "../styled";
 import Image from "next/image";
-import YellowStar from "../../assets/img/starYellowImage.png";
-import GrayStar from "../../assets/img/starGrayImage.png";
-import PackagePlus from "../../assets/img/packagePlus-icon.svg";
 
 import * as React from "react";
 import { useTranslations } from "next-intl";

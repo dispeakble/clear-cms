@@ -10,10 +10,9 @@ import HotelImage from "../assets/img/hotelImage.png";
 import PackageTransfers from "../assets/img/packageTransfers-icon.svg";
 import PackageActivities from "../assets/img/packageActivities-icon.svg";
 import Layout from "../components/Layout";
-import Filters from "../package/components/Filters";
+import Filters from "./components/Filters";
 import { FiltersContainer } from "../package/styled";
 import HotelCard from "./components/PackageCard";
-
 
 const HotelList = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
