@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
 import {
+  ContentWrapper,
   GlobalStyle,
   MainWrapper,
   TopContentWrapper, Wrapper
@@ -28,6 +29,7 @@ import BookingConfirmed from "./steps/BookingConfirmed";
 import DepartureIcon from "../assets/img/departure-icon.svg";
 import FlightImg from "../assets/img/flight.png";
 import ArrivalIcon from "../assets/img/arrival-icon.svg";
+import Layout from "../components/Layout";
 
 interface IPassenger {
   id: string,
@@ -37,10 +39,16 @@ interface IPassenger {
   age?: number;
 }
 
-const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
+const PackageCheckoutPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   const t = useTranslations();
   const [currentStep, setCurrentStep] = useState<number>(1);
+
+  const breadcrumbs = {
+    //TODO translate this
+    "packages/list": "Packages",
+    "packages/checkout": "Checkout"
+  };
 
   const day = {
     Monday: t("day.monday"),
@@ -65,12 +73,6 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
     November: t("month.november"),
     December: t("month.december")
   };
-
-  const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-  };
-
-  const myTheme: any = { colors: colorScheme, icon: getIcons };
 
   const passengersData = [
     {
@@ -245,52 +247,50 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
   };
 
   return (
-    <ThemeProvider theme={myTheme}>
-      <GlobalStyle />
-      <MainWrapper data-testid="package-checkout-page-wrapper">
-        <TopContentWrapper>
-          <Header websiteName={websiteName} />
-        </TopContentWrapper>
-        <Wrapper>
-          <Breadcrumbs page="Package" what="Checkout" />
-          <DetailsWrapper>
+    <Layout
+      isHomePage={false}
+      breadcrumbs={breadcrumbs}
+      websiteSlogan={websiteSlogan}
+      websiteName={websiteName}
+      colorScheme={colorScheme}
+    >
+      <ContentWrapper>
+        <DetailsWrapper>
+          {
+            currentStep !== 4 &&
+            <Cart packageDetails={packageDetails}
+                  passengersCount={passengersCount}
+            />
+          }
+          <HotelsWrapper>
+            <HotelsHeaderWrapper>
+              <HotelsHeader>
+                {
+                  displayHeader()
+                }
+              </HotelsHeader>
+              <CartStepsWrapper>
+                <StepWrapper currentStep={currentStep === 1}>
+                  1
+                </StepWrapper>
+                <StepWrapper currentStep={currentStep === 2}>
+                  2
+                </StepWrapper>
+                <StepWrapper currentStep={currentStep === 3}>
+                  3
+                </StepWrapper>
+                <StepWrapper currentStep={currentStep === 4}>
+                  4
+                </StepWrapper>
+              </CartStepsWrapper>
+            </HotelsHeaderWrapper>
             {
-              currentStep !== 4 &&
-              <Cart packageDetails={packageDetails}
-                    passengersCount={passengersCount}
-              />
+              displayStep()
             }
-            <HotelsWrapper>
-              <HotelsHeaderWrapper>
-                <HotelsHeader>
-                  {
-                    displayHeader()
-                  }
-                </HotelsHeader>
-                <CartStepsWrapper>
-                  <StepWrapper currentStep={currentStep === 1}>
-                    1
-                  </StepWrapper>
-                  <StepWrapper currentStep={currentStep === 2}>
-                    2
-                  </StepWrapper>
-                  <StepWrapper currentStep={currentStep === 3}>
-                    3
-                  </StepWrapper>
-                  <StepWrapper currentStep={currentStep === 4}>
-                    4
-                  </StepWrapper>
-                </CartStepsWrapper>
-              </HotelsHeaderWrapper>
-              {
-                displayStep()
-              }
-            </HotelsWrapper>
-          </DetailsWrapper>
-        </Wrapper>
-        <Footer />
-      </MainWrapper>
-    </ThemeProvider>
+          </HotelsWrapper>
+        </DetailsWrapper>
+      </ContentWrapper>
+    </Layout>
   );
 };
 

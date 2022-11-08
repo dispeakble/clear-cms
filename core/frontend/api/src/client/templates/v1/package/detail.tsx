@@ -63,7 +63,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     });
   };
   const handleAdultPlus = () => {
-    if(data.passenger.adults >= 9) return;
+    if (data.passenger.adults >= 9) return;
     setData({
       ...data,
       passenger: {
@@ -86,7 +86,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   };
 
   const handleChildrenPlus = () => {
-    if(data.passenger.children >= 4) return;
+    if (data.passenger.children >= 4) return;
     const childAges = [...data.passenger.childAges];
     childAges[data.passenger.children] = 0;
     setData({
@@ -116,7 +116,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   const handleChildAgePlus = (i: number) => {
     const childAges = [...data.passenger.childAges];
-    if(childAges[i] >= 9) return;
+    if (childAges[i] >= 9) return;
     childAges[i] = Number(childAges[i]) + 1;
     setData({
       ...data,
@@ -171,71 +171,69 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   };
 
   return (
-    <>
-      <Layout
-        isHomePage={false}
-        breadcrumbs={breadcrumbs}
-        websiteSlogan={websiteSlogan}
-        websiteName={websiteName}
-        colorScheme={colorScheme}
-      >
+    <Layout
+      isHomePage={false}
+      breadcrumbs={breadcrumbs}
+      websiteSlogan={websiteSlogan}
+      websiteName={websiteName}
+      colorScheme={colorScheme}
+    >
+      <ContentWrapper>
+        <PackageCharter
+          data={data}
+          handleChildrenMinus={handleChildrenMinus}
+          handleChildrenPlus={handleChildrenPlus}
+          handleChildAgeMinus={handleChildAgeMinus}
+          handleChildAgePlus={handleChildAgePlus}
+          handleChangeInput={handleChangeInput}
+          handleAdultPlus={handleAdultPlus}
+          handleAdultMinus={handleAdultMinus}
+          handleSearch={handleSearch}
+        />
+      </ContentWrapper>
+      <PaperWrapper style={{ marginTop: "20px" }}>
         <ContentWrapper>
-          <PackageCharter
-            data={data}
-            handleChildrenMinus={handleChildrenMinus}
-            handleChildrenPlus={handleChildrenPlus}
-            handleChildAgeMinus={handleChildAgeMinus}
-            handleChildAgePlus={handleChildAgePlus}
-            handleChangeInput={handleChangeInput}
-            handleAdultPlus={handleAdultPlus}
-            handleAdultMinus={handleAdultMinus}
-            handleSearch={handleSearch}
-          />
+          <BottomContentWrapper>
+            <ServiceAndMapWrapper>
+              <Highlights>
+                <Cardtitle>
+                  {t("packageDetails.incService")}
+                </Cardtitle>
+                <Feature>
+                  {
+                    Features.map((value, index) => {
+                      return <li key={index}><CheckedIcon /><span>{value}</span></li>;
+                    })
+                  }
+                </Feature>
+                <Cardtitle>
+                  {t("packageDetails.notIncService")}
+                </Cardtitle>
+                <Feature>
+                  <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
+                </Feature>
+              </Highlights>
+              <MapSection id="showmap">
+                <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: "AIzaSyCpo_BJKJ9KZOTDlAXaI7o8mH1Q70Kq8v4",
+                    libraries: ["places", "geometry"]
+                  }}
+                  defaultCenter={mapData.center}
+                  defaultZoom={mapData.zoom}
+                  yesIWantToUseGoogleMapApiInternals
+                />
+              </MapSection>
+            </ServiceAndMapWrapper>
+            <DetailWrapper>
+              <PackageDetailCard />
+              <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
+              <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
+            </DetailWrapper>
+          </BottomContentWrapper>
         </ContentWrapper>
-        <PaperWrapper style={{ marginTop: "20px" }}>
-          <ContentWrapper>
-            <BottomContentWrapper>
-              <ServiceAndMapWrapper>
-                <Highlights>
-                  <Cardtitle>
-                    {t("packageDetails.incService")}
-                  </Cardtitle>
-                  <Feature>
-                    {
-                      Features.map((value, index) => {
-                        return <li key={index}><CheckedIcon /><span>{value}</span></li>
-                      })
-                    }
-                  </Feature>
-                  <Cardtitle>
-                    {t("packageDetails.notIncService")}
-                  </Cardtitle>
-                  <Feature>
-                    <li><UncheckedIcon /><span>{t("packageDetails.travelIns")}</span></li>
-                  </Feature>
-                </Highlights>
-                <MapSection id="showmap">
-                  <GoogleMapReact
-                    bootstrapURLKeys={{
-                      key: "AIzaSyCpo_BJKJ9KZOTDlAXaI7o8mH1Q70Kq8v4",
-                      libraries: ["places", "geometry"]
-                    }}
-                    defaultCenter={mapData.center}
-                    defaultZoom={mapData.zoom}
-                    yesIWantToUseGoogleMapApiInternals
-                  />
-                </MapSection>
-              </ServiceAndMapWrapper>
-              <DetailWrapper>
-                <PackageDetailCard />
-                <HotelCardGrid title={t("packageDetails.BookingCardTitle1")} />
-                <HotelCardGrid title={t("packageDetails.detailCard.otherDestinations")} />
-              </DetailWrapper>
-            </BottomContentWrapper>
-          </ContentWrapper>
-        </PaperWrapper>
-      </Layout>
-    </>
+      </PaperWrapper>
+    </Layout>
   );
 
 };

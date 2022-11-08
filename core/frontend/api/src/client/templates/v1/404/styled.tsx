@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import headerBg from "../assets/img/header-bg.jpg";
-import check from "../assets/img/check-sign-gold-icon.svg";
+import check from "../assets/img/icons/check-sign-gold-icon.svg";
 import { CustomTheme } from "../../../modules";
 import Link from "next/link";
 

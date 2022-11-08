@@ -34,6 +34,6 @@ export const StyledBreadcrumbLink = styled.a`
   }
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primaryLight};
+    text-decoration: underline;
   }
 `;

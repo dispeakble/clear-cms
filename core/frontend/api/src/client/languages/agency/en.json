@@ -566,6 +566,7 @@
       "confirmed": "Booking Confirmed"
     },
     "cart": {
+      "header": "Package Summary",
       "total": "Package Price"
     },
     "details": {

@@ -1266,7 +1266,6 @@ export const TicketText = styled.p`
 
 export const CartFooterWrapper = styled.div`
   padding: 25px 31px;
-  border-top: 1px dashed #A29E9E;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1359,7 +1358,7 @@ export const RoomDetails = styled.p`
   color: ${({ theme }) => theme.colors.black};
 `;
 
-export const PackageHotelInfos = styled.p`
+export const PackageHotelInfos = styled.div`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 400;

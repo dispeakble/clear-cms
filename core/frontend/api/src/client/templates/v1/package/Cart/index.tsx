@@ -3,10 +3,7 @@ import {
   CartHeader,
   CartHeaderWrapper,
   CartItemContainer,
-  CartTicketsWrapper,
   CartWrapper,
-  TicketItem,
-  TicketText,
   TotalPrice,
   TotalText,
   CartHotelSection,
@@ -41,7 +38,7 @@ const Cart = ({ packageDetails, passengersCount }: IProps) => {
     <CartWrapper>
       <CartHeaderWrapper>
         <CartHeader>
-          {t("flightsCheckout.cart.header")}
+          {t("packageCheckout.cart.header")}
         </CartHeader>
       </CartHeaderWrapper>
       <CartItemContainer>
@@ -176,25 +173,7 @@ const Cart = ({ packageDetails, passengersCount }: IProps) => {
             );
           })
         }
-
       </CartItemContainer>
-      <CartTicketsWrapper>
-        { /*
-                    Object.keys(passengersCount).map((key: any) =>
-                        (
-                            <TicketItem>
-                                <TicketText>
-                                    {passengersCount[key]} x {key} ticket
-                                </TicketText>
-                                <TicketText>
-                                    {Number((passengersCount[key] as number) * ticketPrice).toFixed(2)} €
-                                </TicketText>
-                            </TicketItem>
-                        )
-                    )
-                  */
-        }
-      </CartTicketsWrapper>
       <CartFooterWrapper>
         <TotalText>
           {t("packageCheckout.cart.total")}

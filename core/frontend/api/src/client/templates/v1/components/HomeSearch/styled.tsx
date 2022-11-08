@@ -330,6 +330,10 @@ export const StyledCheckIn = styled.span`
   & label {
     pointer-events: none;
   }
+  
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("checkInWhite")});
+  }
 
 `;
 
@@ -346,6 +350,10 @@ export const StyledCheckOut = styled.span`
   & label {
     pointer-events: none;
     user-select: none;
+  }
+
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("checkOutWhite")});
   }
 
 `;
@@ -410,6 +418,10 @@ export const StyledPersonFilter = styled.label`
   @media ${device.desktop} {
     background-position: 70px 12px;
   }
+
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("personWhite")});
+  }
 `;
 
 export const StyledChildFilter = styled.label`
@@ -430,6 +442,9 @@ export const StyledChildFilter = styled.label`
   @media ${device.desktop} {
     background-position: 60px 12px;
   }
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("childWhite")});
+  }
 `;
 
 export const StyledStarsFilter = styled.label`
@@ -443,6 +458,9 @@ export const StyledStarsFilter = styled.label`
   }
   @media ${device.desktop} {
     background-position: 60px 12px;
+  }
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("starWhite")});
   }
 `;
 
