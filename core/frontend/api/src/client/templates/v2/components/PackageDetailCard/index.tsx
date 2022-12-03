@@ -3,7 +3,7 @@ import {
   StyledSearchDestinationInput, AutocompleteItem, AutocompleteList, FlightTakeOffInput, DropdownIcon,
   FlightDetailsContainer, FlightPort,
   Time, TakeOffInputContainer, PassengerWrapper, Passenger, ChildIcon,
-  CounterBtn, CounterDiv, DivView, PassengerDetailsWrapper, SpanDiv, PassengerView, BetweenInputs
+  PassengerDetailsWrapper, SpanDiv, BetweenInputs
   , BetweenInputsContainer, BookingCardContent, BookingCardPrice, StyledSearchDepartureInput
 } from "./styled";
 
@@ -29,8 +29,11 @@ import { CalenderIcon, DateDiv, HotelCalendar, HotelSearch } from "../../hotel/c
 import moment from "moment";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Image from "next/image";
-import adultsIcon from "../../assets/img/adults-icon.svg";
-import placeholderLogo from "../../assets/img/company-icon.svg";
+import adultsIcon from "../../assets/img/icons/adults-icon.svg";
+import placeholderLogo from "../../assets/img/icons/company-icon.svg";
+import { Overlay } from "../HomeSearch/styled";
+import ValuePopup from "../HomeSearch/valuePopup";
+import ValuePopupAges from "../HomeSearch/valuePopupAges";
 
 
 const PackageDetailCard = () => {
@@ -47,8 +50,13 @@ const PackageDetailCard = () => {
   const [destinationList, setDestinationList] = useState<any[]>([]);
   const [destinationId, setDestinationId] = useState(0);
   const [minCheckInDate, setMinCheckInDate] = useState(new Date());
-  const [showOccupantAdult, setShowOccupantAdult] = useState(false);
-  const [showOccupantChild, setShowOccupantChild] = useState(false);
+  const [currentPopup, setCurrentPopup] = useState("");
+  const [popupCss, setPopupCss] = useState<Record<string, any>>({});
+  const [filterValues, setFilterValues] = useState({
+    adults: 1,
+    children: 0,
+    childrenAges: []
+  });
 
   const [data, setData] = useState({
     hotel: "",
@@ -197,55 +205,25 @@ const PackageDetailCard = () => {
       [name]: false
     });
   };
-  const handleShowAdults = () => {
-    setShowOccupantAdult(prevState => !prevState);
+
+  const closeModals = () => {
+    setCurrentPopup("");
   };
 
-  const handleAdultPlus = () => {
-    setData({
-      ...data,
-      passenger: {
-        ...data.passenger,
-        adults: data.passenger.adults + 1
-      }
+  const handleFilterChange = (value: Record<string, number[] | number>) => {
+    setFilterValues(prevState => {
+      return { ...prevState, ...value };
     });
-
   };
 
-  const handleAdultMinus = () => {
-    if (Number(data.passenger.adults) > 0) {
-      setData({
-        ...data,
-        passenger: {
-          ...data.passenger,
-          adults: data.passenger.adults - 1
-        }
-      });
-    }
-  };
-  const handleShowChildren = () => {
-    setShowOccupantChild(prevState => !prevState);
-  };
-  const handleChildrenPlus = () => {
-    setData({
-      ...data,
-      passenger: {
-        ...data.passenger,
-        children: data.passenger.children + 1
-      }
+  const toggleFilters = (evt: React.MouseEvent, type: string) => {
+    const boundaries = evt.currentTarget.getBoundingClientRect();
+    setPopupCss({
+      left: Math.floor(boundaries.left) + window.scrollX,
+      top: Math.floor(boundaries.top + 10 + boundaries.height + window.scrollY),
+      width: Math.floor(boundaries.width)
     });
-
-  };
-  const handleChildrenMinus = () => {
-    if (Number(data.passenger.children) > 0) {
-      setData({
-        ...data,
-        passenger: {
-          ...data.passenger,
-          children: data.passenger.children - 1
-        }
-      });
-    }
+    setCurrentPopup(type);
   };
 
   return (
@@ -339,65 +317,55 @@ const PackageDetailCard = () => {
         </InputContainer>
         <label>{t("packageDetails.detailCard.occupants")}</label>
         <InputContainer>
-          <PassengerWrapper>
-            <ClickAwayListener onClickAway={() => setShowOccupantAdult(false)}>
-              <DivView>
-                <Passenger onClick={() => handleShowAdults()}>
-                  <PassengerDetailsWrapper>
-                    <div className="icon-and-title__wrapper">
-                      <Image src={adultsIcon.src} width={9} height={22} />
-                      <SpanDiv>{data?.passenger.adults} {data?.passenger.adults > 1 ? t("packageDetails.adults") : t("packageDetails.adult")}</SpanDiv>
-                    </div>
-                    <DropdownIcon />
-                  </PassengerDetailsWrapper>
-                </Passenger>
-                {showOccupantAdult ? (
-                  <PassengerView>
-                    <CounterDiv>
-                      <CounterBtn onClick={handleAdultMinus}>
-                        -
-                      </CounterBtn>
-                      <div>{data?.passenger.adults}</div>
-                      <CounterBtn onClick={handleAdultPlus}>
-                        +
-                      </CounterBtn>
-                    </CounterDiv>
-                  </PassengerView>
-                ) : null}
-              </DivView>
-            </ClickAwayListener>
+          <PassengerWrapper onClick={(evt) => toggleFilters(evt, "adults")}>
+            <Passenger>
+              <PassengerDetailsWrapper>
+                <div className="icon-and-title__wrapper">
+                  <Image src={adultsIcon.src} width={9} height={22} />
+                  <SpanDiv>{data?.passenger.adults} {data?.passenger.adults > 1 ? t("packageDetails.adults") : t("packageDetails.adult")}</SpanDiv>
+                </div>
+                <DropdownIcon />
+              </PassengerDetailsWrapper>
+            </Passenger>
           </PassengerWrapper>
           <BetweenInputsContainer>
             <BetweenInputs />
           </BetweenInputsContainer>
-          <PassengerWrapper>
-            <ClickAwayListener onClickAway={() => setShowOccupantChild(false)}>
-              <DivView>
-                <Passenger>
-                  <PassengerDetailsWrapper onClick={() => handleShowChildren()}>
-                    <div className="icon-and-title__wrapper">
-                      <ChildIcon />
-                      <SpanDiv>{data?.passenger.children} {data?.passenger.children > 1 ? t("packageDetails.children") : t("packageDetails.child")}</SpanDiv>
-                    </div>
-                    <DropdownIcon />
-                  </PassengerDetailsWrapper>
-                </Passenger>
-                {showOccupantChild ? (
-                  <PassengerView>
-                    <CounterDiv>
-                      <CounterBtn onClick={handleChildrenMinus}>
-                        -
-                      </CounterBtn>
-                      <div>{data?.passenger.children}</div>
-                      <CounterBtn onClick={handleChildrenPlus}>
-                        +
-                      </CounterBtn>
-                    </CounterDiv>
-                  </PassengerView>
-                ) : null}
-              </DivView>
-            </ClickAwayListener>
+          <PassengerWrapper onClick={(evt) => toggleFilters(evt, "children")}>
+            <Passenger>
+              <PassengerDetailsWrapper>
+                <div className="icon-and-title__wrapper">
+                  <ChildIcon />
+                  <SpanDiv>{filterValues.children} {filterValues.children > 1 || filterValues.children === 0 ? t("packageDetails.children") : t("packageDetails.child")}</SpanDiv>
+                </div>
+                <DropdownIcon />
+              </PassengerDetailsWrapper>
+            </Passenger>
           </PassengerWrapper>
+          {(
+            currentPopup.length
+          ) ? <Overlay data-testid="home-search-overlay" onClick={closeModals} /> : ""}
+          {currentPopup === "adults" ?
+            <ValuePopup style={popupCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
+                        max={9 - filterValues.children}
+                        onChange={handleFilterChange} /> : ""}
+          {currentPopup === "children" ?
+            <div><ValuePopup style={popupCss} dataTestId="test-children-handler" name="children"
+                             value={filterValues.children} min={0}
+                             max={4} onChange={handleFilterChange} />
+
+              {filterValues.children > 0 && <ValuePopupAges
+                style={{ ...popupCss, ...{ top: popupCss.top + 50 } }}
+                className="childrenAges"
+                name="childrenAges"
+                min={0}
+                max={12}
+                count={filterValues.children}
+                data={filterValues.childrenAges}
+                dataTestId="test-children-ages-handler"
+                onChange={handleFilterChange} />}
+            </div> : ""
+          }
         </InputContainer>
 
         <TitleText>{t("packageDetails.flightDetails")}</TitleText>

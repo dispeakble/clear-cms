@@ -12,9 +12,9 @@ import Filters from "./components/Filters";
 import PackageCard from "./components/PackageCard";
 
 import HotelImage from "../assets/img/hotels/small/hotel3.jpg";
-import PackageFlight from "../assets/img/packageFlight-icon.svg";
-import PackageHotel from "../assets/img/packageHotel-icon.svg";
-import BusIcon from "../assets/img/bus-icon.svg";
+import PackageFlight from "../assets/img/icons/packageFlight-icon.svg";
+import PackageHotel from "../assets/img/icons/packageHotel-icon.svg";
+import BusIcon from "../assets/img/icons/bus-icon.svg";
 import Layout from "../components/Layout";
 
 

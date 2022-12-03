@@ -7,8 +7,8 @@ import {
 import { BookNowContainer, HotelsLayout, LoadMoreButton, HotelsContainer } from "./styled";
 
 import HotelImage from "../assets/img/hotelImage.png";
-import PackageTransfers from "../assets/img/packageTransfers-icon.svg";
-import PackageActivities from "../assets/img/packageActivities-icon.svg";
+import PackageTransfers from "../assets/img/icons/packageTransfers-icon.svg";
+import PackageActivities from "../assets/img/icons/packageActivities-icon.svg";
 import Layout from "../components/Layout";
 import Filters from "./components/Filters";
 import { FiltersContainer } from "../package/styled";

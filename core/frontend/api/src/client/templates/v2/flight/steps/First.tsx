@@ -30,10 +30,10 @@ import {
   CustomButton
 } from "../styled";
 import Image from "next/image";
-import DepartureIcon from "../../assets/img/departure-icon.svg";
-import ArrivalIcon from "../../assets/img/arrival-icon.svg";
-import InfoIcon from "../../assets/img/info-icon.svg";
-import StopoverIcon from "../../assets/img/stopover-icon.svg";
+import DepartureIcon from "../../assets/img/icons/departure-icon.svg";
+import ArrivalIcon from "../../assets/img/icons/arrival-icon.svg";
+import InfoIcon from "../../assets/img/icons/info-icon.svg";
+import StopoverIcon from "../../assets/img/icons/stopover-icon.svg";
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";

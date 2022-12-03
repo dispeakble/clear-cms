@@ -1,7 +1,7 @@
 import { FiltersHeader, FiltersHeaderWrapper, FiltersWrapper, ResetText } from "../../styled";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import FiltersArrow from "../../../assets/img/filtersArrow-icon.svg";
+import FiltersArrow from "../../../assets/img/icons/filtersArrow-icon.svg";
 
 import { useState } from "react";
 

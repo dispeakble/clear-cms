@@ -26,9 +26,9 @@ import Cart from "./Cart";
 import * as shortid from "shortid";
 import FourthStep from "./steps/Fourth";
 import BookingConfirmed from "./steps/BookingConfirmed";
-import DepartureIcon from "../assets/img/departure-icon.svg";
+import DepartureIcon from "../assets/img/icons/departure-icon.svg";
 import FlightImg from "../assets/img/flight.png";
-import ArrivalIcon from "../assets/img/arrival-icon.svg";
+import ArrivalIcon from "../assets/img/icons/arrival-icon.svg";
 import Layout from "../components/Layout";
 
 interface IPassenger {

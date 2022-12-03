@@ -40,13 +40,6 @@ export const PackagesLayout = styled.div`
 
 `;
 
-export const PackagesDetail = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-`;
-
 export const FiltersContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -109,7 +102,6 @@ export const ImageContainer = styled.div`
   width: 340px;
   border-radius: 10px;
   padding: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.18);
   margin-right: 25px;
   position: relative;
 
@@ -513,9 +505,10 @@ export const HotelsHeaderWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.white};
+  flex-direction: column;
 
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
+  @media screen and ${device.laptopL} {
+    flex-direction: row;
     gap: 10px;
     padding: 12px;
   }
@@ -523,7 +516,7 @@ export const HotelsHeaderWrapper = styled.div`
 
 export const HotelsHeader = styled.h2`
   font-family: "Poppins", sans-serif;
-  font-size: clamp(18px, 3vw, 36px);
+  font-size: 32px;
   font-weight: 400;
   color: #434343;
   line-height: 1.5;
@@ -824,13 +817,14 @@ export const PackagePriceWrapper = styled.div`
   padding: 22px 34px;
   border: 1px ${({ theme }) => theme.colors.borderOutline} solid;
   border-radius: 10px;
+  gap: 10px;
 `;
 
 export const PackagePriceText = styled.h4`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 36px;
+  font-size: 32px;
   line-height: 1.5;
   margin: 0;
 
@@ -961,7 +955,7 @@ export const CustomButton = styled.button<ICustomButton>`
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  font-size: clamp(18px, 3vw, 36px);
+  font-size: clamp(18px, 2vw, 32px);
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.white};
   display: flex;
@@ -969,7 +963,7 @@ export const CustomButton = styled.button<ICustomButton>`
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 18px 26px;
+  padding: 10px 15px;
   justify-content: space-between;
 
   gap: 20px;

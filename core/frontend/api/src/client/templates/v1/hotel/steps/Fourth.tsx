@@ -1,6 +1,6 @@
 import PaymentRedirection from "../../assets/img/paymentRedirection.png";
 import PaymentError from "../../assets/img/paymentError.png";
-import ShoppingCart from "../../assets/img/shoppingCart-icon.svg";
+import ShoppingCart from "../../assets/img/icons/shoppingCart-icon.svg";
 
 import * as React from "react";
 import { useTranslations } from "next-intl";

@@ -51,7 +51,7 @@ import {
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import adultsIcon from "../../../assets/img/adults-icon.svg";
+import adultsIcon from "../../../assets/img/icons/adults-icon.svg";
 import { Overlay } from "../../../components/HomeSearch/styled";
 import ReactTooltip from "react-tooltip";
 

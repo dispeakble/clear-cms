@@ -26,13 +26,11 @@ import {
   HotelDescriptionContainer, HotelDescription, HotelServicesContainer
 } from "../../styled";
 import Image from "next/image";
-import YellowStar from "../../../assets/img/starYellowImage.png";
-import GrayStar from "../../../assets/img/starGrayImage.png";
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { StyledStars } from "../../../components/Styled/stars";
-import collapseUpIcon from "../../../assets/img/collapse-up-icon.svg";
-import collapseDownIcon from "../../../assets/img/collapse-down-icon.svg";
+import collapseUpIcon from "../../../assets/img/icons/collapse-up-icon.svg";
+import collapseDownIcon from "../../../assets/img/icons/collapse-down-icon.svg";
 import Link from "next/link";
 
 

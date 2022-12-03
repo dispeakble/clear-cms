@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import Header from "../components/Header";
 import FlightImg from "../assets/img/flight.png";
-import DepartureIcon from "../assets/img/departure-icon.svg";
-import ArrivalIcon from "../assets/img/arrival-icon.svg";
+import DepartureIcon from "../assets/img/icons/departure-icon.svg";
+import ArrivalIcon from "../assets/img/icons/arrival-icon.svg";
 import {
   GlobalStyle,
   MainWrapper,

@@ -224,28 +224,30 @@ export const HotelName = styled.div`
   padding: 8px 0 0;
 `;
 export const ViewPrice = styled.div`
-  margin: 18px 0;
+  margin: 0 0 18px 0;
   text-align: right;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   
   @media (min-width: ${size.laptop}) {
-    margin: 18px 18px 18px 0;
+    margin: 0 18px 18px 0;
   }
 `;
 
 export const Price = styled.div`
   font-weight: 400;
-  font-size: 36px;
-  line-height: 54px;
+  font-size: 32px;
+  line-height: 48px;
+  padding: 8px 0 0;
   color: #FF840D;
   
   span {
     font-size: 16px;
+    line-height: initial;
   }
 `;
 
 export const AboutPrice = styled.div`
-  
+  line-height: 20px;
 `;
 export const InfoIcon = styled.span`
   display: inline-block;
@@ -267,6 +269,7 @@ export const ShortDescription = styled.div`
   @media only screen and (max-width: ${size.tablet}) {
     display: block;
   }
+  padding: 10px 0;
 `;
 export const HotelLocation = styled.div`
   font-weight: 500;

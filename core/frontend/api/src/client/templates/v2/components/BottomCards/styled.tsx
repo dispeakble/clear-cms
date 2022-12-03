@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { device } from "../../styled";
-import coldStar from "../../assets/img/cold-star-icon.svg";
-import goldStar from "../../assets/img/gold-star-icon.svg";
-import zoomIcon from "../../assets/img/zoom-icon.svg";
+import coldStar from "../../assets/img/icons/cold-star-icon.svg";
+import goldStar from "../../assets/img/icons/gold-star-icon.svg";
+import zoomIcon from "../../assets/img/icons/zoom-icon.svg";
 
 export const Wrapper = styled.div`
   margin: 20px;

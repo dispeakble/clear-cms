@@ -327,7 +327,6 @@ const PackageCharter = ({
           <ViewPrice>
             <Price><span>{t("packageDetails.packageCharter.from")}</span> 1409€</Price>
             <AboutPrice>{t("packageDetails.packageCharter.perStay")}</AboutPrice>
-
           </ViewPrice>
         </HotelInfo>
         <SliderSection>
