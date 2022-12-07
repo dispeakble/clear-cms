@@ -205,8 +205,8 @@
     "checkin": "Saturday, 12 March...",
     "checkout": "Saturday, 13 March...",
     "detail": {
-      "adult": "Adults: ",
-      "child": "Children: "
+      "adult": "Adults",
+      "child": "Children"
     }
   },
   "hotels": {
@@ -426,6 +426,7 @@
       "bookingDetails": "Booking Details",
       "singleRoom": "Single room",
       "allIncl": "All Inclusive",
+      "b&b": "Bed & breakfast",
       "bookNow": "Book Now",
       "seePrices": "See Prices",
       "doubleRoom": "Double room",

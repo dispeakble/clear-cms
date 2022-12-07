@@ -34,6 +34,7 @@ import placeholderLogo from "../../assets/img/icons/company-icon.svg";
 import { Overlay } from "../HomeSearch/styled";
 import ValuePopup from "../HomeSearch/valuePopup";
 import ValuePopupAges from "../HomeSearch/valuePopupAges";
+import Link from "next/link";
 
 
 const PackageDetailCard = () => {
@@ -425,15 +426,15 @@ const PackageDetailCard = () => {
         <BookingCard>
           <div style={{ flexBasis: "15%" }}>
             <BookingHeadingText>{t("packageDetails.detailCard.singleRoom")}</BookingHeadingText>
-            <BookingHeadingText>{t("packageDetails.detailCard.allIncl")}</BookingHeadingText>
+            <BookingHeadingText>{t("packageDetails.detailCard.b&b")}</BookingHeadingText>
           </div>
           <BookingCardContent>
             <BookingMutedText>8 {t("global.days")} / 7 {t("global.nights")}</BookingMutedText>
             <BookingMutedText>1 {t("global.adults")}, 0 {t("global.children")}</BookingMutedText>
           </BookingCardContent>
           <BookingCardPrice>
-            <BookingPriceText>409€</BookingPriceText>
-            <BookingButton>{t("packageDetails.detailCard.bookNow")}</BookingButton>
+            <BookingPriceText>309€</BookingPriceText>
+            <Link href={"/packages/checkout"}><BookingButton>{t("packageDetails.detailCard.bookNow")}</BookingButton></Link>
           </BookingCardPrice>
         </BookingCard>
 
@@ -448,7 +449,7 @@ const PackageDetailCard = () => {
           </BookingCardContent>
           <BookingCardPrice>
             <BookingPriceText>409€</BookingPriceText>
-            <BookingButton>{t("packageDetails.detailCard.bookNow")}</BookingButton>
+            <Link href={"/packages/checkout"}><BookingButton>{t("packageDetails.detailCard.bookNow")}</BookingButton></Link>
           </BookingCardPrice>
         </BookingCard>
       </BookingDetailContainer>

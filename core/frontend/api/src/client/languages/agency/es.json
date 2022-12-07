@@ -172,7 +172,7 @@
     "searchFlightsButton": "Encontrar entradas",
     "checkin": "Llegada",
     "addDate": "Añadir fecha",
-    "checkinDate": "Fecha de registro",
+    "checkinDate": "fecha de entrada",
     "checkout": "Salida",
     "checkoutDate": "Fecha de salida",
     "guests": "Huéspedes",
@@ -205,8 +205,8 @@
     "checkin": "sábado, 12 de marzo...",
     "checkout": "sábado, 13 marzo...",
     "detail": {
-      "adult": "Adulto-",
-      "child": "Niñas-"
+      "adult": "Adultos",
+      "child": "Niños"
     }
   },
   "hotels": {
@@ -424,6 +424,7 @@
       "bookingDetails": "Detalles de la reserva",
       "singleRoom": "Habitación individual",
       "allIncl": "Todo incluido",
+      "b&b": "Bed & breakfast",
       "bookNow": "Reservar ahora",
       "seePrices": "Ver Precios",
       "doubleRoom": "Doble habitacion",

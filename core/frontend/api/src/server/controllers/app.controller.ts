@@ -166,6 +166,7 @@ export class AppController {
             try {
                 switch (data.type) {
                     case "meta":
+                        res.status(HttpStatus.OK);
                         AppController.filesResponse({res, file: data, fileStats});
 
                         file_meta.content_type = data.content_type;
@@ -177,16 +178,15 @@ export class AppController {
                         break;
                 }
             } catch (err) {
-                // eslint-disable-next-line no-console
-                console.log(err);
+                this.logger.log(err);
             }
 
         }, (error) => {
             this.logger.log(error);
-            res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            res.status(HttpStatus.NOT_FOUND);
+            res.end();
         }, () => {
             res.end();
-
         });
     }
 

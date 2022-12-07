@@ -7,6 +7,7 @@ type HeaderWrapperProps = {
 
 export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   width: 100%;
+  min-width: 320px;
   display: flex;
   
   align-items: center;
@@ -58,14 +59,21 @@ export const HeaderContent = styled.div`
   }
 `;
 
-export const LogoWrapper = styled.div`
+export const LogoWrapper = styled.span`
   filter: drop-shadow(0px 0 4px rgba(255,255,255,0.7));
   order: 1;
   margin: 0 5px;
+  display: flex;
+  flex-direction: column;
+  width: 120px;
   @media (max-width: ${size.laptop}) {
     order: 2;
     flex: 1;
     text-align: center;
+  }
+  & a {
+    display: flex;
+    flex: 1;
   }
 `;
 

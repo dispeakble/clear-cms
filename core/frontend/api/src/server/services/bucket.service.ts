@@ -107,7 +107,7 @@ export class BucketService {
                         data: {
                             modified: response.data.mtime,
                             size: response.data.size,
-                            "etagId": response.data.etagId,
+                            etagId: response.data.etagId,
                             file_name: params.path
                         }
                     });

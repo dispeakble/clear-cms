@@ -27,7 +27,7 @@ type searchFilterState = {
   hotel: string,
   checkin: Date,
   checkout: Date,
-  passenger: {
+  passengers: {
     adults: number,
     children: number,
     childAges: number[]
@@ -49,7 +49,7 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     hotel: "",
     checkin: new Date(),
     checkout: moment(new Date()).add(1, "d").toDate(),
-    passenger: {
+    passengers: {
       adults: 1,
       children: 0,
       childAges: []
@@ -63,51 +63,51 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
     });
   };
   const handleAdultPlus = () => {
-    if (data.passenger.adults >= 9) return;
+    if (data.passengers.adults >= 9) return;
     setData({
       ...data,
-      passenger: {
-        ...data.passenger,
-        adults: data.passenger.adults + 1
+      passengers: {
+        ...data.passengers,
+        adults: data.passengers.adults + 1
       }
     });
 
   };
   const handleAdultMinus = () => {
-    if (Number(data.passenger.adults) > 0) {
+    if (Number(data.passengers.adults) > 0) {
       setData({
         ...data,
-        passenger: {
-          ...data.passenger,
-          adults: data.passenger.adults - 1
+        passengers: {
+          ...data.passengers,
+          adults: data.passengers.adults - 1
         }
       });
     }
   };
 
   const handleChildrenPlus = () => {
-    if (data.passenger.children >= 4) return;
-    const childAges = [...data.passenger.childAges];
-    childAges[data.passenger.children] = 0;
+    if (data.passengers.children >= 4) return;
+    const childAges = [...data.passengers.childAges];
+    childAges[data.passengers.children] = 0;
     setData({
       ...data,
-      passenger: {
-        ...data.passenger,
-        children: data.passenger.children + 1,
+      passengers: {
+        ...data.passengers,
+        children: data.passengers.children + 1,
         childAges: childAges
       }
     });
 
   };
   const handleChildrenMinus = () => {
-    if (Number(data.passenger.children) > 0) {
-      const childAges = [...data.passenger.childAges];
-      delete childAges[data.passenger.children - 1];
+    if (Number(data.passengers.children) > 0) {
+      const childAges = [...data.passengers.childAges];
+      delete childAges[data.passengers.children - 1];
       setData({
         ...data,
-        passenger: {
-          ...data.passenger,
-          children: data.passenger.children - 1,
+        passengers: {
+          ...data.passengers,
+          children: data.passengers.children - 1,
           childAges: childAges
         }
       });
@@ -115,26 +115,26 @@ const PackageDetail = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   };
 
   const handleChildAgePlus = (i: number) => {
-    const childAges = [...data.passenger.childAges];
+    const childAges = [...data.passengers.childAges];
     if (childAges[i] >= 9) return;
     childAges[i] = Number(childAges[i]) + 1;
     setData({
       ...data,
-      passenger: {
-        ...data.passenger,
+      passengers: {
+        ...data.passengers,
         childAges: childAges
       }
     });
 
   };
   const handleChildAgeMinus = (i: number) => {
-    const childAges = [...data.passenger.childAges];
+    const childAges = [...data.passengers.childAges];
     childAges[i] = Number(childAges[i]) - 1;
     if (Number(childAges[i]) > 0) {
       setData({
         ...data,
-        passenger: {
-          ...data.passenger,
+        passengers: {
+          ...data.passengers,
           childAges: childAges
         }
       });
