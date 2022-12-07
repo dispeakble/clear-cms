@@ -26,7 +26,7 @@ export class FsService {
         return new Observable((observer) => {
             const realPath = this.help.path.realPath({path: params.path});
             try {
-                if (this.help.not.writeable({path: realPath})) {
+                if (this.help.not.readable({path: realPath})) {
                     observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
                     observer.complete();
                     return;

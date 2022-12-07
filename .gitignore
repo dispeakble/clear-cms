@@ -1,6 +1,8 @@
 .idea
 node_modules/
-var/
+**/var/**
+!**/var/images
+!**/var/images/*
 dist/
 coverage/
 build/
