@@ -103,7 +103,7 @@
     "typescript": "3.9.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build && rm -fr ../api/public/* && cp -Rf ./build/* ../api/public",
     "build_windows": "react-scripts build && xcopy .\\build ..\\api\\public\\ /E/H/Y",
     "test": "react-scripts test --env=jsdom",

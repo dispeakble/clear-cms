@@ -78,7 +78,7 @@ export class GeneralSettingsService {
 
                 this.protocolService.sendMessage(request).subscribe(data => {
                     subscriber.next({
-                        success: "General Settings Updated New",
+                        success: "General Settings Updated",
                         data: data
                     })
                 }, err => {
