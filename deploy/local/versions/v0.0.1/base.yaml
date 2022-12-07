@@ -256,4 +256,4 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: '${PWD}/volumes/cms/bucket'
+      device: '${PWD}/../../../plugins/dosido/bucket/var'

@@ -66,7 +66,7 @@ mkdir -p ./volumes/pgadmin/sessions
 
 chown 500:500 -R ./volumes/pgadmin
 
-mkdir -p ./volumes/cms/bucket
+#mkdir -p ./volumes/cms/bucket
 
 echo "Installing NodeJs packages"
 installService "./infrastructure/install-packages.sh"

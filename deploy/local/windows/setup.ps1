@@ -8,7 +8,7 @@ Write-Output "Creating volume folders"
 
 "mkdir -p ./volumes/postgres" | cmd | Out-Null
 "mkdir -p ./volumes/pgadmin/sessions" | cmd | Out-Null
-"mkdir -p ./volumes/cms/bucket" | cmd | Out-Null
+#"mkdir -p ./volumes/cms/bucket" | cmd | Out-Null
 
 .\start.ps1 -custom $custom
 
