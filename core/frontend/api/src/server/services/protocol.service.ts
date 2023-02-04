@@ -1,6 +1,6 @@
 import {ClientProxy} from "@nestjs/microservices";
 import {Inject, Injectable} from "@nestjs/common";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 
@@ -20,9 +20,9 @@ export class ProtocolService {
         return this.redisService.connect();
     }
 
-    public sendMessage(data: payloadInterface) {
+    public sendMessage(data: PayloadInterface) {
 
-        const payload: payloadInterface = {
+        const payload: PayloadInterface = {
             channel: data.channel,
             api: data.api,
             act: data.act,
@@ -34,7 +34,7 @@ export class ProtocolService {
 
     public emitMessage(data: any) {
 
-        const payload: payloadInterface = {
+        const payload: PayloadInterface = {
             api: data.module,
             act: data.act,
             channel: data.channel,
@@ -47,7 +47,7 @@ export class ProtocolService {
 
     public registerModule(data: ModuleInterface) {
         //TODO use sendMessage here :)
-        const payload: payloadInterface = {
+        const payload: PayloadInterface = {
             api: 'module',
             act: 'register',
             channel: `frontend`,

@@ -31,10 +31,10 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Image from "next/image";
 import adultsIcon from "../../assets/img/icons/adults-icon.svg";
 import placeholderLogo from "../../assets/img/icons/company-icon.svg";
-import { Overlay } from "../HomeSearch/styled";
 import ValuePopup from "../HomeSearch/valuePopup";
 import ValuePopupAges from "../HomeSearch/valuePopupAges";
 import Link from "next/link";
+import { Overlay } from "../Styled/common";
 
 
 const PackageDetailCard = () => {

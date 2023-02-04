@@ -674,6 +674,9 @@ export const StarsWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
 `;
 
 export const StarsText = styled.p`
@@ -1028,6 +1031,23 @@ export const StyledField = styled(Field)`
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   color: #434343;
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+  cursor: pointer;
+  position: relative;
+  
+  &::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    z-index: 999;
+    left: 10px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    background: red;
+  }
 
   ::placeholder {
     color: #ADADAD;
@@ -1217,6 +1237,7 @@ export const HotelPackageTitle = styled.h4`
   font-size: 18px;
   line-height: 1.5;
   margin: 0;
+  flex: 1;
 
   color: ${({ theme }) => theme.colors.accentColor};
 `;

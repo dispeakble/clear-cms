@@ -154,15 +154,14 @@ export const GuestType = styled.div`
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   gap: 10px;
-  padding-left: 10px;
+  cursor: pointer;
+  padding-left: 15px;
 `;
 export const AdultBox = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  cursor: pointer;
   white-space: nowrap;
 `;
 export const AdultIcon = styled.div`
@@ -200,7 +199,7 @@ export const HotelView = styled.div`
     width: 100%;
   }
 `;
-export const HotelInfo = styled.div`
+export const HotelWrapper = styled.div`
   display: block;
   @media (min-width: ${size.tablet}) {
     display: flex;
@@ -258,7 +257,7 @@ export const InfoIcon = styled.span`
   background: url(${({ theme }) => theme.icon("info")}) no-repeat center center;
 
 `;
-export const LeftSide = styled.div`
+export const HotelInfo = styled.div`
   padding-left: 5px;
 `;
 export const Star = styled.div`
@@ -296,26 +295,6 @@ export const DateDiv = styled.div`
   position: relative;
 `;
 
-export const ShowDate = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 0;
-  left: 0;
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-export const HeadingDiv = styled.div`
-  width: 200px;
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-export const MemberBox = styled.div`
-  display: flex;
-  justify-content: center;
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  border-radius: 12px;
-  gap: 18px;
-  padding: 10px;
-`;
 export const CounterDiv = styled.div`
   display: flex;
   padding: 10px;
@@ -338,44 +317,6 @@ export const CounterBtn = styled.div`
 
 `;
 
-export const PersonBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-
-`;
-export const InfBox = styled.div`
-  display: flex;
-`;
-export const ChildBox = styled.div`
-  display: flex;
-`;
-export const SliderLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 10px;
-  height: 437px;
-  background: ${({ theme }) => theme.colors.white};
-
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  box-sizing: border-box;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
-  padding: 12px;
-`;
-export const SliderRight = styled.div`
-  height: 437px;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
-`;
-
-export const ImageCount = styled.div`
-  width: 183px;
-  height: 130px;
-  background-size: cover;
-  margin-top: 10px;
-`;
-
 export const StyledDescription = styled.div<{ readMore: boolean }>`
   width: 100%;
   
@@ -388,11 +329,6 @@ export const StyledDescription = styled.div<{ readMore: boolean }>`
     margin-top: 10px;
   }
 
-`;
-
-export const StyledDescriptionMore = styled.a`
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.primaryColor};
 `;
 
 export const PopupFilters = styled.div`

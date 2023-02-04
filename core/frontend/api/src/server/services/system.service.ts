@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import {ProtocolService} from "./protocol.service";
 
 @Injectable()
@@ -24,7 +24,7 @@ export class SystemService {
 
     private checkService(params) {
         return new Promise((resolve, reject) => {
-            const payload: payloadInterface = {
+            const payload: PayloadInterface = {
                 channel: params.channel,
                 api: 'protocol',
                 act: 'ping',
@@ -90,7 +90,7 @@ export class SystemService {
 
 
 
-            const payload: payloadInterface = {
+            const payload: PayloadInterface = {
                 api: 'module',
                 act: 'register',
                 channel: `hub`,

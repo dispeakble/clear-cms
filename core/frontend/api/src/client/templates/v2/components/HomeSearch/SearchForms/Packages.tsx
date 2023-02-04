@@ -2,7 +2,6 @@ import {
   AutocompleteItem,
   AutocompleteList,
   CalendarContainer,
-  Overlay,
   StyledCenterLabel,
   StyledCheckIn,
   StyledCheckOut,
@@ -29,6 +28,8 @@ import { useRouter } from "next/router";
 import useWsContext from "../../../../../context/SocketContext";
 import debounce from "lodash/debounce";
 import ValuePopupAges from "../valuePopupAges";
+import { waitForElm } from "../../../helpers/dom.helper";
+import { Overlay } from "../../Styled/common";
 
 export const Packages = () => {
   const router = useRouter();
@@ -118,7 +119,7 @@ export const Packages = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  }, [ws, setDestinationList, setShowDestinations]);
+  }, [ws, setDestinationList, setShowDestinations, departureId]);
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
@@ -183,9 +184,15 @@ export const Packages = () => {
     setCurrentPopup("");
   };
 
-  const openCalendar = (event: React.MouseEvent<HTMLSpanElement>, type: string) => {
+  const openCalendar = async (event: React.MouseEvent<HTMLSpanElement>, type: string) => {
     if (event.currentTarget === event.target) {
       setCalendarIsOpen(true);
+    }
+
+    if(type === 'end-date') {
+      await waitForElm('.react-calendar__tile--rangeStart');
+      const startDateBtn: HTMLElement = document.querySelector('.react-calendar__tile--rangeStart') as HTMLElement;
+      startDateBtn.click();
     }
   };
 
@@ -317,7 +324,7 @@ export const Packages = () => {
                 }</StyledValue>
               </StyledCheckIn>
               <StyledCheckOut onClick={(event: React.MouseEvent<HTMLSpanElement>) => openCalendar(event, 'end-date')} data-testid="test-checkOut-button">
-                <StyledLabel>{t("search.checkout")}</StyledLabel>
+                <StyledLabel>{t("search.checkoutDate")}</StyledLabel>
                 <StyledValue data-testid="test-checkOut-date-value">{
                   checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
                 }</StyledValue>

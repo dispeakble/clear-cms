@@ -1,7 +1,7 @@
-export interface payloadInterface{
+export interface PayloadInterface {
     api: string;
     act: string;
-    channel: string;
+    channel?: string;
     config?: any;
     type?: string;
     payload?: any;

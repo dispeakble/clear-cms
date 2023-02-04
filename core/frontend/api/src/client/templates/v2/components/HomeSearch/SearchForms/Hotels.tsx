@@ -2,7 +2,6 @@ import {
   AutocompleteItem,
   AutocompleteList,
   CalendarContainer,
-  Overlay,
   StyledCenterLabel,
   StyledCheckIn,
   StyledCheckOut,
@@ -29,6 +28,7 @@ import { useRouter } from "next/router";
 import useWsContext from "../../../../../context/SocketContext";
 import debounce from "lodash/debounce";
 import ValuePopupAges from "../valuePopupAges";
+import { Overlay } from "../../Styled/common";
 
 export const Hotels = () => {
   const router = useRouter();

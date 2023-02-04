@@ -1,7 +1,7 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 
 @Injectable()
 export class PagesService {
@@ -16,7 +16,7 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try{
-                    const payload: payloadInterface = {
+                    const payload: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'list',
@@ -56,7 +56,7 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try {
-                    const pageReq: payloadInterface = {
+                    const pageReq: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'get',
@@ -96,7 +96,7 @@ export class PagesService {
                         return;
                     }
 
-                    const settingPayload: payloadInterface = {
+                    const settingPayload: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'get',

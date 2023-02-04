@@ -87,7 +87,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  max-width: 300px;
+  max-width: 320px;
   @media ${device.mobileS} {
     max-width: 320px;
   }

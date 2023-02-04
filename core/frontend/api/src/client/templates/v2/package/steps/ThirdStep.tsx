@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 
 
-const BookingConfirmed = () => {
+const ThirdStep = () => {
 
   const t = useTranslations();
 
@@ -43,4 +43,4 @@ const BookingConfirmed = () => {
   );
 };
 
-export default BookingConfirmed;
+export default ThirdStep;

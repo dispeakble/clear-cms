@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import { Formik, Form, Field } from "formik";
 
-const SecondStep = ({
+const FirstStep = ({
                       passengers,
                       setPassengers, contactDetails,
                       setContactDetails, setCurrentStep,
@@ -352,4 +352,4 @@ const SecondStep = ({
   );
 };
 
-export default SecondStep;
+export default FirstStep;

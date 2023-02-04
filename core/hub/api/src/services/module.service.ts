@@ -230,6 +230,7 @@ export class ModuleService {
       "applicationVersion": process.env.app_version,
       "emailSender": "admin@example.com",
       "emailPassword": "1qaz",
+      "emailHost": "mail.dosidoweb.com",
       "colorScheme": {
         "primaryColor": { "label": "Primary Color", "value": "#ff6a00" },
         "primaryLight": { "label": "Primary Light", "value": "#ff8733" },

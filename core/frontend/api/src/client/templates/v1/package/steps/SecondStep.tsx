@@ -24,7 +24,7 @@ interface IProps {
   setCurrentStep: any;
 }
 
-const FourthStep = ({
+const SecondStep = ({
                       paymentError, currentStep,
                       setCurrentStep
                     }: IProps) => {
@@ -93,4 +93,4 @@ const FourthStep = ({
   );
 };
 
-export default FourthStep;
+export default SecondStep;

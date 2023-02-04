@@ -191,7 +191,7 @@ export const Packages = () => {
 
     if(type === 'end-date') {
       await waitForElm('.react-calendar__tile--rangeStart');
-      const startDateBtn: HTMLElement = document.querySelector('.react-calendar__tile--rangeStart');
+      const startDateBtn: HTMLElement = document.querySelector('.react-calendar__tile--rangeStart') as HTMLElement;
       startDateBtn.click();
     }
   };

@@ -1,5 +1,5 @@
 import {Inject, Injectable} from "@nestjs/common";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 
@@ -20,7 +20,7 @@ export class PublicThemesService {
         return new Observable((subscriber) => {
             (async () => {
                 try {
-                    const payload: payloadInterface = {
+                    const payload: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'list',
@@ -58,7 +58,7 @@ export class PublicThemesService {
         return new Observable((subscriber) => {
             (async () => {
                 try {
-                    const payload: payloadInterface = {
+                    const payload: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'get',
@@ -135,7 +135,7 @@ export class PublicThemesService {
                         mui: params.data.mui
                     }
 
-                    const request: payloadInterface = {
+                    const request: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'set',
@@ -199,7 +199,7 @@ export class PublicThemesService {
                         bgGradient: params.bgGradient,
                         mui: params.mui
                     }
-                    const request: payloadInterface = {
+                    const request: PayloadInterface = {
                         channel: `db`,
                         api: 'sql',
                         act: 'add',
@@ -233,7 +233,7 @@ export class PublicThemesService {
         return new Observable((subscriber) => {
             (async () => {
                try {
-                   const request: payloadInterface = {
+                   const request: PayloadInterface = {
                        channel: `db`,
                        api: 'sql',
                        act: 'rem',

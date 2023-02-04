@@ -483,9 +483,10 @@ export const StyledOneWay = styled.label`
 
 export const CalendarContainer = styled.div`
   position: absolute;
-  height: auto;
-  margin-top: 80px;
+  width: 100%;
+  min-width: 300px;
   left: 0;
+  margin-top: 80px;
   z-index: 20;
   padding: 10px;
   background: ${({ theme }) => theme.colors.white};
@@ -497,6 +498,26 @@ export const CalendarContainer = styled.div`
   flex-direction: column;
   gap: 20px;
 
+  @media ${device.mobileL} {
+    width: 400px;
+    left: calc(50% - 200px);
+  }
+
+  @media ${device.tablet} {
+    width: 720px;
+    left: calc(50% - 360px);
+  }
+  
+  @media ${device.laptop} {
+    width: 768px;
+    left: calc(50% - 384px);
+  }
+
+  @media ${device.laptopL} {
+    left: revert;
+    width: 505px;
+  }
+
   .react-calendar {
     max-width: 100%;
     background: ${({ theme }) => theme.colors.white};
@@ -505,6 +526,7 @@ export const CalendarContainer = styled.div`
   }
 
   .react-calendar--doubleView {
+    width: auto;
     @media ${device.tablet} {
       width: 100%;
     }
@@ -516,13 +538,11 @@ export const CalendarContainer = styled.div`
     @media ${device.tablet} {
       flex-direction: row;
     }
-    margin: -0.5em;
   }
 
   .react-calendar--doubleView .react-calendar__viewContainer > * {
-    @media ${device.tablet} {
-      width: 50%;
-    }
+    width: auto;
+    flex: 1;
   }
 
   .react-calendar,
@@ -554,7 +574,6 @@ export const CalendarContainer = styled.div`
   .react-calendar__navigation {
     display: flex;
     height: 44px;
-    margin-bottom: 1em;
   }
 
   .react-calendar__navigation button {
@@ -586,7 +605,7 @@ export const CalendarContainer = styled.div`
   }
 
   .react-calendar__month-view__weekdays__weekday {
-    padding: 0.5em;
+    padding: 10px 5px;
   }
 
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
@@ -613,7 +632,7 @@ export const CalendarContainer = styled.div`
 
   .react-calendar__tile {
     max-width: 100%;
-    padding: 10px 6.6667px;
+    padding: 10px 5px;
     background: none;
     text-align: center;
     line-height: 16px;
@@ -680,13 +699,4 @@ export const CalendarContainer = styled.div`
     visibility: hidden;
   }
 
-`;
-
-export const Overlay = styled.a`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 15;
 `;
