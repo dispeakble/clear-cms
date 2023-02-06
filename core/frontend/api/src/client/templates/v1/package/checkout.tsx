@@ -1,15 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { ThemeProvider } from "styled-components";
-import Header from "../components/Header";
 import {
-  GlobalStyle,
-  MainWrapper,
-  TopContentWrapper, Wrapper
+  ContentWrapper,
 } from "../styled";
-import Breadcrumbs from "../components/Breadcrumbs";
-import { getIcon } from "../helpers/icons";
-import Footer from "../components/Footer";
 import {
   DetailsWrapper,
   HotelsHeaderWrapper,
@@ -19,15 +12,15 @@ import {
   StepWrapper
 } from "./styled";
 import { useTranslations } from "next-intl";
-import FirstStep from "./steps/First";
-import SecondStep from "./steps/Second";
+import FirstStep from "./steps/FirstStep";
+import SecondStep from "./steps/SecondStep";
+import ThirdStep from "./steps/ThirdStep";
 import Cart from "./Cart";
 import * as shortid from "shortid";
-import FourthStep from "./steps/Fourth";
-import BookingConfirmed from "./steps/BookingConfirmed";
-import DepartureIcon from "../assets/img/departure-icon.svg";
+import DepartureIcon from "../assets/img/icons/departure-icon.svg";
 import FlightImg from "../assets/img/flight.png";
-import ArrivalIcon from "../assets/img/arrival-icon.svg";
+import ArrivalIcon from "../assets/img/icons/arrival-icon.svg";
+import Layout from "../components/Layout";
 
 interface IPassenger {
   id: string,
@@ -37,11 +30,18 @@ interface IPassenger {
   age?: number;
 }
 
-const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
+const PackageCheckoutPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
 
   const t = useTranslations();
   const [currentStep, setCurrentStep] = useState<number>(1);
 
+  const breadcrumbs = {
+    //TODO translate this
+    "packages/list": "Packages",
+    "packages/checkout": "Checkout"
+  };
+
+  //this is silly. must do something about it
   const day = {
     Monday: t("day.monday"),
     Tuesday: t("day.tuesday"),
@@ -65,12 +65,6 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
     November: t("month.november"),
     December: t("month.december")
   };
-
-  const getIcons = (iconName: string) => {
-    return getIcon(iconName);
-  };
-
-  const myTheme: any = { colors: colorScheme, icon: getIcons };
 
   const passengersData = [
     {
@@ -183,7 +177,7 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
           firstName: "",
           lastName: "",
           isAdult: passenger.type === "adult",
-          ...(passenger.type !== "adult" ? { age: Number as unknown as number } : {})
+          ...(passenger.type !== "adult" ? { age: 0 } : {})
         }];
       });
     });
@@ -216,14 +210,7 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
   const displayStep = () => {
     switch (currentStep) {
       case 1:
-        return <FirstStep packageDetails={packageDetails}
-                          setCurrentStep={setCurrentStep}
-                          currentStep={currentStep}
-                          passengersCount={passengersCount}
-        />;
-
-      case 2:
-        return <SecondStep passengers={passengers}
+        return <FirstStep passengers={passengers}
                            setCurrentStep={setCurrentStep}
                            currentStep={currentStep}
                            setPassengers={setPassengers}
@@ -233,64 +220,58 @@ const PackageCheckoutPage = ({ websiteName, colorScheme }: any) => {
                            setInvoiceDetails={setInvoiceDetails}
                            passengersCount={passengersCount}
         />;
-      case 3:
-        return <FourthStep paymentError={paymentError}
+      case 2:
+        return <SecondStep paymentError={paymentError}
                            currentStep={currentStep}
                            setCurrentStep={setCurrentStep}
         />;
-
-      case 4:
-        return <BookingConfirmed />;
+      case 3:
+        return <ThirdStep />;
     }
   };
 
   return (
-    <ThemeProvider theme={myTheme}>
-      <GlobalStyle />
-      <MainWrapper data-testid="package-checkout-page-wrapper">
-        <TopContentWrapper>
-          <Header websiteName={websiteName} />
-        </TopContentWrapper>
-        <Wrapper>
-          <Breadcrumbs page="Package" what="Checkout" />
-          <DetailsWrapper>
+    <Layout
+      isHomePage={false}
+      breadcrumbs={breadcrumbs}
+      websiteSlogan={websiteSlogan}
+      websiteName={websiteName}
+      colorScheme={colorScheme}
+    >
+      <ContentWrapper>
+        <DetailsWrapper>
+          {
+            currentStep !== 3 &&
+            <Cart packageDetails={packageDetails}
+                  passengersCount={passengersCount}
+            />
+          }
+          <HotelsWrapper>
+            <HotelsHeaderWrapper>
+              <HotelsHeader>
+                {
+                  displayHeader()
+                }
+              </HotelsHeader>
+              <CartStepsWrapper>
+                <StepWrapper currentStep={currentStep === 1}>
+                  1
+                </StepWrapper>
+                <StepWrapper currentStep={currentStep === 2}>
+                  2
+                </StepWrapper>
+                <StepWrapper currentStep={currentStep === 3}>
+                  3
+                </StepWrapper>
+              </CartStepsWrapper>
+            </HotelsHeaderWrapper>
             {
-              currentStep !== 4 &&
-              <Cart packageDetails={packageDetails}
-                    passengersCount={passengersCount}
-              />
+              displayStep()
             }
-            <HotelsWrapper>
-              <HotelsHeaderWrapper>
-                <HotelsHeader>
-                  {
-                    displayHeader()
-                  }
-                </HotelsHeader>
-                <CartStepsWrapper>
-                  <StepWrapper currentStep={currentStep === 1}>
-                    1
-                  </StepWrapper>
-                  <StepWrapper currentStep={currentStep === 2}>
-                    2
-                  </StepWrapper>
-                  <StepWrapper currentStep={currentStep === 3}>
-                    3
-                  </StepWrapper>
-                  <StepWrapper currentStep={currentStep === 4}>
-                    4
-                  </StepWrapper>
-                </CartStepsWrapper>
-              </HotelsHeaderWrapper>
-              {
-                displayStep()
-              }
-            </HotelsWrapper>
-          </DetailsWrapper>
-        </Wrapper>
-        <Footer />
-      </MainWrapper>
-    </ThemeProvider>
+          </HotelsWrapper>
+        </DetailsWrapper>
+      </ContentWrapper>
+    </Layout>
   );
 };
 

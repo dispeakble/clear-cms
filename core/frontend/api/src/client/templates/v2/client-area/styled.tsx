@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const size = {
-    mobileS: "320px",
-    mobileM: "375px",
-    mobileL: "425px",
-    tablet: "768px",
-    laptop: "1024px",
-    laptopL: "1440px",
-    desktop: "1919px",
-    desktopL: "2560px"
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  laptop: "1024px",
+  laptopL: "1440px",
+  desktop: "1919px",
+  desktopL: "2560px"
 };
 
 export const ClientAreaWrapper = styled.div`
@@ -17,7 +17,7 @@ export const ClientAreaWrapper = styled.div`
   @media screen and (max-width: ${size.laptop}){
     padding: 0;
   }
-`
+`;
 
 export const ClientOuter = styled.div`
   border-radius: 12px;
@@ -29,7 +29,7 @@ export const ClientOuter = styled.div`
     align-items: center;
     padding: 0;
   }
-`
+`;
 
 export const ClientProfilePicture = styled.div`
   width: 144px;
@@ -45,7 +45,7 @@ export const ClientProfilePicture = styled.div`
     height: 70px;
     min-width: 70px;
   }
-`
+`;
 
 export const ClientProfileMainInfos = styled.div`
   display: flex;
@@ -58,18 +58,18 @@ export const ClientProfileMainInfos = styled.div`
   @media screen and (max-width: ${size.tablet}){
     gap: 10px;
   }
-`
+`;
 
 export const StyledDiv = styled.div`
   padding: 20px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.22);
   border-radius: 12px;
   width: 100%;
-`
+`;
 
 export const ClientPersonalInfosContainer = styled(StyledDiv)`
   
-`
+`;
 
 
 export const ClientProfileMainInfosContainer = styled(StyledDiv)`
@@ -88,15 +88,15 @@ export const ClientProfileMainInfosContainer = styled(StyledDiv)`
     flex-direction: column;
     align-items: stretch;
   }
-`
+`;
 
 export const PersonalInfoItem = styled.div`
   padding: 20px 0;
-  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.primaryColor};
   &:last-child{
     border: none;
   }
-`
+`;
 
 export const ItemTitle = styled.p`
   font-weight: 600;
@@ -104,8 +104,8 @@ export const ItemTitle = styled.p`
   line-height: 1.5;
   margin: 0;
 
-  color: ${({theme}) => theme.colors.grey};
-`
+  color: ${({ theme }) => theme.colors.grey};
+`;
 
 export const ItemInfo = styled.span`
   font-weight: 500;
@@ -113,14 +113,14 @@ export const ItemInfo = styled.span`
   line-height: 1.25;
   margin-top: 8px;
   
-  color: ${({theme}) => theme.colors.jetBlack};
-`
+  color: ${({ theme }) => theme.colors.jetBlack};
+`;
 
 export const EditProfileButton = styled.button`
   outline: none;
   border: none;
-  background: ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.white};
   font-size: 18px;
   line-height: 1.5;
   padding: 20px 30px;
@@ -132,7 +132,7 @@ export const EditProfileButton = styled.button`
     padding: 10px 30px;
     font-size: 16px;
   }
-`
+`;
 
 export const ClientGreetings = styled.h2`
   font-family: 'Poppins', sans-serif;
@@ -141,8 +141,8 @@ export const ClientGreetings = styled.h2`
   line-height: 1.5;
   margin: 0;
 
-  color: ${({theme}) => theme.colors.jetBlack};
-`
+  color: ${({ theme }) => theme.colors.jetBlack};
+`;
 
 export const Text = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -150,8 +150,8 @@ export const Text = styled.p`
   font-size: clamp(13px, 2vw, 16px);
   line-height: 1.5;
   margin: 0;
-  color: ${({theme}) => theme.colors.grey};
-`
+  color: ${({ theme }) => theme.colors.grey};
+`;
 
 export const NoOfDays = styled.h3`
   font-family: 'Poppins', sans-serif;
@@ -160,8 +160,8 @@ export const NoOfDays = styled.h3`
   line-height: 1.5;
   margin: 0;
   
-  color: ${({theme}) => theme.colors.jetBlack};
-`
+  color: ${({ theme }) => theme.colors.jetBlack};
+`;
 
 export const PersonalInfos = styled.h3`
   font-family: 'Poppins', sans-serif;
@@ -170,5 +170,5 @@ export const PersonalInfos = styled.h3`
   line-height: 1.5;
   margin: 0;
 
-  color: ${({theme}) => theme.colors.jetBlack};
-`
+  color: ${({ theme }) => theme.colors.jetBlack};
+`;

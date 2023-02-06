@@ -1,6 +1,6 @@
 import {ClientProxy} from "@nestjs/microservices";
 import {Inject, Injectable} from "@nestjs/common";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 
@@ -10,7 +10,6 @@ export class ProtocolService {
 
     private methods = ["start", "sendMessage", "emitMessage", "registerModule", "ping", "startHandshake", "requestHandshake", "confirmHandshake", "sendGet"];
     private handhakes: any = {};
-    private channelPrefix = process.env.app;
 
     constructor(
         @Inject('REDIS_SERVICE') private redisService: ClientProxy,
@@ -21,36 +20,37 @@ export class ProtocolService {
         return this.redisService.connect();
     }
 
-    public sendMessage(data: payloadInterface) {
+    public sendMessage(data: PayloadInterface) {
 
-        const payload: payloadInterface = {
+        const payload: PayloadInterface = {
             channel: data.channel,
             api: data.api,
             act: data.act,
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public emitMessage(data: any) {
 
-        const payload: payloadInterface = {
+        const payload: PayloadInterface = {
             api: data.module,
             act: data.act,
             channel: data.channel,
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload);
+        return this.redisService.emit({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
     public registerModule(data: ModuleInterface) {
-        const payload: payloadInterface = {
+        //TODO use sendMessage here :)
+        const payload: PayloadInterface = {
             api: 'module',
             act: 'register',
-            channel: `${process.env.app}_frontend`,
+            channel: `frontend`,
             payload: data
         };
         return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();

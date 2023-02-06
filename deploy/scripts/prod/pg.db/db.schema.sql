@@ -2345,7 +2345,7 @@ ALTER TABLE ONLY public."ProductToLocalities"
 
 INSERT INTO "public"."Auths"(
 	email, fullname, fname, lname, password, active)
-	VALUES ('admin@localhost.local', 'Administrator', 'Admin', 'Boss', MD5('1qaz'), 1);
+	VALUES ('admin@example.com', 'Administrator', 'Admin', 'Boss', MD5('1qaz'), 1);
 
 INSERT INTO public."Settings"("isDefault", data)
 	VALUES (1, '{"websiteName": "Do Si Do", "websiteDomain": "www.dosidoweb.com", "websiteOwner": "Do Si Do", "websiteAdminEmail": "admin@dosidoweb.com", "applicationVersion": "1.0.1"}');

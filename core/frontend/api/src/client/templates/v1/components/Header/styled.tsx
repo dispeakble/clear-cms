@@ -7,6 +7,7 @@ type HeaderWrapperProps = {
 
 export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   width: 100%;
+  min-width: 320px;
   display: flex;
   
   align-items: center;
@@ -14,30 +15,24 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   position: fixed;
   z-index: 9999;
   top: 0;
-  
-  
-
   -webkit-transition: background-color 1000ms linear;
   -ms-transition: background-color 1000ms linear;
   transition: background-color 1000ms linear;
 
   &.fixedHeader {
     z-index: 999;
-    background: ${({theme}) => theme.colors.primaryColor};
+    background: ${({ theme }) => theme.colors.primaryColor};
     box-shadow: 0 10px 10px -4px rgba(0,0,0,0.3);
   }
 `;
 
 export const HeaderContent = styled.div`
   margin: 0 auto;
-  padding: 20px;
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  @media (max-width: ${size.laptop}) {
-    padding: 0;
-  }
+
   @media ${device.mobileS} {
     max-width: 320px;
   }
@@ -64,15 +59,21 @@ export const HeaderContent = styled.div`
   }
 `;
 
-
-export const LogoWrapper = styled.div`
+export const LogoWrapper = styled.span`
   filter: drop-shadow(0px 0 4px rgba(255,255,255,0.7));
   order: 1;
   margin: 0 5px;
+  display: flex;
+  flex-direction: column;
+  width: 120px;
   @media (max-width: ${size.laptop}) {
     order: 2;
     flex: 1;
     text-align: center;
+  }
+  & a {
+    display: flex;
+    flex: 1;
   }
 `;
 
@@ -89,9 +90,9 @@ export const MenuWrapper = styled.div`
 `;
 
 export const SearchWrapper = styled.div`
-  border: 1px solid ${({theme}) => theme.colors.primaryColor};
+  border: 1px solid ${({ theme }) => theme.colors.primaryColor};
   position: relative;
-  background: url(${({theme}) => theme.icon('search')}) no-repeat 16px center  ${({theme}) => theme.colors.white};
+  background: url(${({ theme }) => theme.icon("search")}) no-repeat 16px center  ${({ theme }) => theme.colors.white};
   order: 4;
   margin-left: 10px;
   @media (max-width: ${size.laptop}) {
@@ -113,12 +114,12 @@ export const InputSearch = styled.input`
   }
 
   &:focus {
-    padding: 8px 8px 8px 65px;
+    padding: 8px 8px 8px 54px;
     width: 100%;
   }
 
   @media (min-width: ${size.laptop}) {
-    padding: 8px 8px 8px 65px;
+    padding: 8px 8px 8px 54px;
 
     width: 100%;
     &::placeholder {
@@ -126,15 +127,6 @@ export const InputSearch = styled.input`
     }
   }
 `;
-
-export const AuthWrapper = styled.div`
-  display: flex;
-  gap: 15px;
-  position: relative;
-  height: 100%;
-  margin-left: 15px ;
-  order: 5;
-`
 
 export const StyledButton = styled.div`
   padding: 4px 30px;
@@ -149,23 +141,13 @@ export const StyledButton = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-`
-
-export const LoginButton = styled(StyledButton)`
-  background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
-  color: ${({theme}) => theme.colors.white};
-`
-
-export const RegisterButton = styled(StyledButton)`
-  background: ${({theme}) => theme.colors.white};
-  color: #70B915;
-`
+`;
 
 export const ProfileContainer = styled.div`
   position: relative;
   order: 5;
   margin-left: 25px;
-`
+`;
 
 export const ProfileButton = styled.div`
   display: flex;
@@ -179,22 +161,19 @@ export const ProfileButton = styled.div`
   @media screen and (max-width: ${size.tablet}){
     background: transparent;
   }
-`
+`;
 
 export const ProfileFirstName = styled.p`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
-
   text-decoration-line: underline;
-
-  color: ${({theme}) => theme.colors.white};
-  
+  color: ${({ theme }) => theme.colors.white};
   @media screen and (max-width: ${size.tablet}){
     display: none;
   }
-`
+`;
 
 export const ProfilePicture = styled.div`
   border-radius: 50%;
@@ -203,7 +182,7 @@ export const ProfilePicture = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export const ProfilePictureBig = styled.div`
   border-radius: 50%;
@@ -213,7 +192,7 @@ export const ProfilePictureBig = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export const ProfileMainInfos = styled.div`
   height: 100%;
@@ -222,7 +201,7 @@ export const ProfileMainInfos = styled.div`
   flex-direction: column;
   gap: 4px;
   justify-content: center;
-`
+`;
 
 export const UserFullName = styled.p`
   font-style: normal;
@@ -234,95 +213,86 @@ export const UserFullName = styled.p`
   margin: 0;
   flex: 1;
   
-  color: ${({theme}) => theme.colors.jetBlack};
-`
+  color: ${({ theme }) => theme.colors.jetBlack};
+`;
 
 export const UserEmail = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
   margin:0;
-  color: ${({theme}) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.gray};
   text-overflow: ellipsis;
   overflow-x: clip;
   white-space: nowrap;
   width: 100%;
-`
+`;
 
 export const IconContainer = styled.div`
 
-`
+`;
 
-export const ProfileInfosContainer = styled.div<{isOpen?: boolean}>`
+export const ProfileInfosContainer = styled.div<{ isOpen?: boolean }>`
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  
   width: 375px;
-  
-  display: ${({isOpen}) => isOpen ? 'block' : 'none'};
-
-  background: rgb(${({theme}) => theme.colors.primaryColorFadedRBG});
+  display: ${({ isOpen }) => isOpen ? "block" : "none"};
+  background: rgb(${({ theme }) => theme.colors.primaryColorFadedRBG});
   box-shadow: 0 0 24px rgba(0, 75, 139, 0.24);
   border-radius: 8px;
-  
   padding: 20px 25px;
-`
+`;
 
 export const ProfileInfosItem = styled.div`
   padding: 24px;
-  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.primaryColor};
   cursor: pointer;
-`
+`;
 
 export const InfosItem = styled.div`
   display: flex;
   gap: 16px;
-`
+`;
 
 export const InfosItemLabel = styled.p`
   font-weight: 700;
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
-  color: ${({theme}) => theme.colors.jetBlack};
+  color: ${({ theme }) => theme.colors.jetBlack};
   white-space: nowrap;
-`
+`;
 
 export const ProfilePictureInfosContainer = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
   padding-bottom: 20px;
-  border-bottom: 1px dashed ${({theme}) => theme.colors.primaryColor};
-`
+  border-bottom: 1px dashed ${({ theme }) => theme.colors.primaryColor};
+`;
 
 export const LogoutButton = styled.button`
-  background: ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.white};
   outline: none;
   border: none; 
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   width: 100%;
-  
   cursor: pointer;
-
   font-weight: 400;
   font-size: 16px;
   line-height: 1.5;
   text-align: center;
-  
   padding: 7px 110px;
-  
   margin-top: 12px;
   transition: .2s background ease-in-out;
-  
   &:hover{
-    background: ${({theme}) => theme.colors.primaryColorHover};
+    background: ${({ theme }) => theme.colors.primaryColorHover};
     transition: .2s background ease-in-out;
   }
-`
+`;
 
 export const LanguagesWrapper = styled.div`
   order: 3;

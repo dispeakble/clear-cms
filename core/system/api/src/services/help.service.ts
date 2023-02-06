@@ -12,7 +12,7 @@ export class HelpService {
         mainPath: path.join(__dirname, '..', '..', '..', '/var')
     }
 
-    private help = {
+    public help = {
         path: {
             sanitize: (params) => params.path.replace(/(\.\.(\/|\\))+/g, ''),
             realPath: (reqPath) => path.join(this.config.mainPath, this.help.path.sanitize({path: reqPath.path}))
@@ -95,7 +95,7 @@ export class HelpService {
         },
         isZip:(pathToCheck = "") => {
             let res = false
-            pathToCheck.split('/').forEach((item,index) => {
+            pathToCheck.split('/').forEach((item) => {
                 if(item && path.extname(item) === ".zip"){
                     res = true
                 }
@@ -103,8 +103,8 @@ export class HelpService {
             return res
         },
         zipPathParse:(pathToParse = "") => {
-            let zipPath = [];
-            let insideZipPath = [];
+            const zipPath = [];
+            const insideZipPath = [];
             let zip = false;
             pathToParse.split('/').forEach(item => {
                 if(zip){
@@ -122,9 +122,6 @@ export class HelpService {
             }
         }
 
-    }
-
-    constructor() {
     }
 
     public perform(data: any, config?: ModuleInterface) {

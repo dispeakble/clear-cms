@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import { Observable } from "rxjs";
 import path from "path";
 import { ProtocolService } from "./protocol.service";
@@ -30,13 +30,12 @@ export class SettingsService {
     return new Observable((subscriber) => {
       (async () => {
         try {
-          const payload: payloadInterface = {
-            channel: `${process.env.app}_db`,
+          const payload: PayloadInterface = {
+            channel: `db`,
             api: "sql",
             act: "get",
             payload: {
               db: "main",
-              channel: `${process.env.app}_frontend`,
               data: {
                 what: "setting",
                 limit: [0, 1]

@@ -25,7 +25,7 @@ import {Field, Form, Formik} from 'formik';
 import UseAuth from "../../../../../auth/auth";
 import jwtDecode from "jwt-decode";
 
-const EditPage = ({ websiteName, colorScheme }: any) => {
+const EditPage = ({ websiteName, colorScheme, websiteSlogan }: any) => {
 
     const {user, isAuthenticated, isLoading, setIsLoading} = useAuthentication()
 
@@ -120,7 +120,7 @@ const EditPage = ({ websiteName, colorScheme }: any) => {
             ) :
             ((isAuthenticated && user) ?
                 (
-                    <Layout websiteName={websiteName} colorScheme={colorScheme} breadcrumb={breadcrumbs} isLogin>
+                    <Layout websiteName={websiteName} websiteSlogan={websiteSlogan} colorScheme={colorScheme} breadcrumbs={breadcrumbs} isLogin>
                         <EditWrapper>
                             <EditOuter>
                                 <EditClientMainInfos>

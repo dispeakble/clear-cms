@@ -1,16 +1,11 @@
 import {Injectable} from '@nestjs/common';
 import * as SystemInformation from "systeminformation";
-import {ProtocolService} from "./protocol.service";
-import * as os from "os";
 import {Observable} from "rxjs";
 
 @Injectable()
 export class ResourcesService {
 
     private methods = ["getHardwareInfo"];
-
-    constructor(private protocolService: ProtocolService) {
-    }
 
     private getHardwareInfo(params) {
         return new Observable(subscriber => {

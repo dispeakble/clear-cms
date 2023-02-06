@@ -37,15 +37,15 @@ export const StyledTitle = styled.h3`
 
 export const StyledDescription = styled.article`
   font-size: 20px;
-  color: ${({theme}) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.gray};
   line-height: 200%;
 `;
 
 export const StyledContactBtn = styled.a`
   font-size: 20px;
-  color:  ${({theme}) => theme.colors.white};
+  color:  ${({ theme }) => theme.colors.white};
   line-height: 75px;
-  background-color: ${({theme}) => theme.colors.primaryColor};
+  background-color: ${({ theme }) => theme.colors.primaryColor};
   cursor: pointer;
   border-radius: 8px;
   padding: 0 16px;
@@ -54,21 +54,21 @@ export const StyledContactBtn = styled.a`
   margin: 6%;
 
   &:hover {
-    color: ${({theme}) => theme.colors.white};
-    background-color: ${({theme}) => theme.colors.primaryLight};
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.primaryLight};
   }
 `;
 
 export const StyledFloatingPrice = styled.div`
-  background:  ${({theme}) => theme.colors.white};
-  color: ${({theme}) => theme.colors.primaryColor};
+  background:  ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.primaryColor};
   padding: 30%;
   text-align: center;
   font-size: 36px;
 
   & span {
     text-transform: uppercase;
-    color: ${({theme}) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.black};
     font-size: 18px;
   }
 `;

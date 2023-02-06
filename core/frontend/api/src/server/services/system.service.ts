@@ -1,6 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {ModuleInterface} from "../interfaces/module.interface";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import {ProtocolService} from "./protocol.service";
 
 @Injectable()
@@ -24,7 +24,7 @@ export class SystemService {
 
     private checkService(params) {
         return new Promise((resolve, reject) => {
-            const payload: payloadInterface = {
+            const payload: PayloadInterface = {
                 channel: params.channel,
                 api: 'protocol',
                 act: 'ping',
@@ -70,15 +70,30 @@ export class SystemService {
 
     public async registerModule(data: ModuleInterface) {
         return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: `${process.env.app}_hub`});
-            await this.waitForService({channel: `${process.env.app}_db`});
-            await this.waitForService({channel: `${process.env.app}_bucket`});
-            await this.waitForService({channel: `${process.env.app}_frontendproxy`});
 
-            const payload: payloadInterface = {
+            try {
+                if(data.dependencies && data.dependencies.length) {
+                    await Promise.all(data.dependencies.map((dep: Record<string, any>) => {
+                        return this.waitForService({channel: dep.name});
+                    }));
+                } else {
+                    await Promise.all([
+                        this.waitForService({channel: `hub`}),
+                        this.waitForService({channel: `db`}),
+                        this.waitForService({channel: `bucket`}),
+                        this.waitForService({channel: `frontendproxy`})
+                    ]);
+                }
+            } catch {
+                'noop';
+            }
+
+
+
+            const payload: PayloadInterface = {
                 api: 'module',
                 act: 'register',
-                channel: `${process.env.app}_hub`,
+                channel: `hub`,
                 config: {
                     restart: true,
                     stop: false

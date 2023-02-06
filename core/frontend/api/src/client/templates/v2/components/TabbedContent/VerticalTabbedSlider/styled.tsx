@@ -28,12 +28,12 @@ export const StyledSliderWrapper = styled.div`
     width: 1000px;
   }
   & .image-gallery-icon {
-    color: ${({theme}) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
     filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
-        color: ${({theme}) => theme.colors.primaryColorHover};
+        color: ${({ theme }) => theme.colors.primaryColorHover};
       }
     }
 

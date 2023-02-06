@@ -1,7 +1,6 @@
 import {Inject, Injectable, OnModuleInit} from '@nestjs/common';
 import createServer from 'next';
 import { NextServer, RequestHandler } from "next/dist/server/next";
-import {UrlWithParsedQuery} from "url";
 import { AppService } from "./app.service";
 import { ConfigService } from "@nestjs/config";
 import { NextUrlWithParsedQuery } from "next/dist/server/request-meta";

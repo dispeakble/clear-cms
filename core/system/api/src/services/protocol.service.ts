@@ -1,8 +1,7 @@
-import {ClientProxy, Ctx, EventPattern, Payload, RedisContext} from "@nestjs/microservices";
+import {ClientProxy} from "@nestjs/microservices";
 import {Inject, Injectable} from "@nestjs/common";
 import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
-import * as fs from "fs";
 import {Observable} from "rxjs";
 
 
@@ -23,34 +22,34 @@ export class ProtocolService {
 
     public sendMessage(data: payloadInterface) {
 
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             channel: data.channel,
             api: data.api,
             act: data.act,
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public emitMessage(data: any) {
 
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             api: data.module,
             act: data.act,
             channel: data.channel,
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload);
+        return this.redisService.emit({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
     public registerModule(data: ModuleInterface) {
-        let payload: payloadInterface = {
+        const payload: payloadInterface = {
             api: 'module',
             act: 'register',
-            channel: `${process.env.app}_system`,
+            channel: `system`,
             payload: data
         };
         return this.redisService.send({message: `${process.env.app}_hub`}, payload).toPromise();
@@ -78,7 +77,7 @@ export class ProtocolService {
                     callerId: myId,
                     indication: params.indication,
                     respond: {
-                        channel: config.config.channel,
+                        channel: config.channel,
                         api: 'protocol',
                         act: 'confirmHandshake'
                     }
@@ -108,7 +107,7 @@ export class ProtocolService {
             });
 
             params.perform({
-                channel: config.config.channel,
+                channel: config.channel,
                 api: params.indication.api,
                 act: params.indication.act,
                 payload: {
@@ -118,8 +117,6 @@ export class ProtocolService {
                 subscriber.next(response);
             }, (errResponse) => {
                 subscriber.error(errResponse);
-            }, () => {
-
             })
 
         })

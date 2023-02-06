@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="admin start:dev" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/core/admin/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start:dev" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="redis_server" value="localhost" />
+      <env name="backend_port" value="9696" />
+      <env name="redis_port" value="6379" />
+      <env name="redis_password" value="1gzHwbgfwR" />
+      <env name="app" value="marioviajes" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

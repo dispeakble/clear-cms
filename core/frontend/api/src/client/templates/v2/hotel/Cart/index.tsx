@@ -1,76 +1,76 @@
 import {
-    CartFooterWrapper,
-    CartHeader,
-    CartHeaderWrapper, CartHotelInfo,
-    CartItemContainer,
-    CartTicketsWrapper,
-    CartWrapper,
-    DetailsText,
-    FlightTimeContainer,
-    HotelCartItem, HotelCartItemElement, HotelName, RoomType,
-    TicketItem,
-    TicketText,
-    TotalPrice,
-    TotalText
+  CartFooterWrapper,
+  CartHeader,
+  CartHeaderWrapper, CartHotelInfo,
+  CartItemContainer,
+  CartTicketsWrapper,
+  CartWrapper,
+  DetailsText,
+  FlightTimeContainer,
+  HotelCartItem, HotelCartItemElement, HotelName, RoomType,
+  TicketItem,
+  TicketText,
+  TotalPrice,
+  TotalText
 } from "../styled";
 import * as React from "react";
-import {useTranslations} from "next-intl";
+import { useTranslations } from "next-intl";
 
-interface IProps{
-    hotelData: any;
+interface IProps {
+  hotelData: any;
 }
 
-const Cart = ({hotelData}: IProps) => {
+const Cart = ({ hotelData }: IProps) => {
 
-    const t = useTranslations()
+  const t = useTranslations();
 
-    return(
-        <CartWrapper>
-            <CartHeaderWrapper>
-                <CartHeader>
-                    {t('flightsCheckout.cart.header')}
-                </CartHeader>
-            </CartHeaderWrapper>
-            <CartItemContainer>
-                {
-                    hotelData.map((hotel: any, index: number) => {
-                        return(
-                            <CartHotelInfo key={index}>
-                                <HotelCartItem>
-                                    <HotelCartItemElement>
-                                        <HotelName>
-                                            {hotel.name}
-                                        </HotelName>
-                                    </HotelCartItemElement>
-                                    <HotelCartItemElement>
-                                        <RoomType>
-                                            {hotel.roomType}
-                                        </RoomType>
-                                        {hotel.allInclusive &&
-                                            <RoomType>
-                                                {t('hotelCheckout.cart.allInclusive')}
-                                            </RoomType>
-                                        }
+  return (
+    <CartWrapper>
+      <CartHeaderWrapper>
+        <CartHeader>
+          {t("flightsCheckout.cart.header")}
+        </CartHeader>
+      </CartHeaderWrapper>
+      <CartItemContainer>
+        {
+          hotelData.map((hotel: any, index: number) => {
+            return (
+              <CartHotelInfo key={index}>
+                <HotelCartItem>
+                  <HotelCartItemElement>
+                    <HotelName>
+                      {hotel.name}
+                    </HotelName>
+                  </HotelCartItemElement>
+                  <HotelCartItemElement>
+                    <RoomType>
+                      {hotel.roomType}
+                    </RoomType>
+                    {hotel.allInclusive &&
+                      <RoomType>
+                        {t("hotelCheckout.cart.allInclusive")}
+                      </RoomType>
+                    }
 
-                                    </HotelCartItemElement>
-                                    <HotelCartItemElement>
-                                        <DetailsText>
-                                            {hotel.duration}
-                                        </DetailsText>
-                                        <DetailsText>
-                                            {hotel.adults} {t('hotelCheckout.main.adults')}, {hotel.children} {t('hotelCheckout.main.children')}
-                                        </DetailsText>
-                                    </HotelCartItemElement>
-                                </HotelCartItem>
-                                <FlightTimeContainer>
-                                </FlightTimeContainer>
-                            </CartHotelInfo>
-                        )
-                    })
-                }
-            </CartItemContainer>
-            <CartTicketsWrapper>
-                { /*
+                  </HotelCartItemElement>
+                  <HotelCartItemElement>
+                    <DetailsText>
+                      {hotel.duration}
+                    </DetailsText>
+                    <DetailsText>
+                      {hotel.adults} {t("hotelCheckout.main.adults")}, {hotel.children} {t("hotelCheckout.main.children")}
+                    </DetailsText>
+                  </HotelCartItemElement>
+                </HotelCartItem>
+                <FlightTimeContainer>
+                </FlightTimeContainer>
+              </CartHotelInfo>
+            );
+          })
+        }
+      </CartItemContainer>
+      <CartTicketsWrapper>
+        { /*
                     Object.keys(passengersCount).map((key: any) =>
                         (
                             <TicketItem>
@@ -84,26 +84,26 @@ const Cart = ({hotelData}: IProps) => {
                         )
                     )
                   */
-                }
-                <TicketItem>
-                    <TicketText>
-                        {t('flightsCheckout.cart.tax')}
-                    </TicketText>
-                    <TicketText>
-                        15.00 €
-                    </TicketText>
-                </TicketItem>
-            </CartTicketsWrapper>
-            <CartFooterWrapper>
-                <TotalText>
-                    {t('flightsCheckout.cart.total')}
-                </TotalText>
-                <TotalPrice>
-                    468.71 €
-                </TotalPrice>
-            </CartFooterWrapper>
-        </CartWrapper>
-    )
-}
+        }
+        <TicketItem>
+          <TicketText>
+            {t("flightsCheckout.cart.tax")}
+          </TicketText>
+          <TicketText>
+            15.00 €
+          </TicketText>
+        </TicketItem>
+      </CartTicketsWrapper>
+      <CartFooterWrapper>
+        <TotalText>
+          {t("flightsCheckout.cart.total")}
+        </TotalText>
+        <TotalPrice>
+          468.71 €
+        </TotalPrice>
+      </CartFooterWrapper>
+    </CartWrapper>
+  );
+};
 
-export default Cart
+export default Cart;

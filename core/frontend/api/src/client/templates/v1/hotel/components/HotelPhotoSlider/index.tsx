@@ -1,6 +1,6 @@
 import * as React from "react";
-import {HotelPhotoSliderWrapper, ImageDiv} from "./styled";
-import ImageGallery from 'react-image-gallery';
+import { HotelPhotoSliderWrapper, ImageDiv } from "./styled";
+import ImageGallery from "react-image-gallery";
 import { useMemo } from "react";
 
 import hotel1 from "../../../assets/img/hotels/small/hotel4.jpg";
@@ -10,36 +10,35 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 const HotelPhotoSlider = () => {
   const gallery = {
-    showBullets: true,
+    showBullets: false,
     showThumbnails: true,
     thumbnailPosition: "left" as "top" | "bottom" | "left" | "right",
     infinite: true,
-    showFullscreenButton: false,
+    showFullscreenButton: true,
     zoom: false,
-    autoPlay: false,
+    autoPlay: true,
     showPlayButton: false,
     showNav: true,
     showIndex: false,
     slideOnThumbnailOver: false,
-    slideInterval: 3000,
-    slideDuration: 300,
+    slideInterval: 5000,
+    slideDuration: 500
   };
 
   const imgSources = [{
     src: hotel1.src
-  },{
+  }, {
     src: hotel2.src
-  },{
+  }, {
     src: hotel3.src
   },
     {
       src: hotel1.src
-    },{
+    }, {
       src: hotel2.src
-    },{
+    }, {
       src: hotel3.src
     }];
-
 
 
   const images = imgSources.map((img) => {
@@ -73,17 +72,17 @@ const HotelPhotoSlider = () => {
     slideDuration: gallery.slideDuration,
     items: images,
     renderItem: (...args: any[]) => {
-      return args.map(a => <ImageDiv url={a.original} key={`${Math.random()}${a.original}`}/>);
-    },
+      return args.map(a => <ImageDiv url={a.original} key={`${Math.random()}${a.original}`} />);
+    }
   }), [gallery]);
 
   return <HotelPhotoSliderWrapper className={"slider-wrapper"}>
     <ImageGallery
-        {...galleryProps}
+      {...galleryProps}
     />
-  
-    <div id={`vertical-slider-enlargeImage`}/>
+
+    <div id={`vertical-slider-enlargeImage`} />
   </HotelPhotoSliderWrapper>;
-}
+};
 
 export default HotelPhotoSlider;

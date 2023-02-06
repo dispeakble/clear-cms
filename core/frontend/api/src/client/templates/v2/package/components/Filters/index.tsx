@@ -1,7 +1,7 @@
 import { FiltersHeader, FiltersHeaderWrapper, FiltersWrapper, ResetText } from "../../styled";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import FiltersArrow from "../../../assets/img/filtersArrow-icon.svg";
+import FiltersArrow from "../../../assets/img/icons/filtersArrow-icon.svg";
 
 import { useState } from "react";
 
@@ -32,22 +32,20 @@ const Filters = ({ setSelectedFilters, selectedFilters, filters }: any) => {
         filters &&
         filters.map((filter: any, index: number) => {
           return (
-            <>
-              <FiltersHeaderWrapper key={index}>
-                <FiltersHeader>
-                  {filter.title}
-                </FiltersHeader>
-                <Image
-                  src={FiltersArrow}
-                  width={10}
-                  height={5}
-                  onClick={() => handleFilterOpen(filter.slug)}
-                  style={{
-                    cursor: "pointer"
-                  }}
-                />
-              </FiltersHeaderWrapper>
-            </>
+            <FiltersHeaderWrapper key={index}>
+              <FiltersHeader>
+                {filter.title}
+              </FiltersHeader>
+              <Image
+                src={FiltersArrow}
+                width={10}
+                height={5}
+                onClick={() => handleFilterOpen(filter.slug)}
+                style={{
+                  cursor: "pointer"
+                }}
+              />
+            </FiltersHeaderWrapper>
           );
         })
       }

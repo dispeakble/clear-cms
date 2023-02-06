@@ -34,7 +34,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
@@ -43,11 +43,11 @@ export class ProtocolService {
         const payload: payloadInterface = {
             api: data.module,
             act: data.act,
-            channel: data.channel,
+            channel: `${data.channel}`,
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload);
+        return this.redisService.emit({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
@@ -57,7 +57,7 @@ export class ProtocolService {
             act: 'checkAccess',
             payload: data.payload
         };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload).toPromise();
     }
 
     public sendPost(data: any) {
@@ -66,7 +66,7 @@ export class ProtocolService {
             act: data.act,
             payload: data.payload.body.payload
         };
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public sendGet(data: any) {
@@ -75,7 +75,7 @@ export class ProtocolService {
             act: 'get',
             payload: data.payload
         };
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
     }
 
     public getMeta(data: any){
@@ -84,7 +84,7 @@ export class ProtocolService {
             act: 'getMeta',
             payload: data.payload
         };
-        return this.redisService.send({message: data.channel}, payload).toPromise();
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload).toPromise();
     }
 
     public ping(data: any, config: ModuleInterface){
@@ -124,7 +124,6 @@ export class ProtocolService {
                         api: 'protocol',
                         act: 'confirmHandshake'
                     }
-
                 }
             })
         }

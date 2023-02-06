@@ -3,13 +3,14 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import {payloadInterface} from "../interfaces/payload.interface";
 import md5 from "md5";
+import { ProtocolService } from "./protocol.service";
 
 @Injectable()
 export class ClientsService {
 
     private methods = ["list", "add", "rem", "set"];
 
-    constructor(@Inject('ProtocolService') private protocolService) {
+    constructor(private protocolService: ProtocolService) {
     }
 
     public list(params: any) {
@@ -24,12 +25,12 @@ export class ClientsService {
             })
 
             const payload: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
                     db: 'agency',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'client',
                         attributes: ["id", "firstName", "lastName", "email", "active", "createdAt", "accessedAt", "updatedAt"],
@@ -60,12 +61,12 @@ export class ClientsService {
             (async () => {
                 try {
                     const request: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                        channel: `db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'agency',
-                            channel: `${process.env.app}_system`,
+                            channel: `system`,
                             data: {
                                 what: 'client',
                                 data: {
@@ -109,12 +110,12 @@ export class ClientsService {
                 delete params.data.accessedAt;
 
                 const request: payloadInterface = {
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: 'sql',
                     act: 'set',
                     payload: {
                         db: 'agency',
-                        channel: `${process.env.app}_system`,
+                        channel: `system`,
                         data: {
                             what: 'client',
                             data: params.data,
@@ -147,12 +148,12 @@ export class ClientsService {
     public rem(params: any) {
         return new Observable(subscriber => {
             const request: payloadInterface = {
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'rem',
                 payload: {
                     db: 'agency',
-                    channel: `${process.env.app}_system`,
+                    channel: `system`,
                     data: {
                         what: 'client',
                         where: {

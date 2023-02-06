@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import {device, size} from "../../styled";
-import {Shadows} from "../../../../assets/design-set";
+import { device, size } from "../../styled";
+import { Shadows } from "../../../../assets/design-set";
 
 export const PackageDetailContainer = styled.div`
   background: #FFFFFF;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
-  border-radius: 27px;
+  border-radius: 20px;
   width: 100%;
-  padding: 2rem;
+  padding: 20px;
 `;
 
 export const CustomSection = styled.div`
@@ -18,10 +18,11 @@ export const CustomSection = styled.div`
   padding: 2rem;
 `;
 
-export const TitleText = styled.h3`
+export const TitleText = styled.div`
   font-weight: 400;
-  font-size: 36px;
-  line-height: 54px;
+  font-size: 33px;
+  line-height: 50px;
+  margin: 0;
 `;
 
 export const ParaTextBold = styled.p`
@@ -34,9 +35,10 @@ export const BookingHeadingText = styled.p`
   font-weight: bolder;
   font-size: 17px;
   margin: 0;
+  white-space: nowrap;
 `;
 
-export const BookingMutedText = styled.p`
+export const BookingMutedText = styled.div`
   font-size: 17px;
   margin: 0;
   color: #848484;
@@ -50,56 +52,61 @@ export const BookingPriceText = styled.p`
 
 export const BookingCard = styled.div`
   width: 100%;
-  height: 140px;
   border: 2px dashed #FFAC5B;
   border-radius: 10px;
-  margin: 1rem 0;
+  margin: 10px 0;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  background: url(${({ theme }) => theme.icon("bookingDetailBg")}) no-repeat center;
+  background-size: cover;
+`;
+
+export const BookingCardContent = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
+
+export const BookingCardPrice = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem;
-  position: relative;
-  
-  background: url(${({theme}) => theme.icon('bookingDetailBg')}) no-repeat center;
-  background-size: cover;
-  
-  white-space: nowrap;
-  overflow-x: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  };
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  gap: 10px;
 `;
 
 export const FlightInformation = styled.div`
-    
-`
+
+`;
 
 export const FlightTakeOffInput = styled.div`
   flex: 1 0 40%;
-`
+`;
 export const InputContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    margin-top: 6px;
-  
-    inputs {
-      background: #FFFFFF;
-      border: 1px solid #DBDBDB;
-      box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
-      border-radius: 10px;
-    }
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  margin-top: 6px;
+
+  inputs {
+    background: #FFFFFF;
+    border: 1px solid #DBDBDB;
+    box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+  }
 `;
 
 export const DropdownIcon = styled.div`
-  width: 40px;
+  width: 30px;
   height: 48px;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
 `;
-
 
 
 // -------------- inputs section -------------
@@ -108,44 +115,51 @@ export const TakeOffInputContainer = styled.div`
   border: 1px solid #DBDBDB;
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
-`
+`;
 
-export const StyledSearchInput = styled.input`
+export const StyledSearchDepartureInput = styled.input`
   flex: 1;
-  background: url(${({theme}) => theme.icon('departure')}) no-repeat 16px center white;
-  padding: 8px 0 8px 64px;
+  background: url(${({ theme }) => theme.icon("departure")}) no-repeat 10px center white;
+  background-size: 23px 24px;
+  padding: 0 0 0 43px;
   width: 100%;
   border: none;
-  border-radius: 10px ;
-  
-  &::placeholder{
-    color: rgba(0,0,0,0.6);
+  border-radius: 10px;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.6);
   }
+
   &:focus {
-    &::placeholder{
+    &::placeholder {
       font-weight: bold;
     }
+
     font-weight: bold;
   }
 `;
 
 export const StyledSearchDestinationInput = styled.input`
   flex: 1;
-  background: url(${({theme}) => theme.icon('destination')}) no-repeat 16px center white;
-  padding: 0 0 0 64px;
+  background: url(${({ theme }) => theme.icon("destination")}) no-repeat 10px center white;
+  background-size: 23px 24px;
+  padding: 0 0 0 43px;
   line-height: 48px;
   box-sizing: border-box;
   width: 100%;
   border: none;
   border-radius: 10px;
-  &::placeholder{
-    color: rgba(0,0,0,0.6);
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.6);
   }
+
   &:focus {
-    &::placeholder{
+    &::placeholder {
       font-weight: bold;
     }
   }
+
   @media ${device.tablet} {
     margin-top: 0;
   }
@@ -156,20 +170,21 @@ export const AutocompleteItem = styled.li`
   padding: 0 10px;
   line-height: 34px;
   cursor: pointer;
+
   &:hover {
-    background: ${({theme}) => theme.colors.primaryColor};
-    color: ${({theme}) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 
 export const AutocompleteList = styled.ul`
   position: absolute;
   z-index: 20;
-  background: ${({theme}) => theme.colors.white};
-  border: 1px solid ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.jetBlack};
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.jetBlack};
   list-style: none;
-  
+
   padding: 0;
   box-shadow: 4px 4px 15px rgb(0 0 0 / 25%);
   width: 100%;
@@ -177,7 +192,7 @@ export const AutocompleteList = styled.ul`
   @media ${device.tablet} {
     width: calc(50% - 3px);
   }
-  
+
   &.destination {
     margin-top: 126px;
     @media ${device.tablet} {
@@ -191,51 +206,53 @@ export const FlightDetailsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin: 2rem 0 3rem 0;
+  margin: 20px 0;
+  gap: 20px;
 `;
 
 
 export const ImageForCompany = styled.div`
-  width: 40%;
-  background: url(${({theme}) => theme.icon('companyImage')}) no-repeat 16px center white;
-  position: absolute;
-  height: 4rem;
-  left: 30%;
+  background: url(${({ theme }) => theme.icon("companyImage")}) no-repeat center center white;
 `;
 
 
 export const FlightPort = styled.div`
-  width: 10%;
   font-size: 12px;
   line-height: 18px;
+  white-space: nowrap;
+  min-width: 60px;
 `;
 
 export const Time = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 60%;
-    position: relative;
-    .time-dotted {
-      border-bottom: 2px dotted #A29E9E;
-      width: 100%;
-      height: 0;
-      position: absolute;
-      top: 60%;
-    }
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  width: 60%;
+  position: relative;
+
+  .time-dotted {
+    border-bottom: 2px dotted #A29E9E;
+    height: 2px;
+    flex: 1;
+  }
+
   .dot-before, .dot-after {
     border: 2px solid #FF840D;
     width: 8px;
     height: 8px;
     border-radius: 4px;
-    position: absolute;
-    top: -2px;
   }
+
   .dot-before {
-    left: -8px;
+    margin-right: -8px;
   }
+
   .dot-after {
-    right: -8px;
+    margin-left: -8px;
   }
+
   .takeOffTime, .tandingTime {
     padding-top: 6px;
     font-weight: 700;
@@ -255,13 +272,14 @@ export const PassengerWrapper = styled.div`
   cursor: pointer;
   padding: 5px 0;
   min-width: 0 !important;
+
   span {
     margin-left: 8px;
   }
 
   p {
     margin: 0;
-    color: ${({theme}) => theme.colors.primaryColor};
+    color: ${({ theme }) => theme.colors.primaryColor};
     font-weight: 500;
     font-size: 16px;
   }
@@ -269,7 +287,8 @@ export const PassengerWrapper = styled.div`
   div {
     text-align: center;
   }
-  @media (max-width: ${size.tablet}){
+
+  @media (max-width: ${size.tablet}) {
     padding: 10px 0 10px 0;
   }
 `;
@@ -290,6 +309,7 @@ export const CounterBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
   :hover {
     background-color: ${({ theme }) => theme.colors.primaryColor};
     color: ${({ theme }) => theme.colors.white};
@@ -330,19 +350,18 @@ export const GuestNumber = styled.div`
 `;
 
 export const PassengerDetailsWrapper = styled.div`
-  cursor:pointer;
+  cursor: pointer;
   display: flex;
   align-items: center;
   padding-left: 8px;
   width: 100%;
   height: 36px;
   justify-content: space-between;
+
   .icon-and-title__wrapper {
     width: 60%;
     display: flex;
-    align-items: center;
   }
-  
 `;
 
 export const PassengerView = styled.div`
@@ -380,73 +399,75 @@ export const BookingDetailContainer = styled.div`
 `;
 
 export const BookingButton = styled.button`
-  height: 51px;
-  background: linear-gradient(180deg, #FFAC5C 0%, #FF840D 100%);
+  padding: 10px;
+  background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+  color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 7px;
   font-weight: bolder;
   font-size: 20px;
-  color: #fff;
   border: none;
-  text-shadow: 0 2px 2px #00000040;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
+  }
 `;
-
-
 
 export const PackageCharterContainer = styled.div`
   margin-top: 3rem;
   padding-left: 3rem;
 `;
 
-
 export const BookingConditionsContainer = styled.div`
   margin-top: 3rem;
   padding-left: 3rem;
 `;
 
-
 export const CustomHeading = styled.p`
   position: relative;
   font-weight: 600;
   font-size: 26px;
+  line-height: 50px;
   color: #FF840D;
-  &:before{
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 220px;
-    height: 2px;
-    background-color: #dedede;
-  }
+  border-bottom: 2px solid #dedede;
 `;
-
 
 export const QuotedPara = styled.p`
   position: relative;
+
   &:before {
-    content: url(${({theme})=>theme.icon('quoteUp')});
+    content: url(${({ theme }) => theme.icon("quoteUp")});
     position: absolute;
     top: -10px;
     left: -50px;
-  };
+  }
+;
+
   &:after {
-    content: url(${({theme})=>theme.icon('quoteDown')});
+    content: url(${({ theme }) => theme.icon("quoteDown")});
     position: absolute;
     bottom: -20px;
     right: 0;
-  };
+  }
+
+  text-align: justify;;
 `;
 
 export const BetweenInputsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 1 20%;
-`
+  padding: 0 10px;
+  @media ${device.tablet} {
+    flex: 1;
+    max-width: 50px;
+  }
+`;
 
 export const BetweenInputs = styled.div`
   border-bottom: 1px dotted grey;
   height: 0;
-  width: 80%;
-`
+  width: 100%;
+`;

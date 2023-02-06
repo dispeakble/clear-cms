@@ -16,8 +16,8 @@
       <env name="tpl_ver" value="v1" />
       <env name="app" value="marioviajes" />
       <env name="JWT_EXP_H" value="3600s" />
-      <env name="NEXT_PUBLIC_RECAPTCHA_SITE_KEY" value="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH" />
-      <env name="RECAPTCHA_SECRET_KEY" value="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29" />
+      <env name="recaptcha_public_key" value="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH" />
+      <env name="recaptcha_private_key" value="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29" />
     </envs>
     <method v="2" />
   </configuration>

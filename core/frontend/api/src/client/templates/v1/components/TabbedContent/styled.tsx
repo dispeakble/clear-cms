@@ -3,7 +3,7 @@ import hotel1 from "../../assets/img/hotels/small/hotel4.jpg";
 import { size } from "../../styled";
 
 export const Wrapper = styled.div`
-  background: ${({theme}) => theme.colors.offWhite};
+  background: ${({ theme }) => theme.colors.offWhite};
   display: block;
   @media (min-width: ${size.tablet}) {
     padding: 34px;
@@ -28,14 +28,14 @@ export const StyledTabs = styled.div`
 `;
 
 export const StyledTab = styled.div`
-  background: rgba(${({theme}) => theme.colors.primaryColorFadedRBG}, .7);
+  background: rgba(${({ theme }) => theme.colors.primaryColorFadedRBG}, .7);
   flex: 1;
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: center;
   font-size: 18px;
-  color: ${({theme}) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.black};
   text-shadow: 0 4px 4px rgba(0,0,0,0.25);
   max-width: 440px;
   padding: 10px;
@@ -46,8 +46,8 @@ export const StyledTab = styled.div`
   text-align: center;
   cursor: pointer;
   &:hover, &.selected {
-    background: rgba(${({theme}) => theme.colors.primaryColorRBG}, .7);
-    color: ${({theme}) => theme.colors.white};
+    background: rgba(${({ theme }) => theme.colors.primaryColorRBG}, .7);
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -65,8 +65,8 @@ export const StyledContent = styled.div`
 
 export const StyledTitle = styled.div`
   margin: 20px 0;
-  font-size: 44px;
-  color: ${({theme}) => theme.colors.primaryColor}
+  font-size: clamp(25px, 3vw, 40px);;
+  color: ${({ theme }) => theme.colors.primaryColor}
 `;
 
 export const StyledContentWrapper = styled.div`
@@ -75,12 +75,12 @@ export const StyledContentWrapper = styled.div`
 `;
 export const StyledContentTitle = styled.div`
   font-size: 22px;
-  color:  ${({theme}) => theme.colors.black};
-  background: url(${({theme}) => theme.icon('checkSignGold')}) no-repeat left 3px;
-  padding-left: 20px;
+  color:  ${({ theme }) => theme.colors.black};
+  background: url(${({ theme }) => theme.icon("checkSignGold")}) no-repeat left 3px;
+  padding: 0 0 10px 20px;
 `;
 export const StyledContentSubtitle = styled.div`
   padding-left: 20px;
   font-size: 16px;
-  color: ${({theme}) => theme.colors.primaryRed};
+  color: ${({ theme }) => theme.colors.primaryRed};
 `;

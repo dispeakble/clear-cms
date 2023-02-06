@@ -246,7 +246,7 @@ class ViewThemes extends Component {
                                 onClick={() => this.enableEditMode(theme.id)}
                                 style={{backgroundSize: "contain"}}
                                 className={this.props.classes.media}
-                                image={theme.thumbnail}
+                                image={`/files/themes/${theme.id}.png`}
                             />
                             <CardContent style={{textAlign: "center"}}>
                                 {theme.title}
@@ -1036,6 +1036,7 @@ class ViewThemes extends Component {
                 </div>
                 {this.state.createModal ? this.openEditor() : ""}
                 <Modal
+                  modalSize="small"
                     showModal={this.state.showDeleteModal}
                     {...this.deleteModal}
                 />

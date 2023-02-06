@@ -7,6 +7,7 @@ import {
   StyledValuePopupList
 } from "./styledValuePopup";
 import React, { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 type valuePopupAgesProps = {
   name: string;
@@ -20,7 +21,19 @@ type valuePopupAgesProps = {
   onChange: (value: Record<string, number[]>) => void;
 }
 
-const ValuePopupAges: React.FC<valuePopupAgesProps> = ({ name, data, count, min, max, dataTestId, className, style, onChange }) => {
+const ValuePopupAges: React.FC<valuePopupAgesProps> = ({
+                                                         name,
+                                                         data,
+                                                         count,
+                                                         min,
+                                                         max,
+                                                         dataTestId,
+                                                         className,
+                                                         style,
+                                                         onChange
+                                                       }) => {
+
+  const t = useTranslations();
 
   const [values, setValues] = useState<number[]>([]);
 
@@ -61,7 +74,7 @@ const ValuePopupAges: React.FC<valuePopupAgesProps> = ({ name, data, count, min,
   return (<StyledValuePopup data-testid={dataTestId} className={className} style={style}>
     {values.map((val: number, i: number) => (
       <StyledValuePopupList key={i}>
-        <StyledAgeLabel>Child {i + 1} age:</StyledAgeLabel>
+        <StyledAgeLabel>{t('search.childAgeVar', {n: i + 1})}</StyledAgeLabel>
         <StyledValuePopupControl>
           <StyledButton onClick={() => decreaseValue(i)} data-testid="test-age-minus-handler">-</StyledButton>
           <StyledValue data-testid="test-age-handler-value">{val}</StyledValue>

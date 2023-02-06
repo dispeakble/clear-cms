@@ -11,7 +11,7 @@ type valuePopupProps = {
   onChange: (value: Record<string, number>) => void;
 }
 
-const ValuePopup: React.FC<valuePopupProps> = ({name, value, min, max, dataTestId, style, onChange}) => {
+const ValuePopup: React.FC<valuePopupProps> = ({ name, value, min, max, dataTestId, style, onChange }) => {
 
   const [currentValue, setCurrentValue] = useState(value);
 
@@ -21,7 +21,7 @@ const ValuePopup: React.FC<valuePopupProps> = ({name, value, min, max, dataTestI
     setTimeout(() => {
       setVisible(true);
     }, 30);
-  }, [])
+  }, []);
 
   const decreaseValue = () => {
     const newVal = currentValue - 1 >= min ? currentValue - 1 : currentValue;
@@ -29,7 +29,7 @@ const ValuePopup: React.FC<valuePopupProps> = ({name, value, min, max, dataTestI
     result[name] = newVal;
     onChange(result);
     setCurrentValue(newVal);
-  }
+  };
 
   const increaseValue = () => {
     const newVal = currentValue + 1 <= max ? currentValue + 1 : currentValue;
@@ -37,13 +37,13 @@ const ValuePopup: React.FC<valuePopupProps> = ({name, value, min, max, dataTestI
     result[name] = newVal;
     onChange(result);
     setCurrentValue(newVal);
-  }
+  };
 
   return visible ? <StyledValuePopup style={style} data-testid={dataTestId}>
     <StyledButton onClick={decreaseValue} data-testid="test-minus-handler">-</StyledButton>
     <StyledValue data-testid="test-handler-value">{currentValue}</StyledValue>
     <StyledButton onClick={increaseValue} data-testid="test-plus-handler">+</StyledButton>
   </StyledValuePopup> : <></>;
-}
+};
 
 export default ValuePopup;

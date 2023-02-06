@@ -1,5 +1,5 @@
 #!/usr/bin/env powershell
-param ($force)
+param ($force = 0, [Boolean]$custom = 0)
 .\stop.ps1
 
 if($force) {
@@ -7,4 +7,4 @@ if($force) {
     rm -r -fo volumes
 }
 
-.\setup.ps1
+.\setup.ps1 -custom $custom

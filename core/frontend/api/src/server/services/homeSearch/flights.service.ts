@@ -39,7 +39,7 @@ export class HomeSearchFlightsService {
         const result = {}
 
         result['departure'] = await this.protocolService.sendMessage({
-            channel: `${process.env.app}_db`,
+            channel: `db`,
             api: 'sql',
             act: 'list',
             payload: {
@@ -68,7 +68,7 @@ export class HomeSearchFlightsService {
         const result = {};
 
         result['departure'] = await this.protocolService.sendMessage({
-            channel: `${process.env.app}_db`,
+            channel: `db`,
             api: 'sql',
             act: 'list',
             payload: {
@@ -108,7 +108,7 @@ export class HomeSearchFlightsService {
 
         try {
             response = await this.protocolService.sendMessage({
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'list',
                 payload: {
@@ -150,7 +150,7 @@ export class HomeSearchFlightsService {
             }).toPromise();
 
             if(response && response.length) {
-                const result = response.map((el: any, i: any) => {
+                const result = response.map((el: any) => {
                     return el['DestinationGeography'];
                 });
                 return {
@@ -172,7 +172,7 @@ export class HomeSearchFlightsService {
 
         try {
             response = await this.protocolService.sendMessage({
-                channel: `${process.env.app}_db`,
+                channel: `db`,
                 api: 'sql',
                 act: 'get',
                 payload: {

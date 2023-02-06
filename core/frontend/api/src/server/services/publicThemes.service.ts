@@ -1,5 +1,5 @@
 import {Inject, Injectable} from "@nestjs/common";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 
@@ -20,13 +20,12 @@ export class PublicThemesService {
         return new Observable((subscriber) => {
             (async () => {
                 try {
-                    const payload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const payload: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 attributes: ["id", "title", "isDefault", "thumbnail"]
@@ -59,13 +58,12 @@ export class PublicThemesService {
         return new Observable((subscriber) => {
             (async () => {
                 try {
-                    const payload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const payload: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 attributes: [
@@ -137,13 +135,12 @@ export class PublicThemesService {
                         mui: params.data.mui
                     }
 
-                    const request: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const request: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'set',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 where: params.where,
@@ -202,13 +199,12 @@ export class PublicThemesService {
                         bgGradient: params.bgGradient,
                         mui: params.mui
                     }
-                    const request: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const request: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'add',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'publicTheme',
                                 data: {
@@ -237,13 +233,12 @@ export class PublicThemesService {
         return new Observable((subscriber) => {
             (async () => {
                try {
-                   const request: payloadInterface = {
-                       channel: `${process.env.app}_db`,
+                   const request: PayloadInterface = {
+                       channel: `db`,
                        api: 'sql',
                        act: 'rem',
                        payload: {
                            db: 'main',
-                           channel: `${process.env.app}_frontend`,
                            data: {
                                what: 'publicTheme',
                                where: params

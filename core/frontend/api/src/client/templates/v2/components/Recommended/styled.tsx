@@ -16,9 +16,8 @@ export const Wrapper = styled.div`
 `;
 
 export const StyledCard = styled.div`
-  background: ${({theme}) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 25px rgba(0, 0, 0, .1);
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -45,14 +44,15 @@ export const StyledDetails = styled.div`
 `;
 
 export const StyledPrice = styled.div`
-  color: ${({theme}) => theme.colors.darkRed};
+  color: ${({ theme }) => theme.colors.darkRed};
   font-size: 26px;
   margin-bottom: 10px;
+  text-align: right;
 `;
 
 export const StyledActionButton = styled.a`
-  background: ${({theme}) => theme.colors.primaryColor};
-  color: ${({theme}) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primaryColor};
+  color: ${({ theme }) => theme.colors.white};
   border-radius: 12px;
   text-align: center;
   width: 100%;
@@ -63,8 +63,8 @@ export const StyledActionButton = styled.a`
   margin-bottom: 10px;
 
   &:hover {
-    color: ${({theme}) => theme.colors.white};
-    background: ${({theme}) => theme.colors.primaryLight};
+    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.primaryLight};
   }
 `;
 
@@ -88,14 +88,14 @@ export const StyledZoomImg = styled.div<{ src: any }>`
   align-items: flex-end;
   justify-content: flex-end;
   position: relative;
-/*
+    /*
   &:after {
     content: " ";
     width: 26px;
     height: 26px;
     display: block;
     position: absolute;
-    background: url(${({theme}) => theme.icon('zoom')}) no-repeat left top;
+    background: url(${({ theme }) => theme.icon("zoom")}) no-repeat left top;
   }*/
 
 `;
@@ -110,34 +110,4 @@ export const StyledZoomPopup = styled.div<{ src: any }>`
   background-size: cover;
   transition: width 600ms ease-out, height 600ms ease-out, margin 600ms ease-out;
   position: absolute;
-`;
-export const StyledStars = styled.div<{ stars: number }>`
-  height: 25px;
-  background: url(${({theme}) => theme.icon('coldStar')}) space top left;
-  background-size: 25px 25px;
-  width: 125px;
-  @media ${device.tablet} {
-    width: 250px;
-    height: 50px;
-    background-size: 50px 50px;
-  }
-
-
-  position: relative;
-
-  &:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    left: 0;
-    height: 25px;
-    width: ${({ stars }) => stars * 25}px;
-    background: url(${({theme}) => theme.icon('goldStar')}) space left center;
-    background-size: 25px 25px;
-    @media ${device.tablet} {
-      width: ${({ stars }) => stars * 50}px;
-      height: 50px;
-      background-size: 50px 50px;
-    }
-  }
 `;

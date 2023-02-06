@@ -65,28 +65,30 @@ export class SystemService {
         });
     }
 
-    public async registerModule(data: ModuleInterface) {
-        return new Promise(async (resolve_register) => {
-            await this.waitForService({channel: `${process.env.app}_hub`});
+    public registerModule(data: ModuleInterface) {
+        return new Promise((resolve_register) => {
+            (async () => {
+                await this.waitForService({channel: `hub`});
 
-            const payload: payloadInterface = {
-                api: 'module',
-                act: 'register',
-                channel: `${process.env.app}_hub`,
-                config: {
-                    restart: true,
-                    stop: false
-                },
-                payload: data
-            };
-            const registerSub = this.protocolService.sendMessage(payload);
-            registerSub.subscribe(data => {
-                resolve_register(data);
-            }, err => {
-                resolve_register(err);
-            }, () => {
-                resolve_register(null);
-            });
+                const payload: payloadInterface = {
+                    api: 'module',
+                    act: 'register',
+                    channel: `hub`,
+                    config: {
+                        restart: true,
+                        stop: false
+                    },
+                    payload: data
+                };
+                const registerSub = this.protocolService.sendMessage(payload);
+                registerSub.subscribe(data => {
+                    resolve_register(data);
+                }, err => {
+                    resolve_register(err);
+                }, () => {
+                    resolve_register(null);
+                });
+            })();
         });
     }
 

@@ -15,14 +15,14 @@ const Languages = (props: { languages: any; }) => {
       <SelectedLanguage>{languages[router.locale as string]} <BiChevronDown /></SelectedLanguage>
       <LanguagesDropdown>
         {
-            router.locales &&
-                router.locales.map((locale, i) =>
-                    <Link href={router.asPath} locale={locale} key={`language-link-${i}`}>
-                      <a>
-                        {languages[locale]}
-                      </a>
-                    </Link>
-                )
+          router.locales &&
+          router.locales.map((locale, i) =>
+            <Link href={router.asPath} locale={locale} key={`language-link-${i}`}>
+              <a>
+                {languages[locale]}
+              </a>
+            </Link>
+          )
         }
       </LanguagesDropdown>
     </Container>

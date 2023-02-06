@@ -110,7 +110,8 @@ const HotelDetail = ({ websiteName, colorScheme }: any) => {
         <Header websiteName={websiteName} />
         <TopContentWrapper>
           <ContentWrapper>
-            <Breadcrumbs countryName="Spain" islandName="Tenerife" townName="Adeje" hotelName="Hotel Victoria (Hotel)" />
+            <Breadcrumbs countryName="Spain" islandName="Tenerife" townName="Adeje"
+                         hotelName="Hotel Victoria (Hotel)" />
             <HotelDetailComponent
               data={data}
               handleChildrenMinus={handleChildrenMinus}

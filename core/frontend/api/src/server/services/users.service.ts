@@ -18,7 +18,7 @@ export class UsersService {
         return new Observable(subscriber => {
             (async () => {
                 const userResults = await this.protocolService.sendMessage({
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: "sql",
                     act: "get",
                     payload: {
@@ -44,7 +44,7 @@ export class UsersService {
         return new Observable(subscriber => {
             (async () => {
                 const updateUserResults = await this.protocolService.sendMessage({
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: "sql",
                     act: "set",
                     payload: {
@@ -71,7 +71,7 @@ export class UsersService {
         return new Observable(subscriber => {
             (async () => {
                 const updateUserResults = await this.protocolService.sendMessage({
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: "sql",
                     act: "set",
                     payload: {
@@ -100,7 +100,7 @@ export class UsersService {
         return new Observable(subscriber => {
             (async () => {
                 const updateRequest = await this.protocolService.sendMessage({
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: "sql",
                     act: "set",
                     payload: {
@@ -128,7 +128,7 @@ export class UsersService {
         return new Observable(subscriber => {
             (async () => {
                 const updateRequest = await this.protocolService.sendMessage({
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: "sql",
                     act: "set",
                     payload: {
@@ -156,7 +156,7 @@ export class UsersService {
         return new Observable(subscriber => {
             (async () => {
                 const userResults = await this.protocolService.sendMessage({
-                    channel: `${process.env.app}_db`,
+                    channel: `db`,
                     api: "sql",
                     act: "get",
                     payload: {

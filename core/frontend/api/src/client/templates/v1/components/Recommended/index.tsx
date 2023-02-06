@@ -14,7 +14,8 @@ const Recommended = () => {
     title: t("home.recommended.hotel1"),
     meal: t("home.recommended.description"),
     details: t("home.recommended.noOfNights"),
-    price: "199$",
+    price: "199 €",
+    stars: 3,
     img: hotel1.src
   };
 
@@ -34,6 +35,9 @@ const Recommended = () => {
         <Card {...cardProps} dataTestid="test-recommended-card-first" />
         <Card {...cardProps} dataTestid="test-recommended-card-second" />
         <Card {...cardProps} dataTestid="test-recommended-card-third" />
+        <Card {...cardProps} dataTestid="test-recommended-card-fourth" />
+        <Card {...cardProps} dataTestid="test-recommended-card-fifth" />
+        <Card {...cardProps} dataTestid="test-recommended-card-sixth" />
       </Wrapper>
     </>
   );

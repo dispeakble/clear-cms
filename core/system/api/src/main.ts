@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Transport } from '@nestjs/microservices';
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 
 async function bootstrap() {
     try {
@@ -13,7 +13,7 @@ async function bootstrap() {
         await app.connectMicroservice({
             transport: Transport.REDIS,
             options: {
-                url: 'redis://' + process.env.redis_server,
+                url: `redis://${process.env.redis_server}`,
                 port: +process.env.redis_port,
                 password: process.env.redis_password,
                 retryAttempts: 20,
@@ -27,7 +27,7 @@ async function bootstrap() {
             }
         });
 
-        await app.startAllMicroservicesAsync();
+        await app.startAllMicroservices();
     } catch(err){
         console.error(err);
         process.exit(1);

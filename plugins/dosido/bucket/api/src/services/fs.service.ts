@@ -3,7 +3,7 @@ import {ModuleInterface} from "../interfaces/module.interface";
 import * as path from 'path';
 import * as fs from "fs";
 import {v4 as uuid} from "uuid";
-import {Observable, Subscriber} from "rxjs";
+import {Observable} from "rxjs";
 import * as mime from "mime";
 import * as AdmZip from "adm-zip";
 import { Readable } from 'stream';
@@ -26,7 +26,7 @@ export class FsService {
         return new Observable((observer) => {
             const realPath = this.help.path.realPath({path: params.path});
             try {
-                if (this.help.not.writeable({path: realPath})) {
+                if (this.help.not.readable({path: realPath})) {
                     observer.next({type: 'error', content_length: 0, content_type: "404", message: "not found"});
                     observer.complete();
                     return;
@@ -238,6 +238,7 @@ export class FsService {
         let options: any = {};
 
 
+        //TODO add support for multiple files
         params.initiator.subscribe(data => {
             //first will be the meta data
             //create a write stream

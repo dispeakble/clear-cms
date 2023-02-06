@@ -28,6 +28,7 @@ interface ITicketItem {
 }
 
 export const PackagesLayout = styled.div`
+  margin-top: 40px;
   width: 100%;
   display: flex;
   gap: 20px;
@@ -37,13 +38,6 @@ export const PackagesLayout = styled.div`
     flex-direction: row;
   }
 
-`;
-
-export const PackagesDetail = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
 `;
 
 export const FiltersContainer = styled.div`
@@ -80,7 +74,7 @@ export const LoadMoreButton = styled.button`
   transition: background .4s ease-in-out;
 
   :hover {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColorHover} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
     transition: background .4s ease-in-out;
   }
 `;
@@ -92,7 +86,7 @@ export const CardWrapper = styled.div`
   padding: 14px;
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.14);
-  border-radius: 24px;
+  border-radius: 10px;
   display: flex;
   width: 100%;
   margin-bottom: 10px;
@@ -108,7 +102,6 @@ export const ImageContainer = styled.div`
   width: 340px;
   border-radius: 10px;
   padding: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.18);
   margin-right: 25px;
   position: relative;
 
@@ -167,7 +160,10 @@ export const PackageServicesContainer = styled.div`
 `;
 
 export const ServiceItem = styled.div`
-
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const PackageDescription = styled.p`
@@ -226,17 +222,13 @@ export const PackageItems = styled.div`
   display: flex;
   align-items: center;
   background: ${({ theme }) => theme.colors.primaryColorHover};
-  border-radius: 27px;
-  max-width: 425px;
+  border-radius: 30px;
+  width: 100%;
   justify-content: space-between;
   padding: 2px 10px;
   margin-bottom: 8px;
 
   @media screen and (max-width: ${size.mobileL}) {
-    flex-direction: column;
-    gap: 8px;
-    max-width: 100%;
-    width: 100%;
     border-radius: 5px;
   }
 `;
@@ -245,6 +237,7 @@ export const ItemContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  height: 30px;
 `;
 
 export const ItemText = styled.p`
@@ -343,11 +336,14 @@ export const TaxText = styled.p`
   color: #646464;
 `;
 
-export const ButtonContainer = styled.div`
-
+export const BookNowContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 `;
-
-export const BookNowButton = styled.button`
+export const BookNowButton = styled.a`
   background: linear-gradient(180deg, #7ACD13 0%, #5D9519 100%);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
@@ -359,7 +355,7 @@ export const BookNowButton = styled.button`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.5;
   white-space: nowrap;
 
@@ -375,6 +371,11 @@ export const BookNowButton = styled.button`
     background: linear-gradient(180deg, rgba(122, 205, 19, 0.63) 0%, rgba(93, 149, 25, 0.63) 100%);
     transition: background .4s ease-in-out;
   }
+
+  @media screen and ${device.tablet} {
+    font-size: 20px;
+  }
+  
 `;
 
 export const DetailsContainer = styled.div`
@@ -435,7 +436,7 @@ export const FiltersWrapper = styled.div`
 export const FiltersHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 22px 11px;
+  padding: 10px;
   align-items: center;
   width: 100%;
   cursor: pointer;
@@ -504,9 +505,10 @@ export const HotelsHeaderWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.white};
+  flex-direction: column;
 
-  @media screen and (max-width: 480px) {
-    flex-direction: column;
+  @media screen and ${device.laptopL} {
+    flex-direction: row;
     gap: 10px;
     padding: 12px;
   }
@@ -514,7 +516,7 @@ export const HotelsHeaderWrapper = styled.div`
 
 export const HotelsHeader = styled.h2`
   font-family: "Poppins", sans-serif;
-  font-size: clamp(18px, 3vw, 36px);
+  font-size: 32px;
   font-weight: 400;
   color: #434343;
   line-height: 1.5;
@@ -672,6 +674,9 @@ export const StarsWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: flex-end;
 `;
 
 export const StarsText = styled.p`
@@ -815,13 +820,14 @@ export const PackagePriceWrapper = styled.div`
   padding: 22px 34px;
   border: 1px ${({ theme }) => theme.colors.borderOutline} solid;
   border-radius: 10px;
+  gap: 10px;
 `;
 
 export const PackagePriceText = styled.h4`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 36px;
+  font-size: 32px;
   line-height: 1.5;
   margin: 0;
 
@@ -952,7 +958,7 @@ export const CustomButton = styled.button<ICustomButton>`
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
-  font-size: clamp(18px, 3vw, 36px);
+  font-size: clamp(18px, 2vw, 32px);
   line-height: 1.5;
   color: ${({ theme }) => theme.colors.white};
   display: flex;
@@ -960,7 +966,7 @@ export const CustomButton = styled.button<ICustomButton>`
   cursor: pointer;
   border: none;
   outline: none;
-  padding: 18px 26px;
+  padding: 10px 15px;
   justify-content: space-between;
 
   gap: 20px;
@@ -1025,6 +1031,23 @@ export const StyledField = styled(Field)`
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   color: #434343;
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+  cursor: pointer;
+  position: relative;
+  
+  &::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    z-index: 999;
+    left: 10px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    background: red;
+  }
 
   ::placeholder {
     color: #ADADAD;
@@ -1214,6 +1237,7 @@ export const HotelPackageTitle = styled.h4`
   font-size: 18px;
   line-height: 1.5;
   margin: 0;
+  flex: 1;
 
   color: ${({ theme }) => theme.colors.accentColor};
 `;
@@ -1257,7 +1281,6 @@ export const TicketText = styled.p`
 
 export const CartFooterWrapper = styled.div`
   padding: 25px 31px;
-  border-top: 1px dashed #A29E9E;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1350,7 +1373,7 @@ export const RoomDetails = styled.p`
   color: ${({ theme }) => theme.colors.black};
 `;
 
-export const PackageHotelInfos = styled.p`
+export const PackageHotelInfos = styled.div`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 400;

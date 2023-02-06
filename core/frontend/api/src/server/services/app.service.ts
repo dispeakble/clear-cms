@@ -1,8 +1,9 @@
-import {Inject, Injectable} from '@nestjs/common';
+import { Inject, Injectable, Logger } from "@nestjs/common";
 
 @Injectable()
 export class AppService {
 
+    public logger: Logger = new Logger('App.Service');
     private methods = ["protocolCall"];
 
     constructor(@Inject('ProtocolService') private protocolService) {
@@ -28,8 +29,7 @@ export class AppService {
         if (this.methods.includes(data.act)) {
             return this[data.act](data.payload);
         } else {
-            // eslint-disable-next-line no-console
-            console.log("Frontend.AppService." + data.act + " not found");
+            this.logger.log(`Frontend.AppService.${data.act} not found`);
         }
         return null;
     }

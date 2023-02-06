@@ -59,4 +59,4 @@ export const StyledLabel = styled.label`
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
-`
+`;

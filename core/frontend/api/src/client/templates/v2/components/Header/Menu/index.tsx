@@ -11,16 +11,14 @@ const Menu = ({ links }: MenuProps) => {
   return (
     <StyledMenuWrapper>
       <StyledMenu>
-        {links &&
-            links.map((link, i) => <Item key={`menu-link-${i}`}>
-              <LinkItem href={link.linkSlug}>
-                {t(`search.${link.linkSlug}`)}
-              </LinkItem>
-            </Item>)
-        }
+        {links && links.map((link) => <Item key={`menu-link-${link.linkSlug}`}>
+            <LinkItem href={`/${link.linkHref}`}>
+              {t(`menu.${link.linkText}`)}
+            </LinkItem>
+          </Item>
+        )}
       </StyledMenu>
     </StyledMenuWrapper>
-
   );
 };
 

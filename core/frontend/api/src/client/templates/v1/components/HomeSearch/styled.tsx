@@ -2,18 +2,17 @@ import styled from "styled-components";
 
 import { device, size } from "../../styled";
 
-export const StyledHomeSearch = styled.div`
+export const StyledHomeSearch = styled.div<{ isHome: boolean }>`
   background-size: cover;
-  padding: 114px 0 0;
   width: 100%;
   display: flex;
   flex-direction: column;
+  ${({isHome}) => isHome && 'padding-top: 90px;'}
   @media ${device.tablet} {
     max-width: 720px;
   }
   @media ${device.laptop} {
     max-width: 768px;
-    padding: 114px 20px 0;
   }
   @media ${device.laptopL} {
     max-width: 1024px;
@@ -43,7 +42,7 @@ export const StyledSearchTabs = styled.div`
 export const StyledSearchTab = styled.a`
   display: block;
   text-align: center;
-  padding: 20px;
+  padding: 15px;
   background: white;
   cursor: pointer;
   user-select: none;
@@ -68,6 +67,7 @@ export const StyledSearchTab = styled.a`
   }
 
   @media ${device.tablet} {
+    padding: 20px;
     display: inline-block;
     flex: none;
   }
@@ -215,6 +215,11 @@ export const StyledSearchInputHolder = styled.div`
 
 export const StyledSearchButton = styled.button`
   font-size: 14px;
+  white-space: nowrap;
+  flex: 1;
+  @media ${device.tablet} {
+    flex: none;
+  }
   background: ${({ theme }) => theme.colors.primaryColor};
 
   &:hover {
@@ -236,7 +241,6 @@ export const StyledSearchButton = styled.button`
 `;
 
 export const StyledSearchOptions = styled.div`
-  position: relative;
   margin-top: 5px;
   padding: 10px;
   border-radius: 0 0 16px 16px;
@@ -244,6 +248,7 @@ export const StyledSearchOptions = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  gap: 10px;
   @media ${device.tablet} {
     flex-direction: row;
   }
@@ -285,30 +290,31 @@ export const StyledPrimaryValue = styled.div`
 `;
 
 export const StyledSearchCheckinGroup = styled.div`
-  border: 2px solid #EFEFEF;
+  border: 1px solid ${({ theme }) => theme.colors.greyBorder};
   border-radius: 10px;
   display: flex;
-  @media ${device.tablet} {
-    width: auto;
-  }
-  @media ${device.laptop} {
-    min-width: 250px;
-  }
-  @media ${device.laptopL} {
-    width: 350px;
-  }
-  @media ${device.desktop} {
-    width: 420px;
-  }
+  flex: 1;
 
   & > span:hover {
-    background-color: ${({ theme }) => theme.colors.primaryLight};
+    background-color: ${({ theme }) => theme.colors.primaryColorHover};
+    
 
     & > label {
       color: #FFFFFF !important;
+      flex: 1;
     }
 
   }
+`;
+
+export const StyledSearchSecondGroup = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @media ${device.tablet} {
+    flex-direction: row;
+  }  
 `;
 
 export const StyledCheckIn = styled.span`
@@ -323,6 +329,10 @@ export const StyledCheckIn = styled.span`
 
   & label {
     pointer-events: none;
+  }
+  
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("checkInWhite")});
   }
 
 `;
@@ -342,6 +352,10 @@ export const StyledCheckOut = styled.span`
     user-select: none;
   }
 
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("checkOutWhite")});
+  }
+
 `;
 
 export const StyledFilterWrapper = styled.div`
@@ -355,19 +369,17 @@ export const StyledFilterWrapper = styled.div`
 
 export const StyledSearchOptionsGroup = styled.div`
   cursor: pointer !important;
-  border: 2px solid #EFEFEF;
+  border: 1px solid ${({ theme }) => theme.colors.primaryColorHover};
   border-radius: 10px;
-  margin-top: 10px;
   display: flex;
-  
+  flex: 1;
   @media ${device.tablet} {
     flex: 1;
-    margin: 0 0 0 10px;
   }
 
   & > label:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.primaryLight};
+    background-color: ${({ theme }) => theme.colors.primaryColorHover};
 
     & > ${StyledCenterLabel} * {
       color: white !important;
@@ -387,9 +399,13 @@ export const StyledSearchOptionsGroup = styled.div`
       border-radius: 0 0 8px 0;
     }
   }
+  
+  & label {
+    flex: 1;
+  }
 `;
 
-export const StyledPerson = styled.label`
+export const StyledPersonFilter = styled.label`
   flex: 1;
   user-select: none;
   padding: 10px 0 10px 10px;
@@ -402,9 +418,13 @@ export const StyledPerson = styled.label`
   @media ${device.desktop} {
     background-position: 70px 12px;
   }
+
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("personWhite")});
+  }
 `;
 
-export const StyledChild = styled.label`
+export const StyledChildFilter = styled.label`
   flex: 1;
   user-select: none;
   padding: 10px 0 10px 10px;
@@ -422,9 +442,12 @@ export const StyledChild = styled.label`
   @media ${device.desktop} {
     background-position: 60px 12px;
   }
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("childWhite")});
+  }
 `;
 
-export const StyledStars = styled.label`
+export const StyledStarsFilter = styled.label`
   flex: 1;
   user-select: none;
   padding: 10px 0 10px 10px;
@@ -436,6 +459,9 @@ export const StyledStars = styled.label`
   @media ${device.desktop} {
     background-position: 60px 12px;
   }
+  &:hover {
+    background-image: url(${({ theme }) => theme.icon("starWhite")});
+  }
 `;
 
 export const StyledOneWay = styled.label`
@@ -444,6 +470,7 @@ export const StyledOneWay = styled.label`
   display: inline-block;
   position: relative;
   border-radius: 0 8px 8px 0;
+  padding: 10px;
 
   & input {
     cursor: pointer;
@@ -456,9 +483,10 @@ export const StyledOneWay = styled.label`
 
 export const CalendarContainer = styled.div`
   position: absolute;
-  height: auto;
-  margin-top: 80px;
+  width: 100%;
+  min-width: 300px;
   left: 0;
+  margin-top: 80px;
   z-index: 20;
   padding: 10px;
   background: ${({ theme }) => theme.colors.white};
@@ -470,6 +498,26 @@ export const CalendarContainer = styled.div`
   flex-direction: column;
   gap: 20px;
 
+  @media ${device.mobileL} {
+    width: 400px;
+    left: calc(50% - 200px);
+  }
+
+  @media ${device.tablet} {
+    width: 720px;
+    left: calc(50% - 360px);
+  }
+  
+  @media ${device.laptop} {
+    width: 768px;
+    left: calc(50% - 384px);
+  }
+
+  @media ${device.laptopL} {
+    left: revert;
+    width: 505px;
+  }
+
   .react-calendar {
     max-width: 100%;
     background: ${({ theme }) => theme.colors.white};
@@ -478,6 +526,7 @@ export const CalendarContainer = styled.div`
   }
 
   .react-calendar--doubleView {
+    width: auto;
     @media ${device.tablet} {
       width: 100%;
     }
@@ -489,14 +538,11 @@ export const CalendarContainer = styled.div`
     @media ${device.tablet} {
       flex-direction: row;
     }
-    margin: -0.5em;
   }
 
   .react-calendar--doubleView .react-calendar__viewContainer > * {
-    @media ${device.tablet} {
-      width: 50%;
-    }
-    margin: 0.5em;
+    width: auto;
+    flex: 1;
   }
 
   .react-calendar,
@@ -528,7 +574,6 @@ export const CalendarContainer = styled.div`
   .react-calendar__navigation {
     display: flex;
     height: 44px;
-    margin-bottom: 1em;
   }
 
   .react-calendar__navigation button {
@@ -552,9 +597,15 @@ export const CalendarContainer = styled.div`
     font-weight: bold;
     font-size: 0.75em;
   }
+  
+  .react-calendar__month-view:not(:first-of-type) {
+    @media ${device.tablet} {
+      border-left: 1px solid ${({ theme }) => theme.colors.primaryLight};
+    }    
+  }
 
   .react-calendar__month-view__weekdays__weekday {
-    padding: 0.5em;
+    padding: 10px 5px;
   }
 
   .react-calendar__month-view__weekNumbers .react-calendar__tile {
@@ -581,7 +632,7 @@ export const CalendarContainer = styled.div`
 
   .react-calendar__tile {
     max-width: 100%;
-    padding: 10px 6.6667px;
+    padding: 10px 5px;
     background: none;
     text-align: center;
     line-height: 16px;
@@ -608,6 +659,7 @@ export const CalendarContainer = styled.div`
   }
 
   .react-calendar__tile--hasActive {
+    color: ${({ theme }) => theme.colors.white};
     background: ${({ theme }) => theme.colors.primaryColor};
   }
 
@@ -623,7 +675,7 @@ export const CalendarContainer = styled.div`
 
   .react-calendar__tile--rangeStart, .react-calendar__tile--rangeEnd {
     background: ${({ theme }) => theme.colors.primaryColor} !important;
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white} !important;
   }
 
   .react-calendar__tile--active:enabled:hover,
@@ -647,13 +699,4 @@ export const CalendarContainer = styled.div`
     visibility: hidden;
   }
 
-`;
-
-export const Overlay = styled.a`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 15;
 `;

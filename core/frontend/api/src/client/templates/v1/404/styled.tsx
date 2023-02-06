@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import headerBg from "../assets/img/header-bg.jpg";
-import check from "../assets/img/check-sign-gold-icon.svg";
+import check from "../assets/img/icons/check-sign-gold-icon.svg";
 import { CustomTheme } from "../../../modules";
 import Link from "next/link";
 
@@ -13,29 +13,29 @@ export const GlobalStyle = createGlobalStyle<{ theme: CustomTheme }>`
 `;
 
 interface IText {
-    center?: boolean;
+  center?: boolean;
 }
 
 export const size = {
-    mobileS: "320px",
-    mobileM: "375px",
-    mobileL: "425px",
-    tablet: "768px",
-    laptop: "1024px",
-    laptopL: "1440px",
-    desktop: "1920px",
-    desktopL: "2560px"
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  laptop: "1024px",
+  laptopL: "1440px",
+  desktop: "1920px",
+  desktopL: "2560px"
 };
 
 export const device = {
-    mobileS: `(min-width: ${size.mobileS})`,
-    mobileM: `(min-width: ${size.mobileM})`,
-    mobileL: `(min-width: ${size.mobileL})`,
-    tablet: `(min-width: ${size.tablet})`,
-    laptop: `(min-width: ${size.laptop})`,
-    laptopL: `(min-width: ${size.laptopL})`,
-    desktop: `(min-width: ${size.desktop})`,
-    desktopL: `(min-width: ${size.desktopL})`
+  mobileS: `(min-width: ${size.mobileS})`,
+  mobileM: `(min-width: ${size.mobileM})`,
+  mobileL: `(min-width: ${size.mobileL})`,
+  tablet: `(min-width: ${size.tablet})`,
+  laptop: `(min-width: ${size.laptop})`,
+  laptopL: `(min-width: ${size.laptopL})`,
+  desktop: `(min-width: ${size.desktop})`,
+  desktopL: `(min-width: ${size.desktopL})`
 };
 
 export const TopContentWrapper = styled.div`

@@ -2,14 +2,13 @@ import {
   AutocompleteItem,
   AutocompleteList,
   CalendarContainer,
-  Overlay,
   StyledCenterLabel,
   StyledCheckIn,
   StyledCheckOut,
-  StyledChild,
+  StyledChildFilter,
   StyledFilterWrapper,
   StyledLabel,
-  StyledPerson,
+  StyledPersonFilter,
   StyledPrimaryValue,
   StyledSearchButton,
   StyledSearchCheckinGroup,
@@ -17,17 +16,19 @@ import {
   StyledSearchInputHolder,
   StyledSearchOptions,
   StyledSearchOptionsGroup,
-  StyledStars,
+  StyledSearchSecondGroup,
+  StyledStarsFilter,
   StyledValue
 } from "../styled";
 import { useTranslations } from "next-intl";
-import { MutableRefObject, useCallback, useRef, useState } from "react";
+import React, { MutableRefObject, useCallback, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import ValuePopup from "../valuePopup";
 import { useRouter } from "next/router";
 import useWsContext from "../../../../../context/SocketContext";
 import debounce from "lodash/debounce";
 import ValuePopupAges from "../valuePopupAges";
+import { Overlay } from "../../Styled/common";
 
 export const Hotels = () => {
   const router = useRouter();
@@ -35,7 +36,7 @@ export const Hotels = () => {
 
   const destinationRef = useRef() as MutableRefObject<HTMLInputElement>;
 
-  const [destinationList, setDestinationList] = useState<any[]>([]);
+  const [destinationList, setDestinationList] = useState<Record<string, string>[]>([]);
   const [showDestinations, setShowDestinations] = useState(false);
 
   const { ws } = useWsContext();
@@ -43,7 +44,8 @@ export const Hotels = () => {
   const [destination, setDestination] = useState("");
   const [destinationId, setDestinationId] = useState(0);
   const [calendarIsOpen, setCalendarIsOpen] = useState(false);
-  const [showFilter, setShowFilter] = useState("");
+  const [currentPopup, setCurrentPopup] = useState("");
+  const [popupCss, setPopupCss] = useState<Record<string, number>>({});
   const [minCheckInDate] = useState(new Date());
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
@@ -99,7 +101,7 @@ export const Hotels = () => {
   };
 
   const closeFilters = () => {
-    setShowFilter("");
+    setCurrentPopup("");
   };
 
   const openCalendar = (e: any) => {
@@ -130,8 +132,14 @@ export const Hotels = () => {
     closeModals();
   };
 
-  const toggleFilters = (type: string) => {
-    setShowFilter(type);
+  const toggleFilters = (evt: React.MouseEvent, type: string) => {
+    const boundaries = evt.currentTarget.getBoundingClientRect();
+    setPopupCss({
+      left: Math.floor(boundaries.left) - 10,
+      top: Math.floor(boundaries.top + 22 + boundaries.height),
+      width: Math.floor(boundaries.width) + 10
+    });
+    setCurrentPopup(type);
   };
 
   const handleFilterChange = (value: Record<string, number[] | number>) => {
@@ -190,89 +198,94 @@ export const Hotels = () => {
       </StyledSearchInputHolder>
       <StyledFilterWrapper>
         <StyledSearchOptions>
-          <StyledSearchCheckinGroup>
-            <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
-              <StyledLabel>{t("search.checkinDate")}</StyledLabel>
-              <StyledValue data-testid="test-checkIn-date-value">{
-                checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckIn>
-            <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
-              <StyledLabel>{t("search.checkout")}</StyledLabel>
-              <StyledValue data-testid="test-checkOut-date-value">{
-                checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckOut>
-            {
-              calendarIsOpen &&
-              <>
-                <CalendarContainer data-testid="test-calendar">
-                  <Calendar
-                    formatMonthYear={(locale, date) => formatDate(date)}
-                    view="month"
-                    showDoubleView={true}
-                    selectRange={true}
-                    onChange={onDateChange}
-                    value={[checkInDate, checkOutDate]}
-                    minDate={minCheckInDate}
-                    returnValue="range"
-                  />
-                </CalendarContainer>
-              </>
-            }
-          </StyledSearchCheckinGroup>
-
           <StyledSearchOptionsGroup>
-            <StyledStars>
-              <StyledCenterLabel data-testid="test-open-stars-handler" onClick={() => toggleFilters("stars")}>
+            <StyledStarsFilter>
+              <StyledCenterLabel data-testid="test-open-stars-handler" onClick={(evt) => toggleFilters(evt, "stars")}>
                 <StyledLabel>{t("search.hotel-stars")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.stars}</StyledPrimaryValue>
               </StyledCenterLabel>
-              {showFilter === "stars" &&
-                <ValuePopup dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1} max={5}
-                            onChange={handleFilterChange} />}
-            </StyledStars>
-            <StyledPerson>
-              <StyledCenterLabel data-testid="test-open-adults-handler" onClick={() => toggleFilters("adults")}>
+            </StyledStarsFilter>
+            <StyledPersonFilter>
+              <StyledCenterLabel data-testid="test-open-adults-handler" onClick={(evt) => toggleFilters(evt, "adults")}>
                 <StyledLabel>{t("search.adults")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
               </StyledCenterLabel>
-              {showFilter === "adults" &&
-                <ValuePopup dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9}
-                            onChange={handleFilterChange} />}
-            </StyledPerson>
-            <StyledChild>
-              <StyledCenterLabel data-testid="test-open-children-handler" onClick={() => toggleFilters("children")}>
+            </StyledPersonFilter>
+            <StyledChildFilter>
+              <StyledCenterLabel data-testid="test-open-children-handler"
+                                 onClick={(evt) => toggleFilters(evt, "children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
-              {showFilter === "children" &&
-                <div><ValuePopup dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
-                              max={4} onChange={handleFilterChange} />
-
-                  {filterValues.children > 0 && <ValuePopupAges
-                    className="childrenAges"
-                    name="childrenAges"
-                    min={0}
-                    max={17}
-                    count={filterValues.children}
-                    data={filterValues.childrenAges}
-                    dataTestId="test-children-ages-handler"
-                    onChange={handleFilterChange} />}
-                </div>
-
-              }
-            </StyledChild>
+            </StyledChildFilter>
           </StyledSearchOptionsGroup>
-          <StyledSearchButton onClick={searchSubmitHandler}
-                              data-testid="search-submit-btn">{t("search.searchHotelsButton")}</StyledSearchButton>
+          <StyledSearchSecondGroup>
+            <StyledSearchCheckinGroup>
+              <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
+                <StyledLabel>{t("search.checkinDate")}</StyledLabel>
+                <StyledValue data-testid="test-checkIn-date-value">{
+                  checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckIn>
+              <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
+                <StyledLabel>{t("search.checkout")}</StyledLabel>
+                <StyledValue data-testid="test-checkOut-date-value">{
+                  checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckOut>
+              {
+                calendarIsOpen &&
+                <>
+                  <CalendarContainer data-testid="test-calendar">
+                    <Calendar
+                      formatMonthYear={(locale, date) => formatDate(date)}
+                      view="month"
+                      showDoubleView={true}
+                      selectRange={true}
+                      onChange={onDateChange}
+                      value={[checkInDate, checkOutDate]}
+                      minDate={minCheckInDate}
+                      returnValue="range"
+                    />
+                  </CalendarContainer>
+                </>
+              }
+            </StyledSearchCheckinGroup>
+            <StyledSearchButton onClick={searchSubmitHandler}
+                                data-testid="search-submit-btn">{t("global.search")}</StyledSearchButton>
+          </StyledSearchSecondGroup>
         </StyledSearchOptions>
       </StyledFilterWrapper>
       {(
-        showFilter.length
+        currentPopup.length
         || calendarIsOpen
         || showDestinations
       ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
+      {currentPopup === "stars" &&
+        <ValuePopup style={popupCss} dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1}
+                    max={5}
+                    onChange={handleFilterChange} />}
+      {currentPopup === "adults" &&
+        <ValuePopup style={popupCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
+                    max={9 - filterValues.children}
+                    onChange={handleFilterChange} />}
+      {currentPopup === "children" ?
+        <div><ValuePopup style={popupCss} dataTestId="test-children-handler" name="children"
+                         value={filterValues.children} min={0}
+                         max={4} onChange={handleFilterChange} />
+
+          {filterValues.children > 0 && <ValuePopupAges
+            style={{ ...popupCss, ...{ top: popupCss.top + 50 } }}
+            className="childrenAges"
+            name="childrenAges"
+            min={0}
+            max={12}
+            count={filterValues.children}
+            data={filterValues.childrenAges}
+            dataTestId="test-children-ages-handler"
+            onChange={handleFilterChange} />}
+        </div> : ""
+      }
     </>
   );
 };

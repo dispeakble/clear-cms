@@ -1,30 +1,29 @@
 import {
-    Body, CardImage, CustomButton, MutedText, TitleText,
-} from './styled';
-import React from "react"
+  Body, CardImage, CustomButton, SubTitle, TitleText
+} from "./styled";
+import React from "react";
 
-import cardBg from "../../../assets/img/hotels/original/hotel1.jpg"
-import calendarCheckIcon from "../../../assets/img/calendar-check-icon.svg"
-import {StyledStarsSmall} from "../../../components/Styled/stars";
-import {useTranslations} from "next-intl";
+import cardBg from "../../../assets/img/hotels/original/hotel1.jpg";
+import { StyledStars } from "../../../components/Styled/stars";
+import { useTranslations } from "next-intl";
+
 const HotelCard = () => {
-    const t = useTranslations();
-    return(
-        <Body>
-            <TitleText>Sol Puerto de la Cruz</TitleText>
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                <MutedText>Tenerife</MutedText>
-                <StyledStarsSmall stars={4}></StyledStarsSmall>
-            </div>
+  const t = useTranslations();
+  return (
+    <Body>
+      <TitleText>Sol Puerto de la Cruz</TitleText>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <SubTitle>Tenerife</SubTitle>
+        <StyledStars stars={4} size='small'></StyledStars>
+      </div>
 
-            <CardImage src={cardBg.src} alt={"Card Image"} />
+      <CardImage src={cardBg.src} alt={"Card Image"} />
 
-            <CustomButton>
-                <img src={calendarCheckIcon.src} alt="icon"/>
-                {t("packageDetails.detailCard.checkAvailable")}
-            </CustomButton>
-        </Body>
-    )
-}
+      <CustomButton>
+        {t("packageDetails.detailCard.seePrices")}
+      </CustomButton>
+    </Body>
+  );
+};
 
 export default HotelCard;

@@ -7,11 +7,11 @@
     </scripts>
     <node-interpreter value="project" />
     <envs>
-      <env name="redis_server" value="localhost" />
-      <env name="backend_port" value="8686" />
-      <env name="redis_port" value="6379" />
-      <env name="redis_password" value="1gzHwbgfwR" />
       <env name="app" value="marioviajes" />
+      <env name="backend_port" value="8686" />
+      <env name="redis_password" value="1gzHwbgfwR" />
+      <env name="redis_port" value="6379" />
+      <env name="redis_server" value="localhost" />
     </envs>
     <method v="2" />
   </configuration>

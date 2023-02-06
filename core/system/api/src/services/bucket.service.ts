@@ -1,24 +1,26 @@
 import {HttpStatus, Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import * as fs from "fs";
-import {promises as fsp, Stats} from "fs";
+import {promises as fsp} from "fs";
 import * as mime from "mime";
-import {Observable} from "rxjs";
+import { Observable, Subscriber } from "rxjs";
 import * as etag from "etag";
 import {payloadInterface} from "../interfaces/payload.interface";
 import path from "path";
 import {HelpService} from "./help.service";
+import { ProtocolService } from "./protocol.service";
+import { Readable } from "stream";
 
 @Injectable()
 export class BucketService {
 
-    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
+    private methods = ["checkAccess", "getMeta", "info", "get", "chmod", "chown", "list", "completePath", "upload", "uploadFromBase64", "read", "rename", "move", "download", "copy", "rm", "mkdir", "recycle", "archive", "extract"];
     private publicPaths = ["view-auth", "recover-password", "static", "manifest.json"];//TODO GET THIS FROM A CONFIG
     private defaultPath = 'index.html';
     private help: any;
 
 
-    constructor(@Inject('ProtocolService') private protocolService, @Inject('HelpService') private helpService) {
+    constructor(private protocolService: ProtocolService, private helpService: HelpService) {
         this.help = helpService.help;
     }
 
@@ -26,7 +28,7 @@ export class BucketService {
         return new Promise((resolve) => {
             try {
                 const metaPayload: payloadInterface = {
-                    channel: `${process.env.app}_bucket`,
+                    channel: `bucket`,
                     api: 'fs',
                     act: 'info',
                     payload: {
@@ -55,8 +57,8 @@ export class BucketService {
                 });
 
             } catch (err) {
-                console.log(err);
-                resolve(err);
+                console.log(err.message);
+                resolve(err.message);
             }
 
         });
@@ -65,33 +67,27 @@ export class BucketService {
     private upload(params: any, config){
         return new Observable(subscriber => {
 
-            const handshake = params.perform({
-                channel: config.config.channel,
-                api: 'protocol',
-                act: 'startHandshake',
-                payload: {
-                    channel: `${process.env.app}_bucket`,
-                    indication: {
-                        api: 'fs',
-                        act: 'upload'
-                    }
+            const handShake = this.protocolService.startHandshake({
+                channel: 'bucket',
+                indication: {
+                    api: 'fs',
+                    act: 'upload'
                 }
-            });
+            }, {channel: 'system'});
 
-            handshake.theObserver.subscribe(data => {
-            }, err => {
-                console.log(err);
-            }, () => {
-
+            handShake.theObserver.subscribe((data) => {
+                console.log(data);
+            }, (err) => {
+                console.log(err.message);
             })
 
-            handshake.thePromise.then(handshakeResponse => {
+            handShake.thePromise.then((handshakeResponse: {thePusher: Subscriber<any>}) => {
                 params.initiator.subscribe(data => {
                     handshakeResponse.thePusher.next(data)
                 }, err => {
-                    console.log(err);
-                    handshakeResponse.thePusher.error(err);
-                    subscriber.error(err);
+                    console.log(err.message);
+                    handshakeResponse.thePusher.error(err.message);
+                    subscriber.error(err.message);
                 }, () => {
                     handshakeResponse.thePusher.complete();
                     subscriber.complete();
@@ -101,6 +97,53 @@ export class BucketService {
             });
 
         });
+    }
+
+    private uploadFromBase64(params) {
+
+        const initiator = new Observable(subscriber => {
+            let buff = Buffer.from(params.base64, 'base64');
+            subscriber.next({
+                payload: {
+                    type: "meta",
+                    length: buff.length,
+                    filename: params.filename,
+                    path: "themes",
+                    replace: true
+                }
+            });
+
+            const stream = Readable.from(buff);
+
+            let index = 0;
+            const t = Math.random();
+
+            stream.on('data', (chunk: any) => {
+                index++;
+                subscriber.next({
+                    payload: {
+                        type: "data",
+                        index: `${t}-${index}`,
+                        buffer: chunk
+                    }
+                });
+            });
+
+            stream.on('end', () => {
+                subscriber.complete();
+            });
+
+            stream.on('error', () => {
+                subscriber.error(`upload failed for: ${params.filename}`);
+            })
+        });
+
+        return this.perform({
+            act: 'upload',
+            payload: {
+                initiator: initiator
+            }
+        }).toPromise();
     }
 
     private checkPaths(data: any){
@@ -113,7 +156,7 @@ export class BucketService {
             return true;
         }
         let hasAccess = false;
-        this.publicPaths.forEach((e, i) => {
+        this.publicPaths.forEach((e) => {
             if(file_name.indexOf(e) === 0){
                 hasAccess = true;
             }
@@ -143,7 +186,7 @@ export class BucketService {
         return new Promise((resolve) => {
             const path_parts = params.path.split('/');
             this.protocolService.sendMessage({
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'info',
                 payload: {
@@ -243,7 +286,7 @@ export class BucketService {
     private _getFromBucket(params: any) {
         const path_parts = params.path.split('/');
         this.protocolService.sendMessage({
-            channel: `${process.env.app}_bucket`,
+            channel: `bucket`,
             api: 'fs',
             act: 'read',
             payload: {
@@ -319,7 +362,7 @@ export class BucketService {
     public list (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'list',
                 payload: {
@@ -339,7 +382,7 @@ export class BucketService {
     public completePath (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'completePath',
                 payload: {
@@ -358,7 +401,7 @@ export class BucketService {
     public rm (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'rm',
                 payload: params
@@ -376,7 +419,7 @@ export class BucketService {
     public rename (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'rename',
                 payload: {
@@ -399,7 +442,7 @@ export class BucketService {
             //check if the file already exists in the selected folder
             //if it already exists then ask the user to overwrite
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'move',
                 payload: {
@@ -421,7 +464,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'download',
                 payload: {
@@ -442,7 +485,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'archive',
                 payload: {
@@ -465,7 +508,7 @@ export class BucketService {
         return new Observable(subscriber => {
 
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'extract',
                 payload: {
@@ -486,7 +529,7 @@ export class BucketService {
     public mkdir (params: any){
         return new Observable(subscriber => {
             const payload: payloadInterface = {
-                channel: `${process.env.app}_bucket`,
+                channel: `bucket`,
                 api: 'fs',
                 act: 'mkdir',
                 payload: {

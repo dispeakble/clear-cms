@@ -58,7 +58,7 @@ export const HotelSearch = styled.div`
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   cursor: pointer;
-  flex: 1 0 40%;
+  flex: 1;
 
   input {
     border: none;
@@ -76,26 +76,26 @@ export const SearchIcon = styled.div`
   width: 23px;
   height: 23px;
   margin: 13px 10px 0 10px;
-  background: url(${({theme}) => theme.icon('search')}) no-repeat left center;`;
+  background: url(${({ theme }) => theme.icon("search")}) no-repeat left center;`;
 
 export const CalenderIcon = styled.div`
   width: 23px;
   height: 24px;
   margin: 13px 10px 0 10px;
-  background: url(${({theme}) => theme.icon('calendar')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("calendar")}) no-repeat left center;
 `;
 export const DropdownIcon = styled.div`
   width: 40px;
   height: 48px;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
 `;
 export const NewSearch = styled.div`
   display: flex;
   flex: 1;
 
   button {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
     color: ${({ theme }) => theme.colors.white};
     height: 50px;
     padding-right: 20px;
@@ -113,7 +113,7 @@ export const NewSearch = styled.div`
     flex: 1;
 
     &:hover {
-      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
       color: #FFFFFF;
       text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
     }
@@ -128,7 +128,7 @@ export const WhiteIcon = styled.div`
   width: 32px;
   height: 50px;
   display: inline-block;
-  background: url(${({theme}) => theme.icon('searchWhite')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("searchWhite")}) no-repeat center center;
 
 `;
 export const GuestType = styled.div`
@@ -158,7 +158,7 @@ export const AdultIcon = styled.div`
   height: 26px;
   width: 10px;
   top: 0;
-  background: url(${({theme}) => theme.icon('adults')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("adults")}) no-repeat left center;
   cursor: pointer;
 `;
 export const AdultNumber = styled.div`
@@ -173,7 +173,7 @@ export const ChildIcon = styled.div`
   width: 20px;
   top: 0;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("child")}) no-repeat left center;
 `;
 
 export const HotelView = styled.div`
@@ -268,7 +268,7 @@ export const InfoIcon = styled.span`
   width: 32px;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('info')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("info")}) no-repeat center center;
 
 `;
 export const LeftSide = styled.div``;
@@ -303,7 +303,7 @@ export const SliderSection = styled.div`
   display: flex;
 `;
 export const DateDiv = styled.div`
-  position: relative;
+  
 `;
 
 export const ShowDate = styled.div`
@@ -386,15 +386,15 @@ export const ImageCount = styled.div`
   margin-top: 10px;
 `;
 
-export const StyledDescription = styled.div<{readMore: boolean}>`
+export const StyledDescription = styled.div<{ readMore: boolean }>`
   width: 100%;
   text-align: left;
   line-height: 2.4rem;
   letter-spacing: .05em;
   margin-bottom: 1rem;
   color: #000;
-  max-height: ${props=> props.readMore ? ' ' : '600px'};
-  overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
+  max-height: ${props => props.readMore ? " " : "600px"};
+  overflow: ${props => props.readMore ? " " : "hidden"} ;
   font-size: 18px;
   
   @media only screen and (max-width: ${size.tablet}) {
@@ -429,7 +429,7 @@ export const SubDetail = styled.div`
   margin-top: 15px;
 
   button {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
     color: ${({ theme }) => theme.colors.white};
     width: 340px;
     height: 45px;
@@ -448,7 +448,7 @@ export const SubDetail = styled.div`
     flex: 1;
 
     &:hover {
-      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
       color: #FFFFFF;
       text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
     }
@@ -504,7 +504,7 @@ export const DetailTop = styled.div`
   margin-bottom: 12px;
 `;
 export const CloseIcon = styled.div`
-  background: url(${({theme}) => theme.icon('close')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("close")}) no-repeat left center;
   width: 22px;
   height: 12px;
   position: relative;
@@ -534,7 +534,7 @@ export const Quantity = styled.div`
     font-size: 18px;
     line-height: 38px;
     color: ${({ theme }) => theme.colors.black};
-    margin-bottom: 0;
+    margin: 0;
   }
 `;
 

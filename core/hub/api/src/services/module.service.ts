@@ -15,9 +15,9 @@ export class ModuleService {
   constructor(
     private protocolService: ProtocolService,
     private cacheService: RedisCacheService) {
-    this.modules[`${process.env.app}_hub`] = {
+    this.modules[`hub`] = {
       version: "version",
-      description: `The main hub for ${process.env.app}`,
+      description: `The main hub`,
       started: new Date(),
       dependencies: []
     };
@@ -34,9 +34,9 @@ export class ModuleService {
         });
 
         if(!pingResponse) {
-          delete this.modules[`${process.env.app}_${module}`];
+          delete this.modules[module];
         } else {
-          this.modules[`${process.env.app}_${module}`] = {
+          this.modules[module] = {
             version: pingResponse.version,
             description: '',
             started: new Date(),
@@ -53,17 +53,17 @@ export class ModuleService {
       try {
         setTimeout(() => {
           resolve_ping(null);
-        }, 1000);
+        }, 10000);
 
         const payload: payloadInterface = {//todo export this globally. lazy load
           api: "protocol",
           act: "ping",
-          channel: `${process.env.app}_hub`,
+          channel: String(dep.name),
           payload: dep
         };
 
         const module_response = await this.protocolService.sendMessage({
-          channel: `${process.env.app}_${dep.name}`,
+          channel: String(dep.name),
           payload: payload
         });
         resolve_ping(module_response);
@@ -195,7 +195,7 @@ export class ModuleService {
     }
 
     const adminPayload = {
-      channel: `${process.env.app}_db`,
+      channel: `db`,
       payload: {
         api: "sql",
         act: "add",
@@ -228,34 +228,39 @@ export class ModuleService {
       "websiteOwner": `${process.env.admin_fname} ${process.env.admin_lname}`,
       "websiteAdminEmail": process.env.website_email,
       "applicationVersion": process.env.app_version,
-      "emailSender": "admin@localhost.local",
+      "emailSender": "admin@example.com",
       "emailPassword": "1qaz",
+      "emailHost": "mail.dosidoweb.com",
       "colorScheme": {
-        "primaryColor": { "colorName": "Primary Color","slug": "primaryColor" ,"hex": "#DC6B03" },
-        "primaryColorRBG": { "colorName": "Primary Color RBG","slug": "primaryColorRBG" ,"hex": { "r": 220, "g": 107, "b": 3 } },
-        "primaryColorFadedRBG": { "colorName": "Primary Color Faded RBG","slug": "primaryColorFadedRBG" ,"hex": { "r": 252, "g": 232, "b": 221 } },
-        "primaryDark": { "colorName": "Primary Dark","slug": "primaryDark" ,"hex": "orange" },
-        "primaryLight": { "colorName": "Primary Light","slug": "primaryLight" ,"hex": "#FF9F5A" },
-        "primaryColorHover": { "colorName": "Primary Color Hover","slug": "primaryColorHover" ,"hex": "#FC8C25" },
-        "primaryRed": { "colorName": "Primary Red","slug": "primaryRed" ,"hex": "#DC0303" },
-        "secondaryColor": { "colorName": "Secondary Color","slug": "secondaryColor" ,"hex": "#FF0000" },
-        "accentColor": { "colorName": "Accent Color","slug": "accentColor" ,"hex": "#f39200" },
-        "darkRed": { "colorName": "Dark Red","slug": "darkRed" ,"hex": "#E90000" },
-        "jetBlack": { "colorName": "Jet Black","slug": "jetBlack" ,"hex": "#333" },
-        "black": { "colorName": "Black","slug": "black" ,"hex": "#000" },
-        "offWhite": { "colorName": "Off White","slug": "offWhite" ,"hex": "#f5f5f5" },
-        "white": { "colorName": "White","slug": "white" ,"hex": "#fff" },
-        "gray": { "colorName": "Gray","slug": "gray" ,"hex": "#505050" },
-        "mainBackground": { "colorName": "Main Background","slug": "mainBackground" ,"hex": "#E5E5E5" },
-        "footerLinks": { "colorName": "Footer Links","slug": "footerLinks" ,"hex": "#868484" },
-        "greyBorder": { "colorName": "Grey Border","slug": "greyBorder" ,"hex": "#ACACAC" },
-        "borderOutline": { "colorName": "Border Outline","slug": "borderOutline" ,"hex": "#DBDBDB" },
+        "primaryColor": { "label": "Primary Color", "value": "#ff6a00" },
+        "primaryLight": { "label": "Primary Light", "value": "#ff8733" },
+        "primaryDark": { "label": "Primary Dark", "value": "#c74f01" },
+        "primaryColorHover": { "label": "Primary Color Hover", "value": "#ff9855" },
+        "primaryColorRBG": { "label": "Primary Color RBG", "value": { "r": 220, "g": 107, "b": 3 } },
+        "primaryColorFadedRBG": { "label": "Primary Color Faded RBG", "value": { "r": 252, "g": 232, "b": 221 } },
+        "primaryRed": { "label": "Primary Red", "value": "#DC0303" },
+        "secondaryColor": { "label": "Secondary Color", "value": "#FF0000" },
+        "accentColor": { "label": "Accent Color", "value": "#f39200" },
+        "actionLight": { "label": "Accent Light", "value": "#98d24f"},
+        "actionNormal": { "label": "Accent Normal", "value": "#7ACD13"},
+        "actionDark": { "label": "Accent Dark", "value": "#5D9519"},
+        "darkRed": { "label": "Dark Red", "value": "#E90000" },
+        "jetBlack": { "label": "Jet Black", "value": "#333" },
+        "black": { "label": "Black", "value": "#000" },
+        "offWhite": { "label": "Off White", "value": "#f5f5f5" },
+        "white": { "label": "White", "value": "#fff" },
+        "gray": { "label": "Gray", "value": "#505050" },
+        "lightGray": { "label": "Gray", "value": "#848484" },
+        "mainBackground": { "label": "Main Background", "value": "#E5E5E5" },
+        "footerLinks": { "label": "Footer Links", "value": "#868484" },
+        "greyBorder": { "label": "Grey Border", "value": "#ACACAC" },
+        "borderOutline": { "label": "Border Outline", "value": "#DBDBDB" },
       },
       "selectedTheme": "v1"
     };
 
     const settingsPayload = {
-      channel: `${process.env.app}_db`,
+      channel: `db`,
       payload: {
         api: "sql",
         act: "add",
@@ -289,7 +294,7 @@ export class ModuleService {
 
     const addDoashboardBox = async (box) => {
       const boxPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -334,7 +339,7 @@ export class ModuleService {
     const addThemes = async () => {
       await Promise.all([darkTheme, dayTheme].map(async theme => {
         const themesPayload = {
-          channel: `${process.env.app}_db`,
+          channel: `db`,
           payload: {
             api: "sql",
             act: "add",
@@ -388,7 +393,7 @@ export class ModuleService {
       });
 
       const geoPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -452,7 +457,7 @@ export class ModuleService {
       });
 
       const geoPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -517,7 +522,7 @@ export class ModuleService {
       });
 
       const geoPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -581,7 +586,7 @@ export class ModuleService {
       });
 
       const hotelSearchPayload = {
-        channel: `${process.env.app}_db`,
+        channel: `db`,
         payload: {
           api: "sql",
           act: "add",
@@ -618,7 +623,7 @@ export class ModuleService {
     await this.cacheService.set("ports",
       JSON.stringify(ports));
     return this.protocolService.sendMessage({
-      channel: data.target || `${process.env.app}_proxy`,
+      channel: data.target || `proxy`,
       payload: {
         api: "app",
         act: "updatePortMapping",

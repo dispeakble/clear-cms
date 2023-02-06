@@ -94,8 +94,7 @@ export class AuthService {
     }
 
     async isHuman(token: string){
-        //TODO: store secret in env
-        const secret = "6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29";
+        const secret = process.env.recaptcha_private_key;
         const response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,{
             method: "POST"
         })

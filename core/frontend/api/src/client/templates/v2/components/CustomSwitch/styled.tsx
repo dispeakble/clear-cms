@@ -9,13 +9,13 @@ export const StyledSwitchText = styled.p`
   margin:0;
 
   color: #434343;
-`
+`;
 
 export const StyledSwitch = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
-`
+`;
 
 export const StyledLabel = styled.div`
   position: relative;
@@ -23,7 +23,7 @@ export const StyledLabel = styled.div`
   width: 45px;
   height: 21px;
   align-items: center;
-`
+`;
 
 export const StyledCheckbox = styled.input`
   opacity: 0;
@@ -41,7 +41,7 @@ export const StyledCheckbox = styled.input`
   :checked + .slider:before {
     transform: translateX(24px);
   }
-`
+`;
 
 export const CustomSlider = styled.span`
   position: absolute;
@@ -65,4 +65,4 @@ export const CustomSlider = styled.span`
     border-radius: 50%;
     transition: .4s;
   }
-`
+`;

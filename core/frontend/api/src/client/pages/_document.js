@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
                   href="https://fonts.googleapis.com/css2?family=Poppins"
                   rel="stylesheet"
                 />
+                <link rel="icon" href="/files/images/favIcon.ico" type="image/x-icon" />
               </Head>
                 <body>
                   <Main />

@@ -2,33 +2,34 @@ import {
   AutocompleteItem,
   AutocompleteList,
   CalendarContainer,
-  Overlay,
   StyledCenterLabel,
   StyledCheckIn,
   StyledCheckOut,
-  StyledChild,
+  StyledChildFilter,
   StyledFilterWrapper,
   StyledLabel,
-  StyledPerson,
+  StyledPersonFilter,
   StyledPrimaryValue,
   StyledSearchButton,
-  StyledSearchCheckinGroup,
+  StyledSearchCheckinGroup, StyledSearchSecondGroup,
   StyledSearchDestinationInput,
   StyledSearchInput,
   StyledSearchInputHolder,
   StyledSearchOptions,
   StyledSearchOptionsGroup,
-  StyledStars,
+  StyledStarsFilter,
   StyledValue
 } from "../styled";
 import { useTranslations } from "next-intl";
-import { MutableRefObject, useCallback, useRef, useState } from "react";
+import React, { MutableRefObject, useCallback, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import ValuePopup from "../valuePopup";
 import { useRouter } from "next/router";
 import useWsContext from "../../../../../context/SocketContext";
 import debounce from "lodash/debounce";
 import ValuePopupAges from "../valuePopupAges";
+import { waitForElm } from "../../../helpers/dom.helper";
+import { Overlay } from "../../Styled/common";
 
 export const Packages = () => {
   const router = useRouter();
@@ -68,8 +69,8 @@ export const Packages = () => {
   const [destination, setDestination] = useState("");
   const [destinationId, setDestinationId] = useState(0);
   const [calendarIsOpen, setCalendarIsOpen] = useState(false);
-  const [showFilter, setShowFilter] = useState("");
-  const [filterCss, setFilterCss] = useState<Record<string, any>>({});
+  const [currentPopup, setCurrentPopup] = useState("");
+  const [popupCss, setPopupCss] = useState<Record<string, any>>({});
   const [minCheckInDate, setMinCheckInDate] = useState(new Date());
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(new Date());
@@ -118,7 +119,7 @@ export const Packages = () => {
       setDestinationList([]);
       setShowDestinations(false);
     }
-  }, [ws, setDestinationList, setShowDestinations]);
+  }, [ws, setDestinationList, setShowDestinations, departureId]);
 
   const getStartDates = async () => {
     const response = await ws.sendMessage({
@@ -133,9 +134,9 @@ export const Packages = () => {
       }
     });
     if (response && response.dateInterval) {
-      setMinCheckInDate(new Date(response.dateInterval))
+      setMinCheckInDate(new Date(response.dateInterval));
     }
-  }
+  };
 
   const debouncedDepartureSearch = useCallback(debounce(searchDepartureByName, 500), []);
   const debouncedDestinationSearch = useCallback(debounce(searchDestinationByName, 500), [departureId]);
@@ -180,12 +181,18 @@ export const Packages = () => {
   };
 
   const closeFilters = () => {
-    setShowFilter("");
+    setCurrentPopup("");
   };
 
-  const openCalendar = (e: any) => {
-    if (e.currentTarget === e.target) {
+  const openCalendar = async (event: React.MouseEvent<HTMLSpanElement>, type: string) => {
+    if (event.currentTarget === event.target) {
       setCalendarIsOpen(true);
+    }
+
+    if(type === 'end-date') {
+      await waitForElm('.react-calendar__tile--rangeStart');
+      const startDateBtn: HTMLElement = document.querySelector('.react-calendar__tile--rangeStart') as HTMLElement;
+      startDateBtn.click();
     }
   };
 
@@ -198,7 +205,7 @@ export const Packages = () => {
   };
 
   const formatDateSearch = (date: any) => {
-    return Intl.DateTimeFormat('ro', {
+    return Intl.DateTimeFormat("ro", {
       month: "2-digit",
       day: "2-digit",
       year: "2-digit"
@@ -217,12 +224,12 @@ export const Packages = () => {
 
   const toggleFilters = (evt: React.MouseEvent, type: string) => {
     const boundaries = evt.currentTarget.getBoundingClientRect();
-    setFilterCss({
-      left: Math.floor(boundaries.left),
+    setPopupCss({
+      left: Math.floor(boundaries.left) - 10,
       top: Math.floor(boundaries.top + 22 + boundaries.height),
-      width: Math.floor(boundaries.width)
-    })
-    setShowFilter(type);
+      width: Math.floor(boundaries.width) + 10
+    });
+    setCurrentPopup(type);
   };
 
   const handleFilterChange = (value: Record<string, number[] | number>) => {
@@ -245,10 +252,10 @@ export const Packages = () => {
     }
 
     if (destination.length > 0
-        && checkInDate
-        && checkOutDate
-        && formatDate(checkInDate) !== formatDate(checkOutDate)
-        && guestsCount() > 0) {
+      && checkInDate
+      && checkOutDate
+      && formatDate(checkInDate) !== formatDate(checkOutDate)
+      && guestsCount() > 0) {
       router.push(`/packages/search/${destination}/from-${formatDateSearch(checkInDate)}/to-${formatDateSearch(checkOutDate)}/adults-${filterValues.adults}/children-${filterValues.children}`);
     }
   };
@@ -287,91 +294,93 @@ export const Packages = () => {
       </StyledSearchInputHolder>
       <StyledFilterWrapper>
         <StyledSearchOptions>
-          <StyledSearchCheckinGroup>
-            <StyledCheckIn onClick={openCalendar} data-testid="test-checkIn-button">
-              <StyledLabel>{t("search.checkinDate")}</StyledLabel>
-              <StyledValue data-testid="test-checkIn-date-value">{
-                checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckIn>
-            <StyledCheckOut onClick={openCalendar} data-testid="test-checkOut-button">
-              <StyledLabel>{t("search.checkout")}</StyledLabel>
-              <StyledValue data-testid="test-checkOut-date-value">{
-                checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
-              }</StyledValue>
-            </StyledCheckOut>
-            {
-              calendarIsOpen &&
-              <>
-                <CalendarContainer data-testid="test-calendar">
-                  <Calendar
-                    formatMonthYear={(locale, date) => formatDate(date)}
-                    view="month"
-                    showDoubleView={true}
-                    selectRange={true}
-                    onChange={onDateChange}
-                    value={[checkInDate, checkOutDate]}
-                    minDate={minCheckInDate}
-                    returnValue="range"
-                  />
-                </CalendarContainer>
-              </>
-            }
-          </StyledSearchCheckinGroup>
-
           <StyledSearchOptionsGroup>
-            <StyledStars>
+            <StyledStarsFilter>
               <StyledCenterLabel data-testid="test-open-stars-handler" onClick={(evt) => toggleFilters(evt, "stars")}>
                 <StyledLabel>{t("search.hotel-stars")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.stars}</StyledPrimaryValue>
               </StyledCenterLabel>
-
-            </StyledStars>
-            <StyledPerson>
+            </StyledStarsFilter>
+            <StyledPersonFilter>
               <StyledCenterLabel data-testid="test-open-adults-handler" onClick={(evt) => toggleFilters(evt, "adults")}>
                 <StyledLabel>{t("search.adults")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.adults}</StyledPrimaryValue>
               </StyledCenterLabel>
-
-            </StyledPerson>
-            <StyledChild>
-              <StyledCenterLabel  data-testid="test-open-children-handler" onClick={(evt) => toggleFilters(evt, "children")}>
+            </StyledPersonFilter>
+            <StyledChildFilter>
+              <StyledCenterLabel data-testid="test-open-children-handler"
+                                 onClick={(evt) => toggleFilters(evt, "children")}>
                 <StyledLabel>{t("search.children")}</StyledLabel>
                 <StyledPrimaryValue>{filterValues.children}</StyledPrimaryValue>
               </StyledCenterLabel>
-
-            </StyledChild>
+            </StyledChildFilter>
           </StyledSearchOptionsGroup>
-          <StyledSearchButton onClick={searchSubmitHandler}
-                              data-testid="search-submit-btn">{t("search.searchPackagesButton")}</StyledSearchButton>
+          <StyledSearchSecondGroup>
+            <StyledSearchCheckinGroup>
+              <StyledCheckIn onClick={(event: React.MouseEvent<HTMLSpanElement>) => openCalendar(event, 'start-date')} data-testid="test-checkIn-button">
+                <StyledLabel>{t("search.checkinDate")}</StyledLabel>
+                <StyledValue data-testid="test-checkIn-date-value">{
+                  checkInDate !== null ? formatDate(checkInDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckIn>
+              <StyledCheckOut onClick={(event: React.MouseEvent<HTMLSpanElement>) => openCalendar(event, 'end-date')} data-testid="test-checkOut-button">
+                <StyledLabel>{t("search.checkoutDate")}</StyledLabel>
+                <StyledValue data-testid="test-checkOut-date-value">{
+                  checkOutDate !== null ? formatDate(checkOutDate) : t("search.addDate")
+                }</StyledValue>
+              </StyledCheckOut>
+              {
+                calendarIsOpen &&
+                <>
+                  <CalendarContainer data-testid="test-calendar">
+                    <Calendar
+                      formatMonthYear={(locale, date) => formatDate(date)}
+                      view="month"
+                      showDoubleView={true}
+                      selectRange={true}
+                      onChange={onDateChange}
+                      value={[checkInDate, checkOutDate]}
+                      minDate={minCheckInDate}
+                      returnValue="range"
+                    />
+                  </CalendarContainer>
+                </>
+              }
+            </StyledSearchCheckinGroup>
+            <StyledSearchButton onClick={searchSubmitHandler}
+                                data-testid="search-submit-btn">{t("global.search")}</StyledSearchButton>
+          </StyledSearchSecondGroup>
         </StyledSearchOptions>
       </StyledFilterWrapper>
       {(
-        showFilter.length
+        currentPopup.length
         || calendarIsOpen
         || showDepartures
         || showDestinations
       ) && <Overlay data-testid="home-search-overlay" onClick={closeModals} />}
-      {showFilter === "stars" &&
-        <ValuePopup style={filterCss} dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1} max={5}
+      {currentPopup === "stars" &&
+        <ValuePopup style={popupCss} dataTestId="test-stars-handler" name="stars" value={filterValues.stars} min={1}
+                    max={5}
                     onChange={handleFilterChange} />}
-      {showFilter === "adults" &&
-        <ValuePopup style={filterCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1} max={9}
+      {currentPopup === "adults" &&
+        <ValuePopup style={popupCss} dataTestId="test-adults-handler" name="adults" value={filterValues.adults} min={1}
+                    max={9 - filterValues.children}
                     onChange={handleFilterChange} />}
-      {showFilter === "children" ?
-        <div><ValuePopup style={filterCss} dataTestId="test-children-handler" name="children" value={filterValues.children} min={0}
+      {currentPopup === "children" ?
+        <div><ValuePopup style={popupCss} dataTestId="test-children-handler" name="children"
+                         value={filterValues.children} min={0}
                          max={4} onChange={handleFilterChange} />
 
-          { filterValues.children > 0 && <ValuePopupAges
-            style={{...filterCss, ...{top: filterCss.top + 50}}}
+          {filterValues.children > 0 && <ValuePopupAges
+            style={{ ...popupCss, ...{ top: popupCss.top + 50 } }}
             className="childrenAges"
             name="childrenAges"
             min={0}
-            max={17}
+            max={12}
             count={filterValues.children}
             data={filterValues.childrenAges}
             dataTestId="test-children-ages-handler"
-            onChange={handleFilterChange}/> }
+            onChange={handleFilterChange} />}
         </div> : ""
       }
     </>

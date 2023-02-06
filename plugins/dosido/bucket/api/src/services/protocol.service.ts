@@ -27,7 +27,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.send({message: data.channel}, payload);
+        return this.redisService.send({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
@@ -40,7 +40,7 @@ export class ProtocolService {
             payload: data.payload || ""
         };
 
-        return this.redisService.emit({message: data.channel}, payload);
+        return this.redisService.emit({message: `${process.env.app}_${data.channel}`}, payload);
 
     }
 
@@ -67,7 +67,7 @@ export class ProtocolService {
                     callerId: myId,
                     indication: params.indication,
                     respond: {
-                        channel: config.config.channel,
+                        channel: config.channel,
                         api: 'protocol',
                         act: 'confirmHandshake'
                     }
@@ -97,7 +97,7 @@ export class ProtocolService {
             });
 
             params.perform({
-                channel: config.config.channel,
+                channel: config.channel,
                 api: params.indication.api,
                 act: params.indication.act,
                 payload: {

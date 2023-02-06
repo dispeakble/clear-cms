@@ -3,29 +3,27 @@ import { size } from "../../styled";
 import { Shadows } from "../../../../assets/design-set";
 import Calendar from "react-calendar";
 
-export const Wrapper = styled.div`
-  margin-top: 30px;
+export const PackageWrapper = styled.div`
+  margin-top: 20px;
   @media (min-width: ${size.laptop}) {
     display: flex;
     flex: 1 1;
   }
   width: 100%;
+  border-radius: 20px;
   gap: 8px;
   background: ${({ theme }) => theme.colors.white};
 `;
 
 export const DealCard = styled.div`
-  background: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 4px 7px 0 rgb(0 0 0 / 17%);
-  height: max-content;
-  //width: 35%;
-  @media (max-width: ${size.laptop}) {
-    width: 100%;
+  flex: 1;
+  @media (min-width: ${size.laptop}) {
+    flex: none;
+    border-right: 1px solid ${({ theme }) => theme.colors.borderOutline};
   }
 `;
 export const CardHead = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  background: ${({ theme }) => theme.colors.white};
 
   line-height: 48px;
   font-size: 32px;
@@ -38,9 +36,9 @@ export const CardHead = styled.div`
 `;
 
 export const EditDeals = styled.div`
-  padding: 27px;
+  padding: 20px;
 `;
-export const Destination = styled.div`
+export const FieldGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -52,7 +50,20 @@ export const Destination = styled.div`
   }
 `;
 
-export const HotelSearch = styled.div`
+export const ResponsiveFieldGroup = styled.div`
+  @media (min-width: ${size.tablet}) {
+    display: flex;
+    gap: 10px;
+  }
+  @media (min-width: ${size.laptop}) {
+    display: block;
+  }
+  & ${FieldGroup} {
+    flex: 1;
+  }
+`;
+
+export const FormElement = styled.div`
   display: flex;
   justify-content: space-around;
   height: 50px;
@@ -79,29 +90,30 @@ export const SearchIcon = styled.div`
   width: 23px;
   height: 23px;
   margin: 13px 10px 0 10px;
-  background: url(${({theme}) => theme.icon('search')}) no-repeat left center;`;
+  background: url(${({ theme }) => theme.icon("search")}) no-repeat left center;`;
 
 export const CalenderIcon = styled.div`
   width: 23px;
   height: 24px;
   margin: 13px 10px 0 10px;
-  background: url(${({theme}) => theme.icon('calendar')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("calendar")}) no-repeat left center;
 `;
 export const DropdownIcon = styled.div`
   width: 40px;
   height: 48px;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('dropdown')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("dropdown")}) no-repeat left center;
 `;
-export const NewSearch = styled.div`
+export const SearchButton = styled.div`
   display: flex;
-  flex: 1;
+  align-items: center;
+  justify-content: center;
 
   button {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
     color: ${({ theme }) => theme.colors.white};
     height: 50px;
-    padding-right: 20px;
+    padding: 0 20px;
     border-radius: 12px;
     border: none;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -113,12 +125,9 @@ export const NewSearch = styled.div`
     cursor: pointer;
     display: flex;
     text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
-    flex: 1;
 
     &:hover {
-      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
-      color: #FFFFFF;
-      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+      background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
     }
 
     a {
@@ -127,11 +136,11 @@ export const NewSearch = styled.div`
       }
     }
 `;
-export const WhiteIcon = styled.div`
+export const SearchIconWhite = styled.div`
   width: 32px;
   height: 50px;
   display: inline-block;
-  background: url(${({theme}) => theme.icon('searchWhite')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("searchWhite")}) no-repeat left 14px;
 
 `;
 export const GuestType = styled.div`
@@ -145,15 +154,14 @@ export const GuestType = styled.div`
   box-shadow: 0 4px 7px rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   gap: 10px;
-  padding-left: 10px;
+  cursor: pointer;
+  padding-left: 15px;
 `;
 export const AdultBox = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  cursor: pointer;
   white-space: nowrap;
 `;
 export const AdultIcon = styled.div`
@@ -161,7 +169,7 @@ export const AdultIcon = styled.div`
   height: 26px;
   width: 10px;
   top: 0;
-  background: url(${({theme}) => theme.icon('adults')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("adults")}) no-repeat left center;
   cursor: pointer;
 `;
 export const AdultNumber = styled.div`
@@ -176,7 +184,7 @@ export const ChildIcon = styled.div`
   width: 20px;
   top: 0;
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('child')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("child")}) no-repeat left center;
 `;
 
 export const HotelView = styled.div`
@@ -185,13 +193,13 @@ export const HotelView = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
+  padding: 10px 10px 0;
   width: 379px;
   @media (max-width: ${size.laptop}) {
     width: 100%;
   }
 `;
-export const HotelInfo = styled.div`
+export const HotelWrapper = styled.div`
   display: block;
   @media (min-width: ${size.tablet}) {
     display: flex;
@@ -207,60 +215,60 @@ export const HotelInfo = styled.div`
   }
 `;
 export const HotelName = styled.div`
-  font-size: 36px;
+  font-size: 32px;
   color: ${({ theme }) => theme.colors.gray};
   font-weight: 400;
+  margin: 0;
   line-height: 48px;
-  padding-top: 18px;
+  padding: 8px 0 0;
 `;
 export const ViewPrice = styled.div`
-  margin: 18px 0;
+  margin: 0 0 18px 0;
   text-align: right;
   text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   
   @media (min-width: ${size.laptop}) {
-    margin: 18px 18px 18px 0;
-  }
-  
-  @media (min-width: ${size.tablet}) {
-      width: 268px;
-    }
+    margin: 0 18px 18px 0;
   }
 `;
 
 export const Price = styled.div`
   font-weight: 400;
-  font-size: 36px;
-  line-height: 54px;
+  font-size: 32px;
+  line-height: 48px;
+  padding: 8px 0 0;
   color: #FF840D;
   
   span {
     font-size: 16px;
+    line-height: initial;
   }
-`
+`;
 
 export const AboutPrice = styled.div`
-  
-`
+  line-height: 20px;
+`;
 export const InfoIcon = styled.span`
   display: inline-block;
   height: 32px;
   width: 32px;
   text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  background: url(${({theme}) => theme.icon('info')}) no-repeat center center;
+  background: url(${({ theme }) => theme.icon("info")}) no-repeat center center;
 
 `;
-export const LeftSide = styled.div``;
+export const HotelInfo = styled.div`
+  padding-left: 5px;
+`;
 export const Star = styled.div`
 `;
 export const ShortDescription = styled.div`
-  display: flex;
   width: 100%;
   justify-content: space-between;
   @media only screen and (max-width: ${size.tablet}) {
     display: block;
   }
+  padding: 10px 0;
 `;
 export const HotelLocation = styled.div`
   font-weight: 500;
@@ -268,7 +276,6 @@ export const HotelLocation = styled.div`
   color: #0009;
 `;
 export const ViewMap = styled.div`
-  margin-left: 32px;
   a {
     color: ${({ theme }) => theme.colors.secondaryColor};
     font-size: 16px;
@@ -288,26 +295,6 @@ export const DateDiv = styled.div`
   position: relative;
 `;
 
-export const ShowDate = styled.div`
-  position: absolute;
-  top: 80px;
-  right: 0;
-  left: 0;
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-export const HeadingDiv = styled.div`
-  width: 200px;
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-export const MemberBox = styled.div`
-  display: flex;
-  justify-content: center;
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  border-radius: 12px;
-  gap: 18px;
-  padding: 10px;
-`;
 export const CounterDiv = styled.div`
   display: flex;
   padding: 10px;
@@ -315,7 +302,7 @@ export const CounterDiv = styled.div`
   justify-content: space-between;
 `;
 export const CounterBtn = styled.div`
-  fontSize: 12px;
+  font-size: 12px;
   background-color: ${({ theme }) => theme.colors.offWhite};
   cursor: pointer;
   padding: 1px 9px;
@@ -330,49 +317,11 @@ export const CounterBtn = styled.div`
 
 `;
 
-export const PersonBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-
-`;
-export const InfBox = styled.div`
-  display: flex;
-`;
-export const ChildBox = styled.div`
-  display: flex;
-`;
-export const SliderLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 10px;
-  height: 437px;
-  background: ${({ theme }) => theme.colors.white};
-
-  border: 1px solid ${({ theme }) => theme.colors.borderOutline};
-  box-sizing: border-box;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
-  padding: 12px;
-`;
-export const SliderRight = styled.div`
-  height: 437px;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
-`;
-
-export const ImageCount = styled.div`
-  width: 183px;
-  height: 130px;
-  background-size: cover;
-  margin-top: 10px;
-`;
-
-export const StyledDescription = styled.div<{readMore: boolean}>`
+export const StyledDescription = styled.div<{ readMore: boolean }>`
   width: 100%;
   
-  max-height: ${props=> props.readMore ? ' ' : '600px'};
-  overflow: ${props=> props.readMore ? ' ' : 'hidden'} ;
+  max-height: ${props => props.readMore ? " " : "600px"};
+  overflow: ${props => props.readMore ? " " : "hidden"} ;
   font-size: 20px;
   color: rgba(0, 0, 0, 0.5);
   @media only screen and (max-width: ${size.tablet}) {
@@ -382,19 +331,27 @@ export const StyledDescription = styled.div<{readMore: boolean}>`
 
 `;
 
-export const StyledDescriptionMore = styled.a`
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.primaryColor};
-`;
-
-export const DetailsCard = styled.div`
+export const PopupFilters = styled.div`
   position: absolute;
+  right: 0;
   z-index: 2;
-  width: 320px;
   background: ${({ theme }) => theme.colors.white};
   border-radius: 12px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-
+  user-select: none;
+  width: 260px;
+  @media (min-width: ${size.mobileS}) {
+    width: 280px;
+  }
+  @media (min-width: ${size.mobileM}) {
+    width: 335px;
+  }
+  @media (min-width: ${size.mobileL}) {
+    width: 360px;
+  }
+  @media (min-width: ${size.laptop}) {
+    width: 290px;
+  }
 `;
 export const PersonEntry = styled.div`
   padding: 0 22px 22px 22px;
@@ -407,9 +364,8 @@ export const SubDetail = styled.div`
   margin-top: 15px;
 
   button {
-    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryDark} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
+    background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryLight} 0%, ${({ theme }) => theme.colors.primaryColor} 100%);
     color: ${({ theme }) => theme.colors.white};
-    width: 340px;
     height: 45px;
     padding-right: 20px;
     border-radius: 12px;
@@ -426,7 +382,7 @@ export const SubDetail = styled.div`
     flex: 1;
 
     &:hover {
-      background: linear-gradient(180deg, #FFBA77 0%, #DE8C41 100%);
+      background: linear-gradient(180deg, ${({ theme }) => theme.colors.primaryColorHover} 0%, ${({ theme }) => theme.colors.primaryLight} 100%);
       color: #FFFFFF;
       text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
     }
@@ -444,6 +400,7 @@ export const Person = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 `;
 export const BoxLeft = styled.div`
   display: flex;
@@ -452,8 +409,7 @@ export const BoxLeft = styled.div`
   h3 {
     font-weight: 600;
     font-size: 18px;
-    line-height: 35px;
-    margin-bottom: 0;
+    margin: 0;
     color: ${({ theme }) => theme.colors.black};
   }
 
@@ -465,28 +421,27 @@ export const BoxLeft = styled.div`
   }
 `;
 export const BoxRight = styled.div``;
-export const DetailTop = styled.div`
+export const PopupFilterTitle = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 20px;
   width: 100%;
   height: 60px;
   background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 1px 7px rgba(0, 0, 0, 0.25);
-  font-weight: 600;
-  font-size: 27.5px;
-  line-height: 41px;
+  line-height: 48px;
+  font-size: 32px;
+  color: ${({ theme }) => theme.colors.gray};
   text-align: center;
   border-radius: 12px 12px 0 0;
-  color: ${({ theme }) => theme.colors.black};
   margin-bottom: 12px;
 `;
 export const CloseIcon = styled.div`
-  background: url(${({theme}) => theme.icon('close')}) no-repeat left center;
+  background: url(${({ theme }) => theme.icon("close")}) no-repeat left center;
   width: 22px;
   height: 12px;
   position: relative;
-  right: 92px;
   cursor: pointer;
 `;
 export const Quantity = styled.div`
@@ -498,6 +453,7 @@ export const Quantity = styled.div`
   height: 38px;
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
+  user-select: none;
 
   span {
     font-weight: 600;
@@ -506,13 +462,17 @@ export const Quantity = styled.div`
     color: ${({ theme }) => theme.colors.black};
     cursor: pointer;
   }
+  
+  h3 {
+    margin: 0;
+  }
 
   h5 {
     font-weight: 600;
     font-size: 18px;
     line-height: 38px;
     color: ${({ theme }) => theme.colors.black};
-    margin-bottom: 0;
+    margin: 0;
   }
 `;
 
@@ -654,7 +614,7 @@ export const HotelCalendar = styled(Calendar)`
     max-width: 100%;
     background: none;
     text-align: center;
-    line-height: 40px;
+    line-height: 35px;
     padding: 0;
     border-radius: 25px;
     background: #fff;
@@ -674,12 +634,14 @@ export const HotelCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--now {
-    background: red;
+    background-color: #F4AC67;
+    color: #fff;
   }
 
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: red;
+    background-color: #F4AC67;
+    color: #fff;
   }
 
   .react-calendar__tile--hasActive {
@@ -749,8 +711,8 @@ export const HotelCalendar = styled(Calendar)`
 `;
 export const H4 = styled("h4")`
   
-`
+`;
 
-export const SPAN = styled("span")`
+export const span = styled("span")`
 user-select: none;
-`
+`;

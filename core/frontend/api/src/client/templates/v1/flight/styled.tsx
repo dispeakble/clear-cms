@@ -1,36 +1,51 @@
 import styled from "styled-components";
-import Image from "next/image"
-import {Field} from "formik";
-interface IStep{
-    currentStep?: boolean;
+import Image from "next/image";
+import { Field } from "formik";
+import { device } from "../styled";
+
+interface IStep {
+  currentStep?: boolean;
 }
 
-interface IFlightsDetails{
-    expand?: boolean;
+interface IFlightsDetails {
+  expand?: boolean;
 }
 
-interface IButtonContainer{
-    hasOneChild?: boolean;
+interface IButtonContainer {
+  hasOneChild?: boolean;
 }
 
-interface ICustomButton{
-    isActive?: boolean;
+interface ICustomButton {
+  isActive?: boolean;
 }
-interface IPaymentDiv{
-    isError?: boolean;
+
+interface IPaymentDiv {
+  isError?: boolean;
 }
 
 
 export const size = {
-    mobileS: "320px",
-    mobileM: "375px",
-    mobileL: "425px",
-    tablet: "768px",
-    laptop: "1024px",
-    laptopL: "1440px",
-    desktop: "1919px",
-    desktopL: "2560px"
+  mobileS: "320px",
+  mobileM: "375px",
+  mobileL: "425px",
+  tablet: "768px",
+  laptop: "1024px",
+  laptopL: "1440px",
+  desktop: "1919px",
+  desktopL: "2560px"
 };
+
+export const FlightsLayout = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+
+  @media ${device.laptopL} {
+    flex-direction: row;
+  }
+`;
 
 export const DetailsWrapper = styled.div`
   display: flex;
@@ -45,7 +60,7 @@ export const DetailsWrapper = styled.div`
     align-items: stretch;
     padding: 20px;
   }
-`
+`;
 
 export const CartWrapper = styled.div`
   flex: 1;
@@ -57,21 +72,21 @@ export const CartWrapper = styled.div`
   @media(max-width: ${size.laptop}){
     max-width: 100%;
   }
-`
+`;
 
 export const FlightsWrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 export const FlightDetails = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 16px 21px;
   border-bottom: 1px solid #FF840D;
-`
+`;
 
 export const PricingRules = styled.div`
   display: flex;
@@ -82,7 +97,7 @@ export const PricingRules = styled.div`
   @media screen and (max-width: 480px){
     display: none;
   }
-`
+`;
 
 export const PricingText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -91,7 +106,7 @@ export const PricingText = styled.p`
   line-height: 1.5;
 
   color: #FF840D;
-`
+`;
 
 export const DottedLines = styled.hr`
   border: none;
@@ -100,7 +115,7 @@ export const DottedLines = styled.hr`
   text-align: center;
   height: 1px;
   flex: 1;
-`
+`;
 
 export const DottedLinesContainer = styled.div`
   display: flex;
@@ -110,7 +125,7 @@ export const DottedLinesContainer = styled.div`
   @media screen and (max-width: ${size.laptop}){
     display: none;
   }
-`
+`;
 
 export const Flight = styled.div`
   display: flex;
@@ -126,9 +141,9 @@ export const Flight = styled.div`
     width: 100%;
   }
 
-`
+`;
 
-export const StyledField= styled(Field)`
+export const StyledField = styled(Field)`
   outline: none;
   border: 1px solid #DBDBDB;
   border-radius: 10px;
@@ -142,19 +157,19 @@ export const StyledField= styled(Field)`
   ::placeholder{
     color: #ADADAD;
   }
-`
+`;
 
 export const Flights = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const PassengerDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 export const PassengerItem = styled.div`
   width: 100%;
@@ -167,7 +182,7 @@ export const PassengerItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-`
+`;
 
 export const ErrorText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -177,11 +192,11 @@ export const ErrorText = styled.p`
   margin:0;
 
   color: #e74c3c;
-`
+`;
 
 export const PassengerHeaderContainer = styled.div`
 
-`
+`;
 
 export const PassengerHeader = styled.h2`
   margin: 0;
@@ -190,7 +205,7 @@ export const PassengerHeader = styled.h2`
   font-size: 36px;
   line-height: 1.5;
   color: #434343;
-`
+`;
 
 export const FormGroup = styled.div`
   display: flex;
@@ -202,13 +217,13 @@ export const FormGroup = styled.div`
     flex-direction: column;
     align-items: stretch;
   }
-`
+`;
 
 export const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-`
+`;
 
 export const InputLabel = styled.label`
   font-family: 'Poppins', sans-serif;
@@ -217,7 +232,7 @@ export const InputLabel = styled.label`
   line-height: 1.5;
   margin: 0;
   color: #434343;
-`
+`;
 
 export const TextInput = styled(Field)`
   outline: none;
@@ -233,7 +248,7 @@ export const TextInput = styled(Field)`
   ::placeholder{
     color: #ADADAD;
   }
-`
+`;
 
 export const CustomSelect = styled.select`
   outline: none;
@@ -250,7 +265,7 @@ export const CustomSelect = styled.select`
   option:first-child{
     color: #ADADAD;
   }
-`
+`;
 
 
 export const FlightDestinationTextContainer = styled.div`
@@ -279,20 +294,20 @@ export const FlightDestinationTextContainer = styled.div`
       display: none !important;
     }
   }
-`
+`;
 
 export const ButtonsContainer = styled.div<IButtonContainer>`
   display: flex;
-  justify-content: ${({hasOneChild}) => hasOneChild ? "flex-end" : "space-between"};
+  justify-content: ${({ hasOneChild }) => hasOneChild ? "flex-end" : "space-between"};
 
   @media screen and (max-width:${size.tablet}){
     flex-direction: column;
     gap: 20px;
   }
-`
+`;
 
 export const CustomButton = styled.button<ICustomButton>`
-  background: ${({isActive}) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
+  background: ${({ isActive }) => isActive ? "linear-gradient(180deg, #7ACD13 0%, #5D9519 100%)" : "linear-gradient(180deg, #D0D0D0 0%, #919191 100%)"};
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
@@ -327,7 +342,7 @@ export const CustomButton = styled.button<ICustomButton>`
     border-radius: 50% ;
     text-align: center;
 
-    color: ${({isActive}) => isActive ? "#FF8C1D" : "#959595"};
+    color: ${({ isActive }) => isActive ? "#FF8C1D" : "#959595"};
   }
 
   @media screen and (max-width:${size.tablet}){
@@ -347,7 +362,7 @@ export const CustomButton = styled.button<ICustomButton>`
       color: #959595;
     }
   }
-`
+`;
 
 export const FlightDepartureTextContainer = styled.div`
   display: flex;
@@ -375,7 +390,7 @@ export const FlightDepartureTextContainer = styled.div`
       display: none !important;
     }
   }
-`
+`;
 
 export const FlightLocationsText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -384,7 +399,7 @@ export const FlightLocationsText = styled.p`
   font-size: 20px;
   line-height: 1.5;
   margin: 0;
-`
+`;
 
 export const FlightDuration = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -395,7 +410,7 @@ export const FlightDuration = styled.p`
   background: #ffffff;
   line-height: 1.5;
   margin: 0;
-`
+`;
 
 export const FlightsHeaderWrapper = styled.div`
   display: flex;
@@ -412,7 +427,7 @@ export const FlightsHeaderWrapper = styled.div`
     gap: 10px;
     padding: 12px;
   }
-`
+`;
 
 export const FlightsHeader = styled.h2`
   font-family: "Poppins", sans-serif;
@@ -421,14 +436,14 @@ export const FlightsHeader = styled.h2`
   color: #434343;
   line-height:1.5;
   margin: 0;
-`
+`;
 
 export const CartHeaderWrapper = styled.div`
   padding: 25px 31px;
   border-bottom: 1px dashed #A29E9E;
   display: flex;
   align-items: center;
-`
+`;
 
 export const CartHeader = styled.h2`
   font-family: "Poppins", sans-serif;
@@ -437,11 +452,11 @@ export const CartHeader = styled.h2`
   color: #434343;
   line-height:1.5;
   margin: 0;
-`
+`;
 
 export const FLightProviderImg = styled(Image)`
   height: 20px !important;
-`
+`;
 
 export const CartItemContainer = styled.div`
   display: flex;
@@ -449,10 +464,10 @@ export const CartItemContainer = styled.div`
   gap: 23px;
   border-bottom: 1px dashed #A29E9E;
   padding: 24px 20px;
-`
+`;
 
 export const CartFlightInfo = styled.div`
-`
+`;
 
 export const CartStepsWrapper = styled.div`
   display: flex;
@@ -462,7 +477,7 @@ export const CartStepsWrapper = styled.div`
   @media screen and (max-width: 1200px){
     gap: 15px;
   }
-`
+`;
 export const StepWrapper = styled.div<IStep>`
   font-family: 'Poppins', sans-serif;
   font-style: normal;
@@ -478,8 +493,8 @@ export const StepWrapper = styled.div<IStep>`
 
   border: 1px solid #FF8C1D;
 
-  background: ${({currentStep}) => currentStep ? "#FF8C1D" : "#FFFFFF"};
-  color:  ${({currentStep}) => currentStep ? "#FFFFFF" : "#FF8C1D"};
+  background: ${({ currentStep }) => currentStep ? "#FF8C1D" : "#FFFFFF"};
+  color:  ${({ currentStep }) => currentStep ? "#FFFFFF" : "#FF8C1D"};
 
   border-radius:50%;
 
@@ -513,20 +528,20 @@ export const StepWrapper = styled.div<IStep>`
   }
 
 
-`
+`;
 
 export const FlightCartItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
-`
+`;
 
 export const FlightTimeContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 export const TimeText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -536,7 +551,7 @@ export const TimeText = styled.p`
   line-height: 1.5;
   margin: 0;
 
-`
+`;
 
 export const DateText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -546,7 +561,7 @@ export const DateText = styled.p`
   line-height: 1.5;
   margin: 0;
 
-`
+`;
 
 export const DepartureDestinationText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -555,7 +570,7 @@ export const DepartureDestinationText = styled.p`
   color: #000000;
   line-height: 1.5;
   margin: 0;
-`
+`;
 
 export const DepartureTextWrapper = styled.div`
   display: flex;
@@ -577,7 +592,7 @@ export const DepartureTextWrapper = styled.div`
     background: #fff;
     border-radius: 50%;
   }
-`
+`;
 
 export const DestinationTextWrapper = styled.div`
   display: flex;
@@ -599,26 +614,26 @@ export const DestinationTextWrapper = styled.div`
     background: #fff;
     border-radius: 50%;
   }
-`
+`;
 
 export const FlightExpandDetails = styled.div<IFlightsDetails>`
   padding: 10px;
-  display: ${({expand}) => expand ? "block" : "none"};
+  display: ${({ expand }) => expand ? "block" : "none"};
   transition: height .5s ease-in-out;
   overflow: hidden;
-`
+`;
 
 export const FlightDescriptionContainer = styled.div`
   padding: 25px 0;
   border-bottom: 1px solid #FF840D;
   margin-bottom: 5px;
-`
+`;
 
 export const FlightDetailsWrapper = styled.div`
   border-radius: 10px;
   border: 1px solid #FF840D;
   background: #FFFFFF;
-`
+`;
 
 export const FlightDescription = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -627,20 +642,20 @@ export const FlightDescription = styled.p`
   font-size: 14px;
   line-height: 1.5;
   margin: 0;
-`
+`;
 
 export const FlightInfosContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
   padding: 20px;
-`
+`;
 
 export const FlightInfosItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const FlightInfosDate = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -654,7 +669,7 @@ export const FlightInfosDate = styled.p`
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
-`
+`;
 
 export const FlighInfosDateTimeWrapper = styled.div`
   display: flex;
@@ -663,7 +678,7 @@ export const FlighInfosDateTimeWrapper = styled.div`
   @media screen and (max-width: 480px){
     flex-direction: column;
   }
-`
+`;
 
 export const FlightInfosDateLocationDepartureWrapper = styled.div`
   display: flex;
@@ -685,7 +700,7 @@ export const FlightInfosDateLocationDepartureWrapper = styled.div`
     background: #fff;
     border-radius: 50%;
   }
-`
+`;
 
 export const FlightInfosDateLocationDestinationWrapper = styled.div`
   display: flex;
@@ -707,7 +722,7 @@ export const FlightInfosDateLocationDestinationWrapper = styled.div`
     background: #fff;
     border-radius: 50%;
   }
-`
+`;
 
 export const FlightInfosDurationAircraftWrapper = styled.div`
   display: flex;
@@ -716,7 +731,7 @@ export const FlightInfosDurationAircraftWrapper = styled.div`
   text-align: center;
   padding: 0 10px;
   background: white;
-`
+`;
 
 export const FlightInfosTime = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -730,7 +745,7 @@ export const FlightInfosTime = styled.p`
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
-`
+`;
 
 export const FlightInfosLocationText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -749,7 +764,7 @@ export const FlightInfosLocationText = styled.p`
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
-`
+`;
 export const FlightAircraft = styled.p`
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
@@ -763,7 +778,7 @@ export const FlightAircraft = styled.p`
     font-weight: 700;
     margin: 0;
   }
-`
+`;
 
 export const Stopover = styled.div`
   width: 100%;
@@ -774,7 +789,7 @@ export const Stopover = styled.div`
   padding: 13px;
   border-radius:5px;
   gap: 8px;
-`
+`;
 
 export const StopoverText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -796,7 +811,7 @@ export const StopoverText = styled.p`
   @media screen and (max-width: 480px){
     font-size: 14px;
   }
-`
+`;
 
 export const CartTicketsWrapper = styled.div`
   min-height: 200px;
@@ -804,12 +819,12 @@ export const CartTicketsWrapper = styled.div`
   flex-direction: column;
   gap: 15px;
   padding: 18px 20px;
-`
+`;
 
 export const TicketItem = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const TicketText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -819,7 +834,7 @@ export const TicketText = styled.p`
   margin: 0;
 
   color: #000000;
-`
+`;
 
 export const CartFooterWrapper = styled.div`
   padding: 25px 31px;
@@ -827,7 +842,7 @@ export const CartFooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 export const TotalText = styled.p`
   font-family: 'Poppins', sans-serif;
@@ -837,7 +852,7 @@ export const TotalText = styled.p`
   margin: 0;
 
   color: #434343;
-`
+`;
 
 export const TotalPrice = styled.h2`
   font-family: 'Poppins', sans-serif;
@@ -847,12 +862,12 @@ export const TotalPrice = styled.h2`
   margin: 0;
 
   color: #434343;
-`
+`;
 
 /* start fourth step */
 
 export const Payment = styled.div<IPaymentDiv>`
-  background: ${({isError}) => isError ? "#FFFFFF" : "none"};
+  background: ${({ isError }) => isError ? "#FFFFFF" : "none"};
   display: flex;
   align-items: center;
   padding: 15px 0;
@@ -861,11 +876,11 @@ export const Payment = styled.div<IPaymentDiv>`
   @media screen and (max-width: ${size.laptop}){
     flex-direction: column;
   }
-`
+`;
 
 export const PaymentStatusImageContainer = styled.div`
 
-`
+`;
 
 export const PaymentStatusDetailsContainer = styled.div`
   display: flex;
@@ -873,7 +888,7 @@ export const PaymentStatusDetailsContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-`
+`;
 
 export const PaymentStatusTitle = styled.h3`
   font-family: 'Nunito', sans-serif;
@@ -885,9 +900,9 @@ export const PaymentStatusTitle = styled.h3`
   text-transform: uppercase;
   margin: 0;
   color: #77838F;
-`
+`;
 
-export const PaymentErrorText= styled.h4`
+export const PaymentErrorText = styled.h4`
   font-family: 'Nunito', sans-serif;
   font-weight: 600;
   font-size: 18px;
@@ -897,7 +912,7 @@ export const PaymentErrorText= styled.h4`
   text-transform: uppercase;
   margin: 0;
   color: #FF1515;
-`
+`;
 
 export const PaymentInfoText = styled.h5`
   font-family: 'Nunito', sans-serif;
@@ -909,7 +924,7 @@ export const PaymentInfoText = styled.h5`
   letter-spacing: 0.5px;
 
   color: #FF840D;
-`
+`;
 
 export const RedirectText = styled.p`
   font-family: 'Nunito', sans-serif;
@@ -925,13 +940,13 @@ export const RedirectText = styled.p`
   a{
     color: #FF840D;
   }
-`
+`;
 
 export const PaymentStep = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 /* end fourth step */
 
@@ -941,7 +956,7 @@ export const BookingConfirmedContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const FinalStep = styled.div`
   display: flex;
@@ -952,7 +967,7 @@ export const FinalStep = styled.div`
   @media screen and (max-width: ${size.laptop}){
     flex-direction: column;
   }
-`
+`;
 
 export const ConfirmedText = styled.div`
   display: flex;
@@ -960,7 +975,7 @@ export const ConfirmedText = styled.div`
   align-items: center;
   justify-content: center;
   gap: 40px;
-`
+`;
 
 export const SuccessText = styled.h3`
   font-family: 'Metropolis', sans-serif;
@@ -971,7 +986,7 @@ export const SuccessText = styled.h3`
   text-align: center;
   margin: 0;
   color: #FF8C1D;
-`
+`;
 
 export const EmailDetailsText = styled.h5`
   margin: 0;
@@ -984,4 +999,4 @@ export const EmailDetailsText = styled.h5`
 text-align: center;
 
 color: #77838F;
-`
+`;

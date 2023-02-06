@@ -1,7 +1,7 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
-import {payloadInterface} from "../interfaces/payload.interface";
+import {PayloadInterface} from "../interfaces/PayloadInterface";
 
 @Injectable()
 export class PagesService {
@@ -16,13 +16,12 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try{
-                    const payload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const payload: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'list',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'page',
                                 how: "AND",
@@ -57,13 +56,12 @@ export class PagesService {
         return new Observable(subscriber => {
             (async () => {
                 try {
-                    const pageReq: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const pageReq: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'page',
                                 include: [{
@@ -98,13 +96,12 @@ export class PagesService {
                         return;
                     }
 
-                    const settingPayload: payloadInterface = {
-                        channel: `${process.env.app}_db`,
+                    const settingPayload: PayloadInterface = {
+                        channel: `db`,
                         api: 'sql',
                         act: 'get',
                         payload: {
                             db: 'main',
-                            channel: `${process.env.app}_frontend`,
                             data: {
                                 what: 'setting'
                             }

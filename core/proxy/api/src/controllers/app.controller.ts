@@ -5,24 +5,23 @@ import {
 import {Request, Response} from "express";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {payloadInterface} from "../interfaces/payload.interface";
-import {HttpAuthGuard} from "../guards/http.auth.guard";
 import multer from "multer";
 import {Ctx, EventPattern, MessagePattern, Payload, RedisContext} from "@nestjs/microservices";
 
 @Controller()
 export class AppController {
     private moduleConfig: ModuleInterface = {
-        name: `${process.env.app}_proxy`,
+        name: `adminproxy`,
         version: '21.07.28',
         description: 'the main http proxy (gateway)',
         started: new Date(),
         config: {
-            channel: `${process.env.app}_proxy`,
+            channel: `adminproxy`,
             restart: true,
             stop: false
         },
         dependencies: [{
-            name: `${process.env.app}_hub`,
+            name: `hub`,
             version: 'latest'
         }]
     };
@@ -71,6 +70,7 @@ export class AppController {
             this.portMap = await this.protocolService.getValue('portMap') || [];
 
             const data = await this.systemService.registerModule(this.moduleConfig);
+            logger.log(data);
             if(!data) {
                 throw 'System api not ready yet';
             }
@@ -216,7 +216,7 @@ export class AppController {
                             endPost = false;
                             const callback = response.callback;
                             const cb_payload = {
-                                channel: `${process.env.app}_proxy`,
+                                channel: `adminproxy`,
                                 api: callback.api,
                                 act: callback.act,
                                 payload: {
@@ -263,7 +263,7 @@ export class AppController {
         try {
 
             const fileReq = {
-                "channel": `${process.env.app}_system`,
+                "channel": `system`,
                 "payload": {
                     "ip": req.ip,
                     "hostname": req.hostname,
@@ -401,12 +401,12 @@ export class AppController {
     }
 
     //Microservice protocol
-    @MessagePattern({message: `${process.env.app}_proxy`})
+    @MessagePattern({message: `${process.env.app}_adminproxy`})
     public async onRedisMessage(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
 
-    @EventPattern({event: `${process.env.app}_proxy`})
+    @EventPattern({event: `${process.env.app}_adminproxy`})
     public async onRedisEvent(@Payload() data: any, @Ctx() context: RedisContext) {
         return this.perform(data);
     }
@@ -447,7 +447,7 @@ export class AppController {
             const data = params.data;
 
             const payload: payloadInterface = {
-                channel: `${process.env.app}_${data.module}`,
+                channel: data.module,
                 api: data.api,
                 act: data.act,
                 payload: data.payload
