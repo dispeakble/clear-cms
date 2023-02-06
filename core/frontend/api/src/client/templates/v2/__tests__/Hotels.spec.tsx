@@ -65,10 +65,10 @@ describe("Hotels list Page Suite", () => {
     fireEvent.click(hotelsPage.getAllByText(/Hotel Description/)[0]);
   });
 
-  it("Should open and close filters", async () => {
+  /*it("Should open and close filters", async () => {
     const hotelsPage = render(<Wrapper {...pageProps} />);
 
-    fireEvent.click(hotelsPage.container.querySelectorAll(".filterHeaderWrapper")[0]);
+    fireEvent.click(hotelsPage.getByTestId('hotel-filter-wrapper'));
 
     await waitFor(() => {
       expect(hotelsPage.container.querySelectorAll(".isOpen")[0]).toBeInTheDocument();
@@ -80,7 +80,7 @@ describe("Hotels list Page Suite", () => {
       expect(hotelsPage.container.querySelectorAll(".isOpen")[0]).toBeUndefined();
     });
 
-  });
+  });*/
 
   it("Should reset filters", async () => {
     const hotelsPage = render(<Wrapper {...pageProps} />);

@@ -444,7 +444,7 @@ export const InnerRoomList = styled.div`
   cursor: pointer;
   width: 100%;
   background: white;
-  border-radius: 30px;
+  border-radius: 26px;
   left: 0;
   border: 1px solid ${({ theme }) => theme.colors.borderOutline};
   transition: all 100ms ease-in-out;

@@ -158,7 +158,7 @@ const HotelList = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       <PaperWrapper>
         <ContentWrapper>
           <HotelsLayout>
-            <FiltersContainer>
+            <FiltersContainer data-testid="hotel-filter-wrapper">
               <Filters
                 setSelectedFilters={setSelectedFilters}
                 selectedFilters={selectedFilters}

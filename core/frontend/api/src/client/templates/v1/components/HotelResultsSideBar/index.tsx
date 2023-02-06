@@ -202,7 +202,6 @@ const HotelResultSideBar = ({
           <FieldGroup>
             <ClickAwayListener onClickAway={() => handleClickAway("details")}>
               <DateDiv>
-                <H4>{t("hotelResult.sideBar.search.detail")}</H4>
                 <GuestType>
                   <AdultBox onClick={() => handleShowPassenger()}>
                     <AdultIcon />
@@ -230,7 +229,6 @@ const HotelResultSideBar = ({
                           ...show,
                           details: false
                         })} />
-                      {t("hotelResult.sideBar.search.detail")}
                     </DetailTop>
                     <PersonEntry>
                       <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>

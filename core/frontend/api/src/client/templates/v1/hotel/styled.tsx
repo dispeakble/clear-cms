@@ -331,8 +331,8 @@ export const BookNowContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
+  justify-content: flex-end;
+  margin-bottom: 12px;
 `;
 
 export const BookNowButton = styled.a`

@@ -328,7 +328,6 @@ const HotelDetailComponent = ({
                             ...show,
                             details: false
                           })} />
-                        {t("hotelResult.sideBar.search.detail")}
                       </DetailTop>
                       <PersonEntry>
                         <CardDesc>{t("hotelResult.sideBar.search.addPersons")}</CardDesc>

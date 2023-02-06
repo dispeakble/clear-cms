@@ -47,8 +47,6 @@ export class EmailService {
         },
         error: (err) => {
           this.logger.error(err.message);
-        },
-        complete: () => {
         }
       });
     } catch (err) {
