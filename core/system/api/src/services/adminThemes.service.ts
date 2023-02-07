@@ -16,7 +16,15 @@ export class AdminThemesService {
     }
 
     private uploadFromBase64(params) {
-        const initiator = new Observable(subscriber => {
+        return this.bucketService.perform({
+            act: 'uploadFromBase64',
+            payload: {
+                base64: params.base64,
+                filename: params.filename,
+                path: 'themes'
+            }
+        }).toPromise();
+        /*const initiator = new Observable(subscriber => {
             (async () => {
                 let buff = Buffer.from(params.base64, 'base64');
                 subscriber.next({
@@ -63,7 +71,7 @@ export class AdminThemesService {
             payload: {
                 initiator: initiator
             }
-        }).toPromise();
+        }).toPromise();*/
     }
 
     public list() {

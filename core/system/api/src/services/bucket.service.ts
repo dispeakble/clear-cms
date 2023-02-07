@@ -100,42 +100,47 @@ export class BucketService {
     }
 
     private uploadFromBase64(params) {
-
         const initiator = new Observable(subscriber => {
-            let buff = Buffer.from(params.base64, 'base64');
-            subscriber.next({
-                payload: {
-                    type: "meta",
-                    length: buff.length,
-                    filename: params.filename,
-                    path: "themes",
-                    replace: true
-                }
-            });
-
-            const stream = Readable.from(buff);
-
-            let index = 0;
-            const t = Math.random();
-
-            stream.on('data', (chunk: any) => {
-                index++;
+            (async () => {
+                let buff = Buffer.from(params.base64, 'base64');
                 subscriber.next({
                     payload: {
-                        type: "data",
-                        index: `${t}-${index}`,
-                        buffer: chunk
+                        type: "meta",
+                        length: buff.length,
+                        filename: params.filename,
+                        path: params.path,
+                        replace: true
                     }
                 });
-            });
 
-            stream.on('end', () => {
-                subscriber.complete();
-            });
+                await (() => new Promise((resolve) => {
+                    setTimeout(resolve, 300);
+                }))();
 
-            stream.on('error', () => {
-                subscriber.error(`upload failed for: ${params.filename}`);
-            })
+                const stream = Readable.from(buff);
+
+                let index = 0;
+                const t = Math.random();
+
+                stream.on('data', (chunk: any) => {
+                    index++;
+                    subscriber.next({
+                        payload: {
+                            type: "data",
+                            index: `${t}-${index}`,
+                            buffer: chunk
+                        }
+                    });
+                });
+
+                stream.on('end', () => {
+                    subscriber.complete();
+                });
+
+                stream.on('error', () => {
+                    subscriber.error(`upload failed for: ${params.filename}`);
+                });
+            })();
         });
 
         return this.perform({
@@ -143,7 +148,7 @@ export class BucketService {
             payload: {
                 initiator: initiator
             }
-        }).toPromise();
+        });
     }
 
     private checkPaths(data: any){

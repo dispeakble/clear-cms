@@ -56,7 +56,7 @@ class ViewGeneralSettings extends Component {
             defaultMetaDescription: { valid: false, empty: true },
             defaultFavicon: { valid: false, empty: true },
             faviconName: { valid: false, empty: true },
-            defaultWebsiteLogo: { valid: false, empty: true },
+            logoBase64Data: { valid: false, empty: true },
             websiteLogo: { valid: false, empty: true },
             includeWebsiteTitle: { valid: false, empty: true },
             emailSender: { valid: false, empty: true },
@@ -64,7 +64,7 @@ class ViewGeneralSettings extends Component {
             contactEmail: { valid: false, empty: true },
             selectedTheme: { valid: false, empty: true }
         },
-        defaultWebsiteLogo: "",
+        logoBase64Data: "",
         websiteLogo: "",
         errors: "",
         messages: "",
@@ -175,7 +175,7 @@ class ViewGeneralSettings extends Component {
                 valid: true,
                 empty: false
             };
-            validation.defaultWebsiteLogo = {
+            validation.logoBase64Data = {
                 valid: true,
                 empty: false
             };
@@ -221,7 +221,7 @@ class ViewGeneralSettings extends Component {
                 defaultFavicon: generalSettingsData.defaultFavicon,
                 faviconName: generalSettingsData.faviconName,
                 websiteLogo: generalSettingsData.websiteLogo,
-                defaultWebsiteLogo: generalSettingsData.defaultWebsiteLogo,
+                logoBase64Data: generalSettingsData.logoBase64Data,
                 includeWebsiteTitle: generalSettingsData.includeWebsiteTitle,
                 websiteTimezone: generalSettingsData.websiteTimezone,
                 emailSender: generalSettingsData.emailSender,
@@ -594,7 +594,7 @@ class ViewGeneralSettings extends Component {
                 defaultFavicon: this.state.defaultFavicon,
                 faviconName: this.state.faviconName,
                 websiteLogo: this.state.websiteLogo,
-                defaultWebsiteLogo: this.state.defaultWebsiteLogo,
+                logoBase64Data: this.state.logoBase64Data,
                 includeWebsiteTitle: this.state.includeWebsiteTitle,
                 websiteTimezone: this.state.websiteTimezone,
                 emailSender: this.state.emailSender,
@@ -791,7 +791,7 @@ class ViewGeneralSettings extends Component {
                                                  onChange={async (e) =>
                                                    this.setState({
                                                        websiteLogo: e.target.files[0].name,
-                                                       defaultWebsiteLogo: await imageHelper.toBase64(e.target.files[0])
+                                                       logoBase64Data: await imageHelper.toBase64(e.target.files[0])
                                                    })
                                                  } />
                                           <Button variant="contained" disabled={false} className={classes.button}
@@ -806,8 +806,8 @@ class ViewGeneralSettings extends Component {
                                   {
                                       this.state.websiteLogo ?
                                         <div style={{ minHeight: "60px", marginTop: "40px" }}>
-                                            <img src={this.state.defaultWebsiteLogo} alt={this.state.websiteLogo}
-                                                 style={{ height: "30px", width: "30px" }} />
+                                            <img src={`/files/images/${this.state.websiteLogo}`} alt={this.state.websiteLogo}
+                                                 style={{ maxWidth: "120px" }} />
                                             <h5 style={{
                                                 fontStyle: "italic",
                                                 textDecoration: "underline",
