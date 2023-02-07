@@ -1,6 +1,6 @@
 {
   "name": "crm-system-client",
-  "version": "20.08.05",
+  "version": "23.02.07",
   "description": "Client UI for the System Pod",
   "private": true,
   "main": "src/index.js",

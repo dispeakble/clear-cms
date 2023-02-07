@@ -3,13 +3,14 @@ import {payloadInterface} from "../interfaces/payload.interface";
 import {ModuleInterface} from "../interfaces/module.interface";
 import {Observable} from "rxjs";
 import { ProtocolService } from "./protocol.service";
+import { BucketService } from "./bucket.service";
 
 @Injectable()
 export class GeneralSettingsService {
 
     private methods = ["getInfo", "setInfo"];
 
-    constructor(private protocolService: ProtocolService) {
+    constructor(private protocolService: ProtocolService, private bucketService: BucketService) {
 
     }
 
@@ -57,6 +58,23 @@ export class GeneralSettingsService {
     public async setInfo(params) {
         return new Observable(subscriber => {
             (async () => {
+
+                if(params.payload.data.logoBase64Data) {
+
+                    const parts = params.payload.data.logoBase64Data.split(';base64,');
+
+                    this.bucketService.perform({
+                        act: 'uploadFromBase64',
+                        payload: {
+                            base64: parts[1],
+                            filename: params.payload.data.websiteLogo,
+                            path: 'images'
+                        }
+                    }).toPromise();
+
+                    delete params.payload.data.logoBase64Data;
+                }
+
                 const request: payloadInterface = {
                     channel: `db`,
                     api: 'sql',
@@ -75,6 +93,8 @@ export class GeneralSettingsService {
                         }
                     }
                 };
+
+
 
                 this.protocolService.sendMessage(request).subscribe(data => {
                     subscriber.next({
