@@ -15,11 +15,11 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   position: fixed;
   z-index: 9999;
   top: 0;
-  -webkit-transition: background-color 1000ms linear;
-  -ms-transition: background-color 1000ms linear;
-  transition: background-color 1000ms linear;
+  -webkit-transition: background-color 1000ms linear, box-shadow 1000ms linear;
+  -ms-transition: background-color 1000ms linear, box-shadow 1000ms linear;
+  transition: background-color 1000ms linear, box-shadow 1000ms linear;
 
-  &.fixedHeader {
+  &.fixedHeader, &:hover {
     z-index: 999;
     background: ${({ theme }) => theme.colors.primaryColor};
     box-shadow: 0 10px 10px -4px rgba(0,0,0,0.3);

@@ -15,11 +15,11 @@ export const HeaderWrapper = styled.header<HeaderWrapperProps>`
   position: fixed;
   z-index: 9999;
   top: 0;
-  -webkit-transition: background-color 1000ms linear;
-  -ms-transition: background-color 1000ms linear;
-  transition: background-color 1000ms linear;
+  -webkit-transition: background-color 1000ms linear, box-shadow 1000ms linear;
+  -ms-transition: background-color 1000ms linear, box-shadow 1000ms linear;
+  transition: background-color 1000ms linear, box-shadow 1000ms linear;
 
-  &.fixedHeader {
+  &.fixedHeader, &:hover {
     z-index: 999;
     background: ${({ theme }) => theme.colors.primaryColor};
     box-shadow: 0 10px 10px -4px rgba(0,0,0,0.3);
@@ -92,10 +92,13 @@ export const MenuWrapper = styled.div`
 export const SearchWrapper = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.primaryColor};
   position: relative;
-  background: url(${({ theme }) => theme.icon("search")}) no-repeat 16px center  ${({ theme }) => theme.colors.white};
   order: 4;
   margin-left: 10px;
+  display: flex;
+  flex: 50px;
   @media (max-width: ${size.laptop}) {
+    border-color: transparent;
+    background-color: transparent;
     order: 3;
     margin: 0;
   }
@@ -104,10 +107,11 @@ export const SearchWrapper = styled.div`
 export const InputSearch = styled.input`
   outline: none;
   border: none;
-  background: none;
-  width: 50px;
+  flex: 1;
+  min-width: 50px;
   height: 50px;
   padding: 0;
+  background: url(${({ theme }) => theme.icon("searchWhite")}) no-repeat 16px center;
 
   &::placeholder {
     color: transparent;
@@ -116,6 +120,7 @@ export const InputSearch = styled.input`
   &:focus {
     padding: 8px 8px 8px 54px;
     width: 100%;
+    background: url(${({ theme }) => theme.icon("search")}) no-repeat 16px center ${({ theme }) => theme.colors.white};
   }
 
   @media (min-width: ${size.laptop}) {
