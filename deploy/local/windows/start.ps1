@@ -135,7 +135,7 @@ echo "**************** Starting Services *****************"
 
 Write-Output "Login in to docker"
 
-Get-Content ../secrets/dockerpass.txt | docker login --username cmsbot --password-stdin
+Get-Content ../secrets/dockerpass.txt | docker login --username dispeakble --password-stdin
 
 echo "..\versions\$INSTALL_VERSION\base.yaml"
 

@@ -42,8 +42,8 @@ fi
 base_path=$(readlink -e ".")
 cd $base_path
 
-DOCKERHUB_USERNAME="cmsbot"
-DOCKERHUB_PASS="uB8V7B6IR5ll"
+DOCKERHUB_USERNAME="dispeakble"
+DOCKERHUB_PASS="zF*%d5^nTOwPt$!1"
 BITBUCKET_USERNAME="the_dispeakble_one"
 BITBUCKET_PASS='KWJtnNGH9Wh9EtAhnSmX'
 
