@@ -15,6 +15,9 @@ $TPL_VER = "v1"
 $CMS_JWT_EXP_H="3600s"
 $recaptcha_public_key="6LdNqsESAAAAAPHt1ZG6vr4RBQHoM-eVcE4XB4wJ"
 $recaptcha_private_key="6LdNqsESAAAAANbWPLowt17zjEwNS4MuvVLfX7TQ"
+$DOCKER_REGISTRY_USERNAME=Get-Content ../secrets/dockeruser.txt
+$DOCKER_REGISTRY_URL=Get-Content ../secrets/dockerurl.txt
+
 $POSTGRES_DEFAULT_USER = "cms"
 $POSTGRES_DEFAULT_PASSWORD = "1qaz"
 $POSTGRES_DEFAULT_DB = "main"
@@ -23,6 +26,7 @@ $PGADMIN_DEFAULT_EMAIL = "admin@example.com"
 $PGADMIN_DEFAULT_PASSWORD = "1qaz"
 $REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
 $BUCKET_PATH="./volumes/cms/bucket"
+
 $CMS_HUB_VERSION="1675617296"
 $CMS_DB_VERSION="1675617296"
 $CMS_BUCKET_VERSION="1675617296"
@@ -135,7 +139,7 @@ echo "**************** Starting Services *****************"
 
 Write-Output "Login in to docker"
 
-Get-Content ../secrets/dockerpass.txt | docker login --username cmsbot --password-stdin
+Get-Content ../secrets/dockerpass.txt | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin $DOCKER_REGISTRY_URL
 
 echo "..\versions\$INSTALL_VERSION\base.yaml"
 

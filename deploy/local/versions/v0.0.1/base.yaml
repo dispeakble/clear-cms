@@ -66,7 +66,7 @@ services:
 
   cms-hub:
     container_name: cms-hub
-    image: "dispeakble/crm-hub:${CMS_HUB_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-hub:${CMS_HUB_VERSION}"
     restart: always
     depends_on:
       - postgres
@@ -91,7 +91,7 @@ services:
 
   cms-db:
     container_name: cms-db
-    image: "dispeakble/crm-db:${CMS_DB_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-db:${CMS_DB_VERSION}"
     restart: always
     depends_on:
       - postgres
@@ -115,7 +115,7 @@ services:
 
   cms-bucket:
     container_name: cms-bucket
-    image: "dispeakble/crm-bucket:${CMS_BUCKET_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-bucket:${CMS_BUCKET_VERSION}"
     restart: always
     depends_on:
       - postgres
@@ -135,7 +135,7 @@ services:
 
   cms-admin-proxy:
     container_name: cms-admin-proxy
-    image: "dispeakble/crm-proxy:${CMS_ADMIN_PROXY_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-proxy:${CMS_ADMIN_PROXY_VERSION}"
     restart: always
     depends_on:
       - redis
@@ -158,7 +158,7 @@ services:
 
   cms-public-proxy:
     container_name: cms-public-proxy
-    image: "dispeakble/crm-frontend-proxy:${CMS_FRONTEND_PROXY_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-frontend-proxy:${CMS_FRONTEND_PROXY_VERSION}"
     restart: always
     depends_on:
       - redis
@@ -181,7 +181,7 @@ services:
 
   cms-frontend:
     container_name: cms-frontend
-    image: "dispeakble/crm-frontend-api:${CMS_FRONTEND_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-frontend-api:${CMS_FRONTEND_VERSION}"
     restart: always
     depends_on:
       - postgres
@@ -209,7 +209,7 @@ services:
 
   cms-system:
     container_name: cms-system
-    image: "dispeakble/crm-system:${CMS_ADMIN_SYSTEM_VERSION}"
+    image: "${DOCKER_REGISTRY_USERNAME}/crm-system:${CMS_ADMIN_SYSTEM_VERSION}"
     restart: always
     depends_on:
       - postgres
