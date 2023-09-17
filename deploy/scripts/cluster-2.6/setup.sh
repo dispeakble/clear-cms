@@ -45,8 +45,8 @@ if [ -z "$(command -v kubectl)" ]; then
   installService "../infrastructure/install-kubectl.sh"
 fi
 
-DOCKERHUB_USERNAME="cmsbot"
-DOCKERHUB_PASS="uB8V7B6IR5ll"
+DOCKERHUB_USERNAME="dispeakble"
+DOCKERHUB_PASS="zF*%d5^nTOwPt$!1"
 BITBUCKET_USERNAME="the_dispeakble_one"
 BITBUCKET_PASS='KWJtnNGH9Wh9EtAhnSmX'
 DEFAULT_CLUSTER_USERNAME="admin"

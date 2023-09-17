@@ -57,7 +57,7 @@ fi
 
 echo "Login in to docker"
 
-cat ../secrets/dockerpass.txt | docker login --username cmsbot --password-stdin
+cat ../secrets/dockerpass.txt | docker login --username dispeakble --password-stdin
 
 echo "Creating volume folders"
 

@@ -47,6 +47,7 @@ import leftArrowIcon from "../assets/img/icons/left-arrow-icon.svg";
 import viewMoreIcon from "../assets/img/icons/view-more-icon.svg";
 import loginEmail from "../assets/img/icons/email-icon.svg";
 import loginPassword from "../assets/img/icons/password-icon.svg";
+import menuIcon from "../assets/img/icons/menu-icon.svg";
 
 const icons: Record<string, any> = {
   loginEmail: loginEmail,
@@ -97,7 +98,8 @@ const icons: Record<string, any> = {
   resultFilter: filterIcon,
   rightArrow: rightArrowIcon,
   leftArrow: leftArrowIcon,
-  viewMore: viewMoreIcon
+  viewMore: viewMoreIcon,
+  menu: menuIcon,
 };
 
 export const getIcon = (iconName: string) => {

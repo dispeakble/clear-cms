@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DOCKERHUB_USERNAME="cmsbot"
-DOCKERHUB_PASS="uB8V7B6IR5ll"
+DOCKERHUB_USERNAME="dispeakble"
+DOCKERHUB_PASS="zF*%d5^nTOwPt$!1"
 
 INIT_APP_NAME="marioviajes"
 INIT_APP_VERSION="1.5.0"
