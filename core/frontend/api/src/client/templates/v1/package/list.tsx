@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { ContentWrapper, PaperWrapper } from "../styled";
 import {
-  BookNowContainer,
   FiltersContainer,
-  LoadMoreButton,
+  LoadMoreButton, LoadMoreContanier,
   PackagesContainer,
   PackagesLayout
 } from "./styled";
@@ -185,11 +184,11 @@ const PackagesPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
                     <PackageCard key={`${JSON.stringify(_)}-${i}`} details={packageMock} />
                   ))
               }
-              <BookNowContainer>
+              <LoadMoreContanier>
                 <LoadMoreButton onClick={() => loadMorePages()}>
                   {t("packages.main.loadMore")}
                 </LoadMoreButton>
-              </BookNowContainer>
+              </LoadMoreContanier>
             </PackagesContainer>
           </PackagesLayout>
         </ContentWrapper>

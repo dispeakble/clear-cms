@@ -22,7 +22,7 @@ import {
   PackageMain,
   PackageMainContainer,
   PackageDetailsContainer,
-  PackageDescriptionContainer, PackageDescription, PackageServicesContainer, ServiceItem
+  PackageDescriptionContainer, PackageDescription, PackageServicesContainer, ServiceItem, StyledArrowIcon
 } from "../../styled";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -98,8 +98,7 @@ const PackageCard = ({ details }: PackageCardProps) => {
                     <ServicesDescriptionText>
                       {t("packages.main.includedServices")}
                     </ServicesDescriptionText>
-                    {isExpanded === "services" && <img src={collapseUpIcon.src} />}
-                    {isExpanded !== "services" && <img src={collapseDownIcon.src} />}
+                    <StyledArrowIcon className={isExpanded === "services" ? "rotate180" : ""} src={collapseDownIcon.src} />
                   </ServicesTextContainer>
                   <ServicesTextContainer
                     onClick={() => handleDetails("description")}
@@ -108,8 +107,7 @@ const PackageCard = ({ details }: PackageCardProps) => {
                     <ServicesDescriptionText>
                       {t("packages.main.hotelDescription")}
                     </ServicesDescriptionText>
-                    {isExpanded === "description" && <img src={collapseUpIcon.src} />}
-                    {isExpanded !== "description" && <img src={collapseDownIcon.src} />}
+                    <StyledArrowIcon className={isExpanded === "description" ? "rotate180" : ""} src={collapseDownIcon.src} />
                   </ServicesTextContainer>
                 </DetailsContainer>
               </PackageDetails>
@@ -140,24 +138,18 @@ const PackageCard = ({ details }: PackageCardProps) => {
           </PricingDetailsWrapper>
         </PackageMainContainer>
         <PackageDetailsContainer>
-          {
-            isExpanded === "services" &&
-            <PackageServicesContainer>
-              {[...details.services].map(
-                (service: any) => <ServiceItem key={service}>
-                  <CheckedIcon />{service}
-                </ServiceItem>
-              )}
-            </PackageServicesContainer>
-          }
-          {
-            isExpanded === "description" &&
-            <PackageDescriptionContainer>
-              <PackageDescription>
-                {details.description}
-              </PackageDescription>
-            </PackageDescriptionContainer>
-          }
+          { isExpanded === "services" && <PackageServicesContainer>
+            {[...details.services].map(
+              (service: any) => <ServiceItem key={service}>
+                <CheckedIcon />{service}
+              </ServiceItem>
+            )}
+          </PackageServicesContainer> }
+          { isExpanded === "description" && <PackageDescriptionContainer>
+            <PackageDescription>
+              {details.description}
+            </PackageDescription>
+          </PackageDescriptionContainer> }
         </PackageDetailsContainer>
       </PackageMain>
 

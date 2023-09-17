@@ -1,8 +1,8 @@
 version: "3.2"
 services:
 
-  redis:
-    container_name: redis
+  cms-redis:
+    container_name: cms-redis
     image: "redis:alpine"
     restart: always
     command: "redis-server --requirepass '${REDIS_DEFAULT_PASSWORD}'"
@@ -16,8 +16,8 @@ services:
       node_net:
         ipv4_address: 172.28.1.1
 
-  postgres:
-    container_name: postgres
+  cms-postgres:
+    container_name: cms-postgres
     image: "postgres:11.14-alpine" # use latest official postgres version
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
@@ -37,8 +37,8 @@ services:
       node_net:
         ipv4_address: 172.28.1.2
 
-  pgadmin:
-    container_name: pgadmin
+  cms-pgadmin:
+    container_name: cms-pgadmin
     image: dpage/pgadmin4
     restart: always
     healthcheck:
@@ -50,7 +50,7 @@ services:
       timeout: 10s
       retries: 1
     depends_on:
-      - postgres
+      - cms-postgres
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -69,8 +69,8 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-hub:${CMS_HUB_VERSION}"
     restart: always
     depends_on:
-      - postgres
-      - redis
+      - cms-postgres
+      - cms-redis
     environment:
       - app=${APP_NAME}
       - app_version=${APP_VERSION}
@@ -94,8 +94,8 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-db:${CMS_DB_VERSION}"
     restart: always
     depends_on:
-      - postgres
-      - redis
+      - cms-postgres
+      - cms-redis
       - cms-hub
     environment:
       - redis_server=172.28.1.1
@@ -118,8 +118,8 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-bucket:${CMS_BUCKET_VERSION}"
     restart: always
     depends_on:
-      - postgres
-      - redis
+      - cms-postgres
+      - cms-redis
       - cms-hub
     volumes:
       - cms-bucket:/usr/src/var
@@ -138,7 +138,7 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-proxy:${CMS_ADMIN_PROXY_VERSION}"
     restart: always
     depends_on:
-      - redis
+      - cms-redis
       - cms-hub
       - cms-db
       - cms-bucket
@@ -161,7 +161,7 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-frontend-proxy:${CMS_FRONTEND_PROXY_VERSION}"
     restart: always
     depends_on:
-      - redis
+      - cms-redis
       - cms-hub
       - cms-db
       - cms-bucket
@@ -184,8 +184,8 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-frontend-api:${CMS_FRONTEND_VERSION}"
     restart: always
     depends_on:
-      - postgres
-      - redis
+      - cms-postgres
+      - cms-redis
       - cms-hub
       - cms-db
     environment:
@@ -212,8 +212,8 @@ services:
     image: "${DOCKER_REGISTRY_USERNAME}/crm-system:${CMS_ADMIN_SYSTEM_VERSION}"
     restart: always
     depends_on:
-      - postgres
-      - redis
+      - cms-postgres
+      - cms-redis
       - cms-hub
       - cms-db
     environment:

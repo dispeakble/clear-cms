@@ -79,6 +79,11 @@ export const LoadMoreButton = styled.button`
   }
 `;
 
+export const LoadMoreContanier = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 
 /* start Packages styles */
 
@@ -157,6 +162,7 @@ export const PackageDescriptionContainer = styled.div`
 `;
 
 export const PackageServicesContainer = styled.div`
+
 `;
 
 export const ServiceItem = styled.div`
@@ -407,6 +413,13 @@ export const ServicesDescriptionText = styled.a`
 
 export const DescriptionContainer = styled.div`
 
+`;
+
+export const StyledArrowIcon = styled.img`
+  transition: transform 120ms linear;
+  &.rotate180 {
+    transform: rotate(180deg);
+  }
 `;
 
 /* end Packages styles */

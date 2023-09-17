@@ -269,6 +269,7 @@ export const StyledLabel = styled.label`
   color: rgba(0, 0, 0, 0.5);
   font-size: 12px;
   white-space: nowrap;
+  cursor: inherit;
 
   & > span {
     padding-right: 10px !important;
