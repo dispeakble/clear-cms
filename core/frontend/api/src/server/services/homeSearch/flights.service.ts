@@ -149,7 +149,7 @@ export class HomeSearchFlightsService {
                 }
             }).toPromise();
 
-            if(response && response.length) {
+            if(response?.length) {
                 const result = response.map((el: any) => {
                     return el['DestinationGeography'];
                 });
@@ -164,7 +164,6 @@ export class HomeSearchFlightsService {
             Logger.log(err);
             return null;
         }
-        return null;
     }
 
     private async searchStartDate(params: any) {

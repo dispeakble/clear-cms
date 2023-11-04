@@ -13,7 +13,7 @@
       <env name="session_secret" value="1qaz" />
       <env name="redis_port" value="6379" />
       <env name="redis_password" value="1gzHwbgfwR" />
-      <env name="app" value="marioviajes" />
+      <env name="app" value="clearcms" />
     </envs>
     <method v="2" />
   </configuration>

@@ -1,0 +1,8 @@
+**/node_modules
+**/__tests__
+**/dist
+**/build
+**/.wsrun
+**/.dockerignore
+**/.git
+**/.next

@@ -25,6 +25,7 @@ export class ModuleService {
 
   public async checkModules() {
 
+    //TODO get this list from an ENV var
     const modules = ['frontend', 'frontendproxy', 'adminproxy', 'system', 'bucket', 'db'];
 
     setInterval(() => {

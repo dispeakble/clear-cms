@@ -1,0 +1,627 @@
+{
+  "global": {
+    "home": "Home",
+    "search": "Búsqueda",
+    "pageTitle": "{websiteName}",
+    "adults": "Adultos",
+    "children": "Niños",
+    "nights": "noches",
+    "days": "dias",
+    "included": "Incluye",
+    "termsAndConditions": "Términos y Condiciones.",
+    "greetings": "Hola",
+    "loading": "Cargando...",
+    "redirecting": "Redirigiendo...",
+    "loggingOut": "Cerrar la sesión...",
+    "accounts": {
+      "login": "Acceso",
+      "logout": "Cierre de sesión",
+      "signup": "Registrarse",
+      "myProfile": "Mi perfil",
+      "changePassword": "Cambiar la contraseña",
+      "invoices": "Facturas",
+      "contracts": "Contratos"
+    },
+    "errors": {
+      "credentialsMismatch": "No hay coincidencia de credenciales.",
+      "errorOccurred": "Se ha producido un error, por favor, inténtelo de nuevo...",
+      "recaptchaError": "Se ha producido un error al validar el ReCAPTCHA, por favor, inténtelo más tarde...",
+      "passwordMismatch": "La contraseña actual no es válida, por favor, introduzca su contraseña actual e inténtelo de nuevo.",
+      "passwordUpdateError": "Se ha producido un error al actualizar la contraseña, inténtelo de nuevo más tarde."
+    }
+  },
+  "menu": {
+    "home": "Home",
+    "packages": "Paquetes",
+    "hotels": "Hoteles",
+    "flights": "Vuelos",
+    "activities": "Ocupaciones",
+    "login": "Acceso",
+    "search": "Búsqueda"
+  },
+  "input": {
+    "placeholder": {
+      "firstName": "P.EJ. John (Nombre)",
+      "lastName": "P.EJ. Smith (Apellido)",
+      "login": {
+        "email": "Introduzca su correo electrónico",
+        "password": "Introduzca su contraseña"
+      }
+    }
+  },
+  "day": {
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado",
+    "sunday": "Domingo"
+  },
+  "month": {
+    "january": "enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Puede",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
+  "home": {
+    "seo": {
+      "pageTitle": "Hoteles, Boletos de avión, Paquetes vacacionales :: {websiteName}"
+    },
+    "info-box-title": "Aventuras",
+    "info-box-description": "Vacaciones y excursiones",
+    "img-source": "Imagen de",
+    "promo": {
+      "special-offers": "Ofertas",
+      "last-minute": "Último minuto",
+      "flights": "Vuelos"
+    },
+    "about-us": {
+      "title": "Viaja a cualquier rincón del mundo con nosotros",
+      "description": "Explorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros. Explorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros. Explorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros.\n\nExplorarías el paraíso natural del mundo, encontremos el mejor destino del mundo con nosotros.",
+      "contact-us": "Contacto"
+    },
+    "recommended": {
+      "title": "Destino recomendado",
+      "book-now": "Reservar ahora",
+      "tabs": {
+        "popular": "Popular",
+        "adventure": "Aventura",
+        "relax": "Relax",
+        "see-prices": "Ver precios"
+      },
+      "hotel1": "hoteles 1",
+      "description": "Alojamiento y desayuno completo",
+      "noOfNights": "Vuelo + Hotel 3 noches",
+      "bookNow": "Reservar ahora"
+    },
+    "relax": "Relájese",
+    "breakfast": "desayuno",
+    "detail": "7 días, desayuno",
+    "bookNow": "Reservar ahora",
+    "tabbed": {
+      "tabs": {
+        "first": "Vuelos + Hoteles",
+        "second": "Relájate en las mejores playas",
+        "third": "Divertidos parques acuáticos y zoológicos"
+      },
+      "first": {
+        "title": "El paquete completo",
+        "first": {
+          "subtitle": "Vuelos baratos",
+          "content": "Encuentra fácilmente tu billete de avión deseado"
+        },
+        "second": {
+          "subtitle": "Una diversa selección de hoteles",
+          "content": "Encontrarás el hotel perfecto para tus vacaciones soñadas"
+        },
+        "third": {
+          "subtitle": "Ponerlos todos juntos",
+          "content": "Benefíciese de nuestros paquetes de vuelos y reservas de hotel"
+        }
+      },
+      "second": {
+        "title": "Diversión en la playa",
+        "first": {
+          "subtitle": "Cosas para hacer",
+          "content": "Puedes elegir entre una playa de surf a un lado y un baño suave en el puerto"
+        },
+        "second": {
+          "subtitle": "Tomar un bocadillo",
+          "content": "Deléitese con mariscos frescos marinados en chile y lima."
+        },
+        "third": {
+          "subtitle": "Magia del atardecer",
+          "content": "Las cabañas de playa iluminadas con faroles son un escenario memorable para ver la puesta de sol."
+        }
+      },
+      "third": {
+        "title": "Diversión en el zoológico",
+        "first": {
+          "subtitle": "Observa aves exóticas",
+          "content": "Los pájaros amistosos siempre están felices de verte."
+        },
+        "second": {
+          "subtitle": "Espectáculo de delfines",
+          "content": "Mira a los delfines realizar los trucos más salvajes."
+        },
+        "third": {
+          "subtitle": "Huge Aquarium",
+          "content": "Get a unique experience at the aquarium. We have penguins"
+        }
+      }
+    },
+    "terms-and-conditions": {
+      "title": "Términos y condiciones",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras fringilla sapien libero, non malesuada nisi lacinia vel. Nam euvarius justo. Phaselluslaoreet sapien augue, a accumsan turpis dapibus vitae. Curabitur ac nibh felis. Sed eu metus quis erosegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttitor lor sit ametsegestas rhoncus. Mauris tristique nislcommodo risus volutpat porttitor. In turpis turpis, ornare sed maximus eu, iaculis etmetus. Aliquam rutrum enim lacus. Integer quis tincidunt urna.Quisque pretium fermentum felis vel porttit"
+    }
+  },
+  "search": {
+    "destination": "Destino",
+    "input-placeholder": "¿Adónde vas?",
+    "searchPackagesButton": "Encuentra ofertas",
+    "searchHotelsButton": "Buscar hoteles",
+    "searchFlightsButton": "Encontrar entradas",
+    "checkin": "Llegada",
+    "addDate": "Añadir fecha",
+    "checkinDate": "fecha de entrada",
+    "checkout": "Salida",
+    "checkoutDate": "Fecha de salida",
+    "guests": "Huéspedes",
+    "adults": "Adultos",
+    "children": "Niños",
+    "childAgeVar": "Niño #{n} edad:",
+    "oneway": "One way",
+    "adults-age": "13 años o más.",
+    "children-age": "De 2 a 12 años.",
+    "search-btn": "Buscar",
+    "homeSearchPackageDeparturePlaceholder": "Salida",
+    "homeSearchPackageDestinationPlaceholder": "Destino",
+    "homeSearchFlightDeparturePlaceholder": "Salida",
+    "homeSearchFlightDestinationPlaceholder": "Destino",
+    "homeSearchHotelDestinationPlaceholder": "Buscar un destino o un hotel",
+    "flightsDeparturePlaceholder": "Salida del vuelo",
+    "flightsDestinationPlaceholder": "destino del vuelo",
+    "departure": "Salida",
+    "return": "Devolver",
+    "departureDate": "Fecha de salida",
+    "returnDate": "Fecha de regreso",
+    "hotels": "Hoteles",
+    "packages": "Paquetes",
+    "flights": "Vuelos",
+    "hotel-stars": "Categoría"
+  },
+  "deals": {
+    "hotel": "Hotel Victoria",
+    "location": "Bischofshofen, 4, 38660 Adeje, Spain",
+    "checkin": "sábado, 12 de marzo...",
+    "checkout": "sábado, 13 marzo...",
+    "detail": {
+      "adult": "Adultos",
+      "child": "Niños"
+    }
+  },
+  "hotels": {
+    "main": {
+      "bookNow": "Reservar ahora",
+      "taxes": "*Incluyendo todos los impuestos",
+      "includedServices": "Servicios incluidos",
+      "hotelDescription": "Descripción del hotel",
+      "loadMore": "Ver más hoteles",
+      "from": "De"
+    },
+    "seo": {
+      "pageTitle": "{websiteName}",
+      "description": "Construye tu viaje perfecto en {websiteName} con cualquier presupuesto. En {websiteName} puedes encontrar grandes ahorros en hoteles, vuelos y paquetes."
+    }
+  },
+  "hotelAbout": {
+    "hotel": "Hotel Victoria, Adeje, España ",
+    "star": "({noOfStars} Estrellas)",
+    "cardTitle": "Hotel Victoria Destacados"
+  },
+  "hotelAvailable": {
+    "selectRoom": "2 Habitaciones"
+  },
+  "tooltip": {
+    "view_price": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,",
+    "room_type": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor Lorem ipsum dolor sit amet,"
+  },
+  "footer": {
+    "links": {
+      "about-us": "Sobre nosotros",
+      "contact": "Contacto",
+      "disclaimer": "Descargo de responsabilidad",
+      "useful-information": "Información útil",
+      "file-a-complaint": "Presentar una queja",
+      "working-hours": "Horas Laborales"
+    },
+    "email-address": "Correo electrónico",
+    "subscribe-title": "Suscríbete a nuestro boletín",
+    "subscribe": "Suscribir"
+  },
+  "custom404": {
+    "header": "¿Va a alguna parte? Has llegado a una página muy perdida.",
+    "links": "Haga clic en los siguientes enlaces",
+    "return": "O volver a la página de inicio",
+    "goBackHome": "Vuelve a home"
+  },
+  "links": {
+    "home": "Home",
+    "contact": "Contactar con",
+    "hotels": "Hoteles",
+    "flights": "Vuelos",
+    "packages": "Paquetes",
+    "latestSearches": "Últimas búsquedas",
+    "lastMinute": "Último minuto"
+  },
+  "custom300": {
+    "header": "Su página se redirigirá pronto."
+  },
+  "custom401": {
+    "header": "Se le ha dado de baja."
+  },
+  "custom500": {
+    "header": "Por el momento nuestros servicios están en mantenimiento."
+  },
+  "flightsCheckout": {
+    "cart": {
+      "header": "Su cesta de la compra",
+      "tax": "Impuesto sobre los servicios",
+      "total": "Precio total"
+    },
+    "flights": {
+      "header": "Detalles del vuelo",
+      "pricingRules": "Normas de fijación de precios"
+    },
+    "country": {
+      "spain": "España",
+      "unitedKingdom": "Reino Unido",
+      "morocco": "Marruecos",
+      "romania": "Rumania"
+    },
+    "main": {
+      "firstName": "Primer nombre",
+      "lastName": "Apellido",
+      "adult": "Adulto",
+      "child": "Niño",
+      "city": "Ciudad",
+      "contactDetails": "Detalles de contacto",
+      "zipCode": "Código postal",
+      "invoiceDetails": "Detalles de la factura",
+      "phoneNumber": "Número de teléfono",
+      "address": "Dirección",
+      "childAge": "Edad del niño",
+      "country": "País",
+      "emailAddress": "Correo electrónico",
+      "previousStep": "Paso anterior",
+      "nextStep": "Próximo paso",
+      "type": {
+        "departure": "salida",
+        "return": "devolver"
+      },
+      "bucharest": "Bucarest",
+      "departureDate": "lunes, 10 de junio.",
+      "tenerife": "Tenerife",
+      "destinationDate": "lunes, 10 de junio.",
+      "stopover": {
+        "city": {
+          "madrid": "Madrid"
+        }
+      },
+      "ticket": "billete",
+      "firstNamePlaceHolder": "P.EJ. Juan (nombre de pila)",
+      "lastNamePlaceHolder": "P.EJ. Juan (nombre de pila)",
+      "sameAsContact": "Igual que los detalles de contacto"
+    }
+  },
+  "flightList": {
+    "filters": {
+      "sortCheckboxes": {
+        "all": "Todos",
+        "theBest": "El mejor",
+        "theCheapest": "El mas barato",
+        "theFastest": "El mas rapido",
+        "airline": "Aerolínea"
+      }
+    },
+    "sort": "Clasificar",
+    "airlines": "aerolíneas",
+    "stopOvers": "Número de escalas",
+    "bucharest": "Bucarest",
+    "madrid": "Madrid",
+    "tenerife": "Tenerife",
+    "flightType": {
+      "directflight": "vuelo directo",
+      "oneStop": "una parada en MAD"
+    },
+    "person": "persona",
+    "bookNow": "Reservar ahora"
+  },
+  "filters": {
+    "destination": "Destino",
+    "categories": "Categorías",
+    "main": {
+      "title": "filtros",
+      "reset": "Reiniciar"
+    },
+    "packages": {
+      "title": "Paquete Charter para {hotelName}",
+      "address": "Bischofshofen, 4, 38660 Adeje, Spain",
+      "type": {
+        "flights": "Vuelos",
+        "hotel": "Hotel",
+        "transfers": "Transferencias",
+        "activities": "Actividades"
+      }
+    },
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur, ullamcorper lectus id, consectetur purus. Cras consequat dapibus aliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt, eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequat. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "services": {
+      "flightIncluded": "Vuelo incluido",
+      "checkinBaggage": "facturar equipaje",
+      "handBaggage": "equipaje de mano",
+      "airportTaxes": "Impuestos de aeropuerto",
+      "airportToHotel": "Traslado del aeropuerto al hotel",
+      "hotelToAirport": "Transfer from hotel to airport",
+      "touristAssistance": "asistencia turística",
+      "nightStay": "noches de night"
+    }
+  },
+  "packages": {
+    "main": {
+      "bookNow": "Reservar ahora",
+      "taxes": "*Incluyendo todos los impuestos",
+      "includedServices": "Servicios incluidos",
+      "hotelDescription": "Descripción del hotel",
+      "loadMore": "Ver más paquetes",
+      "from": "Desde"
+    }
+  },
+  "packageDetails": {
+    "BookingCardTitle1": "Hoteles similares",
+    "countryName": "España",
+    "islandName": "Tenerife",
+    "townName": "Adeje",
+    "hotelName": "Paquete Charter para {hotelName}",
+    "findDeals": "Buscar ofertas",
+    "destinationOrHotel": "Destino u Hotel:",
+    "checkInDate": "Comprobar en la fecha:",
+    "checkOutDate": "Echa un vistazo a la fecha:",
+    "adult": "Adultos",
+    "children": "Niños",
+    "flightDetails": "Detalles del vuelo",
+    "flightDetailLabel": "Vuelo desde {flightFrom} a {flightTo} {flightDuration}",
+    "bookingDetailPara": "Precios disponibles para el {date} - {noOfNights} noches",
+    "charterDetailHeading1": "Paquete Charter para {hotelName}",
+    "charterDetailPara1": "Vacaciones especialmente seleccionadas para su alma gemela, disfrute de una cena en un entorno romántico en Barefoot Resort - Havelock, emocionante actividad Seakart, visite la playa Elephant y disfrute de los deportes acuáticos. Cómodos traslados privados, Elección de Hoteles, Viajes interinsulares en ferry privado...",
+    "charterDetailHeading2": "Condiciones de reserva",
+    "incService": "Servicios incluidos",
+    "services": {
+      "flightIncluded": "Vuelo incluido",
+      "checkinBaggage": "facturar equipaje",
+      "handBaggage": "equipaje de mano",
+      "airportTaxes": "Impuestos de aeropuerto",
+      "airportToHotel": "Traslado del aeropuerto al hotel",
+      "hotelToAirport": "Transfer from hotel to airport",
+      "touristAssistance": "asistencia turística",
+      "nightStay": "noches de night"
+    },
+    "notIncService": "Servicios No Incluidos",
+    "travelIns": "Seguro de viaje",
+    "detailCard": {
+      "packDetail": "Detalles del paquete",
+      "flightInf": "Informacion de vuelo",
+      "flightDate": "Fecha de vuelo",
+      "occupants": "ocupantes",
+      "bookingDetails": "Detalles de la reserva",
+      "singleRoom": "Habitación individual",
+      "allIncl": "Todo incluido",
+      "b&b": "Bed & breakfast",
+      "bookNow": "Reservar ahora",
+      "seePrices": "Ver Precios",
+      "doubleRoom": "Doble habitacion",
+      "henri": "enrique",
+      "coanda": "Coanda",
+      "tenerife": "Tenerfie",
+      "spain": "España",
+      "sur": "Sur",
+      "bucharest": "Bucarest",
+      "checkAvailable": "Consultar disponibilidad",
+      "otherDestinations": "Otros Destinos"
+    },
+    "packageCharter": {
+      "showMap": "Mostrar mapa",
+      "from": "desde",
+      "perStay": "pers / night"
+    }
+  },
+  "hotelDetail": {
+    "hotelDetailComponent": {
+      "find": "Encontrar",
+      "hotel": "Destino u Hotel",
+      "outDate": "Echa un vistazo a la fecha",
+      "inDate": "Comprobar en la fecha",
+      "details": "Detalles",
+      "addNumbersOfPersons": "Añadir números de personas",
+      "ageOnTheDayOfTravel": "Años y más el día del viaje",
+      "infoIconDes": "Lorem psum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. labore et dolore magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, adipisicing elit, sed do eiusmod tempor. magna aliqua. Lorem ipsum dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod",
+      "viewPrices": "Ver precios",
+      "newSearch": "Nueva búsqueda",
+      "done": "Hecho",
+      "showMap": "Mostrar mapa"
+    },
+    "hotelAbout": {
+      "features": {
+        "breakfast": "Desayuno info Continental, Buffet",
+        "seaView": "Vista marítima",
+        "gardenView": "Vista al jardín",
+        "terrace": "Terraza",
+        "poolView": "Vista a la piscina",
+        "quietStreetView": "Vista de la calle tranquila",
+        "freeParking": "Estacionamiento gratis",
+        "atmExchange": "Cambio de cajero automático"
+      },
+      "readLess": "Leer menos...",
+      "readMore": "Lee mas..."
+    },
+    "hotelAvailable": {
+      "roomsAvailable": "Habitaciones disponibles para",
+      "checkIn": "Registrarse",
+      "checkOut": "Verificar",
+      "refreshPrice": "Actualizar precios",
+      "roomType": "Tipo de habitación",
+      "meals": "Comidas",
+      "rooms": "Habitaciones",
+      "room": "Habitación",
+      "price": "Precio",
+      "premiumRoom": "Habitación Familiar Premium ",
+      "breakfastInc": "Desayuno incluido",
+      "bookNow": "Reservar ahora"
+    }
+  },
+  "hotelCheckout": {
+    "main": {
+      "stars": "{stars} estrellas",
+      "adults": "Adultos",
+      "children": "Niños"
+    },
+    "headers": {
+      "first": "Detalles de la reserva",
+      "second": "Detalles del pasajero",
+      "third": "Tercer paso",
+      "fourthError": "Error de pago",
+      "fourthSuccess": "Procesamiento de pagos",
+      "confirmed": "Procesamiento de pagos"
+    },
+    "payment": {
+      "error": {
+        "title": "El paso de pago no tuvo éxito",
+        "insufficientFunds": "Fondos insuficientes",
+        "tryAgain": "Intentémoslo de nuevo"
+      },
+      "success": {
+        "title": "Le redirigimos al paso de procesamiento de pagos",
+        "doNotCloseWindow": "Por favor, no cierre esta ventana"
+      },
+      "clickBackButton": "O bien, haga clic en el botón de retroceso",
+      "redirectText": "Si su página no ha cambiado en 5 segundos, por favor",
+      "clickHere": "Haga clic aquí"
+    },
+    "paymentConfirmed": {
+      "successText": "Éxito",
+      "emailDetails": "También recibirá un correo electrónico con todos los detalles.",
+      "backHome": "Volver a Home"
+    },
+    "cart": {
+      "allInclusive": "Todo incluido"
+    }
+  },
+  "hotelResult": {
+    "sideBar": {
+      "carousels": {
+        "title1": "Grandes ofertas de 2022",
+        "title2": "Principales búsquedas de 2022"
+      },
+      "search": {
+        "passengers": "Pasajeros",
+        "addPersons": "Añadir números de personas",
+        "adultsAge": "12 años o más el día del viaje",
+        "childrensAge": "2-12 años el día del viaje",
+        "done": "Hecho",
+        "newSearch": "Nueva búsqueda"
+      }
+    },
+    "adult": "Adulto",
+    "nights": "noches",
+    "bookNow": "Reservar ahora",
+    "from": "Desde",
+    "hotelVictoria": "Hotel Victoria",
+    "victoriaHotelLocation": "Bischofshofen, 4, 38660 Adeje, España",
+    "hotelVictoriaDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eu dolor efficitur ullamcorper lectus id, consectetur purus. Cras consequat dapibusaliquam. Aenean hendrerit convallis ultrices. Praesent scelerisque orci vel arcu tincidunt eu facilisis massa pellentesque. Ut facilisis sem ipsum, vitae porta enim dignissim consequa. Etiam nec placerat nibh. Aliquam posuere auctor lacus vitae sollicitudin. Quisque facilisis accumsan sapien ac efficitur. Etiam eget urna vulputate, faucibus ipsum et, imperdiet ipsum. Nam eu nunc a erat tincidunt feugiat sit amet id lacus. Nunc id risus vitae neque dictum eleifend eu quis felis.",
+    "viewMore": "Ver más"
+  },
+  "packageCheckout": {
+    "main": {
+      "stars": "{stars} estrellas",
+      "adults": "Adultos",
+      "children": "Niños",
+      "termsAndConditionsApply": "Se aplican los términos y condiciones.",
+      "termsAndConditionsLong": "Al continuar con el siguiente paso, confirmo que estoy de acuerdo con los"
+    },
+    "headers": {
+      "first": "Detalles de la reserva del paquete",
+      "second": "Detalles del pasajero",
+      "third": "Tercer paso",
+      "fourthError": "Error de pago",
+      "fourthSuccess": "Procesamiento de pagos",
+      "confirmed": "Procesamiento de pagos"
+    },
+    "cart": {
+      "total": "Precio del paquete"
+    },
+    "details": {
+      "title": "Mi superpaquete extraordinario",
+      "bedAndBreakfast": "Alojamiento y desayuno",
+      "doubleRoom": "Habitación doble",
+      "airportHotelTransfer": "Traslado al aeropuerto + traslado al hotel",
+      "smallBags": "bolsa pequeña para cada persona",
+      "suitcase": "maleta grande para cada adulto",
+      "airportTaxes": "Todas las tasas de aeropuerto"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Inicia sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "rememberMe": "Recuérdame",
+      "forgotPassword": "¿Olvidó su contraseña?",
+      "continue": "Continuar",
+      "dontHaveAccount": "¿No tiene una cuenta? ",
+      "registerHere": "Regístrese aquí"
+    },
+    "passwordReset": {
+      "title": "Inicia sesión",
+      "infos": "Recibirás un correo electrónico con las indicaciones para el proceso de restablecimiento de la contraseña."
+    }
+  },
+  "invoice": {
+    "invoiceDetails": "Detalles de la factura",
+    "price": "Precio",
+    "download": "Descargar factura"
+  },
+  "clientArea": {
+    "greetings": "Hola, {name}!",
+    "daysCount": "Usted forma parte de {website} para",
+    "personalInfo": "Datos personales",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "dateOfBirth": "Fecha de nacimiento",
+    "contactNumber": "Número de contacto",
+    "editProfile": "Editar perfil",
+    "phoneNumber": "Número de teléfono",
+    "edit": {
+      "changeDetails": "Cambia tus datos aquí",
+      "updateInfos": "Puedes cambiar aquí Nombre, fecha de nacimiento, etc.",
+      "uploadAvatar": "Subir Avatar",
+      "saveChanges": "Guardar cambios",
+      "discardChanges": "Descartar cambios",
+      "password": {
+        "updateInfos": "Puedes cambiar tu contraseña aquí",
+        "currentPassword": "Tu contraseña actual",
+        "newPassword": "Su nueva contraseña",
+        "newPasswordConfirm": "Confirma tu nueva contraseña",
+        "changePassword": "Cambia tu contraseña aquí"
+      }
+    }
+  }
+}

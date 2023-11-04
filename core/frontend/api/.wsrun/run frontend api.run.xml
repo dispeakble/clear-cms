@@ -14,7 +14,7 @@
       <env name="NODE_ENV" value="development" />
       <env name="website_domain" value="http://localhost:9898" />
       <env name="tpl_ver" value="v1" />
-      <env name="app" value="marioviajes" />
+      <env name="app" value="clearcms" />
       <env name="JWT_EXP_H" value="3600s" />
       <env name="recaptcha_public_key" value="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH" />
       <env name="recaptcha_private_key" value="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29" />

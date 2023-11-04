@@ -7,7 +7,7 @@
     </scripts>
     <node-interpreter value="project" />
     <envs>
-      <env name="app" value="marioviajes" />
+      <env name="app" value="clearcms" />
       <env name="dev" value="true" />
       <env name="pg_connections" value="main,agency" />
       <env name="pg_db" value="main" />

@@ -2,14 +2,14 @@
 Param ([Boolean]$custom = 0)
 
 $INSTALL_VERSION="v0.0.1"
-$APP_NAME = "marioviajes"
-$APP_VERSION = "1.5.0"
-$WEBSITE_NAME = "Mario Viajes"
-$WEBSITE_EMAIL = "contact@marioviajes.com"
-$ADMIN_FNAME = "Mario"
-$ADMIN_LNAME = "Viajes"
-$WEBSITE_DOMAIN = "marioviajes.com"
-$DEFAULT_EMAIL = "admin@example.com"
+$APP_NAME = "clearcms"
+$APP_VERSION = "1.6.0"
+$WEBSITE_NAME = "Clear CMS"
+$WEBSITE_EMAIL = "contact@clearcms.com"
+$ADMIN_FNAME = "Admin"
+$ADMIN_LNAME = "CMS"
+$WEBSITE_DOMAIN = "clearcms.com"
+$DEFAULT_EMAIL = "admin@clearcms.com"
 $DEFAULT_PASSWORD = "1qaz"
 $TPL_VER = "v1"
 $CMS_JWT_EXP_H="3600s"
@@ -22,18 +22,18 @@ $POSTGRES_DEFAULT_USER = "cms"
 $POSTGRES_DEFAULT_PASSWORD = "1qaz"
 $POSTGRES_DEFAULT_DB = "main"
 $POSTGRES_DEFAULT_CONNECTIONS = "main,agency"
-$PGADMIN_DEFAULT_EMAIL = "admin@example.com"
+$PGADMIN_DEFAULT_EMAIL = "admin@clearcms.com"
 $PGADMIN_DEFAULT_PASSWORD = "1qaz"
 $REDIS_DEFAULT_PASSWORD = "1gzHwbgfwR"
 $BUCKET_PATH="./volumes/cms/bucket"
 
-$CMS_HUB_VERSION="1675617296"
-$CMS_DB_VERSION="1675617296"
-$CMS_BUCKET_VERSION="1675617296"
-$CMS_FRONTEND_PROXY_VERSION="1675617296"
-$CMS_FRONTEND_VERSION="1675617296"
-$CMS_ADMIN_PROXY_VERSION="1675617296"
-$CMS_ADMIN_SYSTEM_VERSION="1675617296"
+$CMS_HUB_VERSION="1698666457"
+$CMS_DB_VERSION="1698666457"
+$CMS_BUCKET_VERSION="1698666457"
+$CMS_FRONTEND_PROXY_VERSION="1698666457"
+$CMS_FRONTEND_VERSION="1698666457"
+$CMS_ADMIN_PROXY_VERSION="1698666457"
+$CMS_ADMIN_SYSTEM_VERSION="1698666457"
 $PWD=Get-Location
 
 
@@ -80,6 +80,8 @@ $env:TPL_VER=$TPL_VER
 $env:CMS_JWT_EXP_H=$CMS_JWT_EXP_H
 $env:recaptcha_public_key=$recaptcha_public_key
 $env:recaptcha_private_key=$recaptcha_private_key
+$env:DOCKER_REGISTRY_USERNAME=$DOCKER_REGISTRY_USERNAME
+$env:DOCKER_REGISTRY_URL=$DOCKER_REGISTRY_URL
 
 $env:REDIS_DEFAULT_PASSWORD=$REDIS_DEFAULT_PASSWORD
 
@@ -108,6 +110,8 @@ echo "$PWD"
 echo "$INSTALL_VERSION"
 echo "$APP_NAME"
 echo "$APP_VERSION"
+echo "$DOCKER_REGISTRY_URL"
+echo "$DOCKER_REGISTRY_USERNAME"
 echo "$DEFAULT_EMAIL"
 echo "$DEFAULT_PASSWORD"
 echo "$WEBSITE_NAME"
@@ -139,7 +143,7 @@ echo "**************** Starting Services *****************"
 
 Write-Output "Login in to docker"
 
-Get-Content ../secrets/dockerpass.txt | docker login --username $DOCKER_REGISTRY_USERNAME --password-stdin $DOCKER_REGISTRY_URL
+Get-Content ../secrets/dockerpass.txt | docker login $DOCKER_REGISTRY_URL --username $DOCKER_REGISTRY_USERNAME --password-stdin
 
 echo "..\versions\$INSTALL_VERSION\base.yaml"
 

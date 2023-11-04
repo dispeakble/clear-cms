@@ -1,0 +1,24 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FRONT-END api" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/core/frontend/api/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start:dev" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="redis_server" value="localhost" />
+      <env name="backend_port" value="9090" />
+      <env name="redis_port" value="6379" />
+      <env name="redis_password" value="1gzHwbgfwR" />
+      <env name="NODE_ENV" value="development" />
+      <env name="website_domain" value="http://localhost:9696" />
+      <env name="tpl_ver" value="v1" />
+      <env name="app" value="clearcms" />
+      <env name="JWT_EXP_H" value="3600s" />
+      <env name="recaptcha_public_key" value="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH" />
+      <env name="recaptcha_private_key" value="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
