@@ -1,4 +1,4 @@
-const waitForElm = (selector: string) => {
+export const waitForElm = (selector: string) => {
   return new Promise(resolve => {
     if (document.querySelector(selector)) {
       return resolve(document.querySelector(selector));
@@ -17,7 +17,3 @@ const waitForElm = (selector: string) => {
     });
   });
 };
-
-export {
-  waitForElm
-}

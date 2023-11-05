@@ -32,10 +32,7 @@
   },
   "menu": {
     "home": "Home",
-    "packages": "Paquetes",
-    "hotels": "Hoteles",
-    "flights": "Vuelos",
-    "activities": "Ocupaciones",
+    "categories": "Categorías",
     "login": "Acceso",
     "search": "Búsqueda"
   },

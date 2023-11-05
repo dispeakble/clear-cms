@@ -32,10 +32,7 @@
   },
   "menu": {
     "home": "Home",
-    "packages": "Packages",
-    "hotels": "Hotels",
-    "flights": "Flights",
-    "activities": "Activities",
+    "categories": "Categories",
     "login": "Login",
     "search": "Search"
   },

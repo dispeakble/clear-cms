@@ -45,7 +45,7 @@ class DataController {
     private async listCategories() {
         const data = await this.context.req.apiHub({
             protocolMethod: 'sendMessage',
-            channel: `admin`,
+            channel: `frontend`,
             api: 'categories',
             act: 'list',
             payload: {}

@@ -1,8 +1,8 @@
+
 // Put this in src/client/next.config.js
 // This is so .next folder is in the root directory. Make sure to add .next to .gitignore
 
-const serverUrl =
-  `https://${process.env.website_domain}` || 'http://localhost:9090';
+const serverUrl = `https://${process.env.website_domain}` || 'http://localhost:9898';
 
 module.exports = {
   reactStrictMode: true,
@@ -11,11 +11,11 @@ module.exports = {
   },
   distDir: '../../.next',
   devIndicators: {
-    buildActivity: false,
+    buildActivity: false
   },
   serverRuntimeConfig: {
     // Will only be available on the server side
-    enabled: true,
+    enabled: true
   },
   i18n: {
     locales: ['en', 'es'],
@@ -33,8 +33,8 @@ module.exports = {
     return [
       {
         source: '/files/:path*',
-        destination: `${serverUrl}/files/:path*`, // Proxy to static files
-      },
-    ];
-  },
+        destination: `${serverUrl}/files/:path*` // Proxy to static files
+      }
+    ]
+  }
 };

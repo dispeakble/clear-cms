@@ -46,13 +46,12 @@ export const device = {
   desktopL: `(min-width: ${size.desktopL})`,
 };
 
-export const MainWrapper = styled.div<{ isOrange?: boolean }>`
+export const MainWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: ${({ theme }) => theme.colors.mainBackground};
 `;
 
 export const Wrapper = styled.div<{
@@ -76,16 +75,9 @@ export const Wrapper = styled.div<{
   }
 `;
 
-export const TopContentWrapper = styled.div<{
-  isHome?: boolean;
-  showSearch?: boolean;
-}>`
+export const TopContentWrapper = styled.div`
   width: 100%;
-  padding: 54px 0 0;
-  ${({ showSearch }) => showSearch && 'padding-bottom: 40px;'}
-  background: url('${headerBg.src}') no-repeat center center ${({ theme }) =>
-    theme.colors.mainBackground};
-  background-size: cover;
+  padding-top: 46px;
 `;
 
 export const ContentWrapper = styled.div`

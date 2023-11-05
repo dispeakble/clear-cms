@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, MainWrapper } from '../../styled';
+import Header from '../Header';
+import {
+  GlobalStyle,
+  MainWrapper,
+  TopContentWrapper,
+  Wrapper,
+} from '../../styled';
+import Breadcrumbs from '../Breadcrumbs';
 import { getIcon } from '../../helpers/icons';
 import { MuiThemeProvider } from '@material-ui/core';
 import { createTheme } from '@material-ui/core/styles';
@@ -9,9 +16,19 @@ interface LayoutProps {
   websiteName: string;
   colorScheme: Record<string, any>;
   children: React.ReactChild | React.ReactChild[];
+  breadcrumbs?: Record<string, any>;
+  isLogin?: boolean;
+  isHomePage?: boolean;
+  websiteSlogan: string;
 }
 
-const Layout = ({ children, websiteName, colorScheme }: LayoutProps) => {
+const Layout = ({
+  websiteName,
+  colorScheme,
+  children,
+  breadcrumbs,
+  isHomePage = false,
+}: LayoutProps) => {
   const getIcons = (iconName: string) => {
     return getIcon(iconName);
   };
@@ -19,13 +36,76 @@ const Layout = ({ children, websiteName, colorScheme }: LayoutProps) => {
   const theme: any = { colors: colorScheme, icon: getIcons };
   const muiTheme: any = createTheme({
     palette: colorScheme,
+    overrides: {
+      MuiTable: {
+        root: {
+          background: 'transparent',
+          borderSpacing: '0 20px',
+          borderCollapse: 'revert',
+        },
+      },
+      MuiTableHead: {
+        root: {
+          background: colorScheme.white,
+        },
+      },
+      MuiTableRow: {
+        head: {
+          background: 'transparent',
+          '& > th:first-child': {
+            borderRadius: '10px 0 0 10px',
+          },
+          '& > th:last-child': {
+            borderRadius: '0 10px 10px 0',
+          },
+          '& > th > span > div': {
+            cursor: 'pointer',
+            fontSize: '13px',
+            fontWeight: 'bold',
+            color: colorScheme.jetBlack,
+          },
+        },
+        root: {
+          padding: '10px',
+          background: colorScheme.white,
+          '& > td:first-child': {
+            borderRadius: '10px 0 0 10px',
+            width: '150px !important',
+            borderRight: `1px dashed ${colorScheme.greyBorder}`,
+          },
+          '& > td:last-child': {
+            borderRadius: '0 10px 10px 0',
+          },
+        },
+        footer: {
+          background: 'transparent',
+          '& > tr': {
+            border: 'none',
+          },
+          '& > td:first-child': {
+            width: 'auto !important',
+          },
+        },
+      },
+      MuiTableFooter: {
+        root: {
+          background: 'none',
+        },
+      },
+    },
   });
 
   return (
     <MuiThemeProvider theme={muiTheme}>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <MainWrapper>{children}</MainWrapper>
+        <MainWrapper data-testid="main-wrapper">
+          <TopContentWrapper>
+            {!isHomePage && <Header websiteName={websiteName} />}
+            {!isHomePage && breadcrumbs && <Breadcrumbs {...breadcrumbs} />}
+          </TopContentWrapper>
+          <Wrapper>{children}</Wrapper>
+        </MainWrapper>
       </ThemeProvider>
     </MuiThemeProvider>
   );

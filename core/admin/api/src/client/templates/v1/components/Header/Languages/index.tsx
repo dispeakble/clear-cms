@@ -1,14 +1,14 @@
-import * as React from 'react';
 import { BiChevronDown } from "react-icons/bi";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Container, LanguagesDropdown, SelectedLanguage } from "./styled";
-import { NextRouter } from 'next/dist/shared/lib/router/router';
+import { NextRouter } from "next/dist/shared/lib/router/router";
 
 const Languages = (props: { languages: any; }) => {
 
   const router: NextRouter = useRouter();
   const { languages } = props;
+
 
   return (
     <Container>

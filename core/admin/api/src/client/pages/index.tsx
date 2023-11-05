@@ -17,7 +17,7 @@ interface ComponentProps extends WithRouterProps {
 }
 
 const templates: any = {
-  v1: dynamic(() => import('../templates/v1/pages/App')),
+  v1: dynamic(() => import('../templates/v1/HomePage')),
 };
 
 const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
@@ -28,7 +28,9 @@ const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
   return (
     <>
       <Helmet>
-        <title>Clear CMS</title>
+        <title>
+          {t('home.seo.pageTitle', { websiteName: settings.websiteName })}
+        </title>
       </Helmet>
       <Component {...settings} />
     </>
@@ -43,7 +45,7 @@ export async function getServerSideProps(context: any) {
     act: 'get',
     payload: {
       db: 'main',
-      channel: `admin`,
+      channel: `frontend`,
       data: {
         what: 'setting',
         limit: [0, 1],
@@ -75,8 +77,12 @@ export async function getServerSideProps(context: any) {
     });
     websiteData['colorScheme'] = dbWebsiteData['colorScheme'];
     websiteData['selectedTheme'] = dbWebsiteData['selectedTheme'];
+    websiteData['websiteAdminEmail'] = dbWebsiteData['websiteAdminEmail'];
+    websiteData['websiteDomain'] = dbWebsiteData['websiteDomain'];
+    websiteData['websiteName'] = dbWebsiteData['websiteName'];
   } catch (err) {
-    console.error(err);
+    // eslint-disable-next-line no-console
+    console.log(err);
     return {
       props: {
         settings: {},

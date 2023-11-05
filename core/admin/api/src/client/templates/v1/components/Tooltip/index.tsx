@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { TooltipCard, TooltipText, TooltipBox } from "./styled";
 
 const CustomTooltip = (props: any) => {

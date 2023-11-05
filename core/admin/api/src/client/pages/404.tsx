@@ -15,7 +15,7 @@ interface ComponentProps extends WithRouterProps {
 }
 
 const templates: any = {
-  v1: dynamic(() => import('../templates/v1/pages/404')),
+  v1: dynamic(() => import('../templates/v1/404')),
 };
 
 const PageComponent: NextPage<ComponentProps> = () => {

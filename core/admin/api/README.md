@@ -1,6 +1,6 @@
 Admin roadmap:
 1. [ ] login/logout 
-2. [ ] admin color palette
+2. [ ] admin themes - from scratch
 3. [ ] dashboard
 4. [ ] categories
 5. [ ] users
