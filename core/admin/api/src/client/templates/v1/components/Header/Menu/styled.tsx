@@ -10,7 +10,6 @@ export const StyledMenu = styled.ul`
   cursor: pointer;
   list-style: none;
   display: flex;
-  gap: 30px;
   padding: 0;
   margin: 0;
 
@@ -28,8 +27,6 @@ export const StyledMenu = styled.ul`
       content: ' ';
       width: 52px;
       height: 52px;
-      background: url(${({ theme }) => theme.icon('menu')}) no-repeat center
-        center rgba(0, 0, 0, 0.1);
     }
 
     &:hover {
@@ -38,11 +35,11 @@ export const StyledMenu = styled.ul`
       gap: 0;
     }
 
-    &:hover li {
-      display: block;
+    &:hover > li {
+      display: flex;
     }
 
-    & li {
+    & > li {
       display: none;
       gap: 0;
       background: ${({ theme }) => theme.colors.primaryColor};
@@ -57,6 +54,7 @@ export const StyledMenu = styled.ul`
 
 export const Item = styled.li`
   padding: 4px 0;
+  display: flex;
 `;
 
 export const LinkItem = styled.a`

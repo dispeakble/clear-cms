@@ -46,6 +46,9 @@ export const HeaderContent = styled.div`
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  &:hover > * {
+    color: ${({ theme }) => theme.colors.white};
+  }
 
   @media ${device.mobileS} {
     max-width: 320px;

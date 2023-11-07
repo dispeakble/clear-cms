@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useTranslations } from 'next-intl';
 import Layout from '../../components/Layout';
+import { Table } from '@mui/material';
 
 const LoginPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
   const t = useTranslations();
 
   const breadcrumbs = {
-    login: 'Categories',
+    categories: 'Categories',
   };
 
   return (
@@ -16,7 +17,7 @@ const LoginPage = ({ websiteName, websiteSlogan, colorScheme }: any) => {
       colorScheme={colorScheme}
       breadcrumbs={breadcrumbs}
     >
-      Categories
+      <Table />
     </Layout>
   );
 };

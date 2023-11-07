@@ -20,6 +20,20 @@ export const GlobalStyle = createGlobalStyle<{ theme: CustomTheme }>`
   [data-lastpass-icon-root="true"] {
     display: none;
   }
+
+  html *.selected {
+    background: repeating-radial-gradient(
+      circle farthest-corner at -13% -13%,
+      rgba(255, 255, 255, 0.8),
+      ${({ theme }) => theme.colors.primaryColorHover} 50%,
+      rgba(255, 255, 255, 0.8)
+    );
+  }
+
+  html *.selected, html *.selected * {
+    color: ${({ theme }) => theme.colors.white};
+  }
+  
 `;
 
 export const size = {

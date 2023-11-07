@@ -14,7 +14,10 @@ const Menu = ({ links }: MenuProps) => {
       <StyledMenu>
         {links &&
           links.map((link) => (
-            <Item key={`menu-link-${link.linkSlug}`}>
+            <Item
+              key={`menu-link-${link.linkSlug}`}
+              className={link.linkSlug === 'categories' ? 'selected' : ''}
+            >
               <LinkItem href={`/${link.linkHref}`}>
                 {t(`menu.${link.linkText}`)}
               </LinkItem>

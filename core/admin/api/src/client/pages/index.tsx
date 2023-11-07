@@ -28,9 +28,7 @@ const PageComponent: NextPage<ComponentProps> = ({ version, settings }) => {
   return (
     <>
       <Helmet>
-        <title>
-          {t('home.seo.pageTitle', { websiteName: settings.websiteName })}
-        </title>
+        <title>{settings.websiteName}</title>
       </Helmet>
       <Component {...settings} />
     </>

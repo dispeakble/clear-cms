@@ -10,11 +10,12 @@
     <envs>
       <env name="app" value="clearcms" />
       <env name="backend_port" value="9090" />
+      <env name="recaptcha_private_key" value="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29" />
+      <env name="recaptcha_public_key" value="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH" />
       <env name="redis_password" value="1gzHwbgfwR" />
       <env name="redis_port" value="6379" />
       <env name="redis_server" value="localhost" />
-      <env name="recaptcha_public_key" value="6LexYKcgAAAAAJFaubxSmEb8YREOpijCvN7cXTKH" />
-      <env name="recaptcha_private_key" value="6LexYKcgAAAAAIezbvvoK8awgmECnH7j7YDJsH29" />
+      <env name="NODE_ENV" value="development" />
     </envs>
     <method v="2" />
   </configuration>
